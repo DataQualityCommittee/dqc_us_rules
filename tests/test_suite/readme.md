@@ -125,4 +125,4 @@ Review the DQC-report.csv file to see the results of the test cases against the 
 
 
 © Copyright 2015, XBRL US Inc, All rights reserved   
-See [License.md](../../License.md) for license information.
+See [License](../../License.md) for license information.
