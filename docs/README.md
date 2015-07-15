@@ -12,4 +12,4 @@ Data Quality Committee Rules
 
 
 © Copyright 2015, XBRL US Inc, All rights reserved   
-See [License.md](https://github.com/susanyount-wf/dqc_us_rules/blob/release_1susan/License.md) for license information.
+See [License.md](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/License.md) for license information.
