@@ -38,7 +38,7 @@ Each rule has a dynamic message associated with it that uses ${..} to define the
 
 Messages for rules that return facts as model object references can refer to those facts ordinally, beginning with index 1. The references to these facts can include the following properties:
 
-* ${fact1.name}  Prefixed name of the fact'€™s concept.
+* ${fact1.name}  Prefixed name of the fact's concept.
 
 * ${fact1.localName}  The local name (without prefix) of the fact's concept.
 
@@ -66,7 +66,7 @@ Messages for rules that return facts as model object references can refer to tho
 
 Facts which are not ordinal arguments may be specified by prefixed name, such as dei:DocumentPeriodEndDate.fact.  These are specified as ${dei:DocumentPeriodEndDate.fact.name}, ${dei:DocumentPeriodEndDate.fact.value}, etc.  The fields are same as for ordinal fact references, as in the section above. The ".fact." must appear between the prefixed name and property name.
 
-**Concepts identified by prefixed name  **
+**Concepts identified by prefixed name**
 
 Concepts may be provided for message argument fact dimensions and their members, for example ${my:FooAxis.label} or ${my:BarMember.label}.  Concepts have the following properties:
 
