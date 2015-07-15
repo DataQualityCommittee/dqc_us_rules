@@ -80,4 +80,4 @@ If there are variable references that can't be resolved, such as missing facts, 
 
 
 © Copyright 2015, XBRL US Inc, All rights reserved   
-See [License.md](../../License.md) for license information.
+See [License](../../License.md) for license information.
