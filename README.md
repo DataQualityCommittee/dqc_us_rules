@@ -70,6 +70,6 @@ We actively accept, and encourage, pull requests for code changes.  An explanati
 
 ## License
 
-See [License.md](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/License.md) for license information.
+See [License.md](License.md) for license information.
 
 © Copyright 2015, XBRL US Inc, All rights reserved
