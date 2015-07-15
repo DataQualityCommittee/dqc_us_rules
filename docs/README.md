@@ -12,4 +12,4 @@ Data Quality Committee Rules
 
 
 © Copyright 2015, XBRL US Inc, All rights reserved   
-See [License.md](../License.md) for license information.
+See [License](../License.md) for license information.
