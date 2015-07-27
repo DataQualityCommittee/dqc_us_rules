@@ -93,7 +93,9 @@ def _get_default_dped(dped_facts):
     if len(keys) == 0:
         return None
     elif len(keys) == 1:
-        return [f for f in dped_facts.values()]
+        # Only one Document Period End Date, so that is our default
+        (_, value), = dped_facts.items()
+        return value
     else:
         return dped_facts.get('', [None])
 
