@@ -144,3 +144,15 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         res = dpedc._doc_period_end_date_check(mock_model)
         self.assertEqual(len(res), 1)  # Only expect one because test 33 will not happen if 36 fires.
+
+
+class TestGetDefaultDped(unittest.TestCase):
+
+    def test_no_dped(self):
+        self.assertIsNone(dpedc._get_default_dped({}))
+
+    def test_length_one_dped(self):
+        self.assertEqual(['test_case'], dpedc._get_default_dped({'': ['test_case']}))
+
+    def test_multi_dped(self):
+        self.assertEqual(['test_case'], dpedc._get_default_dped({'': ['test_case'], 'foo': ['another test case']}))

@@ -42,6 +42,8 @@ __pluginInfo__ = {
     'name': 'DQC.SEC.ALL',
     'version': '1.0',
     'description': '''All Data Quality Committee SEC Filing Checks''',
+    'author': '',
+    'license': 'See accompanying license text',
     #Mount points
     'Validate.XBRL.Finally': run_checks,
 }
