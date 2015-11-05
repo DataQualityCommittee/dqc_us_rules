@@ -71,7 +71,8 @@ def _setup_dei_facts(modelXbrl):
     return a tuple of the dictionary of a list of 1 DocumentPeriodEndDate per LegalEntityAxis and
     the dictionary of the list of dei facts per LegalEntityAxis
     """
-    ignored_fact_list = ['EntityCommonStockSharesOutstanding', 'EntityPublicFloat', 'DocumentPeriodEndDate']
+    ignored_fact_list = ['EntityCommonStockSharesOutstanding', 'EntityPublicFloat', 'DocumentPeriodEndDate',
+        'EntityNumberOfEmployees', 'EntityListingDepositoryReceiptRatio']
     dei_facts = facts.LegalEntityAxis_facts_by_member(_get_dei_facts(modelXbrl, ignored_fact_list))
     dped_facts = facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(['DocumentPeriodEndDate'], modelXbrl))
     return dped_facts, dei_facts
