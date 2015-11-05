@@ -9,10 +9,10 @@ CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate'
              'DocumentFiscalYearFocus', 'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
              'EntityCentralIndexKey', 'EntityFilerCategory']
 DATE_BOUNDS_DICT = {
-    "FY": {"min": 350, "max": 379},
-    "Q1": {"min": 77, "max": 119},
-    "Q2": {"min": 154, "max": 204},
-    "Q3": {"min": 238, "max": 287}
+    "FY": {"min": 340, "max": 390},
+    "Q1": {"min": 65, "max": 115},
+    "Q2": {"min": 155, "max": 205},
+    "Q3": {"min": 245, "max": 295}
 }
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
