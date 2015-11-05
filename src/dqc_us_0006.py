@@ -24,7 +24,7 @@ def validate_dates_within_periods(val):
     for the fiscal focus period
     """
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
-    if len(doc_type) != 1 or 't' in doc_type[0].lower():
+    if len(doc_type) != 1 or 'T' in doc_type[0]:
         # If it is a transitional document, or there is more than one document type declared, we will not run this check.
         return
     dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, DATE_BOUNDS_DICT, val.modelXbrl)
