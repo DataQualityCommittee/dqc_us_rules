@@ -50,7 +50,7 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = 2 * (-dec_scale ** 10)
+    margin_of_error = margin_scale * (10 ** (-dec_scale))
     return round_val1 < round_val2 - margin_of_error or round_val1 > round_val2 + margin_of_error
 
 
