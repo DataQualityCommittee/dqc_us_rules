@@ -202,4 +202,4 @@ def axis_qnames(fact):
     """
     @return a list of the @param fact's axes.
     """
-    return [str(dim.dimensionQname.localName) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]
+    return [str(dim.dimensionQname) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]
