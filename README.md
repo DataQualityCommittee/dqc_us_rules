@@ -4,8 +4,9 @@ dqc_us_rules is a plugin for Arelle
 
 ## dqc_us_rules contains:
 
+* Final rules that the XBRL US Data Quality Committee approved for public release
 * Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
-* Reference implementation of the draft rules, using Arelle as an XBRL processor
+* Reference implementation of the rules, using Arelle as an XBRL processor
 * Unit tests for the reference implementation
 * Test suite
 
@@ -70,6 +71,7 @@ We actively accept, and encourage, pull requests for code changes.  An explanati
 
 ## License
 
-See [License](License.md) for license information.
+See [License](License.md) for license information.  
+See [Patent Notice](PatentNotice.md) for patent infringement notice.
 
 © Copyright 2015, XBRL US Inc, All rights reserved
