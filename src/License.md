@@ -4,16 +4,12 @@ All published final recommendations of the Data Quality Committee are copyrighte
 
 Copyright © 2015, American Institute of CPAs (AICPA)  
 Copyright © 2015, Calcbench, Inc.  
-Copyright © 2015, CFA Institute  
-Copyright © 2015, Craig Lewis  
-Copyright © 2015, Credit Suisse HOLT  
-Copyright © 2015, Merrill Corporation  
-Copyright © 2015, RDG Filings  
+Copyright © 2015, Merrill Communications LLC  
+Copyright © 2015, RDG Filings, a division of Research Data Group Inc.  
 Copyright © 2015, R. R. Donnelley & Sons Company  
-Copyright © 2015, S&P Capital IQ  
 Copyright © 2015, Vintage, a division of PR Newswire  
 Copyright © 2015, Workiva Inc.  
-Copyright © 2015, XBRL US  
+Copyright © 2015, XBRL US, Inc.  
 
 This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to XBRL US except as required to translate it into languages other than English. Members of XBRL US agree to grant certain licenses under the XBRL US Intellectual Property Policy (https://xbrl.us/home/about/legal/).
 
