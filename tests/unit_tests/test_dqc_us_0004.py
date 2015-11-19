@@ -1,5 +1,6 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 import unittest
 from datetime import datetime, timedelta
 from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT, _values_unequal
