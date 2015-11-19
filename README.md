@@ -4,8 +4,8 @@ dqc_us_rules is a plugin for Arelle
 
 ## dqc_us_rules contains:
 
-* Approved rules produced by the XBRL US Data Quality Committee and draft rules exposed for public comment
-* Reference implementation of approved and draft rules, using Arelle as an XBRL processor
+* Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
+* Reference implementation of the draft rules, using Arelle as an XBRL processor
 * Unit tests for the reference implementation
 * Test suite
 
@@ -26,7 +26,7 @@ dqc_us_rules is a plugin for Arelle
 
 It is strongly recommended that one uses a python virtual environment, such as [virtualenv](http://www.virtualenv.org/en/latest/), to do development.  To make development and management of virtual environments easier, we recommend checking out [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/).
 
-The rest of this setup will assume you have installed [virtualenv](http://www.virtualenv.org/en/latest/) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/).
+The rest of this setup will assume you have installed [virtualenv](http://www.virtualenv.org/en/latest/) and [virtualenvwrapper](http://virtualenvwrapper).
 
 ### Creating a virtual environment
 
