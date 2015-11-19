@@ -12,5 +12,5 @@ Data Quality Committee Rules
 
 
 © Copyright 2015, XBRL US Inc, All rights reserved   
-See [License](../License.md) for license information.
+See [License](../License.md) for license information.  
 See [Patent Notice](../PatentNotice.md) for patent infringement notice.
