@@ -1,5 +1,6 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 from collections import defaultdict
 from datetime import timedelta
 from .util import facts, messages
@@ -9,10 +10,10 @@ CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate'
              'DocumentFiscalYearFocus', 'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
              'EntityCentralIndexKey', 'EntityFilerCategory']
 DATE_BOUNDS_DICT = {
-    "FY": {"min": 350, "max": 379},
-    "Q1": {"min": 77, "max": 119},
-    "Q2": {"min": 154, "max": 204},
-    "Q3": {"min": 238, "max": 287}
+    "FY": {"min": 340, "max": 390},
+    "Q1": {"min": 65, "max": 115},
+    "Q2": {"min": 155, "max": 205},
+    "Q3": {"min": 245, "max": 295}
 }
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
@@ -23,6 +24,10 @@ def validate_dates_within_periods(val):
     Check Date Ranges are within expected values
     for the fiscal focus period
     """
+    doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
+    if len(doc_type) != 1 or 'T' in doc_type[0].xValue:
+        # If it is a transitional document, or there is more than one document type declared, we will not run this check.
+        return
     dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, DATE_BOUNDS_DICT, val.modelXbrl)
     for document_fiscal_period_focus, fact_list in dict_of_facts.items():
         for fact in fact_list:

@@ -1,8 +1,9 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 import unittest
 from datetime import datetime, timedelta
-from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT
+from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT, _values_unequal
 from mock import Mock, patch
 
 
@@ -18,7 +19,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         mock_context = Mock(instantDatetime=datetime(2013, 12, 22, 11, 30, 59))
 
         asset_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=1)
-        liabilities_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=2)
+        liabilities_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=100)
 
         mock_name_concepts_dict = {
             _ASSETS_CONCEPT: [asset_concept],
@@ -110,3 +111,16 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         for asset, liability, date in _assets_eq_liability_equity(modelXbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
+
+    def test_values_unequal_equal_values(self):
+        self.assertFalse(_values_unequal(100, 100, -1))
+        self.assertFalse(_values_unequal(130, 100, -2))
+
+    def test_values_unequal_unequal_but_still_equal_values(self):
+        self.assertFalse(_values_unequal(120, 100, -1))
+        self.assertFalse(_values_unequal(200, 100, -2))
+
+    def test_values_unequal_very_unequal_values(self):
+        self.assertTrue(_values_unequal(220, 100, -1))
+        self.assertTrue(_values_unequal(600, 100, -2))
+

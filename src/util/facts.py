@@ -184,18 +184,22 @@ def LegalEntityAxis_facts_by_member(facts):
     return results
 
 
-def member_qnames(fact):
+def member_qnames(fact, axis_filter=None):
     """
     Return a list of a fact's member(s)
 
     :param fact: (ModelFact) An arelle ModelFact instance.
     :returns: ([str, ..., str]) A list of the string representation of each of the fact's member's qnames.
     """
-    return [str(dim.member.qname) for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
+    if axis_filter:
+        return [str(dim.member.qname) for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None
+                and dim.dimensionQname is not None and dim.dimensionQname.localName in axis_filter]
+    else:
+        return [str(dim.member.qname) for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
 
 
 def axis_qnames(fact):
     """
     @return a list of the @param fact's axes.
     """
-    return [str(dim.dimensionQname.localName) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]
+    return [str(dim.dimensionQname) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]

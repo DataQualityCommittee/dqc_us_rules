@@ -1,7 +1,7 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 from .util import facts, messages
-
 from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
 
 _ASSETS_CONCEPT = 'Assets'
@@ -39,8 +39,19 @@ def _assets_eq_liability_equity(modelXbrl):
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
                 min_dec = min(dec_assets, dec_liabilities)
-                if roundValue(fact_assets.xValue, decimals=min_dec) != roundValue(fact_liabilities.xValue, decimals=min_dec):
+                if _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
                     yield fact_assets, fact_liabilities
+
+
+def _values_unequal(val1, val2, dec_scale, margin_scale=2):
+    """
+    Checks the values for equality based on their scaling.
+    Returns False if the values are equal, otherwise True.
+    """
+    round_val1 = roundValue(val1, decimals=dec_scale)
+    round_val2 = roundValue(val2, decimals=dec_scale)
+    margin_of_error = margin_scale * (10 ** (-dec_scale))
+    return round_val1 < round_val2 - margin_of_error or round_val1 > round_val2 + margin_of_error
 
 
 __pluginInfo__ = {

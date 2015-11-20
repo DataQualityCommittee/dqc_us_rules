@@ -1,5 +1,6 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 import csv
 import os
 from .util import facts, messages
@@ -88,7 +89,7 @@ def check_rule(fact, rule_dict):
     :returns: (boolean) True if the fact matched the rule else False.
     """
     fact_matches = False
-    artifacts = get_artifact_lists(fact, rule_dict['artifact'])
+    artifacts = get_artifact_lists(fact, rule_dict)
     for fact_artifact in artifacts:
         if rule_dict['relation'] == 'Contains':
             fact_matches = contains(fact_artifact, rule_dict['item_check'])
@@ -96,6 +97,8 @@ def check_rule(fact, rule_dict):
             fact_matches = contains_insensitive(fact_artifact, rule_dict['item_check'])
         elif rule_dict['relation'] == 'Equals':
             fact_matches = equals(fact_artifact, rule_dict['item_check'])
+        elif rule_dict['relation'] == 'Has_member':
+            fact_matches = equals(fact_artifact, rule_dict['item_check'].split('|')[1])
         if fact_matches:
             break  # if fact matches rule condition escape loop, otherwise continue checking
 
@@ -152,19 +155,25 @@ def equals(fact_part, dict_check):
 #====================================================Find Artifacts =============================================================
 
 
-def get_artifact_lists(fact, artifact_type):
+def get_artifact_lists(fact, rule_dict):
     """
     Given a ModelFact instance and an "artifact_type" key derived from the negative_numbers.csv file,
     lookup the corresponding field or object off of the given ModelFact and return its value.
 
     :param fact: (ModelFact) An arelle ModelFact instance.
-    :param artifact_type: (str) A string value derived from the negative_numbers.csv
-    :returns: The arelle model object value pulled of the ModelFact corresponding to the passed in artifact_type.
+    :param rule_dict: (dict) A dictionary with the rule information
+    :returns: An iterable of the arelle model object values pulled of the ModelFact corresponding to the passed in artifact_type.
     """
-    artifacts = None
+    artifacts = []
+    artifact_type = rule_dict['artifact']
 
-    if(artifact_type == "Member"):
+    if artifact_type == "Member":
         artifacts = facts.member_qnames(fact)
+    if artifact_type == "Axis":
+        if '|' in rule_dict['item_check']:
+            artifacts = facts.member_qnames(fact, axis_filter=rule_dict['item_check'].split('|')[0])
+        else:
+            artifacts = facts.axis_qnames(fact)
 
     return artifacts
 

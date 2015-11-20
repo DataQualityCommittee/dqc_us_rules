@@ -1,5 +1,6 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 from .util import facts, messages
 
 from arelle.ModelValue import dateunionDate
@@ -71,7 +72,8 @@ def _setup_dei_facts(modelXbrl):
     return a tuple of the dictionary of a list of 1 DocumentPeriodEndDate per LegalEntityAxis and
     the dictionary of the list of dei facts per LegalEntityAxis
     """
-    ignored_fact_list = ['EntityCommonStockSharesOutstanding', 'EntityPublicFloat', 'DocumentPeriodEndDate']
+    ignored_fact_list = ['EntityCommonStockSharesOutstanding', 'EntityPublicFloat', 'DocumentPeriodEndDate',
+        'EntityNumberOfEmployees', 'EntityListingDepositoryReceiptRatio']
     dei_facts = facts.LegalEntityAxis_facts_by_member(_get_dei_facts(modelXbrl, ignored_fact_list))
     dped_facts = facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(['DocumentPeriodEndDate'], modelXbrl))
     return dped_facts, dei_facts

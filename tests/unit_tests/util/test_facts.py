@@ -1,5 +1,6 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# (c) Copyright 2015, XBRL US Inc, All rights reserved   
+# See license.md for license information.  
+# See PatentNotice.md for patent infringement notice.
 import unittest
 from mock import Mock
 import src.util.facts
@@ -284,15 +285,14 @@ class TestScaleValues(unittest.TestCase):
         self.assertEqual(expected_results, results)
 
 
-class TestAxisMemberQnames(unittest.TestCase):
+class TestAxisQnames(unittest.TestCase):
 
     def test_axis_qnames_no_axis(self):
-        dimqname = Mock(localName='CashCheckAxis')
-        dim = Mock(dimensionQname=dimqname)
+        dim = Mock(dimensionQname='us-gaap:CashCheckAxis')
         segDimValues = {'cashcheckaxis': dim}
         context = Mock(segDimValues=segDimValues)
         fact = Mock(context=context)
-        expected = ['CashCheckAxis']
+        expected = ['us-gaap:CashCheckAxis']
         self.assertEqual(expected, src.util.facts.axis_qnames(fact))
 
     def test_axis_qnames(self):
@@ -300,6 +300,9 @@ class TestAxisMemberQnames(unittest.TestCase):
         fact = Mock(context=context)
         expected = []
         self.assertEqual(expected, src.util.facts.axis_qnames(fact))
+
+
+class TestMemberQnames(unittest.TestCase):
 
     def test_member_qnames(self):
         member = Mock(qname='CashCheckAxis')

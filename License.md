@@ -1,8 +1,16 @@
 # License
 
-All material contained in the dqc_us_rules GitHub repository (except for the files in the src directory) is copyrighted as follows, whether the copyright is carried explicitly in the material (such as .md files, program code and some .xml files), or not in the file (such as .csv files, which have no means of embedding copyright and legal wording):
+All published final recommendations of the Data Quality Committee are copyrighted as follows, whether the copyright is carried explicitly in the material (such as .md files, program code and some .xml files), or not in the file (such as .csv files, which have no means of embedding copyright and legal wording):
 
-	� Copyright 2015, XBRL US Inc, All rights reserved
+Copyright © 2015, American Institute of CPAs (AICPA)  
+Copyright © 2015, Calcbench, Inc.  
+Copyright © 2015, Merrill Communications LLC  
+Copyright © 2015, Research Data Group Inc.  
+Copyright © 2015, R. R. Donnelley & Sons Company  
+Copyright © 2015, Vintage, a division of PR Newswire  
+Copyright © 2015, Workiva Inc.  
+Copyright © 2015, XBRL US, Inc.  
 
-The draft guidelines and validation rules are being provided solely in connection with the Data Quality Committee'�s consideration regarding whether to eventually provide the public with a royalty-free, worldwide, perpetual license; until approved for such use, they may not be used, for any purpose other than to test the rules and provide comments thereon to the Data Quality Committee without the prior written consent of the copyright holder above. 
+This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to XBRL US except as required to translate it into languages other than English. Members of XBRL US agree to grant certain licenses under the XBRL US Intellectual Property Policy (https://xbrl.us/home/about/legal/).
 
+THE DOCUMENT AND THE INFORMATION CONTAINED THEREIN IS PROVIDED ?AS IS?, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL XBRL US, THE MEMBERS, THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
