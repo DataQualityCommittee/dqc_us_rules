@@ -45,6 +45,8 @@ __pluginInfo__ = {
     'description': '''All Data Quality Committee SEC Filing Checks''',
     'author': '',
     'license': 'See accompanying license text',
+    # Required plugin for logging
+    'import': ( 'logging/dqcParameters.py', ),
     #Mount points
     'Validate.XBRL.Finally': run_checks,
 }
