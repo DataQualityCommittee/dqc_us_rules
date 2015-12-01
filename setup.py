@@ -10,7 +10,7 @@ readme = open('README.md').read()
 def get_version():
     import imp
 
-    source_dir = 'src'
+    source_dir = 'dqc_us_rules'
 
     with open('{}/_pkg_meta.py'.format(source_dir), 'rb') as fp:
         mod = imp.load_source('_pkg_meta', source_dir, fp)
@@ -28,7 +28,7 @@ setup_args = dict(
     url='https://github.com/DataQualityCommittee/dqc_us_rules',
     packages=find_packages(),
     include_package_data=True,
-    zip_safe=False,
+    zip_safe=True,
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
