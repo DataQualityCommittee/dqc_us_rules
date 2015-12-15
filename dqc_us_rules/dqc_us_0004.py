@@ -1,6 +1,8 @@
 # (c) Copyright 2015, XBRL US Inc, All rights reserved   
 # See license.md for license information.  
 # See PatentNotice.md for patent infringement notice.
+import math
+
 from .util import facts, messages
 from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
 
@@ -38,7 +40,10 @@ def _assets_eq_liability_equity(modelXbrl):
             if fact_assets.context is not None and fact_assets.context.instantDatetime is not None:
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
-                min_dec = min(dec_assets, dec_liabilities)
+                if math.isinf(dec_scale):
+                    margin_of_error = 0 # prevents float(inf) causing threshold to mix Decimals and float
+                else:
+                    min_dec = min(dec_assets, dec_liabilities)
                 if _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
                     yield fact_assets, fact_liabilities
 
