@@ -1,6 +1,8 @@
 # (c) Copyright 2015, XBRL US Inc, All rights reserved   
 # See license.md for license information.  
 # See PatentNotice.md for patent infringement notice.
+from decimal import Decimal
+
 from .util import facts, messages
 from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
 
@@ -8,7 +10,7 @@ _ASSETS_CONCEPT = 'Assets'
 _LIABILITIES_CONCEPT = 'LiabilitiesAndStockholdersEquity'
 _CODE_NAME = 'DQC.US.0004'
 _RULE_VERSION = '1.0'
-
+_TEN = Decimal(10)
 
 def assets_eq_liability_equity(val):
     """
@@ -50,7 +52,7 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = margin_scale * (10 ** (-dec_scale))
+    margin_of_error = Decimal(margin_scale) * (_TEN ** Decimal(-dec_scale))
     return round_val1 < round_val2 - margin_of_error or round_val1 > round_val2 + margin_of_error
 
 
