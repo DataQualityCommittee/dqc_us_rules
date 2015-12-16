@@ -1,7 +1,7 @@
 # (c) Copyright 2015, XBRL US Inc, All rights reserved   
 # See license.md for license information.  
 # See PatentNotice.md for patent infringement notice.
-import math
+from decimal import Decimal
 
 from .util import facts, messages
 from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
@@ -10,7 +10,7 @@ _ASSETS_CONCEPT = 'Assets'
 _LIABILITIES_CONCEPT = 'LiabilitiesAndStockholdersEquity'
 _CODE_NAME = 'DQC.US.0004'
 _RULE_VERSION = '1.0'
-
+_TEN = Decimal(10)
 
 def assets_eq_liability_equity(val):
     """
@@ -40,10 +40,7 @@ def _assets_eq_liability_equity(modelXbrl):
             if fact_assets.context is not None and fact_assets.context.instantDatetime is not None:
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
-                if math.isinf(dec_scale):
-                    margin_of_error = 0 # prevents float(inf) causing threshold to mix Decimals and float
-                else:
-                    min_dec = min(dec_assets, dec_liabilities)
+                min_dec = min(dec_assets, dec_liabilities)
                 if _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
                     yield fact_assets, fact_liabilities
 
@@ -55,7 +52,7 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = margin_scale * (10 ** (-dec_scale))
+    margin_of_error = Decimal(margin_scale) * (_TEN ** Decimal(-dec_scale))
     return round_val1 < round_val2 - margin_of_error or round_val1 > round_val2 + margin_of_error
 
 
