@@ -40,7 +40,7 @@ permalink: /meetings/jan_2016/readme.md
 
   + [Rule Form - Word Doc](/docs/DQC_US_0041/DQC_0041.docx?raw=true)
 
-  + [Debt Axis Discussion - PDF](/docs/DQC_US_0041/LongTermDebtAxis.pdf?raw=true)
+  + [Debt Axis Discussion - PDF](/docs/DQC_US_0001/LongTermDebtAxis.pdf?raw=true)
   
 ### Break 
 
