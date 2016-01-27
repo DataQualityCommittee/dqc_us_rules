@@ -16,11 +16,7 @@ If one of the components in a comparison does not exist then the comparison will
 
 ## Element Name Comparison
 
-When the characters of an element name are matched to comparison strings, the comparison is case insensitive (referred to as "Contains the Text") unless otherwise stated in the rule. When specific element names are referenced in a rule the text comparison is case sensitive.
-
-## Element Comparison
-
-When a specific element is referenced in a rule, an exact case sensitive match is required based on the element name and the namespace. Label names of elements are not used for matching unless otherwise stated in the rule.
+When portions of an element name are matched to comparison strings, the comparison is case insensitive unless otherwise stated in the rule. When a specific element is referenced in a rule, an exact case sensitive match is required based on the element name and the namespace. Label names of elements are not used for matching unless otherwise stated in the rule.
 
 ## Decimal Comparison
 
