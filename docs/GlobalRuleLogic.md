@@ -14,9 +14,9 @@ The reporting period end date refers to the reporting period of the filer. This 
 
 If one of the components in a comparison does not exist then the comparison will not occur. For example if the rule tests Assets = LiabilitiesAndShareholdersEquity and one of the elements is missing, the test will not run. 
 
-## Text Comparison
+## Element Name Comparison
 
-When the text in an element name is matched using string matching (referred to as "Contains the Text") all text comparison of the element name is case insensitive unless otherwise stated in the rule. When specific element names are referenced in a rule the text comparison is case sensitive.
+When the characters of an element name are matched to comparison strings, the comparison is case insensitive (referred to as "Contains the Text") unless otherwise stated in the rule. When specific element names are referenced in a rule the text comparison is case sensitive.
 
 ## Element Comparison
 
