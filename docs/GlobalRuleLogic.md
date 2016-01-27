@@ -16,7 +16,7 @@ If one of the components in a comparison does not exist then the comparison will
 
 ## Element Name Comparison
 
-When portions of an element name are matched to comparison strings, the comparison is case insensitive unless otherwise stated in the rule. When elements are matched based on their full qualified name (QName), the element name (local part of the QName) comparison is case sensitive and the namespace (URI) comparison follows IETF rules. Labels of elements are not used for matching unless otherwise stated in the rule.
+When portions of an element name are matched to comparison strings, the comparison is case insensitive unless otherwise stated in the rule. When elements are matched based on their full qualified name (QName), the element name (local part of the QName) comparison is case sensitive and the namespace (URI) comparison follows IETF rules. Element labels are not used for matching unless otherwise stated in the rule.
 
 ## Decimal Comparison
 
