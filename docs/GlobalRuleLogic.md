@@ -10,7 +10,7 @@ The message code of each DQC message is as follows:  DQC.US.nnnn.mmm where nnnn 
 
 The reporting period end date refers to the reporting period of the filer. This is determined by taking the later of either the value of the **Document Period End Date** element or the context date of the **Document Period End Date **element.
 
-## Existence of components
+## Existence of Components
 
 If one of the components in a comparison does not exist then the comparison will not occur. For example if the rule tests Assets = LiabilitiesAndShareholdersEquity and one of the elements is missing, the test will not run. 
 
