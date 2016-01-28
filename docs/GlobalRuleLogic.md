@@ -10,9 +10,13 @@ The message code of each DQC message is as follows:  DQC.US.nnnn.mmm where nnnn 
 
 The reporting period end date refers to the reporting period of the filer. This is determined by taking the later of either the value of the **Document Period End Date** element or the context date of the **Document Period End Date **element.
 
-## Existence of components
+## Existence of Components
 
 If one of the components in a comparison does not exist then the comparison will not occur. For example if the rule tests Assets = LiabilitiesAndShareholdersEquity and one of the elements is missing, the test will not run. 
+
+## Element Name Comparison
+
+When portions of an element name are matched to comparison strings, the comparison is case insensitive unless otherwise stated in the rule. When elements are matched based on their full qualified name (QName), the element name (local part of the QName) comparison is case sensitive and the namespace (URI) comparison follows IETF rules. Element labels are not used for matching unless otherwise stated in the rule.
 
 ## Decimal Comparison
 
