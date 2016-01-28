@@ -8,7 +8,7 @@ The message code of each DQC message is as follows:  DQC.US.nnnn.mmm where nnnn 
 
 ## Reporting Period End Date
 
-The reporting period end date refers to the reporting period of the filer. This is determined by taking the later of either the value of the **Document Period End Date** element or the context date of the **Document Period End Date **element.
+The reporting period end date is the ending date of the Required Context as defined in the SEC EDGAR Filer Manual.
 
 ## Existence of Components
 
