@@ -1,4 +1,4 @@
-* Data Quality Committee Rules *
+# Data Quality Committee Rules
 
 The rules linked below are either available for public review or have been approved by the DQC.
 
