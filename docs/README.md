@@ -12,7 +12,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved |
 
-Subfolders in this folder of the repository that have only a word docx or other 'preliminary' materials released publicly as part of meeting agendas are presented for information only and are under committee consideration, but have not been developed for public review or approved.
+Subfolders in this folder of the repository that have only a word docx or other 'preliminary' materials released publicly as part of meeting agendas are presented for information only.
 
 © Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
 See [License](../License.md) for license information.  
