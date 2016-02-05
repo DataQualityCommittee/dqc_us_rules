@@ -43,7 +43,7 @@ Calcbench - http://fortune.com/2015/12/15/oil-prices-impact-energy-industry/
 
 * #### Guidance  
   
-  + [Income Tax Reconciliation using Percentages (Rules DQC_0013 and DQC_0015)](/meetings/feb_2016/50-12IncomeTaxReconciliationusingPercentages.docx)
+  + [Income Tax Reconciliation using Percentages (Rules DQC_0013 and DQC_0015)](/meetings/feb_2016/50-12IncomeTaxReconciliationusingPercentages.docx?raw=true)
 
 * #### DQC_0018 - Deprecated Element Is Used in the Filing 
 
