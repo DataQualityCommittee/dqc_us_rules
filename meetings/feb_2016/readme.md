@@ -9,7 +9,7 @@ permalink: /meetings/feb_2016/readme.md
 
 ### Approval of Minutes 
 
-* January 7 Meeting Minutes
+* [January 7 Meeting Minutes - Word Doc](/meetings/feb_2016/MtgNotes01072016.docx?raw=true)
 
 ### Use Cases for XBRL Data
 
