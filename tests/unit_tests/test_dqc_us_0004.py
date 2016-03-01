@@ -3,9 +3,8 @@
 # See PatentNotice.md for patent infringement notice.
 import unittest
 from datetime import datetime, timedelta
-from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT, _values_unequal
+from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT, _values_unequal, _min_dec_valid
 from mock import Mock, patch
-
 
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
@@ -124,3 +123,22 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         self.assertTrue(_values_unequal(220, 100, -1))
         self.assertTrue(_values_unequal(600, 100, -2))
 
+    def test_values_scale_nan(self):
+        self.assert_true(_min_dec_valid(100,100,float('nan')))
+        self.assert_true(_min_dec_valid(150,160,float('nan')))
+
+    def test_values_scale_infinity(self):
+        self.assert_false(_min_dec_valid(100,100, float('inf')))
+        self.assert_false(_min_dec_valid(200,200, float('inf')))
+
+    def test_values_scale_negative_infinity(self):
+        self.assert_false(_min_dec_valid(100,100, float('-inf')))
+        self.assert_false(_min_dec_valid(200,200, float('-inf')))
+
+    def test_values_scale_none(self):
+        self.assert_true(_min_dec_valid(100, 100, None))
+        self.assert_true(_min_dec_valid(100, 200, None))
+
+    def test_values_scale_is_zero(self):
+        self.assert_false(_min_dec_valid(100, 100, 0))
+        self.assert_false(_min_dec_valid(100, 200, 0))
