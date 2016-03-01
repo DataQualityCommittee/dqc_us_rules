@@ -124,21 +124,36 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         self.assertTrue(_values_unequal(600, 100, -2))
 
     def test_values_scale_nan(self):
+        """
+        Make sure that the scale value is not valid if it is Not a Number
+        """
         self.assert_true(_min_dec_valid(100,100,float('nan')))
         self.assert_true(_min_dec_valid(150,160,float('nan')))
 
     def test_values_scale_infinity(self):
-        self.assert_false(_min_dec_valid(100,100, float('inf')))
-        self.assert_false(_min_dec_valid(200,200, float('inf')))
+        """
+        Make sure that the scale value is valid if it is infinity
+        """
+        self.assert_true(_min_dec_valid(100,100, float('inf')))
+        self.assert_true(_min_dec_valid(200,200, float('inf')))
 
     def test_values_scale_negative_infinity(self):
-        self.assert_false(_min_dec_valid(100,100, float('-inf')))
-        self.assert_false(_min_dec_valid(200,200, float('-inf')))
+        """
+        Make sure that the scale value is valid if it is negative infinity
+        """
+        self.assert_true(_min_dec_valid(100,100, float('-inf')))
+        self.assert_true(_min_dec_valid(200,200, float('-inf')))
 
     def test_values_scale_none(self):
-        self.assert_true(_min_dec_valid(100, 100, None))
-        self.assert_true(_min_dec_valid(100, 200, None))
+        """
+        Make sure that the scale value is not valid if is not None
+        """
+        self.assert_false(_min_dec_valid(100, 100, None))
+        self.assert_false(_min_dec_valid(100, 200, None))
 
     def test_values_scale_is_zero(self):
-        self.assert_false(_min_dec_valid(100, 100, 0))
-        self.assert_false(_min_dec_valid(100, 200, 0))
+        """
+        Make sure that the scale value is valid when it is zero
+        """
+        self.assert_true(_min_dec_valid(100, 100, 0))
+        self.assert_true(_min_dec_valid(100, 200, 0))
