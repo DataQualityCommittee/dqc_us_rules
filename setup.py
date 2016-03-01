@@ -30,15 +30,12 @@ setup_args = dict(
     include_package_data=True,
     zip_safe=True,
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'License :: XBRL-US License',
+        'License :: Other/Proprietary License',
         'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
+        "Topic :: Office/Business :: Financial :: Accounting"
     ],
     test_suite='test',
     install_requires=[],
