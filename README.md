@@ -63,7 +63,7 @@ The rule definition index is [here](docs/README.md).
 
 ## Proposed Changes
 
-We actively accept, and encourage, pull requests for code changes.  An list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project.  If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement.  If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
+We actively accept, and encourage, pull requests for code changes. A list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project. If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement. If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
 
 ### Requirements for a Pull Request(PR):
 
