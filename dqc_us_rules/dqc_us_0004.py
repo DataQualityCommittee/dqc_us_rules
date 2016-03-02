@@ -40,7 +40,7 @@ def _assets_eq_liability_equity(modelXbrl):
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
                 min_dec = min(dec_assets, dec_liabilities)
-                if not _min_dec_valid(min_dec) and _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
+                if _min_dec_valid(min_dec) and _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
                     yield fact_assets, fact_liabilities
 
 def _min_dec_valid(min_dec):
