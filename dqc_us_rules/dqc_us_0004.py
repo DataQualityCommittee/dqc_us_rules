@@ -48,8 +48,10 @@ def _min_dec_valid(min_dec):
     Checks to make sure that min_dec values are valid.
     Returns False if min_dec is a None type or if min_dec is Not a number
 
-    @param min_dec:
-    @return is min_dec valid:
+    :param min_dec: the minumum of dec_assets and dec_liabilities
+    :type min_dec: None or int or NaN
+    :return: Is min_dec valid
+    :rtype: bool
     """
 
     return min_dec is not None and not isnan(min_dec)
