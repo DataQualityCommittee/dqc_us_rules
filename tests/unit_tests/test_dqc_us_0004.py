@@ -3,7 +3,7 @@
 # See PatentNotice.md for patent infringement notice.
 import unittest
 from datetime import datetime, timedelta
-from src.dqc_us_0004 import _assets_eq_liability_equity, _ASSETS_CONCEPT, _LIABILITIES_CONCEPT, _values_unequal, _min_dec_valid
+from src import dqc_us_0004
 from mock import Mock, patch
 
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
@@ -157,4 +157,3 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         """
         self.assert_true(_min_dec_valid(100, 100, 0))
         self.assert_true(_min_dec_valid(100, 200, 0))
-        
