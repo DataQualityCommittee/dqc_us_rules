@@ -157,3 +157,4 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         """
         self.assert_true(_min_dec_valid(100, 100, 0))
         self.assert_true(_min_dec_valid(100, 200, 0))
+        
