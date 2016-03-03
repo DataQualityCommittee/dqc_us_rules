@@ -8,7 +8,7 @@ from mock import Mock, patch
 
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
-    @patch('src.dqc_us_0004.inferredDecimals', return_value=0)
+    @patch('dqc_us_rules.dqc_us_0004.inferredDecimals', return_value=0)
     def test_bv_errors(self, patched_decimals):
         asset_concept = Mock()
         asset_concept.qname = dqc_us_0004._ASSETS_CONCEPT
@@ -127,33 +127,33 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         """
         Make sure that the scale value is not valid if it is Not a Number
         """
-        self.assert_true(dqc_us_0004._min_dec_valid(float('nan')))
-        self.assert_true(dqc_us_0004._min_dec_valid(float('nan')))
+        self.assertFalse(dqc_us_0004._min_dec_valid(float('nan')))
+        self.assertFalse(dqc_us_0004._min_dec_valid(float('nan')))
 
     def test_values_scale_infinity(self):
         """
         Make sure that the scale value is valid if it is infinity
         """
-        self.assert_true(dqc_us_0004._min_dec_valid(float('inf')))
-        self.assert_true(dqc_us_0004._min_dec_valid(float('inf')))
+        self.assertTrue(dqc_us_0004._min_dec_valid(float('inf')))
+        self.assertTrue(dqc_us_0004._min_dec_valid(float('inf')))
 
     def test_values_scale_negative_infinity(self):
         """
         Make sure that the scale value is valid if it is negative infinity
         """
-        self.assert_true(dqc_us_0004._min_dec_valid(float('-inf')))
-        self.assert_true(dqc_us_0004._min_dec_valid(float('-inf')))
+        self.assertTrue(dqc_us_0004._min_dec_valid(float('-inf')))
+        self.assertTrue(dqc_us_0004._min_dec_valid(float('-inf')))
 
     def test_values_scale_none(self):
         """
         Make sure that the scale value is not valid if is not None
         """
-        self.assert_false(dqc_us_0004._min_dec_valid(None))
-        self.assert_false(dqc_us_0004._min_dec_valid(None))
+        self.assertFalse(dqc_us_0004._min_dec_valid(None))
+        self.assertFalse(dqc_us_0004._min_dec_valid(None))
 
     def test_values_scale_is_zero(self):
         """
         Make sure that the scale value is valid when it is zero
         """
-        self.assert_true(dqc_us_0004._min_dec_valid(0))
-        self.assert_true(dqc_us_0004._min_dec_valid(0))
+        self.assertTrue(dqc_us_0004._min_dec_valid(0))
+        self.assertTrue(dqc_us_0004._min_dec_valid(0))
