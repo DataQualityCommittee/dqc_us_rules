@@ -176,7 +176,7 @@ def LegalEntityAxis_facts_by_member(facts):
     for fact in facts:
         legalDim = LEGALENTITYAXIS_DEFAULT
         if fact_components_valid(fact):
-            dims = [dim for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member]
+            dims = [dim for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
             for dim in dims:
                 if dim.dimension.qname.localName == 'LegalEntityAxis':
                     legalDim = dim.member.qname.localName
