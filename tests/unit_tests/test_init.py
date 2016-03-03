@@ -30,7 +30,3 @@ class TestInitFunctions(unittest.TestCase):
         self.assertTrue(
             mock_plugins[1].__pluginInfo__['Validate.XBRL.Finally'].called
         )
-
-    def test_plugins_to_run(self):
-        plugin_list = dqc_us_rules._plugins_to_run(dqc_us_rules)
-        self.assertGreater(len(plugin_list), 0)
