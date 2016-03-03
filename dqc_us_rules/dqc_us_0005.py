@@ -20,10 +20,13 @@ def _get_end_of_period(val):
 
     @return A dictionary of tuples containing the fact, found date and a string representation of that date, keyed off of the LegalEntityAxis members in the format {lea_member: (fact, found_date, date_str)}
     """
+
+
     results = {}
     end_of_period_concepts = [c for c in val.modelXbrl.nameConcepts['DocumentPeriodEndDate'] if c.qname.namespaceURI in val.disclosureSystem.standardTaxonomiesDict]
     if len(end_of_period_concepts) == 1:
         end_of_period_dict = facts.LegalEntityAxis_facts_by_member(val.modelXbrl.factsByQname[end_of_period_concepts[0].qname])
+
         for lea_member, end_of_period_facts in end_of_period_dict.items():
             for fact in end_of_period_facts:
                 eop_date = fact.xValue
@@ -44,6 +47,7 @@ def _get_end_of_period(val):
 
 
 def validate_facts(val):
+    print("Here")
     eop_results = _get_end_of_period(val)
     fact_dict = facts.LegalEntityAxis_facts_by_member(filter(lambda f: f.context is not None, val.modelXbrl.facts))
     for lea_member, fact_list in fact_dict.items():

@@ -4,7 +4,7 @@
 import unittest
 from datetime import datetime, timedelta
 from dqc_us_rules import dqc_us_0004
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
