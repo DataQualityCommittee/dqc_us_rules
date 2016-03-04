@@ -2,10 +2,10 @@
 # See license.md for license information.  
 # See PatentNotice.md for patent infringement notice.
 import unittest
-import src.dqc_us_0006 as dqc_us_0006
+import dqc_us_rules.dqc_us_0006 as dqc_us_0006
 from mock import Mock
 from collections import defaultdict
-import src.util.facts
+import dqc_us_rules.util.facts
 
 
 class TestContextDates(unittest.TestCase):
@@ -40,10 +40,26 @@ class TestContextDates(unittest.TestCase):
         fact1 = Mock(context=context1)
         fact2 = Mock(context=context2)
         fact3 = Mock(context=context2)
-        res1 = src.util.facts.LegalEntityAxis_facts_by_member([fact1, fact2])
-        res2 = src.util.facts.LegalEntityAxis_facts_by_member([fact3])
+        res1 = dqc_us_rules.util.facts.LegalEntityAxis_facts_by_member([fact1, fact2])
+        res2 = dqc_us_rules.util.facts.LegalEntityAxis_facts_by_member([fact3])
         res3 = dqc_us_0006._dict_list_update(res1, res2)
 
         expected = defaultdict(list)
         expected.update({'': [fact2, fact3], 'Company1': [fact1]})
         self.assertEqual(res3, expected)
+
+class Test_Date_Bounds_CVS(unittest.TestCase):
+    def test_date_bounds_cvs_keys(self):
+        """
+        Test to make sure that dictionary read in from the csv shares equals the original DATE_BOUNDS_DICT
+        """
+        DATE_BOUNDS_DICT = {
+            'FY':{'min':340,'max':390},
+            'Q1':{'min':65,'max':115},
+            'Q3':{'min':245,'max':295},
+            'Q2':{'min':155,'max':205}
+        }
+
+        date_bounds_dict_from_csv = dqc_us_0006.date_bounds_from_csv()
+
+        self.assertDictEqual(DATE_BOUNDS_DICT,date_bounds_dict_from_csv)
