@@ -647,7 +647,7 @@ class TestFactsAreValid(unittest.TestCase):
 
     def test_fact_components_valid_on_none_type_segDimValue(self):
         """
-        Tests to make sure that a Fact.context with a None type context is not valid
+        Tests to make sure that a Fact.context with a None type sedDimValues is not valid
         """
         fact = Mock(decimals='-2', value='6500', xValue=6500, precision=None)
         fact.context.segDimValues = None
