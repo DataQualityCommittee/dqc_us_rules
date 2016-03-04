@@ -17,8 +17,14 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
         mock_context = Mock(instantDatetime=datetime(2013, 12, 22, 11, 30, 59))
 
-        asset_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=1)
-        liabilities_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=100)
+        asset_fact = Mock(
+            contextID='valid', context=mock_context, unitID='unit1',
+            isNil=False, xValid=True, xValue=1
+        )
+        liabilities_fact = Mock(
+            contextID='valid', context=mock_context, unitID='unit1',
+            isNil=False, xValid=True, xValue=100
+        )
 
         mock_name_concepts_dict = {
             dqc_us_0004._ASSETS_CONCEPT: [asset_concept],
@@ -49,7 +55,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         modelXbrl.nameConcepts = mock_name_concepts_dict_no_liability
 
         error_count = 0
-        for asset, liability, date in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
+        for _ in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
 
@@ -61,8 +67,14 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
         mock_context = Mock(instantDatetime=None)
 
-        asset_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=1)
-        liabilities_fact = Mock(contextID='valid', context=mock_context, unitID='unit1', isNil=False, xValid=True, xValue=2)
+        asset_fact = Mock(
+            contextID='valid', context=mock_context, unitID='unit1',
+            isNil=False, xValid=True, xValue=1
+        )
+        liabilities_fact = Mock(
+            contextID='valid', context=mock_context, unitID='unit1',
+            isNil=False, xValid=True, xValue=2
+        )
 
         mock_name_concepts_dict = {
             dqc_us_0004._ASSETS_CONCEPT: [asset_concept],
@@ -79,7 +91,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         modelXbrl.factsByQname = mock_facts_by_qname
 
         error_count = 0
-        for asset, liability, date in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
+        for _ in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
 
@@ -89,8 +101,14 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         liabilities_concept = Mock()
         liabilities_concept.qname = dqc_us_0004._LIABILITIES_CONCEPT
 
-        asset_fact = Mock(contextID='valid', context=None, unitID='unit1', isNil=False, xValid=True, xValue=1)
-        liabilities_fact = Mock(contextID='valid', context=None, unitID='unit1', isNil=False, xValid=True, xValue=2)
+        asset_fact = Mock(
+            contextID='valid', context=None, unitID='unit1',
+            isNil=False, xValid=True, xValue=1
+        )
+        liabilities_fact = Mock(
+            contextID='valid', context=None, unitID='unit1',
+            isNil=False, xValid=True, xValue=2
+        )
 
         mock_name_concepts_dict = {
             dqc_us_0004._ASSETS_CONCEPT: [asset_concept],
@@ -107,7 +125,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         modelXbrl.factsByQname = mock_facts_by_qname
 
         error_count = 0
-        for asset, liability, date in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
+        for _ in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
 
