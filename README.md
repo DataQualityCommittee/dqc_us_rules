@@ -68,7 +68,7 @@ We actively accept, and encourage, pull requests for code changes. A list of the
 ### Requirements for a Pull Request(PR):
 
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
-  - Your code should pass [flake8](https://github.com/bmcustodio/flake8).
+  - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
   - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
   - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/PYTHON.rst#docstrings) are required.
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
