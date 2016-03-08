@@ -2,7 +2,7 @@
 # See license.md for license information.  
 # See PatentNotice.md for patent infringement notice.
 from decimal import Decimal
-
+from math import isnan
 from .util import facts, messages
 from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
 
@@ -10,7 +10,6 @@ _ASSETS_CONCEPT = 'Assets'
 _LIABILITIES_CONCEPT = 'LiabilitiesAndStockholdersEquity'
 _CODE_NAME = 'DQC.US.0004'
 _RULE_VERSION = '1.0'
-_TEN = Decimal(10)
 
 def assets_eq_liability_equity(val):
     """
@@ -41,9 +40,21 @@ def _assets_eq_liability_equity(modelXbrl):
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
                 min_dec = min(dec_assets, dec_liabilities)
-                if _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
+                if _min_dec_valid(min_dec) and _values_unequal(fact_assets.xValue, fact_liabilities.xValue, min_dec):
                     yield fact_assets, fact_liabilities
 
+def _min_dec_valid(min_dec):
+    """
+    Checks to make sure that min_dec values are valid.
+    Returns False if min_dec is a None type or if min_dec is Not a number
+
+    :param min_dec: the minumum of dec_assets and dec_liabilities
+    :type min_dec: None or int or NaN
+    :return: Is min_dec valid
+    :rtype: bool
+    """
+
+    return min_dec is not None and not isnan(min_dec)
 
 def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
@@ -52,7 +63,7 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = Decimal(margin_scale) * (_TEN ** Decimal(-dec_scale))
+    margin_of_error = Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
     return round_val1 < round_val2 - margin_of_error or round_val1 > round_val2 + margin_of_error
 
 
