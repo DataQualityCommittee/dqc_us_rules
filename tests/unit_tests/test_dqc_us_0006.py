@@ -69,9 +69,9 @@ class Test_Date_Bounds_CVS(unittest.TestCase):
             'Q2':{'min':155,'max':205}
         }
 
-        date_bounds_dict_from_csv = dqc_us_0006.date_bounds_from_csv()
+        date_bounds_dict_from_csv = dqc_us_0006._date_bounds_from_csv()
 
-        self.assertDictEqual(DATE_BOUNDS_DICT,date_bounds_dict_from_csv)
+        self.assertDictEqual(DATE_BOUNDS_DICT, date_bounds_dict_from_csv)
 
     def test_date_bounds_cvs_keys_unequal(self):
         """
@@ -85,5 +85,8 @@ class Test_Date_Bounds_CVS(unittest.TestCase):
         }
 
         date_bounds_dict_from_cvs = dqc_us_0006._date_bounds_from_csv()
+        self.assertEqual(sorted(list(RANDOM_DATE_BOUNDS_DICT.keys())), sorted(list(date_bounds_dict_from_cvs.keys())))
 
-        self.assertDictUnequal(RANDOM_DATE_BOUNDS_DICT,date_bounds_dict_from_cvs)
+        for key in RANDOM_DATE_BOUNDS_DICT.keys():
+            for subkey in RANDOM_DATE_BOUNDS_DICT[key].keys():
+                self.assertNotEqual(RANDOM_DATE_BOUNDS_DICT[key][subkey], date_bounds_dict_from_cvs[key][subkey])
