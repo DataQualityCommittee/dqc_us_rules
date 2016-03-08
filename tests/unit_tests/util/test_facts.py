@@ -622,12 +622,13 @@ class TestMemberQnames(unittest.TestCase):
         expected = ['CashCheckAxis']
         self.assertEqual(expected, fact_lib.member_qnames(fact))
 
+
 class TestFactsAreValid(unittest.TestCase):
     def test_fact_components_valid_on_valid_fact(self):
         """
         Tests to make sure that a valid fact still works
         """
-        fact = Mock(decimals='-4', value='869098', xvalue = 869098, precision = None)
+        fact = Mock(decimals='-4', value='869098', xvalue=869098, precision=None)
         self.assertTrue(fact_lib._fact_components_valid(fact))
 
     def test_fact_components_valid_on_none_type_fact(self):
@@ -647,7 +648,8 @@ class TestFactsAreValid(unittest.TestCase):
 
     def test_fact_components_valid_on_none_type_segDimValue(self):
         """
-        Tests to make sure that a Fact.context with a None type segDimValue is not valid
+        Tests to make sure that a Fact.context with a None type segDimValue is
+        not valid
         """
         fact = Mock(decimals='-2', value='6500', xValue=6500, precision=None)
         fact.context.segDimValues = None
