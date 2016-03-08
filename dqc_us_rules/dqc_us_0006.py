@@ -8,9 +8,12 @@ import csv
 import os
 
 CHECK_TYPES = ['textBlockItemType']
-CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate', 'DocumentPeriodEndDate',
-             'DocumentFiscalYearFocus', 'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
-             'EntityCentralIndexKey', 'EntityFilerCategory']
+CHECK_DEI = [
+    'AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate',
+    'DocumentPeriodEndDate', 'DocumentFiscalYearFocus',
+    'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
+    'EntityCentralIndexKey', 'EntityFilerCategory'
+]
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
 _DEFAULT_DATE_BOUNDS_FILE = os.path.join(
@@ -29,7 +32,8 @@ def validate_dates_within_periods(val):
     DATE_BOUNDS_DICT = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
     if len(doc_type) != 1 or 'T' in doc_type[0].xValue:
-        # If it is a transitional document, or there is more than one document type declared, we will not run this check.
+        # If it is a transitional document, or there is more than one
+        # document type declared, we will not run this check.
         return
     dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, DATE_BOUNDS_DICT, val.modelXbrl)
     for document_fiscal_period_focus, fact_list in dict_of_facts.items():
@@ -72,7 +76,8 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, modelXbrl):
 
 def _dict_list_update(dict_a, dict_b):
     """
-    helper for the LEA dictionaries, extends the lists from dict_a with the lists in dict_b.
+    Helper for the LEA dictionaries, extends the lists from dict_a with the
+    lists in dict_b.
     """
     for key, val in dict_b.items():
         dict_a[key].extend(val)
@@ -92,13 +97,17 @@ def _date_bounds_from_csv():
         date_bounds_dict = {}
         next(reader, None)
         for row in reader:
-            date_bounds_dict[row[0]]={'min':int(row[1]),'max':int(row[2])}
+            date_bounds_dict[row[0]] = {'min': int(row[1]), 'max': int(row[2])}
         return date_bounds_dict
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
     'version': _RULE_VERSION,
-    'description': '''Checks all of the specified types and concepts for their date ranges to verify the ranges are within expected paramters for the fiscal periods''',
-    #Mount points
+    'description': (
+        'Checks all of the specified types and concepts for their date '
+        'ranges to verify the ranges are within expected paramters for the '
+        'fiscal periods'
+    ),
+    # Mount points
     'Validate.XBRL.Finally': validate_dates_within_periods,
 }
