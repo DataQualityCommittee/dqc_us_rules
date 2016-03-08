@@ -13,10 +13,12 @@ CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate'
              'EntityCentralIndexKey', 'EntityFilerCategory']
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
-_DEFAULT_DATE_BOUNDS_FILE = os.path.join(os.path.dirname(__file__),
-                                         'resources',
-                                         'DQC_US_0006',
-                                         'dqc_06_date_bounds.csv')
+_DEFAULT_DATE_BOUNDS_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0006',
+    'dqc_06_date_bounds.csv'
+)
 
 
 def validate_dates_within_periods(val):
