@@ -13,7 +13,10 @@ CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate'
              'EntityCentralIndexKey', 'EntityFilerCategory']
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
-_DEFAULT_DATE_BOUNDS_FILE = os.path.join(os.path.dirname(__file__), 'resources', 'DQC_US_0006', 'dqc_06_date_bounds.csv')
+_DEFAULT_DATE_BOUNDS_FILE = os.path.join(os.path.dirname(__file__),
+                                         'resources',
+                                         'DQC_US_0006',
+                                         'dqc_06_date_bounds.csv')
 
 
 def validate_dates_within_periods(val):
@@ -35,7 +38,6 @@ def validate_dates_within_periods(val):
                                 ruleVersion=_RULE_VERSION)
 
 
-
 def _date_range_check(check_types, check_dei, date_bounds_dict, modelXbrl):
     """
     Takes two lists of fact names, a dict of date boundaries and modelXbrl and then compiles a list of all
@@ -43,7 +45,6 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, modelXbrl):
     date span to the date boundaries for the corresponding document period focus. Any facts with spans less than
     or larger than the supplied boundaries are returned in a dict based on the document period focus.
     """
-    print("date range check")
     facts_in_error = defaultdict(list)
     list_of_facts = facts.LegalEntityAxis_facts_by_member(facts.get_facts_with_type(check_types, modelXbrl))
     list_of_facts = _dict_list_update(list_of_facts, (facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(check_dei, modelXbrl))))
@@ -75,12 +76,14 @@ def _dict_list_update(dict_a, dict_b):
         dict_a[key].extend(val)
     return dict_a
 
-def date_bounds_from_csv():
+
+def _date_bounds_from_csv():
     """
     Returns a map of {time_period: {'min':min_value,'max':max_value}}
      ex: date_bounds_from_csv()['Q1'] = {'min':65,'max':115}
 
-    :returns: A map of {time_period: {'min':min_value,'max':max_value}}.
+    :rtype: dict
+    :return: A map of {time_period: {'min':min_value,'max':max_value}}.
     """
     with open(_DEFAULT_DATE_BOUNDS_FILE, 'r') as f:
         reader = csv.reader(f)
