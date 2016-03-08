@@ -26,7 +26,7 @@ def validate_dates_within_periods(val):
     Check Date Ranges are within expected values
     for the fiscal focus period
     """
-    DATE_BOUNDS_DICT = date_bounds_from_csv()
+    DATE_BOUNDS_DICT = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
     if len(doc_type) != 1 or 'T' in doc_type[0].xValue:
         # If it is a transitional document, or there is more than one document type declared, we will not run this check.
