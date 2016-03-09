@@ -29,13 +29,13 @@ def validate_dates_within_periods(val):
     Check Date Ranges are within expected values
     for the fiscal focus period
     """
-    DATE_BOUNDS_DICT = _date_bounds_from_csv()
+    date_bounds_dict = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
     if len(doc_type) != 1 or 'T' in doc_type[0].xValue:
         # If it is a transitional document, or there is more than one
         # document type declared, we will not run this check.
         return
-    dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, DATE_BOUNDS_DICT, val.modelXbrl)
+    dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, date_bounds_dict, val.modelXbrl)
     for document_fiscal_period_focus, fact_list in dict_of_facts.items():
         for fact in fact_list:
             val.modelXbrl.error('{}.14'.format(_CODE_NAME), messages.get_message(_CODE_NAME), concept=fact.qname,
