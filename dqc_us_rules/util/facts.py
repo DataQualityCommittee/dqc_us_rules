@@ -5,8 +5,16 @@ from arelle import ValidateXbrlCalcs
 
 from arelle.ModelValue import QName
 
-DEI_NAMESPACE_LIST = ['http://xbrl.sec.gov/dei/2014-01-31', 'http://xbrl.sec.gov/dei/2013-01-31', 'http://xbrl.sec.gov/dei/2012-01-31', 'http://xbrl.sec.gov/dei/2011-01-31', 'http://xbrl.us/dei/2009-01-31']
-GAAP_NAMESPACE_LIST = ['http://fasb.org/us-gaap/2012-01-31', 'http://fasb.org/us-gaap/2013-01-31', 'http://fasb.org/us-gaap/2014-01-31', 'http://fasb.org/us-gaap/2015-01-31']
+DEI_NAMESPACE_LIST = [
+    'http://xbrl.sec.gov/dei/2014-01-31', 'http://xbrl.sec.gov/dei/2013-01-31',
+    'http://xbrl.sec.gov/dei/2012-01-31', 'http://xbrl.sec.gov/dei/2011-01-31',
+    'http://xbrl.us/dei/2009-01-31'
+]
+
+GAAP_NAMESPACE_LIST = [
+    'http://fasb.org/us-gaap/2012-01-31', 'http://fasb.org/us-gaap/2013-01-31',
+    'http://fasb.org/us-gaap/2014-01-31', 'http://fasb.org/us-gaap/2015-01-31'
+]
 
 
 class DecimalOverriddenFact(object):
@@ -25,14 +33,17 @@ class DecimalOverriddenFact(object):
 
 def scale_values(facts):
     """
-    Accepts a list of facts and returns a list of values from those facts re-scaled by the least precise fact's precision
-    Makes no guarantees about data type, known types are integers, floats, and Decimals
-    Precision attribute is not allowed in EFM 6.5.17, so this assumes decimals-use only.
+    Accepts a list of facts and returns a list of values from those facts
+    re-scaled by the least precise fact's precision Makes no guarantees about
+    data type, known types are integers, floats, and Decimals Precision
+    attribute is not allowed in EFM 6.5.17, so this assumes decimals-use only.
     """
     decimals = set([fact.decimals for fact in facts])
-    if len(decimals) == 1:  # if all decimals match, then just return xValue (their already scaled value)
+    if len(decimals) == 1:
+        # if all decimals match, then just return xValue
+        # (their already scaled value)
         return [fact.xValue for fact in facts]
-    #Redo the set getting only numbers
+    # Redo the set getting only numbers
     decimals = set([int(fact.decimals) for fact in facts if fact.decimals != 'INF' and fact.decimals is not None])
     min_decimals_str = str(min(decimals))
     return [ValidateXbrlCalcs.roundFact(DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True) for fact in facts]
@@ -40,8 +51,9 @@ def scale_values(facts):
 
 def filter_duplicate_facts(facts, ignore_units=False):
     """
-    This utility method should be used to prune duplicate facts from a set of facts.  The facts should
-    all be the same concept, and the set returned will be all the unique facts in the set.
+    This utility method should be used to prune duplicate facts from a set of
+    facts.  The facts should all be the same concept, and the set returned will
+    be all the unique facts in the set.
     """
     mapped_facts = defaultdict(list)
     for f in facts:
@@ -56,14 +68,21 @@ def filter_duplicate_facts(facts, ignore_units=False):
 
 def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
     """
-    Takes a group of facts for calculations and groups them by context and units, and strips out the ones that
+    Takes a group of facts for calculations and groups them by context and
+    units, and strips out the ones that
     are duplicated or not complete groupings.
 
-    @param fact_dict: The fact dictionary.  Should be {'conceptName':[facts_tagged_as_concept]...}
-    @param unit_ignored_dict: The dictionary of concepts to ignore units for duplication checking.  Should be {'conceptName': True...}.
-                              Defaults to 'False' for anything not defined, and all units are tested otherwise.
-    @return A list of dicts that map a context-unit-matched set of the facts together.
-            Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
+    @param fact_dict: The fact dictionary.
+    Should be {'conceptName':[facts_tagged_as_concept]...}
+
+    @param unit_ignored_dict: The dictionary of concepts to ignore units for
+    duplication checking.  Should be {'conceptName': True...}.
+    Defaults to 'False' for anything not defined, and
+    all units are tested otherwise.
+
+    @return A list of dicts that map a context-unit-matched set of the
+    facts together.
+    Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
     """
     unit_ignored = defaultdict(lambda: False)
     if unit_ignored_dict:
@@ -122,7 +141,8 @@ def axis_member_exists(val, fact, axis_name, member_name):
 
 def get_facts_with_type(lookup_type_strings, modelXbrl):
     """
-    Returns a list of facts from the modelXbrl whose types match the types supplied in the lookup_type_strings list
+    Returns a list of facts from the modelXbrl whose types match the types
+    supplied in the lookup_type_strings list
     """
     list_types = []
     if lookup_type_strings:
@@ -144,33 +164,62 @@ def lookup_gaap_facts(fact_name, modelXbrl):
     return facts
 
 
-def get_facts_dei(lookup_concept_strings, modelXbrl):
+def get_facts_dei(lookup_concept_strings, model_xbrl):
     """
-    Returns a list of dei facts from the modelXbrl whose name matches the names supplied in the lookup_concept_strings list
+    Returns a list of dei facts from the modelXbrl whose name matches the names
+    supplied in the lookup_concept_strings list
+
+    :param lookup_concept_strings:
+    :type lookup_concept_strings:
+    :param model_xbrl:
+    :type model_xbrl: 
+    :rtype: list of facts
+    :returns: list of dei facts from specified model_xbrl
     """
     list_dei = []
     if lookup_concept_strings:
         for dei in lookup_concept_strings:
-            list_dei.extend(lookup_dei_facts(dei, modelXbrl, False))
+            list_dei.extend(lookup_dei_facts(dei, model_xbrl, False))
     return list_dei
 
 
-def lookup_dei_facts(fact_name, modelXbrl, validation=True):
+def lookup_dei_facts(fact_name, model_xbrl, validation=True):
     """
-    returns the set of dei facts for the
+    Returns the set of dei facts for the
     given fact name
+
+    :param fact_name: name of the fact
+    :type fact_name: str
+    :param model_xbrl: ModelXbrl to get the facts from
+    :type model_xbrl: ModelXbrl
+    :param validation:
+    :type validation: bool
+    :rtype: List of facts
+    :returns: Set of dei facts for a given fact name
     """
-    facts = [f for f in modelXbrl.facts if f.concept.qname.localName == fact_name and f.concept.qname.namespaceURI in DEI_NAMESPACE_LIST]
+    facts = [
+        f for f in model_xbrl.facts
+        if f.concept.qname.localName == fact_name and
+        f.concept.qname.namespaceURI in DEI_NAMESPACE_LIST
+    ]
     if validation:
         facts = [f for f in facts if f.context is not None and f.xValue is not None]
     return facts
 
 
 LEGALENTITYAXIS_DEFAULT = ''
+
+
 def LegalEntityAxis_facts_by_member(facts):
     """
-    Returns a dictionary of lists of facts, keyed off of the LegalEntityAxis member, or
-    defaults to LEGALENTITYAXIS_DEFAULT if the fact has no LEA member.
+    Returns a dictionary of lists of facts, keyed off of the LegalEntityAxis
+    member, or defaults to LEGALENTITYAXIS_DEFAULT if the fact has no LEA
+    member.
+
+    :param facts: list of facts
+    :type facts: arelle.ModelInstanceObject.ModelFact
+    :rtype: dict of lists of facts
+    :returns: Dictionary of a list of facts keyed off of the LegalEntityAxis
     """
     results = defaultdict(list)
     for fact in facts:
@@ -191,8 +240,8 @@ def _fact_components_valid(fact):
 
     :param fact: The fact to check if it is valid
     :type fact: arelle.ModelInstanceObject.ModelFact
-    :return: True if none of the components of the fact are not None
     :rtype: bool
+    :returns: True if none of the components of the fact are not None
     """
     if fact is None:
         return False
@@ -209,18 +258,34 @@ def member_qnames(fact, axis_filter=None):
     """
     Return a list of a fact's member(s)
 
-    :param fact: (ModelFact) An arelle ModelFact instance.
-    :returns: ([str, ..., str]) A list of the string representation of each of the fact's member's qnames.
+    :param fact: An arelle ModelFact instance.
+    :param axis_filter: The axis to filter for
+    :type axis_filter: bool
+    :type fact: arelle.ModelInstance.ModelFact
+    :rtype: list of strings
+    :returns: ([str, ..., str]) A list of the string representation of each of
+    the fact's member's qnames.
     """
     if axis_filter:
-        return [str(dim.member.qname) for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None
-                and dim.dimensionQname is not None and dim.dimensionQname.localName in axis_filter]
+        return [
+            str(dim.member.qname) for dim in fact.context.segDimValues.values()
+            if dim.isExplicit and dim.member is not None and dim.dimensionQname
+            is not None and dim.dimensionQname.localName in axis_filter
+        ]
     else:
-        return [str(dim.member.qname) for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
+        return [
+            str(dim.member.qname) for dim in fact.context.segDimValues.values()
+            if dim.isExplicit and dim.member is not None
+            ]
 
 
 def axis_qnames(fact):
     """
-    @return a list of the @param fact's axes.
+    Returns a list the dim.dimensionQnames withing the fact as strings
+
+    :param fact: An arelle ModelFact instance.
+    :type fact: arelle.ModelInstance.ModelFact
+    :rtype: list of strings
+    :returns: a list of the fact's axes.
     """
     return [str(dim.dimensionQname) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]
