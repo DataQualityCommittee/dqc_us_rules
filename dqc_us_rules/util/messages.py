@@ -33,7 +33,7 @@ def get_message(primary_number, secondary_number='default'):
     :param: The secondary number for the rule.
     :type secondary_number: str
     :rtype: None or str
-    :returns: The message text, or None if the primary number does not exist
+    :return: The message text, or None if the primary number does not exist
     """
     global _LOADED_MESSAGES
     if not _LOADED_MESSAGES:
