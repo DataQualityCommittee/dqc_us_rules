@@ -40,7 +40,7 @@ def scale_values(facts):
     :param facts: list of facts to scale
     :type facts: list of fact
     :rtype: list of Decimals
-    :returns: list of values rescaled by least precise fact's precision
+    :return: list of values rescaled by least precise fact's precision
     """
     decimals = set([fact.decimals for fact in facts])
     if len(decimals) == 1:
@@ -64,7 +64,7 @@ def filter_duplicate_facts(facts, ignore_units=False):
     :param ignore_units: specifies whether units make fact unique or not
     :type ignore_units: bool
     :rtype: list of facts
-    :returns: all unique facts in facts
+    :return: all unique facts in facts
     """
     mapped_facts = defaultdict(list)
     for f in facts:
@@ -95,7 +95,7 @@ def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
                               all units are tested otherwise.
     :type unit_ignored_dict:
     :rtype: list of dicts
-    :returns: A list of dicts that map a context-unit-matched set of the
+    :return: A list of dicts that map a context-unit-matched set of the
     facts together.
     Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
     """
@@ -134,7 +134,7 @@ def axis_exists(val, fact, axis_name):
     :param axis_name: name of the axis to check
     :type axis_name: str
     :rtype: bool
-    :returns: True if fact is demensionalized
+    :return: True if fact is demensionalized
     """
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
 
@@ -155,7 +155,7 @@ def member_exists(val, fact, member_name):
     :param member_name: str
     :type member_name: member name to check against
     :rtype: bool
-    :returns: True if fact is demensionalized with gived axis
+    :return: True if fact is demensionalized with gived axis
     """
 
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
@@ -181,7 +181,7 @@ def axis_member_exists(val, fact, axis_name, member_name):
     :param member_name: member_name to check against local name
     :type member_name: str
     :rtype: bool
-    :returns: returns true if fact is dimensionalized
+    :return: returns true if fact is dimensionalized
     """
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
 
@@ -206,7 +206,7 @@ def get_facts_with_type(lookup_type_strings, model_xbrl):
     :param model_xbrl: modelXbrl to return facts from
     :type model_xbrl: modelXbrl
     :rtype: list of facts
-    :returns: list of facts from the specified modelXbrl
+    :return: list of facts from the specified modelXbrl
     """
     list_types = []
     if lookup_type_strings:
@@ -230,7 +230,7 @@ def lookup_gaap_facts(fact_name, model_xbrl):
     :param model_xbrl: modelXbrl to return facts from
     :type model_xbrl: modelXbrl
     :rtype: list of facts
-    :returns: list of us-gaap facts
+    :return: list of us-gaap facts
     """
     def valid_fact(fact):
         return fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and fact.context is not None and fact.xValue is not None
@@ -251,7 +251,7 @@ def get_facts_dei(lookup_concept_strings, model_xbrl):
     :param model_xbrl: modelXbrl to get facts from
     :type model_xbrl: modelXbrl
     :rtype: list of facts
-    :returns: list of dei facts from specified model_xbrl
+    :return: list of dei facts from specified model_xbrl
     """
     list_dei = []
     if lookup_concept_strings:
@@ -272,7 +272,7 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
     :param validation: should check for valid facts
     :type validation: bool
     :rtype: List of facts
-    :returns: Set of dei facts for a given fact name
+    :return: Set of dei facts for a given fact name
     """
     facts = [
         f for f in model_xbrl.facts
@@ -299,7 +299,7 @@ def LegalEntityAxis_facts_by_member(facts):
     :param facts: list of facts
     :type facts: arelle.ModelInstanceObject.ModelFact
     :rtype: dict of lists of facts
-    :returns: Dictionary of a list of facts keyed off of the LegalEntityAxis
+    :return: Dictionary of a list of facts keyed off of the LegalEntityAxis
     """
     results = defaultdict(list)
     for fact in facts:
@@ -321,7 +321,7 @@ def _fact_components_valid(fact):
     :param fact: The fact to check if it is valid
     :type fact: arelle.ModelInstanceObject.ModelFact
     :rtype: bool
-    :returns: True if none of the components of the fact are not None
+    :return: True if none of the components of the fact are not None
     """
     if fact is None:
         return False
@@ -343,7 +343,7 @@ def member_qnames(fact, axis_filter=None):
     :param axis_filter: The axis to filter for
     :type axis_filter: bool
     :rtype: list of strings
-    :returns: ([str, ..., str]) A list of the string representation of each of
+    :return: ([str, ..., str]) A list of the string representation of each of
     the fact's member's qnames.
     """
     if axis_filter:
@@ -366,7 +366,7 @@ def axis_qnames(fact):
     :param fact: An arelle ModelFact instance.
     :type fact: arelle.ModelInstance.ModelFact
     :rtype: list of strings
-    :returns: a list of the fact's axes.
+    :return: a list of the fact's axes.
     """
     return [
         str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
