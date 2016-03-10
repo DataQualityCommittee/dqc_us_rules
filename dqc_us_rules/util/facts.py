@@ -3,7 +3,6 @@
 from collections import defaultdict
 from arelle import ValidateXbrlCalcs
 
-from arelle.ModelValue import QName
 
 DEI_NAMESPACE_LIST = [
     'http://xbrl.sec.gov/dei/2014-01-31', 'http://xbrl.sec.gov/dei/2013-01-31',
@@ -37,6 +36,11 @@ def scale_values(facts):
     re-scaled by the least precise fact's precision Makes no guarantees about
     data type, known types are integers, floats, and Decimals Precision
     attribute is not allowed in EFM 6.5.17, so this assumes decimals-use only.
+
+    :param facts: list of facts to scale
+    :type facts: list of fact
+    :rtype: list of Decimals
+    :returns: list of values rescaled by least precise fact's precision
     """
     decimals = set([fact.decimals for fact in facts])
     if len(decimals) == 1:
@@ -54,11 +58,20 @@ def filter_duplicate_facts(facts, ignore_units=False):
     This utility method should be used to prune duplicate facts from a set of
     facts.  The facts should all be the same concept, and the set returned will
     be all the unique facts in the set.
+
+    :param facts: list of facts to find unique facts from
+    :type facts: list of fact
+    :param ignore_units: specifies whether units make fact unique or not
+    :type ignore_units: bool
+    :rtype: list of facts
+    :returns: all unique facts in facts
     """
     mapped_facts = defaultdict(list)
     for f in facts:
         if f.contextID is not None and not f.isNil and f.xValid:
-            mapped_facts[(f.contextID, None if ignore_units else f.unitID)].append(f)
+            mapped_facts[
+                f.contextID, None if ignore_units else f.unitID
+            ].append(f)
     result = []
     for v in mapped_facts.values():
         if len(v) == 1:
@@ -72,15 +85,17 @@ def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
     units, and strips out the ones that
     are duplicated or not complete groupings.
 
-    @param fact_dict: The fact dictionary.
-    Should be {'conceptName':[facts_tagged_as_concept]...}
-
-    @param unit_ignored_dict: The dictionary of concepts to ignore units for
-    duplication checking.  Should be {'conceptName': True...}.
-    Defaults to 'False' for anything not defined, and
-    all units are tested otherwise.
-
-    @return A list of dicts that map a context-unit-matched set of the
+    :param fact_dict: The fact dictionary.
+                      Should be {'conceptName':[facts_tagged_as_concept]...}
+    :type fact_dict:
+    :param unit_ignored_dict: The dictionary of concepts to ignore units for
+                              duplication checking.
+                              Should be {'conceptName': True...}.
+                              Defaults to 'False' for anything not defined, and
+                              all units are tested otherwise.
+    :type unit_ignored_dict:
+    :rtype: list of dicts
+    :returns: A list of dicts that map a context-unit-matched set of the
     facts together.
     Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
     """
@@ -89,7 +104,9 @@ def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
         unit_ignored.update(unit_ignored_dict)
     cleaned_fact_map = defaultdict()
     for k, v in fact_dict.items():
-        cleaned_fact_map[k] = filter_duplicate_facts(v, ignore_units=unit_ignored[k])
+        cleaned_fact_map[k] = filter_duplicate_facts(
+            v, ignore_units=unit_ignored[k]
+        )
     result_map = defaultdict(dict)
     for k, v in cleaned_fact_map.items():
         if not unit_ignored[k]:
@@ -107,60 +124,120 @@ def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
 
 def axis_exists(val, fact, axis_name):
     """
-    given a fact, check if fact is dimensionalized
+    Given a fact, check if fact is dimensionalized
     with given axis
+
+    :param val: val with standard taxonomies dict to check
+    :type val: val
+    :param fact: fact to check
+    :type fact: fact
+    :param axis_name: name of the axis to check
+    :type axis_name: str
+    :rtype: bool
+    :returns: True if fact is demensionalized
     """
+    standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
+
     return any(axis_name == dim.dimensionQname.localName
                for dim in fact.context.qnameDims.values()
-               if dim.isExplicit and dim.dimensionQname
-               and dim.dimensionQname.namespaceURI in val.disclosureSystem.standardTaxonomiesDict)
+               if dim.isExplicit and dim.dimensionQname and
+               dim.dimensionQname.namespaceURI in standard_taxonomies_dict)
 
 
 def member_exists(val, fact, member_name):
     """
-    given a fact, check if fact is dimensionalized
-    with given axis
+    Given a fact, check if fact is dimensionalized with given axis
+
+    :param val: val to check against
+    :type val: val
+    :param fact: fact to check against
+    :type fact: fact
+    :param member_name: str
+    :type member_name: member name to check against
+    :rtype: bool
+    :returns: True if fact is demensionalized with gived axis
     """
-    return any(member_name == dim.member.qname.localName
-               for dim in fact.context.segDimValues.values()
-               if dim.isExplicit and dim.member is not None
-               and dim.member.qname.namespaceURI in val.disclosureSystem.standardTaxonomiesDict)
+
+    standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
+
+    return any(
+        member_name == dim.member.qname.localName
+        for dim in fact.context.segDimValues.values()
+        if dim.isExplicit and dim.member is not None and
+        dim.member.qname.namespaceURI in standard_taxonomies_dict
+    )
 
 
 def axis_member_exists(val, fact, axis_name, member_name):
     """
     Given a fact, check if the fact is dimensionalized for a axis/member pairing
+
+    :param val: val to check standard taxonomies dict on
+    :type val: val
+    :param fact: fact to check segDimValues of
+    :type fact: fact
+    :param axis_name: axis name to check against local name
+    :type axis_name: str
+    :param member_name: member_name to check against local name
+    :type member_name: str
+    :rtype: bool
+    :returns: returns true if fact is dimensionalized
     """
-    return any(member_name == dim.memberQname.localName and axis_name == dim.dimensionQname.localName
-               for dim in fact.context.segDimValues.values()
-               if dim.isExplicit and dim.memberQname is not None
-               and dim.memberQname.namespaceURI in val.disclosureSystem.standardTaxonomiesDict
-               and dim.dimensionQname is not None
-               and dim.dimensionQname.namespaceURI in val.disclosureSystem.standardTaxonomiesDict)
+    standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
+
+    return any(
+        member_name == dim.memberQname.localName and
+        axis_name == dim.dimensionQname.localName
+        for dim in fact.context.segDimValues.values()
+        if dim.isExplicit and dim.memberQname is not None and
+        dim.memberQname.namespaceURI in standard_taxonomies_dict and
+        dim.dimensionQname is not None and
+        dim.dimensionQname.namespaceURI in standard_taxonomies_dict
+    )
 
 
-def get_facts_with_type(lookup_type_strings, modelXbrl):
+def get_facts_with_type(lookup_type_strings, model_xbrl):
     """
     Returns a list of facts from the modelXbrl whose types match the types
     supplied in the lookup_type_strings list
+
+    :param lookup_type_strings: string specifying what to lookup
+    :type lookup_type_strings: str
+    :param model_xbrl: modelXbrl to return facts from
+    :type model_xbrl: modelXbrl
+    :rtype: list of facts
+    :returns: list of facts from the specified modelXbrl
     """
     list_types = []
     if lookup_type_strings:
         for type in lookup_type_strings:
-            list_types.extend(f for f in list(modelXbrl.facts) if f.context is not None
-                              and f.concept.type is not None and f.concept.type.name == type)
+            list_types.extend(
+                f for f in list(model_xbrl.facts)
+                if f.context is not None and
+                f.concept.type is not None and f.concept.type.name == type
+            )
     return list_types
 
 
-def lookup_gaap_facts(fact_name, modelXbrl):
+def lookup_gaap_facts(fact_name, model_xbrl):
     """
-    returns the set of us-gaap facts for the
+    Returns the set of us-gaap facts for the
     given fact name.  Note that the facts will not be
     returned if the context or xValue is None.
+
+    :param fact_name: name of the fact to lookup
+    :type fact_name: str
+    :param model_xbrl: modelXbrl to return facts from
+    :type model_xbrl: modelXbrl
+    :rtype: list of facts
+    :returns: list of us-gaap facts
     """
     def valid_fact(fact):
         return fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and fact.context is not None and fact.xValue is not None
-    facts = [f for f in modelXbrl.facts if f.concept.qname.localName == fact_name and valid_fact(f)]
+    facts = [
+        f for f in model_xbrl.facts
+        if f.concept.qname.localName == fact_name and valid_fact(f)
+    ]
     return facts
 
 
@@ -169,10 +246,10 @@ def get_facts_dei(lookup_concept_strings, model_xbrl):
     Returns a list of dei facts from the modelXbrl whose name matches the names
     supplied in the lookup_concept_strings list
 
-    :param lookup_concept_strings:
-    :type lookup_concept_strings:
-    :param model_xbrl:
-    :type model_xbrl: 
+    :param lookup_concept_strings: strings to loop up
+    :type lookup_concept_strings: list of str
+    :param model_xbrl: modelXbrl to get facts from
+    :type model_xbrl: modelXbrl
     :rtype: list of facts
     :returns: list of dei facts from specified model_xbrl
     """
@@ -192,7 +269,7 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
     :type fact_name: str
     :param model_xbrl: ModelXbrl to get the facts from
     :type model_xbrl: ModelXbrl
-    :param validation:
+    :param validation: should check for valid facts
     :type validation: bool
     :rtype: List of facts
     :returns: Set of dei facts for a given fact name
@@ -203,7 +280,10 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
         f.concept.qname.namespaceURI in DEI_NAMESPACE_LIST
     ]
     if validation:
-        facts = [f for f in facts if f.context is not None and f.xValue is not None]
+        facts = [
+            f for f in facts
+            if f.context is not None and f.xValue is not None
+        ]
     return facts
 
 
@@ -259,9 +339,9 @@ def member_qnames(fact, axis_filter=None):
     Return a list of a fact's member(s)
 
     :param fact: An arelle ModelFact instance.
+    :type fact: arelle.ModelInstance.ModelFact
     :param axis_filter: The axis to filter for
     :type axis_filter: bool
-    :type fact: arelle.ModelInstance.ModelFact
     :rtype: list of strings
     :returns: ([str, ..., str]) A list of the string representation of each of
     the fact's member's qnames.
@@ -276,7 +356,7 @@ def member_qnames(fact, axis_filter=None):
         return [
             str(dim.member.qname) for dim in fact.context.segDimValues.values()
             if dim.isExplicit and dim.member is not None
-            ]
+        ]
 
 
 def axis_qnames(fact):
@@ -288,4 +368,7 @@ def axis_qnames(fact):
     :rtype: list of strings
     :returns: a list of the fact's axes.
     """
-    return [str(dim.dimensionQname) for dim in fact.context.segDimValues.values() if dim.dimensionQname is not None]
+    return [
+        str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
+        if dim.dimensionQname is not None
+    ]
