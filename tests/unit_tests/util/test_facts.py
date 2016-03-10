@@ -622,6 +622,7 @@ class TestMemberQnames(unittest.TestCase):
         expected = ['CashCheckAxis']
         self.assertEqual(expected, fact_lib.member_qnames(fact))
 
+
 class TestFactsAreValid(unittest.TestCase):
     def test_fact_components_valid_on_valid_fact(self):
         """
