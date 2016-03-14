@@ -77,8 +77,11 @@ def validate_facts(val):
         filter(lambda f: f.context is not None, val.modelXbrl.facts)
     )
     for lea_member, fact_list in fact_dict.items():
-        lookup = lea_member \
-            if lea_member in eop_results else facts.LEGALENTITYAXIS_DEFAULT
+        lookup = (
+            lea_member
+            if lea_member in eop_results
+            else facts.LEGALENTITYAXIS_DEFAULT
+        )
         if lookup in eop_results:
             for fact in fact_list:
                 # endDateTime will be the instant date time if this
