@@ -94,8 +94,8 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
             min_span = timedelta(days=date_bounds_dict[focus.xValue].get('min'))
             max_span = timedelta(days=date_bounds_dict[focus.xValue].get('max'))
             for fact in fact_list:
-                if fact.context.endDatetime is not None and \
-                                fact.context.startDatetime is not None:
+                if (fact.context.endDatetime is not None and
+                   fact.context.startDatetime is not None):
                     span = fact.context.endDatetime - fact.context.startDatetime
                     if span < min_span or span > max_span:
                         facts_in_error[focus].append(fact)
