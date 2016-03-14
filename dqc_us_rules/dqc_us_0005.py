@@ -36,17 +36,20 @@ def _get_end_of_period(val):
     ]
 
     if len(end_of_period_concepts) == 1:
-        end_of_period_dict = \
+        end_of_period_dict = (
             facts.legal_entity_axis_facts_by_member(
                 val.modelXbrl.factsByQname[end_of_period_concepts[0].qname]
             )
+        )
         for lea_member, end_of_period_facts in end_of_period_dict.items():
             for fact in end_of_period_facts:
                 eop_date = fact.xValue
                 # Get maximum of fact value and fact's context end date
                 if fact.context is not None:
                     eop_context_end = fact.context.endDatetime
-                    date_str = dateunionValue(eop_context_end, subtractOneDay=True)
+                    date_str = (
+                        dateunionValue(eop_context_end, subtractOneDay=True)
+                    )
                     if (eop_context_end is not None and
                        (eop_date is None or eop_context_end > eop_date)):
                         eop_date = eop_context_end
