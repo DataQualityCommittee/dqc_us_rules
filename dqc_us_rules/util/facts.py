@@ -187,11 +187,11 @@ def LegalEntityAxis_facts_by_member(facts):
 
 def fact_components_valid(fact):
     """
-    Return true if all of the components in a fact are not none
+    Return true if all of the components in a fact are not None
 
     :param fact: The fact to check if it is valid
     :type fact: '~arelle.ModelInstanceObject.ModelFact'
-    :return: True if none of the components of the fact are None
+    :return: True if none of the components of the fact are not None
     :rtype: bool
     """
     if fact is None:
