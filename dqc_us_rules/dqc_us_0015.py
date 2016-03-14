@@ -59,13 +59,14 @@ def filter_negative_number_facts(val, blacklist_concepts):
     numeric_facts = grab_numeric_facts(list(val.modelXbrl.facts))
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
-    facts_to_check = [f for f in numeric_facts if float(f.value) < 0 and
-                      f.concept.type is not None and
-                      # facts with numerical values less than 0 and contexts and
-                      f.context is not None and
-                      # check xsd type of the concept
-                      f.isNumeric
-                      ]
+    facts_to_check = [
+        f for f in numeric_facts if float(f.value) < 0 and
+        f.concept.type is not None and
+        # facts with numerical values less than 0 and contexts and
+        f.context is not None and
+        # check xsd type of the concept
+        f.isNumeric
+    ]
 
     # identify facts which should be reported as included in the list
     for fact in facts_to_check:
@@ -124,12 +125,14 @@ def check_rule(fact, rule_dict):
             fact_matches = contains(fact_artifact, rule_dict['item_check'])
         elif rule_dict['relation'] == 'Contains_insensitive':
             fact_matches = contains_insensitive(
-                fact_artifact, rule_dict['item_check'])
+                fact_artifact, rule_dict['item_check']
+            )
         elif rule_dict['relation'] == 'Equals':
             fact_matches = equals(fact_artifact, rule_dict['item_check'])
         elif rule_dict['relation'] == 'Has_member':
             fact_matches = equals(
-                fact_artifact, rule_dict['item_check'].split('|')[1])
+                fact_artifact, rule_dict['item_check'].split('|')[1]
+            )
         if fact_matches:
             # if fact matches rule condition escape loop,
             # otherwise continue checking
@@ -141,8 +144,10 @@ def check_rule(fact, rule_dict):
     if rule_dict['additional_conditions'] is None:
         return fact_matches
     else:
-        return (fact_matches and
-                check_rule(fact, rule_dict['additional_conditions']))
+        return (
+            fact_matches and
+            check_rule(fact, rule_dict['additional_conditions'])
+        )
 
 # =====================Relationship checks=============================
 
@@ -223,7 +228,8 @@ def get_artifact_lists(fact, rule_dict):
     if artifact_type == "Axis":
         if '|' in rule_dict['item_check']:
             artifacts = facts.member_qnames(
-                fact, axis_filter=rule_dict['item_check'].split('|')[0])
+                fact, axis_filter=rule_dict['item_check'].split('|')[0]
+            )
         else:
             artifacts = facts.axis_qnames(fact)
 
