@@ -9,7 +9,6 @@ from dqc_us_rules import dqc_us_0006
 from dqc_us_rules.util import facts
 
 
-
 class TestContextDates(unittest.TestCase):
     def setUp(self):
         mock_type = Mock()
@@ -22,7 +21,7 @@ class TestContextDates(unittest.TestCase):
             localName='DocumentFiscalPeriodFocus'
         )
         mock_concept = Mock(qname=mock_qname, type=mock_type)
-        mock_nameConcepts = {'DocumentFiscalPeriodFocus': [mock_concept]}
+        mock_nameconcepts = {'DocumentFiscalPeriodFocus': [mock_concept]}
         mock_context = Mock()
         mock_fact = Mock(
             context=mock_context,
@@ -30,11 +29,11 @@ class TestContextDates(unittest.TestCase):
             qname=mock_qname,
             xValue='Q3'
         )
-        mock_factsByQname = {mock_concept.qname: [mock_fact]}
+        mock_factsbyqname = {mock_concept.qname: [mock_fact]}
         self.mock_model = Mock(
-            factsByQname=mock_factsByQname,
+            factsByQname=mock_factsbyqname,
             facts=[mock_fact],
-            nameConcepts=mock_nameConcepts
+            nameConcepts=mock_nameconcepts
         )
 
     def test_lea_facts_and_update(self):
@@ -88,7 +87,8 @@ class TestDateBoundsCSV(unittest.TestCase):
         }
 
         date_bounds_dict_from_csv = dqc_us_0006._date_bounds_from_csv()
-        self.assertEqual(sorted(list(random_date_bounds_dict.keys())), sorted(list(date_bounds_dict_from_csv.keys())))
+        self.assertEqual(sorted(list(random_date_bounds_dict.keys())),
+                         sorted(list(date_bounds_dict_from_csv.keys())))
 
         for key in random_date_bounds_dict.keys():
             for subkey in random_date_bounds_dict[key].keys():
