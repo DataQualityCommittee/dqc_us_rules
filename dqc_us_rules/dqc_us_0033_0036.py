@@ -80,7 +80,9 @@ def _doc_period_end_date_check(model_xbrl):
         # DocumentPeriodEndDate
         for lea_key, fact_group in dei_facts.items():
             eop_fact = dped_facts.get(lea_key, default_dped_fact)[0]
-            if eop_fact is None or eop_fact.context is None or eop_fact.context.endDatetime is None:
+            if eop_fact is None or \
+               eop_fact.context is None or \
+               eop_fact.context.endDatetime is None:
                 continue
 
             # Arelle adjusts context end date to end-of-day midnight
