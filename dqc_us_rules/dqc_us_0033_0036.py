@@ -20,12 +20,12 @@ def doc_period_end_date_check(val):
     """
     for params in _doc_period_end_date_check(val.modelXbrl):
         code, message, context_date, mod_obj, default_dped_fact = params
-        val.modelXbrl.error(code,
-                            message,
-                            dped_context_date=context_date,
-                            modelObject=(mod_obj, default_dped_fact),
-                            ruleVersion=_RULE_VERSION
-                            )
+        val.modelXbrl.error(
+            code, message,
+            dped_context_date=context_date,
+            modelObject=(mod_obj, default_dped_fact),
+            ruleVersion=_RULE_VERSION
+        )
 
 
 def _doc_period_end_date_check(model_xbrl):
@@ -140,8 +140,7 @@ def _setup_dei_facts(model_xbrl):
     dped_facts = facts.LegalEntityAxis_facts_by_member(
         facts.get_facts_dei(['DocumentPeriodEndDate'], model_xbrl)
     )
-    print('Setup dei facts')
-    print(dped_facts)
+
     return dped_facts, dei_facts
 
 
