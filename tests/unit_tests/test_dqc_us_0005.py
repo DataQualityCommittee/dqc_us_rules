@@ -23,11 +23,11 @@ class TestContextChecks(unittest.TestCase):
         mock_concept = Mock(
             qname=mock_qname, type=mock_type
         )
-        mock_nameConcepts = {'DocumentPeriodEndDate': [mock_concept]}
-        mock_segDimVal = {}
+        mock_name_concepts = {'DocumentPeriodEndDate': [mock_concept]}
+        mock_segdimval = {}
         mock_context = Mock(
             endDatetime=date(2015, 1, 1),
-            segDimValues=mock_segDimVal
+            segDimValues=mock_segdimval
         )
         mock_fact = Mock(
             context=mock_context,
@@ -41,7 +41,7 @@ class TestContextChecks(unittest.TestCase):
         self.mock_model = Mock(
             factsByQname=mock_factsByQname,
             facts=[mock_fact],
-            nameConcepts=mock_nameConcepts
+            nameConcepts=mock_name_concepts
         )
 
     def test_dei_regex(self):
