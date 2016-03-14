@@ -7,8 +7,8 @@ from .util import facts, messages
 from arelle.XmlUtil import dateunionValue
 
 LEGALENTITYAXIS_DEFAULT = ''
-_dei_pattern = \
-    re.compile(r'^http://xbrl\.((sec\.gov)|(us))/dei/\d{4}-\d{2}-\d{2}')
+_dei_pattern = (
+    re.compile(r'^http://xbrl\.((sec\.gov)|(us))/dei/\d{4}-\d{2}-\d{2}'))
 _CODE_NAME = 'DQC.US.0005'
 _RULE_VERSION = '1.0'
 
@@ -47,7 +47,8 @@ def _get_end_of_period(val):
                 if fact.context is not None:
                     eop_context_end = fact.context.endDatetime
                     date_str = dateunionValue(eop_context_end, subtractOneDay=True)
-                    if eop_context_end is not None and (eop_date is None or eop_context_end > eop_date):
+                    if (eop_context_end is not None and
+                       (eop_date is None or eop_context_end > eop_date)):
                         eop_date = eop_context_end
                         # end dates have a time of 24:00 so
                         # adjust them back 1 day
@@ -69,7 +70,7 @@ def validate_facts(val):
     :type val: val
     """
     eop_results = _get_end_of_period(val)
-    fact_dict = facts.LegalEntityAxis_facts_by_member(
+    fact_dict = facts.legal_entity_axis_facts_by_member(
         filter(lambda f: f.context is not None, val.modelXbrl.facts)
     )
     for lea_member, fact_list in fact_dict.items():
