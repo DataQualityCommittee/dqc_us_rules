@@ -48,9 +48,14 @@ def scale_values(facts):
         # (their already scaled value)
         return [fact.xValue for fact in facts]
     # Redo the set getting only numbers
-    decimals = set([int(fact.decimals) for fact in facts if fact.decimals != 'INF' and fact.decimals is not None])
+    decimals = set([int(fact.decimals)
+                    for fact in facts
+                    if fact.decimals != 'INF' and
+                    fact.decimals is not None])
     min_decimals_str = str(min(decimals))
-    return [ValidateXbrlCalcs.roundFact(DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True) for fact in facts]
+    return [ValidateXbrlCalcs.roundFact(
+            DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True)
+            for fact in facts]
 
 
 def filter_duplicate_facts(facts, ignore_units=False):
@@ -290,7 +295,7 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
 LEGALENTITYAXIS_DEFAULT = ''
 
 
-def LegalEntityAxis_facts_by_member(facts):
+def legal_entity_axis_facts_by_member(facts):
     """
     Returns a dictionary of lists of facts, keyed off of the LegalEntityAxis
     member, or defaults to LEGALENTITYAXIS_DEFAULT if the fact has no LEA
@@ -305,7 +310,10 @@ def LegalEntityAxis_facts_by_member(facts):
     for fact in facts:
         legalDim = LEGALENTITYAXIS_DEFAULT
         if _fact_components_valid(fact):
-            dims = [dim for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
+            dims = [
+                dim for dim in fact.context.segDimValues.values()
+                if dim.isExplicit and dim.member is not None
+                ]
             for dim in dims:
                 if dim.dimension.qname.localName == 'LegalEntityAxis':
                     legalDim = dim.member.qname.localName
