@@ -28,6 +28,9 @@ def validate_dates_within_periods(val):
     """
     Check Date Ranges are within expected values
     for the fiscal focus period
+
+    :param val: val to check
+    :type val: val
     """
     date_bounds_dict = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
@@ -44,30 +47,55 @@ def validate_dates_within_periods(val):
                                 ruleVersion=_RULE_VERSION)
 
 
-def _date_range_check(check_types, check_dei, date_bounds_dict, modelXbrl):
+def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     """
-    Takes two lists of fact names, a dict of date boundaries and modelXbrl and then compiles a list of all
-    facts in the modelXbrl that match the names in the supplied name lists. It then compares the context
-    date span to the date boundaries for the corresponding document period focus. Any facts with spans less than
-    or larger than the supplied boundaries are returned in a dict based on the document period focus.
+    Takes two lists of fact names, a dict of date boundaries and modelXbrl and
+    then compiles a list of all facts in the modelXbrl that match the names in
+    the supplied name lists. It then compares the context date span to the date
+    boundaries for the corresponding document period focus. Any facts with
+    spans less than or larger than the supplied boundaries are returned in a
+    dict based on the document period focus.
+
+    :param check_types: first list of names
+    :type check_types: list of str
+    :param check_dei: second list of names
+    :type check_dei: list of str
+    :param date_bounds_dict: period from which names should be pulled from
+    :type date_bounds_dict: dictionary of date bounds
+    :param model_xbrl: model xbrl from which facts are to be pulled from
+    :type model_xbrl: ModelXbrl
+    :rtype: dict of facts
+    :return: list of facts that match the names in the two lists and are within
+    the date_bounds_dict
     """
     facts_in_error = defaultdict(list)
-    list_of_facts = facts.LegalEntityAxis_facts_by_member(facts.get_facts_with_type(check_types, modelXbrl))
-    list_of_facts = _dict_list_update(list_of_facts, (facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(check_dei, modelXbrl))))
+    list_of_facts = facts.LegalEntityAxis_facts_by_member(
+        facts.get_facts_with_type(check_types, model_xbrl)
+    )
+    list_of_facts = _dict_list_update(
+        list_of_facts,
+        (facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(
+            check_dei,
+            model_xbrl)
+        ))
+    )
 
-    dfpf_list = facts.lookup_dei_facts('DocumentFiscalPeriodFocus', modelXbrl)
+    dfpf_list = facts.lookup_dei_facts('DocumentFiscalPeriodFocus', model_xbrl)
     dfpf_dict = facts.LegalEntityAxis_facts_by_member(dfpf_list)
     for lea_member, fact_list in list_of_facts.items():
-        lookup = lea_member if lea_member in dfpf_dict else facts.LEGALENTITYAXIS_DEFAULT
+        lookup = lea_member \
+            if lea_member in dfpf_dict else facts.LEGALENTITYAXIS_DEFAULT
         if lookup in dfpf_dict:
-            focus_l = set([foc for foc in dfpf_dict[lookup] if foc.xValue in date_bounds_dict])
+            focus_l = set([foc for foc in dfpf_dict[lookup]
+                           if foc.xValue in date_bounds_dict])
             if len(focus_l) != 1:
                 continue
             focus = focus_l.pop()
             min_span = timedelta(days=date_bounds_dict[focus.xValue].get('min'))
             max_span = timedelta(days=date_bounds_dict[focus.xValue].get('max'))
             for fact in fact_list:
-                if fact.context.endDatetime is not None and fact.context.startDatetime is not None:
+                if fact.context.endDatetime is not None and \
+                                fact.context.startDatetime is not None:
                     span = fact.context.endDatetime - fact.context.startDatetime
                     if span < min_span or span > max_span:
                         facts_in_error[focus].append(fact)
@@ -78,6 +106,13 @@ def _dict_list_update(dict_a, dict_b):
     """
     Helper for the LEA dictionaries, extends the lists from dict_a with the
     lists in dict_b.
+
+    :param dict_a: dictionary to be extended
+    :type dict_a: dictionary of lists
+    :param dict_b: dictionary to extend into other dictionary
+    :type dict_b: dictionary of lists
+    :rtype: dict of list
+    :return: lists in dict_a extended with lists in dict_b
     """
     for key, val in dict_b.items():
         dict_a[key].extend(val)
