@@ -51,15 +51,15 @@ class TestDocPerEndDateChk(unittest.TestCase):
         concept_inst1 = mock.Mock(periodType='instant', qname=m_qn_good1)
         concept_inst2 = mock.Mock(periodType='instant', qname=m_qn_good2)
         concept_inst3 = mock.Mock(periodType='instant', qname=m_qn_good3)
-        concept_SharesOut = mock.Mock(qname=m_qn_bad1)
-        concept_PubFloat = mock.Mock(qname=m_qn_bad2)
-        concept_EndDate = mock.Mock(qname=m_qn_bad3)
+        concept_sharesout = mock.Mock(qname=m_qn_bad1)
+        concept_pubfloat = mock.Mock(qname=m_qn_bad2)
+        concept_enddate = mock.Mock(qname=m_qn_bad3)
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
-        mock_segDimValues = mock.Mock()
-        mock_segDimValues.values.return_value = []
+        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues.values.return_value = []
         mock_context = mock.Mock(
-            endDatetime=mock_edt_norm, segDimValues=mock_segDimValues
+            endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
         )
         self.fact_good1 = mock.Mock(
             concept=concept_dur1, qname=m_qn_good1,
@@ -92,17 +92,17 @@ class TestDocPerEndDateChk(unittest.TestCase):
             context=mock_context
         )
         self.fact_shares = mock.Mock(
-            concept=concept_SharesOut, qname=m_qn_bad1,
+            concept=concept_sharesout, qname=m_qn_bad1,
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
             context=mock_context
         )
         self.fact_public = mock.Mock(
-            concept=concept_PubFloat, qname=m_qn_bad2,
+            concept=concept_pubfloat, qname=m_qn_bad2,
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
             context=mock_context
         )
         self.fact_end = mock.Mock(
-            concept=concept_EndDate, qname=m_qn_bad3,
+            concept=concept_enddate, qname=m_qn_bad3,
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
             context=mock_context
         )
@@ -128,15 +128,15 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date()
+        side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_a_warn(self, mock_func):
-        mock_segDimValues = mock.Mock()
-        mock_segDimValues.values.return_value = []
+        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_dped_context = mock.Mock(
-            endDatetime=mock_edt_norm, segDimValues=mock_segDimValues
+            endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
         )
         mock_edt_off = mock.Mock()
         mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
@@ -158,17 +158,17 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date()
+        side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_an_error(self, mock_func):
-        mock_segDimValues = mock.Mock()
-        mock_segDimValues.values.return_value = []
+        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_edt_off = mock.Mock()
         mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
         mock_off_context = mock.Mock(
-            endDatetime=mock_edt_off, segDimValues=mock_segDimValues
+            endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
         )
         self.fact_end.xValue = mock_edt_norm
         self.fact_good1.context = mock_off_context
@@ -186,7 +186,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date()
+        side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_a_warn_and_error(self, mock_func):
         mock_mem_qn = mock.Mock(localName='foo')
@@ -200,8 +200,8 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_more_dims = mock.Mock()
         mock_more_dims.values.return_value = [mock_dim]
 
-        mock_segDimValues = mock.Mock()
-        mock_segDimValues.values.return_value = []
+        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues.values.return_value = []
 
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
@@ -209,20 +209,17 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_edt_off = mock.Mock()
         mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
         mock_off_context = mock.Mock(
-            endDatetime=mock_edt_off, segDimValues=mock_segDimValues
-        )
-        mock_off_context_lea = mock.Mock(
-            endDatetime=mock_edt_off, segDimValues=mock_more_dims
+            endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
         )
 
         m_qn_bad = mock.Mock(
             localName='DocumentPeriodEndDate',
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31'
         )
-        concept_EndDate = mock.Mock(qname=m_qn_bad)
+        concept_enddate = mock.Mock(qname=m_qn_bad)
         mock_dped_off = mock.Mock(
             context=mock_off_context, xValue=mock_edt_off,
-            concept=concept_EndDate, qname=m_qn_bad,
+            concept=concept_enddate, qname=m_qn_bad,
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31'
         )
         self.fact_end.xValue = mock_edt_off
