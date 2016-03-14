@@ -16,7 +16,6 @@ class TestDQC0015(unittest.TestCase):
         self.assertTrue(dqc_us_0015.contains(element_one, check_list))
         self.assertFalse(dqc_us_0015.contains(element_two, check_list))
 
-
     def test_contains_insensitive(self):
         element_one = 'foo:cRediT'
         element_two = 'foo:aCcRedItAtiON'
@@ -27,7 +26,6 @@ class TestDQC0015(unittest.TestCase):
         self.assertTrue(
             dqc_us_0015.contains_insensitive(element_two, check_list)
         )
-
 
     def test_equals(self):
         element_one = 'foo:Credit'
@@ -44,7 +42,6 @@ class TestDQC0015(unittest.TestCase):
         self.assertTrue(dqc_us_0015.equals('NaN', 'NaN'))
         self.assertFalse(dqc_us_0015.equals("NaN", '1'))
         self.assertFalse(dqc_us_0015.equals(0, 'zero'))
-
 
     def test_parse_row(self):
         test_row = [
