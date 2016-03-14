@@ -29,7 +29,7 @@ class TestFilterDuplicateFacts(unittest.TestCase):
                 contextID=None, unitID=None,
                 isNil=False, xValid=True
             ),
-            # Shoud skip because empty contextID
+            # Should skip because empty contextID
             Mock(
                 contextID=None, unitID='unit1',
                 isNil=False, xValid=True
@@ -69,7 +69,7 @@ class TestFilterDuplicateFacts(unittest.TestCase):
                 contextID='context2', unitID='unit2',
                 isNil=False, xValid=True
             ),
-            #Should not include because dupes
+            # Should not include because dupes
             Mock(
                 contextID='context3', unitID=None,
                 isNil=False, xValid=True
@@ -78,7 +78,7 @@ class TestFilterDuplicateFacts(unittest.TestCase):
                 contextID='context3', unitID=None,
                 isNil=False, xValid=True
             ),
-            #Should include because none units
+            # Should include because none units
             Mock(
                 contextID='context1', unitID=None,
                 isNil=False, xValid=True
@@ -152,9 +152,20 @@ class TestFilterDuplicateFacts(unittest.TestCase):
 class TestPrepareFactsForCalculation(unittest.TestCase):
 
     def test_prepare_facts_for_calculation_happy_path(self):
-        fact_dict = {'concept1': [Mock(contextID='context1', unitID='unit2', isNil=False, xValid=True), Mock(contextID='context1', unitID='unit1', isNil=False, xValid=True)],
-                     'concept2': [Mock(contextID='context1', unitID='unit1', isNil=False, xValid=True), Mock(contextID='context1', unitID='unit2', isNil=False, xValid=True)],
-                     }
+        fact_dict = {
+            'concept1': [
+                Mock(contextID='context1', unitID='unit2',
+                     isNil=False, xValid=True),
+                Mock(contextID='context1', unitID='unit1',
+                     isNil=False, xValid=True)
+            ],
+            'concept2': [
+                Mock(contextID='context1', unitID='unit1',
+                     isNil=False, xValid=True),
+                Mock(contextID='context1', unitID='unit2',
+                     isNil=False, xValid=True)
+            ],
+        }
         prepared = fact_lib.prepare_facts_for_calculation(fact_dict)
         self.assertEqual(2, len(prepared))
         for fs in prepared:
@@ -163,10 +174,27 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
             self.assertEqual(fs['concept1'].unitID, fs['concept2'].unitID)
 
     def test_prepare_facts_for_calculation_mixed_bag(self):
-        fact_dict = {'concept1': [Mock(contextID='context1', unitID='unit2', isNil=False, xValid=True), Mock(contextID='context1', unitID='unit1', isNil=False, xValid=True)],
-                     'concept2': [Mock(contextID='context1', unitID='unit1', isNil=False, xValid=True), Mock(contextID='context1', unitID='unit2', isNil=False, xValid=True)],
-                     'concept3': [Mock(contextID='context1', unitID='unit1', isNil=False, xValid=True), Mock(contextID='context2', unitID='unit2', isNil=False, xValid=True), Mock(contextID=None, isNil=False, xValid=True)],
-                     }
+        fact_dict = {
+            'concept1': [
+                Mock(contextID='context1', unitID='unit2',
+                     isNil=False, xValid=True),
+                Mock(contextID='context1', unitID='unit1',
+                     isNil=False, xValid=True)
+            ],
+            'concept2': [
+                Mock(contextID='context1', unitID='unit1',
+                     isNil=False, xValid=True),
+                Mock(contextID='context1', unitID='unit2',
+                     isNil=False, xValid=True)
+            ],
+            'concept3': [
+                Mock(contextID='context1', unitID='unit1',
+                     isNil=False, xValid=True),
+                Mock(contextID='context2', unitID='unit2',
+                     isNil=False, xValid=True),
+                Mock(contextID=None, isNil=False, xValid=True)
+            ],
+        }
         prepared = fact_lib.prepare_facts_for_calculation(fact_dict)
         self.assertEqual(1, len(prepared))
         for fs in prepared:
@@ -598,8 +626,8 @@ class TestAxisQnames(unittest.TestCase):
 
     def test_axis_qnames_no_axis(self):
         dim = Mock(dimensionQname='us-gaap:CashCheckAxis')
-        segDimValues = {'cashcheckaxis': dim}
-        context = Mock(segDimValues=segDimValues)
+        seg_dim_values = {'cashcheckaxis': dim}
+        context = Mock(segDimValues=seg_dim_values)
         fact = Mock(context=context)
         expected = ['us-gaap:CashCheckAxis']
         self.assertEqual(expected, fact_lib.axis_qnames(fact))
