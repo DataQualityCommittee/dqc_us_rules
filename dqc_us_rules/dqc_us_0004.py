@@ -17,7 +17,10 @@ def assets_eq_liability_equity(val):
     Assets equals Liabilities and Stockholders Equity
 
     :param val: val to look at the modelXbrl for
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
+    :return: No direct return, but throws an error for everything returned by
+    _assets_eq_liability_equity
+    :rtype: None
     """
     for fact in _assets_eq_liability_equity(val.modelXbrl):
         fact_assets, fact_liabilities = fact
@@ -31,22 +34,25 @@ def assets_eq_liability_equity(val):
 
 def _assets_eq_liability_equity(model_xbrl):
     """
-    Yeilds fact assets and fact liablities as long as it is able to
+    Yields fact assets and fact liabilities as long as it is able to
 
     :param model_xbrl: modelXbrl to check name concepts of
-    :type model_xbrl: ModelXbrl
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     """
     assets_concept = (model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
                       if model_xbrl.nameConcepts[_ASSETS_CONCEPT] else None)
 
-    liability_equity_concept = (model_xbrl.nameConcepts[_LIABILITIES_CONCEPT][0]
-                                if model_xbrl.nameConcepts[_LIABILITIES_CONCEPT]
-                                else None)
+    liability_equity_concept = (
+        model_xbrl.nameConcepts[_LIABILITIES_CONCEPT][0]
+        if model_xbrl.nameConcepts[_LIABILITIES_CONCEPT]
+        else None
+    )
 
     if assets_concept is not None and liability_equity_concept is not None:
         assets_facts = model_xbrl.factsByQname[assets_concept.qname]
         liability_equity_facts = (
-            model_xbrl.factsByQname[liability_equity_concept.qname])
+            model_xbrl.factsByQname[liability_equity_concept.qname]
+        )
 
         fact_dict = dict()
         fact_dict[_ASSETS_CONCEPT] = assets_facts
@@ -56,15 +62,16 @@ def _assets_eq_liability_equity(model_xbrl):
         for fact_group in fact_groups:
             fact_assets = fact_group[_ASSETS_CONCEPT]
             fact_liabilities = fact_group[_LIABILITIES_CONCEPT]
-            if (fact_assets.context is not None and
-               fact_assets.context.instantDatetime is not None):
+            if ((fact_assets.context is not None and
+                 fact_assets.context.instantDatetime is not None)):
 
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
                 min_dec = min(dec_assets, dec_liabilities)
-                if _min_dec_valid(min_dec) and _values_unequal(
-                        fact_assets.xValue, fact_liabilities.xValue, min_dec
-                ):
+                if ((_min_dec_valid(min_dec) and
+                     _values_unequal(
+                         fact_assets.xValue, fact_liabilities.xValue, min_dec
+                     ))):
                     yield fact_assets, fact_liabilities
 
 
@@ -88,21 +95,23 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     Returns False if the values are equal, otherwise True.
 
     :param val1: first value to round
-    :type val1: val
+    :type val1: :class: '~arelle.ModelXbrl'
     :param val2: second value to round
-    :type val2: val
+    :type val2: :class: '~arelle.ModelXbrl'
     :param dec_scale: precision on rounded value
     :type dec_scale: decimal
     :param margin_scale: margin of scale for the margin of error
     :type margin_scale: float
-    :rtype: bool
     :return: True if the values are not equal
+    :rtype: bool
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
     margin_of_error = Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
-    return (round_val1 < round_val2 - margin_of_error or
-            round_val1 > round_val2 + margin_of_error)
+    return (
+        round_val1 < round_val2 - margin_of_error or
+        round_val1 > round_val2 + margin_of_error
+    )
 
 
 __pluginInfo__ = {
