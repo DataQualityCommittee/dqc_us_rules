@@ -16,7 +16,7 @@ def doc_period_end_date_check(val):
     DocumentPeriodEndDates returned from _doc_period_end_date_check
 
     :param val: val from which to throw an error
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No explicit return, Throws error for everything returned by
         _doc_period_end_date_check
     :rtype: None
@@ -39,7 +39,7 @@ def _doc_period_end_date_check(model_xbrl):
     DEI fact context end dates against it.
 
     :param model_xbrl: ModelXbrl to check facts
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of tuples containing bad DocumentPeriodEndDates
     :rtype: list [tuple]
     """
@@ -153,11 +153,11 @@ def _get_dei_facts(model_xbrl, exclude_list=[None]):
     exclude_list; this can be fed into prepare_facts_for_calculation.
 
     :param model_xbrl: ModelXbrl to gather DEI facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param exclude_list: names of facts to exclude
     :type exclude_list: list [str]
     :return: list of all the modelXbrl DEI facts that aren't in exclude list
-    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
+    :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     return [
         f for f in model_xbrl.facts

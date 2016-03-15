@@ -38,7 +38,7 @@ def scale_values(facts):
     attribute is not allowed in EFM 6.5.17, so this assumes decimals-use only.
 
     :param facts: list of facts to scale
-    :type facts: list [:class: '~arelle.ModelInstanceObject.ModelFact']
+    :type facts: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     :return: list of values rescaled by least precise fact's precision
     :rtype: list [:class:'~decimals.Decimal']
     """
@@ -136,9 +136,9 @@ def axis_exists(val, fact, axis_name):
     with given axis
 
     :param val: val with standard taxonomies dict to check
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param fact: fact to check
-    :type fact: :class: '~arelle.ModelInstanceObject.ModelFact'
+    :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
     :param axis_name: name of the axis to check
     :type axis_name: str
     :return: True if fact is demensionalized
@@ -159,9 +159,9 @@ def member_exists(val, fact, member_name):
     Given a fact, check if fact is dimensionalized with given axis
 
     :param val: val to check against
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param fact: fact to check against
-    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :param member_name: member name to check against
     :type member_name: str
     :return: True if fact is demensionalized with gived axis
@@ -183,9 +183,9 @@ def axis_member_exists(val, fact, axis_name, member_name):
     Given a fact, check if the fact is dimensionalized for a axis/member pairing
 
     :param val: val to check standard taxonomies dict on
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param fact: fact to check segDimValues of
-    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :param axis_name: axis name to check against local name
     :type axis_name: str
     :param member_name: member_name to check against local name
@@ -214,7 +214,7 @@ def get_facts_with_type(lookup_type_strings, model_xbrl):
     :param lookup_type_strings: string specifying what to lookup
     :type lookup_type_strings: str
     :param model_xbrl: modelXbrl to return facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of facts from the specified modelXbrl
     :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact"]
     """
@@ -238,9 +238,9 @@ def lookup_gaap_facts(fact_name, model_xbrl):
     :param fact_name: name of the fact to lookup
     :type fact_name: str
     :param model_xbrl: modelXbrl to return facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of us-gaap facts
-    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
+    :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     def valid_fact(fact):
         return fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and fact.context is not None and fact.xValue is not None
@@ -259,9 +259,9 @@ def get_facts_dei(lookup_concept_strings, model_xbrl):
     :param lookup_concept_strings: strings to look up using a loop
     :type lookup_concept_strings: list [str]
     :param model_xbrl: modelXbrl to get facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of dei facts from specified model_xbrl
-    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
+    :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     list_dei = []
     if lookup_concept_strings:
@@ -278,11 +278,11 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
     :param fact_name: name of the fact
     :type fact_name: str
     :param model_xbrl: ModelXbrl to get the facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param validation: should check for valid facts
     :type validation: bool
     :return: Set of dei facts for a given fact name
-    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
+    :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     facts = [
         f for f in model_xbrl.facts
@@ -332,7 +332,7 @@ def _fact_components_valid(fact):
     Return true if all of the components in a fact are not none
 
     :param fact: The fact to check if it is valid
-    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :return: True if none of the components of the fact are not None
     :rtype: bool
     """
@@ -352,7 +352,7 @@ def member_qnames(fact, axis_filter=None):
     Return a list of a fact's member(s)
 
     :param fact: An arelle ModelFact instance.
-    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :param axis_filter: The axis to filter for
     :type axis_filter: bool
     :return: ([str, ..., str]) A list of the string representation of each of
@@ -377,7 +377,7 @@ def axis_qnames(fact):
     Returns a list the dim.dimensionQnames withing the fact as strings
 
     :param fact: An arelle ModelFact instance.
-    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :return: a list of the fact's axes.
     :rtype: list [str]
     """

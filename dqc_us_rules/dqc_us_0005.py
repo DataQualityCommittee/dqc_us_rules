@@ -24,7 +24,7 @@ def _get_end_of_period(val):
     words, dates that end in 24:00 will be put at 00:00 of the expected day.
 
     :param val: bal from which to gather end dates
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: A dictionary of tuples containing the fact, found date and a
         string representation of that date, keyed off of the LegalEntityAxis
         members in the format {lea_member: (fact, found_date, date_str)}
@@ -71,7 +71,7 @@ def validate_facts(val):
     the facts contained in val are correctly implemented.
 
     :param val: val to check
-    :type val: '~arelle.ModelXbrl'
+    :type val:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """

@@ -28,7 +28,7 @@ def run_negative_numbers(val):
 
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: Nore direct return, but throws errors for facts matching the
         blacklist
     :rtype: None
@@ -55,12 +55,12 @@ def filter_negative_number_facts(val, blacklist_concepts):
     the black list and aren't excluded.
 
     :param val: val whose modelXbrl provides the facts to check
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param blacklist_concepts: An iterable of the blacklist concepts we should
         be testing against.
     :type blacklist_concepts: list [str]
     :return: Return list of the facts falling into the blacklist.
-    :rtype: list [:class: '~arelle.ModelInstanceObject.ModelFact']
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
     blacklist_exclusion_rules = get_rules_from_csv()
     bad_blacklist = []
@@ -96,7 +96,7 @@ def grab_numeric_facts(facts_list):
     :param facts_list: list of fact to return numeric values for
     :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     :return: return list of facts with numeric values
-    :rtype: list [:class: '~arelle.ModelInstanceObject.ModelFact']
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
     numeric_facts = []
     for fact in facts_list:
@@ -120,7 +120,7 @@ def check_rule(fact, rule_dict):
     Check if the input fact meets the conditions of the passed in rule_dict.
 
     :param fact: An arelle ModelFact instance.
-    :type fact: :class: '~arelle.ModelInstanceObject.ModelFact'
+    :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
     :param rule_dict: A rule from the rule dict.
         E.g. a return value of `_parse_row`.
     :type rule_dict: dict
@@ -167,7 +167,7 @@ def contains(fact_part, dict_check):
 
     :param fact_part: An arelle model object value pulled off of the current
         ModelFact being tested.
-    :type fact_part: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact_part: :class:'~arelle.InstanceModelObject.ModelFact'
     :param dict_check: Value from the current rule dict to be compared against.
     :type dict_check: dict
     :return: True if the dict_check is contained in fact_part else False.
@@ -182,7 +182,7 @@ def contains_insensitive(fact_part, dict_check):
 
     :param fact_part: An arelle model object value pulled off of the current
         ModelFact being tested.
-    :type fact_part: :class: '~arelle.InstanceModelObject.ModelFact'
+    :type fact_part: :class:'~arelle.InstanceModelObject.ModelFact'
     :param dict_check: Value from the current rule dict to be compared against.
     :type dict_check: dict
     :return: True if the dict_check is contained in fact_part else False.
@@ -222,7 +222,7 @@ def get_artifact_lists(fact, rule_dict):
     the given ModelFact and return its value.
 
     :param fact: An arelle ModelFact instance.
-    :type fact: :class: '~arelle.InstanceModelFact'
+    :type fact: :class:'~arelle.InstanceModelFact'
     :param rule_dict: A dictionary with the rule information
     :type rule_dict: dict
     :return: An iterable of the arelle model object values pulled of the

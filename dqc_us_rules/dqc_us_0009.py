@@ -17,7 +17,7 @@ def fact_gt_other_fact(val):
     other, as per the config).
 
     :param val: val to to throw error from
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No explicit return, but throws an error for things returned by
         _compare_facts
     :rtype: None
@@ -68,7 +68,7 @@ def _compare_facts(lesser, greater, val):
     :param greater: A dictionary 'greater' us-gaap concept name.
     :type greater: dict
     :param val: The validation information which includes a modelXbrl object.
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: A list of the fact pairs
     :rtype: list [tuple]
     """

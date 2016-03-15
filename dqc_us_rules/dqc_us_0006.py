@@ -29,7 +29,7 @@ def validate_dates_within_periods(val):
     Checks date ranges are within expected values for the fiscal focus period
 
     :param val: val to check
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, but throws errors when dates aren't validated
     :rtype: none
     """
@@ -64,7 +64,7 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     :param date_bounds_dict: period from which names should be pulled from
     :type date_bounds_dict: dict
     :param model_xbrl: model xbrl from which facts are to be pulled from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of facts that match the names in the two lists and are within
         the date_bounds_dict
     :rtype: dict

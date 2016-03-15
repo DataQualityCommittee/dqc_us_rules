@@ -17,7 +17,7 @@ def assets_eq_liability_equity(val):
     Assets equals Liabilities and Stockholders Equity
 
     :param val: val to look at the modelXbrl for
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, but throws an error for everything returned by
         _assets_eq_liability_equity
     :rtype: None
@@ -37,7 +37,7 @@ def _assets_eq_liability_equity(model_xbrl):
     Yields fact assets and fact liabilities as long as it is able to
 
     :param model_xbrl: modelXbrl to check name concepts of
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: yields fact assets and fact liabilities that should throw errors
     :rtype: tuple of facts assets and fact liabilities
     """
@@ -99,9 +99,9 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     Returns False if the values are equal, otherwise True.
 
     :param val1: first value to round
-    :type val1: :class: '~arelle.ModelXbrl'
+    :type val1: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param val2: second value to round
-    :type val2: :class: '~arelle.ModelXbrl'
+    :type val2: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param dec_scale: precision on rounded value
     :type dec_scale: decimal
     :param margin_scale: margin of scale for the margin of error
