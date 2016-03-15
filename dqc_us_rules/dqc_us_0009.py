@@ -72,9 +72,10 @@ def _compare_facts(lesser, greater, val):
     :return: A list of the fact pairs
     :rtype: list [tuple]
     """
-    fact_dict = {lesser: facts.lookup_gaap_facts(lesser, val.modelXbrl),
-                 greater: facts.lookup_gaap_facts(greater, val.modelXbrl)
-                 }
+    fact_dict = {
+        lesser: facts.lookup_gaap_facts(lesser, val.modelXbrl),
+        greater: facts.lookup_gaap_facts(greater, val.modelXbrl)
+    }
     mapped_fact_groups = facts.prepare_facts_for_calculation(fact_dict)
     results = []
     for group in mapped_fact_groups:
