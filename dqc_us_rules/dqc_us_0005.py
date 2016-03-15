@@ -132,6 +132,7 @@ def validate_facts(val):
                                 messages.get_message(_CODE_NAME, "49"),
                                 modelObject=[fact] + list(eop_results[lookup]),
                                 ruleVersion=_RULE_VERSION)
+# ==============================================================================
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
