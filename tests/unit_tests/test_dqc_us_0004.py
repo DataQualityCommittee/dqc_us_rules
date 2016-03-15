@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0004.inferredDecimals', return_value=0)
-    def test_bv_errors(self):
+    def test_bv_errors(self, patched_decimals):
         """
         Tests to see if errors right numher of errors are thrown
         """
@@ -40,7 +40,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        model_xbrl = Mock()
+        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
         model_xbrl.nameConcepts = mock_name_concepts_dict
         model_xbrl.factsByQname = mock_facts_by_qname
 
@@ -93,12 +93,12 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        modelxbrl = Mock()
-        modelxbrl.nameConcepts = mock_name_concepts_dict
-        modelxbrl.factsByQname = mock_facts_by_qname
+        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
+        model_xbrl.nameConcepts = mock_name_concepts_dict
+        model_xbrl.factsByQname = mock_facts_by_qname
 
         error_count = 0
-        for _ in dqc_us_0004._assets_eq_liability_equity(modelxbrl):
+        for _ in dqc_us_0004._assets_eq_liability_equity(model_xbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
 
@@ -130,7 +130,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        model_xbrl = Mock()
+        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
         model_xbrl.nameConcepts = mock_name_concepts_dict
         model_xbrl.factsByQname = mock_facts_by_qname
 
