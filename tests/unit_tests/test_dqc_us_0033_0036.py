@@ -21,6 +21,9 @@ DEI_NAMESPACE_LIST = [
 class TestDocPerEndDateChk(unittest.TestCase):
 
     def setUp(self):
+        """
+        Sets up values for following unit tests
+        """
         m_qn_bad1 = mock.Mock(
             localName='EntityCommonStockSharesOutstanding',
             namespaceURI='http://xbrl.sec.gov/dei/2014-01-31'
@@ -108,6 +111,9 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
     def test_setup_facts(self):
+        """
+        Tests _setup_facts against expected dped and dei dicts
+        """
         mock_model = mock.Mock(
             facts=[
                 self.fact_good1, self.fact_good2, self.fact_good3,
@@ -131,6 +137,10 @@ class TestDocPerEndDateChk(unittest.TestCase):
         side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_a_warn(self, mock_func):
+        """
+        Tests _doc_period_end_date_check to see of the length is right and that
+        it returns the correct values
+        """
         mock_segdimvalues = mock.Mock()
         mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
@@ -161,6 +171,9 @@ class TestDocPerEndDateChk(unittest.TestCase):
         side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_an_error(self, mock_func):
+        """
+        Tests _doc_period_end_date_check when it should return an error
+        """
         mock_segdimvalues = mock.Mock()
         mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
@@ -189,6 +202,10 @@ class TestDocPerEndDateChk(unittest.TestCase):
         side_effect=lambda x, subtract_one_day: x.date()
     )
     def test_a_warn_and_error(self, mock_func):
+        """
+        Tests _doc_period_end_date_check when it should return a warning and an
+        error
+        """
         mock_mem_qn = mock.Mock(localName='foo')
         mock_dim_qn = mock.Mock(localName='LegalEntityAxis')
         mock_dim_dim = mock.Mock(qname=mock_dim_qn)
@@ -241,15 +258,26 @@ class TestDocPerEndDateChk(unittest.TestCase):
 class TestGetDefaultDped(unittest.TestCase):
 
     def test_no_dped(self):
+        """
+        Tests to make sure that _get_default_dped on an empty dict returns None
+        """
         self.assertIsNone(dqc_us_0033_0036._get_default_dped({}))
 
     def test_length_one_dped(self):
+        """
+        Tests to make sure that _get_default_dped on a dict with a None and a
+        string returns the string
+        """
         self.assertEqual(
             ['test_case'],
             dqc_us_0033_0036._get_default_dped({'': ['test_case']})
         )
 
     def test_multi_dped(self):
+        """
+        Tests to make sure that _get_default_dped return the first non Nil
+        string in a dict
+        """
         self.assertEqual(
             ['test_case'],
             dqc_us_0033_0036._get_default_dped(
