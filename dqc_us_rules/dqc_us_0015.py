@@ -182,7 +182,7 @@ def contains_insensitive(fact_part, dict_check):
 
     :param fact_part: An arelle model object value pulled off of the current
         ModelFact being tested.
-    :type fact_part: :clasee: '~arelle.InstanceModelObject.ModelFact'
+    :type fact_part: :class: '~arelle.InstanceModelObject.ModelFact'
     :param dict_check: Value from the current rule dict to be compared against.
     :type dict_check: dict
     :return: True if the dict_check is contained in fact_part else False.
