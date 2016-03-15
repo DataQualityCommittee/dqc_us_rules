@@ -123,8 +123,8 @@ def _setup_dei_facts(model_xbrl):
     """
     Sets up the dei facts using the specified modelXbrl
 
-    :param model_xbrl:
-    :type model_xbrl:
+    :param model_xbrl: ModelXbrl to get the dei facts from
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: a tuple of the dictionary of a list of 1 DocumentPeriodEndDate per
         LegalEntityAxis and the dictionary of the list of dei facts per
         LegalEntityAxis
