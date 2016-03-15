@@ -75,7 +75,7 @@ class TestContextChecks(unittest.TestCase):
     )
     def test_get_end_of_period_no_concept(self, mock_func):
         """
-        Test _get_end_of_period
+        Test _get_end_of_period with no concept
         """
         mock_val = Mock(
             modelXbrl=self.mock_model, disclosureSystem=self.mock_disclosure
@@ -98,7 +98,8 @@ class TestContextChecks(unittest.TestCase):
 
     def test_axis_exists_multi_axis(self):
         """
-        Test axis_exists
+        Test axis_exists on one fact where the axis exists and one fact where
+        the axis is doesn't exist
         """
         mock_val = Mock(
             disclosureSystem=Mock(
