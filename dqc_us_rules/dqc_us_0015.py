@@ -7,14 +7,18 @@ from .util import facts, messages
 
 _CODE_NAME = 'DQC.US.0015'
 _RULE_VERSION = '1.0'
-_DEFAULT_CONCEPTS_FILE = os.path.join(os.path.dirname(__file__),
-                                      'resources',
-                                      'DQC_US_0015',
-                                      'dqc_15_concepts.csv')
-_DEFAULT_EXCLUSIONS_FILE = os.path.join(os.path.dirname(__file__),
-                                        'resources',
-                                        'DQC_US_0015',
-                                        'dqc_15_exclusion_rules.csv')
+_DEFAULT_CONCEPTS_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0015',
+    'dqc_15_concepts.csv'
+)
+_DEFAULT_EXCLUSIONS_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0015',
+    'dqc_15_exclusion_rules.csv'
+)
 
 
 def run_negative_numbers(val):
@@ -23,9 +27,11 @@ def run_negative_numbers(val):
     the hits in the various lists.
 
     :param val: The validation object which carries the validation information,
-    including the ModelXBRL
-    :type val: val
-    :side effect: Fire errors for facts matching the blacklist.
+        including the ModelXBRL
+    :type val: :class: '~arelle.ModelXbrl'
+    :return: Nore direct return, but throws errors for facts matching the
+        blacklist
+    :rtype: None
     """
     # filter down to numeric facts
     blacklist_dict = concept_map_from_csv()
@@ -34,10 +40,12 @@ def run_negative_numbers(val):
         index_key = blacklist_dict[fact.qname.localName]
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
-                base_key=_CODE_NAME, extension_key=index_key),
+                base_key=_CODE_NAME, extension_key=index_key
+            ),
             messages.get_message(_CODE_NAME, str(index_key)),
             concept=fact.concept.label(), modelObject=fact,
-            ruleVersion=_RULE_VERSION)
+            ruleVersion=_RULE_VERSION
+        )
 
 
 def filter_negative_number_facts(val, blacklist_concepts):
@@ -47,11 +55,12 @@ def filter_negative_number_facts(val, blacklist_concepts):
     the black list and aren't excluded.
 
     :param val: val whose modelXbrl provides the facts to check
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
     :param blacklist_concepts: An iterable of the blacklist concepts we should
-    be testing against.
-    :type blacklist_concepts:
-    :return: list Return list of the facts falling into the blacklist.
+        be testing against.
+    :type blacklist_concepts: list [str]
+    :return: Return list of the facts falling into the blacklist.
+    :rtype: list [:class: '~arelle.ModelInstanceObject.ModelFact']
     """
     blacklist_exclusion_rules = get_rules_from_csv()
     bad_blacklist = []
