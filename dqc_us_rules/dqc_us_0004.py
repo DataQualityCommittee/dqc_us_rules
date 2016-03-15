@@ -41,8 +41,10 @@ def _assets_eq_liability_equity(model_xbrl):
     :return: yields fact assets and fact liabilities that should throw errors
     :rtype: tuple of facts assets and fact liabilities
     """
-    assets_concept = (model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
-                      if model_xbrl.nameConcepts[_ASSETS_CONCEPT] else None)
+    assets_concept = (
+        model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
+        if model_xbrl.nameConcepts[_ASSETS_CONCEPT] else None
+    )
 
     liability_equity_concept = (
         model_xbrl.nameConcepts[_LIABILITIES_CONCEPT][0]
