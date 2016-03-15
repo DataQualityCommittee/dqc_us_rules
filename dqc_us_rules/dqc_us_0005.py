@@ -95,6 +95,7 @@ def validate_facts(val):
                     # the expected eop dates
                     comparison_date = eop_results[lookup][1]
                     if fact_date <= comparison_date:
+# ===========================REPLACE BLOCK WITH FUNCTION========================
                         ECSSO = 'EntityCommonStockSharesOutstanding'
                         if fact.localName == ECSSO:
                             # if a fact whose qname is
