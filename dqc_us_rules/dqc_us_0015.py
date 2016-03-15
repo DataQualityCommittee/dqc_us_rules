@@ -263,8 +263,8 @@ def get_rules_from_csv():
     """
     Return a list of rules for blacklist exclusions
 
-    :rtype: list
     :return: a list representing the data from the negative_numbers.csv file.
+    :rtype: list
     """
     blacklist_exclusion_rules = list()
     with open(_DEFAULT_EXCLUSIONS_FILE, 'rt') as f:
