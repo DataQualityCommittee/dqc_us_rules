@@ -11,6 +11,9 @@ from dqc_us_rules.util import facts
 
 class TestContextChecks(unittest.TestCase):
     def setUp(self):
+        """
+        Sets up values for unit tests
+        """
         mock_type = Mock()
         mock_type.name = 'textBlockItemType'
         mock_qname = Mock(
@@ -34,17 +37,20 @@ class TestContextChecks(unittest.TestCase):
             concept=mock_concept,
             xValue=date(2015, 1, 1)
         )
-        mock_factsByQname = {mock_concept.qname: [mock_fact]}
+        mock_factsbyqname = {mock_concept.qname: [mock_fact]}
         self.mock_disclosure = Mock(
             standardTaxonomiesDict={'http://xbrl.sec.gov/dei/2014-01-31': None}
         )
         self.mock_model = Mock(
-            factsByQname=mock_factsByQname,
+            factsByQname=mock_factsbyqname,
             facts=[mock_fact],
             nameConcepts=mock_name_concepts
         )
 
     def test_dei_regex(self):
+        """
+        Tests _dei_pattern against a pass list and a fail list
+        """
         should_pass_list = [
             'http://xbrl.sec.gov/dei/2014-01-31',
             'http://xbrl.sec.gov/dei/2013-01-31',
@@ -68,6 +74,9 @@ class TestContextChecks(unittest.TestCase):
         'dqc_us_rules.dqc_us_0005.dateunionValue', return_value='2015-01-01'
     )
     def test_get_end_of_period_no_concept(self, mock_func):
+        """
+        Test _get_end_of_period
+        """
         mock_val = Mock(
             modelXbrl=self.mock_model, disclosureSystem=self.mock_disclosure
         )
@@ -88,6 +97,9 @@ class TestContextChecks(unittest.TestCase):
         )
 
     def test_axis_exists_multi_axis(self):
+        """
+        Test axis_exists
+        """
         mock_val = Mock(
             disclosureSystem=Mock(
                 standardTaxonomiesDict={'namespace': None}
@@ -119,6 +131,9 @@ class TestContextChecks(unittest.TestCase):
 class TestDeiChecks(unittest.TestCase):
 
     def test_dei_regex(self):
+        """
+        Test _dei_pattern against pass list and fail list
+        """
         should_pass_list = [
             'http://xbrl.sec.gov/dei/2014-01-31',
             'http://xbrl.sec.gov/dei/2013-01-31',
