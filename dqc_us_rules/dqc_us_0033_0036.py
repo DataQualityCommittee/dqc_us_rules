@@ -168,9 +168,9 @@ def _get_dei_facts(model_xbrl, exclude_list=[None]):
 
 def _get_default_dped(dped_facts):
     """
-    returns the default DocumentPeriodEndDate fact or None if there are no
-    DocumentPeriodEndDate facts and a list of None if it doesn't exist or
-    can't be figured out.
+    Returns the default DocumentPeriodEndDate fact. If there are no
+    DocumentPeriodEndDate facts it returns None. If the DocumentPeriodEndDate
+    cannot be figured it returns a list of None.
 
     :param dped_facts: dictionary of facts to get DocumentEndPeriodDate from
     :type dped_facts: dict
