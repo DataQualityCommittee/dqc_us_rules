@@ -114,9 +114,9 @@ def _dict_list_update(dict_a, dict_b):
     lists in dict_b.
 
     :param dict_a: dictionary to be extended
-    :type dict_a: dictionary of lists
+    :type dict_a: dict
     :param dict_b: dictionary to extend into other dictionary
-    :type dict_b: dictionary of lists
+    :type dict_b: dict
     :return: lists in dict_a extended with lists in dict_b
     :rtype: dict
     """
