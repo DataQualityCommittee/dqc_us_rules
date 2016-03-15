@@ -13,6 +13,8 @@ def _load_messages(filename=None):
 
     :param filename: file to load messages from
     :type filename: str
+    :return: No explicit return, but loads messages into _LOADED_MESSAGES
+    :rtype: none
     """
     global _LOADED_MESSAGES
     if not filename:
@@ -32,8 +34,8 @@ def get_message(primary_number, secondary_number='default'):
     :type primary_number: str
     :param: The secondary number for the rule.
     :type secondary_number: str
-    :rtype: None or str
     :return: The message text, or None if the primary number does not exist
+    :rtype: None or str
     """
     global _LOADED_MESSAGES
     if not _LOADED_MESSAGES:
