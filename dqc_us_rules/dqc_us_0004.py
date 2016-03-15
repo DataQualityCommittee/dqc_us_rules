@@ -19,7 +19,7 @@ def assets_eq_liability_equity(val):
     :param val: val to look at the modelXbrl for
     :type val: :class: '~arelle.ModelXbrl'
     :return: No direct return, but throws an error for everything returned by
-    _assets_eq_liability_equity
+        _assets_eq_liability_equity
     :rtype: None
     """
     for fact in _assets_eq_liability_equity(val.modelXbrl):
