@@ -26,11 +26,12 @@ _DEFAULT_DATE_BOUNDS_FILE = os.path.join(
 
 def validate_dates_within_periods(val):
     """
-    Check Date Ranges are within expected values
-    for the fiscal focus period
+    Checks date ranges are within expected values for the fiscal focus period
 
     :param val: val to check
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
+    :return: No direct return, but throws errors when dates aren't validated
+    :rtype: none
     """
     date_bounds_dict = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
@@ -57,16 +58,16 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     dict based on the document period focus.
 
     :param check_types: first list of names
-    :type check_types: list of str
+    :type check_types: list [str]
     :param check_dei: second list of names
-    :type check_dei: list of str
+    :type check_dei: list [str]
     :param date_bounds_dict: period from which names should be pulled from
-    :type date_bounds_dict: dictionary of date bounds
+    :type date_bounds_dict: dict
     :param model_xbrl: model xbrl from which facts are to be pulled from
-    :type model_xbrl: ModelXbrl
-    :rtype: dict of facts
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :return: list of facts that match the names in the two lists and are within
-    the date_bounds_dict
+        the date_bounds_dict
+    :rtype: dict
     """
     facts_in_error = defaultdict(list)
     list_of_facts = facts.LegalEntityAxis_facts_by_member(
@@ -74,28 +75,33 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     )
     list_of_facts = _dict_list_update(
         list_of_facts,
-        (facts.LegalEntityAxis_facts_by_member(facts.get_facts_dei(
-            check_dei,
-            model_xbrl)
-        ))
+        facts.LegalEntityAxis_facts_by_member(
+            facts.get_facts_dei(check_dei, model_xbrl)
+        )
     )
 
     dfpf_list = facts.lookup_dei_facts('DocumentFiscalPeriodFocus', model_xbrl)
     dfpf_dict = facts.LegalEntityAxis_facts_by_member(dfpf_list)
     for lea_member, fact_list in list_of_facts.items():
-        lookup = lea_member \
-            if lea_member in dfpf_dict else facts.LEGALENTITYAXIS_DEFAULT
+        lookup = (
+            lea_member
+            if lea_member in dfpf_dict
+            else facts.LEGALENTITYAXIS_DEFAULT
+        )
         if lookup in dfpf_dict:
-            focus_l = set([foc for foc in dfpf_dict[lookup]
-                           if foc.xValue in date_bounds_dict])
+            focus_l = set([
+                foc for foc in dfpf_dict[lookup]
+                if foc.xValue in date_bounds_dict
+            ])
+
             if len(focus_l) != 1:
                 continue
             focus = focus_l.pop()
             min_span = timedelta(days=date_bounds_dict[focus.xValue].get('min'))
             max_span = timedelta(days=date_bounds_dict[focus.xValue].get('max'))
             for fact in fact_list:
-                if fact.context.endDatetime is not None and \
-                                fact.context.startDatetime is not None:
+                if ((fact.context.endDatetime is not None and
+                     fact.context.startDatetime is not None)):
                     span = fact.context.endDatetime - fact.context.startDatetime
                     if span < min_span or span > max_span:
                         facts_in_error[focus].append(fact)
@@ -111,8 +117,8 @@ def _dict_list_update(dict_a, dict_b):
     :type dict_a: dictionary of lists
     :param dict_b: dictionary to extend into other dictionary
     :type dict_b: dictionary of lists
-    :rtype: dict of list
     :return: lists in dict_a extended with lists in dict_b
+    :rtype: dict
     """
     for key, val in dict_b.items():
         dict_a[key].extend(val)
@@ -122,10 +128,10 @@ def _dict_list_update(dict_a, dict_b):
 def _date_bounds_from_csv():
     """
     Returns a map of {time_period: {'min':min_value,'max':max_value}}
-     ex: date_bounds_from_csv()['Q1'] = {'min':65,'max':115}
+    ex: date_bounds_from_csv()['Q1'] = {'min':65,'max':115}
 
-    :rtype: dict
     :return: A map of {time_period: {'min':min_value,'max':max_value}}.
+    :rtype: dict
     """
     with open(_DEFAULT_DATE_BOUNDS_FILE, 'r') as f:
         reader = csv.reader(f)

@@ -17,7 +17,10 @@ def fact_gt_other_fact(val):
     other, as per the config).
 
     :param val: val to to throw error from
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
+    :return: No explicit return, but throws an error for things returned by
+        _compare_facts
+    :rtype: None
     """
     for index, lesser, greater in _read_csv():
         for fact_group in _compare_facts(lesser, greater, val):
@@ -41,8 +44,8 @@ def _read_csv():
     Reads in information from dqc_us_config.csv and returns
     it in a tuple
 
-    :rtype: tuple of index, lesser fact and greater fact
     :return: tuple of info read in from dqc_us_config.csv
+    :rtype: tuple (str, str, str)
     """
     path = os.path.join(
         os.path.dirname(__file__),
@@ -61,13 +64,13 @@ def _compare_facts(lesser, greater, val):
     Returns a list of facts that don't match up, if any.
 
     :param lesser: A dictionary with a 'lesser' us-gaap concept name
-    :type lesser: dictionary
+    :type lesser: dict
     :param greater: A dictionary 'greater' us-gaap concept name.
-    :type greater: dictionary
+    :type greater: dict
     :param val: The validation information which includes a modelXbrl object.
-    :type val: val
-    :rtype: list of tuples
+    :type val: :class: '~arelle.ModelXbrl'
     :return: A list of the fact pairs
+    :rtype: list [tuple]
     """
     fact_dict = {lesser: facts.lookup_gaap_facts(lesser, val.modelXbrl),
                  greater: facts.lookup_gaap_facts(greater, val.modelXbrl)
@@ -86,8 +89,10 @@ def _compare_facts(lesser, greater, val):
 __pluginInfo__ = {
     'name': _CODE_NAME,
     'version': _RULE_VERSION,
-    'description': 'Checks pairs of facts to ensure '
-                   'that one is greater than the other.',
+    'description': (
+        'Checks pairs of facts to ensure '
+        'that one is greater than the other.'
+    ),
     # Mount points
     'Validate.XBRL.Finally': fact_gt_other_fact,
 }

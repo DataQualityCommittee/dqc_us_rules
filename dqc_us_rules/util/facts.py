@@ -38,9 +38,9 @@ def scale_values(facts):
     attribute is not allowed in EFM 6.5.17, so this assumes decimals-use only.
 
     :param facts: list of facts to scale
-    :type facts: list of fact
-    :rtype: list of Decimals
+    :type facts: list [:class: '~arelle.ModelInstanceObject.ModelFact']
     :return: list of values rescaled by least precise fact's precision
+    :rtype: list [:class:'~decimals.Decimal']
     """
     decimals = set([fact.decimals for fact in facts])
     if len(decimals) == 1:
@@ -48,9 +48,16 @@ def scale_values(facts):
         # (their already scaled value)
         return [fact.xValue for fact in facts]
     # Redo the set getting only numbers
-    decimals = set([int(fact.decimals) for fact in facts if fact.decimals != 'INF' and fact.decimals is not None])
+    decimals = {
+        int(fact.decimals)
+        for fact in facts
+        if fact.decimals != 'INF' and
+        fact.decimals is not None
+    }
     min_decimals_str = str(min(decimals))
-    return [ValidateXbrlCalcs.roundFact(DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True) for fact in facts]
+    return [ValidateXbrlCalcs.roundFact(
+            DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True)
+            for fact in facts]
 
 
 def filter_duplicate_facts(facts, ignore_units=False):
@@ -60,11 +67,11 @@ def filter_duplicate_facts(facts, ignore_units=False):
     be all the unique facts in the set.
 
     :param facts: list of facts to find unique facts from
-    :type facts: list of fact
+    :type facts: list ['~arelle.ModelInstanceObject.ModelFact']
     :param ignore_units: specifies whether units make fact unique or not
     :type ignore_units: bool
-    :rtype: list of facts
     :return: all unique facts in facts
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
     mapped_facts = defaultdict(list)
     for f in facts:
@@ -86,18 +93,16 @@ def prepare_facts_for_calculation(fact_dict, unit_ignored_dict=None):
     are duplicated or not complete groupings.
 
     :param fact_dict: The fact dictionary.
-                      Should be {'conceptName':[facts_tagged_as_concept]...}
-    :type fact_dict:
+        Should be {'conceptName':[facts_tagged_as_concept]...}
+    :type fact_dict: dict
     :param unit_ignored_dict: The dictionary of concepts to ignore units for
-                              duplication checking.
-                              Should be {'conceptName': True...}.
-                              Defaults to 'False' for anything not defined, and
-                              all units are tested otherwise.
-    :type unit_ignored_dict:
-    :rtype: list of dicts
+        duplication checking. Should be {'conceptName': True...}. Defaults to
+        'False' for anything not defined, and all units are tested otherwise.
+    :type unit_ignored_dict: dict
     :return: A list of dicts that map a context-unit-matched set of the
-    facts together.
-    Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
+        facts together.
+        Should be: [{'conceptName1':fact, 'conceptName2':fact2,...}...]
+    :rtype: list [dict]
     """
     unit_ignored = defaultdict(lambda: False)
     if unit_ignored_dict:
@@ -128,20 +133,22 @@ def axis_exists(val, fact, axis_name):
     with given axis
 
     :param val: val with standard taxonomies dict to check
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
     :param fact: fact to check
-    :type fact: fact
+    :type fact: :class: '~arelle.ModelInstanceObject.ModelFact'
     :param axis_name: name of the axis to check
     :type axis_name: str
-    :rtype: bool
     :return: True if fact is demensionalized
+    :rtype: bool
     """
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
 
-    return any(axis_name == dim.dimensionQname.localName
-               for dim in fact.context.qnameDims.values()
-               if dim.isExplicit and dim.dimensionQname and
-               dim.dimensionQname.namespaceURI in standard_taxonomies_dict)
+    return any(
+        axis_name == dim.dimensionQname.localName
+        for dim in fact.context.qnameDims.values()
+        if dim.isExplicit and dim.dimensionQname and
+        dim.dimensionQname.namespaceURI in standard_taxonomies_dict
+    )
 
 
 def member_exists(val, fact, member_name):
@@ -149,13 +156,13 @@ def member_exists(val, fact, member_name):
     Given a fact, check if fact is dimensionalized with given axis
 
     :param val: val to check against
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
     :param fact: fact to check against
-    :type fact: fact
-    :param member_name: str
-    :type member_name: member name to check against
-    :rtype: bool
+    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
+    :param member_name: member name to check against
+    :type member_name: str
     :return: True if fact is demensionalized with gived axis
+    :rtype: bool
     """
 
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
@@ -173,15 +180,15 @@ def axis_member_exists(val, fact, axis_name, member_name):
     Given a fact, check if the fact is dimensionalized for a axis/member pairing
 
     :param val: val to check standard taxonomies dict on
-    :type val: val
+    :type val: :class: '~arelle.ModelXbrl'
     :param fact: fact to check segDimValues of
-    :type fact: fact
+    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
     :param axis_name: axis name to check against local name
     :type axis_name: str
     :param member_name: member_name to check against local name
     :type member_name: str
-    :rtype: bool
     :return: returns true if fact is dimensionalized
+    :rtype: bool
     """
     standard_taxonomies_dict = val.disclosureSystem.standardTaxonomiesDict
 
@@ -204,9 +211,9 @@ def get_facts_with_type(lookup_type_strings, model_xbrl):
     :param lookup_type_strings: string specifying what to lookup
     :type lookup_type_strings: str
     :param model_xbrl: modelXbrl to return facts from
-    :type model_xbrl: modelXbrl
-    :rtype: list of facts
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :return: list of facts from the specified modelXbrl
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact"]
     """
     list_types = []
     if lookup_type_strings:
@@ -228,9 +235,9 @@ def lookup_gaap_facts(fact_name, model_xbrl):
     :param fact_name: name of the fact to lookup
     :type fact_name: str
     :param model_xbrl: modelXbrl to return facts from
-    :type model_xbrl: modelXbrl
-    :rtype: list of facts
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :return: list of us-gaap facts
+    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
     """
     def valid_fact(fact):
         return fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and fact.context is not None and fact.xValue is not None
@@ -249,9 +256,9 @@ def get_facts_dei(lookup_concept_strings, model_xbrl):
     :param lookup_concept_strings: strings to loop up
     :type lookup_concept_strings: list of str
     :param model_xbrl: modelXbrl to get facts from
-    :type model_xbrl: modelXbrl
-    :rtype: list of facts
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :return: list of dei facts from specified model_xbrl
+    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
     """
     list_dei = []
     if lookup_concept_strings:
@@ -268,11 +275,11 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
     :param fact_name: name of the fact
     :type fact_name: str
     :param model_xbrl: ModelXbrl to get the facts from
-    :type model_xbrl: ModelXbrl
+    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :param validation: should check for valid facts
     :type validation: bool
-    :rtype: List of facts
     :return: Set of dei facts for a given fact name
+    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
     """
     facts = [
         f for f in model_xbrl.facts
@@ -290,22 +297,25 @@ def lookup_dei_facts(fact_name, model_xbrl, validation=True):
 LEGALENTITYAXIS_DEFAULT = ''
 
 
-def LegalEntityAxis_facts_by_member(facts):
+def legal_entity_axis_facts_by_member(facts):
     """
     Returns a dictionary of lists of facts, keyed off of the LegalEntityAxis
     member, or defaults to LEGALENTITYAXIS_DEFAULT if the fact has no LEA
     member.
 
-    :param facts: list of facts
+    :param facts: list [:class:'arelle.InstanceModelObject.ModelFact']
     :type facts: arelle.ModelInstanceObject.ModelFact
-    :rtype: dict of lists of facts
     :return: Dictionary of a list of facts keyed off of the LegalEntityAxis
+    :rtype: dict
     """
     results = defaultdict(list)
     for fact in facts:
         legalDim = LEGALENTITYAXIS_DEFAULT
         if _fact_components_valid(fact):
-            dims = [dim for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
+            dims = [
+                dim for dim in fact.context.segDimValues.values()
+                if dim.isExplicit and dim.member is not None
+            ]
             for dim in dims:
                 if dim.dimension.qname.localName == 'LegalEntityAxis':
                     legalDim = dim.member.qname.localName
@@ -319,9 +329,9 @@ def _fact_components_valid(fact):
     Return true if all of the components in a fact are not none
 
     :param fact: The fact to check if it is valid
-    :type fact: arelle.ModelInstanceObject.ModelFact
-    :rtype: bool
+    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
     :return: True if none of the components of the fact are not None
+    :rtype: bool
     """
     if fact is None:
         return False
@@ -339,12 +349,12 @@ def member_qnames(fact, axis_filter=None):
     Return a list of a fact's member(s)
 
     :param fact: An arelle ModelFact instance.
-    :type fact: arelle.ModelInstance.ModelFact
+    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
     :param axis_filter: The axis to filter for
     :type axis_filter: bool
-    :rtype: list of strings
     :return: ([str, ..., str]) A list of the string representation of each of
-    the fact's member's qnames.
+        the fact's member's qnames.
+    :rtype: list [str]
     """
     if axis_filter:
         return [
@@ -364,9 +374,9 @@ def axis_qnames(fact):
     Returns a list the dim.dimensionQnames withing the fact as strings
 
     :param fact: An arelle ModelFact instance.
-    :type fact: arelle.ModelInstance.ModelFact
-    :rtype: list of strings
+    :type fact: :class: '~arelle.InstanceModelObject.ModelFact'
     :return: a list of the fact's axes.
+    :rtype: list [str]
     """
     return [
         str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
