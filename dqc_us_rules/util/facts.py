@@ -306,8 +306,8 @@ def legal_entity_axis_facts_by_member(facts):
     member, or defaults to LEGALENTITYAXIS_DEFAULT if the fact has no LEA
     member.
 
-    :param facts: list [:class:'arelle.InstanceModelObject.ModelFact']
-    :type facts: :class:'~arelle.ModelInstanceObject.ModelFact'
+    :param facts: List of facts to key off by the LegalEntityAxis
+    :type facts: list [:class:'arelle.InstanceModelObject.ModelFact']
     :return: Dictionary of a list of facts keyed off of the LegalEntityAxis
     :rtype: dict
     """
