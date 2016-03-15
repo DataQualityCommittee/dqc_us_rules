@@ -11,6 +11,9 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0004.inferredDecimals', return_value=0)
     def test_bv_errors(self):
+        """
+        Tests to see if errors right numher of errors are thrown
+        """
         asset_concept = Mock()
         asset_concept.qname = dqc_us_0004._ASSETS_CONCEPT
         liabilities_concept = Mock()
@@ -61,6 +64,9 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         self.assertEqual(error_count, 0)
 
     def test_bv_no_errors_duration(self):
+        """
+        Tests to see if no errors are thrown without a duration on fact
+        """
         asset_concept = Mock()
         asset_concept.qname = dqc_us_0004._ASSETS_CONCEPT
         liabilities_concept = Mock()
@@ -87,16 +93,19 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        modelXbrl = Mock()
-        modelXbrl.nameConcepts = mock_name_concepts_dict
-        modelXbrl.factsByQname = mock_facts_by_qname
+        modelxbrl = Mock()
+        modelxbrl.nameConcepts = mock_name_concepts_dict
+        modelxbrl.factsByQname = mock_facts_by_qname
 
         error_count = 0
-        for _ in dqc_us_0004._assets_eq_liability_equity(modelXbrl):
+        for _ in dqc_us_0004._assets_eq_liability_equity(modelxbrl):
             error_count += 1
         self.assertEqual(error_count, 0)
 
     def test_bv_None_context(self):
+        """
+        Tests to see if no errors are throws by a none context
+        """
         asset_concept = Mock()
         asset_concept.qname = dqc_us_0004._ASSETS_CONCEPT
         liabilities_concept = Mock()
@@ -131,14 +140,23 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         self.assertEqual(error_count, 0)
 
     def test_values_unequal_equal_values(self):
+        """
+        Tests values_unequal with equal values
+        """
         self.assertFalse(dqc_us_0004._values_unequal(100, 100, -1))
         self.assertFalse(dqc_us_0004._values_unequal(130, 100, -2))
 
     def test_values_unequal_unequal_but_still_equal_values(self):
+        """
+        Tests values_unequal with values that are calculated to be equal
+        """
         self.assertFalse(dqc_us_0004._values_unequal(120, 100, -1))
         self.assertFalse(dqc_us_0004._values_unequal(200, 100, -2))
 
     def test_values_unequal_very_unequal_values(self):
+        """
+        Test values_unequal with unequal values
+        """
         self.assertTrue(dqc_us_0004._values_unequal(220, 100, -1))
         self.assertTrue(dqc_us_0004._values_unequal(600, 100, -2))
 
