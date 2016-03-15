@@ -8,7 +8,8 @@ from arelle.XmlUtil import dateunionValue
 
 LEGALENTITYAXIS_DEFAULT = ''
 _dei_pattern = (
-    re.compile(r'^http://xbrl\.((sec\.gov)|(us))/dei/\d{4}-\d{2}-\d{2}'))
+    re.compile(r'^http://xbrl\.((sec\.gov)|(us))/dei/\d{4}-\d{2}-\d{2}')
+)
 _CODE_NAME = 'DQC.US.0005'
 _RULE_VERSION = '1.0'
 
@@ -23,11 +24,11 @@ def _get_end_of_period(val):
     words, dates that end in 24:00 will be put at 00:00 of the expected day.
 
     :param val: bal from which to gather end dates
-    :type val: val
-    :rtype: dictionary of tuples
+    :type val: :class: '~arelle.ModelXbrl'
     :return: A dictionary of tuples containing the fact, found date and a
-    string representation of that date, keyed off of the LegalEntityAxis
-    members in the format {lea_member: (fact, found_date, date_str)}
+        string representation of that date, keyed off of the LegalEntityAxis
+        members in the format {lea_member: (fact, found_date, date_str)}
+    :rtype: dict
     """
     results = {}
     end_of_period_concepts = [
@@ -50,8 +51,8 @@ def _get_end_of_period(val):
                     date_str = (
                         dateunionValue(eop_context_end, subtractOneDay=True)
                     )
-                    if (eop_context_end is not None and
-                       (eop_date is None or eop_context_end > eop_date)):
+                    if ((eop_context_end is not None and
+                         (eop_date is None or eop_context_end > eop_date))):
                         eop_date = eop_context_end
                         # end dates have a time of 24:00 so
                         # adjust them back 1 day
@@ -66,11 +67,13 @@ def _get_end_of_period(val):
 
 def validate_facts(val):
     """
-    Validates facts, in other words it checks to see if the facts contained in
-    val are correctly implemented.
+    This fuction validates facts. In other words this function checks to see if
+    the facts contained in val are correctly implemented.
 
     :param val: val to check
-    :type val: val
+    :type val: '~arelle.ModelXbrl'
+    :return: No direct return, throws errors when facts can't be validated
+    :rtype: None
     """
     eop_results = _get_end_of_period(val)
     fact_dict = facts.legal_entity_axis_facts_by_member(
