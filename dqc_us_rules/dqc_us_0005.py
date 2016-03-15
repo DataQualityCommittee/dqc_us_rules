@@ -71,7 +71,7 @@ def validate_facts(val):
     the facts contained in val are correctly implemented.
 
     :param val: val to check
-    :type val:'~arelle.ModelXbrl.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """
