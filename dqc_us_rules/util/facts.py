@@ -55,9 +55,12 @@ def scale_values(facts):
         fact.decimals is not None
     }
     min_decimals_str = str(min(decimals))
-    return [ValidateXbrlCalcs.roundFact(
-            DecimalOverriddenFact(fact, min_decimals_str), inferDecimals=True)
-            for fact in facts]
+    return [
+        ValidateXbrlCalcs.roundFact(
+            DecimalOverriddenFact(fact, min_decimals_str),
+            inferDecimals=True
+        ) for fact in facts
+    ]
 
 
 def filter_duplicate_facts(facts, ignore_units=False):
@@ -253,8 +256,8 @@ def get_facts_dei(lookup_concept_strings, model_xbrl):
     Returns a list of dei facts from the modelXbrl whose name matches the names
     supplied in the lookup_concept_strings list
 
-    :param lookup_concept_strings: strings to loop up
-    :type lookup_concept_strings: list of str
+    :param lookup_concept_strings: strings to look up using a loop
+    :type lookup_concept_strings: list [str]
     :param model_xbrl: modelXbrl to get facts from
     :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
     :return: list of dei facts from specified model_xbrl
@@ -304,7 +307,7 @@ def legal_entity_axis_facts_by_member(facts):
     member.
 
     :param facts: list [:class:'arelle.InstanceModelObject.ModelFact']
-    :type facts: arelle.ModelInstanceObject.ModelFact
+    :type facts: :class:'~arelle.ModelInstanceObject.ModelFact'
     :return: Dictionary of a list of facts keyed off of the LegalEntityAxis
     :rtype: dict
     """
