@@ -14,7 +14,7 @@ def _load_messages(filename=None):
     :param filename: file to load messages from
     :type filename: str
     :return: No explicit return, but loads messages into _LOADED_MESSAGES
-    :rtype: none
+    :rtype: None
     """
     global _LOADED_MESSAGES
     if not filename:
