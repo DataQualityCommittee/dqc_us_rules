@@ -174,16 +174,24 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
         """
         fact_dict = {
             'concept1': [
-                Mock(contextID='context1', unitID='unit2',
-                     isNil=False, xValid=True),
-                Mock(contextID='context1', unitID='unit1',
-                     isNil=False, xValid=True)
+                Mock(
+                    contextID='context1', unitID='unit2',
+                    isNil=False, xValid=True
+                ),
+                Mock(
+                    contextID='context1', unitID='unit1',
+                    isNil=False, xValid=True
+                )
             ],
             'concept2': [
-                Mock(contextID='context1', unitID='unit1',
-                     isNil=False, xValid=True),
-                Mock(contextID='context1', unitID='unit2',
-                     isNil=False, xValid=True)
+                Mock(
+                    contextID='context1', unitID='unit1',
+                    isNil=False, xValid=True
+                ),
+                Mock(
+                    contextID='context1', unitID='unit2',
+                    isNil=False, xValid=True
+                )
             ],
         }
         prepared = fact_lib.prepare_facts_for_calculation(fact_dict)
@@ -200,22 +208,34 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
         """
         fact_dict = {
             'concept1': [
-                Mock(contextID='context1', unitID='unit2',
-                     isNil=False, xValid=True),
-                Mock(contextID='context1', unitID='unit1',
-                     isNil=False, xValid=True)
+                Mock(
+                    contextID='context1', unitID='unit2',
+                    isNil=False, xValid=True
+                ),
+                Mock(
+                    contextID='context1', unitID='unit1',
+                    isNil=False, xValid=True
+                )
             ],
             'concept2': [
-                Mock(contextID='context1', unitID='unit1',
-                     isNil=False, xValid=True),
-                Mock(contextID='context1', unitID='unit2',
-                     isNil=False, xValid=True)
+                Mock(
+                    contextID='context1', unitID='unit1',
+                    isNil=False, xValid=True
+                ),
+                Mock(
+                    contextID='context1', unitID='unit2',
+                    isNil=False, xValid=True
+                )
             ],
             'concept3': [
-                Mock(contextID='context1', unitID='unit1',
-                     isNil=False, xValid=True),
-                Mock(contextID='context2', unitID='unit2',
-                     isNil=False, xValid=True),
+                Mock(
+                    contextID='context1', unitID='unit1',
+                    isNil=False, xValid=True
+                ),
+                Mock(
+                    contextID='context2', unitID='unit2',
+                    isNil=False, xValid=True
+                ),
                 Mock(contextID=None, isNil=False, xValid=True)
             ],
         }
