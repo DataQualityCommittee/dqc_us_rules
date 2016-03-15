@@ -39,7 +39,7 @@ def _assets_eq_liability_equity(model_xbrl):
     :param model_xbrl: modelXbrl to check name concepts of
     :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: yields fact assets and fact liabilities that should throw errors
-    :rtype: tuple of facts assets and fact liabilities
+    :rtype: tuple
     """
     assets_concept = (
         model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
@@ -103,7 +103,7 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     :param val2: second value to round
     :type val2: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param dec_scale: precision on rounded value
-    :type dec_scale: decimal
+    :type dec_scale: :class:'~decimal.Decimal'
     :param margin_scale: margin of scale for the margin of error
     :type margin_scale: float
     :return: True if the values are not equal
