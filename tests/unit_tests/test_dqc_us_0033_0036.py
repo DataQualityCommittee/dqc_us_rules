@@ -216,8 +216,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         mock_more_dims = mock.Mock()
         mock_more_dims.values.return_value = [mock_dim]
-
-        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
         mock_segdimvalues.values.return_value = []
 
         mock_edt_norm = mock.Mock()
