@@ -35,7 +35,10 @@ def _doc_period_end_date_check(modelXbrl):
     for eop_facts in dped_facts.values():
         eop_fact = eop_facts[0]
         eop_context = eop_fact.context
-        if eop_context is None or eop_context.endDatetime is None:
+        if ((eop_fact is None or
+             eop_fact.xValue is None or
+             eop_context is None or
+             eop_context.endDatetime is None)):
             continue
         fact_eop_date = dateunionDate(eop_fact.xValue, subtractOneDay=True)
         # Arelle adjusts context end date to end-of-day midnight
