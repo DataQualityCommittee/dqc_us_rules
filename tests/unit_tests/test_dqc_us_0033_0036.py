@@ -174,7 +174,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         """
         Tests _doc_period_end_date_check when it should return an error
         """
-        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
         mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
