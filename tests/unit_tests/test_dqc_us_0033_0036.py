@@ -59,7 +59,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         concept_enddate = mock.Mock(qname=m_qn_bad3)
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
-        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
         mock_segdimvalues.values.return_value = []
         mock_context = mock.Mock(
             endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
