@@ -11,6 +11,9 @@ from dqc_us_rules.util import facts
 
 class TestContextDates(unittest.TestCase):
     def setUp(self):
+        """
+        Set up values for the unit tests that follow
+        """
         mock_type = Mock()
         mock_type.name = 'textBlockItemType'
         mock_qname = Mock(
@@ -37,6 +40,9 @@ class TestContextDates(unittest.TestCase):
         )
 
     def test_lea_facts_and_update(self):
+        """
+        Test _dict_list_update
+        """
         mem_qname = Mock(localName='Company1')
         member = Mock(qname=mem_qname)
         dim_qname = Mock(localName='LegalEntityAxis')
