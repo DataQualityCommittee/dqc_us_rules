@@ -11,6 +11,9 @@ class TestInitFunctions(unittest.TestCase):
 
     @patch('dqc_us_rules._plugins_to_run')
     def test_run_checks(self, plugins_func):
+        """
+        Tests to make sure that init.py works correctly
+        """
         mock_plugins = [
             MagicMock(
                 __pluginInfo__={'Validate.XBRL.Finally': MagicMock()},
