@@ -137,10 +137,10 @@ def _setup_dei_facts(model_xbrl):
         'EntityNumberOfEmployees',
         'EntityListingDepositoryReceiptRatio'
     ]
-    dei_facts = facts.LegalEntityAxis_facts_by_member(
+    dei_facts = facts.legal_entity_axis_facts_by_member(
         _get_dei_facts(model_xbrl, ignored_fact_list)
     )
-    dped_facts = facts.LegalEntityAxis_facts_by_member(
+    dped_facts = facts.legal_entity_axis_facts_by_member(
         facts.get_facts_dei(['DocumentPeriodEndDate'], model_xbrl)
     )
 
