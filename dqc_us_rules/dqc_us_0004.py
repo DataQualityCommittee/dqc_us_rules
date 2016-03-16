@@ -68,7 +68,6 @@ def _assets_eq_liability_equity(model_xbrl):
             fact_liabilities = fact_group[_LIABILITIES_CONCEPT]
             if ((fact_assets.context is not None and
                  fact_assets.context.instantDatetime is not None)):
-
                 dec_assets = inferredDecimals(fact_assets)
                 dec_liabilities = inferredDecimals(fact_liabilities)
                 min_dec = min(dec_assets, dec_liabilities)

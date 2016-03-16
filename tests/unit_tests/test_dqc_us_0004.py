@@ -5,6 +5,7 @@ import unittest
 from datetime import datetime
 from dqc_us_rules import dqc_us_0004
 from unittest.mock import Mock, patch
+import arelle.ModelXbrl
 
 
 class TestAssetsEqLiabilityEquity(unittest.TestCase):
@@ -40,7 +41,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
+        model_xbrl = Mock(spec=arelle.ModelXbrl.ModelXbrl)
         model_xbrl.nameConcepts = mock_name_concepts_dict
         model_xbrl.factsByQname = mock_facts_by_qname
 
@@ -94,7 +95,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
+        model_xbrl = Mock(spec=arelle.ModelXbrl.ModelXbrl)
         model_xbrl.nameConcepts = mock_name_concepts_dict
         model_xbrl.factsByQname = mock_facts_by_qname
 
@@ -131,7 +132,7 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
             liabilities_concept.qname: [liabilities_fact]
         }
 
-        model_xbrl = Mock(spec='arelle.modelXbrl.ModelXbrl')
+        model_xbrl = Mock(spec=arelle.ModelXbrl.ModelXbrl)
         model_xbrl.nameConcepts = mock_name_concepts_dict
         model_xbrl.factsByQname = mock_facts_by_qname
 
