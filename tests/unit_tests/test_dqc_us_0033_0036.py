@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from datetime import date
 import unittest
@@ -59,7 +59,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         concept_enddate = mock.Mock(qname=m_qn_bad3)
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
-        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
+        mock_segdimvalues = mock.Mock()
         mock_segdimvalues.values.return_value = []
         mock_context = mock.Mock(
             endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
@@ -170,11 +170,11 @@ class TestDocPerEndDateChk(unittest.TestCase):
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
         side_effect=lambda x, subtract_one_day: x.date()
     )
-    def test_an_error(self, mock_func):
+    def test_an_error(self):
         """
         Tests _doc_period_end_date_check when it should return an error
         """
-        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
+        mock_segdimvalues = mock.Mock()
         mock_segdimvalues.values.return_value = []
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
@@ -216,7 +216,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         mock_more_dims = mock.Mock()
         mock_more_dims.values.return_value = [mock_dim]
-        mock_segdimvalues = mock.Mock(spec="arelle.ModelInstanceObject.ModelFact.context.SegDimValues")
+        mock_segdimvalues = mock.Mock()
         mock_segdimvalues.values.return_value = []
 
         mock_edt_norm = mock.Mock()

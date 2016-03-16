@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from collections import OrderedDict
 from datetime import date
@@ -169,8 +169,8 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
 
     def test_prepare_facts_for_calculation_happy_path(self):
         """
-        Tests to see prepare_facts_for_calculation works correctly when there is
-        an easy path
+        Tests to see prepare_facts_for_calculation works correctly when there
+        is an easy path
         """
         fact_dict = {
             'concept1': [
@@ -198,13 +198,15 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
         self.assertEqual(2, len(prepared))
         for fs in prepared:
             self.assertEqual(2, len(fs))
-            self.assertEqual(fs['concept1'].contextID, fs['concept2'].contextID)
+            self.assertEqual(
+                fs['concept1'].contextID, fs['concept2'].contextID
+            )
             self.assertEqual(fs['concept1'].unitID, fs['concept2'].unitID)
 
     def test_prepare_facts_for_calculation_mixed_bag(self):
         """
-        Tests to see if prepare_facts_for_calculation works when the path is not
-        easy
+        Tests to see if prepare_facts_for_calculation works when the path is
+        not easy
         """
         fact_dict = {
             'concept1': [
@@ -243,8 +245,12 @@ class TestPrepareFactsForCalculation(unittest.TestCase):
         self.assertEqual(1, len(prepared))
         for fs in prepared:
             self.assertEqual(3, len(fs))
-            self.assertEqual(fs['concept1'].contextID, fs['concept2'].contextID)
-            self.assertEqual(fs['concept1'].contextID, fs['concept3'].contextID)
+            self.assertEqual(
+                fs['concept1'].contextID, fs['concept2'].contextID
+            )
+            self.assertEqual(
+                fs['concept1'].contextID, fs['concept3'].contextID
+            )
             self.assertEqual(fs['concept1'].unitID, fs['concept2'].unitID)
             self.assertEqual(fs['concept1'].unitID, fs['concept3'].unitID)
 
@@ -768,7 +774,10 @@ class TestFactsAreValid(unittest.TestCase):
         """
         Tests to make sure that a valid fact still works
         """
-        fact = Mock(decimals='-4', value='869098', xvalue=869098, precision=None)
+        fact = Mock(
+            decimals='-4', value='869098', xvalue=869098, precision=None
+
+        )
         self.assertTrue(fact_lib._fact_components_valid(fact))
 
     def test_fact_components_valid_on_none_type_fact(self):

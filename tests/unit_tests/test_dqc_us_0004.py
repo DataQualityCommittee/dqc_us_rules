@@ -1,8 +1,8 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import unittest
-from datetime import datetime, timedelta
+from datetime import datetime
 from dqc_us_rules import dqc_us_0004
 from unittest.mock import Mock, patch
 
@@ -45,7 +45,8 @@ class TestAssetsEqLiabilityEquity(unittest.TestCase):
         model_xbrl.factsByQname = mock_facts_by_qname
 
         error_count = 0
-        for asset, liability in dqc_us_0004._assets_eq_liability_equity(model_xbrl):
+        for fact in dqc_us_0004._assets_eq_liability_equity(model_xbrl):
+            asset, liability = fact
             error_count += 1
             self.assertEqual(asset, asset_fact)
             self.assertEqual(liability, liabilities_fact)

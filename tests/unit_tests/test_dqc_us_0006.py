@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from collections import defaultdict
 import unittest
@@ -54,8 +54,8 @@ class TestContextDates(unittest.TestCase):
         fact1 = Mock(context=context1)
         fact2 = Mock(context=context2)
         fact3 = Mock(context=context2)
-        res1 = facts.LegalEntityAxis_facts_by_member([fact1, fact2])
-        res2 = facts.LegalEntityAxis_facts_by_member([fact3])
+        res1 = facts.legal_entity_axis_facts_by_member([fact1, fact2])
+        res2 = facts.legal_entity_axis_facts_by_member([fact3])
         res3 = dqc_us_0006._dict_list_update(res1, res2)
 
         expected = defaultdict(list)
