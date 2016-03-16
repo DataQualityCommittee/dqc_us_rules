@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from decimal import Decimal
 from math import isnan
@@ -111,7 +111,9 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
+    margin_of_error = (
+        Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
+    )
     return (
         round_val1 < round_val2 - margin_of_error or
         round_val1 > round_val2 + margin_of_error
