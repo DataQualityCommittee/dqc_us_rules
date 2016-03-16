@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import re
 from .util import facts, messages
@@ -56,7 +56,9 @@ def _get_end_of_period(val):
                         eop_date = eop_context_end
                         # end dates have a time of 24:00 so
                         # adjust them back 1 day
-                        date_str = dateunionValue(eop_date, subtractOneDay=True)
+                        date_str = (
+                            dateunionValue(eop_date, subtractOneDay=True)
+                        )
                     if lea_member in results:
                         if results[lea_member][1] < eop_date:
                             results[lea_member] = (fact, eop_date, date_str)
@@ -95,7 +97,7 @@ def validate_facts(val):
                     # the expected eop dates
                     comparison_date = eop_results[lookup][1]
                     if fact_date <= comparison_date:
-# ===========================REPLACE BLOCK WITH FUNCTION========================
+                        # ========REPLACE BLOCK WITH FUNCTION==================
                         ECSSO = 'EntityCommonStockSharesOutstanding'
                         if fact.localName == ECSSO:
                             # if a fact whose qname is
@@ -132,7 +134,7 @@ def validate_facts(val):
                                 messages.get_message(_CODE_NAME, "49"),
                                 modelObject=[fact] + list(eop_results[lookup]),
                                 ruleVersion=_RULE_VERSION)
-# ==============================================================================
+                        # =====================================================
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
