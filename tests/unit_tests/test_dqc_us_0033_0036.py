@@ -18,6 +18,22 @@ DEI_NAMESPACE_LIST = [
 ]
 
 
+class TestIsValidEOPFact(unittest.TestCase):
+
+    def test_is_valid_eop_fact(self):
+        """
+        Tests to make sure that _is_valid_eop_fact catches errors
+        """
+        fact_valid = mock.Mock()
+        fact_valid.xValue = date(year=2015, month=1, day=1)
+        fact_not_valid1 = None
+        fact_not_valid2 = mock.Mock()
+        fact_not_valid2.xValue = None
+        self.assertTrue(dqc_us_0033_0036._is_valid_eop_fact(fact_valid))
+        self.assertFalse(dqc_us_0033_0036._is_valid_eop_fact(fact_not_valid1))
+        self.assertFalse(dqc_us_0033_0036._is_valid_eop_fact(fact_not_valid2))
+
+
 class TestDocPerEndDateChk(unittest.TestCase):
 
     def setUp(self):
