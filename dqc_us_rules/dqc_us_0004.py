@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from decimal import Decimal
 from math import isnan
@@ -17,7 +17,7 @@ def assets_eq_liability_equity(val):
     Assets equals Liabilities and Stockholders Equity
 
     :param val: val to look at the modelXbrl for
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, but throws an error for everything returned by
         _assets_eq_liability_equity
     :rtype: None
@@ -37,12 +37,14 @@ def _assets_eq_liability_equity(model_xbrl):
     Yields fact assets and fact liabilities as long as it is able to
 
     :param model_xbrl: modelXbrl to check name concepts of
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: yields fact assets and fact liabilities that should throw errors
-    :rtype: tuple of facts assets and fact liabilities
+    :rtype: tuple
     """
-    assets_concept = (model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
-                      if model_xbrl.nameConcepts[_ASSETS_CONCEPT] else None)
+    assets_concept = (
+        model_xbrl.nameConcepts[_ASSETS_CONCEPT][0]
+        if model_xbrl.nameConcepts[_ASSETS_CONCEPT] else None
+    )
 
     liability_equity_concept = (
         model_xbrl.nameConcepts[_LIABILITIES_CONCEPT][0]
@@ -97,11 +99,11 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     Returns False if the values are equal, otherwise True.
 
     :param val1: first value to round
-    :type val1: :class: '~arelle.ModelXbrl'
+    :type val1: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param val2: second value to round
-    :type val2: :class: '~arelle.ModelXbrl'
+    :type val2: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param dec_scale: precision on rounded value
-    :type dec_scale: decimal
+    :type dec_scale: :class:'~decimal.Decimal'
     :param margin_scale: margin of scale for the margin of error
     :type margin_scale: float
     :return: True if the values are not equal
@@ -109,7 +111,9 @@ def _values_unequal(val1, val2, dec_scale, margin_scale=2):
     """
     round_val1 = roundValue(val1, decimals=dec_scale)
     round_val2 = roundValue(val2, decimals=dec_scale)
-    margin_of_error = Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
+    margin_of_error = (
+        Decimal(margin_scale) * (Decimal(10) ** Decimal(-dec_scale))
+    )
     return (
         round_val1 < round_val2 - margin_of_error or
         round_val1 > round_val2 + margin_of_error

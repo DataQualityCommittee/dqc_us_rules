@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from collections import defaultdict
 from datetime import timedelta
@@ -29,7 +29,7 @@ def validate_dates_within_periods(val):
     Checks date ranges are within expected values for the fiscal focus period
 
     :param val: val to check
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, but throws errors when dates aren't validated
     :rtype: none
     """
@@ -39,13 +39,21 @@ def validate_dates_within_periods(val):
         # If it is a transitional document, or there is more than one
         # document type declared, we will not run this check.
         return
-    dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, date_bounds_dict, val.modelXbrl)
+    dict_of_facts = (
+        _date_range_check(
+            CHECK_TYPES, CHECK_DEI, date_bounds_dict, val.modelXbrl
+        )
+    )
     for document_fiscal_period_focus, fact_list in dict_of_facts.items():
         for fact in fact_list:
-            val.modelXbrl.error('{}.14'.format(_CODE_NAME), messages.get_message(_CODE_NAME), concept=fact.qname,
-                                period=document_fiscal_period_focus.xValue,
-                                modelObject=[fact, document_fiscal_period_focus],
-                                ruleVersion=_RULE_VERSION)
+            val.modelXbrl.error(
+                '{}.14'.format(_CODE_NAME),
+                messages.get_message(_CODE_NAME),
+                concept=fact.qname,
+                period=document_fiscal_period_focus.xValue,
+                modelObject=[fact, document_fiscal_period_focus],
+                ruleVersion=_RULE_VERSION
+            )
 
 
 def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
@@ -64,7 +72,7 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     :param date_bounds_dict: period from which names should be pulled from
     :type date_bounds_dict: dict
     :param model_xbrl: model xbrl from which facts are to be pulled from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of facts that match the names in the two lists and are within
         the date_bounds_dict
     :rtype: dict
@@ -97,12 +105,19 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
             if len(focus_l) != 1:
                 continue
             focus = focus_l.pop()
-            min_span = timedelta(days=date_bounds_dict[focus.xValue].get('min'))
-            max_span = timedelta(days=date_bounds_dict[focus.xValue].get('max'))
+            min_span = (
+                timedelta(days=date_bounds_dict[focus.xValue].get('min'))
+            )
+            max_span = (
+                timedelta(days=date_bounds_dict[focus.xValue].get('max'))
+            )
+
             for fact in fact_list:
                 if ((fact.context.endDatetime is not None and
                      fact.context.startDatetime is not None)):
-                    span = fact.context.endDatetime - fact.context.startDatetime
+                    span = (
+                        fact.context.endDatetime - fact.context.startDatetime
+                    )
                     if span < min_span or span > max_span:
                         facts_in_error[focus].append(fact)
     return facts_in_error
@@ -114,9 +129,9 @@ def _dict_list_update(dict_a, dict_b):
     lists in dict_b.
 
     :param dict_a: dictionary to be extended
-    :type dict_a: dictionary of lists
+    :type dict_a: dict
     :param dict_b: dictionary to extend into other dictionary
-    :type dict_b: dictionary of lists
+    :type dict_b: dict
     :return: lists in dict_a extended with lists in dict_b
     :rtype: dict
     """

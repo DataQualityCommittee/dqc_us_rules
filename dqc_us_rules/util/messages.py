@@ -27,8 +27,8 @@ def _load_messages(filename=None):
 def get_message(primary_number, secondary_number='default'):
     """
     Gets the message for a primary number and a secondary number for a message
-    categorization.  If the rule doesn't have the secondary number in existence,
-    it grabs the default value for the primary categorization.
+    categorization.  If the rule doesn't have the secondary number in
+    existence it grabs the default value for the primary categorization.
 
     :param primary_number: The primary number for the rule.
     :type primary_number: str

@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from .util import facts, messages
 
@@ -16,7 +16,7 @@ def doc_period_end_date_check(val):
     DocumentPeriodEndDates returned from _doc_period_end_date_check
 
     :param val: val from which to throw an error
-    :type val: :class: '~arelle.ModelXbrl'
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No explicit return, Throws error for everything returned by
         _doc_period_end_date_check
     :rtype: None
@@ -39,7 +39,7 @@ def _doc_period_end_date_check(model_xbrl):
     DEI fact context end dates against it.
 
     :param model_xbrl: ModelXbrl to check facts
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: list of tuples containing bad DocumentPeriodEndDates
     :rtype: list [tuple]
     """
@@ -123,8 +123,8 @@ def _setup_dei_facts(model_xbrl):
     """
     Sets up the dei facts using the specified modelXbrl
 
-    :param model_xbrl:
-    :type model_xbrl:
+    :param model_xbrl: ModelXbrl to get the dei facts from
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: a tuple of the dictionary of a list of 1 DocumentPeriodEndDate per
         LegalEntityAxis and the dictionary of the list of dei facts per
         LegalEntityAxis
@@ -137,10 +137,10 @@ def _setup_dei_facts(model_xbrl):
         'EntityNumberOfEmployees',
         'EntityListingDepositoryReceiptRatio'
     ]
-    dei_facts = facts.LegalEntityAxis_facts_by_member(
+    dei_facts = facts.legal_entity_axis_facts_by_member(
         _get_dei_facts(model_xbrl, ignored_fact_list)
     )
-    dped_facts = facts.LegalEntityAxis_facts_by_member(
+    dped_facts = facts.legal_entity_axis_facts_by_member(
         facts.get_facts_dei(['DocumentPeriodEndDate'], model_xbrl)
     )
 
@@ -153,11 +153,11 @@ def _get_dei_facts(model_xbrl, exclude_list=[None]):
     exclude_list; this can be fed into prepare_facts_for_calculation.
 
     :param model_xbrl: ModelXbrl to gather DEI facts from
-    :type model_xbrl: :class: '~arelle.ModelXbrl.ModelXbrl'
+    :type model_xbrl: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param exclude_list: names of facts to exclude
     :type exclude_list: list [str]
     :return: list of all the modelXbrl DEI facts that aren't in exclude list
-    :rtype: list [:class: '~arelle.InstanceModelObject.ModelFact']
+    :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     return [
         f for f in model_xbrl.facts
@@ -168,9 +168,9 @@ def _get_dei_facts(model_xbrl, exclude_list=[None]):
 
 def _get_default_dped(dped_facts):
     """
-    returns the default DocumentPeriodEndDate fact or None if there are no
-    DocumentPeriodEndDate facts and a list of None if it doesn't exist or
-    can't be figured out.
+    Returns the default DocumentPeriodEndDate fact. If there are no
+    DocumentPeriodEndDate facts it returns None. If the DocumentPeriodEndDate
+    cannot be figured it returns a list of None.
 
     :param dped_facts: dictionary of facts to get DocumentEndPeriodDate from
     :type dped_facts: dict
