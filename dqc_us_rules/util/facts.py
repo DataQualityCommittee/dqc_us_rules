@@ -180,7 +180,8 @@ def member_exists(val, fact, member_name):
 
 def axis_member_exists(val, fact, axis_name, member_name):
     """
-    Given a fact, check if the fact is dimensionalized for a axis/member pairing
+    Given a fact, check if the fact is dimensionalized for a axis/member
+    pairing
 
     :param val: val to check standard taxonomies dict on
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
@@ -243,7 +244,10 @@ def lookup_gaap_facts(fact_name, model_xbrl):
     :rtype: list [:class:'~arelle.InstanceModelObject.ModelFact']
     """
     def valid_fact(fact):
-        return fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and fact.context is not None and fact.xValue is not None
+        return (
+            fact.concept.qname.namespaceURI in GAAP_NAMESPACE_LIST and
+            fact.context is not None and fact.xValue is not None
+        )
     facts = [
         f for f in model_xbrl.facts
         if f.concept.qname.localName == fact_name and valid_fact(f)
