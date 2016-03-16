@@ -134,7 +134,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtract_one_day: x.date()
+        side_effect=lambda x, subtractOneDay: x.date() # noqa
     )
     def test_a_warn(self, mock_func):
         """
@@ -168,9 +168,9 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtract_one_day: x.date()
+        side_effect=lambda x, subtractOneDay: x.date() # noqa
     )
-    def test_an_error(self):
+    def test_an_error(self, mock_func):
         """
         Tests _doc_period_end_date_check when it should return an error
         """
@@ -199,7 +199,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtract_one_day: x.date()
+        side_effect=lambda x, subtractOneDay: x.date() # noqa
     )
     def test_a_warn_and_error(self, mock_func):
         """
