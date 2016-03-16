@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import pkgutil
 import sys
@@ -12,7 +12,10 @@ def run_checks(val):
     """
     plugin_modules = _plugins_to_run(sys.modules[__name__])
     for plugin in plugin_modules:
-        if plugin.__file__ is not None and plugin.__file__.find('__init__.py') == -1 and hasattr(plugin, '__pluginInfo__'):
+        if ((plugin.__file__ is not None and
+             plugin.__file__.find('__init__.py') == -1 and
+             hasattr(plugin, '__pluginInfo__'))):
+
             func = plugin.__pluginInfo__['Validate.XBRL.Finally']
             func(val)
 
@@ -42,11 +45,11 @@ def _plugins_to_run(mod, include_start=True):
 __pluginInfo__ = {
     'name': 'DQC.SEC.ALL',
     'version': '1.0',
-    'description': '''All Data Quality Committee SEC Filing Checks''',
+    'description': 'All Data Quality Committee SEC Filing Checks',
     'author': '',
     'license': 'See accompanying license text',
     # Required plugin for logging
-    'import': ( 'logging/dqcParameters.py', ),
-    #Mount points
+    'import': ('logging/dqcParameters.py', ),
+    # Mount points
     'Validate.XBRL.Finally': run_checks,
 }
