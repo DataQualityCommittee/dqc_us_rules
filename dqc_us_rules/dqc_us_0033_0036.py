@@ -28,7 +28,7 @@ def _is_valid_eop_fact(eop_fact):
     """
     if eop_fact is None:
         return False
-    if eop_fact.xValue is None:
+    elif eop_fact.xValue is None:
         return False
     return True
 
