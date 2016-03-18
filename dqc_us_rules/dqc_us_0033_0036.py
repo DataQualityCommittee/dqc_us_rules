@@ -23,10 +23,6 @@ def doc_period_end_date_check(val):
     """
     for params in _doc_period_end_date_check(val.modelXbrl):
         code, message, context_date, mod_obj, default_dped_fact = params
-       # print(code, mod_obj.contextID)
-       # print()
-       # print(code, mod_obj.context.contextID)
-       # print()
         val.modelXbrl.error(
             code, message,
             dped_context_date=context_date,
