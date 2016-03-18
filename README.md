@@ -1,6 +1,6 @@
 # XBRL US Data Quality Committee Rules
 
-dqc_us_rules is a plugin for Arelle 
+dqc_us_rules is a plugin for Arelle
 
 ## dqc_us_rules contains:
 
@@ -32,7 +32,7 @@ The rest of this setup will assume you have installed [virtualenv](http://www.vi
 ### Creating a virtual environment
 
 To create a virtual environment, change your directory to the root of this project, and execute the following command:
-    
+
     mkvirtualenv dqc -a $PWD -p <path_to_python3>
 
 This will give you a virtual environment that you can then work within by inputting
@@ -43,13 +43,9 @@ any time you need to work in it.
 
 ### Installing dependencies
 
-To install the dependencies for development of only the DQC ruleset, you will use [pip](https://pip.pypa.io/en/latest/installing.html) to install the requirements.  Install Arelle as a package first
+To install the dependencies for development of only the DQC ruleset, you will use [pip](https://pip.pypa.io/en/latest/installing.html) to install the requirements. Install the development requirements using:
 
-    pip install -r arelle-requirements.txt
-
-When that is finished, then install the remainder of the development requirements
-
-    pip install dev-requirements.txt
+    pip install -r requirements-dev.txt
 
 ### Running unit tests
 
@@ -65,9 +61,28 @@ See documentation in the test suite
 
 The rule definition index is [here](docs/README.md).
 
-## Change Management
+## Proposed Changes
 
-We actively accept, and encourage, pull requests for code changes.  An explanation of the change is required, and the request will be reviewed by the technical leads of the project.  If the request is accepted it will be merged into the master branch. Some requests may require Committee approval which may take longer to implement.  If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
+We actively accept, and encourage, pull requests for code changes. A list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project. If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement. If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
+
+### Requirements for a Pull Request(PR):
+
+  - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
+  - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
+  - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
+  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/PYTHON.rst#docstrings) are required.
+  - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
+  - The pull request must have at least one `+1` from another community member.
+  - There must be no unaddressed comments.
+  - PR text must be in the specified format:
+    ```
+    #### Changes:
+
+    - Change_one with reasoning
+    - Change_two with reasoning
+
+    Please review: @hefischer  @andrewperkins-wf
+    ```
 
 ## License
 
