@@ -175,7 +175,7 @@ def LegalEntityAxis_facts_by_member(facts):
     results = defaultdict(list)
     for fact in facts:
         legalDim = LEGALENTITYAXIS_DEFAULT
-        if fact_components_valid(fact):
+        if _fact_components_valid(fact):
             dims = [dim for dim in fact.context.segDimValues.values() if dim.isExplicit and dim.member is not None]
             for dim in dims:
                 if dim.dimension.qname.localName == 'LegalEntityAxis':
@@ -185,13 +185,13 @@ def LegalEntityAxis_facts_by_member(facts):
     return results
 
 
-def fact_components_valid(fact):
+def _fact_components_valid(fact):
     """
-    Return true if all of the components in a fact are none
+    Return true if all of the components in a fact are not none
 
     :param fact: The fact to check if it is valid
     :type fact: arelle.ModelInstanceObject.ModelFact
-    :return: True if none of the components of the fact are None
+    :return: True if none of the components of the fact are not None
     :rtype: bool
     """
     if fact is None:
