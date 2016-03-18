@@ -4,19 +4,24 @@
 from collections import defaultdict
 from datetime import timedelta
 from .util import facts, messages
+import csv
+import os
 
 CHECK_TYPES = ['textBlockItemType']
-CHECK_DEI = ['AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate', 'DocumentPeriodEndDate',
-             'DocumentFiscalYearFocus', 'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
-             'EntityCentralIndexKey', 'EntityFilerCategory']
-DATE_BOUNDS_DICT = {
-    "FY": {"min": 340, "max": 390},
-    "Q1": {"min": 65, "max": 115},
-    "Q2": {"min": 155, "max": 205},
-    "Q3": {"min": 245, "max": 295}
-}
+CHECK_DEI = [
+    'AmendmentDescription', 'AmendmentFlag', 'CurrentFiscalYearEndDate',
+    'DocumentPeriodEndDate', 'DocumentFiscalYearFocus',
+    'DocumentFiscalPeriodFocus', 'DocumentType', 'EntityRegistrantName',
+    'EntityCentralIndexKey', 'EntityFilerCategory'
+]
 _CODE_NAME = 'DQC.US.0006'
 _RULE_VERSION = '1.0'
+_DEFAULT_DATE_BOUNDS_FILE = os.path.join(
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0006',
+    'dqc_06_date_bounds.csv'
+)
 
 
 def validate_dates_within_periods(val):
@@ -24,11 +29,13 @@ def validate_dates_within_periods(val):
     Check Date Ranges are within expected values
     for the fiscal focus period
     """
+    date_bounds_dict = _date_bounds_from_csv()
     doc_type = facts.lookup_dei_facts('DocumentType', val.modelXbrl)
     if len(doc_type) != 1 or 'T' in doc_type[0].xValue:
-        # If it is a transitional document, or there is more than one document type declared, we will not run this check.
+        # If it is a transitional document, or there is more than one
+        # document type declared, we will not run this check.
         return
-    dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, DATE_BOUNDS_DICT, val.modelXbrl)
+    dict_of_facts = _date_range_check(CHECK_TYPES, CHECK_DEI, date_bounds_dict, val.modelXbrl)
     for document_fiscal_period_focus, fact_list in dict_of_facts.items():
         for fact in fact_list:
             val.modelXbrl.error('{}.14'.format(_CODE_NAME), messages.get_message(_CODE_NAME), concept=fact.qname,
@@ -69,17 +76,38 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, modelXbrl):
 
 def _dict_list_update(dict_a, dict_b):
     """
-    helper for the LEA dictionaries, extends the lists from dict_a with the lists in dict_b.
+    Helper for the LEA dictionaries, extends the lists from dict_a with the
+    lists in dict_b.
     """
     for key, val in dict_b.items():
         dict_a[key].extend(val)
     return dict_a
 
 
+def _date_bounds_from_csv():
+    """
+    Returns a map of {time_period: {'min':min_value,'max':max_value}}
+     ex: date_bounds_from_csv()['Q1'] = {'min':65,'max':115}
+
+    :rtype: dict
+    :return: A map of {time_period: {'min':min_value,'max':max_value}}.
+    """
+    with open(_DEFAULT_DATE_BOUNDS_FILE, 'r') as f:
+        reader = csv.reader(f)
+        date_bounds_dict = {}
+        next(reader, None)
+        for row in reader:
+            date_bounds_dict[row[0]] = {'min': int(row[1]), 'max': int(row[2])}
+        return date_bounds_dict
+
 __pluginInfo__ = {
     'name': _CODE_NAME,
     'version': _RULE_VERSION,
-    'description': '''Checks all of the specified types and concepts for their date ranges to verify the ranges are within expected paramters for the fiscal periods''',
-    #Mount points
+    'description': (
+        'Checks all of the specified types and concepts for their date '
+        'ranges to verify the ranges are within expected paramters for the '
+        'fiscal periods'
+    ),
+    # Mount points
     'Validate.XBRL.Finally': validate_dates_within_periods,
 }

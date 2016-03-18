@@ -56,3 +56,43 @@ class TestContextDates(unittest.TestCase):
         expected = defaultdict(list)
         expected.update({'': [fact2, fact3], 'Company1': [fact1]})
         self.assertEqual(res3, expected)
+
+
+class TestDateBoundsCSV(unittest.TestCase):
+    def test_date_bounds_csv_keys_equal(self):
+        """
+        Test to make sure that the dictionary read in from the csv shares
+        equals the original date_bounds_dict
+        """
+        date_bounds_dict = {
+            'FY': {'min': 340, 'max': 390},
+            'Q1': {'min': 65, 'max': 115},
+            'Q3': {'min': 245, 'max': 295},
+            'Q2': {'min': 155, 'max': 205}
+        }
+
+        date_bounds_dict_from_csv = dqc_us_0006._date_bounds_from_csv()
+
+        self.assertDictEqual(date_bounds_dict, date_bounds_dict_from_csv)
+
+    def test_date_bounds_csv_keys_unequal(self):
+        """
+        Test to make sure that the dictionary read is doesn't equal something
+        other than the original DATE_BOUNDS_DICT
+        """
+        random_date_bounds_dict = {
+            'FY': {'min': 374, 'max': 489},
+            'Q1': {'min': 234, 'max': 394},
+            'Q3': {'min': 890, 'max': 891},
+            'Q2': {'min': 300, 'max': 790}
+        }
+
+        date_bounds_dict_from_csv = dqc_us_0006._date_bounds_from_csv()
+        self.assertEqual(sorted(list(random_date_bounds_dict.keys())), sorted(list(date_bounds_dict_from_csv.keys())))
+
+        for key in random_date_bounds_dict.keys():
+            for subkey in random_date_bounds_dict[key].keys():
+                self.assertNotEqual(
+                    random_date_bounds_dict[key][subkey],
+                    date_bounds_dict_from_csv[key][subkey]
+                )
