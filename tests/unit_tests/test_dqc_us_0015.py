@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import io
 import unittest
@@ -10,14 +10,20 @@ import dqc_us_rules.dqc_us_0015 as dqc_us_0015
 
 class TestDQC0015(unittest.TestCase):
     def test_contains(self):
+        """
+        Test contains with value that is in list and value that isn't in list
+        """
         element_one = 'foo:Credit'
         element_two = 'foo:Accreditation'
         check_list = 'Credit'
         self.assertTrue(dqc_us_0015.contains(element_one, check_list))
         self.assertFalse(dqc_us_0015.contains(element_two, check_list))
 
-
     def test_contains_insensitive(self):
+        """
+        Test contains_insensitive with item that contain the same letters but
+        not the same casing
+        """
         element_one = 'foo:cRediT'
         element_two = 'foo:aCcRedItAtiON'
         check_list = 'CreDIt'
@@ -28,8 +34,11 @@ class TestDQC0015(unittest.TestCase):
             dqc_us_0015.contains_insensitive(element_two, check_list)
         )
 
-
     def test_equals(self):
+        """
+        Test equals with values that should be equal and values that aren't
+        equal
+        """
         element_one = 'foo:Credit'
         element_two = 'foo:Accreditation'
         element_three = 'foo:CreditMaximum'
@@ -45,8 +54,10 @@ class TestDQC0015(unittest.TestCase):
         self.assertFalse(dqc_us_0015.equals("NaN", '1'))
         self.assertFalse(dqc_us_0015.equals(0, 'zero'))
 
-
     def test_parse_row(self):
+        """
+        Test _parse_row against expected result
+        """
         test_row = [
             'ConceptName', 'Not', 'Contains', 'Reserves', 'ConceptName',
             None, 'Contains', 'Recoveries', 'Period', None, 'Equals',
@@ -95,6 +106,9 @@ class TestDQC0015(unittest.TestCase):
 
 class TestBuildDict(unittest.TestCase):
     def setUp(self):
+        """
+        Sets up the following test cases
+        """
         self.csv_lines = [
             'LIST,ARTIFACT,NEGATION,RELATION,ITEM',
             'BLE,Member,,Contains,Something',
@@ -118,6 +132,10 @@ class TestBuildDict(unittest.TestCase):
         )
 
     def test_blacklist(self):
+        """
+        Tests blacklist to see if it contains the right items and is the right
+        length
+        """
         # Test blacklist
         list_color = 'black'
         exp_incl = []  # only concept includes

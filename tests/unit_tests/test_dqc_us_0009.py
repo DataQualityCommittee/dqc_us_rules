@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import unittest
 from unittest.mock import patch, MagicMock, Mock
@@ -11,6 +11,9 @@ class TestCompareFacts(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0009.facts')
     def test_empty_compare(self, fact_patch):
+        """
+        Tests _compare_facts with empty facts
+        """
         lesser = Mock()
         greater = Mock()
         val = MagicMock(xbrlModel='false model')
@@ -22,6 +25,10 @@ class TestCompareFacts(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0009.facts.lookup_gaap_facts')
     @patch('dqc_us_rules.dqc_us_0009.facts.prepare_facts_for_calculation')
     def test_extant_compare(self, fact_patch, lookup_patch):
+        """
+        Tests compare facts with different values and one value that is the
+        same
+        """
         lesser = Mock()
         greater = Mock()
         val = MagicMock(xbrlModel='false model')
