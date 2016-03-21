@@ -78,18 +78,18 @@ def _date_range_check(check_types, check_dei, date_bounds_dict, model_xbrl):
     :rtype: dict
     """
     facts_in_error = defaultdict(list)
-    list_of_facts = facts.LegalEntityAxis_facts_by_member(
+    list_of_facts = facts.legal_entity_axis_facts_by_member(
         facts.get_facts_with_type(check_types, model_xbrl)
     )
     list_of_facts = _dict_list_update(
         list_of_facts,
-        facts.LegalEntityAxis_facts_by_member(
+        facts.legal_entity_axis_facts_by_member(
             facts.get_facts_dei(check_dei, model_xbrl)
         )
     )
 
     dfpf_list = facts.lookup_dei_facts('DocumentFiscalPeriodFocus', model_xbrl)
-    dfpf_dict = facts.LegalEntityAxis_facts_by_member(dfpf_list)
+    dfpf_dict = facts.legal_entity_axis_facts_by_member(dfpf_list)
     for lea_member, fact_list in list_of_facts.items():
         lookup = (
             lea_member
