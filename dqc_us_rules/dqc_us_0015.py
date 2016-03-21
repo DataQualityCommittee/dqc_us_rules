@@ -208,7 +208,7 @@ def equals(fact_part, dict_check):
     try:
         coerced_dict_value = float(dict_check)
         return coerced_dict_value == fact_part
-    except:
+    except ValueError:
         return False
 
 
