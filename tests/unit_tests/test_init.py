@@ -1,5 +1,5 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-# See license.md for license information.  
+# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import unittest
 from unittest.mock import patch, MagicMock
@@ -11,6 +11,9 @@ class TestInitFunctions(unittest.TestCase):
 
     @patch('dqc_us_rules._plugins_to_run')
     def test_run_checks(self, plugins_func):
+        """
+        Tests to make sure that init.py works correctly
+        """
         mock_plugins = [
             MagicMock(
                 __pluginInfo__={'Validate.XBRL.Finally': MagicMock()},
