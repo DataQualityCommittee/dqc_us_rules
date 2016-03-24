@@ -100,17 +100,16 @@ def _doc_period_end_date_check(model_xbrl):
             # If the DocumentPeriodEndDate context check doesn't fire,
             # we will check all dei fact context end dates against it.
             for fact in fact_group:
-                if ((
-                    fact.contextID in not_valid_dped or
-                    fact.context is None or
-                    fact.context.endDatetime is None or
-                    fact.concept.periodType != 'duration'
+                if ((fact.contextID in not_valid_dped or
+                     fact.context is None or
+                     fact.context.endDatetime is None or
+                     fact.concept.periodType != 'duration'
                      )):
                     continue
 
                 if context_eop_date != dateunionDate(
-                        fact.context.endDatetime,
-                        subtractOneDay=True
+                    fact.context.endDatetime,
+                    subtractOneDay=True
                 ):
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
