@@ -46,7 +46,7 @@ def _is_valid_eop_fact(eop_fact):
     return True
 
 
-def _doc_period_end_date_check(modelXbrl):
+def _doc_period_end_date_check(model_xbrl):
     """
     Compares the value of DocumentPeriodEndDate against the end date of its
     context. If the difference is more than 3 days, fires a validation error.
