@@ -776,7 +776,6 @@ class TestFactsAreValid(unittest.TestCase):
         """
         fact = Mock(
             decimals='-4', value='869098', xvalue=869098, precision=None
-
         )
         self.assertTrue(fact_lib._fact_components_valid(fact))
 
