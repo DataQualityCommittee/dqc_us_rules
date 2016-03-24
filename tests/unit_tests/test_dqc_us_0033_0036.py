@@ -134,7 +134,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_a_warn(self, mock_func):
         """
@@ -168,7 +168,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_an_error(self, mock_func):
         """
@@ -199,7 +199,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_a_warn_and_error(self, mock_func):
         """
