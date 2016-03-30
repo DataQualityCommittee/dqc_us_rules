@@ -31,6 +31,21 @@ def doc_period_end_date_check(val):
         )
 
 
+def _is_valid_eop_fact(eop_fact):
+    """
+    Checks to ensure that the eop_fact and the eop_fact.xValue is not None
+    :param eop_fact: fact to check
+    :type eop_fact: :class: "~arelle.InstanceModelObject.ModelFact"
+    :return: True if the fact and the fact.xValue is not None
+    :rtype: bool
+    """
+    if eop_fact is None:
+        return False
+    elif eop_fact.xValue is None:
+        return False
+    return True
+
+
 def _doc_period_end_date_check(model_xbrl):
     """
     Compares the value of DocumentPeriodEndDate against the end date of its
@@ -55,7 +70,9 @@ def _doc_period_end_date_check(model_xbrl):
     for eop_facts in dped_facts.values():
         eop_fact = eop_facts[0]
         eop_context = eop_fact.context
-        if eop_context is None or eop_context.endDatetime is None:
+        if ((not _is_valid_eop_fact(eop_fact) or
+             eop_context is None or
+             eop_context.endDatetime is None)):
             continue
         fact_eop_date = dateunionDate(eop_fact.xValue, subtractOneDay=True)
         # Arelle adjusts context end date to end-of-day midnight
