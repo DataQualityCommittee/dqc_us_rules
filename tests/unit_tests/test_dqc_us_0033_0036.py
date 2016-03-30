@@ -267,7 +267,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
         # Only expect one because test 33 will not happen if 36 fires.
-        self.assertEqual(len(res), 1)
+        self.assertEqual(len(res), 2)
 
 
 class TestGetDefaultDped(unittest.TestCase):

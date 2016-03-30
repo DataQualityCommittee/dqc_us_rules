@@ -64,7 +64,7 @@ def _doc_period_end_date_check(model_xbrl):
     if default_dped_fact is None:
         return result_group
 
-    is_valid_dped = True
+    not_valid_dped = []
     # loop through the DocumentPeriodEndDate's to check for
     # consistent dates
     for eop_facts in dped_facts.values():
@@ -84,7 +84,7 @@ def _doc_period_end_date_check(model_xbrl):
         )
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
-            is_valid_dped = False
+            not_valid_dped.append(eop_fact.contextID)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -92,47 +92,49 @@ def _doc_period_end_date_check(model_xbrl):
                 eop_fact,
                 default_dped_fact
             ))
-
     # Don't loop through them if the DPED date is bad, since the date
     # is incorrect.
-    if is_valid_dped:
-        # loop through the dei facts and compare against their LEA's
-        # DocumentPeriodEndDate
-        for lea_key, fact_group in dei_facts.items():
-            eop_fact = dped_facts.get(lea_key, default_dped_fact)[0]
-            if ((eop_fact is None or
-                 eop_fact.context is None or
-                 eop_fact.context.endDatetime is None)):
-                continue
 
-            # Arelle adjusts context end date to end-of-day midnight
-            # Reverse the adjustment to get the expected date value
-            # by subtracting one day
-            context_eop_date = dateunionDate(
-                eop_fact.context.endDatetime, subtractOneDay=True
-            )
+    # loop through the dei facts and compare against their LEA's
+    # DocumentPeriodEndDate
+    for lea_key, fact_group in dei_facts.items():
+        eop_fact = dped_facts.get(lea_key, default_dped_fact)[0]
+        if ((eop_fact is None or
+             eop_fact.context is None or
+             eop_fact.context.endDatetime is None
+             )):
+            continue
 
-            if len(fact_group) > 0:
-                # Check all DEI facts against this DocumentPeriodEndDate.
-                # If the DocumentPeriodEndDate context check doesn't fire,
-                # we will check all dei fact context end dates against it.
-                for fact in fact_group:
-                    if ((fact.context is None or
-                         fact.context.endDatetime is None or
-                         fact.concept.periodType != 'duration')):
-                        continue
+        # Arelle adjusts context end date to end-of-day midnight
+        # Reverse the adjustment to get the expected date value
+        # by subtracting one day
+        context_eop_date = dateunionDate(
+            eop_fact.context.endDatetime, subtractOneDay=True
+        )
 
-                    if context_eop_date != dateunionDate(
-                            fact.context.endDatetime,
-                            subtractOneDay=True
-                    ):
-                        result_group.append((
-                            '{}.2'.format(_CODE_NAME_33),
-                            messages.get_message(_CODE_NAME_33),
-                            fact.concept.label(),
-                            fact,
-                            default_dped_fact
-                        ))
+        if len(fact_group) > 0:
+            # Check all DEI facts against this DocumentPeriodEndDate.
+            # If the DocumentPeriodEndDate context check doesn't fire,
+            # we will check all dei fact context end dates against it.
+            for fact in fact_group:
+                if ((fact.contextID in not_valid_dped or
+                     fact.context is None or
+                     fact.context.endDatetime is None or
+                     fact.concept.periodType != 'duration'
+                     )):
+                    continue
+
+                if context_eop_date != dateunionDate(
+                    fact.context.endDatetime,
+                    subtractOneDay=True
+                ):
+                    result_group.append((
+                        '{}.2'.format(_CODE_NAME_33),
+                        messages.get_message(_CODE_NAME_33),
+                        fact.concept.label(),
+                        fact,
+                        default_dped_fact
+                    ))
     return result_group
 
 
