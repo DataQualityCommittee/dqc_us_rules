@@ -281,10 +281,9 @@ def fire_dqc_us_0041_errors(val):
         val.modelXbrl.error(
             '{}.16'.format(_CODE_NAME),
             messages.get_message(_CODE_NAME),
-            modelObject=[axis_name, axis_default_name, def_name],
-            axis_name_label="axis_name_value",
-            axis_default_name="axis_default_name",
-            def_name="def_name",
+            axis_name=axis_name,
+            axis_default_name=axis_default_name,
+            def_name=def_name,
             ruleVersion=_RULE_VERSION
         )
 
