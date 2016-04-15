@@ -276,6 +276,8 @@ def fire_dqc_us_0041_errors(val):
     :return: No explicit return, but it fires all the dqc_us_0041 errors
     :rtype: None
     """
+    _setup_cache(val)
+
     for error_info in _catch_dqc_us_0041_errors(val):
         axis_name, axis_default_name, def_name = error_info
         val.modelXbrl.error(
@@ -288,6 +290,26 @@ def fire_dqc_us_0041_errors(val):
         )
 
 
+def _default_dimension_mismatch(default_dimension, usgaap_default_dimensions):
+    """
+    Returns true if the default dimension is not included in the usgaap default
+    dimensions
+
+    :param default_dimension: dimension to test if it is a usgaap default
+        dimension
+    :type: str
+    :param usgaap_default_dimensions: list of usgaap taxonomies default
+        dimensions
+    :type: list
+    :return: True if the default dimensions is not included in the usgaap
+        default dimensions
+    :rtype: bool
+    """
+    if default_dimension != usgaap_default_dimensions:
+        return True
+    return False
+
+
 def _catch_dqc_us_0041_errors(val):
     """
     Returns a tuple containing the parts of the dqc_us_0041 error to be
@@ -298,13 +320,20 @@ def _catch_dqc_us_0041_errors(val):
     :return: all dqc_us_0041 errors
     :rtype: tuple
     """
-    _setup_cache(val)
-
-    for fact in val.modelXbrl.facts:
-        for dim in fact.context.qnameDims.values():
-            if ((dim.dimensionQname.localName not in
-                 val.usgaapDefaultDimensions.keys())):
-                yield (fact, val.usgaapDefaultDimensions, fact)
+    rel_set = val.modelXbrl.relationshipSet(
+        XbrlConst.dimensionDefault
+    ).modelRelationships
+    for rel in rel_set:
+        rel_to = rel.toModelObject
+        rel_from = rel.fromModelObject
+        if (_default_dimension_mismatch(
+                rel_to.name,
+                val.usgaapDefaultDimensions[rel_from.name]
+        )):
+            yield (rel_from.name,
+                   val.usgaapDefaultDimensions[rel_from.name],
+                   rel_to.name
+                   )
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
