@@ -30,16 +30,14 @@ class TestDefaultDimensions(unittest.TestCase):
             good_domain_pair[1]
         ))
 
-    @patch("dqc_us_0041._is_in_namespace",
+    @patch("dqc_us_rules.dqc_us_0041._load_cache",
            autospec=True,
-           return_value=True
            )
     def test_catch_dqc_us_0041_errors_with_errors(self, _):
         """
         Tests to see if dqc_us_0041_errors will be caught
         """
         bad_count = 0
-
         val = mock.Mock()
         rel = mock.Mock()
         rel.toModelObject.name = "DebtInstrumentNameDomain"
@@ -57,9 +55,8 @@ class TestDefaultDimensions(unittest.TestCase):
 
         self.assertTrue(bad_count == 1)
 
-    @patch("tests.unit_tests.test_dqc_us_0041.dqc_us_0041._is_in_namespace",
-           autospec=True,
-           return_value=True
+    @patch("dqc_us_rules.dqc_us_0041._load_cache",
+           autospec=True
            )
     def test_catch_dqc_us_0041_errors_with_no_errors(self, _):
         """
