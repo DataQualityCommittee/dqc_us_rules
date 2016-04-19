@@ -15,44 +15,43 @@ _CODE_NAME = 'DQC.US.0018'
 _RULE_VERSION = '1.1'
 
 ugtDocs = (
-           {"year": 2014,
-            "namespace": "http://fasb.org/us-gaap/2014-01-31",
-            "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",
-            "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",
+           {
+               "year": 2014,
+               "namespace": "http://fasb.org/us-gaap/2014-01-31",
+               "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",  # noqa
+               "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
             },
-           {"year": 2015,
-            "namespace": "http://fasb.org/us-gaap/2015-01-31",
-            "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",
-            "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",
+           {
+               "year": 2015,
+               "namespace": "http://fasb.org/us-gaap/2015-01-31",
+               "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
+               "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
             },
-           {"year": 2016,
-            "namespace": "http://fasb.org/us-gaap/2016-01-31",
-            "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",
-            "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",
+           {
+               "year": 2016,
+               "namespace": "http://fasb.org/us-gaap/2016-01-31",
+               "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
+               "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
             },
            )
 
 
 def _load(val):
-    if not val.validateLoggingSemantic:  # all checks herein are SEMANTIC
-        return
-
-    val.linroleDefinitionIsDisclosure = re.compile(r"-\s+Disclosure\s+-\s",
-                                                   re.IGNORECASE
-                                                   )
+    val.linroleDefinitionIsDisclosure = re.compile(
+        r"-\s+Disclosure\s+-\s", re.IGNORECASE
+    )
     val.linkroleDefinitionStatementSheet = re.compile(
-        r"[^-]+-\s+Statement\s+-\s+.*",  # no restriction to type of statement
-        re.IGNORECASE
+        r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE
     )
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
     # load deprecated concepts for filed year of us-gaap
     for ugt in ugtDocs:
-        ugtNamespace = ugt["namespace"]
-        if ((ugtNamespace in val.modelXbrl.namespaceDocs and
-             len(val.modelXbrl.namespaceDocs[ugtNamespace]) > 0)):
-            val.ugtNamespace = ugtNamespace
-            usgaap_doc = val.modelXbrl.namespaceDocs[ugtNamespace][0]
+        ugt_namespace = ugt["namespace"]
+        if ((ugt_namespace in val.modelXbrl.namespaceDocs and
+             len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0)):
+            val.ugtNamespace = ugt_namespace
+            usgaap_doc = val.modelXbrl.namespaceDocs[ugt_namespace][0]
             deprecations_json_file = os.path.join(
                 usgaap_doc.filepathdir,
                 os.sep,
@@ -73,12 +72,11 @@ def _load(val):
 
 
 def _make(val):
-    val.linroleDefinitionIsDisclosure = re.compile(r"-\s+Disclosure\s+-\s",
-                                                   re.IGNORECASE
-                                                   )
+    val.linroleDefinitionIsDisclosure = re.compile(
+        r"-\s+Disclosure\s+-\s", re.IGNORECASE
+    )
     val.linkroleDefinitionStatementSheet = re.compile(
-        r"[^-]+-\s+Statement\s+-\s+.*",
-        re.IGNORECASE
+        r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE
     )
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
@@ -90,6 +88,7 @@ def _make(val):
             'DQC_US_0018',
             "deprecated-concepts.json"
         )
+        
         if not os.path.isfile(deprecations_json_file):
             started_at = time.time()
             ugt_doc_lb = ugt["docLB"]
