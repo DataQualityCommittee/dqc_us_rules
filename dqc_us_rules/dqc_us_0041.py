@@ -62,8 +62,6 @@ def _make_cache(
     :type ugt: str
     :param cntlr: cntlr to save to
     :type cntlr: :class: '~arelle.Cntrl.Cntrl'
-    :param ugt_calcs_json_file: where to save json taxonomies
-    :type ugt_calcs_json_file: str
     :param ugt_default_dimensions_json_file: location to save json default
         dimensions
     :type ugt_default_dimensions_json_file: str
@@ -168,7 +166,6 @@ def _setup_cache(val):
                 val,
                 ugt,
                 cntlr,
-                ugt_calcs_json_file,
                 ugt_default_dimensions_json_file
             )
 
@@ -176,7 +173,7 @@ def _setup_cache(val):
 
 
 def _load_cache(
-        val, ugt, cntlr, ugt_calcs_json_file, ugt_default_dimensions_json_file
+        val, ugt, cntlr, ugt_default_dimensions_json_file
 ):
     """
     Loads the cached taxonomy default demensions. If the file isn't cached yet
@@ -188,8 +185,6 @@ def _load_cache(
     :type ugt: str
     :param cntlr: cntlr to load from
     :type cntlr: :class: '~arelle.CntrlWinMain'
-    :param ugt_calcs_json_file: where to load json taxonomies from
-    :type ugt_calcs_json_file: str
     :param ugt_default_dimensions_json_file: location to load json default
         dimensions from
     :type ugt_default_dimensions_json_file: str
@@ -214,7 +209,6 @@ def _load_cache(
             val,
             ugt,
             cntlr,
-            ugt_calcs_json_file,
             ugt_default_dimensions_json_file
         )
 
