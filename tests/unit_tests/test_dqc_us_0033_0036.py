@@ -18,6 +18,22 @@ DEI_NAMESPACE_LIST = [
 ]
 
 
+class TestIsValidEOPFact(unittest.TestCase):
+
+    def test_is_valid_eop_fact(self):
+        """
+        Tests to make sure that _is_valid_eop_fact catches errors
+        """
+        fact_valid = mock.Mock()
+        fact_valid.xValue = date(year=2015, month=1, day=1)
+        fact_not_valid1 = None
+        fact_not_valid2 = mock.Mock()
+        fact_not_valid2.xValue = None
+        self.assertTrue(dqc_us_0033_0036._is_valid_eop_fact(fact_valid))
+        self.assertFalse(dqc_us_0033_0036._is_valid_eop_fact(fact_not_valid1))
+        self.assertFalse(dqc_us_0033_0036._is_valid_eop_fact(fact_not_valid2))
+
+
 class TestDocPerEndDateChk(unittest.TestCase):
 
     def setUp(self):
@@ -134,7 +150,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_a_warn(self, mock_func):
         """
@@ -168,7 +184,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_an_error(self, mock_func):
         """
@@ -199,7 +215,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
-        side_effect=lambda x, subtractOneDay: x.date() # noqa
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
     def test_a_warn_and_error(self, mock_func):
         """
@@ -251,7 +267,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
         # Only expect one because test 33 will not happen if 36 fires.
-        self.assertEqual(len(res), 1)
+        self.assertEqual(len(res), 2)
 
 
 class TestGetDefaultDped(unittest.TestCase):
