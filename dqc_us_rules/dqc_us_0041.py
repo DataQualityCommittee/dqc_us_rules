@@ -155,7 +155,6 @@ def _setup_cache(val):
                 'DQC_US_0041'
             )
 
-            ugt_calcs_json_file = usgaap_doc + os.sep + "ugt-calculations.json"
             ugt_default_dimensions_json_file = (
                 usgaap_doc +
                 os.sep +
