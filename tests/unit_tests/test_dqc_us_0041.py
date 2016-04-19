@@ -13,10 +13,11 @@ class TestDefaultDimensions(unittest.TestCase):
         """
         bad_domain_pair = ["DebtInstrumentNameDomain", "DebtInstrumentDomain"]
 
-        self.assertTrue(dqc_us_0041._default_dimension_mismatch(
-            bad_domain_pair[0],
-            bad_domain_pair[1]
-        ))
+        self.assertTrue(
+            dqc_us_0041._default_dimension_mismatch(
+                bad_domain_pair[0], bad_domain_pair[1]
+            )
+        )
 
     def test_default_dimension_mismatch_with_no_mismatch(self):
         """
@@ -25,14 +26,13 @@ class TestDefaultDimensions(unittest.TestCase):
         """
         good_domain_pair = ["DebtInstrumentDomain", "DebtInstrumentDomain"]
 
-        self.assertFalse(dqc_us_0041._default_dimension_mismatch(
-            good_domain_pair[0],
-            good_domain_pair[1]
-        ))
+        self.assertFalse(
+            dqc_us_0041._default_dimension_mismatch(
+                good_domain_pair[0], good_domain_pair[1]
+            )
+        )
 
-    @patch("dqc_us_rules.dqc_us_0041._load_cache",
-           autospec=True,
-           )
+    @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
     def test_catch_dqc_us_0041_errors_with_errors(self, _):
         """
         Tests to see if dqc_us_0041_errors will be caught
@@ -55,9 +55,7 @@ class TestDefaultDimensions(unittest.TestCase):
 
         self.assertTrue(bad_count == 1)
 
-    @patch("dqc_us_rules.dqc_us_0041._load_cache",
-           autospec=True
-           )
+    @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
     def test_catch_dqc_us_0041_errors_with_no_errors(self, _):
         """
         Tests to make sure dqc_us_0041 doesn't always throw errors

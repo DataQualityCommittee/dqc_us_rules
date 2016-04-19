@@ -16,31 +16,33 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 _CODE_NAME = 'DQC.US.0041'
 _RULE_VERSION = '1.1'
 
+_EARLIEST_GAP_YEAR = 2014
 
 ugtDocs = (
-    {"year": 2014,
-     "namespace": "http://fasb.org/us-gaap/2014-01-31",
-     "docLB": "http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-doc-2014-01-31.xml",  # noqa
-     "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
+    {
+        "year": 2014,
+        "namespace": "http://fasb.org/us-gaap/2014-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-doc-2014-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
      },
 
-    {"year": 2015,
-     "namespace": "http://fasb.org/us-gaap/2015-01-31",
-     "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
-     "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
+    {
+        "year": 2015,
+        "namespace": "http://fasb.org/us-gaap/2015-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
      },
 
-    {"year": 2016,
-     "namespace": "http://fasb.org/us-gaap/2016-01-31",
-     "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
-     "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
+    {
+        "year": 2016,
+        "namespace": "http://fasb.org/us-gaap/2016-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
      }
 )
 
 
-def _make_cache(
-        val, ugt, cntlr, ugt_default_dimensions_json_file
-):
+def _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file):
     """
     Creates a new caches for the Taxonomy default dimensions
 
@@ -61,10 +63,12 @@ def _make_cache(
         val.modelXbrl.modelManager.validateDisclosureSystem
     )
     val.modelXbrl.modelManager.validateDisclosureSystem = False
-    calculations_instance = (ModelXbrl.load(
-        val.modelXbrl.modelManager,
-        openFileSource(ugt_entry_xsd, cntlr),
-        _("built us-gaap calculations cache"))  # noqa
+    calculations_instance = (
+        ModelXbrl.load(
+            val.modelXbrl.modelManager,
+            openFileSource(ugt_entry_xsd, cntlr),
+            _("built us-gaap calculations cache")  # noqa
+        )
     )
     val.modelXbrl.modelManager.validateDisclosureSystem = (
         prior_validate_disclosure_system
@@ -79,22 +83,22 @@ def _make_cache(
         )
 
     else:
-        for defaultDimRel in calculations_instance.relationshipSet(
-                XbrlConst.dimensionDefault).modelRelationships:
-            if isinstance(
-                    defaultDimRel.fromModelObject,
-                    ModelConcept
-            ) and isinstance(
-                defaultDimRel.toModelObject,
-                ModelConcept
-            ):
-                from_name = defaultDimRel.fromModelObject.name
-                to_name = defaultDimRel.toModelObject.name
+        model_relationships = (
+            calculations_instance.relationshipSet(
+                XbrlConst.dimensionDefault
+            ).modelRelationships
+        )
+        for default_dim_rel in model_relationships:
+            if _default_dim_rel_is_instance(default_dim_rel):
+                from_name = default_dim_rel.fromModelObject.name
+                to_name = default_dim_rel.toModelObject.name
                 val.usgaapDefaultDimensions[from_name] = to_name
-        json_str = str(json.dumps(
-            val.usgaapDefaultDimensions,
-            ensure_ascii=False,
-            indent=0)
+        json_str = str(
+            json.dumps(
+                val.usgaapDefaultDimensions,
+                ensure_ascii=False,
+                indent=0
+            )
         )  # might not be unicode in 2.7
         # 2.7 gets unicode this way
         saveFile(cntlr, ugt_default_dimensions_json_file, json_str)
@@ -128,21 +132,16 @@ def _setup_cache(val):
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
 
-    year = 2014
+    year = _EARLIEST_GAP_YEAR
     for ugt in ugtDocs:
         ugt_default_dimensions_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
             'DQC_US_0041',
-            "_".join([str(year), "ugt-default-dimensions.json"])
+            '{}_ugt-default-dimensions.json'.format(str(year))
         )
 
-        _make_cache(
-            val,
-            ugt,
-            cntlr,
-            ugt_default_dimensions_json_file
-        )
+        _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file)
 
         year += 1
 
@@ -158,9 +157,27 @@ def _is_in_namespace(val, ugt_namespace):
     :return: True if ugt_namespace is in the val.modelXbrl's namespace docs
     :rtype: bool
     """
-    return (ugt_namespace in val.modelXbrl.namespaceDocs and
-            len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0
-            )
+    return (
+        ugt_namespace in val.modelXbrl.namespaceDocs and
+        len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0
+    )
+
+
+def _default_dim_rel_is_instance(default_dim_rel):
+    """
+    Checks to makes sure that the fromModelObject and the toModelObject's of a
+    defaultDimensionRelationship are both ModelConcept's
+
+    :param default_dim_rel: The default dimension relationship to check
+    :type default_dim_rel: :class:'~arelle.ModelXbrl.ModelRelationship'
+    :return: True if the default_dim_rel.fromModelObject is a ModelConcept and
+        the default_dim_rel.toModelObject is a ModelConcept
+    :rtype: bool
+    """
+    return(
+        isinstance(default_dim_rel.fromModelObject, ModelConcept) and
+        isinstance(default_dim_rel.toModelObject, ModelConcept)
+    )
 
 
 def _load_cache(val):
@@ -184,7 +201,7 @@ def _load_cache(val):
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
 
-    year = 2014
+    year = _EARLIEST_GAP_YEAR
 
     for ugt in ugtDocs:
         ugt_namespace = ugt["namespace"]
@@ -193,17 +210,15 @@ def _load_cache(val):
                 os.path.dirname(__file__),
                 'resources',
                 'DQC_US_0041',
-                "_".join([str(year), "ugt-default-dimensions.json"])
+                '{}_ugt-default-dimensions.json'.format(str(year))
             )
 
             file = None
 
             try:
                 file = openFileStream(
-                       cntlr,
-                       ugt_default_dimensions_json_file,
-                       'rt',
-                       encoding='utf-8'
+                    cntlr, ugt_default_dimensions_json_file,
+                    'rt', encoding='utf-8'
                 )
 
                 val.usgaapDefaultDimensions = json.load(file)
@@ -224,7 +239,7 @@ def fire_dqc_us_0041_errors(val):
     :return: No explicit return, but it fires all the dqc_us_0041 errors
     :rtype: None
     """
-    _setup_cache(val)
+    _load_cache(val)
 
     for error_info in _catch_dqc_us_0041_errors(val):
         axis_name, axis_default_name, def_name = error_info
@@ -275,20 +290,23 @@ def _catch_dqc_us_0041_errors(val):
     for rel in rel_set:
         rel_to = rel.toModelObject
         rel_from = rel.fromModelObject
-        if (_default_dimension_mismatch(
-                rel_to.name,
-                val.usgaapDefaultDimensions[rel_from.name]
-        )):
-            yield (rel_from.name,
-                   val.usgaapDefaultDimensions[rel_from.name],
-                   rel_to.name
-                   )
+        if _default_dimension_mismatch(
+            rel_to.name,
+            val.usgaapDefaultDimensions[rel_from.name]
+        ):
+            yield (
+                rel_from.name,
+                val.usgaapDefaultDimensions[rel_from.name],
+                rel_to.name
+            )
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
     'version': _RULE_VERSION,
-    'description': 'All axis defaults should be the same as the axis '
-                   'defaults defined in the taxonomy.',
+    'description': (
+        'All axis defaults should be the same as the axis '
+        'defaults defined in the taxonomy.'
+    ),
     # Mount points
     'Validate.XBRL.Finally': fire_dqc_us_0041_errors,
 }
