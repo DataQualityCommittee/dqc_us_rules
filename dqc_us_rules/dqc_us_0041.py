@@ -1,4 +1,4 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# (c) Copyright 2016, XBRL US Inc. All rights reserved.
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 from .util import messages
@@ -14,7 +14,7 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 
 
 _CODE_NAME = 'DQC.US.0041'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.1'
 
 
 ugtDocs = (
@@ -51,7 +51,7 @@ ugtDocs = (
 
 
 def _make_cache(
-        val, ugt, cntlr, ugt_calcs_json_file, ugt_default_dimensions_json_file
+        val, ugt, cntlr, ugt_default_dimensions_json_file
 ):
     """
     Creates a new caches for the Taxonomy default dimensions
@@ -61,7 +61,7 @@ def _make_cache(
     :param ugt: Taxonomy to check
     :type ugt: str
     :param cntlr: cntlr to save to
-    :type cntlr: :class: '~arelle.CntrlWinMain'
+    :type cntlr: :class: '~arelle.Cntrl.Cntrl'
     :param ugt_calcs_json_file: where to save json taxonomies
     :type ugt_calcs_json_file: str
     :param ugt_default_dimensions_json_file: location to save json default
@@ -70,13 +70,8 @@ def _make_cache(
     :return: no explicit return, but saves caches for dqc_us_0041
     :rtype: None
     """
-    val.modelXbrl.modelManager.addToLog(
-                    _("loading us-gaap {0} calculations and default "  # noqa
-                      "dimensions into cache").format(ugt["year"])
-                )
     started_at = time.time()
     ugt_entry_xsd = ugt["entryXsd"]
-    val.usgaapCalculations = {}
     val.usgaapDefaultDimensions = {}
     prior_validate_disclosure_system = (
         val.modelXbrl.modelManager.validateDisclosureSystem
@@ -90,51 +85,16 @@ def _make_cache(
     val.modelXbrl.modelManager.validateDisclosureSystem = (
         prior_validate_disclosure_system
     )
+
     if calculations_instance is None:
         val.modelXbrl.error(
             "arelle:notLoaded",
             _("US-GAAP calculations not loaded: %(file)s"),  # noqa
-            modelXbrl=val,
+           modelXbrl=val,
             file=os.path.basename(ugt_entry_xsd)
         )
+
     else:
-        # load calculations
-        for ELR in calculations_instance.relationshipSet(
-                XbrlConst.summationItem
-        ).linkRoleUris:
-            elr_rel_set = calculations_instance.relationshipSet(
-                XbrlConst.summationItem, ELR
-            )
-            definition = ""
-            for roleType in calculations_instance.roleTypes.get(
-                    ELR, ()
-            ):
-                definition = roleType.definition
-                break
-            is_statement_sheet = bool(
-                val.linkroleDefinitionStatementSheet.match(
-                    definition
-                )
-            )
-            elr_ugt_calcs = {
-                "#roots": [c.name for c in elr_rel_set.rootConcepts],
-                "#definition": definition,
-                "#isStatementSheet": is_statement_sheet
-            }
-            for rel_info in elr_rel_set.fromModelObjects().items():
-                rel_from, rels = rel_info
-                elr_ugt_calcs[rel_from.name] = [
-                    rel.toModelObject.name for rel in rels
-                ]
-            val.usgaapCalculations[ELR] = elr_ugt_calcs
-        json_str = str(json.dumps(
-            val.usgaapCalculations,
-            ensure_ascii=False,
-            indent=0)
-        )  # might not be unicode in 2.7
-        # 2.7 gets unicode this way
-        saveFile(cntlr, ugt_calcs_json_file, json_str)
-        # load default dimensions
         for defaultDimRel in calculations_instance.relationshipSet(
                 XbrlConst.dimensionDefault).modelRelationships:
             if isinstance(
@@ -238,14 +198,6 @@ def _load_cache(
     """
     file = None
     try:
-        file = openFileStream(
-            cntlr,
-            ugt_calcs_json_file,
-            'rt',
-            encoding='utf-8'
-        )
-        val.usgaapCalculations = json.load(file)
-        file.close()
         file = openFileStream(
             cntlr,
             ugt_default_dimensions_json_file,
