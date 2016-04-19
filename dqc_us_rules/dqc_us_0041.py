@@ -16,7 +16,7 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 _CODE_NAME = 'DQC.US.0041'
 _RULE_VERSION = '1.1'
 
-_EARLIEST_GAP_YEAR = 2014
+_EARLIEST_GAAP_YEAR = 2014
 
 ugtDocs = (
     {
@@ -132,7 +132,7 @@ def _setup_cache(val):
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
 
-    year = _EARLIEST_GAP_YEAR
+    year = _EARLIEST_GAAP_YEAR
     for ugt in ugtDocs:
         ugt_default_dimensions_json_file = os.path.join(
             os.path.dirname(__file__),
@@ -201,7 +201,7 @@ def _load_cache(val):
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
 
-    year = _EARLIEST_GAP_YEAR
+    year = _EARLIEST_GAAP_YEAR
 
     for ugt in ugtDocs:
         ugt_namespace = ugt["namespace"]
