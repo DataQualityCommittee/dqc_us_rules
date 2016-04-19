@@ -1,6 +1,7 @@
 import unittest
 from dqc_us_rules import dqc_us_0041
 from unittest import mock
+from unittest.mock import patch
 from arelle import XbrlConst
 
 
@@ -29,7 +30,11 @@ class TestDefaultDimensions(unittest.TestCase):
             good_domain_pair[1]
         ))
 
-    def test_catch_dqc_us_0041_errors_with_errors(self):
+    @patch("dqc_us_0041._is_in_namespace",
+           autospec=True,
+           return_value=True
+           )
+    def test_catch_dqc_us_0041_errors_with_errors(self, _):
         """
         Tests to see if dqc_us_0041_errors will be caught
         """
@@ -52,7 +57,11 @@ class TestDefaultDimensions(unittest.TestCase):
 
         self.assertTrue(bad_count == 1)
 
-    def test_catch_dqc_us_0041_errors_with_no_errors(self):
+    @patch("tests.unit_tests.test_dqc_us_0041.dqc_us_0041._is_in_namespace",
+           autospec=True,
+           return_value=True
+           )
+    def test_catch_dqc_us_0041_errors_with_no_errors(self, _):
         """
         Tests to make sure dqc_us_0041 doesn't always throw errors
         """
@@ -65,7 +74,6 @@ class TestDefaultDimensions(unittest.TestCase):
         val.modelXbrl.relationshipSet(
             XbrlConst.dimensionDefault
         ).modelRelationships = [rel]
-
         usgaap_default_dims = {}
         usgaap_default_dims["DebtInstrumentAxis"] = "DebtInstrumentNameDomain"
         val.usgaapDefaultDimensions = usgaap_default_dims

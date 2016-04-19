@@ -18,18 +18,6 @@ _RULE_VERSION = '1.1'
 
 
 ugtDocs = (
-    {"year": 2012,
-     "namespace": "http://fasb.org/us-gaap/2012-01-31",
-     "docLB": "http://xbrl.fasb.org/us-gaap/2012/elts/us-gaap-doc-2012-01-31.xml",  # noqa
-     "entryXsd": "http://xbrl.fasb.org/us-gaap/2012/entire/us-gaap-entryPoint-std-2012-01-31.xsd",  # noqa
-     },
-
-    {"year": 2013,
-     "namespace": "http://fasb.org/us-gaap/2013-01-31",
-     "docLB": "http://xbrl.fasb.org/us-gaap/2013/elts/us-gaap-doc-2013-01-31.xml",  # noqa
-     "entryXsd": "http://xbrl.fasb.org/us-gaap/2013/entire/us-gaap-entryPoint-std-2013-01-31.xsd",  # noqa
-     },
-
     {"year": 2014,
      "namespace": "http://fasb.org/us-gaap/2014-01-31",
      "docLB": "http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-doc-2014-01-31.xml",  # noqa
@@ -60,8 +48,6 @@ def _make_cache(
     :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
     :param ugt: Taxonomy to check
     :type ugt: str
-    :param cntlr: cntlr to save to
-    :type cntlr: :class: '~arelle.Cntrl.Cntrl'
     :param ugt_default_dimensions_json_file: location to save json default
         dimensions
     :type ugt_default_dimensions_json_file: str
@@ -103,7 +89,7 @@ def _make_cache(
                 ModelConcept
             ):
                 from_name = defaultDimRel.fromModelObject.name
-                to_name = defaultDimRel.fromModelObject.name
+                to_name = defaultDimRel.toModelObject.name
                 val.usgaapDefaultDimensions[from_name] = to_name
         json_str = str(json.dumps(
             val.usgaapDefaultDimensions,
@@ -122,8 +108,8 @@ def _make_cache(
 
 def _setup_cache(val):
     """
-    Loads the cache into memory, otherwise it builds it. Should only have to
-    build it the first time
+    Builds the cache needed for dqc_us_0041. Should only have to build it the
+    first time
 
     :param val: ValidateXbrl to check if it contains errors
     :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
@@ -142,67 +128,14 @@ def _setup_cache(val):
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
 
+    year = 2014
     for ugt in ugtDocs:
-        ugt_namespace = ugt["namespace"]
-
-        if ((ugt_namespace in val.modelXbrl.namespaceDocs and
-             len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0
-             )):
-
-            usgaap_doc = os.path.join(
-                os.path.dirname(__file__),
-                'resources',
-                'DQC_US_0041'
-            )
-
-            ugt_default_dimensions_json_file = (
-                usgaap_doc +
-                os.sep +
-                "ugt-default-dimensions.json"
-            )
-
-            _load_cache(
-                val,
-                ugt,
-                cntlr,
-                ugt_default_dimensions_json_file
-            )
-
-            return
-
-
-def _load_cache(
-        val, ugt, cntlr, ugt_default_dimensions_json_file
-):
-    """
-    Loads the cached taxonomy default demensions. If the file isn't cached yet
-    it will create a new cache
-
-    :param val: ValidateXbrl to be validated
-    :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
-    :param ugt: Taxonomy to check
-    :type ugt: str
-    :param cntlr: cntlr to load from
-    :type cntlr: :class: '~arelle.CntrlWinMain'
-    :param ugt_default_dimensions_json_file: location to load json default
-        dimensions from
-    :type ugt_default_dimensions_json_file: str
-    :return: no explicit return, but loads caches for dqc_us_0041
-    :rtype: None
-    """
-    file = None
-    try:
-        file = openFileStream(
-            cntlr,
-            ugt_default_dimensions_json_file,
-            'rt',
-            encoding='utf-8'
+        ugt_default_dimensions_json_file = os.path.join(
+            os.path.dirname(__file__),
+            'resources',
+            'DQC_US_0041',
+            "_".join([str(year), "ugt-default-dimensions.json"])
         )
-        val.usgaapDefaultDimensions = json.load(file)
-        file.close()
-    except FileNotFoundError:
-        if file:
-            file.close()
 
         _make_cache(
             val,
@@ -210,6 +143,76 @@ def _load_cache(
             cntlr,
             ugt_default_dimensions_json_file
         )
+
+        year += 1
+
+
+def _is_in_namespace(val, ugt_namespace):
+    """
+    Returns true if the ugt_namespace is the same as the current vals namespace
+
+    :param val: ValidateXbrl that is being validated
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl
+    :param ugt_namespace: Namespace of taxonomy for current year
+    :type ugt_namespace: str
+    :return: True if ugt_namespace is in the val.modelXbrl's namespace docs
+    :rtype: bool
+    """
+    return (ugt_namespace in val.modelXbrl.namespaceDocs and
+            len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0
+            )
+
+
+def _load_cache(val):
+    """
+    Loads the cached taxonomy default demensions. If the file isn't cached yet
+    it will create a new cache
+
+    :param val: ValidateXbrl to be validated
+    :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
+    :return: no explicit return, but loads caches for dqc_us_0041
+    :rtype: None
+    """
+    val.linroleDefinitionIsDisclosure = (
+        re.compile(r"-\s+Disclosure\s+-\s", re.IGNORECASE)
+    )
+
+    val.linkroleDefinitionStatementSheet = (
+        re.compile(r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE)
+    )  # no restriction to type of statement
+
+    val.ugtNamespace = None
+    cntlr = val.modelXbrl.modelManager.cntlr
+
+    year = 2014
+
+    for ugt in ugtDocs:
+        ugt_namespace = ugt["namespace"]
+        if _is_in_namespace(val, ugt_namespace):
+            ugt_default_dimensions_json_file = os.path.join(
+                os.path.dirname(__file__),
+                'resources',
+                'DQC_US_0041',
+                "_".join([str(year), "ugt-default-dimensions.json"])
+            )
+
+            file = None
+
+            try:
+                file = openFileStream(
+                       cntlr,
+                       ugt_default_dimensions_json_file,
+                       'rt',
+                       encoding='utf-8'
+                )
+
+                val.usgaapDefaultDimensions = json.load(file)
+                file.close()
+
+            except FileNotFoundError:
+                if file:
+                    file.close()
+        year += 1
 
 
 def fire_dqc_us_0041_errors(val):
@@ -265,6 +268,7 @@ def _catch_dqc_us_0041_errors(val):
     :return: all dqc_us_0041 errors
     :rtype: tuple
     """
+    _load_cache(val)
     rel_set = val.modelXbrl.relationshipSet(
         XbrlConst.dimensionDefault
     ).modelRelationships
