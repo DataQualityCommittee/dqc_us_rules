@@ -253,6 +253,22 @@ def fire_dqc_us_0041_errors(val):
         )
 
 
+def _check_relationship_exists(rel):
+    """
+    Makes sure that the relationship won't throw None type errors
+
+    :param rel: relationship to check
+    :type rel: :class:'~arelle.ModelXbrl.ModelRelationship'
+    :return: Returns true if both the toModelObject and the fromModelObject
+        are both instances of ModelConcepts
+    :rtype: bool
+    """
+    return (
+        isinstance(rel.toModelObject, ModelConcept) and
+        isinstance(rel.fromModelObject, ModelConcept)
+    )
+
+
 def _default_dimension_mismatch(default_dimension, usgaap_default_dimensions):
     """
     Returns true if the default dimension is not included in the usgaap default
@@ -288,17 +304,19 @@ def _catch_dqc_us_0041_errors(val):
         XbrlConst.dimensionDefault
     ).modelRelationships
     for rel in rel_set:
-        rel_to = rel.toModelObject
-        rel_from = rel.fromModelObject
-        if _default_dimension_mismatch(
-            rel_to.name,
-            val.usgaapDefaultDimensions[rel_from.name]
-        ):
-            yield (
-                rel_from.name,
-                val.usgaapDefaultDimensions[rel_from.name],
-                rel_to.name
-            )
+        if _check_relationship_exists(rel):
+            rel_to = rel.toModelObject
+            rel_from = rel.fromModelObject
+            
+            if _default_dimension_mismatch(
+                rel_to.name,
+                val.usgaapDefaultDimensions[rel_from.name]
+            ):
+                yield (
+                    rel_from.name,
+                    val.usgaapDefaultDimensions[rel_from.name],
+                    rel_to.name
+                )
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
