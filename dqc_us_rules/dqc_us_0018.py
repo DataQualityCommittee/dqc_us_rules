@@ -36,7 +36,7 @@ ugtDocs = (
            )
 
 
-def _load(val):
+def _load_cache(val):
     val.linroleDefinitionIsDisclosure = re.compile(
         r"-\s+Disclosure\s+-\s", re.IGNORECASE
     )
@@ -51,12 +51,12 @@ def _load(val):
         if ((ugt_namespace in val.modelXbrl.namespaceDocs and
              len(val.modelXbrl.namespaceDocs[ugt_namespace]) > 0)):
             val.ugtNamespace = ugt_namespace
-            usgaap_doc = val.modelXbrl.namespaceDocs[ugt_namespace][0]
             deprecations_json_file = os.path.join(
-                usgaap_doc.filepathdir,
-                os.sep,
+                os.path.dirname(__file__),
+                'resources',
+                'DQC_US_0018',
                 "deprecated-concepts.json"
-                )
+            )
             file = None
             try:
                 file = openFileStream(cntlr,
@@ -66,12 +66,13 @@ def _load(val):
 
                 val.usgaapDeprecations = json.load(file)
                 file.close()
-            except Exception:
+
+            except FileNotFoundError:
                 if file:
                     file.close()
 
 
-def _make(val):
+def _create_cache(val):
     val.linroleDefinitionIsDisclosure = re.compile(
         r"-\s+Disclosure\s+-\s", re.IGNORECASE
     )
@@ -154,9 +155,11 @@ def _make(val):
     val.deprecatedMembers = defaultdict(list)
 
 
-def deprecated_facts_errors():
-    for errors in _catch_deprecated_errors():
-        print("")
+def deprecated_facts_errors(val):
+    _load_cache(val)
+    print(val.deprecatedFactConcepts)
+   # for errors in _catch_deprecated_errors():
+    #    print("")
 
 
 def _catch_deprecated_errors():
