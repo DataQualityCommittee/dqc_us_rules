@@ -63,28 +63,28 @@ def _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file):
         val.modelXbrl.modelManager.validateDisclosureSystem
     )
     val.modelXbrl.modelManager.validateDisclosureSystem = False
-    calculations_instance = (
+    ugt_entry_xsd_instance = (
         ModelXbrl.load(
             val.modelXbrl.modelManager,
             openFileSource(ugt_entry_xsd, cntlr),
-            _("built us-gaap calculations cache")  # noqa
+            _("pened us-gaap entry xsd")  # noqa
         )
     )
     val.modelXbrl.modelManager.validateDisclosureSystem = (
         prior_validate_disclosure_system
     )
 
-    if calculations_instance is None:
+    if ugt_entry_xsd_instance is None:
         val.modelXbrl.error(
             "arelle:notLoaded",
-            _("US-GAAP calculations not loaded: %(file)s"),  # noqa
-           modelXbrl=val,
+            _("US-GAAP entry xsd not loaded: %(file)s"),  # noqa
+            modelXbrl=val,
             file=os.path.basename(ugt_entry_xsd)
         )
 
     else:
         model_relationships = (
-            calculations_instance.relationshipSet(
+            ugt_entry_xsd_instance.relationshipSet(
                 XbrlConst.dimensionDefault
             ).modelRelationships
         )
@@ -102,8 +102,8 @@ def _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file):
         )  # might not be unicode in 2.7
         # 2.7 gets unicode this way
         saveFile(cntlr, ugt_default_dimensions_json_file, json_str)
-        calculations_instance.close()
-        del calculations_instance  # dereference closed modelXbrl
+        ugt_entry_xsd_instance.close()
+        del ugt_entry_xsd_instance  # dereference closed modelXbrl
     val.modelXbrl.profileStat(
         _("build default dimensions cache"),  # noqa
         time.time() - started_at
@@ -307,7 +307,7 @@ def _catch_dqc_us_0041_errors(val):
         if _check_relationship_exists(rel):
             rel_to = rel.toModelObject
             rel_from = rel.fromModelObject
-            
+
             if _default_dimension_mismatch(
                 rel_to.name,
                 val.usgaapDefaultDimensions[rel_from.name]
