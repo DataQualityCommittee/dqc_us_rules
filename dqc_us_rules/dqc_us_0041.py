@@ -67,7 +67,7 @@ def _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file):
         ModelXbrl.load(
             val.modelXbrl.modelManager,
             openFileSource(ugt_entry_xsd, cntlr),
-            _("pened us-gaap entry xsd")  # noqa
+            _("opened us-gaap entry xsd")  # noqa
         )
     )
     val.modelXbrl.modelManager.validateDisclosureSystem = (
