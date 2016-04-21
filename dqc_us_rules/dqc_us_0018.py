@@ -117,7 +117,7 @@ def _create_cache(val):
             'DQC_US_0018',
             '{}_deprecated-concepts.json'.format(str(year))
         )
-        
+
         if not os.path.isfile(deprecations_json_file):
             started_at = time.time()
             ugt_doc_lb = ugt["docLB"]
@@ -125,7 +125,7 @@ def _create_cache(val):
             disclosure_system = (
                 val.modelXbrl.modelManager.validateDisclosureSystem
             )
-            # load without SEC/EFM validation (doc file would not be acceptable)
+
             prior_validate_disclosure_system = disclosure_system
             val.modelXbrl.modelManager.validateDisclosureSystem = False
             deprecations_instance = ModelXbrl.load(
@@ -138,9 +138,11 @@ def _create_cache(val):
             )
 
             if deprecations_instance is None:
-                val.modelXbrl.error("arelle:notLoaded",
-                    _("US-GAAP documentation not loaded: %(file)s"),
-                    modelXbrl=val, file=os.path.basename(ugt_doc_lb))
+                val.modelXbrl.error(
+                    "arelle:notLoaded",
+                    _("US-GAAP documentation not loaded: %(file)s"),  # noqa
+                    modelXbrl=val, file=os.path.basename(ugt_doc_lb)
+                )
             else:
                 dep_label = 'http://www.xbrl.org/2009/role/deprecatedLabel'
                 dep_date_label = (
@@ -233,7 +235,7 @@ def _deprecated_dimension(val, dim_concept):
     :rtype: bool
     """
     if dim_concept.name in val.usgaapDeprecations:
-            return True
+        return True
     return False
 
 
@@ -252,7 +254,7 @@ def _deprecated_member(val, model_dim):
         member = model_dim.member
         if member is not None:
             if member.name in val.usgaapDeprecations:
-                    return True
+                return True
     return False
 
 
