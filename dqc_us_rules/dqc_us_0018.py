@@ -56,7 +56,6 @@ def _load_cache(val):
     val.linkroleDefinitionStatementSheet = re.compile(
         r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE
     )
-    val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
     year = _EARLIEST_US_GAAP_YEAR
 
@@ -217,11 +216,8 @@ def _deprecated_concept(val, concept):
     :return: Returns true if the fact uses a deprecated concept
     :rtype: bool
     """
-    if concept.qname.namespaceURI == val.ugtNamespace:
-        if concept.name in val.usgaapDeprecations:
-            return True
-    #elif concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
-    #    return True
+    if concept.name in val.usgaapDeprecations:
+        return True
     return False
 
 
@@ -236,15 +232,12 @@ def _deprecated_dimension(val, dim_concept):
     :return: Returns true if the fact uses a deprecated dimension
     :rtype: bool
     """
-    if dim_concept.qname.namespaceURI == val.ugtNamespace:
-        if dim_concept.name in val.usgaapDeprecations:
+    if dim_concept.name in val.usgaapDeprecations:
             return True
-    elif dim_concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
-        return True
     return False
 
 
-def _deprecated_member(val, modelDim):
+def _deprecated_member(val, model_dim):
     """
     Returns true if the fact uses a deprecated member
 
@@ -255,14 +248,11 @@ def _deprecated_member(val, modelDim):
     :return: Returns true if the fact uses a deprecated dimension
     :rtype: bool
     """
-    if modelDim.isExplicit:
-        member = modelDim.member
+    if model_dim.isExplicit:
+        member = model_dim.member
         if member is not None:
-            if member.qname.namespaceURI == val.ugtNamespace:
-                if member.name in val.usgaapDeprecations:
+            if member.name in val.usgaapDeprecations:
                     return True
-            elif member.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
-                return True
     return False
 
 
@@ -303,8 +293,6 @@ def _fact_uses_deprecated_item(val, fact):
 
         if fact.isItem:
             for dimConcept, modelDim in fact.context.segDimValues.items():
-                print(type(dimConcept))
-                print(type(modelDim))
                 if _deprecated_concept(val, dimConcept):
                     return True
                 if _deprecated_dimension(val, modelDim):
