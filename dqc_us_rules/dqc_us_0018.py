@@ -1,4 +1,4 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
+# (c) Copyright 2016, XBRL US Inc. All rights reserved.
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import json
@@ -8,11 +8,14 @@ import time
 
 from collections import defaultdict
 
+from .util import messages
+
 from arelle import XbrlConst, ModelXbrl
 from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 _CODE_NAME = 'DQC.US.0018'
 _RULE_VERSION = '1.1'
+_EARLIEST_US_GAAP_YEAR = 2014
 
 ugtDocs = (
            {
@@ -37,6 +40,16 @@ ugtDocs = (
 
 
 def _load_cache(val):
+    """
+    Loads the needed deprecated concepts cache into memory
+
+    :param val: ValidateXbrl to load the concepts into
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :return: No explicit return, but it loads the deprecated concepts for the
+        taxonomy used for the filing into the deprecated concepts dictionary
+        of the given ValidateXbrl
+    :rtype: None
+    """
     val.linroleDefinitionIsDisclosure = re.compile(
         r"-\s+Disclosure\s+-\s", re.IGNORECASE
     )
@@ -45,7 +58,8 @@ def _load_cache(val):
     )
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
-    # load deprecated concepts for filed year of us-gaap
+    year = _EARLIEST_US_GAAP_YEAR
+
     for ugt in ugtDocs:
         ugt_namespace = ugt["namespace"]
         if ((ugt_namespace in val.modelXbrl.namespaceDocs and
@@ -55,7 +69,7 @@ def _load_cache(val):
                 os.path.dirname(__file__),
                 'resources',
                 'DQC_US_0018',
-                "deprecated-concepts.json"
+                '{}_deprecated-concepts.json'.format(str(year))
             )
             file = None
             try:
@@ -70,9 +84,23 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
+            return
+        year += 1
+    val.deprecatedFactConcepts = defaultdict(list)
+    val.deprecatedDimensions = defaultdict(list)
+    val.deprecatedMembers = defaultdict(list)
 
 
 def _create_cache(val):
+    """
+    Creates the caches needed for dqc_us_0018
+
+    :param val: ValidateXbrl needed in order to save the cache
+    :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
+    :return: no explicit return but creates and saves a cache in
+        dqc_us_rule\resources\DQC_US_0018
+    :rtype: None
+    """
     val.linroleDefinitionIsDisclosure = re.compile(
         r"-\s+Disclosure\s+-\s", re.IGNORECASE
     )
@@ -81,13 +109,14 @@ def _create_cache(val):
     )
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
+    year = _EARLIEST_US_GAAP_YEAR
 
     for ugt in ugtDocs:
         deprecations_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
             'DQC_US_0018',
-            "deprecated-concepts.json"
+            '{}_deprecated-concepts.json'.format(str(year))
         )
         
         if not os.path.isfile(deprecations_json_file):
@@ -114,12 +143,17 @@ def _create_cache(val):
                     _("US-GAAP documentation not loaded: %(file)s"),
                     modelXbrl=val, file=os.path.basename(ugt_doc_lb))
             else:
-                # load deprecations
                 dep_label = 'http://www.xbrl.org/2009/role/deprecatedLabel'
                 dep_date_label = (
                     'http://www.xbrl.org/2009/role/deprecatedDateLabel'
                 )
-                for labelRel in deprecations_instance.relationshipSet(XbrlConst.conceptLabel).modelRelationships:
+                concept_label = XbrlConst.conceptLabel
+                relationship_set = (
+                    deprecations_instance.relationshipSet(concept_label)
+                )
+                model_relationships = relationship_set.modelRelationships
+
+                for labelRel in model_relationships:
                     model_documentation = labelRel.toModelObject
                     concept_name = labelRel.fromModelObject.name
 
@@ -149,21 +183,148 @@ def _create_cache(val):
                 _("build us-gaap deprecated concepts cache"),  # noqa
                 time.time() - started_at
             )
-        break
-    val.deprecatedFactConcepts = defaultdict(list)
-    val.deprecatedDimensions = defaultdict(list)
-    val.deprecatedMembers = defaultdict(list)
+        year += 1
 
 
 def deprecated_facts_errors(val):
+    """
+    Makes error messages for all deprecation errors
+
+    :param val: ValidateXbrl to check for error
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl
+    :return: No explicit return, though error messages are created
+    :rtype: None
+    """
     _load_cache(val)
-    print(val.deprecatedFactConcepts)
-   # for errors in _catch_deprecated_errors():
-    #    print("")
+    for fact in _catch_deprecated_errors(val):
+        val.modelXbrl.error(
+           _CODE_NAME,
+           messages.get_message(_CODE_NAME),
+           concept=fact.concept.label(),
+           modelObject=fact,
+           ruleVersion=_RULE_VERSION
+        )
 
 
-def _catch_deprecated_errors():
-    yield "sage"
+def _deprecated_concept(val, concept):
+    """
+    Returns true if the fact uses a deprecated concept
+
+    :param val: ValidateXbrl to check for deprecated items
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :param concept: Concept to check
+    :type concept: :class:'~arelle.ModelFact.Concept'
+    :return: Returns true if the fact uses a deprecated concept
+    :rtype: bool
+    """
+    if concept.qname.namespaceURI == val.ugtNamespace:
+        if concept.name in val.usgaapDeprecations:
+            return True
+    elif concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
+        return True
+    return False
+
+
+def _deprecated_dimension(val, dim_concept):
+    """
+    Returns true if the fact uses a deprecated dimension
+
+    :param val: ValidateXbrl to check for deprecated dimensions
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :param dim_concept: Concept to check
+    :type dim_concept: :class:'~arelle.ModelDtsObject.ModelConcept'
+    :return: Returns true if the fact uses a deprecated dimension
+    :rtype: bool
+    """
+    if dim_concept.qname.namespaceURI == val.ugtNamespace:
+        if dim_concept.name in val.usgaapDeprecations:
+            return True
+    elif dim_concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
+        return True
+    return False
+
+
+def _deprecated_member(val, modelDim):
+    """
+    Returns true if the fact uses a deprecated member
+
+    :param val: ValidateXbrl to check for deprecated dimensions
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :param modelDim: Concept to check
+    :type modelDim: :class:'~arelle.ModelInstanceObject.ModelDimensionValue'
+    :return: Returns true if the fact uses a deprecated dimension
+    :rtype: bool
+    """
+    if modelDim.isExplicit:
+        member = modelDim.member
+        if member is not None:
+            if member.qname.namespaceURI == val.ugtNamespace:
+                if member.name in val.usgaapDeprecations:
+                    return True
+            elif member.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
+                return True
+    return False
+
+
+def _fact_checkable(concept, context):
+    """
+    Returns true if fact can be checked
+
+    :param concept: Concept to check if it is None
+    :type concept: :class:'~arelle.ModelDtsObject.ModelConcept'
+    :param context: Context to check if it is None
+    :type context: :class:'arelle.ModelInstanceObject.ModelContext'
+    :return: Returns true if the fact can be checked
+    :rtype; bool
+    """
+    return (
+        concept is not None and
+        context is not None
+    )
+
+
+def _fact_uses_deprecated_item(val, fact):
+    """
+    Checks to see if a fact uses a deprecated item
+
+    :param val: ValidateXbrl to check for deprecated items
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :param fact: Fact to check
+    :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
+    :return: Returns true if fact uses deprecated item
+    :rtype: False
+    """
+    concept = fact.concept
+    context = fact.context
+
+    if _fact_checkable(concept, context):
+        if _deprecated_concept(val, concept):
+            return True
+
+        if fact.isItem:
+            for dimConcept, modelDim in fact.context.segDimValues.items():
+                print(type(dimConcept))
+                print(type(modelDim))
+                if _deprecated_concept(val, dimConcept):
+                    return True
+                if _deprecated_dimension(val, modelDim):
+                    return True
+    return False
+
+
+def _catch_deprecated_errors(val):
+    """
+    Checks to see if facts are using deprecated items
+    :param val: ValidateXbrl to check for deprecated item
+
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
+    :return: Returns information needed to create error message
+    :rype: tuple
+    """
+    for fact in val.modelXbrl.facts:
+        if _fact_uses_deprecated_item(val, fact):
+            yield fact
+
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
