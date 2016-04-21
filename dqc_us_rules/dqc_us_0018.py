@@ -220,8 +220,8 @@ def _deprecated_concept(val, concept):
     if concept.qname.namespaceURI == val.ugtNamespace:
         if concept.name in val.usgaapDeprecations:
             return True
-    elif concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
-        return True
+    #elif concept.get("{http://fasb.org/us-gaap/attributes}deprecatedDate"):
+    #    return True
     return False
 
 
