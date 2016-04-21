@@ -33,7 +33,15 @@ class TestDefaultDimensions(unittest.TestCase):
         )
 
     @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
-    def test_catch_dqc_us_0041_errors_with_errors(self, _):
+    @patch(
+        "dqc_us_rules.dqc_us_0041._default_dim_rel_is_instance",
+        return_value=True
+    )
+    @patch(
+        "dqc_us_rules.dqc_us_0041._check_relationship_exists",
+        return_value=True
+    )
+    def test_catch_dqc_us_0041_errors_with_errors(self, third, second, first):
         """
         Tests to see if dqc_us_0041_errors will be caught
         """
@@ -53,7 +61,7 @@ class TestDefaultDimensions(unittest.TestCase):
         for _ in dqc_us_0041._catch_dqc_us_0041_errors(val):
             bad_count += 1
 
-        self.assertTrue(bad_count == 1)
+        self.assertEquals(bad_count, 1)
 
     @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
     def test_catch_dqc_us_0041_errors_with_no_errors(self, _):
