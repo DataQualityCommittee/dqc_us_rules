@@ -173,7 +173,7 @@ class TestContextChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0005.facts.axis_member_exists')
     def test_run_checks_axis_member_exists(self, axis_member_exists, axis_exists):
         axis_exists.return_value = False
-        axis_member_exists.return_value=True
+        axis_member_exists.return_value = True
         msg = messages.get_message('DQC.US.0005', "49")
         mock_context = Mock(endDatetime=1)
         fact = Mock(localName='foo', context=mock_context)
