@@ -19,19 +19,19 @@ class TestDQC0015(unittest.TestCase):
         self.assertTrue(dqc_us_0015.contains(element_one, check_list))
         self.assertFalse(dqc_us_0015.contains(element_two, check_list))
 
-    def test_contains_insensitive(self):
+    def test_contains_ignore_case(self):
         """
-        Test contains_insensitive with item that contain the same letters but
+        Test contains_ignore_case with item that contain the same letters but
         not the same casing
         """
         element_one = 'foo:cRediT'
         element_two = 'foo:aCcRedItAtiON'
         check_list = 'CreDIt'
         self.assertTrue(
-            dqc_us_0015.contains_insensitive(element_one, check_list)
+            dqc_us_0015.contains_ignore_case(element_one, check_list)
         )
         self.assertTrue(
-            dqc_us_0015.contains_insensitive(element_two, check_list)
+            dqc_us_0015.contains_ignore_case(element_two, check_list)
         )
 
     def test_equals(self):
