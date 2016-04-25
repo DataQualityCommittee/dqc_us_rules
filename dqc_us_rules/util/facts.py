@@ -389,3 +389,22 @@ def axis_qnames(fact):
         str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
         if dim.dimensionQname is not None
     ]
+
+
+def grab_numeric_facts(facts_list):
+    """
+    Given a list of facts, return those facts whose values are numeric
+
+    :param facts_list: list of fact to return numeric values for
+    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    :return: return list of facts with numeric values
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    """
+    numeric_facts = []
+    for fact in facts_list:
+        try:
+            float(fact.value)
+            numeric_facts.append(fact)
+        except ValueError:
+            continue
+    return numeric_facts
