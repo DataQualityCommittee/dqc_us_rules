@@ -117,9 +117,9 @@ def run_checks(val, fact, eop_results, lookup):
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """
-    fact_date = fact.context.endDatetime
-    comparison_date = eop_results[lookup][1]
     if fact.localName == 'EntityCommonStockSharesOutstanding':
+        fact_date = fact.context.endDatetime
+        comparison_date = eop_results[lookup][1]
         # if a fact whose qname is
         # EntityCommonStockSharesOutstanding has an
         # end date prior to eop then fire an error
