@@ -101,6 +101,22 @@ def validate_facts(val):
 
 
 def run_checks(val, fact, eop_results, lookup):
+    """
+    Called to determine which error to fire.
+
+    :param val: val to check
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param fact: fact to check
+    :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
+    :param eop_results: A dictionary of tuples containing the fact, found date and a
+        string representation of that date, keyed off of the LegalEntityAxis
+        members in the format {lea_member: (fact, found_date, date_str)}
+    :type eop_results: dict
+    :param lookup: legal entity access member concept.
+    :type lookup: str
+    :return: No direct return, throws errors when facts can't be validated
+    :rtype: None
+    """
     fact_date = fact.context.endDatetime
     comparison_date = eop_results[lookup][1]
     if fact.localName == 'EntityCommonStockSharesOutstanding':
