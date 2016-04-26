@@ -23,6 +23,7 @@ def run_negative_numbers_no_dimensions(val):
 
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return but throws errors for facts matching the blacklist
     :rtype: None
     """
@@ -61,14 +62,14 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        f for f in numeric_facts if float(f.value) < 0 and
-        f.concept.type is not None and
+        fact for fact in numeric_facts if float(fact.value) < 0 and
+        fact.concept.type is not None and
         # facts with numerical values less than 0 (negative) and contexts
-        f.context is not None and
+        fact.context is not None and
         # check that the fact does not have dimensions
-        len(f.context.segDimValues) == 0 and
+        len(fact.context.segDimValues) == 0 and
         # check xsd type of the concept
-        f.isNumeric
+        fact.isNumeric
     ]
 
     # identify facts which should be reported as included in the list
