@@ -1,7 +1,6 @@
 # (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
-import csv
 import os
 from .util import facts, messages, neg_num
 
@@ -21,6 +20,7 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
+_PRECONDITION_ELEMENT = 'Cash'
 
 def run_negative_values_with_dependence(val):
     """
@@ -30,14 +30,15 @@ def run_negative_values_with_dependence(val):
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: Nore direct return, but throws errors for facts matching the
+    :return: No direct return, but throws errors for facts matching the
         blacklist
     :rtype: None
     """
     # filter down to numeric facts
-    blacklist_dict = neg_num.concept_map_from_csv()
-    blacklist_facts = filter_negative_number_facts(val, blacklist_dict.keys())
+    blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
+    blacklist_facts = filter_negative_number_with_dependence_facts(val, blacklist_dict.keys())
     for fact in blacklist_facts:
+        val.modelXbrl.error('LAST FOR LOOOOOoooooop', 'Finally...')
         index_key = blacklist_dict[fact.qname.localName]
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
@@ -47,6 +48,44 @@ def run_negative_values_with_dependence(val):
             concept=fact.concept.label(), modelObject=fact,
             ruleVersion=_RULE_VERSION
         )
+
+
+def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
+    """
+    Checks...
+
+    :param val: val whose modelXbrl provides the facts to check
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param blacklist_concepts: An iterable of the blacklist concepts we should
+        be testing against.
+    :type blacklist_concepts: list [str]
+    :return: Return list of the facts falling into the blacklist.
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    """
+    blacklist_exclusion_rules = neg_num.get_rules_from_csv(_DEFAULT_EXCLUSIONS_FILE)
+    bad_blacklist = []
+    # Checks if the precondition concept exists and only proceeds with check if true
+    if facts.precondition_fact_exists(list(val.modelXbrl.facts), _PRECONDITION_ELEMENT):
+        numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
+        # other filters before running negative numbers check
+        # numeric_facts has already checked if fact.value can be made into a number
+        facts_to_check = [
+            f for f in numeric_facts if float(f.value) < 0 and
+            f.concept.type is not None and
+            # facts with numerical values less than 0 and contexts and
+            f.context is not None and
+            # check xsd type of the concept
+            f.isNumeric
+        ]
+
+        # identify facts which should be reported as included in the list
+        for fact in facts_to_check:
+            if neg_num.check_rules(fact, blacklist_exclusion_rules):
+                continue  # cannot be black
+            if fact.qname.localName in blacklist_concepts:
+                bad_blacklist.append(fact)
+
+    return bad_blacklist
 
 
 __pluginInfo__ = {
