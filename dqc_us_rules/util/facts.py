@@ -424,6 +424,7 @@ def precondition_fact_exists(facts_list, precondition_concept):
     :rtype: bool
     """
     for fact in facts_list:
+        # The precondition fact exists and its value is greater than zero
         if (fact.concept.qname.localName == precondition_concept) and float(fact.value) > 0:
             return True
     return False

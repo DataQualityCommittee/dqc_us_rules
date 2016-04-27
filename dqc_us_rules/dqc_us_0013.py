@@ -5,7 +5,7 @@ import os
 from .util import facts, messages, neg_num
 
 _CODE_NAME = 'DQC.US.0013'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.1'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -20,7 +20,7 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
-_PRECONDITION_ELEMENT = 'Cash'
+_PRECONDITION_ELEMENT = 'NetIncomeLossBeforeTax'
 
 def run_negative_values_with_dependence(val):
     """
@@ -38,7 +38,6 @@ def run_negative_values_with_dependence(val):
     blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
     blacklist_facts = filter_negative_number_with_dependence_facts(val, blacklist_dict.keys())
     for fact in blacklist_facts:
-        val.modelXbrl.error('LAST FOR LOOOOOoooooop', 'Finally...')
         index_key = blacklist_dict[fact.qname.localName]
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
