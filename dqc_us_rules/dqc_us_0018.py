@@ -50,12 +50,6 @@ def _load_cache(val):
         of the given ValidateXbrl
     :rtype: None
     """
-    val.linroleDefinitionIsDisclosure = re.compile(
-        r"-\s+Disclosure\s+-\s", re.IGNORECASE
-    )
-    val.linkroleDefinitionStatementSheet = re.compile(
-        r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE
-    )
     cntlr = val.modelXbrl.modelManager.cntlr
     year = _EARLIEST_US_GAAP_YEAR
 
@@ -83,11 +77,8 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
-            break
+            return
         year += 1
-    val.deprecatedFactConcepts = defaultdict(list)
-    val.deprecatedDimensions = defaultdict(list)
-    val.deprecatedMembers = defaultdict(list)
 
 
 def _create_cache(val):
@@ -100,12 +91,6 @@ def _create_cache(val):
         dqc_us_rule\resources\DQC_US_0018
     :rtype: None
     """
-    val.linkroleDefinitionIsDisclosure = re.compile(
-        r"-\s+Disclosure\s+-\s", re.IGNORECASE
-    )
-    val.linkroleDefinitionStatementSheet = re.compile(
-        r"[^-]+-\s+Statement\s+-\s+.*", re.IGNORECASE
-    )
     val.ugtNamespace = None
     cntlr = val.modelXbrl.modelManager.cntlr
     year = _EARLIEST_US_GAAP_YEAR
