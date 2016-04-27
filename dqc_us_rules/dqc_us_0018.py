@@ -83,7 +83,7 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
-            return
+            break
         year += 1
     val.deprecatedFactConcepts = defaultdict(list)
     val.deprecatedDimensions = defaultdict(list)
@@ -100,7 +100,7 @@ def _create_cache(val):
         dqc_us_rule\resources\DQC_US_0018
     :rtype: None
     """
-    val.linroleDefinitionIsDisclosure = re.compile(
+    val.linkroleDefinitionIsDisclosure = re.compile(
         r"-\s+Disclosure\s+-\s", re.IGNORECASE
     )
     val.linkroleDefinitionStatementSheet = re.compile(
