@@ -243,20 +243,18 @@ def _deprecated_member(val, model_dim):
     return False
 
 
-def _fact_checkable(concept, context):
+def _fact_checkable(fact):
     """
     Returns true if fact can be checked
 
-    :param concept: Concept to check if it is None
-    :type concept: :class:'~arelle.ModelDtsObject.ModelConcept'
-    :param context: Context to check if it is None
-    :type context: :class:'arelle.ModelInstanceObject.ModelContext'
+    :param fact: Fact to check concept and context for None
+    :type fact: :class:'~arelle.ModelDtsObject.ModelFact'
     :return: Returns true if the fact can be checked
     :rtype; bool
     """
     return (
-        concept is not None and
-        context is not None
+        fact.concept is not None and
+        fact.context is not None
     )
 
 
@@ -271,11 +269,9 @@ def _fact_uses_deprecated_item(val, fact):
     :return: Returns true if fact uses deprecated item
     :rtype: False
     """
-    concept = fact.concept
-    context = fact.context
 
-    if _fact_checkable(concept, context):
-        if _deprecated_concept(val, concept):
+    if _fact_checkable(fact):
+        if _deprecated_concept(val, fact.concept):
             return True
 
         if fact.isItem:
