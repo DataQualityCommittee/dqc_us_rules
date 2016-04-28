@@ -3,6 +3,7 @@
 # See PatentNotice.md for patent infringement notice.
 import os
 from .util import facts, messages, neg_num
+import decimal
 
 _CODE_NAME = 'DQC.US.0013'
 _RULE_VERSION = '1.1'
@@ -55,7 +56,8 @@ def run_negative_values_with_dependence(val):
 
 def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     """
-    Checks...
+    Checks the numeric, negative value facts in the provided ModelXBRL instance
+    against the rule dictionary and returns those which meet the conditions of the blacklist.
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
@@ -73,7 +75,7 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
         # other filters before running negative numbers check
         # numeric_facts has already checked if fact.value can be made into a number
         facts_to_check = [
-            f for f in numeric_facts if float(f.value) < 0 and
+            f for f in numeric_facts if decimal.Decimal(f.value) < 0 and
             f.concept.type is not None and
             # facts with numerical values less than 0 and contexts and
             f.context is not None and
@@ -92,8 +94,15 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
 
 def dqc_13_precondition_check(val):
     """
+    Checks if the precondition fact(s) exist and grabs their values.  Runs through an
+    if/else statement of the precondition check and totals the values to ensure they
+    are greater than zero.
 
-    :return:
+    :param val: val whose modelXbrl provides the facts to check
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: True or False depending on the precondition check
+    :rtype: bool
+
     """
     facts_list = list(val.modelXbrl.facts)
     total = 0
@@ -106,10 +115,11 @@ def dqc_13_precondition_check(val):
 
     if check1:
         total = value1
-        if check2:
-            total = total + value2 + value3
-            if check4 or check5:
-                total = total + value3 + value4 + value5
+    elif check2:
+        total = total + value2 + value3
+    elif check4 or check5:
+        total = total + value3 + value4 + value5
+
     if total > 0:
         return True
     else:

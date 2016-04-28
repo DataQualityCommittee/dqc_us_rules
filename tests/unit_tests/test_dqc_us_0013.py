@@ -99,6 +99,10 @@ class TestDQC0013(unittest.TestCase):
         )
 
     def test_precondition_fact_exists(self):
+        """
+        Verifies that the check for whether a precondition concept exists returns
+        the expected results
+        """
         # Contains precondition element and the associated value is positive = Fire
         fact_list1 = [self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
                       self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
@@ -117,12 +121,22 @@ class TestDQC0013(unittest.TestCase):
                       self.fact_no_fire5]
 
         result1 = util.facts.precondition_fact_exists(fact_list1, dqc_us_0013._PRECONDITION_ELEMENT_1)
-        self.assertEqual(True, 77, result1)
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list2, dqc_us_0013._PRECONDITION_ELEMENT_1))
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list3, dqc_us_0013._PRECONDITION_ELEMENT_1))
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list4, dqc_us_0013._PRECONDITION_ELEMENT_1))
+        self.assertEqual(True, result1[0])
+        self.assertEqual(77, result1[1])
+        result2 = util.facts.precondition_fact_exists(fact_list2, dqc_us_0013._PRECONDITION_ELEMENT_1)
+        self.assertEqual(True, result2[0])
+        self.assertEqual(0, result2[1])
+        result3 = util.facts.precondition_fact_exists(fact_list3, dqc_us_0013._PRECONDITION_ELEMENT_1)
+        self.assertEqual(True, result3[0])
+        self.assertEqual(-77, result3[1])
+        result4 = util.facts.precondition_fact_exists(fact_list4, dqc_us_0013._PRECONDITION_ELEMENT_1)
+        self.assertEqual(False, result4[0])
+        self.assertEqual(0, result4[1])
 
     def test_negative_number_with_dependence(self):
+        """
+        Verifies the check for negative numbers with dependencies works as expected
+        """
         # The precondition fact is positive so the rule should execute
         mock_fact_model1 = mock.Mock(
             modelXbrl=mock.Mock(

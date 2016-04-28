@@ -2,6 +2,7 @@
 # Copyright (c) 2015, XBRL US Inc.  All rights reserved
 from collections import defaultdict
 from arelle import ValidateXbrlCalcs
+import decimal
 
 
 DEI_NAMESPACE_LIST = [
@@ -403,7 +404,7 @@ def grab_numeric_facts(facts_list):
     numeric_facts = []
     for fact in facts_list:
         try:
-            float(fact.value)
+            decimal.Decimal(fact.value)
             numeric_facts.append(fact)
         except ValueError:
             continue
@@ -420,32 +421,12 @@ def precondition_fact_exists(facts_list, precondition_concept):
     :param precondition_concept: name of the concept to look for
     :type precondition_concept: str
     :return: return true or false depending on whether the precondition
-        concept exists
-    :rtype: bool
+        concept exists and then also return the value of the precondition
+        fact if it exist (return 0 for the value if it does not exist)
+    :rtype: tuple (bool, float)
     """
-    # The precondition fact exists and its value is greater than zero
-    # if (fact.concept.qname.localName == precondition_concept) and float(fact.value) > 0:
     for fact in facts_list:
         if fact.concept.qname.localName == precondition_concept:
-            return True, float(fact.value)
+            return True, decimal.Decimal(fact.value)
     return False, 0
 
-def get_precondition_value(facts_list, precondition_concept):
-    """
-    Given a list of facts, check that the precondition concept is
-    included in the list
-
-    :param facts_list: list of facts to check for precondition concept
-    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact'
-    :param precondition_concept: name of the concept to look for
-    :type precondition_concept: str
-    :return: return true or false depending on whether the precondition
-        concept exists
-    :rtype: bool
-    """
-    # If the fact exists, return its value
-    for fact in facts_list:
-        if fact.concept.qname.localName == precondition_concept:
-            return float(fact.value)
-        # If it doesn't exist, return 0
-    return 0

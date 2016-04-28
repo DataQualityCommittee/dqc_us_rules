@@ -4,6 +4,7 @@
 import os
 
 from .util import facts, messages, neg_num
+import decimal
 
 
 _CODE_NAME = 'DQC.US.0014'
@@ -61,7 +62,7 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        f for f in numeric_facts if float(f.value) < 0 and
+        f for f in numeric_facts if decimal.Decimal(f.value) < 0 and
         f.concept.type is not None and
         # facts with numerical values less than 0 (negative) and contexts
         f.context is not None and
