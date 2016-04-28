@@ -133,7 +133,7 @@ def check_rule(fact, rule_dict):
         if rule_dict['relation'] == 'Contains':
             fact_matches = contains(fact_artifact, rule_dict['item_check'])
         elif rule_dict['relation'] == 'Contains_insensitive':
-            fact_matches = contains_insensitive(
+            fact_matches = contains_ignore_case(
                 fact_artifact, rule_dict['item_check']
             )
         elif rule_dict['relation'] == 'Equals':
@@ -176,7 +176,7 @@ def contains(fact_part, dict_check):
     return dict_check in str(fact_part)
 
 
-def contains_insensitive(fact_part, dict_check):
+def contains_ignore_case(fact_part, dict_check):
     """
     Check if the fact_part contains the dict_check item, ignoring case.
 
