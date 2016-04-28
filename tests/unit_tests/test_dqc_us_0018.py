@@ -14,25 +14,12 @@ class TestCompareFacts(unittest.TestCase):
         bad_fact.concept = None
         bad_fact.context = None
 
-        good_concept = good_fact.concept
-        good_context = good_fact.context
-        bad_concept = bad_fact.concept
-        bad_context = bad_fact.context
-
         self.assertTrue(
-            dqc_us_0018._fact_checkable(good_concept, good_context)
+            dqc_us_0018._fact_checkable(good_fact)
         )
 
         self.assertFalse(
-            dqc_us_0018._fact_checkable(good_concept, bad_context)
-        )
-
-        self.assertFalse(
-            dqc_us_0018._fact_checkable(bad_concept, good_context)
-        )
-
-        self.assertFalse(
-            dqc_us_0018._fact_checkable(bad_concept, bad_context)
+            dqc_us_0018._fact_checkable(bad_fact)
         )
 
     def test_deprecated_concept(self):
