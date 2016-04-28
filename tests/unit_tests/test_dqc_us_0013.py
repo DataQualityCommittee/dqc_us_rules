@@ -22,7 +22,7 @@ class TestDQC0013(unittest.TestCase):
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31'
         )
         m_qn_precondition = mock.Mock(
-            localName='NetIncomeLossBeforeTax',
+            localName='IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31'
         )
         m_qn_no_blacklist = mock.Mock(
@@ -111,15 +111,16 @@ class TestDQC0013(unittest.TestCase):
         fact_list3 = [self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
                       self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
                       self.fact_no_fire5, self.fact_precondition_negative]
-        # The precondition element does not exist = Fire
+        # The precondition element does not exist = No Fire
         fact_list4 = [self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
                       self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
                       self.fact_no_fire5]
 
-        self.assertTrue(util.facts.precondition_fact_exists(fact_list1, dqc_us_0013._PRECONDITION_ELEMENT))
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list2, dqc_us_0013._PRECONDITION_ELEMENT))
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list3, dqc_us_0013._PRECONDITION_ELEMENT))
-        self.assertFalse(util.facts.precondition_fact_exists(fact_list4, dqc_us_0013._PRECONDITION_ELEMENT))
+        result1 = util.facts.precondition_fact_exists(fact_list1, dqc_us_0013._PRECONDITION_ELEMENT_1)
+        self.assertEqual(True, 77, result1)
+        self.assertFalse(util.facts.precondition_fact_exists(fact_list2, dqc_us_0013._PRECONDITION_ELEMENT_1))
+        self.assertFalse(util.facts.precondition_fact_exists(fact_list3, dqc_us_0013._PRECONDITION_ELEMENT_1))
+        self.assertFalse(util.facts.precondition_fact_exists(fact_list4, dqc_us_0013._PRECONDITION_ELEMENT_1))
 
     def test_negative_number_with_dependence(self):
         # The precondition fact is positive so the rule should execute
