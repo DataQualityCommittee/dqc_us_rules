@@ -20,7 +20,11 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
-_PRECONDITION_ELEMENT = 'NetIncomeLossBeforeTax'
+_PRECONDITION_ELEMENT_1 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest'
+_PRECONDITION_ELEMENT_2 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments'
+_PRECONDITION_ELEMENT_3 = 'IncomeLossFromEquityMethodInvestments'
+_PRECONDITION_ELEMENT_4 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+_PRECONDITION_ELEMENT_5 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
 
 def run_negative_values_with_dependence(val):
     """
@@ -64,7 +68,7 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     blacklist_exclusion_rules = neg_num.get_rules_from_csv(_DEFAULT_EXCLUSIONS_FILE)
     bad_blacklist = []
     # Checks if the precondition concept exists and only proceeds with check if true
-    if facts.precondition_fact_exists(list(val.modelXbrl.facts), _PRECONDITION_ELEMENT):
+    if dqc_13_precondition_check(val):
         numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
         # other filters before running negative numbers check
         # numeric_facts has already checked if fact.value can be made into a number
@@ -85,6 +89,31 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
                 bad_blacklist.append(fact)
 
     return bad_blacklist
+
+def dqc_13_precondition_check(val):
+    """
+
+    :return:
+    """
+    facts_list = list(val.modelXbrl.facts)
+    total = 0
+
+    check1, value1 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_1)
+    check2, value2 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_2)
+    check3, value3 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_3)
+    check4, value4 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_4)
+    check5, value5 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_5)
+
+    if check1:
+        total = value1
+        if check2:
+            total = total + value2 + value3
+            if check4 or check5:
+                total = total + value3 + value4 + value5
+    if total > 0:
+        return True
+    else:
+        return False
 
 
 __pluginInfo__ = {
