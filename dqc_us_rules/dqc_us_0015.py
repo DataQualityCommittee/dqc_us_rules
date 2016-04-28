@@ -3,7 +3,8 @@
 # See PatentNotice.md for patent infringement notice.
 import csv
 import os
-from .util import facts, messages, neg_num
+from .util import messages, neg_num
+from .util import facts as facts_util
 
 _CODE_NAME = 'DQC.US.0015'
 _RULE_VERSION = '1.0'
@@ -65,7 +66,7 @@ def filter_negative_number_facts(val, blacklist_concepts):
     blacklist_exclusion_rules = get_rules_from_csv()
     bad_blacklist = []
 
-    numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
+    numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
@@ -214,14 +215,14 @@ def get_artifact_lists(fact, rule_dict):
     artifact_type = rule_dict['artifact']
 
     if artifact_type == "Member":
-        artifacts = facts.member_qnames(fact)
+        artifacts = facts_util.member_qnames(fact)
     if artifact_type == "Axis":
         if '|' in rule_dict['item_check']:
-            artifacts = facts.member_qnames(
+            artifacts = facts_util.member_qnames(
                 fact, axis_filter=rule_dict['item_check'].split('|')[0]
             )
         else:
-            artifacts = facts.axis_qnames(fact)
+            artifacts = facts_util.axis_qnames(fact)
 
     return artifacts
 
