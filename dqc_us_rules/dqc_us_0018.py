@@ -45,10 +45,8 @@ def _load_cache(val):
 
     :param val: ValidateXbrl to load the concepts into
     :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
-    :return: No explicit return, but it loads the deprecated concepts for the
-        taxonomy used for the filing into the deprecated concepts dictionary
-        of the given ValidateXbrl
-    :rtype: None
+    :return: Return True if cache exists, False otherwise.
+    :rtype: bool
     """
     cntlr = val.modelXbrl.modelManager.cntlr
     year = _EARLIEST_US_GAAP_YEAR
@@ -77,8 +75,13 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
-            return
+                #year should be cached.  It is not, so return False
+                return False
+            #year should be cached, and is.  Return True
+            return True
         year += 1
+    #checked all years.  No cache found.
+    return False
 
 
 def _create_cache(val):
@@ -104,7 +107,6 @@ def _create_cache(val):
         )
 
         if not os.path.isfile(deprecations_json_file):
-            started_at = time.time()
             ugt_doc_lb = ugt["docLB"]
             val.usgaapDeprecations = {}
             disclosure_system = (
@@ -122,13 +124,7 @@ def _create_cache(val):
                 prior_validate_disclosure_system
             )
 
-            if deprecations_instance is None:
-                val.modelXbrl.error(
-                    "arelle:notLoaded",
-                    _("US-GAAP documentation not loaded: %(file)s"),  # noqa
-                    modelXbrl=val, file=os.path.basename(ugt_doc_lb)
-                )
-            else:
+            if deprecations_instance is not None:
                 dep_label = 'http://www.xbrl.org/2009/role/deprecatedLabel'
                 dep_date_label = (
                     'http://www.xbrl.org/2009/role/deprecatedDateLabel'
@@ -165,10 +161,6 @@ def _create_cache(val):
                 saveFile(cntlr, deprecations_json_file, json_str)
                 deprecations_instance.close()
                 del deprecations_instance  # dereference closed modelXbrl
-            val.modelXbrl.profileStat(
-                _("build us-gaap deprecated concepts cache"),  # noqa
-                time.time() - started_at
-            )
         year += 1
 
 
@@ -181,7 +173,9 @@ def deprecated_facts_errors(val):
     :return: No explicit return, though error messages are created
     :rtype: None
     """
-    _load_cache(val)
+    cache_exists = _load_cache(val)
+    if not cache_exists:
+        _create_cache(val)
     for fact in _catch_deprecated_errors(val):
         val.modelXbrl.error(
            _CODE_NAME,
