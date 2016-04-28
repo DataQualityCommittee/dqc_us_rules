@@ -65,59 +65,75 @@ class TestDQC0014(unittest.TestCase):
         mock_context3 = mock.Mock(segDimValues=mock_dimensions3)
         mock_context4 = mock.Mock(segDimValues=mock_no_dimensions)
 
-        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS dimensions = No Fire
+        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS dimensions = No Fire neg num check
         self.fact_one = mock.Mock(
             concept=mock_concept1, qname=m_qn_fire1, value=-7,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context1
+            context=mock_context1, isNumeric=True
         )
-        # Fact is numeric, has NEGATIVE value, concept in blacklist, but HAS NO dimensions = Fire
+        # Fact is numeric, has NEGATIVE value, concept in blacklist, but HAS NO dimensions = Fire neg num check
         self.fact_two = mock.Mock(
             concept=mock_concept2, qname=m_qn_fire2, value=-77,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context4
+            context=mock_context4, isNumeric=True
         )
-        # Fact is numeric, has POSITIVE value, concept in blacklist, and HAS NO dimensions = No Fire
+        # Fact is numeric, has POSITIVE value, concept in blacklist, and HAS NO dimensions = No Fire neg num check
         self.fact_three = mock.Mock(
             concept=mock_concept3, qname=m_qn_fire3, value=7,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context4
+            context=mock_context4, isNumeric=True
         )
-        # Fact is numeric, has POSITIVE value, concept NOT IN blacklist, and HAS NO dimensions = No Fire
+        # Fact is numeric, has POSITIVE value, concept NOT IN blacklist, and HAS NO dimensions = No Fire neg num check
         self.fact_four = mock.Mock(
             concept=mock_concept4, qname=m_qn_no_fire1, value=77,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context4
+            context=mock_context4, isNumeric=True
         )
-        # Fact is numeric, has POSITIVE value, concept in blacklist, and HAS dimensions = No Fire
+        # Fact is numeric, has POSITIVE value, concept in blacklist, and HAS dimensions = No Fire neg num check
         self.fact_five = mock.Mock(
             concept=mock_concept2, qname=m_qn_fire2, value=777,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context2
+            context=mock_context2, isNumeric=True
         )
         # Fact is NOT numeric (TextItem), has NEGATIVE value, concept in blacklist, and HAS NO dimensions = No Fire
+        # neg num check
+        # Will fail the numeric facts test
         self.fact_six = mock.Mock(
             concept=mock_concept5, qname=m_qn_fire2, value='This is some text!',
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context4
+            context=mock_context4, isNumeric=False
         )
         # Fact is NOT numeric (Boolean), has NEGATIVE value, concept NOT IN blacklist, and HAS NO dimensions = No Fire
+        # neg num check
+        # Will fail the numeric facts test
         self.fact_seven = mock.Mock(
             concept=mock_concept6, qname=m_qn_no_fire2, value='true',
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_concept4
+            context=mock_concept4, isNumeric=False
         )
-        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS NO dimensions = Fire
+        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS NO dimensions = Fire neg num check
         self.fact_eight = mock.Mock(
             concept=mock_concept3, qname=m_qn_fire3, value=-777,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context4
+            context=mock_context4, isNumeric=True
         )
-        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS NO dimensions = No Fire
+        # Fact is numeric, has NEGATIVE value, concept in blacklist, and HAS NO dimensions = No Fire neg num check
         self.fact_nine = mock.Mock(
             concept=mock_concept3, qname=m_qn_fire3, value=-77.7,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
-            context=mock_context3
+            context=mock_context3, isNumeric=True
+        )
+        #  Will fail the numeric facts test
+        self.fact_ten = mock.Mock(
+            concept=mock_concept3, qname=m_qn_fire3, value='false',
+            namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            context=mock_context3, isNumeric=True
+        )
+        # Will fail the numeric facts test
+        self.fact_eleven = mock.Mock(
+            concept=mock_concept2, qname=m_qn_fire2, value=7777,
+            namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            context=mock_context2, isNumeric=False
         )
 
     def test_negative_number_no_dimensions(self):

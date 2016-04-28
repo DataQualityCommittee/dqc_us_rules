@@ -403,8 +403,9 @@ def grab_numeric_facts(facts_list):
     numeric_facts = []
     for fact in facts_list:
         try:
-            float(fact.value)
-            numeric_facts.append(fact)
+            if fact.isNumeric:
+                float(fact.value)
+                numeric_facts.append(fact)
         except ValueError:
             continue
     return numeric_facts
