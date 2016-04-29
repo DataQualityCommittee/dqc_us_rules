@@ -93,7 +93,9 @@ class TestDQC0015(unittest.TestCase):
         """
         with open(dqc_us_0015._DEFAULT_EXCLUSIONS_FILE, 'rt') as f:
             rule_line_count = len(f.readlines()) - 1  # remember the header
-        blacklist_exclusion_rules = neg_num.get_rules_from_csv(dqc_us_0015._DEFAULT_EXCLUSIONS_FILE)
+        blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+            dqc_us_0015._DEFAULT_EXCLUSIONS_FILE
+        )
         # If any values are not BLE , they will not get returned and this
         # count will be less than # of lines.
         total_rule_count = len(blacklist_exclusion_rules)
@@ -121,7 +123,9 @@ class TestBuildDict(unittest.TestCase):
         open_name = '{0}.open'.format(neg_num.__name__)
         with mock.patch(open_name, create=True) as m:
             m.return_value = io.StringIO(self.csv_str)
-            self.blacklist_exclusion_rules = neg_num.get_rules_from_csv(dqc_us_0015._DEFAULT_EXCLUSIONS_FILE)
+            self.blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+                dqc_us_0015._DEFAULT_EXCLUSIONS_FILE
+            )
         self.rule_one = neg_num._parse_row(
             self.csv_lines[0].split(',')[1:]
         )

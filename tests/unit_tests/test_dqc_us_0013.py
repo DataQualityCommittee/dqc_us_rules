@@ -46,37 +46,43 @@ class TestDQC0013(unittest.TestCase):
         )
         mock_no_dimensions = {}
         mock_context = mock.Mock(segDimValues=mock_no_dimensions)
-        # Concept is in blacklist, type is numeric with decimal, value is NEGATIVE = Fire
+        # Concept is in blacklist, type is numeric with decimal, value is
+        # NEGATIVE = Fire
         self.fact_fire1 = mock.Mock(
             concept=mock_concept1, qname=m_qn_fire1, value=-.0010,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Concept is in blacklist, type is numeric without decimal, value is NEGATIVE = Fire
+        # Concept is in blacklist, type is numeric without decimal, value is
+        # NEGATIVE = Fire
         self.fact_fire2 = mock.Mock(
             concept=mock_concept2, qname=m_qn_fire2, value=-10,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Concept is in blacklist, type is numeric with decimal, value is POSITIVE = No Fire
+        # Concept is in blacklist, type is numeric with decimal, value is
+        # POSITIVE = No Fire
         self.fact_no_fire1 = mock.Mock(
             concept=mock_concept1, qname=m_qn_fire1, value=.1010,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Concept is in blacklist, type is numeric without decimal, value is POSITIVE = No Fire
+        # Concept is in blacklist, type is numeric without decimal, value is
+        # POSITIVE = No Fire
         self.fact_no_fire2 = mock.Mock(
             concept=mock_concept2, qname=m_qn_fire2, value=100,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Concept is NOT in blacklist, type is numeric without decimal, value is NEGATIVE = No Fire
+        # Concept is NOT in blacklist, type is numeric without decimal, value
+        # is NEGATIVE = No Fire
         self.fact_no_fire3 = mock.Mock(
             concept=mock_concept_no_blacklist, qname=m_qn_no_blacklist,
             value=-7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Concept is NOT in blacklist, type is numeric without decimal, value is POSITIVE = No Fire
+        # Concept is NOT in blacklist, type is numeric without decimal, value
+        # is POSITIVE = No Fire
         self.fact_no_fire4 = mock.Mock(
             concept=mock_concept_no_blacklist, qname=m_qn_no_blacklist,
             value=7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
