@@ -73,12 +73,12 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
-                #year should be cached.  It is not, so return False
+                # year should be cached. It is not, so return False
                 return False
-            #year should be cached, and is.  Return True
+            # year should be cached, and is. Return True
             return True
         year += 1
-    #checked all years.  No cache found.
+    # checked all years. No cache found.
     return False
 
 
