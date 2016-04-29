@@ -20,9 +20,9 @@ class TestDQC0015(unittest.TestCase):
         self.assertTrue(neg_num.contains(element_one, check_list))
         self.assertFalse(neg_num.contains(element_two, check_list))
 
-    def test_contains_insensitive(self):
+    def test_contains_ignore_case(self):
         """
-        Test contains_insensitive with item that contain the same letters but
+        Test contains_ignore_case with item that contain the same letters but
         not the same casing
         """
         element_one = 'foo:cRediT'
