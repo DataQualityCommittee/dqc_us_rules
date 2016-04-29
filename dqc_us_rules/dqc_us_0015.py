@@ -3,7 +3,8 @@
 # See PatentNotice.md for patent infringement notice.
 import csv
 import os
-from .util import facts, messages
+from .util import messages, neg_num
+from .util import facts as facts_util
 
 _CODE_NAME = 'DQC.US.0015'
 _RULE_VERSION = '1.0'
@@ -34,7 +35,7 @@ def run_negative_numbers(val):
     :rtype: None
     """
     # filter down to numeric facts
-    blacklist_dict = concept_map_from_csv()
+    blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
     blacklist_facts = filter_negative_number_facts(val, blacklist_dict.keys())
     for fact in blacklist_facts:
         index_key = blacklist_dict[fact.qname.localName]
@@ -65,7 +66,7 @@ def filter_negative_number_facts(val, blacklist_concepts):
     blacklist_exclusion_rules = get_rules_from_csv()
     bad_blacklist = []
 
-    numeric_facts = grab_numeric_facts(list(val.modelXbrl.facts))
+    numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
@@ -87,25 +88,6 @@ def filter_negative_number_facts(val, blacklist_concepts):
             bad_blacklist.append(fact)
 
     return bad_blacklist
-
-
-def grab_numeric_facts(facts_list):
-    """
-    Given a list of facts, return those facts whose values are numeric
-
-    :param facts_list: list of fact to return numeric values for
-    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact']
-    :return: return list of facts with numeric values
-    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
-    """
-    numeric_facts = []
-    for fact in facts_list:
-        try:
-            float(fact.value)
-            numeric_facts.append(fact)
-        except ValueError:
-            continue
-    return numeric_facts
 
 
 def check_rules(fact, rule_dicts):
@@ -233,30 +215,18 @@ def get_artifact_lists(fact, rule_dict):
     artifact_type = rule_dict['artifact']
 
     if artifact_type == "Member":
-        artifacts = facts.member_qnames(fact)
+        artifacts = facts_util.member_qnames(fact)
     if artifact_type == "Axis":
         if '|' in rule_dict['item_check']:
-            artifacts = facts.member_qnames(
+            artifacts = facts_util.member_qnames(
                 fact, axis_filter=rule_dict['item_check'].split('|')[0]
             )
         else:
-            artifacts = facts.axis_qnames(fact)
+            artifacts = facts_util.axis_qnames(fact)
 
     return artifacts
 
 # =============================Deal with CSV ================================
-
-
-def concept_map_from_csv():
-    """
-    Returns a map of {qname: id} of the concepts to test for the blacklist
-
-    :return: A map of {qname: id}.
-    :rtype: dict
-    """
-    with open(_DEFAULT_CONCEPTS_FILE, 'rt') as f:
-        reader = csv.reader(f)
-        return {row[1]: row[0] for row in reader}
 
 
 def get_rules_from_csv():
