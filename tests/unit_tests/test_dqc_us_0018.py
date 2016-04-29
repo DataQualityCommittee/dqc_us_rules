@@ -1,7 +1,10 @@
 import unittest
 from unittest import mock
+
 from dqc_us_rules import dqc_us_0018
+
 from arelle.ModelDtsObject import ModelConcept
+
 
 class TestCompareFacts(unittest.TestCase):
     def test_fact_checkable(self):
@@ -62,9 +65,9 @@ class TestCompareFacts(unittest.TestCase):
             "is no longer conveyed dimensionally."
         )
         val.usgaapDeprecations = gaapDeps
-        bad_dim = mock.Mock()
+        bad_dim = mock.Mock(spec=ModelConcept)
         bad_dim.name = 'ComponentOfOtherExpenseNonoperatingAxis'
-        good_dim = mock.Mock()
+        good_dim = mock.Mock(spec=ModelConcept)
         good_dim.name = 'LegalEntityAxis'
 
         self.assertTrue(
