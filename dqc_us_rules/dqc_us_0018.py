@@ -3,10 +3,6 @@
 # See PatentNotice.md for patent infringement notice.
 import json
 import os
-import re
-import time
-
-from collections import defaultdict
 
 from .util import messages
 
