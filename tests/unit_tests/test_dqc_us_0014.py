@@ -160,7 +160,8 @@ class TestDQC0014(unittest.TestCase):
                 facts=[
                     self.fact_one, self.fact_two, self.fact_three,
                     self.fact_four, self.fact_five, self.fact_six,
-                    self.fact_seven, self.fact_eight, self.fact_nine
+                    self.fact_seven, self.fact_eight, self.fact_nine,
+                    self.fact_ten, self.fact_eleven
                 ]
             )
         )
@@ -177,8 +178,11 @@ class TestDQC0014(unittest.TestCase):
         fact_list = [
             self.fact_one, self.fact_two, self.fact_three,
             self.fact_four, self.fact_five, self.fact_six,
-            self.fact_seven, self.fact_eight, self.fact_nine
+            self.fact_seven, self.fact_eight, self.fact_nine,
+            self.fact_ten, self.fact_eleven
         ]
 
         numeric_facts = util.facts.grab_numeric_facts(fact_list)
-        self.assertEqual(7, len(numeric_facts))
+        print('numeric_facts = ')
+        print(fact.qname.localName for fact in numeric_facts)
+        self.assertEqual(8, len(numeric_facts))

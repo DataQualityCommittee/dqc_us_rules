@@ -1,8 +1,8 @@
 # (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
-import csv
 import os
+import csv
 from .util import messages, neg_num
 from .util import facts as facts_util
 
@@ -63,7 +63,9 @@ def filter_negative_number_facts(val, blacklist_concepts):
     :return: Return list of the facts falling into the blacklist.
     :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
-    blacklist_exclusion_rules = get_rules_from_csv()
+    blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+        _DEFAULT_EXCLUSIONS_FILE
+    )
     bad_blacklist = []
 
     numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
@@ -80,7 +82,7 @@ def filter_negative_number_facts(val, blacklist_concepts):
 
     # identify facts which should be reported as included in the list
     for fact in facts_to_check:
-        if check_rules(fact, blacklist_exclusion_rules):
+        if neg_num.check_rules(fact, blacklist_exclusion_rules):
             continue  # cannot be black
         if ((fact.qname.localName in blacklist_concepts and
              fact.qname.namespaceURI in
