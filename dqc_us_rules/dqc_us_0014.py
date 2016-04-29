@@ -26,8 +26,8 @@ def run_negative_numbers_no_dimensions(val):
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: No direct return but throws errors for facts matching the
-        blacklist
+    :return: No direct return but throws errors for facts matching
+        the blacklist.
     :rtype: None
     """
     blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
