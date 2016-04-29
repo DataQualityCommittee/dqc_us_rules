@@ -131,21 +131,27 @@ class TestContextChecks(unittest.TestCase):
     def test_run_checks_EntityCommonStockSharesOutstanding(self):
         msg = messages.get_message('DQC.US.0005', "17")
         mock_context = Mock(endDatetime=1)
-        fact = Mock(localName='EntityCommonStockSharesOutstanding', context=mock_context)
+        fact = Mock(
+            localName='EntityCommonStockSharesOutstanding',
+            context=mock_context
+        )
         lookup = 'foo'
-        eop_results = {lookup:[1, 1]}
+        eop_results = {lookup: [1, 1]}
         mock_error = Mock()
         mock_modelxbrl = Mock(error=mock_error)
         mock_val = Mock(modelXbrl=mock_modelxbrl)
         dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
         self.assertFalse(mock_error.called)
 
-        mock_context=Mock(endDatetime=0)
-        fact = Mock(localName='EntityCommonStockSharesOutstanding', context=mock_context)
+        mock_context = Mock(endDatetime=0)
+        fact = Mock(
+            localName='EntityCommonStockSharesOutstanding',
+            context=mock_context
+        )
         dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
         mock_error.assert_called_with(
             'DQC.US.0005.17',
-             msg,
+            msg,
             modelObject=[fact] + list(eop_results[lookup]),
             ruleVersion=dqc_us_0005._RULE_VERSION
         )
@@ -157,7 +163,7 @@ class TestContextChecks(unittest.TestCase):
         mock_context = Mock(endDatetime=1)
         fact = Mock(localName='foo', context=mock_context)
         lookup = 'foo'
-        eop_results = {lookup:[1, 1]}
+        eop_results = {lookup: [1, 1]}
         mock_error = Mock()
         mock_modelxbrl = Mock(error=mock_error)
         mock_val = Mock(modelXbrl=mock_modelxbrl)
@@ -171,14 +177,15 @@ class TestContextChecks(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0005.facts.axis_exists')
     @patch('dqc_us_rules.dqc_us_0005.facts.axis_member_exists')
-    def test_run_checks_axis_member_exists(self, axis_member_exists, axis_exists):
+    def test_run_checks_axis_member_exists(self, axis_member_exists,
+                                           axis_exists):
         axis_exists.return_value = False
         axis_member_exists.return_value = True
         msg = messages.get_message('DQC.US.0005', "49")
         mock_context = Mock(endDatetime=1)
         fact = Mock(localName='foo', context=mock_context)
         lookup = 'foo'
-        eop_results = {lookup:[1, 1]}
+        eop_results = {lookup: [1, 1]}
         mock_error = Mock()
         mock_modelxbrl = Mock(error=mock_error)
         mock_val = Mock(modelXbrl=mock_modelxbrl)
