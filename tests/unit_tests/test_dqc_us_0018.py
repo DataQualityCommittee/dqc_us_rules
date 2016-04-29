@@ -1,7 +1,7 @@
 import unittest
 from unittest import mock
 from dqc_us_rules import dqc_us_0018
-
+from arelle.ModelDtsObject import ModelConcept
 
 class TestCompareFacts(unittest.TestCase):
     def test_fact_checkable(self):
@@ -92,9 +92,9 @@ class TestCompareFacts(unittest.TestCase):
              "OtherCreditDerivativesMember."
         )
         val.usgaapDeprecations = gaapDeps
-        bad_mem = mock.Mock()
+        bad_mem = mock.Mock(spec=ModelConcept)
         bad_mem.name = 'OtherMember'
-        good_mem = mock.Mock()
+        good_mem = mock.Mock(spec=ModelConcept)
         good_mem.name = 'OtherCreditDerivativesMember'
 
         self.assertTrue(
