@@ -2,9 +2,10 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-from .util import facts, messages, neg_num
 import decimal
 import collections
+
+from .util import facts, messages, neg_num
 
 
 _CODE_NAME = 'DQC.US.0013'
@@ -24,13 +25,32 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
 )
 
 _PRECONDITION_ELEMENTS = collections.OrderedDict([
-    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', []),
-    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',
-        ['IncomeLossFromEquityMethodInvestments']),
-    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
-        ['IncomeLossFromEquityMethodInvestments', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign']),
-    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
-        ['IncomeLossFromEquityMethodInvestments', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'])
+    (
+        (
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxes'
+            'ExtraordinaryItemsNoncontrollingInterest'
+        ), []),
+    (
+        (
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinority'
+            'InterestAndIncomeLossFromEquityMethodInvestments'
+        ),
+        ['IncomeLossFromEquityMethodInvestments']
+    ),
+    (
+        'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
+        [
+            'IncomeLossFromEquityMethodInvestments',
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+        ]
+    ),
+    (
+        'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
+        [
+            'IncomeLossFromEquityMethodInvestments',
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        ]
+    )
 ])
 
 
@@ -48,7 +68,9 @@ def run_negative_values_with_dependence(val):
     """
     # filter down to numeric facts
     blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
-    blacklist_facts = filter_negative_number_with_dependence_facts(val, blacklist_dict.keys())
+    blacklist_facts = filter_negative_number_with_dependence_facts(
+        val, blacklist_dict.keys()
+    )
     for fact in blacklist_facts:
         index_key = blacklist_dict[fact.qname.localName]
         val.modelXbrl.error(
@@ -64,7 +86,8 @@ def run_negative_values_with_dependence(val):
 def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     """
     Checks the numeric, negative value facts in the provided ModelXBRL instance
-    against the rule dictionary and returns those which meet the conditions of the blacklist.
+    against the rule dictionary and returns those which meet the conditions of
+    the blacklist.
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
@@ -74,13 +97,17 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     :return: Return list of the facts falling into the blacklist.
     :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
-    blacklist_exclusion_rules = neg_num.get_rules_from_csv(_DEFAULT_EXCLUSIONS_FILE)
+    blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+        _DEFAULT_EXCLUSIONS_FILE
+    )
     bad_blacklist = []
-    # Checks if the precondition concept exists and only proceeds with check if true
+    # Checks if the precondition concept exists and only proceeds with check
+    # if true
     if dqc_13_precondition_check(val):
         numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
         # other filters before running negative numbers check
-        # numeric_facts has already checked if fact.value can be made into a number
+        # numeric_facts has already checked if fact.value can be made into
+        # a number
         facts_to_check = [
             f for f in numeric_facts if decimal.Decimal(f.value) < 0 and
             f.concept.type is not None and
@@ -102,9 +129,9 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
 
 def dqc_13_precondition_check(val):
     """
-    Checks if the precondition fact(s) exist and grabs their values.  Runs through an
-    if/else statement of the precondition check and totals the values to ensure they
-    are greater than zero.
+    Checks if the precondition fact(s) exist and grabs their values.  Runs
+    through an if/else statement of the precondition check and totals the
+    values to ensure they are greater than zero.
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
@@ -118,7 +145,9 @@ def dqc_13_precondition_check(val):
         check, value = facts.precondition_fact_exists(facts_list, precondition)
         if check:
             for element in pre_checks:
-                new_check, new_value = facts.precondition_fact_exists(facts_list, element)
+                new_check, new_value = facts.precondition_fact_exists(
+                    facts_list, element
+                )
                 value = value + new_value
         if value > 0:
             return True

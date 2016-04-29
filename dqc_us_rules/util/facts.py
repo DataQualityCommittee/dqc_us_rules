@@ -429,4 +429,3 @@ def precondition_fact_exists(facts_list, precondition_concept):
         if fact.concept.qname.localName == precondition_concept:
             return True, decimal.Decimal(fact.value)
     return False, 0
-

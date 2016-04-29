@@ -2,6 +2,7 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
+import csv
 from .util import messages, neg_num
 from .util import facts as facts_util
 
@@ -62,7 +63,9 @@ def filter_negative_number_facts(val, blacklist_concepts):
     :return: Return list of the facts falling into the blacklist.
     :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
     """
-    blacklist_exclusion_rules = neg_num.get_rules_from_csv(_DEFAULT_EXCLUSIONS_FILE)
+    blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+        _DEFAULT_EXCLUSIONS_FILE
+    )
     bad_blacklist = []
 
     numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
