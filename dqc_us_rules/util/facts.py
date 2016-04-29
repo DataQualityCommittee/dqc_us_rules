@@ -406,7 +406,7 @@ def grab_numeric_facts(facts_list):
         try:
             decimal.Decimal(fact.value)
             numeric_facts.append(fact)
-        except ValueError:
+        except decimal.InvalidOperation:
             continue
     return numeric_facts
 
