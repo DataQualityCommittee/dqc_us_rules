@@ -423,7 +423,7 @@ def precondition_fact_exists(facts_list, precondition_concept):
     :return: return true or false depending on whether the precondition
         concept exists and then also return the value of the precondition
         fact if it exist (return 0 for the value if it does not exist)
-    :rtype: tuple (bool, float)
+    :rtype: tuple (bool, decimal)
     """
     for fact in facts_list:
         if fact.concept.qname.localName == precondition_concept:

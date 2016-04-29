@@ -4,6 +4,8 @@
 import os
 from .util import facts, messages, neg_num
 import decimal
+import collections
+
 
 _CODE_NAME = 'DQC.US.0013'
 _RULE_VERSION = '1.1'
@@ -21,19 +23,16 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
-# _PRECONDITION_ELEMENT_1 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest'
-# _PRECONDITION_ELEMENT_2 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments'
-# _PRECONDITION_ELEMENT_3 = 'IncomeLossFromEquityMethodInvestments'
-# _PRECONDITION_ELEMENT_4 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
-# _PRECONDITION_ELEMENT_5 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+_PRECONDITION_ELEMENTS = collections.OrderedDict([
+    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest', []),
+    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',
+        ['IncomeLossFromEquityMethodInvestments']),
+    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
+        ['IncomeLossFromEquityMethodInvestments', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign']),
+    ('IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
+        ['IncomeLossFromEquityMethodInvestments', 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'])
+])
 
-_PRECONDITION_ELEMENTS = [
-    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',
-    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',
-    'IncomeLossFromEquityMethodInvestments',
-    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
-    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
-]
 
 def run_negative_values_with_dependence(val):
     """
@@ -100,6 +99,7 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
 
     return bad_blacklist
 
+
 def dqc_13_precondition_check(val):
     """
     Checks if the precondition fact(s) exist and grabs their values.  Runs through an
@@ -113,26 +113,17 @@ def dqc_13_precondition_check(val):
 
     """
     facts_list = list(val.modelXbrl.facts)
-    total = 0
-    check_list = []
-    value_list = []
 
-    for precondition in _PRECONDITION_ELEMENTS:
+    for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
         check, value = facts.precondition_fact_exists(facts_list, precondition)
-        check_list.append(check)
-        value_list.append(value)
+        if check:
+            for element in pre_checks:
+                new_check, new_value = facts.precondition_fact_exists(facts_list, element)
+                value = value + new_value
+        if value > 0:
+            return True
 
-    if check_list[0]:
-        total = value_list[0]
-    elif check_list[1]:
-        total = value_list[1] + value_list[2]
-    elif check_list[3] or check_list[4]:
-        total = value_list[2] + value_list[3] + value_list[4]
-
-    if total > 0:
-        return True
-    else:
-        return False
+    return False
 
 
 __pluginInfo__ = {

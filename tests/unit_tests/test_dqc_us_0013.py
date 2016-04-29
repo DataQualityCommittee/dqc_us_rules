@@ -22,7 +22,7 @@ class TestDQC0013(unittest.TestCase):
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31'
         )
         m_qn_precondition = mock.Mock(
-            localName='IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',
+            localName='IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31'
         )
         m_qn_no_blacklist = mock.Mock(
@@ -51,13 +51,13 @@ class TestDQC0013(unittest.TestCase):
         )
         # Concept is in blacklist, type is numeric with decimal, value is POSITIVE = No Fire
         self.fact_no_fire1 = mock.Mock(
-            concept=mock_concept1, qname=m_qn_fire1, value=.0010,
+            concept=mock_concept1, qname=m_qn_fire1, value=.1010,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is in blacklist, type is numeric without decimal, value is POSITIVE = No Fire
         self.fact_no_fire2 = mock.Mock(
-            concept=mock_concept2, qname=m_qn_fire2, value=10,
+            concept=mock_concept2, qname=m_qn_fire2, value=100,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
@@ -120,16 +120,24 @@ class TestDQC0013(unittest.TestCase):
                       self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
                       self.fact_no_fire5]
 
-        result1 = util.facts.precondition_fact_exists(fact_list1, dqc_us_0013._PRECONDITION_ELEMENTS[0])
+        result1 = util.facts.precondition_fact_exists(
+            fact_list1, 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        )
         self.assertEqual(True, result1[0])
         self.assertEqual(77, result1[1])
-        result2 = util.facts.precondition_fact_exists(fact_list2, dqc_us_0013._PRECONDITION_ELEMENTS[0])
+        result2 = util.facts.precondition_fact_exists(
+            fact_list2, 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        )
         self.assertEqual(True, result2[0])
         self.assertEqual(0, result2[1])
-        result3 = util.facts.precondition_fact_exists(fact_list3, dqc_us_0013._PRECONDITION_ELEMENTS[0])
+        result3 = util.facts.precondition_fact_exists(
+            fact_list3, 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        )
         self.assertEqual(True, result3[0])
         self.assertEqual(-77, result3[1])
-        result4 = util.facts.precondition_fact_exists(fact_list4, dqc_us_0013._PRECONDITION_ELEMENTS[0])
+        result4 = util.facts.precondition_fact_exists(
+            fact_list4, 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        )
         self.assertEqual(False, result4[0])
         self.assertEqual(0, result4[1])
 
