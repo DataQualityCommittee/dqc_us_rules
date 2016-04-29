@@ -7,6 +7,7 @@ import os
 from .util import messages
 
 from arelle import XbrlConst, ModelXbrl
+from arelle.ModelDtsObject import ModelConcept
 from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 _CODE_NAME = 'DQC.US.0018'
@@ -208,7 +209,9 @@ def _deprecated_dimension(val, dim_concept):
     :return: Returns true if the fact uses a deprecated dimension
     :rtype: bool
     """
-    if dim_concept.name in val.usgaapDeprecations:
+    if not isinstance(dim_concept, ModelConcept):
+        return False
+    elif dim_concept.name in val.usgaapDeprecations:
         return True
     return False
 
