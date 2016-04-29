@@ -108,9 +108,10 @@ def run_checks(val, fact, eop_results, lookup):
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param fact: fact to check
     :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
-    :param eop_results: A dictionary of tuples containing the fact, found date and a
-        string representation of that date, keyed off of the LegalEntityAxis
-        members in the format {lea_member: (fact, found_date, date_str)}
+    :param eop_results: A dictionary of tuples containing the fact, found
+        date and a string representation of that date, keyed off of the
+        LegalEntityAxis members in the format:
+            {lea_member: (fact, found_date, date_str)}
     :type eop_results: dict
     :param lookup: legal entity access member concept.
     :type lookup: str

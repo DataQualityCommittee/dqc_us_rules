@@ -3,10 +3,6 @@
 # See PatentNotice.md for patent infringement notice.
 import json
 import os
-import re
-import time
-
-from collections import defaultdict
 
 from .util import messages
 
@@ -64,10 +60,12 @@ def _load_cache(val):
             )
             file = None
             try:
-                file = openFileStream(cntlr,
-                                      deprecations_json_file,
-                                      'rt',
-                                      encoding='utf-8')
+                file = openFileStream(
+                    cntlr,
+                    deprecations_json_file,
+                    'rt',
+                    encoding='utf-8'
+                )
 
                 val.usgaapDeprecations = json.load(file)
                 file.close()
@@ -75,12 +73,12 @@ def _load_cache(val):
             except FileNotFoundError:
                 if file:
                     file.close()
-                #year should be cached.  It is not, so return False
+                # year should be cached. It is not, so return False
                 return False
-            #year should be cached, and is.  Return True
+            # year should be cached, and is. Return True
             return True
         year += 1
-    #checked all years.  No cache found.
+    # checked all years. No cache found.
     return False
 
 
@@ -137,26 +135,23 @@ def _create_cache(val):
 
                 for labelRel in model_relationships:
                     model_documentation = labelRel.toModelObject
-                    concept_name = labelRel.fromModelObject.name
+                    concept = labelRel.fromModelObject.name
 
                     if model_documentation.role == dep_label:
-                        val.usgaapDeprecations[concept_name] = (
-                            val.usgaapDeprecations.get(
-                                concept_name,
-                                ('', ''))[0],
-                            model_documentation.text
+                        val.usgaapDeprecations[concept] = (
+                            model_documentation.text,
+                            val.usgaapDeprecations.get(concept, ('', ''))[0]
                         )
                     elif model_documentation.role == dep_date_label:
-                        val.usgaapDeprecations[concept_name] = (
+                        val.usgaapDeprecations[concept] = (
                             model_documentation.text,
-                            val.usgaapDeprecations.get(
-                                concept_name,
-                                ('', ''))[1]
+                            val.usgaapDeprecations.get(concept, ('', ''))[1]
                         )
-                json_str = str(json.dumps(
-                    val.usgaapDeprecations,
-                    ensure_ascii=False,
-                    indent=0)
+                json_str = str(
+                    json.dumps(
+                        val.usgaapDeprecations,
+                        ensure_ascii=False, indent=0
+                    )
                 )  # might not be unicode in 2.7
                 saveFile(cntlr, deprecations_json_file, json_str)
                 deprecations_instance.close()
@@ -169,7 +164,7 @@ def deprecated_facts_errors(val):
     Makes error messages for all deprecation errors
 
     :param val: ValidateXbrl to check for error
-    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl
+    :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
     :return: No explicit return, though error messages are created
     :rtype: None
     """
@@ -270,9 +265,8 @@ def _fact_uses_deprecated_item(val, fact):
 
         if fact.isItem:
             for dimConcept, modelDim in fact.context.segDimValues.items():
-                if _deprecated_concept(val, dimConcept):
-                    return True
-                if _deprecated_dimension(val, modelDim):
+                if ((_deprecated_concept(val, dimConcept) or
+                     _deprecated_dimension(val, modelDim))):
                     return True
     return False
 
