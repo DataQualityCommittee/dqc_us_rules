@@ -2,6 +2,7 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
+import decimal
 
 from .util import messages, neg_num
 from .util import facts as facts_util
@@ -25,11 +26,14 @@ def run_negative_numbers_no_dimensions(val):
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: No direct return but throws errors for facts matching the blacklist
+    :return: No direct return but throws errors for facts matching the
+        blacklist
     :rtype: None
     """
     blacklist_dict = neg_num.concept_map_from_csv(_DEFAULT_CONCEPTS_FILE)
-    blacklist_facts = filter_negative_number_no_dimensions_facts(val, blacklist_dict.keys())
+    blacklist_facts = filter_negative_number_no_dimensions_facts(
+        val, blacklist_dict.keys()
+    )
     for fact in blacklist_facts:
         index_key = blacklist_dict[fact.qname.localName]
         val.modelXbrl.error(
@@ -45,8 +49,9 @@ def run_negative_numbers_no_dimensions(val):
 
 def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     """
-    Checks the numeric negative value dimensionless facts in the provided ModelXBRL instance
-    against the rule dictionary and returns those which meet the conditions of the blacklist.
+    Checks the numeric negative value dimensionless facts in the provided
+    ModelXBRL instance against the rule dictionary and returns those which
+    meet the conditions of the blacklist.
 
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
@@ -63,7 +68,7 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        fact for fact in numeric_facts if float(fact.value) < 0 and
+        fact for fact in numeric_facts if decimal.Decimal(fact.value) < 0 and
         fact.concept is not None and
         fact.concept.type is not None and
         # facts with numerical values less than 0 (negative) and contexts
