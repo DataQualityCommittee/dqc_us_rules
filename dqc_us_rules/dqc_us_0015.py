@@ -2,7 +2,8 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-from .util import facts, messages, neg_num
+from .util import messages, neg_num
+from .util import facts as facts_util
 
 _CODE_NAME = 'DQC.US.0015'
 _RULE_VERSION = '1.0'
@@ -64,7 +65,7 @@ def filter_negative_number_facts(val, blacklist_concepts):
     blacklist_exclusion_rules = neg_num.get_rules_from_csv(_DEFAULT_EXCLUSIONS_FILE)
     bad_blacklist = []
 
-    numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
+    numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [

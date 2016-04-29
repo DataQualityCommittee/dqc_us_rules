@@ -2,9 +2,10 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-
-from .util import facts, messages, neg_num
 import decimal
+
+from .util import messages, neg_num
+from .util import facts as facts_util
 
 
 _CODE_NAME = 'DQC.US.0014'
@@ -24,6 +25,7 @@ def run_negative_numbers_no_dimensions(val):
 
     :param val: The validation object which carries the validation information,
         including the ModelXBRL
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return but throws errors for facts matching the blacklist
     :rtype: None
     """
@@ -58,18 +60,20 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     """
     bad_blacklist = []
 
-    numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
+    numeric_facts = facts_util.grab_numeric_facts(list(val.modelXbrl.facts))
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        f for f in numeric_facts if decimal.Decimal(f.value) < 0 and
-        f.concept.type is not None and
+        fact for fact in numeric_facts if decimal.Decimal(fact.value) < 0 and
+        fact.concept is not None and
+        fact.concept.type is not None and
         # facts with numerical values less than 0 (negative) and contexts
-        f.context is not None and
+        fact.context is not None and
+        fact.context.segDimValues is not None and
         # check that the fact does not have dimensions
-        len(f.context.segDimValues) == 0 and
+        len(fact.context.segDimValues) == 0 and
         # check xsd type of the concept
-        f.isNumeric
+        fact.isNumeric
     ]
 
     # identify facts which should be reported as included in the list
