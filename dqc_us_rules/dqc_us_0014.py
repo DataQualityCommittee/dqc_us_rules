@@ -47,7 +47,7 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     Checks the numeric negative value dimensionless facts in the provided ModelXBRL instance
     against the rule dictionary and returns those which meet the conditions of the blacklist.
 
-    :param val: The validatino object which carries the validation information,
+    :param val: The validation object which carries the validation information,
         including the ModelXBRL
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param blacklist_concepts: An iterable of the blacklist concepts we should

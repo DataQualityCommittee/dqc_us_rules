@@ -21,11 +21,19 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
-_PRECONDITION_ELEMENT_1 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest'
-_PRECONDITION_ELEMENT_2 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments'
-_PRECONDITION_ELEMENT_3 = 'IncomeLossFromEquityMethodInvestments'
-_PRECONDITION_ELEMENT_4 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
-_PRECONDITION_ELEMENT_5 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+# _PRECONDITION_ELEMENT_1 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest'
+# _PRECONDITION_ELEMENT_2 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments'
+# _PRECONDITION_ELEMENT_3 = 'IncomeLossFromEquityMethodInvestments'
+# _PRECONDITION_ELEMENT_4 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+# _PRECONDITION_ELEMENT_5 = 'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+
+_PRECONDITION_ELEMENTS = [
+    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',
+    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',
+    'IncomeLossFromEquityMethodInvestments',
+    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
+    'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+]
 
 def run_negative_values_with_dependence(val):
     """
@@ -106,19 +114,20 @@ def dqc_13_precondition_check(val):
     """
     facts_list = list(val.modelXbrl.facts)
     total = 0
+    check_list = []
+    value_list = []
 
-    check1, value1 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_1)
-    check2, value2 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_2)
-    check3, value3 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_3)
-    check4, value4 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_4)
-    check5, value5 = facts.precondition_fact_exists(facts_list, _PRECONDITION_ELEMENT_5)
+    for precondition in _PRECONDITION_ELEMENTS:
+        check, value = facts.precondition_fact_exists(facts_list, precondition)
+        check_list.append(check)
+        value_list.append(value)
 
-    if check1:
-        total = value1
-    elif check2:
-        total = total + value2 + value3
-    elif check4 or check5:
-        total = total + value3 + value4 + value5
+    if check_list[0]:
+        total = value_list[0]
+    elif check_list[1]:
+        total = value_list[1] + value_list[2]
+    elif check_list[3] or check_list[4]:
+        total = value_list[2] + value_list[3] + value_list[4]
 
     if total > 0:
         return True
