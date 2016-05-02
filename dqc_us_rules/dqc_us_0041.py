@@ -269,7 +269,7 @@ def _check_relationship_exists(rel):
     )
 
 
-def _default_dimension_mismatch(default_dimension, usgaap_default_dimensions):
+def _default_dimension_mismatch(relation, validation):
     """
     Returns true if the default dimension is not included in the usgaap default
     dimensions
@@ -284,7 +284,14 @@ def _default_dimension_mismatch(default_dimension, usgaap_default_dimensions):
         default dimensions
     :rtype: bool
     """
-    if default_dimension != usgaap_default_dimensions:
+    if ((not hasattr(validation, "usgaapDefaultDimensions") or
+         not isinstance(validation.usgaapDefaultDimensions, dict))):
+        return False
+    is_the_default_name = (
+        relation.toModelObject.name !=
+        validation.usgaapDefaultDimensions.get(relation.fromModelObject.name)
+    )
+    if is_the_default_name:
         return True
     return False
 
@@ -303,19 +310,13 @@ def _catch_dqc_us_0041_errors(val):
     rel_set = val.modelXbrl.relationshipSet(
         XbrlConst.dimensionDefault
     ).modelRelationships
-    for rel in rel_set:
-        if _check_relationship_exists(rel):
-            rel_to = rel.toModelObject
-            rel_from = rel.fromModelObject
-
-            if _default_dimension_mismatch(
-                rel_to.name,
-                val.usgaapDefaultDimensions[rel_from.name]
-            ):
+    for relation in rel_set:
+        if _check_relationship_exists(relation):
+            if _default_dimension_mismatch(relation, val):
                 yield (
-                    rel_from.name,
-                    val.usgaapDefaultDimensions[rel_from.name],
-                    rel_to.name
+                    relation.fromModelObject.name,
+                    val.usgaapDefaultDimensions[relation.fromModelObject.name],
+                    relation.toModelObject.name
                 )
 
 __pluginInfo__ = {
