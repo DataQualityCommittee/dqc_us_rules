@@ -1,8 +1,11 @@
 import unittest
-from dqc_us_rules import dqc_us_0041
 from unittest import mock
-from unittest.mock import patch
+
 from arelle import XbrlConst
+from arelle.ModelDtsObject import ModelRelationship
+from arelle.ValidateXbrl import ValidateXbrl
+
+from dqc_us_rules import dqc_us_0041
 
 
 class TestDefaultDimensions(unittest.TestCase):
@@ -11,11 +14,39 @@ class TestDefaultDimensions(unittest.TestCase):
         Tests to see if _default_dimension_mismatch can determine if two
         dimensions match or not
         """
-        bad_domain_pair = ["DebtInstrumentNameDomain", "DebtInstrumentDomain"]
+        bad_relation = mock.MagicMock(spec=ModelRelationship)
+        bad_relation.fromModelObject = mock.MagicMock()
+        bad_relation.fromModelObject.name = "DebtInstrumentNameDomain"
+        bad_relation.toModelObject = mock.MagicMock()
+        bad_relation.toModelObject.name = "DebtInstrumentDomain"
 
+
+        bad_validation = mock.MagicMock(spec=ValidateXbrl)
+        bad_validation.usgaapDefaultDimensions = {
+            bad_relation.fromModelObject.name: "TEST"
+        }
         self.assertTrue(
             dqc_us_0041._default_dimension_mismatch(
-                bad_domain_pair[0], bad_domain_pair[1]
+                relation=bad_relation, validation=bad_validation
+            )
+        )
+
+
+    def test_default_dimensions_missing(self):
+        """
+        Tests handling of the validation not having a usgaapDefaultDimensions
+        """
+        bad_relation = mock.MagicMock(spec=ModelRelationship)
+        bad_relation.fromModelObject = mock.MagicMock()
+        bad_relation.fromModelObject.name = "DebtInstrumentNameDomain"
+        bad_relation.toModelObject = mock.MagicMock()
+        bad_relation.toModelObject.name = "DebtInstrumentDomain"
+
+        bad_validation = mock.MagicMock(spec=ValidateXbrl)
+
+        self.assertFalse(
+            dqc_us_0041._default_dimension_mismatch(
+                relation=bad_relation, validation=bad_validation
             )
         )
 
@@ -24,20 +55,30 @@ class TestDefaultDimensions(unittest.TestCase):
         Tests to make sure the _default_dimension_mismatch doesn't always throw
         an error
         """
-        good_domain_pair = ["DebtInstrumentDomain", "DebtInstrumentDomain"]
+        good_relation = mock.MagicMock(spec=ModelRelationship)
+        good_relation.fromModelObject = mock.MagicMock()
+        good_relation.fromModelObject.name = "DebtInstrumentNameDomain"
+        good_relation.toModelObject = mock.MagicMock()
+        good_relation.toModelObject.name = "DebtInstrumentDomain"
 
+        good_validation = mock.MagicMock(spec=ValidateXbrl)
+        good_validation.usgaapDefaultDimensions = {
+            good_relation.fromModelObject.name: (
+                good_relation.toModelObject.name
+            )
+        }
         self.assertFalse(
             dqc_us_0041._default_dimension_mismatch(
-                good_domain_pair[0], good_domain_pair[1]
+                relation=good_relation, validation=good_validation
             )
         )
 
-    @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
-    @patch(
+    @mock.patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
+    @mock.patch(
         "dqc_us_rules.dqc_us_0041._default_dim_rel_is_instance",
         return_value=True
     )
-    @patch(
+    @mock.patch(
         "dqc_us_rules.dqc_us_0041._check_relationship_exists",
         return_value=True
     )
@@ -63,7 +104,7 @@ class TestDefaultDimensions(unittest.TestCase):
 
         self.assertEquals(bad_count, 1)
 
-    @patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
+    @mock.patch("dqc_us_rules.dqc_us_0041._load_cache", autospec=True)
     def test_catch_dqc_us_0041_errors_with_no_errors(self, _):
         """
         Tests to make sure dqc_us_0041 doesn't always throw errors
