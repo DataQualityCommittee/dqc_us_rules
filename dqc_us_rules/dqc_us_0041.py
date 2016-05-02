@@ -277,7 +277,7 @@ def _default_dimension_mismatch(relation, validation):
     :param relation: dimension to test if it is a usgaap default dimension.
     :type: :class:`~arelle.ModelDtsObject.ModelRelationship`
     :param validation: The validation object used to look up the default name.
-    :type: :class:`~arelle.ValidationObject.ValidateXbrl`
+    :type validation: :class:`~arelle.ValidationObject.ValidateXbrl`
     :return: True if the default dimensions is not included in the usgaap
         default dimensions.
     :rtype: bool
