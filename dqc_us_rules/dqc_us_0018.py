@@ -15,25 +15,25 @@ _RULE_VERSION = '1.1'
 _EARLIEST_US_GAAP_YEAR = 2014
 
 ugtDocs = (
-           {
-               "year": 2014,
-               "namespace": "http://fasb.org/us-gaap/2014-01-31",
-               "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",  # noqa
-               "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
-            },
-           {
-               "year": 2015,
-               "namespace": "http://fasb.org/us-gaap/2015-01-31",
-               "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
-               "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
-            },
-           {
-               "year": 2016,
-               "namespace": "http://fasb.org/us-gaap/2016-01-31",
-               "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
-               "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
-            },
-           )
+    {
+        "year": 2014,
+        "namespace": "http://fasb.org/us-gaap/2014-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
+    },
+    {
+        "year": 2015,
+        "namespace": "http://fasb.org/us-gaap/2015-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
+    },
+    {
+        "year": 2016,
+        "namespace": "http://fasb.org/us-gaap/2016-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
+    },
+)
 
 
 def _load_cache(val):
@@ -193,7 +193,8 @@ def _deprecated_concept(val, concept):
     :return: Returns true if the fact uses a deprecated concept
     :rtype: bool
     """
-    if concept.name in val.usgaapDeprecations:
+    if ((hasattr(val, "usgaapDeprecations") and
+         concept.name in val.usgaapDeprecations)):
         return True
     return False
 
