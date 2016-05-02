@@ -24,6 +24,7 @@ def run_checks(val):
             # be able to be pared down in the future.
             val.modelXbrl.error(sys.exc_info())
 
+
 def _plugins_to_run(mod, include_start=True):
     """
     Accepts a module/package and returns an iterator

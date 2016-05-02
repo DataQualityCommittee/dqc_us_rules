@@ -20,7 +20,6 @@ class TestDefaultDimensions(unittest.TestCase):
         bad_relation.toModelObject = mock.MagicMock()
         bad_relation.toModelObject.name = "DebtInstrumentDomain"
 
-
         bad_validation = mock.MagicMock(spec=ValidateXbrl)
         bad_validation.usgaapDefaultDimensions = {
             bad_relation.fromModelObject.name: "TEST"
@@ -30,7 +29,6 @@ class TestDefaultDimensions(unittest.TestCase):
                 relation=bad_relation, validation=bad_validation
             )
         )
-
 
     def test_default_dimensions_missing(self):
         """
