@@ -274,14 +274,12 @@ def _default_dimension_mismatch(relation, validation):
     Returns true if the default dimension is not included in the usgaap default
     dimensions
 
-    :param default_dimension: dimension to test if it is a usgaap default
-        dimension
-    :type: str
-    :param usgaap_default_dimensions: list of usgaap taxonomies default
-        dimensions
-    :type: list
+    :param relation: dimension to test if it is a usgaap default dimension.
+    :type: :class:`~arelle.ModelDtsObject.ModelRelationship`
+    :param validation: The validation object used to look up the default name.
+    :type: :class:`~arelle.ValidationObject.ValidateXbrl`
     :return: True if the default dimensions is not included in the usgaap
-        default dimensions
+        default dimensions.
     :rtype: bool
     """
     if ((not hasattr(validation, "usgaapDefaultDimensions") or
