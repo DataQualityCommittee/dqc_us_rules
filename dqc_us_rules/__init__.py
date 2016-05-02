@@ -12,13 +12,17 @@ def run_checks(val):
     """
     plugin_modules = _plugins_to_run(sys.modules[__name__])
     for plugin in plugin_modules:
-        if ((plugin.__file__ is not None and
-             plugin.__file__.find('__init__.py') == -1 and
-             hasattr(plugin, '__pluginInfo__'))):
+        try:
+            if ((plugin.__file__ is not None and
+                 plugin.__file__.find('__init__.py') == -1 and
+                 hasattr(plugin, '__pluginInfo__'))):
 
-            func = plugin.__pluginInfo__['Validate.XBRL.Finally']
-            func(val)
-
+                func = plugin.__pluginInfo__['Validate.XBRL.Finally']
+                func(val)
+        except Exception:
+            # This is an overly generic error catch, but it will hopefully
+            # be able to be pared down in the future.
+            val.modelXbrl.error(sys.exc_info())
 
 def _plugins_to_run(mod, include_start=True):
     """
