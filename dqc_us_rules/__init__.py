@@ -23,7 +23,7 @@ def run_checks(val):
             # This is an overly generic error catch, but it will hopefully
             # be able to be pared down in the future.
             val.modelXbrl.error(
-                "exception:" + type(err).__name__,
+                "dqc_us_rules.exception:" + type(err).__name__,
                 _(
                     "Testcase validation exception: "
                     "%(error)s, testcase: %(testcase)s"
