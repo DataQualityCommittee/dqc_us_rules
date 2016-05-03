@@ -27,54 +27,66 @@ def run_checks(val):
         for role in val.modelXbrl.roleTypes:
             relset = val.modelXbrl.relationshipSet(_PARENT_CHILD_ARCROLE, linkrole=role)
             for axis in filter(axis_filter, relset.fromModelObjects()):
-                _run_axis_checks(axis, axis_config, relset, val.modelXbrl)
+                _run_axis_checks(axis, axis_config, relset, val)
 
-def _run_axis_checks(axis, axis_config, relset, modelXbrl):
-    _run_member_checks(axis, axis_config, relset, modelXbrl)
-    _run_extension_checks(axis, axis_config, relset, modelXbrl)
+def _run_axis_checks(axis, axis_config, relset, val):
+    _run_member_checks(axis, axis_config, relset, val)
+    _run_extension_checks(axis, axis_config, relset, val)
 
-def _run_member_checks(axis, axis_config, relset, modelXbrl):
+def _run_member_checks(axis, axis_config, relset, val):
     additional_axes = axis_config['additional_axes']
     excluded_axes = axis_config['excluded_axes']
-    allowed_members = axis_config['defined_members'] + axis_config['additional_members']
-    disallowed_members = []
-    allowed_members.append(member_list for member_list in additional_axes.values())
-    disallowed_members.append(member_list for member_list in excluded_axes.values())
-    if len(disallowed_members) > 0:
+    allowed_children = axis_config['defined_members'] + axis_config['additional_members']
+    disallowed_children = list(member_list for member_list in excluded_axes.values())
+    allowed_children.append(member_list for member_list in additional_axes.values())
+    if len(disallowed_children) > 0:
         #can only specify disallowed axes or allowed axes.  Not both.  If disallowed is populated, use that.
-        for child in _all_concepts_under(axis, relset):
-            if _is_concept(child) and not _is_extension(child) and child.qname.localName in disallowed_members:
-                if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+        for child in _all_members_under(axis, relset):
+            print('checking child for disallowed')
+            is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
+            if not is_extension and child.qname.localName in disallowed_children:
+                fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
+                if fact is not None:
                     print('AXIS CHECKS EXCLUSION- HAS FACT')
                     print(axis.qname.localName)
                     print(child.qname.localName)
+                    print(fact)
                 else:
                     print('AXIS CHECKS EXCLUSION- NO FACT')
                     print(axis.qname.localName)
                     print(child.qname.localName)
     else:
-        for child in _all_concepts_under(axis, relset):
-            if _is_concept(child) and not _is_extension(child) and child.qname.localName not in allowed_members:
-                if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+        for child in _all_members_under(axis, relset):
+            is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
+            if not is_extension and child.qname.localName not in allowed_children:
+                fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
+                if fact is not None:
                     print('AXIS CHECK INCLUSION - FACT')
                     print(axis.qname.localName)
                     print(child.qname.localName)
+                    print(fact)
                 else:
                     print('AXIS CHECK INCLUSION - NO FACT')
                     print(axis.qname.localName)
                     print(child.qname.localName)
 
-def _run_extension_checks(axis, axis_config, relset, modelXbrl):
+def _run_extension_checks(axis, axis_config, relset, val):
     allow_all = len(axis_config['extensions']) > 0 and axis_config['extensions'][0] == '*'
     if not allow_all:
         allowed_extensions = axis_config['extensions']
-        for child in _all_concepts_under(axis, relset):
-            if _is_extension(child):                
+        for child in _all_members_under(axis, relset):
+            if child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict:
                 if child.qname.localName not in allowed_extensions:
-                    if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+                    fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
+                    if fact is not None:
                         print('EXTENSION CHECK - HAS FACT')
+                        print(axis.qname.localName)
+                        print(child.qname.localName)
+                        print(fact)
                     else:
                         print('EXTENSION CHECK - NO FACT')
+                        print(axis.qname.localName)
+                        print(child.qname.localName)
 
 def _is_concept(concept):
     """
@@ -83,18 +95,7 @@ def _is_concept(concept):
     """
     return concept is not None and isinstance(concept, ModelConcept) and concept.qname is not None
 
-def _is_extension(concept):
-    """
-    given a concept, check if its namespace looks to be in the list of core concept URI's
-    if not, it is considered to be 'extended'
-    """
-    concept_ns = str(concept.qname.namespaceURI)
-    for core_uri in ['http://xbrl.sec.gov/', 'http://fasb.org/']:
-        if core_uri in concept_ns:
-            return False
-    return True
-
-def _all_concepts_under(axis, relset):
+def _all_members_under(axis, relset):
     """
     Returns a dictionary of concepts seen under the provided concept, in the given relset and filtered by the optional filter.
 
@@ -109,13 +110,16 @@ def _all_concepts_under(axis, relset):
     while(arcs_to_check):
         cur_arc = arcs_to_check.pop()
         to_object = cur_arc.toModelObject
-        if _is_concept(to_object):
+        if _is_concept(to_object) and not _is_domain(to_object):
             concepts[to_object] = cur_arc.toLocator
         for arc in relset.fromModelObject(to_object):
             if arc not in seen_arcs:
                 seen_arcs.add(arc)
                 arcs_to_check.append(arc)
     return concepts
+
+def _is_domain(concept):
+    return '[Domain]' in concept.label()
 
 def _load_config(axis_file):
     """
