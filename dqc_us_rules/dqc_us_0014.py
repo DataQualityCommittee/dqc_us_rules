@@ -2,7 +2,6 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-import decimal
 
 from .util import messages, neg_num
 from .util import facts as facts_util
