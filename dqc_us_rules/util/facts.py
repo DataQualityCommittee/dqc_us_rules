@@ -403,11 +403,10 @@ def grab_numeric_facts(facts_list):
     """
     numeric_facts = []
     for fact in facts_list:
-        try:
-            decimal.Decimal(fact.value)
-            numeric_facts.append(fact)
-        except decimal.InvalidOperation:
+        if not fact.isNumeric:
             continue
+        elif fact.xValue is not None:
+            numeric_facts.append(fact)
     return numeric_facts
 
 
@@ -427,5 +426,5 @@ def precondition_fact_exists(facts_list, precondition_concept):
     """
     for fact in facts_list:
         if fact.concept.qname.localName == precondition_concept:
-            return True, decimal.Decimal(fact.value)
+            return True, fact.xValue
     return False, 0
