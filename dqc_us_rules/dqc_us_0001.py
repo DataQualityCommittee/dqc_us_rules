@@ -4,7 +4,7 @@
 import json
 import os
 from arelle.ModelDtsObject import ModelConcept
-from .util import facts
+from .util import facts, messages
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '1.1'
@@ -27,50 +27,75 @@ def run_checks(val):
         for role in val.modelXbrl.roleTypes:
             relset = val.modelXbrl.relationshipSet(_PARENT_CHILD_ARCROLE, linkrole=role)
             for axis in filter(axis_filter, relset.fromModelObjects()):
-                _run_axis_checks(axis, axis_config, relset, val)
+                _run_axis_checks(axis, axis_config, relset, val, role)
 
-def _run_axis_checks(axis, axis_config, relset, val):
+def _run_axis_checks(axis, axis_config, relset, val, role):
     _run_member_checks(axis, axis_config, relset, val)
     _run_extension_checks(axis, axis_config, relset, val)
 
-def _run_member_checks(axis, axis_config, relset, val):
+def _run_member_checks(axis, axis_config, relset, val, role):
     additional_axes = axis_config['additional_axes']
     excluded_axes = axis_config['excluded_axes']
     allowed_children = axis_config['defined_members'] + axis_config['additional_members']
     disallowed_children = list(member_list for member_list in excluded_axes.values())
     allowed_children.append(member_list for member_list in additional_axes.values())
     if len(disallowed_children) > 0:
-        #can only specify disallowed axes or allowed axes.  Not both.  If disallowed is populated, use that.
+        #Blacklisted axes check - Can only check blacklist (excluded) or whitelist (included) axes.  Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
             print('checking child for disallowed')
             is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
             if not is_extension and child.qname.localName in disallowed_children:
                 fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                 if fact is not None:
-                    print('AXIS CHECKS EXCLUSION- HAS FACT')
-                    print(axis.qname.localName)
-                    print(child.qname.localName)
-                    print(fact)
+                    val.modelXbrl.error(
+                        '{base_key}.{extension_key}'.format(
+                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                        ),
+                        messages.get_message(_CODE_NAME, "ugt_fact"),
+                        axis=axis, member=child, modelObject=fact,
+                        ruleVersion=_RULE_VERSION
+                    )
                 else:
-                    print('AXIS CHECKS EXCLUSION- NO FACT')
-                    print(axis.qname.localName)
-                    print(child.qname.localName)
+                    val.modelXbrl.error(
+                        '{base_key}.{extension_key}'.format(
+                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                        ),
+                        messages.get_message(_CODE_NAME, "no_fact"),
+                        axis=axis,
+                        member=child,
+                        group=role.definition or role.roleURI,
+                        ruleVersion=_RULE_VERSION
+                    )
     else:
+        #Whitelisted axes are specified.
         for child in _all_members_under(axis, relset):
             is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
             if not is_extension and child.qname.localName not in allowed_children:
                 fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                 if fact is not None:
-                    print('AXIS CHECK INCLUSION - FACT')
-                    print(axis.qname.localName)
-                    print(child.qname.localName)
-                    print(fact)
+                    val.modelXbrl.error(
+                        '{base_key}.{extension_key}'.format(
+                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                        ),
+                        messages.get_message(_CODE_NAME, "ext_fact"),
+                        axis=axis,
+                        member=child,
+                        modelObject=fact,
+                        ruleVersion=_RULE_VERSION
+                    )
                 else:
-                    print('AXIS CHECK INCLUSION - NO FACT')
-                    print(axis.qname.localName)
-                    print(child.qname.localName)
+                    val.modelXbrl.error(
+                        '{base_key}.{extension_key}'.format(
+                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                        ),
+                        messages.get_message(_CODE_NAME, "no_fact"),
+                        axis=axis,
+                        member=child,
+                        group=role.definition or role.roleURI,
+                        ruleVersion=_RULE_VERSION
+                    )
 
-def _run_extension_checks(axis, axis_config, relset, val):
+def _run_extension_checks(axis, axis_config, relset, val, role):
     allow_all = len(axis_config['extensions']) > 0 and axis_config['extensions'][0] == '*'
     if not allow_all:
         allowed_extensions = axis_config['extensions']
@@ -79,14 +104,27 @@ def _run_extension_checks(axis, axis_config, relset, val):
                 if child.qname.localName not in allowed_extensions:
                     fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                     if fact is not None:
-                        print('EXTENSION CHECK - HAS FACT')
-                        print(axis.qname.localName)
-                        print(child.qname.localName)
-                        print(fact)
+                        val.modelXbrl.error(
+                            '{base_key}.{extension_key}'.format(
+                                base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            ),
+                            messages.get_message(_CODE_NAME, "ext_fact"),
+                            axis=axis,
+                            member=child,
+                            modelObject=fact,
+                            ruleVersion=_RULE_VERSION
+                        )
                     else:
-                        print('EXTENSION CHECK - NO FACT')
-                        print(axis.qname.localName)
-                        print(child.qname.localName)
+                        val.modelXbrl.error(
+                            '{base_key}.{extension_key}'.format(
+                                base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            ),
+                            messages.get_message(_CODE_NAME, "no_fact"),
+                            axis=axis,
+                            member=child,
+                            group=role.definition or role.roleURI,
+                            ruleVersion=_RULE_VERSION
+                        )
 
 def _is_concept(concept):
     """
