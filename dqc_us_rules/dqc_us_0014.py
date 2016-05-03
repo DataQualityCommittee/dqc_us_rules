@@ -76,8 +76,6 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
         fact.context.segDimValues is not None and
         # check that the fact does not have dimensions
         len(fact.context.segDimValues) == 0
-        # check xsd type of the concept
-        # fact.isNumeric
     ]
 
     # identify facts which should be reported as included in the list

@@ -113,8 +113,6 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
             fact.concept.type is not None and
             # facts with numerical values less than 0 and contexts and
             fact.context is not None
-            # check xsd type of the concept
-            # fact.isNumeric
         ]
 
         # identify facts which should be reported as included in the list
