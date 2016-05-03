@@ -19,10 +19,19 @@ def run_checks(val):
 
                 func = plugin.__pluginInfo__['Validate.XBRL.Finally']
                 func(val)
-        except Exception:
+        except Exception as err:
             # This is an overly generic error catch, but it will hopefully
             # be able to be pared down in the future.
-            val.modelXbrl.error(sys.exc_info())
+            val.modelXbrl.error(
+                "exception:" + type(err).__name__,
+                _(
+                    "Testcase validation exception: "
+                    "%(error)s, testcase: %(testcase)s"
+                ),
+                modelXbrl=val.modelXbrl,
+                testcase=val.modelXbrl.modelDocument.basename, error=err,
+                exc_info=True
+            )
 
 
 def _plugins_to_run(mod, include_start=True):
