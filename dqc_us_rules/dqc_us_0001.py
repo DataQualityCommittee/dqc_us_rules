@@ -30,8 +30,8 @@ def run_checks(val):
                 _run_axis_checks(axis, axis_config, relset, val, role)
 
 def _run_axis_checks(axis, axis_config, relset, val, role):
-    _run_member_checks(axis, axis_config, relset, val)
-    _run_extension_checks(axis, axis_config, relset, val)
+    _run_member_checks(axis, axis_config, relset, val, role)
+    _run_extension_checks(axis, axis_config, relset, val, role)
 
 def _run_member_checks(axis, axis_config, relset, val, role):
     additional_axes = axis_config['additional_axes']
@@ -49,20 +49,20 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                 if fact is not None:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                         ),
                         messages.get_message(_CODE_NAME, "ugt_fact"),
-                        axis=axis, member=child, modelObject=fact,
+                        axis=axis.label(), member=child.label(), modelObject=fact,
                         ruleVersion=_RULE_VERSION
                     )
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                         ),
                         messages.get_message(_CODE_NAME, "no_fact"),
-                        axis=axis,
-                        member=child,
+                        axis=axis.label(),
+                        member=child.label(),
                         group=role.definition or role.roleURI,
                         ruleVersion=_RULE_VERSION
                     )
@@ -75,22 +75,22 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                 if fact is not None:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                         ),
                         messages.get_message(_CODE_NAME, "ext_fact"),
-                        axis=axis,
-                        member=child,
+                        axis=axis.label(),
+                        member=child.label(),
                         modelObject=fact,
                         ruleVersion=_RULE_VERSION
                     )
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                         ),
                         messages.get_message(_CODE_NAME, "no_fact"),
-                        axis=axis,
-                        member=child,
+                        axis=axis.label(),
+                        member=child.label(),
                         group=role.definition or role.roleURI,
                         ruleVersion=_RULE_VERSION
                     )
@@ -106,22 +106,22 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                     if fact is not None:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
-                                base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                                base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                             ),
                             messages.get_message(_CODE_NAME, "ext_fact"),
-                            axis=axis,
-                            member=child,
+                            axis=axis.label(),
+                            member=child.label(),
                             modelObject=fact,
                             ruleVersion=_RULE_VERSION
                         )
                     else:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
-                                base_key=_CODE_NAME, extension_key=axis_config[axis.qname.localName]['rule_index']
+                                base_key=_CODE_NAME, extension_key=axis_config['rule_index']
                             ),
                             messages.get_message(_CODE_NAME, "no_fact"),
-                            axis=axis,
-                            member=child,
+                            axis=axis.label(),
+                            member=child.label(),
                             group=role.definition or role.roleURI,
                             ruleVersion=_RULE_VERSION
                         )
