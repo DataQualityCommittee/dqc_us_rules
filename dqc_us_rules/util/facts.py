@@ -330,7 +330,7 @@ def legal_entity_axis_facts_by_member(facts):
             results[legalDim].append(fact)
     return results
 
-def axis_member_has_fact(axis_name, member_name, model_xbrl):
+def axis_member_fact(axis_name, member_name, model_xbrl):
     for fact in model_xbrl.facts:
         if _fact_components_valid(fact):
             dims = [
@@ -339,7 +339,6 @@ def axis_member_has_fact(axis_name, member_name, model_xbrl):
             ]
             for dim in dims:
                 if dim.dimension.qname.localName == axis_name:
-                    print('found a fact')
                     return fact
     return None
 

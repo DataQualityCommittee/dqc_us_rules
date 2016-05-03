@@ -31,65 +31,50 @@ def run_checks(val):
 
 def _run_axis_checks(axis, axis_config, relset, modelXbrl):
     _run_member_checks(axis, axis_config, relset, modelXbrl)
-    _run_included_excluded_axis_checks(axis, axis_config, relset, modelXbrl)
     _run_extension_checks(axis, axis_config, relset, modelXbrl)
 
 def _run_member_checks(axis, axis_config, relset, modelXbrl):
-    allowed_members = axis_config['defined_members'] + axis_config['additional_members']
-    for rel in relset.fromModelObject(axis):
-        child = rel.toModelObject
-        if _is_concept(child) and child.qname.localName not in allowed_members:
-            #fire
-            if facts.axis_member_has_fact(axis.qname.localName, child.qname.localName, modelXbrl):
-                #fire has fact
-                pass
-            else:
-                #fire no fact
-                pass
-
-
-def _run_included_excluded_axis_checks(axis, axis_config, relset, modelXbrl):
     additional_axes = axis_config['additional_axes']
     excluded_axes = axis_config['excluded_axes']
-    allowed_members = []
+    allowed_members = axis_config['defined_members'] + axis_config['additional_members']
     disallowed_members = []
     allowed_members.append(member_list for member_list in additional_axes.values())
     disallowed_members.append(member_list for member_list in excluded_axes.values())
     if len(disallowed_members) > 0:
         #can only specify disallowed axes or allowed axes.  Not both.  If disallowed is populated, use that.
-        for rel in relset.fromModelObject(axis):
-            child = rel.toModelObject
-            if _is_concept(child) and child.qname.localName in disallowed_members:
-                if facts.axis_member_has_fact(axis.qname.localName, child.qname.localName, modelXbrl):
-                    #fire has fact
-                    pass
+        for child in _all_concepts_under(axis, relset):
+            if _is_concept(child) and not _is_extension(child) and child.qname.localName in disallowed_members:
+                if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+                    print('AXIS CHECKS EXCLUSION- HAS FACT')
+                    print(axis.qname.localName)
+                    print(child.qname.localName)
                 else:
-                    #fire no fact
-                    pass
+                    print('AXIS CHECKS EXCLUSION- NO FACT')
+                    print(axis.qname.localName)
+                    print(child.qname.localName)
     else:
-        for rel in relset.fromModelObject(axis):
-            child = rel.toModelObject
-            if _is_concept(child) and child.qname.localName not in allowed_members:
-                if facts.axis_member_has_fact(axis.qname.localName, child.qname.localName, modelXbrl):
-                    #fire has fact
-                    pass
+        for child in _all_concepts_under(axis, relset):
+            if _is_concept(child) and not _is_extension(child) and child.qname.localName not in allowed_members:
+                if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+                    print('AXIS CHECK INCLUSION - FACT')
+                    print(axis.qname.localName)
+                    print(child.qname.localName)
                 else:
-                    #fire no fact
-                    pass
+                    print('AXIS CHECK INCLUSION - NO FACT')
+                    print(axis.qname.localName)
+                    print(child.qname.localName)
 
 def _run_extension_checks(axis, axis_config, relset, modelXbrl):
     allow_all = len(axis_config['extensions']) > 0 and axis_config['extensions'][0] == '*'
     if not allow_all:
         allowed_extensions = axis_config['extensions']
-        for rel in relset.fromModelObject(axis):
-            child = rel.toModelObject
-            if _is_concept(child) and child.qname.localName not in allowed_extensions:
-                if facts.axis_member_has_fact(axis.qname.localName, child.qname.localName, modelXbrl):
-                    #fire has fact
-                    pass
-                else:
-                    #fire no fact
-                    pass
+        for child in _all_concepts_under(axis, relset):
+            if _is_extension(child):                
+                if child.qname.localName not in allowed_extensions:
+                    if facts.axis_member_fact(axis.qname.localName, child.qname.localName, modelXbrl) is not None:
+                        print('EXTENSION CHECK - HAS FACT')
+                    else:
+                        print('EXTENSION CHECK - NO FACT')
 
 def _is_concept(concept):
     """
@@ -97,6 +82,40 @@ def _is_concept(concept):
         arc.fromModelObject or arc.toModelObject.
     """
     return concept is not None and isinstance(concept, ModelConcept) and concept.qname is not None
+
+def _is_extension(concept):
+    """
+    given a concept, check if its namespace looks to be in the list of core concept URI's
+    if not, it is considered to be 'extended'
+    """
+    concept_ns = str(concept.qname.namespaceURI)
+    for core_uri in ['http://xbrl.sec.gov/', 'http://fasb.org/']:
+        if core_uri in concept_ns:
+            return False
+    return True
+
+def _all_concepts_under(axis, relset):
+    """
+    Returns a dictionary of concepts seen under the provided concept, in the given relset and filtered by the optional filter.
+
+    Dictionary values are locators for the concepts: the `toLocator` from the arc where that concept was discovered.
+    """
+    concepts = dict()
+    arcs_to_check = []
+    seen_arcs = set()
+    for arc in relset.fromModelObject(axis):
+        seen_arcs.add(arc)
+        arcs_to_check.append(arc)
+    while(arcs_to_check):
+        cur_arc = arcs_to_check.pop()
+        to_object = cur_arc.toModelObject
+        if _is_concept(to_object):
+            concepts[to_object] = cur_arc.toLocator
+        for arc in relset.fromModelObject(to_object):
+            if arc not in seen_arcs:
+                seen_arcs.add(arc)
+                arcs_to_check.append(arc)
+    return concepts
 
 def _load_config(axis_file):
     """
