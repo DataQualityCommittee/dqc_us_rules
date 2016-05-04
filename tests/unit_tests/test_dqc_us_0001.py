@@ -2,14 +2,17 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import unittest
+from unittest.mock import Mock, patch
+from arelle.ModelDtsObject import ModelConcept
 
 from dqc_us_rules import dqc_us_0001
 
+class TestIsConcept(unittest.TestCase):
 
-class TestDQCOne(unittest.TestCase):
-
-    def test(self):
-        """
-        Tests to make sure that _get_default_dped on an empty dict returns None
-        """
-        self.assertEqual(dqc_us_0001.find_facts_with_inappropriate_members(), 'Foo')
+    def test_is_concept(self):
+        concept = Mock(spec=ModelConcept, qname='Page')
+        self.assertTrue(dqc_us_0001._is_concept(concept))
+        concept = None
+        self.assertFalse(dqc_us_0001._is_concept(concept))
+        concept = Mock(spec=ModelConcept, qname=None)
+        self.assertFalse(dqc_us_0001._is_concept(concept))

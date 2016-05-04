@@ -27,8 +27,11 @@ _EXT_FACT_KEY = 'ext_fact'
 
 def run_checks(val):
     """
-
-    :return:
+    Entrypoint for the rule.  Load the config, search for instances of each axis of interest, and call validations on them.
+    :param val:
+    :type val:
+    :return: No direct return
+    :rtype: None
     """
     config = _load_config(_DQC_01_AXIS_FILE)
     for axis_key, axis_config in config.items():
@@ -39,10 +42,16 @@ def run_checks(val):
                 _run_axis_checks(axis, axis_config, relset, val, role)
 
 def _run_axis_checks(axis, axis_config, relset, val, role):
+    """
+    Run the axis checks for a given axis, config dict, and set of children.
+    """
     _run_member_checks(axis, axis_config, relset, val, role)
     _run_extension_checks(axis, axis_config, relset, val, role)
 
 def _run_member_checks(axis, axis_config, relset, val, role):
+    """
+    Run the checks on included and excluded members and companion axes.  Extensions are not checked.  Error as appropriate.
+    """
     additional_axes = axis_config[_ADDITIONAL_AXES_KEY]
     excluded_axes = axis_config[_EXCLUDED_AXES_KEY]
     allowed_children = axis_config[_DEFINED_MEMBERS_KEY] + axis_config[_ADDITIONAL_MEMBERS_KEY]
@@ -104,6 +113,9 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     )
 
 def _run_extension_checks(axis, axis_config, relset, val, role):
+    """
+    Check extension members under the given axis.
+    """
     allow_all = len(axis_config[_EXTENSIONS_KEY]) > 0 and axis_config[_EXTENSIONS_KEY][0] == '*'
     if not allow_all:
         allowed_extensions = axis_config[_EXTENSIONS_KEY]
@@ -147,7 +159,7 @@ def _all_members_under(axis, relset):
 
     Dictionary values are locators for the concepts: the `toLocator` from the arc where that concept was discovered.
     """
-    concepts = dict()
+    concepts = []
     arcs_to_check = []
     seen_arcs = set()
     for arc in relset.fromModelObject(axis):
@@ -157,7 +169,7 @@ def _all_members_under(axis, relset):
         cur_arc = arcs_to_check.pop()
         to_object = cur_arc.toModelObject
         if _is_concept(to_object) and not _is_domain(to_object):
-            concepts[to_object] = cur_arc.toLocator
+            concepts.append(to_object)
         for arc in relset.fromModelObject(to_object):
             if arc not in seen_arcs:
                 seen_arcs.add(arc)
