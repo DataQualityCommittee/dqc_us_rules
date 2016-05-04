@@ -180,7 +180,7 @@ def _load_config(axis_file):
 __pluginInfo__ = {
     'name': _CODE_NAME,
     'version': _RULE_VERSION,
-    'description': 'Assets should equal Liabilities and Shareholders Equity',
+    'description': 'Axis member checks.',
     # Mount points
     'Validate.XBRL.Finally': run_checks,
 }
