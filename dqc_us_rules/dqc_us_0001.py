@@ -5,6 +5,7 @@ import json
 import os
 from arelle.ModelDtsObject import ModelConcept
 from .util import facts, messages
+import itertools
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '1.1'
@@ -55,8 +56,10 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     additional_axes = axis_config[_ADDITIONAL_AXES_KEY]
     excluded_axes = axis_config[_EXCLUDED_AXES_KEY]
     allowed_children = axis_config[_DEFINED_MEMBERS_KEY] + axis_config[_ADDITIONAL_MEMBERS_KEY]
-    disallowed_children = list(member_list for member_list in excluded_axes.values())
-    allowed_children.append(member_list for member_list in additional_axes.values())
+    disallowed_children = []
+    disallowed_children.extend(itertools.chain.from_iterable(member_list for member_list in excluded_axes.values()))
+    additional_children = itertools.chain.from_iterable(member_list for member_list in additional_axes.values())
+    allowed_children.extend(additional_children)
     if len(disallowed_children) > 0:
         #Blacklisted axes check - Can only check blacklist (excluded) or whitelist (included) axes.  Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
@@ -94,7 +97,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                         ),
-                        messages.get_message(_CODE_NAME, _EXT_FACT_KEY),
+                        messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
                         modelObject=fact,
