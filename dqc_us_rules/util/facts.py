@@ -2,7 +2,6 @@
 # Copyright (c) 2015, XBRL US Inc.  All rights reserved
 from collections import defaultdict
 from arelle import ValidateXbrlCalcs
-import decimal
 
 
 DEI_NAMESPACE_LIST = [
