@@ -7,6 +7,50 @@ from arelle.ModelDtsObject import ModelConcept
 
 from dqc_us_rules import dqc_us_0001
 
+class TestRunChecks(unittest.TestCase):
+
+    @patch('dqc_us_rules.dqc_us_0001._run_axis_checks')
+    @patch('dqc_us_rules.dqc_us_0001._load_config')
+    @patch('dqc_us_rules.dqc_us_0001._is_concept', return_value=True)
+    def test_filtering(self, _, config, checks):
+        config.return_value = {
+            "foo":{
+                "rule_index":66,
+                "defined_members":[
+                    "DesignatedAsHedgingInstrumentMember",
+                    "NondesignatedMember"
+                ],
+                "additional_axes":{},
+                "excluded_axes":{},
+                "additional_members":[],
+                "extensions":[]
+            }
+        }
+        expected_config = {
+            'excluded_axes': {},
+            'additional_members': [],
+            'extensions': [],
+            'defined_members': ['DesignatedAsHedgingInstrumentMember', 'NondesignatedMember'],
+            'additional_axes': {},
+            'rule_index': 66
+        }
+        mock_qname = Mock(localName='foo')
+        mock_qname2 = Mock(localName='mike')
+        mock_qname3 = Mock(localName='fish')
+        mock_obj1 = Mock(qname=mock_qname)
+        mock_obj2 = Mock(qname=mock_qname2)
+        mock_obj3 = Mock(qname=mock_qname3)
+        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))
+        mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
+        mock_relationship_set_func = Mock(return_value=mock_relset_obj)
+        mock_model_xbrl = Mock(roleTypes=['trey', 'page'], relationshipSet=mock_relationship_set_func)
+        val = Mock(modelXbrl=mock_model_xbrl)
+
+        dqc_us_0001.run_checks(val)
+        self.assertTrue(checks.called)
+        checks.assert_called_with(mock_obj1, expected_config, mock_relset_obj, val, 'page')
+
+
 class TestIsConcept(unittest.TestCase):
 
     def test_is_concept(self):
