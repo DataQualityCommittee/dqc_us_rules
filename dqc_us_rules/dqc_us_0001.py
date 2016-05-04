@@ -58,8 +58,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     allowed_children = axis_config[_DEFINED_MEMBERS_KEY] + axis_config[_ADDITIONAL_MEMBERS_KEY]
     disallowed_children = []
     disallowed_children.extend(itertools.chain.from_iterable(member_list for member_list in excluded_axes.values()))
-    additional_children = itertools.chain.from_iterable(member_list for member_list in additional_axes.values())
-    allowed_children.extend(additional_children)
+    allowed_children.extend(itertools.chain.from_iterable(member_list for member_list in additional_axes.values()))
     if len(disallowed_children) > 0:
         #Blacklisted axes check - Can only check blacklist (excluded) or whitelist (included) axes.  Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
