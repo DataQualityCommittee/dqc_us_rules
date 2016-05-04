@@ -7,6 +7,7 @@ from arelle.ModelDtsObject import ModelConcept
 
 from dqc_us_rules import dqc_us_0001
 
+
 class TestRunChecks(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0001._run_axis_checks')
@@ -17,23 +18,25 @@ class TestRunChecks(unittest.TestCase):
         Tests that we only check on the axes specified in the config.
         """
         config.return_value = {
-            "foo":{
-                "rule_index":66,
-                "defined_members":[
+            "foo": {
+                "rule_index": 66,
+                "defined_members": [
                     "DesignatedAsHedgingInstrumentMember",
                     "NondesignatedMember"
                 ],
-                "additional_axes":{},
-                "excluded_axes":{},
-                "additional_members":[],
-                "extensions":[]
+                "additional_axes": {},
+                "excluded_axes": {},
+                "additional_members": [],
+                "extensions": []
             }
         }
         expected_config = {
             'excluded_axes': {},
             'additional_members': [],
             'extensions': [],
-            'defined_members': ['DesignatedAsHedgingInstrumentMember', 'NondesignatedMember'],
+            'defined_members': [
+                'DesignatedAsHedgingInstrumentMember', 'NondesignatedMember'
+            ],
             'additional_axes': {},
             'rule_index': 66
         }
@@ -43,19 +46,34 @@ class TestRunChecks(unittest.TestCase):
         mock_obj1 = Mock(qname=mock_qname)
         mock_obj2 = Mock(qname=mock_qname2)
         mock_obj3 = Mock(qname=mock_qname3)
-        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))
+        mock_frommodelobj = Mock(
+            return_value=(mock_obj1, mock_obj2, mock_obj3)
+        )
         mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
         mock_relationship_set_func = Mock(return_value=mock_relset_obj)
-        mock_model_xbrl = Mock(roleTypes=['trey', 'page'], relationshipSet=mock_relationship_set_func)
+        mock_model_xbrl = Mock(
+            roleTypes=['trey', 'page'],
+            relationshipSet=mock_relationship_set_func
+        )
         val = Mock(modelXbrl=mock_model_xbrl)
 
         dqc_us_0001.run_checks(val)
         self.assertTrue(checks.called)
-        checks.assert_called_with(mock_obj1, expected_config, mock_relset_obj, val, 'page')
+        checks.assert_called_with(
+            mock_obj1,
+            expected_config,
+            mock_relset_obj,
+            val,
+            'page'
+        )
+
 
 class TestMemberChecks(unittest.TestCase):
 
-    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch(
+        'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
+        return_value=None
+    )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_excluded_list_no_fact(self, members, _, __):
@@ -66,30 +84,42 @@ class TestMemberChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            'excluded_axes':{
-                'foo':['trey', 'page', 'mike', 'fish']
+            'excluded_axes': {
+                'foo': ['trey', 'page', 'mike', 'fish']
             },
             'rule_index': 100
         }
         mock_qname = Mock(localName='trey')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
 
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
-        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_member_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
 
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._NO_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._NO_FACT_KEY
+            ),
             axis=mock_axis.label(),
             group='RoDriftBoats',
             member=mock_child.label(),
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
 
-    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch(
+        'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
+        return_value=None
+    )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_extensions_no_fire(self, members, _, __):
@@ -100,18 +130,24 @@ class TestMemberChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            'excluded_axes':{
-                'foo':['trey', 'page', 'mike', 'fish']
+            'excluded_axes': {
+                'foo': ['trey', 'page', 'mike', 'fish']
             },
             'rule_index': 100
         }
         mock_qname = Mock(localName='trey')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
 
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
-        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_member_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
 
         self.assertFalse(mock_error_func.called)
 
@@ -128,28 +164,37 @@ class TestMemberChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            'excluded_axes':{
-                'foo':['trey', 'page', 'mike', 'fish']
+            'excluded_axes': {
+                'foo': ['trey', 'page', 'mike', 'fish']
             },
             'rule_index': 100
         }
         mock_qname = Mock(localName='trey')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
 
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
-        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_member_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
 
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._UGT_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._UGT_FACT_KEY
+            ),
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
 
     @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact')
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
@@ -164,30 +209,42 @@ class TestMemberChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            'additional_axes':{
-                'foo':['trey', 'page', 'mike', 'fish']
+            'additional_axes': {
+                'foo': ['trey', 'page', 'mike', 'fish']
             },
             'rule_index': 100
         }
         mock_qname = Mock(localName='jerry')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
 
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
-        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_member_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
 
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._UGT_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._UGT_FACT_KEY
+            ),
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
 
-    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch(
+        'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
+        return_value=None
+    )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_included_axes_list_no_fact(self, members, _, __):
@@ -198,28 +255,38 @@ class TestMemberChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            'additional_axes':{
-                'foo':['trey', 'page', 'mike', 'fish']
+            'additional_axes': {
+                'foo': ['trey', 'page', 'mike', 'fish']
             },
             'rule_index': 100
         }
         mock_qname = Mock(localName='jerry')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
 
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
-        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_member_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
 
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._NO_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._NO_FACT_KEY
+            ),
             axis=mock_axis.label(),
             group='RoDriftBoats',
             member=mock_child.label(),
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
+
 
 class TestExtensionChecks(unittest.TestCase):
 
@@ -231,15 +298,24 @@ class TestExtensionChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            "extensions":["*"],
+            "extensions": ["*"],
             'rule_index': 100
         }
 
-        dqc_us_0001._run_extension_checks(Mock(), mock_config, Mock(), mock_val, Mock())
+        dqc_us_0001._run_extension_checks(
+            Mock(),
+            mock_config,
+            Mock(),
+            mock_val,
+            Mock()
+        )
         self.assertFalse(mock_error_func.called)
 
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
-    @patch('dqc_us_rules.dqc_us_0001._all_members_under', return_value=range(10))
+    @patch(
+        'dqc_us_rules.dqc_us_0001._all_members_under',
+        return_value=range(10)
+    )
     def test_no_ext(self, _, __):
         """
         Tests extension checks for no extensions present.
@@ -248,14 +324,23 @@ class TestExtensionChecks(unittest.TestCase):
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_config = {
-            "extensions":[],
+            "extensions": [],
             'rule_index': 100
         }
 
-        dqc_us_0001._run_extension_checks(Mock(), mock_config, Mock(), mock_val, Mock())
+        dqc_us_0001._run_extension_checks(
+            Mock(),
+            mock_config,
+            Mock(),
+            mock_val,
+            Mock()
+        )
         self.assertFalse(mock_error_func.called)
 
-    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch(
+        'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
+        return_value=None
+    )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_has_ext_none_allowed_no_fact(self, members, _, __):
@@ -267,24 +352,33 @@ class TestExtensionChecks(unittest.TestCase):
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_qname = Mock(localName='jerry')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
         mock_config = {
-            "extensions":[],
+            "extensions": [],
             'rule_index': 100
         }
 
-        dqc_us_0001._run_extension_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_extension_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._NO_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._NO_FACT_KEY
+            ),
             axis=mock_axis.label(),
             group='RoDriftBoats',
             member=mock_child.label(),
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
 
     @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact')
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
@@ -300,24 +394,34 @@ class TestExtensionChecks(unittest.TestCase):
         mock_val = Mock(modelXbrl=mock_model_xbrl)
         mock_qname = Mock(localName='jerry')
         mock_child = Mock(qname=mock_qname)
-        members.return_value=[mock_child]
+        members.return_value = [mock_child]
         mock_axis = Mock()
         mock_role = 'RoDriftBoats'
         mock_config = {
-            "extensions":[],
+            "extensions": [],
             'rule_index': 100
         }
 
-        dqc_us_0001._run_extension_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        dqc_us_0001._run_extension_checks(
+            mock_axis,
+            mock_config,
+            Mock(),
+            mock_val,
+            mock_role
+        )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
             '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
-            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._EXT_FACT_KEY),
+            dqc_us_0001.messages.get_message(
+                dqc_us_0001._CODE_NAME,
+                dqc_us_0001._EXT_FACT_KEY
+            ),
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
-         )
+        )
+
 
 class TestIsConcept(unittest.TestCase):
 
@@ -331,6 +435,7 @@ class TestIsConcept(unittest.TestCase):
         self.assertFalse(dqc_us_0001._is_concept(concept))
         concept = Mock(spec=ModelConcept, qname=None)
         self.assertFalse(dqc_us_0001._is_concept(concept))
+
 
 class TestIsDomain(unittest.TestCase):
 
@@ -348,6 +453,7 @@ class TestIsDomain(unittest.TestCase):
 
         concept.qname = Mock(localName='MikeDomain')
         self.assertTrue(dqc_us_0001._is_domain(concept))
+
 
 class TestAllConceptsUnder(unittest.TestCase):
     root_concept = None
@@ -373,7 +479,10 @@ class TestAllConceptsUnder(unittest.TestCase):
         # initialize relset
         mock_relset = Mock()
         fromModelObject_rels = {
-            cncpt_a: [self._mock_rel(cncpt_a, cncpt_b), self._mock_rel(cncpt_a, cncpt_d)],
+            cncpt_a: [
+                self._mock_rel(cncpt_a, cncpt_b),
+                self._mock_rel(cncpt_a, cncpt_d)
+            ],
             cncpt_b: [self._mock_rel(cncpt_b, cncpt_c)],
             cncpt_c: [self._mock_rel(cncpt_c, cncpt_a)],  # cycle
             cncpt_d: []
@@ -406,7 +515,10 @@ class TestAllConceptsUnder(unittest.TestCase):
         """
         Test relationshipSet traversal
         """
-        concepts = dqc_us_0001._all_members_under(self.root_concept, self.relset)
+        concepts = dqc_us_0001._all_members_under(
+            self.root_concept,
+            self.relset
+        )
         # check that we got every concept under the tree
         expected_concepts = set(self.tree_concepts)
         self.assertEqual(set(concepts), expected_concepts)
@@ -417,7 +529,10 @@ class TestAllConceptsUnder(unittest.TestCase):
         """
         Test relationshipSet traversal
         """
-        concepts = dqc_us_0001._all_members_under(self.root_concept, self.relset)
+        concepts = dqc_us_0001._all_members_under(
+            self.root_concept,
+            self.relset
+        )
         # check that we got every concept under the tree
         expected_concepts = set()
         self.assertEqual(set(concepts), expected_concepts)
@@ -428,7 +543,10 @@ class TestAllConceptsUnder(unittest.TestCase):
         """
         Test relationshipSet traversal
         """
-        concepts = dqc_us_0001._all_members_under(self.root_concept, self.relset)
+        concepts = dqc_us_0001._all_members_under(
+            self.root_concept,
+            self.relset
+        )
         # check that we got every concept under the tree
         expected_concepts = set()
         self.assertEqual(set(concepts), expected_concepts)
