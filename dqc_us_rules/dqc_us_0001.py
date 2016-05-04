@@ -53,17 +53,16 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     """
     Run the checks on included and excluded members and companion axes.  Extensions are not checked.  Error as appropriate.
     """
-    additional_axes = axis_config[_ADDITIONAL_AXES_KEY]
-    excluded_axes = axis_config[_EXCLUDED_AXES_KEY]
-    allowed_children = axis_config[_DEFINED_MEMBERS_KEY] + axis_config[_ADDITIONAL_MEMBERS_KEY]
+    additional_axes = axis_config.get(_ADDITIONAL_AXES_KEY, {})
+    excluded_axes = axis_config.get(_EXCLUDED_AXES_KEY, {})
+    allowed_children = axis_config.get(_DEFINED_MEMBERS_KEY, []) + axis_config.get(_ADDITIONAL_MEMBERS_KEY, [])
     disallowed_children = []
     disallowed_children.extend(itertools.chain.from_iterable(member_list for member_list in excluded_axes.values()))
     allowed_children.extend(itertools.chain.from_iterable(member_list for member_list in additional_axes.values()))
     if len(disallowed_children) > 0:
         #Blacklisted axes check - Can only check blacklist (excluded) or whitelist (included) axes.  Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
-            is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
-            if not is_extension and child.qname.localName in disallowed_children:
+            if not _is_extension(child, val) and child.qname.localName in disallowed_children:
                 fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                 if fact is not None:
                     val.modelXbrl.error(
@@ -88,8 +87,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     else:
         #Whitelisted axes are specified.
         for child in _all_members_under(axis, relset):
-            is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
-            if not is_extension and child.qname.localName not in allowed_children:
+            if not _is_extension(child, val) and child.qname.localName not in allowed_children:
                 fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                 if fact is not None:
                     val.modelXbrl.error(
@@ -122,7 +120,7 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
     if not allow_all:
         allowed_extensions = axis_config[_EXTENSIONS_KEY]
         for child in _all_members_under(axis, relset):
-            if child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict:
+            if _is_extension(child, val):
                 if child.qname.localName not in allowed_extensions:
                     fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                     if fact is not None:
@@ -147,6 +145,9 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                             group=role.definition or role.roleURI,
                             ruleVersion=_RULE_VERSION
                         )
+
+def _is_extension(concept, val):
+    return concept.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
 
 def _is_concept(concept):
     """
