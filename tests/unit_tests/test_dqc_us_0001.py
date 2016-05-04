@@ -83,6 +83,29 @@ class TestMemberChecks(unittest.TestCase):
             ruleVersion=dqc_us_0001._RULE_VERSION
          )
 
+    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
+    @patch('dqc_us_rules.dqc_us_0001._all_members_under')
+    def test_extensions_no_fire(self, members, _, __):
+        mock_error_func = Mock()
+        mock_model_xbrl = Mock(error=mock_error_func)
+        mock_val = Mock(modelXbrl=mock_model_xbrl)
+        mock_config = {
+            'excluded_axes':{
+                'foo':['trey', 'page', 'mike', 'fish']
+            },
+            'rule_index': 100
+        }
+        mock_qname = Mock(localName='trey')
+        mock_child = Mock(qname=mock_qname)
+        members.return_value=[mock_child]
+
+        mock_axis = Mock()
+        mock_role = Mock(definition='RoDriftBoats')
+        dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+
+        self.assertFalse(mock_error_func.called)
+
     @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact')
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
@@ -177,6 +200,92 @@ class TestMemberChecks(unittest.TestCase):
             axis=mock_axis.label(),
             group='RoDriftBoats',
             member=mock_child.label(),
+            ruleVersion=dqc_us_0001._RULE_VERSION
+         )
+
+class TestExtensionChecks(unittest.TestCase):
+
+    def test_allow_all(self):
+        mock_error_func = Mock()
+        mock_model_xbrl = Mock(error=mock_error_func)
+        mock_val = Mock(modelXbrl=mock_model_xbrl)
+        mock_config = {
+            "extensions":["*"],
+            'rule_index': 100
+        }
+
+        dqc_us_0001._run_extension_checks(Mock(), mock_config, Mock(), mock_val, Mock())
+        self.assertFalse(mock_error_func.called)
+
+    @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
+    @patch('dqc_us_rules.dqc_us_0001._all_members_under', return_value=range(10))
+    def test_no_ext(self, _, __):
+        mock_error_func = Mock()
+        mock_model_xbrl = Mock(error=mock_error_func)
+        mock_val = Mock(modelXbrl=mock_model_xbrl)
+        mock_config = {
+            "extensions":[],
+            'rule_index': 100
+        }
+
+        dqc_us_0001._run_extension_checks(Mock(), mock_config, Mock(), mock_val, Mock())
+        self.assertFalse(mock_error_func.called)
+
+    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact', return_value=None)
+    @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
+    @patch('dqc_us_rules.dqc_us_0001._all_members_under')
+    def test_has_ext_none_allowed_no_fact(self, members, _, __):
+        mock_error_func = Mock()
+        mock_model_xbrl = Mock(error=mock_error_func)
+        mock_val = Mock(modelXbrl=mock_model_xbrl)
+        mock_qname = Mock(localName='jerry')
+        mock_child = Mock(qname=mock_qname)
+        members.return_value=[mock_child]
+        mock_axis = Mock()
+        mock_role = Mock(definition='RoDriftBoats')
+        mock_config = {
+            "extensions":[],
+            'rule_index': 100
+        }
+
+        dqc_us_0001._run_extension_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        self.assertTrue(mock_error_func.called)
+        mock_error_func.assert_called_with(
+            '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
+            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._NO_FACT_KEY),
+            axis=mock_axis.label(),
+            group='RoDriftBoats',
+            member=mock_child.label(),
+            ruleVersion=dqc_us_0001._RULE_VERSION
+         )
+
+    @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact')
+    @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
+    @patch('dqc_us_rules.dqc_us_0001._all_members_under')
+    def test_has_ext_none_allowed_has_fact(self, members, _, fact):
+        mock_fact = Mock()
+        fact.return_value = mock_fact
+        mock_error_func = Mock()
+        mock_model_xbrl = Mock(error=mock_error_func)
+        mock_val = Mock(modelXbrl=mock_model_xbrl)
+        mock_qname = Mock(localName='jerry')
+        mock_child = Mock(qname=mock_qname)
+        members.return_value=[mock_child]
+        mock_axis = Mock()
+        mock_role = Mock(definition='RoDriftBoats')
+        mock_config = {
+            "extensions":[],
+            'rule_index': 100
+        }
+
+        dqc_us_0001._run_extension_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
+        self.assertTrue(mock_error_func.called)
+        mock_error_func.assert_called_with(
+            '{base}.{index}'.format(base=dqc_us_0001._CODE_NAME, index=100),
+            dqc_us_0001.messages.get_message(dqc_us_0001._CODE_NAME, dqc_us_0001._EXT_FACT_KEY),
+            axis=mock_axis.label(),
+            member=mock_child.label(),
+            modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
          )
 
