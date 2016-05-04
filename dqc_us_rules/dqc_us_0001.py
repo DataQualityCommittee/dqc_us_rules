@@ -268,7 +268,7 @@ def _is_concept(concept):
     """
     return (
         isinstance(concept, ModelConcept) and
-        concept.qname is not None
+        concept.qname
     )
 
 
