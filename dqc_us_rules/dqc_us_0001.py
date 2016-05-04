@@ -15,6 +15,15 @@ _DQC_01_AXIS_FILE = os.path.join(
     'dqc_0001.json'
 )
 _PARENT_CHILD_ARCROLE = "http://www.xbrl.org/2003/arcrole/parent-child"
+_ADDITIONAL_AXES_KEY = 'additional_axes'
+_EXCLUDED_AXES_KEY = 'excluded_axes'
+_DEFINED_MEMBERS_KEY = 'defined_members'
+_ADDITIONAL_MEMBERS_KEY = 'additional_members'
+_EXTENSIONS_KEY = 'extensions'
+_RULE_INDEX_KEY = 'rule_index'
+_UGT_FACT_KEY = 'ugt_fact'
+_NO_FACT_KEY = 'no_fact'
+_EXT_FACT_KEY = 'ext_fact'
 
 def run_checks(val):
     """
@@ -34,33 +43,32 @@ def _run_axis_checks(axis, axis_config, relset, val, role):
     _run_extension_checks(axis, axis_config, relset, val, role)
 
 def _run_member_checks(axis, axis_config, relset, val, role):
-    additional_axes = axis_config['additional_axes']
-    excluded_axes = axis_config['excluded_axes']
-    allowed_children = axis_config['defined_members'] + axis_config['additional_members']
+    additional_axes = axis_config[_ADDITIONAL_AXES_KEY]
+    excluded_axes = axis_config[_EXCLUDED_AXES_KEY]
+    allowed_children = axis_config[_DEFINED_MEMBERS_KEY] + axis_config[_ADDITIONAL_MEMBERS_KEY]
     disallowed_children = list(member_list for member_list in excluded_axes.values())
     allowed_children.append(member_list for member_list in additional_axes.values())
     if len(disallowed_children) > 0:
         #Blacklisted axes check - Can only check blacklist (excluded) or whitelist (included) axes.  Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
-            print('checking child for disallowed')
             is_extension = child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict
             if not is_extension and child.qname.localName in disallowed_children:
                 fact = facts.axis_member_fact(axis.qname.localName, child.qname.localName, val.modelXbrl)
                 if fact is not None:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                         ),
-                        messages.get_message(_CODE_NAME, "ugt_fact"),
+                        messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(), member=child.label(), modelObject=fact,
                         ruleVersion=_RULE_VERSION
                     )
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                         ),
-                        messages.get_message(_CODE_NAME, "no_fact"),
+                        messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
                         group=role.definition or role.roleURI,
@@ -75,9 +83,9 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                 if fact is not None:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                         ),
-                        messages.get_message(_CODE_NAME, "ext_fact"),
+                        messages.get_message(_CODE_NAME, _EXT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
                         modelObject=fact,
@@ -86,9 +94,9 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
-                            base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                            base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                         ),
-                        messages.get_message(_CODE_NAME, "no_fact"),
+                        messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
                         group=role.definition or role.roleURI,
@@ -96,9 +104,9 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     )
 
 def _run_extension_checks(axis, axis_config, relset, val, role):
-    allow_all = len(axis_config['extensions']) > 0 and axis_config['extensions'][0] == '*'
+    allow_all = len(axis_config[_EXTENSIONS_KEY]) > 0 and axis_config[_EXTENSIONS_KEY][0] == '*'
     if not allow_all:
-        allowed_extensions = axis_config['extensions']
+        allowed_extensions = axis_config[_EXTENSIONS_KEY]
         for child in _all_members_under(axis, relset):
             if child.qname.namespaceURI not in val.disclosureSystem.standardTaxonomiesDict:
                 if child.qname.localName not in allowed_extensions:
@@ -106,9 +114,9 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                     if fact is not None:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
-                                base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                                base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                             ),
-                            messages.get_message(_CODE_NAME, "ext_fact"),
+                            messages.get_message(_CODE_NAME, _EXT_FACT_KEY),
                             axis=axis.label(),
                             member=child.label(),
                             modelObject=fact,
@@ -117,9 +125,9 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                     else:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
-                                base_key=_CODE_NAME, extension_key=axis_config['rule_index']
+                                base_key=_CODE_NAME, extension_key=axis_config[_RULE_INDEX_KEY]
                             ),
-                            messages.get_message(_CODE_NAME, "no_fact"),
+                            messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                             axis=axis.label(),
                             member=child.label(),
                             group=role.definition or role.roleURI,
@@ -157,7 +165,7 @@ def _all_members_under(axis, relset):
     return concepts
 
 def _is_domain(concept):
-    return '[Domain]' in concept.label()
+    return '[Domain]' in concept.label() or concept.qname.localName.endswith('Domain')
 
 def _load_config(axis_file):
     """
