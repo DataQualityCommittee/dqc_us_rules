@@ -24,7 +24,7 @@ def run_checks(val):
             # be able to be pared down in the future.
             val.modelXbrl.error(
                 "dqc_us_rules.exception:" + type(err).__name__,
-                _(
+                (
                     "Testcase validation exception: "
                     "%(error)s, testcase: %(testcase)s"
                 ),
