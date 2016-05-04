@@ -16,3 +16,17 @@ class TestIsConcept(unittest.TestCase):
         self.assertFalse(dqc_us_0001._is_concept(concept))
         concept = Mock(spec=ModelConcept, qname=None)
         self.assertFalse(dqc_us_0001._is_concept(concept))
+
+class TestIsDomain(unittest.TestCase):
+
+    def test_is_domain(self):
+        concept = Mock()
+        concept.label.return_value = 'page [Domain]'
+        self.assertTrue(dqc_us_0001._is_domain(concept))
+
+        concept.label.return_value = 'page [Axis]'
+        concept.qname = Mock(localName='Trey')
+        self.assertFalse(dqc_us_0001._is_domain(concept))
+
+        concept.qname = Mock(localName='MikeDomain')
+        self.assertTrue(dqc_us_0001._is_domain(concept))
