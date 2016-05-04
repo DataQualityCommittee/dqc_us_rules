@@ -30,7 +30,8 @@ def run_checks(val):
                 ),
                 modelXbrl=val.modelXbrl,
                 testcase=val.modelXbrl.modelDocument.basename, error=err,
-                exc_info=True
+                exc_info=True,
+                ERROR=err
             )
 
 
