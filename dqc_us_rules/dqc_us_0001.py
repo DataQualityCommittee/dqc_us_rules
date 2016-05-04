@@ -45,8 +45,10 @@ def run_checks(val):
             )
 
             def filter_func(model_object):
-                return (_is_concept(model_object) and
-                        model_object.qname.localName == axis_key)
+                return (
+                    _is_concept(model_object) and
+                    model_object.qname.localName == axis_key
+                )
 
             for axis in filter(filter_func, relset.fromModelObjects()):
                 _run_axis_checks(axis, axis_config, relset, val, role)
@@ -198,8 +200,10 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
     :return: No direct return
     :rtype: None
     """
-    allow_all = (len(axis_config[_EXTENSIONS_KEY]) > 0 and
-                 axis_config[_EXTENSIONS_KEY][0] == '*')
+    allow_all = (
+        len(axis_config[_EXTENSIONS_KEY]) > 0 and
+        axis_config[_EXTENSIONS_KEY][0] == '*'
+    )
     if not allow_all:
         allowed_extensions = axis_config[_EXTENSIONS_KEY]
         for child in _all_members_under(axis, relset):
@@ -237,8 +241,20 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
 
 
 def _is_extension(concept, val):
-    return (concept.qname.namespaceURI not in
-            val.disclosureSystem.standardTaxonomiesDict)
+    """
+    Return True if concept is an extension.
+
+    :param concept: The concept to check
+    :type concept: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: True if concept is an extension, else False
+    :rtype: bool
+    """
+    return (
+        concept.qname.namespaceURI not in
+        val.disclosureSystem.standardTaxonomiesDict
+    )
 
 
 def _is_concept(concept):
@@ -250,9 +266,10 @@ def _is_concept(concept):
     :type concept: :class:'~arelle.ModelDTSObject.ModelConcept'
     :return: True if it's a valid concept.  False if not.
     """
-    return (concept is not None and
-            isinstance(concept, ModelConcept) and
-            concept.qname is not None)
+    return (
+        isinstance(concept, ModelConcept) and
+        concept.qname is not None
+    )
 
 
 def _all_members_under(axis, relset):
@@ -297,8 +314,10 @@ def _is_domain(concept):
     :return: True if the concept is a domain, else False.
     :rtype: bool
     """
-    return ('[Domain]' in concept.label() or
-            concept.qname.localName.endswith('Domain'))
+    return (
+        '[Domain]' in concept.label() or
+        concept.qname.localName.endswith('Domain')
+    )
 
 
 def _load_config(axis_file):

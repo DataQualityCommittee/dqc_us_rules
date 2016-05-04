@@ -346,9 +346,11 @@ def axis_member_fact(axis_name, member_name, model_xbrl):
         if _fact_components_valid(fact):
             dims = [
                 dim for dim in fact.context.segDimValues.values()
-                if (dim.isExplicit and
+                if (
+                    dim.isExplicit and
                     dim.member is not None and
-                    dim.member.qname.localName == member_name)
+                    dim.member.qname.localName == member_name
+                )
             ]
             for dim in dims:
                 if dim.dimension.qname.localName == axis_name:
