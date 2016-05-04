@@ -13,6 +13,9 @@ class TestRunChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._load_config')
     @patch('dqc_us_rules.dqc_us_0001._is_concept', return_value=True)
     def test_filtering(self, _, config, checks):
+        """
+        Tests that we only check on the axes specified in the config.
+        """
         config.return_value = {
             "foo":{
                 "rule_index":66,
@@ -56,6 +59,9 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_excluded_list_no_fact(self, members, _, __):
+        """
+        Tests excluded axes without a fact.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -70,7 +76,7 @@ class TestMemberChecks(unittest.TestCase):
         members.return_value=[mock_child]
 
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
 
         self.assertTrue(mock_error_func.called)
@@ -87,6 +93,9 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_extensions_no_fire(self, members, _, __):
+        """
+        Tests that we won't fire for extensions.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -101,7 +110,7 @@ class TestMemberChecks(unittest.TestCase):
         members.return_value=[mock_child]
 
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
 
         self.assertFalse(mock_error_func.called)
@@ -110,6 +119,9 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_excluded_list_with_fact(self, members, _, fact):
+        """
+        Tests the excluded list with an associated fact.
+        """
         mock_fact = Mock()
         fact.return_value = mock_fact
         mock_error_func = Mock()
@@ -126,7 +138,7 @@ class TestMemberChecks(unittest.TestCase):
         members.return_value=[mock_child]
 
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
 
         self.assertTrue(mock_error_func.called)
@@ -143,6 +155,9 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_included_axes_list_with_fact(self, members, _, fact):
+        """
+        Tests the additional axis includsions with a fact.
+        """
         mock_fact = Mock()
         fact.return_value = mock_fact
         mock_error_func = Mock()
@@ -159,7 +174,7 @@ class TestMemberChecks(unittest.TestCase):
         members.return_value=[mock_child]
 
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
 
         self.assertTrue(mock_error_func.called)
@@ -176,6 +191,9 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_included_axes_list_no_fact(self, members, _, __):
+        """
+        Tests the additional axis includsions without a fact.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -190,7 +208,7 @@ class TestMemberChecks(unittest.TestCase):
         members.return_value=[mock_child]
 
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(mock_axis, mock_config, Mock(), mock_val, mock_role)
 
         self.assertTrue(mock_error_func.called)
@@ -206,6 +224,9 @@ class TestMemberChecks(unittest.TestCase):
 class TestExtensionChecks(unittest.TestCase):
 
     def test_allow_all(self):
+        """
+        Tests the extension checks with all allowed.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -220,6 +241,9 @@ class TestExtensionChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=False)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under', return_value=range(10))
     def test_no_ext(self, _, __):
+        """
+        Tests extension checks for no extensions present.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -235,6 +259,9 @@ class TestExtensionChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_has_ext_none_allowed_no_fact(self, members, _, __):
+        """
+        Test extension blacklisting with no fact.
+        """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -242,7 +269,7 @@ class TestExtensionChecks(unittest.TestCase):
         mock_child = Mock(qname=mock_qname)
         members.return_value=[mock_child]
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         mock_config = {
             "extensions":[],
             'rule_index': 100
@@ -263,6 +290,9 @@ class TestExtensionChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_has_ext_none_allowed_has_fact(self, members, _, fact):
+        """
+        Tests extension blacklisting with a fact.
+        """
         mock_fact = Mock()
         fact.return_value = mock_fact
         mock_error_func = Mock()
@@ -272,7 +302,7 @@ class TestExtensionChecks(unittest.TestCase):
         mock_child = Mock(qname=mock_qname)
         members.return_value=[mock_child]
         mock_axis = Mock()
-        mock_role = Mock(definition='RoDriftBoats')
+        mock_role = 'RoDriftBoats'
         mock_config = {
             "extensions":[],
             'rule_index': 100
@@ -292,6 +322,9 @@ class TestExtensionChecks(unittest.TestCase):
 class TestIsConcept(unittest.TestCase):
 
     def test_is_concept(self):
+        """
+        Test the _is_concept check.
+        """
         concept = Mock(spec=ModelConcept, qname='Page')
         self.assertTrue(dqc_us_0001._is_concept(concept))
         concept = None
@@ -302,6 +335,9 @@ class TestIsConcept(unittest.TestCase):
 class TestIsDomain(unittest.TestCase):
 
     def test_is_domain(self):
+        """
+        Test the _is_domain check.
+        """
         concept = Mock()
         concept.label.return_value = 'page [Domain]'
         self.assertTrue(dqc_us_0001._is_domain(concept))
@@ -355,6 +391,9 @@ class TestAllConceptsUnder(unittest.TestCase):
 
     @staticmethod
     def _mock_rel(fr, to):
+        """
+        Build a mock relationshipSet.
+        """
         rel = Mock()
         rel.fromModelObject = fr
         rel.toModelObject = to

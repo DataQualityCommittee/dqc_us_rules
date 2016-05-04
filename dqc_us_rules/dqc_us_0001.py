@@ -81,7 +81,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        group=role.definition or role.roleURI,
+                        group=role,
                         ruleVersion=_RULE_VERSION
                     )
     else:
@@ -108,7 +108,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        group=role.definition or role.roleURI,
+                        group=role,
                         ruleVersion=_RULE_VERSION
                     )
 
@@ -142,7 +142,7 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                             messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                             axis=axis.label(),
                             member=child.label(),
-                            group=role.definition or role.roleURI,
+                            group=role,
                             ruleVersion=_RULE_VERSION
                         )
 
