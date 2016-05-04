@@ -49,28 +49,28 @@ class TestDQC0013(unittest.TestCase):
         # Concept is in blacklist, type is numeric with decimal, value is
         # NEGATIVE = Fire
         self.fact_fire1 = mock.Mock(
-            concept=mock_concept1, qname=m_qn_fire1, value=-.0010,
+            concept=mock_concept1, qname=m_qn_fire1, xValue=-.0010,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is in blacklist, type is numeric without decimal, value is
         # NEGATIVE = Fire
         self.fact_fire2 = mock.Mock(
-            concept=mock_concept2, qname=m_qn_fire2, value=-10,
+            concept=mock_concept2, qname=m_qn_fire2, xValue=-10,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is in blacklist, type is numeric with decimal, value is
         # POSITIVE = No Fire
         self.fact_no_fire1 = mock.Mock(
-            concept=mock_concept1, qname=m_qn_fire1, value=.1010,
+            concept=mock_concept1, qname=m_qn_fire1, xValue=.1010,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is in blacklist, type is numeric without decimal, value is
         # POSITIVE = No Fire
         self.fact_no_fire2 = mock.Mock(
-            concept=mock_concept2, qname=m_qn_fire2, value=100,
+            concept=mock_concept2, qname=m_qn_fire2, xValue=100,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
@@ -78,38 +78,38 @@ class TestDQC0013(unittest.TestCase):
         # is NEGATIVE = No Fire
         self.fact_no_fire3 = mock.Mock(
             concept=mock_concept_no_blacklist, qname=m_qn_no_blacklist,
-            value=-7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=-7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is NOT in blacklist, type is numeric without decimal, value
         # is POSITIVE = No Fire
         self.fact_no_fire4 = mock.Mock(
             concept=mock_concept_no_blacklist, qname=m_qn_no_blacklist,
-            value=7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is in blacklist, type is numeric, value is ZERO = No Fire
         self.fact_no_fire5 = mock.Mock(
-            concept=mock_concept1, qname=m_qn_fire1, value=0,
+            concept=mock_concept1, qname=m_qn_fire1, xValue=0,
             namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Precondition fact that will cause the rule to fire (value is > 0)
         self.fact_precondition_positive = mock.Mock(
             concept=mock_precondition_concept, qname=m_qn_precondition,
-            value=77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Precondition fact that will NOT cause the rule to fire (value is = 0)
         self.fact_precondition_zero = mock.Mock(
             concept=mock_precondition_concept, qname=m_qn_precondition,
-            value=0, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=0, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Precondition fact that will NOT cause the rule to fire (value is < 0)
         self.fact_precondition_negative = mock.Mock(
             concept=mock_precondition_concept, qname=m_qn_precondition,
-            value=-77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=-77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
 

@@ -2,7 +2,6 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-import decimal
 import collections
 
 from .util import facts, messages, neg_num
@@ -109,12 +108,11 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
         # numeric_facts has already checked if fact.value can be made into
         # a number
         facts_to_check = [
-            f for f in numeric_facts if decimal.Decimal(f.value) < 0 and
-            f.concept.type is not None and
+            fact for fact in numeric_facts
+            if fact.xValue < 0 and
+            fact.concept.type is not None and
             # facts with numerical values less than 0 and contexts and
-            f.context is not None and
-            # check xsd type of the concept
-            f.isNumeric
+            fact.context is not None
         ]
 
         # identify facts which should be reported as included in the list

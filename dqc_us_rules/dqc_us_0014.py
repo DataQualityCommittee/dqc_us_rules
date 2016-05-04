@@ -2,7 +2,6 @@
 # See license.md for license information.
 # See PatentNotice.md for patent infringement notice.
 import os
-import decimal
 
 from .util import messages, neg_num
 from .util import facts as facts_util
@@ -68,16 +67,15 @@ def filter_negative_number_no_dimensions_facts(val, blacklist_concepts):
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        fact for fact in numeric_facts if decimal.Decimal(fact.value) < 0 and
+        fact for fact in numeric_facts
+        if fact.xValue < 0 and
         fact.concept is not None and
         fact.concept.type is not None and
         # facts with numerical values less than 0 (negative) and contexts
         fact.context is not None and
         fact.context.segDimValues is not None and
         # check that the fact does not have dimensions
-        len(fact.context.segDimValues) == 0 and
-        # check xsd type of the concept
-        fact.isNumeric
+        len(fact.context.segDimValues) == 0
     ]
 
     # identify facts which should be reported as included in the list

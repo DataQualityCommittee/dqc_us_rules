@@ -285,11 +285,15 @@ def _default_dimension_mismatch(relation, validation):
     if ((not hasattr(validation, "usgaapDefaultDimensions") or
          not isinstance(validation.usgaapDefaultDimensions, dict))):
         return False
+    has_a_default_name = (
+        validation.usgaapDefaultDimensions.get(relation.fromModelObject.name)
+        is not None
+    )
     is_the_default_name = (
         relation.toModelObject.name !=
         validation.usgaapDefaultDimensions.get(relation.fromModelObject.name)
     )
-    if is_the_default_name:
+    if has_a_default_name and is_the_default_name:
         return True
     return False
 
@@ -313,7 +317,9 @@ def _catch_dqc_us_0041_errors(val):
             if _default_dimension_mismatch(relation, val):
                 yield (
                     relation.fromModelObject.name,
-                    val.usgaapDefaultDimensions[relation.fromModelObject.name],
+                    val.usgaapDefaultDimensions.get(
+                        relation.fromModelObject.name
+                    ),
                     relation.toModelObject.name
                 )
 
