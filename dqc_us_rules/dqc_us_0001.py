@@ -31,8 +31,9 @@ def run_checks(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     each axis of interest, and call validations on them.
-    :param val:
-    :type val:
+
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return
     :rtype: None
     """
@@ -55,6 +56,19 @@ def _run_axis_checks(axis, axis_config, relset, val, role):
     """
     Run the axis checks for a given axis, config dict,
     and set of children.
+
+    :param axis: The axis to check
+    :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_config: The axis-specific config.
+    :type axis_config: dict
+    :param relset: The relationshipSet for the axis.
+    :type relset: set
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param role: The role for the relationship
+    :type role: str
+    :return: No direct return
+    :rtype: None
     """
     _run_member_checks(axis, axis_config, relset, val, role)
     _run_extension_checks(axis, axis_config, relset, val, role)
@@ -64,6 +78,19 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     """
     Run the checks on included and excluded members and companion axes.
     Extensions are not checked.  Error as appropriate.
+
+    :param axis: The axis to check
+    :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_config: The axis-specific config.
+    :type axis_config: dict
+    :param relset: The relationshipSet for the axis.
+    :type relset: set
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param role: The role for the relationship
+    :type role: str
+    :return: No direct return
+    :rtype: None
     """
     additional_axes = axis_config.get(_ADDITIONAL_AXES_KEY, {})
     excluded_axes = axis_config.get(_EXCLUDED_AXES_KEY, {})
@@ -157,6 +184,19 @@ def _run_member_checks(axis, axis_config, relset, val, role):
 def _run_extension_checks(axis, axis_config, relset, val, role):
     """
     Check extension members under the given axis.
+
+    :param axis: The axis to check
+    :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_config: The axis-specific config.
+    :type axis_config: dict
+    :param relset: The relationshipSet for the axis.
+    :type relset: set
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param role: The role for the relationship
+    :type role: str
+    :return: No direct return
+    :rtype: None
     """
     allow_all = (len(axis_config[_EXTENSIONS_KEY]) > 0 and
                  axis_config[_EXTENSIONS_KEY][0] == '*')
@@ -203,8 +243,12 @@ def _is_extension(concept, val):
 
 def _is_concept(concept):
     """
-        This utility method should be used instead of None checks on
-        arc.fromModelObject or arc.toModelObject.
+    This utility method should be used instead of None checks on
+    arc.fromModelObject or arc.toModelObject.
+
+    :param concept: The concept to check
+    :type concept: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :return: True if it's a valid concept.  False if not.
     """
     return (concept is not None and
             isinstance(concept, ModelConcept) and
@@ -218,6 +262,13 @@ def _all_members_under(axis, relset):
 
     Dictionary values are locators for the concepts: the `toLocator`
     from the arc where that concept was discovered.
+
+    :param axis: The axis to check.
+    :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param relset: The relationshipSet.
+    :type relset: set
+    :return: a list of members under the axis.
+    :rtype: [:class:'~arelle.ModelDTSObject.ModelConcept']
     """
     concepts = []
     arcs_to_check = []
@@ -238,16 +289,27 @@ def _all_members_under(axis, relset):
 
 
 def _is_domain(concept):
+    """
+    Return True if the concept is a domain, else False
+
+    :param concept: The concept to check.
+    :type concept: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :return: True if the concept is a domain, else False.
+    :rtype: bool
+    """
     return ('[Domain]' in concept.label() or
             concept.qname.localName.endswith('Domain'))
 
 
 def _load_config(axis_file):
     """
-    Returns a map of {qname: id} of the concepts to test for the blacklist
+    Returns a map of axis/configs to test.
 
-    :return: A map of {qname: id}.
-    :rtype +    """
+    :param axis_file: the file to open.
+    :type axis_file: file
+    :return: A map of the config file.
+    :rtype: dict
+    """
 
     with open(axis_file) as config:
         return json.load(config)
