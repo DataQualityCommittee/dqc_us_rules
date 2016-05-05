@@ -201,7 +201,7 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_included_axes_list_with_fact(self, members, _, fact):
         """
-        Tests the additional axis includsions with a fact.
+        Tests the additional axis inclusions with a fact.
         """
         mock_fact = Mock()
         fact.return_value = mock_fact
@@ -249,7 +249,7 @@ class TestMemberChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
     def test_included_axes_list_no_fact(self, members, _, __):
         """
-        Tests the additional axis includsions without a fact.
+        Tests the additional axis inclusions without a fact.
         """
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)

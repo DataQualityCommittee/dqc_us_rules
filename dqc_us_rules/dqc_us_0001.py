@@ -265,6 +265,7 @@ def _is_concept(concept):
     :param concept: The concept to check
     :type concept: :class:'~arelle.ModelDTSObject.ModelConcept'
     :return: True if it's a valid concept.  False if not.
+    :rtype: bool
     """
     return (
         isinstance(concept, ModelConcept) and
