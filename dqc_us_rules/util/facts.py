@@ -389,3 +389,41 @@ def axis_qnames(fact):
         str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
         if dim.dimensionQname is not None
     ]
+
+
+def grab_numeric_facts(facts_list):
+    """
+    Given a list of facts, return those facts whose values are numeric
+
+    :param facts_list: list of fact to return numeric values for
+    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    :return: return list of facts with numeric values
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    """
+    numeric_facts = []
+    for fact in facts_list:
+        if not fact.isNumeric:
+            continue
+        elif fact.xValue is not None:
+            numeric_facts.append(fact)
+    return numeric_facts
+
+
+def precondition_fact_exists(facts_list, precondition_concept):
+    """
+    Given a list of facts, check that the precondition concept is
+    included in the list
+
+    :param facts_list: list of facts to check for precondition concept
+    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact'
+    :param precondition_concept: name of the concept to look for
+    :type precondition_concept: str
+    :return: return true or false depending on whether the precondition
+        concept exists and then also return the value of the precondition
+        fact if it exist (return 0 for the value if it does not exist)
+    :rtype: tuple (bool, decimal)
+    """
+    for fact in facts_list:
+        if fact.concept.qname.localName == precondition_concept:
+            return True, fact.xValue
+    return False, 0

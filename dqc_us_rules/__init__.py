@@ -12,12 +12,27 @@ def run_checks(val):
     """
     plugin_modules = _plugins_to_run(sys.modules[__name__])
     for plugin in plugin_modules:
-        if ((plugin.__file__ is not None and
-             plugin.__file__.find('__init__.py') == -1 and
-             hasattr(plugin, '__pluginInfo__'))):
+        try:
+            if ((plugin.__file__ is not None and
+                 plugin.__file__.find('__init__.py') == -1 and
+                 hasattr(plugin, '__pluginInfo__'))):
 
-            func = plugin.__pluginInfo__['Validate.XBRL.Finally']
-            func(val)
+                func = plugin.__pluginInfo__['Validate.XBRL.Finally']
+                func(val)
+        except Exception as err:
+            # This is an overly generic error catch, but it will hopefully
+            # be able to be pared down in the future.
+            val.modelXbrl.error(
+                "dqc_us_rules.exception:" + type(err).__name__,
+                (
+                    "Testcase validation exception: "
+                    "%(error)s, testcase: %(testcase)s"
+                ),
+                modelXbrl=val.modelXbrl,
+                testcase=val.modelXbrl.modelDocument.basename,
+                error=err,
+                exc_info=True
+            )
 
 
 def _plugins_to_run(mod, include_start=True):
