@@ -276,7 +276,7 @@ def _is_concept(concept):
 def _all_members_under(axis, relset):
     """
     Returns a dictionary of concepts seen under the provided concept,
-    in the given relset and filtered by the optional filter.
+    in the given relset.
 
     Dictionary values are locators for the concepts: the `toLocator`
     from the arc where that concept was discovered.
