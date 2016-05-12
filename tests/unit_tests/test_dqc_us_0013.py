@@ -78,7 +78,8 @@ class TestDQC0013(unittest.TestCase):
         # is NEGATIVE = No Fire
         self.fact_no_fire3 = mock.Mock(
             concept=mock_concept_no_blacklist, qname=m_qn_no_blacklist,
-            xValue=-7777, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            xValue=-7777,
+            namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
         # Concept is NOT in blacklist, type is numeric without decimal, value
