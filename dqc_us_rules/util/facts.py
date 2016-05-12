@@ -331,6 +331,33 @@ def legal_entity_axis_facts_by_member(facts):
     return results
 
 
+def axis_member_fact(axis_name, member_name, model_xbrl):
+    """
+    Return the fact present, if any, under the axis/member combination.
+
+    :param axis_name: The axis name to check
+    :type axis_name: str
+    :param member_name: The member name to check
+    :type member_name: str
+    :return: The fact found or None
+    :rtype: :class:'~arelle.InstanceModelObject.ModelFact' or None
+    """
+    for fact in model_xbrl.facts:
+        if _fact_components_valid(fact):
+            dims = [
+                dim for dim in fact.context.segDimValues.values()
+                if (
+                    dim.isExplicit and
+                    dim.member is not None and
+                    dim.member.qname.localName == member_name
+                )
+            ]
+            for dim in dims:
+                if dim.dimension.qname.localName == axis_name:
+                    return fact
+    return None
+
+
 def _fact_components_valid(fact):
     """
     Return true if all of the components in a fact are not none
