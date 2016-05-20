@@ -198,8 +198,6 @@ class TestContextChecks(unittest.TestCase):
         )
 
 
-
-
 class TestDeiChecks(unittest.TestCase):
 
     def test_dei_regex(self):

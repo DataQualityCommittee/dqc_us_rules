@@ -15,6 +15,7 @@ _RULE_VERSION = '1.0'
 
 _REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
 
+
 def _get_end_of_period(val):
     """
     Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
