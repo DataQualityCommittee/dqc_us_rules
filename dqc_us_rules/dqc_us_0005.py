@@ -13,6 +13,7 @@ _dei_pattern = (
 _CODE_NAME = 'DQC.US.0005'
 _RULE_VERSION = '1.0'
 
+_REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
 
 def _get_end_of_period(val):
     """
@@ -69,14 +70,25 @@ def _get_end_of_period(val):
 
 def validate_facts(val):
     """
-    This fuction validates facts. In other words this function checks to see if
-    the facts contained in val are correctly implemented.
+    This function validates facts. In other words this function checks to see
+    if the facts contained in val are correctly implemented. Ignores these
+    checks with S-1 and S-11 type of documents.
 
     :param val: val to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """
+    # Ignore 0005 checks if this document is an S-1 or S-11
+    dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val)
+    for dei in dei_list:
+        is_an_excluded_report = any(
+            True if ex in dei.xValue else False
+            for ex in _REPORT_TYPE_EXCLUSIONS
+        )
+        if is_an_excluded_report:
+            return
+
     eop_results = _get_end_of_period(val)
     fact_dict = facts.legal_entity_axis_facts_by_member(
         filter(lambda f: f.context is not None, val.modelXbrl.facts)
