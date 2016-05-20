@@ -325,6 +325,7 @@ def legal_entity_axis_facts_by_member(facts):
             ]
             for dim in dims:
                 if dim.dimension.qname.localName == 'LegalEntityAxis':
+                    print('Got a LEA')
                     legalDim = dim.member.qname.localName
                     break
             results[legalDim].append(fact)

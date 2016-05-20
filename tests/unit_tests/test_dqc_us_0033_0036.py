@@ -178,7 +178,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        self.assertTrue(len(res) == 1)
+        self.assertEqual(len(res), 1)
         code, message, eop_date, eop_fact, dped_fact = res[0]
         self.assertEqual(code, 'DQC.US.0036.1')
 
@@ -195,7 +195,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_edt_off = mock.Mock()
-        mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=3)
         mock_off_context = mock.Mock(
             endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
         )
@@ -209,7 +209,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
             ]
         )
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        self.assertTrue(len(res) == 1)
+        self.assertEqual(len(res), 1)
         code, message, eop_date, eop_fact, dped_fact = res[0]
         self.assertEqual(code, 'DQC.US.0033.2')
 
@@ -239,9 +239,17 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
 
         mock_edt_off = mock.Mock()
-        mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
+        # This will cause 36 to fire
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
         mock_off_context = mock.Mock(
             endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
+        )
+
+        mock_edt_off2 = mock.Mock()
+        # This will cause 33 to fire
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
+        mock_off2_context = mock.Mock(
+            endDatetime=mock_edt_off2, segDimValues=mock_segdimvalues
         )
 
         m_qn_bad = mock.Mock(
@@ -256,7 +264,8 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
         self.fact_end.xValue = mock_edt_off
 
-        self.fact_good1.context = mock_off_context
+        self.fact_good1.context = mock_off_context  # fact for 36
+        self.fact_good2.context = mock_off2_context  # fact for 33
         mock_model = mock.Mock(
             facts=[
                 self.fact_good1, self.fact_good2, self.fact_good3,
@@ -266,8 +275,78 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        # Only expect one because test 33 will not happen if 36 fires.
+        self.assertEqual(len(res), 2)  # Because both 33 and 36 should fire
+
+
+    # From Here...
+    @mock.patch(
+        'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
+    )
+    def test_33_no_fire_on_lea_that_fires_36(self, moc_func):
+        """
+        Tests _doc_period_end_date_check when it should return a warning and an
+        error
+        """
+        mock_mem_qn = mock.Mock(localName='foo')
+        mock_dim_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim_dim = mock.Mock(qname=mock_dim_qn)
+        mock_member = mock.Mock(qname=mock_mem_qn)
+        mock_dim = mock.Mock(
+            isExplicit=True, member=mock_member, dimension=mock_dim_dim
+        )
+
+        mock_more_dims = mock.Mock()
+        mock_more_dims.values.return_value = [mock_dim]
+        mock_segdimvalues = mock.Mock()
+        mock_segdimvalues.values.return_value = []
+
+        mock_edt_norm = mock.Mock()
+        mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
+
+        mock_edt_off = mock.Mock()
+        # This will cause 36 to fire
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
+        mock_off_context = mock.Mock(
+            endDatetime=mock_edt_off, segDimValues=mock_more_dims
+        )
+
+        mock_edt_off2 = mock.Mock()
+        # This will cause 33 to fire
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
+        mock_off2_context = mock.Mock(
+            endDatetime=mock_edt_off2, segDimValues=mock_more_dims
+        )
+
+        m_qn_bad = mock.Mock(
+            localName='DocumentPeriodEndDate',
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+        )
+        concept_enddate = mock.Mock(qname=m_qn_bad)
+        mock_dped_off = mock.Mock(
+            context=mock_off_context, xValue=mock_edt_off,
+            concept=concept_enddate, qname=m_qn_bad,
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+            segDimValues=mock_more_dims
+        )
+        self.fact_end.xValue = mock_edt_off
+
+        self.fact_good1.context = mock_off_context  # fact for 36
+        self.fact_shares.context = mock_off2_context  # fact for 33
+        mock_model = mock.Mock(
+            facts=[
+                self.fact_good1, self.fact_good2, self.fact_good3,
+                self.fact_bad1, self.fact_bad2, self.fact_bad3,
+                self.fact_end, mock_dped_off
+            ]
+        )
+
+        res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
+        for i in res:
+            print('Iiiiiiiii = {}'.format(i))
+        # Because 33 shouldn't fire when 36 fires on an LEA axis
         self.assertEqual(len(res), 2)
+    # To Here...
 
 
 class TestGetDefaultDped(unittest.TestCase):

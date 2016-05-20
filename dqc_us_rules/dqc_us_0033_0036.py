@@ -124,10 +124,17 @@ def _doc_period_end_date_check(model_xbrl):
                      )):
                     continue
 
+                print('context_eop_date = {}'.format(context_eop_date))
+                other_date = dateunionDate(
+                    fact.context.endDatetime, subtractOneDay=True
+                )
+                print('the other date = {}'.format(other_date))
+
                 delta = context_eop_date - dateunionDate(
                     fact.context.endDatetime, subtractOneDay=True
                 )
-                if abs(delta.days) <= 3:
+                print('DELTA = {}'.format(delta.days))
+                if 0 != abs(delta.days) <= 3:
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
                         messages.get_message(_CODE_NAME_33),
