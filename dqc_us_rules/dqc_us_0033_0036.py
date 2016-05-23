@@ -5,6 +5,7 @@ from .util import facts, messages
 
 from arelle.ModelValue import dateunionDate
 
+
 _CODE_NAME_33 = 'DQC.US.0033'
 _CODE_NAME_36 = 'DQC.US.0036'
 _RULE_VERSION = '1.0'
@@ -85,6 +86,7 @@ def _doc_period_end_date_check(model_xbrl):
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
             not_valid_dped.append(eop_fact.contextID)
+            # not_valid_dped.append(eop_fact.member_qname)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -92,6 +94,7 @@ def _doc_period_end_date_check(model_xbrl):
                 eop_fact,
                 default_dped_fact
             ))
+    print('not_valid_dped = {}'.format(not_valid_dped))
     # Don't loop through them if the DPED date is bad, since the date
     # is incorrect.
 
@@ -122,6 +125,7 @@ def _doc_period_end_date_check(model_xbrl):
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
                      )):
+                    print('Did not check')
                     continue
 
                 print('context_eop_date = {}'.format(context_eop_date))
@@ -135,6 +139,7 @@ def _doc_period_end_date_check(model_xbrl):
                 )
                 print('DELTA = {}'.format(delta.days))
                 if 0 != abs(delta.days) <= 3:
+                    print('MADE IT HERE...')
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
                         messages.get_message(_CODE_NAME_33),
@@ -163,9 +168,12 @@ def _setup_dei_facts(model_xbrl):
         'EntityNumberOfEmployees',
         'EntityListingDepositoryReceiptRatio'
     ]
+
     dei_facts = facts.legal_entity_axis_facts_by_member(
         _get_dei_facts(model_xbrl, ignored_fact_list)
     )
+    # dei_facts = _get_dei_facts(model_xbrl, ignored_fact_list)
+    # lea_dei_facts = facts.legal_entity_axis_facts_by_member(dei_facts)
     dped_facts = facts.legal_entity_axis_facts_by_member(
         facts.get_facts_dei(['DocumentPeriodEndDate'], model_xbrl)
     )
