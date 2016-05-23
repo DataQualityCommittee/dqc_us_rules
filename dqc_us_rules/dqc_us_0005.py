@@ -81,7 +81,7 @@ def validate_facts(val):
     :rtype: None
     """
     # Ignore 0005 checks if this document is an S-1 or S-11
-    dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val)
+    dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val.modelXbrl)
     for dei in dei_list:
         is_an_excluded_report = any(
             True if ex in dei.xValue else False
