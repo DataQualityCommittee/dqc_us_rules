@@ -100,7 +100,7 @@ def validate_facts(val):
             if lea_member in eop_results
             else facts.LEGALENTITYAXIS_DEFAULT
         )
-        if lookup in eop_results:
+        if lookup in sorted(eop_results):
             for fact in fact_list:
                 # endDateTime will be the instant date time if this
                 # is an instant period
