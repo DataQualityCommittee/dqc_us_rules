@@ -85,8 +85,10 @@ def _doc_period_end_date_check(model_xbrl):
         )
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
-            not_valid_dped.append(eop_fact.contextID)
-            # not_valid_dped.append(eop_fact.member_qname)
+            for dim in eop_fact.context.segDimValues.values():
+                not_valid_dped = str(dim.member.qname)
+                # not_valid_dped.append(str(dim.member.qname))
+                model_xbrl.error('Print ONE = ', not_valid_dped)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -94,7 +96,7 @@ def _doc_period_end_date_check(model_xbrl):
                 eop_fact,
                 default_dped_fact
             ))
-    print('not_valid_dped = {}'.format(not_valid_dped))
+    model_xbrl.error('not_valid = ', not_valid_dped)
     # Don't loop through them if the DPED date is bad, since the date
     # is incorrect.
 
@@ -120,12 +122,17 @@ def _doc_period_end_date_check(model_xbrl):
             # If the DocumentPeriodEndDate context check doesn't fire,
             # we will check all dei fact context end dates against it.
             for fact in fact_group:
-                if ((fact.contextID in not_valid_dped or
+                fact_member = ''
+                for dim in fact.context.segDimValues.values():
+                    fact_member = (str(dim.member.qname))
+                    model_xbrl.error('fact_member = ', fact_member)
+                if ((str(fact_member) == not_valid_dped or
                      fact.context is None or
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
                      )):
                     print('Did not check')
+                    model_xbrl.error('Did NOT CHECK', 'No CHECK')
                     continue
 
                 print('context_eop_date = {}'.format(context_eop_date))
@@ -139,7 +146,6 @@ def _doc_period_end_date_check(model_xbrl):
                 )
                 print('DELTA = {}'.format(delta.days))
                 if 0 != abs(delta.days) <= 3:
-                    print('MADE IT HERE...')
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
                         messages.get_message(_CODE_NAME_33),
