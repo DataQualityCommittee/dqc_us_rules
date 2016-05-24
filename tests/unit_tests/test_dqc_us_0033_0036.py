@@ -279,8 +279,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
             print('Iiiiiiiii = {}'.format(i))
         self.assertEqual(len(res), 2)  # Because both 33 and 36 should fire
 
-
-    # From Here...
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
         side_effect=lambda x, subtractOneDay: x.date()  # noqa
@@ -301,8 +299,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         mock_more_dims = mock.Mock()
         mock_more_dims.values.return_value = [mock_dim]
-        mock_segdimvalues = mock.Mock()
-        mock_segdimvalues.values.return_value = []
 
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
@@ -314,14 +310,14 @@ class TestDocPerEndDateChk(unittest.TestCase):
             endDatetime=mock_edt_off, segDimValues=mock_more_dims
         )
 
-        # This will cause 33 to fire
+        # This will cause 33 to fire (except it won't in this test)
         mock_edt_off2 = mock.Mock()
         mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
         mock_off2_context = mock.Mock(
             endDatetime=mock_edt_off2, segDimValues=mock_more_dims
         )
 
-        # This will cause 33 to fire
+        # This will cause 33 to fire (except it won't in this test)
         mock_edt_off3 = mock.Mock()
         mock_edt_off3.date.return_value = date(year=2015, month=1, day=2)
         mock_off3_context = mock.Mock(
@@ -342,13 +338,13 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         # fact for 36
         self.fact_end.xValue = mock_edt_off
-        # self.fact_good1.xValue = mock_edt_off2
-        # self.fact_good3.xValue = mock_edt_off3
-        # self.fact_shares.xValue = mock_edt_off2
 
         # facts for 33 but neither will fire because 36 fires on fact_end
         self.fact_good1.context = mock_off2_context
         self.fact_good3.context = mock_off3_context
+
+        # Setting the dimensions on the fact_end fact
+        self.fact_end.context.segDimValues = mock_more_dims
 
         # fact for 33 but won't fire because it is on the exclude list
         self.fact_shares.context = mock_off2_context
@@ -357,16 +353,13 @@ class TestDocPerEndDateChk(unittest.TestCase):
             facts=[
                 self.fact_good1, self.fact_good2, self.fact_good3,
                 self.fact_bad1, self.fact_bad2, self.fact_bad3,
-                self.fact_shares, self.fact_end,  mock_dped_off
+                self.fact_shares, self.fact_end, mock_dped_off
             ]
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        for i in res:
-            print('Iiiiiiiii = {}'.format(i))
-        # Because 33 shouldn't fire when 36 fires on an LEA axis
-        self.assertEqual(len(res), 5)
-    # To Here...
+        # Only 36 fires because 33 shouldn't fire when 36 fires on a LEA axis
+        self.assertEqual(len(res), 1)
 
 
 class TestGetDefaultDped(unittest.TestCase):

@@ -86,9 +86,7 @@ def _doc_period_end_date_check(model_xbrl):
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
             for dim in eop_fact.context.segDimValues.values():
-                not_valid_dped = str(dim.member.qname)
-                # not_valid_dped.append(str(dim.member.qname))
-                model_xbrl.error('Print ONE = ', not_valid_dped)
+                not_valid_dped.append(str(dim.member.qname))
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -96,7 +94,7 @@ def _doc_period_end_date_check(model_xbrl):
                 eop_fact,
                 default_dped_fact
             ))
-    model_xbrl.error('not_valid = ', not_valid_dped)
+
     # Don't loop through them if the DPED date is bad, since the date
     # is incorrect.
 
@@ -125,26 +123,17 @@ def _doc_period_end_date_check(model_xbrl):
                 fact_member = ''
                 for dim in fact.context.segDimValues.values():
                     fact_member = (str(dim.member.qname))
-                    model_xbrl.error('fact_member = ', fact_member)
-                if ((str(fact_member) == not_valid_dped or
+                if ((str(fact_member) in not_valid_dped or
                      fact.context is None or
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
                      )):
-                    print('Did not check')
-                    model_xbrl.error('Did NOT CHECK', 'No CHECK')
                     continue
-
-                print('context_eop_date = {}'.format(context_eop_date))
-                other_date = dateunionDate(
-                    fact.context.endDatetime, subtractOneDay=True
-                )
-                print('the other date = {}'.format(other_date))
 
                 delta = context_eop_date - dateunionDate(
                     fact.context.endDatetime, subtractOneDay=True
                 )
-                print('DELTA = {}'.format(delta.days))
+
                 if 0 != abs(delta.days) <= 3:
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
