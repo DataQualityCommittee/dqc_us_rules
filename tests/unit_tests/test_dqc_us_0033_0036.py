@@ -275,8 +275,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        for i in res:
-            print('Iiiiiiiii = {}'.format(i))
         self.assertEqual(len(res), 2)  # Because both 33 and 36 should fire
 
     @mock.patch(
@@ -287,7 +285,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         """
         Tests _doc_period_end_date_check to ensure that facts that should fire
         rule 33 do not if rule 36 fires on a Legal Entity Axis and the rule 33
-        facts have a member of the Legal Entity Axis
+        facts the member of the Legal Entity Axis
         """
         mock_mem_qn = mock.Mock(localName='foo')
         mock_dim_qn = mock.Mock(localName='LegalEntityAxis')
@@ -310,14 +308,16 @@ class TestDocPerEndDateChk(unittest.TestCase):
             endDatetime=mock_edt_off, segDimValues=mock_more_dims
         )
 
-        # This will cause 33 to fire (except it won't in this test)
+        # This will cause 33 to fire (except it won't in this test as per the
+        # reason noted in the docstring)
         mock_edt_off2 = mock.Mock()
         mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
         mock_off2_context = mock.Mock(
             endDatetime=mock_edt_off2, segDimValues=mock_more_dims
         )
 
-        # This will cause 33 to fire (except it won't in this test)
+        # This will cause 33 to fire (except it won't in this test as per the
+        # reason noted in the docstring)
         mock_edt_off3 = mock.Mock()
         mock_edt_off3.date.return_value = date(year=2015, month=1, day=2)
         mock_off3_context = mock.Mock(

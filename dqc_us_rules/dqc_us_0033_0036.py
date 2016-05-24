@@ -123,7 +123,7 @@ def _doc_period_end_date_check(model_xbrl):
                 fact_member = ''
                 for dim in fact.context.segDimValues.values():
                     fact_member = (str(dim.member.qname))
-                if ((str(fact_member) in not_valid_dped or
+                if ((fact_member in not_valid_dped or
                      fact.context is None or
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
@@ -167,8 +167,6 @@ def _setup_dei_facts(model_xbrl):
     dei_facts = facts.legal_entity_axis_facts_by_member(
         _get_dei_facts(model_xbrl, ignored_fact_list)
     )
-    # dei_facts = _get_dei_facts(model_xbrl, ignored_fact_list)
-    # lea_dei_facts = facts.legal_entity_axis_facts_by_member(dei_facts)
     dped_facts = facts.legal_entity_axis_facts_by_member(
         facts.get_facts_dei(['DocumentPeriodEndDate'], model_xbrl)
     )
