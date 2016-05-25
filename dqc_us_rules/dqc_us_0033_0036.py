@@ -127,26 +127,29 @@ def _doc_period_end_date_check(model_xbrl):
                      )):
                     continue
 
-                should_break = False
-                for fact_axis, fact_dim_value in fact.context.segDimValues.items():
-                    if fact_dim_value.memberQname.localName in not_valid_dped:
-                        should_break = True
-                        break
-                if should_break:
-                    continue
-
-                delta = context_eop_date - dateunionDate(
-                    fact.context.endDatetime, subtractOneDay=True
-                )
-                if delta.days != 0 and abs(delta.days) <= 3:
-                    result_group.append((
-                        '{}.2'.format(_CODE_NAME_33),
-                        messages.get_message(_CODE_NAME_33),
-                        fact.concept.label(),
-                        fact,
-                        default_dped_fact
-                    ))
+                should_continue = check_for_lea_member(fact, not_valid_dped)
+                if should_continue:
+                    delta = context_eop_date - dateunionDate(
+                        fact.context.endDatetime, subtractOneDay=True
+                    )
+                    if delta.days != 0 and abs(delta.days) <= 3:
+                        result_group.append((
+                            '{}.2'.format(_CODE_NAME_33),
+                            messages.get_message(_CODE_NAME_33),
+                            fact.concept.label(),
+                            fact,
+                            default_dped_fact
+                        ))
     return result_group
+
+
+def check_for_lea_member(fact_items, not_valid_dped):
+    for fact_axis, fact_dim_value in fact_items.context.segDimValues.items():
+        if fact_dim_value.memberQname.localName in not_valid_dped:
+            # If we find the member, we do not want to continue with rule 33
+            # check
+            return False
+    return True
 
 
 def _setup_dei_facts(model_xbrl):
