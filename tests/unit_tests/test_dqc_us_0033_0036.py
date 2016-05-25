@@ -7,6 +7,9 @@ from unittest import mock
 
 from dqc_us_rules import dqc_us_0033_0036
 from collections import defaultdict
+from arelle.ModelInstanceObject import ModelDimensionValue, ModelFact, ModelContext
+from arelle.ModelValue import QName
+from arelle.ModelXbrl import ModelXbrl
 
 
 DEI_NAMESPACE_LIST = [
@@ -346,6 +349,80 @@ class TestDocPerEndDateChk(unittest.TestCase):
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
         # Only 36 fires because 33 shouldn't fire when 36 fires on a LEA axis
         self.assertEqual(len(res), 1)
+
+    def test_check_for_lea_member(self):
+        """
+        HERE>>>>Test to make sure True is returned if when the fact has the legal entity
+        """
+        not_valid_dped = ['vault', 'bars', 'foo', 'beam', 'floor', 'boo']
+
+        # ModelInstanceObject has the ModelContext class and the ModelDimensionValue class (the MDV class has the memberQname function)
+        # ModelValue has the Qname class
+
+        mock_mem1_qn = mock.Mock(spec=QName)
+        mock_mem1_qn.localName = 'foo'
+        mock_dim1_qn = mock.Mock(spec=QName)
+        mock_dim1_qn.localName = 'LegalEntityAxis'
+        mock_dim1_dim = mock.Mock(spec=ModelDimensionValue, dimensionQname=mock_dim1_qn)
+        mock_member1 = mock.Mock(spec=ModelDimensionValue, memberQname=mock_mem1_qn)
+        mock_dimension1 = mock.Mock(
+            spec=ModelDimensionValue, isExplicit=True, member=mock_member1, dimension=mock_dim1_dim
+        )
+
+        mock_mem2_qn = mock.Mock(spec=QName)
+        mock_mem2_qn.localName = 'boo'
+        mock_dim2_qn = mock.Mock(spec=QName)
+        mock_dim2_qn.localName = 'Scenario'
+        mock_dim2_dim = mock.Mock(spec=ModelDimensionValue, dimensionQname=mock_dim2_qn)
+        mock_member2 = mock.Mock(spec=ModelDimensionValue, memberQname=mock_mem2_qn)
+        mock_dimension2 = mock.Mock(
+            spec=ModelDimensionValue, isExplicit=True, member=mock_member2, dimension=mock_dim2_dim
+        )
+
+        mock_mem3_qn = mock.Mock(spec=QName)
+        mock_mem3_qn.localName = 'moo'
+        mock_dim3_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim3_dim = mock.Mock(spec=ModelDimensionValue, dimensionQname=mock_dim3_qn)
+        mock_member3 = mock.Mock(spec=ModelDimensionValue, memberQname=mock_mem3_qn)
+        mock_dimension3 = mock.Mock(
+            spec=ModelDimensionValue, isExplicit=True, member=mock_member3, dimension=mock_dim3_dim
+        )
+
+        mock_more_dims1 = {mock_dim1_dim: mock_dimension1}
+        mock_more_dims2 = {mock_dim2_dim: mock_dimension2}
+        mock_more_dims3 = {mock_dim3_dim: mock_dimension3}
+        mock_no_dimensions = {}
+
+        mock_context1 = mock.Mock(spec=ModelXbrl, segDimValues=mock_more_dims1)
+        mock_context2 = mock.Mock(spec=ModelXbrl, segDimValues=mock_more_dims2)
+        mock_context3 = mock.Mock(spec=ModelXbrl, segDimValues=mock_more_dims3)
+        mock_context4 = mock.Mock(spec=ModelXbrl, segDimValues=mock_no_dimensions)
+
+        print('mock_context4 = {}'.format(mock_no_dimensions))
+
+        self.fact_one = mock.Mock(spec=ModelFact, context=mock_context1)
+        self.fact_two = mock.Mock(spec=ModelFact, context=mock_context2)
+        self.fact_three = mock.Mock(spec=ModelFact, context=mock_context3)
+        self.fact_four = mock.Mock(spec=ModelFact, context=mock_context4)
+
+        print('fact_one = {}'.format(self.fact_one))
+        print('fact_four = {}'.format(self.fact_four))
+
+        result1 = (dqc_us_0033_0036.check_for_lea_member(self.fact_one, not_valid_dped))
+        result2 = (dqc_us_0033_0036.check_for_lea_member(self.fact_two, not_valid_dped))
+        result3 = (dqc_us_0033_0036.check_for_lea_member(self.fact_three, not_valid_dped))
+        result4 = (dqc_us_0033_0036.check_for_lea_member(self.fact_four, not_valid_dped))
+
+        print('result1 = {}'.format(result1))
+        print('result2 = {}'.format(result2))
+        print('result3 = {}'.format(result3))
+        print('result4 = {}'.format(result4))
+
+        self.assertFalse(dqc_us_0033_0036.check_for_lea_member(self.fact_one, not_valid_dped))
+        self.assertTrue(dqc_us_0033_0036.check_for_lea_member(self.fact_two, not_valid_dped))
+        self.assertTrue(dqc_us_0033_0036.check_for_lea_member(self.fact_three, not_valid_dped))
+        self.assertTrue(dqc_us_0033_0036.check_for_lea_member(self.fact_four, not_valid_dped))
+
 
 
 class TestGetDefaultDped(unittest.TestCase):

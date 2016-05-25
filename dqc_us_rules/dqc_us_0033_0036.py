@@ -144,7 +144,11 @@ def _doc_period_end_date_check(model_xbrl):
 
 
 def check_for_lea_member(fact_items, not_valid_dped):
+    print('not_valid_dped = {}'.format(not_valid_dped))
     for fact_axis, fact_dim_value in fact_items.context.segDimValues.items():
+        print(type(fact_dim_value))
+        print('fact_dim_value = {}'.format(fact_dim_value.memberQname.localName))
+        is_gonna_b_false = fact_dim_value.memberQname.localName in not_valid_dped
         if fact_dim_value.memberQname.localName in not_valid_dped:
             # If we find the member, we do not want to continue with rule 33
             # check
