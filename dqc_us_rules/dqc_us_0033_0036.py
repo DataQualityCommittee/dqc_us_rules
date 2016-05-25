@@ -143,12 +143,22 @@ def _doc_period_end_date_check(model_xbrl):
     return result_group
 
 
-def check_for_lea_member(fact_items, not_valid_dped):
-    print('not_valid_dped = {}'.format(not_valid_dped))
-    for fact_axis, fact_dim_value in fact_items.context.segDimValues.items():
-        print(type(fact_dim_value))
-        print('fact_dim_value = {}'.format(fact_dim_value.memberQname.localName))
-        is_gonna_b_false = fact_dim_value.memberQname.localName in not_valid_dped
+def check_for_lea_member(fact, not_valid_dped):
+    """
+    Checks facts to determine whether the fact contains a LEA member that we
+    do not want to fire rule 33 for
+
+    :param fact: fact to check
+    :type fact: :class: "~arelle.InstanceModelObject.ModelFact"
+    :param not_valid_dped: list of LEA member's that we do not want to fire
+        rule 33 on
+    :type not_valid_dped: list
+    :return: False (so we don't continue) if the fact contains a LEA member
+        that is in the list of LEA members we do not want to fire rule 33 for.
+        True (so we do continue) otherwise.
+    :rtype: bool
+    """
+    for fact_axis, fact_dim_value in fact.context.segDimValues.items():
         if fact_dim_value.memberQname.localName in not_valid_dped:
             # If we find the member, we do not want to continue with rule 33
             # check
