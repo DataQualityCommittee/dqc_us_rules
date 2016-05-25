@@ -75,8 +75,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         concept_enddate = mock.Mock(qname=m_qn_bad3)
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
-        mock_segdimvalues = mock.Mock()
-        mock_segdimvalues.values.return_value = []
+        mock_segdimvalues = {}
         mock_context = mock.Mock(
             endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
         )
@@ -157,13 +156,13 @@ class TestDocPerEndDateChk(unittest.TestCase):
         Tests _doc_period_end_date_check to see of the length is right and that
         it returns the correct values
         """
-        mock_segdimvalues = mock.Mock()
-        mock_segdimvalues.values.return_value = []
+        mock_segdimvalues = {}
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_dped_context = mock.Mock(
             endDatetime=mock_edt_norm, segDimValues=mock_segdimvalues
         )
+
         mock_edt_off = mock.Mock()
         mock_edt_off.date.return_value = date(year=2015, month=2, day=1)
         self.fact_end.context = mock_dped_context
@@ -190,8 +189,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         """
         Tests _doc_period_end_date_check when it should return an error
         """
-        mock_segdimvalues = mock.Mock()
-        mock_segdimvalues.values.return_value = []
+        mock_segdimvalues = {}
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_edt_off = mock.Mock()
@@ -222,18 +220,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         Tests _doc_period_end_date_check when it should return a warning and an
         error
         """
-        mock_mem_qn = mock.Mock(localName='foo')
-        mock_dim_qn = mock.Mock(localName='LegalEntityAxis')
-        mock_dim_dim = mock.Mock(qname=mock_dim_qn)
-        mock_member = mock.Mock(qname=mock_mem_qn)
-        mock_dim = mock.Mock(
-            isExplicit=True, member=mock_member, dimension=mock_dim_dim
-        )
-
-        mock_more_dims = mock.Mock()
-        mock_more_dims.values.return_value = [mock_dim]
-        mock_segdimvalues = mock.Mock()
-        mock_segdimvalues.values.return_value = []
+        mock_segdimvalues = {}
 
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
@@ -295,8 +282,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
             isExplicit=True, member=mock_member, dimension=mock_dim_dim
         )
 
-        mock_more_dims = mock.Mock()
-        mock_more_dims.values.return_value = [mock_dim]
+        mock_more_dims = {mock_dim_dim: mock_dim}
 
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)

@@ -85,8 +85,9 @@ def _doc_period_end_date_check(model_xbrl):
         )
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
-            for dim in eop_fact.context.segDimValues.values():
-                not_valid_dped.append(str(dim.member.qname))
+            for axis, dim_value in eop_fact.context.segDimValues.items():
+                if axis.qname.localName == 'LegalEntityAxis':
+                    not_valid_dped.append(dim_value.memberQname.localName)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -120,21 +121,24 @@ def _doc_period_end_date_check(model_xbrl):
             # If the DocumentPeriodEndDate context check doesn't fire,
             # we will check all dei fact context end dates against it.
             for fact in fact_group:
-                fact_member = ''
-                for dim in fact.context.segDimValues.values():
-                    fact_member = (str(dim.member.qname))
-                if ((fact_member in not_valid_dped or
-                     fact.context is None or
+                if ((fact.context is None or
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
                      )):
                     continue
 
+                should_break = False
+                for fact_axis, fact_dim_value in fact.context.segDimValues.items():
+                    if fact_dim_value.memberQname.localName in not_valid_dped:
+                        should_break = True
+                        break
+                if should_break:
+                    continue
+
                 delta = context_eop_date - dateunionDate(
                     fact.context.endDatetime, subtractOneDay=True
                 )
-
-                if 0 != abs(delta.days) <= 3:
+                if delta.days != 0 and abs(delta.days) <= 3:
                     result_group.append((
                         '{}.2'.format(_CODE_NAME_33),
                         messages.get_message(_CODE_NAME_33),
