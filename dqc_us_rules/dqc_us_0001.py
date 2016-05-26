@@ -118,12 +118,12 @@ def _run_member_checks(axis, axis_config, relset, val, role):
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
                  child.qname.localName in disallowed_children)):
-                fact = facts.axis_member_fact(
+                fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if fact is not None:
+                if len(fact_list) != 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -132,7 +132,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        modelObject=fact,
+                        modelObject=fact_list,
                         ruleVersion=_RULE_VERSION
                     )
                 else:
