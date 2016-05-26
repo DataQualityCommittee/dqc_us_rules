@@ -127,8 +127,7 @@ def _doc_period_end_date_check(model_xbrl):
                      )):
                     continue
 
-                should_continue = check_for_lea_member(fact, not_valid_dped)
-                if should_continue:
+                if check_for_lea_member(fact, not_valid_dped):
                     delta = context_eop_date - dateunionDate(
                         fact.context.endDatetime, subtractOneDay=True
                     )
