@@ -356,7 +356,7 @@ def axis_member_fact(axis_name, member_name, model_xbrl):
             for dim in dims:
                 if dim.dimension.qname.localName == axis_name:
                     fact_list.append(fact)
-                    return fact_list
+            return fact_list
     return None
 
 
