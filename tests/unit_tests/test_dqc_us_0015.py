@@ -4,6 +4,7 @@
 import io
 import unittest
 from unittest import mock
+from dqc_us_rules.util import neg_num
 
 import dqc_us_rules.dqc_us_0015 as dqc_us_0015
 
@@ -16,22 +17,22 @@ class TestDQC0015(unittest.TestCase):
         element_one = 'foo:Credit'
         element_two = 'foo:Accreditation'
         check_list = 'Credit'
-        self.assertTrue(dqc_us_0015.contains(element_one, check_list))
-        self.assertFalse(dqc_us_0015.contains(element_two, check_list))
+        self.assertTrue(neg_num.contains(element_one, check_list))
+        self.assertFalse(neg_num.contains(element_two, check_list))
 
-    def test_contains_insensitive(self):
+    def test_contains_ignore_case(self):
         """
-        Test contains_insensitive with item that contain the same letters but
+        Test contains_ignore_case with item that contain the same letters but
         not the same casing
         """
         element_one = 'foo:cRediT'
         element_two = 'foo:aCcRedItAtiON'
         check_list = 'CreDIt'
         self.assertTrue(
-            dqc_us_0015.contains_insensitive(element_one, check_list)
+            neg_num.contains_insensitive(element_one, check_list)
         )
         self.assertTrue(
-            dqc_us_0015.contains_insensitive(element_two, check_list)
+            neg_num.contains_insensitive(element_two, check_list)
         )
 
     def test_equals(self):
@@ -43,16 +44,16 @@ class TestDQC0015(unittest.TestCase):
         element_two = 'foo:Accreditation'
         element_three = 'foo:CreditMaximum'
         check_list = 'foo:Credit'
-        self.assertTrue(dqc_us_0015.equals(element_one, check_list))
-        self.assertFalse(dqc_us_0015.equals(element_two, check_list))
-        self.assertFalse(dqc_us_0015.equals(element_three, check_list))
-        self.assertTrue(dqc_us_0015.equals(1.0, '1.0'))
-        self.assertTrue(dqc_us_0015.equals(1, '1.0'))
-        self.assertTrue(dqc_us_0015.equals(1.00, '1'))
-        self.assertTrue(dqc_us_0015.equals(1.00, '1.00'))
-        self.assertTrue(dqc_us_0015.equals('NaN', 'NaN'))
-        self.assertFalse(dqc_us_0015.equals("NaN", '1'))
-        self.assertFalse(dqc_us_0015.equals(0, 'zero'))
+        self.assertTrue(neg_num.equals(element_one, check_list))
+        self.assertFalse(neg_num.equals(element_two, check_list))
+        self.assertFalse(neg_num.equals(element_three, check_list))
+        self.assertTrue(neg_num.equals(1.0, '1.0'))
+        self.assertTrue(neg_num.equals(1, '1.0'))
+        self.assertTrue(neg_num.equals(1.00, '1'))
+        self.assertTrue(neg_num.equals(1.00, '1.00'))
+        self.assertTrue(neg_num.equals('NaN', 'NaN'))
+        self.assertFalse(neg_num.equals("NaN", '1'))
+        self.assertFalse(neg_num.equals(0, 'zero'))
 
     def test_parse_row(self):
         """
@@ -82,7 +83,7 @@ class TestDQC0015(unittest.TestCase):
                 }
             }
         }
-        rule = dqc_us_0015._parse_row(test_row)
+        rule = neg_num._parse_row(test_row)
         self.assertDictEqual(rule, expected_rule)
 
     def test_actual_rule_config(self):
@@ -92,7 +93,9 @@ class TestDQC0015(unittest.TestCase):
         """
         with open(dqc_us_0015._DEFAULT_EXCLUSIONS_FILE, 'rt') as f:
             rule_line_count = len(f.readlines()) - 1  # remember the header
-        blacklist_exclusion_rules = dqc_us_0015.get_rules_from_csv()
+        blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+            dqc_us_0015._DEFAULT_EXCLUSIONS_FILE
+        )
         # If any values are not BLE , they will not get returned and this
         # count will be less than # of lines.
         total_rule_count = len(blacklist_exclusion_rules)
@@ -117,17 +120,19 @@ class TestBuildDict(unittest.TestCase):
         self.csv_str = '\n'.join(self.csv_lines)
         # Mock the context managed open statement to return the test CSV
         # mock open specifically in the target module
-        open_name = '{0}.open'.format(dqc_us_0015.__name__)
+        open_name = '{0}.open'.format(neg_num.__name__)
         with mock.patch(open_name, create=True) as m:
             m.return_value = io.StringIO(self.csv_str)
-            self.blacklist_exclusion_rules = dqc_us_0015.get_rules_from_csv()
-        self.rule_one = dqc_us_0015._parse_row(
+            self.blacklist_exclusion_rules = neg_num.get_rules_from_csv(
+                dqc_us_0015._DEFAULT_EXCLUSIONS_FILE
+            )
+        self.rule_one = neg_num._parse_row(
             self.csv_lines[0].split(',')[1:]
         )
-        self.rule_two = dqc_us_0015._parse_row(
+        self.rule_two = neg_num._parse_row(
             self.csv_lines[1].split(',')[1:]
         )
-        self.rule_three = dqc_us_0015._parse_row(
+        self.rule_three = neg_num._parse_row(
             self.csv_lines[2].split(',')[1:]
         )
 

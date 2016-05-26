@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from dqc_us_rules import dqc_us_0005
-from dqc_us_rules.util import facts
+from dqc_us_rules.util import facts, messages
 
 
 class TestContextChecks(unittest.TestCase):
@@ -128,6 +128,75 @@ class TestContextChecks(unittest.TestCase):
             facts.axis_exists(mock_val, mock_fact, 'not a used axis')
         )
 
+    def test_run_checks_EntityCommonStockSharesOutstanding(self):
+        msg = messages.get_message('DQC.US.0005', "17")
+        mock_context = Mock(endDatetime=1)
+        fact = Mock(
+            localName='EntityCommonStockSharesOutstanding',
+            context=mock_context
+        )
+        lookup = 'foo'
+        eop_results = {lookup: [1, 1]}
+        mock_error = Mock()
+        mock_modelxbrl = Mock(error=mock_error)
+        mock_val = Mock(modelXbrl=mock_modelxbrl)
+        dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
+        self.assertFalse(mock_error.called)
+
+        mock_context = Mock(endDatetime=0)
+        fact = Mock(
+            localName='EntityCommonStockSharesOutstanding',
+            context=mock_context
+        )
+        dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
+        mock_error.assert_called_with(
+            'DQC.US.0005.17',
+            msg,
+            modelObject=[fact] + list(eop_results[lookup]),
+            ruleVersion=dqc_us_0005._RULE_VERSION
+        )
+
+    @patch('dqc_us_rules.dqc_us_0005.facts.axis_exists')
+    def test_run_checks_axis_exists(self, axis_exists):
+        axis_exists.return_value = True
+        msg = messages.get_message('DQC.US.0005', "48")
+        mock_context = Mock(endDatetime=1)
+        fact = Mock(localName='foo', context=mock_context)
+        lookup = 'foo'
+        eop_results = {lookup: [1, 1]}
+        mock_error = Mock()
+        mock_modelxbrl = Mock(error=mock_error)
+        mock_val = Mock(modelXbrl=mock_modelxbrl)
+        dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
+        mock_error.assert_called_with(
+            'DQC.US.0005.48',
+            msg,
+            modelObject=[fact] + list(eop_results[lookup]),
+            ruleVersion=dqc_us_0005._RULE_VERSION
+        )
+
+    @patch('dqc_us_rules.dqc_us_0005.facts.axis_exists')
+    @patch('dqc_us_rules.dqc_us_0005.facts.axis_member_exists')
+    def test_run_checks_axis_member_exists(self, axis_member_exists,
+                                           axis_exists):
+        axis_exists.return_value = False
+        axis_member_exists.return_value = True
+        msg = messages.get_message('DQC.US.0005', "49")
+        mock_context = Mock(endDatetime=1)
+        fact = Mock(localName='foo', context=mock_context)
+        lookup = 'foo'
+        eop_results = {lookup: [1, 1]}
+        mock_error = Mock()
+        mock_modelxbrl = Mock(error=mock_error)
+        mock_val = Mock(modelXbrl=mock_modelxbrl)
+        dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
+        mock_error.assert_called_with(
+            'DQC.US.0005.49',
+            msg,
+            modelObject=[fact] + list(eop_results[lookup]),
+            ruleVersion=dqc_us_0005._RULE_VERSION
+        )
+
 
 class TestDeiChecks(unittest.TestCase):
 
@@ -153,3 +222,42 @@ class TestDeiChecks(unittest.TestCase):
             self.assertTrue(dqc_us_0005._dei_pattern.match(ns))
         for ns in should_fail_list:
             self.assertFalse(dqc_us_0005._dei_pattern.match(ns))
+
+    @patch('dqc_us_rules.dqc_us_0005._get_end_of_period', autospec=True)
+    def test_report_exclusion(self, get_end_of_period):
+        """Tests to make sure excluded reports are not validated."""
+        mock_type = Mock()
+        mock_type.name = 'textBlockItemType'
+        mock_doc_type_qname = Mock(
+            return_value=(
+                '{http://xbrl.sec.gov/dei/2014-01-31}DocumentType'
+            ),
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+            localName='DocumentType'
+        )
+        mock_doc_type_concept = Mock(
+            qname=mock_doc_type_qname, type=mock_type
+        )
+
+        mock_name_concepts = {'DocumentType': [mock_doc_type_concept]}
+        mock_segdimval = {}
+        mock_doc_type_context = Mock(
+            endDatetime=date(2015, 1, 1),
+            segDimValues=mock_segdimval
+        )
+        mock_doc_type_fact = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue="S-11 Ammended"
+        )
+        mock_factsbyqname = {mock_doc_type_context.qname: [mock_doc_type_fact]}
+        self.mock_disclosure = Mock(
+            standardTaxonomiesDict={'http://xbrl.sec.gov/dei/2014-01-31': None}
+        )
+        self.mock_model = Mock(
+            factsByQname=mock_factsbyqname,
+            facts=[mock_doc_type_fact],
+            nameConcepts=mock_name_concepts
+        )
+        dqc_us_0005.validate_facts(self.mock_model)
+        self.assertFalse(get_end_of_period.called)

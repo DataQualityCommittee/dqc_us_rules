@@ -13,6 +13,8 @@ _dei_pattern = (
 _CODE_NAME = 'DQC.US.0005'
 _RULE_VERSION = '1.0'
 
+_REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
+
 
 def _get_end_of_period(val):
     """
@@ -69,14 +71,25 @@ def _get_end_of_period(val):
 
 def validate_facts(val):
     """
-    This fuction validates facts. In other words this function checks to see if
-    the facts contained in val are correctly implemented.
+    This function validates facts. In other words this function checks to see
+    if the facts contained in val are correctly implemented. Ignores these
+    checks with S-1 and S-11 type of documents.
 
     :param val: val to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """
+    # Ignore 0005 checks if this document is an S-1 or S-11
+    dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val.modelXbrl)
+    for dei in dei_list:
+        is_an_excluded_report = any(
+            True if ex in dei.xValue else False
+            for ex in _REPORT_TYPE_EXCLUSIONS
+        )
+        if is_an_excluded_report:
+            return
+
     eop_results = _get_end_of_period(val)
     fact_dict = facts.legal_entity_axis_facts_by_member(
         filter(lambda f: f.context is not None, val.modelXbrl.facts)
@@ -87,7 +100,7 @@ def validate_facts(val):
             if lea_member in eop_results
             else facts.LEGALENTITYAXIS_DEFAULT
         )
-        if lookup in eop_results:
+        if lookup in sorted(eop_results):
             for fact in fact_list:
                 # endDateTime will be the instant date time if this
                 # is an instant period
@@ -97,44 +110,65 @@ def validate_facts(val):
                     # the expected eop dates
                     comparison_date = eop_results[lookup][1]
                     if fact_date <= comparison_date:
-                        # ========REPLACE BLOCK WITH FUNCTION==================
-                        ECSSO = 'EntityCommonStockSharesOutstanding'
-                        if fact.localName == ECSSO:
-                            # if a fact whose qname is
-                            # EntityCommonStockSharesOutstanding has an
-                            # end date prior to eop then fire an error
+                        run_checks(val, fact, eop_results, lookup)
 
-                            # Only fire if it is actually less than the
-                            # comparison date
-                            if fact_date < comparison_date:
-                                val.modelXbrl.error(
-                                    '{base_code}.17'.format(
-                                        base_code=_CODE_NAME
-                                    ),
-                                    messages.get_message(_CODE_NAME, "17"),
-                                    modelObject=[fact] +
-                                    list(eop_results[lookup]),
-                                    ruleVersion=_RULE_VERSION
-                                )
-                        elif facts.axis_exists(
-                                val, fact, 'SubsequentEventTypeAxis'):
-                            val.modelXbrl.error(
-                                '{base_code}.48'.format(base_code=_CODE_NAME),
-                                messages.get_message(_CODE_NAME, "48"),
-                                modelObject=[fact] + list(eop_results[lookup]),
-                                ruleVersion=_RULE_VERSION
-                            )
-                        elif facts.axis_member_exists(
-                                val,
-                                fact,
-                                'StatementScenarioAxis',
-                                'ScenarioForecastMember'):
-                            val.modelXbrl.error(
-                                '{base_code}.49'.format(base_code=_CODE_NAME),
-                                messages.get_message(_CODE_NAME, "49"),
-                                modelObject=[fact] + list(eop_results[lookup]),
-                                ruleVersion=_RULE_VERSION)
-                        # =====================================================
+
+def run_checks(val, fact, eop_results, lookup):
+    """
+    Called to determine which error to fire.
+
+    :param val: val to check
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param fact: fact to check
+    :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
+    :param eop_results: A dictionary of tuples containing the fact, found
+        date and a string representation of that date, keyed off of the
+        LegalEntityAxis members in the format:
+            {lea_member: (fact, found_date, date_str)}
+    :type eop_results: dict
+    :param lookup: legal entity access member concept.
+    :type lookup: str
+    :return: No direct return, throws errors when facts can't be validated
+    :rtype: None
+    """
+    if fact.localName == 'EntityCommonStockSharesOutstanding':
+        fact_date = fact.context.endDatetime
+        comparison_date = eop_results[lookup][1]
+        # if a fact whose qname is
+        # EntityCommonStockSharesOutstanding has an
+        # end date prior to eop then fire an error
+
+        # Only fire if it is actually less than the
+        # comparison date
+        if fact_date < comparison_date:
+            val.modelXbrl.error(
+                '{base_code}.17'.format(
+                    base_code=_CODE_NAME
+                ),
+                messages.get_message(_CODE_NAME, "17"),
+                modelObject=[fact] +
+                list(eop_results[lookup]),
+                ruleVersion=_RULE_VERSION
+            )
+    elif facts.axis_exists(
+            val, fact, 'SubsequentEventTypeAxis'):
+        val.modelXbrl.error(
+            '{base_code}.48'.format(base_code=_CODE_NAME),
+            messages.get_message(_CODE_NAME, "48"),
+            modelObject=[fact] + list(eop_results[lookup]),
+            ruleVersion=_RULE_VERSION
+        )
+    elif facts.axis_member_exists(
+            val,
+            fact,
+            'StatementScenarioAxis',
+            'ScenarioForecastMember'):
+        val.modelXbrl.error(
+            '{base_code}.49'.format(base_code=_CODE_NAME),
+            messages.get_message(_CODE_NAME, "49"),
+            modelObject=[fact] + list(eop_results[lookup]),
+            ruleVersion=_RULE_VERSION)
+
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
