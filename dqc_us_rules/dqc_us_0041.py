@@ -230,7 +230,7 @@ def _load_cache(val):
         year += 1
 
 
-def fire_dqc_us_0041_errors(val):
+def fire_dqc_us_0041_errors(val, *args, **kwargs):
     """
     Fires all the dqc_us_0041 errors returned by _catch_dqc_us_0041_errors
 

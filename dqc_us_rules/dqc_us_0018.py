@@ -160,7 +160,7 @@ def _create_cache(val):
         year += 1
 
 
-def deprecated_facts_errors(val):
+def deprecated_facts_errors(val, *args, **kwargs):
     """
     Makes error messages for all deprecation errors
 
