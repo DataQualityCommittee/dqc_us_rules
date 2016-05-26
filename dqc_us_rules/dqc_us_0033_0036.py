@@ -36,7 +36,7 @@ def _is_valid_eop_fact(eop_fact):
     """
     Checks to ensure that the eop_fact and the eop_fact.xValue is not None
     :param eop_fact: fact to check
-    :type eop_fact: :class: "~arelle.InstanceModelObject.ModelFact"
+    :type eop_fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :return: True if the fact and the fact.xValue is not None
     :rtype: bool
     """
@@ -149,7 +149,7 @@ def check_for_lea_member(fact, not_valid_dped):
     do not want to fire rule 33 for
 
     :param fact: fact to check
-    :type fact: :class: "~arelle.InstanceModelObject.ModelFact"
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :param not_valid_dped: list of LEA member's that we do not want to fire
         rule 33 on
     :type not_valid_dped: list
