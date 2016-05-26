@@ -5,6 +5,7 @@ from .util import facts, messages
 
 from arelle.ModelValue import dateunionDate
 
+
 _CODE_NAME_33 = 'DQC.US.0033'
 _CODE_NAME_36 = 'DQC.US.0036'
 _RULE_VERSION = '1.0'
@@ -35,7 +36,7 @@ def _is_valid_eop_fact(eop_fact):
     """
     Checks to ensure that the eop_fact and the eop_fact.xValue is not None
     :param eop_fact: fact to check
-    :type eop_fact: :class: "~arelle.InstanceModelObject.ModelFact"
+    :type eop_fact: :class:'~arelle.InstanceModelObject.ModelFact'
     :return: True if the fact and the fact.xValue is not None
     :rtype: bool
     """
@@ -84,7 +85,9 @@ def _doc_period_end_date_check(model_xbrl):
         )
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
-            not_valid_dped.append(eop_fact.contextID)
+            for axis, dim_value in eop_fact.context.segDimValues.items():
+                if axis.qname.localName == 'LegalEntityAxis':
+                    not_valid_dped.append(dim_value.memberQname.localName)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -92,6 +95,7 @@ def _doc_period_end_date_check(model_xbrl):
                 eop_fact,
                 default_dped_fact
             ))
+
     # Don't loop through them if the DPED date is bad, since the date
     # is incorrect.
 
@@ -117,25 +121,48 @@ def _doc_period_end_date_check(model_xbrl):
             # If the DocumentPeriodEndDate context check doesn't fire,
             # we will check all dei fact context end dates against it.
             for fact in fact_group:
-                if ((fact.contextID in not_valid_dped or
-                     fact.context is None or
+                if ((fact.context is None or
                      fact.context.endDatetime is None or
                      fact.concept.periodType != 'duration'
                      )):
                     continue
 
-                if context_eop_date != dateunionDate(
-                    fact.context.endDatetime,
-                    subtractOneDay=True
-                ):
-                    result_group.append((
-                        '{}.2'.format(_CODE_NAME_33),
-                        messages.get_message(_CODE_NAME_33),
-                        fact.concept.label(),
-                        fact,
-                        default_dped_fact
-                    ))
+                if check_for_lea_member(fact, not_valid_dped):
+                    delta = context_eop_date - dateunionDate(
+                        fact.context.endDatetime, subtractOneDay=True
+                    )
+                    if delta.days != 0 and abs(delta.days) <= 3:
+                        result_group.append((
+                            '{}.2'.format(_CODE_NAME_33),
+                            messages.get_message(_CODE_NAME_33),
+                            fact.concept.label(),
+                            fact,
+                            default_dped_fact
+                        ))
     return result_group
+
+
+def check_for_lea_member(fact, not_valid_dped):
+    """
+    Checks facts to determine whether the fact contains a LEA member that we
+    do not want to fire rule 33 for
+
+    :param fact: fact to check
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
+    :param not_valid_dped: list of LEA member's that we do not want to fire
+        rule 33 on
+    :type not_valid_dped: list
+    :return: False (so we don't continue) if the fact contains a LEA member
+        that is in the list of LEA members we do not want to fire rule 33 for.
+        True (so we do continue) otherwise.
+    :rtype: bool
+    """
+    for fact_axis, fact_dim_value in fact.context.segDimValues.items():
+        if fact_dim_value.memberQname.localName in not_valid_dped:
+            # If we find the member, we do not want to continue with rule 33
+            # check
+            return False
+    return True
 
 
 def _setup_dei_facts(model_xbrl):
@@ -156,6 +183,7 @@ def _setup_dei_facts(model_xbrl):
         'EntityNumberOfEmployees',
         'EntityListingDepositoryReceiptRatio'
     ]
+
     dei_facts = facts.legal_entity_axis_facts_by_member(
         _get_dei_facts(model_xbrl, ignored_fact_list)
     )
