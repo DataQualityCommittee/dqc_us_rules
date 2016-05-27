@@ -27,7 +27,7 @@ _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 
 
-def run_checks(val):
+def run_checks(val, *args, **kwargs):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     each axis of interest, and call validations on them.

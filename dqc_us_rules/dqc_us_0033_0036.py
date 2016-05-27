@@ -10,7 +10,7 @@ _CODE_NAME_36 = 'DQC.US.0036'
 _RULE_VERSION = '1.0'
 
 
-def doc_period_end_date_check(val):
+def doc_period_end_date_check(val, *args, **kwargs):
     """
     Creates an error with all the relevant information from each of the bad
     DocumentPeriodEndDates returned from _doc_period_end_date_check
