@@ -816,13 +816,13 @@ class TestAllFactsUnder(unittest.TestCase):
             dimension=mock_dimension,
             isExplicit=True
         )
-        segDimValues = {'1': mock_dim, '2': mock_dim}
+        segDimValues = {'1': mock_dim}
         mock_context = Mock(segDimValues=segDimValues)
         mock_fact = Mock(context=mock_context)
         mock_modelxbrl = Mock(facts=[mock_fact])
         self.assertEqual(
             fact_lib.axis_member_fact('bar', 'foo', mock_modelxbrl),
-            mock_fact
+            [mock_fact]
         )
 
         mock_qname3 = Mock(localName="NOPE")
@@ -838,5 +838,5 @@ class TestAllFactsUnder(unittest.TestCase):
         mock_modelxbrl = Mock(facts=[mock_fact])
         self.assertEqual(
             fact_lib.axis_member_fact('bar', 'foo', mock_modelxbrl),
-            None
+            []
         )

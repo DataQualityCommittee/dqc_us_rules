@@ -342,6 +342,7 @@ def axis_member_fact(axis_name, member_name, model_xbrl):
     :return: The fact found or None
     :rtype: :class:'~arelle.InstanceModelObject.ModelFact' or None
     """
+    fact_list = []
     for fact in model_xbrl.facts:
         if _fact_components_valid(fact):
             dims = [
@@ -354,8 +355,8 @@ def axis_member_fact(axis_name, member_name, model_xbrl):
             ]
             for dim in dims:
                 if dim.dimension.qname.localName == axis_name:
-                    return fact
-    return None
+                    fact_list.append(fact)
+    return fact_list
 
 
 def _fact_components_valid(fact):
