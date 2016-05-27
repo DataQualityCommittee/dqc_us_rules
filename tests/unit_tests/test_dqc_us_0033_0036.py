@@ -7,7 +7,7 @@ from unittest import mock
 
 from dqc_us_rules import dqc_us_0033_0036
 from collections import defaultdict
-from arelle.ModelInstanceObject import ModelDimensionValue, ModelFact, ModelContext
+from arelle.ModelInstanceObject import ModelDimensionValue, ModelFact
 from arelle.ModelValue import QName
 from arelle.ModelXbrl import ModelXbrl
 
@@ -408,7 +408,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
         self.assertTrue(dqc_us_0033_0036.check_for_lea_member(
             self.fact_three, not_valid_dped
         ))
-
 
 
 class TestGetDefaultDped(unittest.TestCase):
