@@ -174,11 +174,11 @@ def deprecated_facts_errors(val, *args, **kwargs):
         _create_cache(val)
     for fact in _catch_deprecated_errors(val):
         val.modelXbrl.error(
-           _CODE_NAME,
-           messages.get_message(_CODE_NAME),
-           concept=fact.concept.label(),
-           modelObject=fact,
-           ruleVersion=_RULE_VERSION
+            '{}.34'.format(_CODE_NAME),
+            messages.get_message(_CODE_NAME),
+            concept=fact.concept.label(),
+            modelObject=fact,
+            ruleVersion=_RULE_VERSION
         )
 
 
