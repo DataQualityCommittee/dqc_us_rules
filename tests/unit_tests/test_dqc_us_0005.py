@@ -259,5 +259,6 @@ class TestDeiChecks(unittest.TestCase):
             facts=[mock_doc_type_fact],
             nameConcepts=mock_name_concepts
         )
-        dqc_us_0005.validate_facts(self.mock_model)
+        mock_val = Mock(modelXbrl=self.mock_model)
+        dqc_us_0005.validate_facts(mock_val)
         self.assertFalse(get_end_of_period.called)
