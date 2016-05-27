@@ -27,7 +27,7 @@ _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 
 
-def run_checks(val):
+def run_checks(val, *args, **kwargs):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     each axis of interest, and call validations on them.
@@ -209,12 +209,12 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
         for child in _all_members_under(axis, relset):
             if _is_extension(child, val):
                 if child.qname.localName not in allowed_extensions:
-                    fact = facts.axis_member_fact(
+                    fact_list = facts.axis_member_fact(
                         axis.qname.localName,
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if fact is not None:
+                    if len(fact_list) != 0:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
@@ -223,7 +223,7 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                             messages.get_message(_CODE_NAME, _EXT_FACT_KEY),
                             axis=axis.label(),
                             member=child.label(),
-                            modelObject=fact,
+                            modelObject=fact_list,
                             ruleVersion=_RULE_VERSION
                         )
                     else:

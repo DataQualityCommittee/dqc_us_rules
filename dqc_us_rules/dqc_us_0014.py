@@ -17,7 +17,7 @@ _DEFAULT_CONCEPTS_FILE = os.path.join(
 )
 
 
-def run_negative_numbers_no_dimensions(val):
+def run_negative_numbers_no_dimensions(val, *args, **kwargs):
     """
     Run the list of facts against our negative number check for facts with
     no dimensions and add errors for the hits in the various lists.

@@ -22,7 +22,7 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
 )
 
 
-def run_negative_numbers(val):
+def run_negative_numbers(val, *args, **kwargs):
     """
     Run the list of facts against our negative number checks and add errors for
     the hits in the various lists.
