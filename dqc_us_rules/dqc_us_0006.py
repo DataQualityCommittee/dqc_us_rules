@@ -161,7 +161,7 @@ __pluginInfo__ = {
     'version': _RULE_VERSION,
     'description': (
         'Checks all of the specified types and concepts for their date '
-        'ranges to verify the ranges are within expected paramters for the '
+        'ranges to verify the ranges are within expected parameters for the '
         'fiscal periods'
     ),
     # Mount points
