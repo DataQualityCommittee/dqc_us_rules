@@ -69,7 +69,7 @@ def _get_end_of_period(val):
     return results
 
 
-def validate_facts(val):
+def validate_facts(val, *args, **kwargs):
     """
     This function validates facts. In other words this function checks to see
     if the facts contained in val are correctly implemented. Ignores these

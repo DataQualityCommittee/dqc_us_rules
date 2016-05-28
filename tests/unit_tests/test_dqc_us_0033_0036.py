@@ -196,7 +196,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_edt_off = mock.Mock()
-        mock_edt_off.date.return_value = date(year=2015, month=1, day=3)
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
         mock_off_context = mock.Mock(
             endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
         )
@@ -300,7 +300,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         # This will cause 33 to fire (except it won't in this test as per the
         # reason noted in the docstring)
         mock_edt_off2 = mock.Mock()
-        mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=6)
         mock_off2_context = mock.Mock(
             endDatetime=mock_edt_off2, segDimValues=mock_more_dims
         )
@@ -308,7 +308,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         # This will cause 33 to fire (except it won't in this test as per the
         # reason noted in the docstring)
         mock_edt_off3 = mock.Mock()
-        mock_edt_off3.date.return_value = date(year=2015, month=1, day=2)
+        mock_edt_off3.date.return_value = date(year=2015, month=1, day=7)
         mock_off3_context = mock.Mock(
             endDatetime=mock_edt_off3, segDimValues=mock_more_dims
         )

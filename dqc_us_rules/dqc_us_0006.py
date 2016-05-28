@@ -24,7 +24,7 @@ _DEFAULT_DATE_BOUNDS_FILE = os.path.join(
 )
 
 
-def validate_dates_within_periods(val):
+def validate_dates_within_periods(val, *args, **kwargs):
     """
     Checks date ranges are within expected values for the fiscal focus period
 
