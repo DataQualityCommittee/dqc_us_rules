@@ -53,7 +53,7 @@ _PRECONDITION_ELEMENTS = collections.OrderedDict([
 ])
 
 
-def run_negative_values_with_dependence(val):
+def run_negative_values_with_dependence(val, *args, **kwargs):
     """
     Run the list of facts against our negative number checks and add errors for
     the hits in the various lists.

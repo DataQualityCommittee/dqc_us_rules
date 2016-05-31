@@ -339,7 +339,7 @@ class TestExtensionChecks(unittest.TestCase):
 
     @patch(
         'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
-        return_value=None
+        return_value=[]
     )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
@@ -388,7 +388,7 @@ class TestExtensionChecks(unittest.TestCase):
         Tests extension blacklisting with a fact.
         """
         mock_fact = Mock()
-        fact.return_value = mock_fact
+        fact.return_value = [mock_fact]
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -418,7 +418,7 @@ class TestExtensionChecks(unittest.TestCase):
             ),
             axis=mock_axis.label(),
             member=mock_child.label(),
-            modelObject=mock_fact,
+            modelObject=[mock_fact],
             ruleVersion=dqc_us_0001._RULE_VERSION
         )
 

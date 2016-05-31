@@ -11,7 +11,7 @@ _CODE_NAME_36 = 'DQC.US.0036'
 _RULE_VERSION = '1.0'
 
 
-def doc_period_end_date_check(val):
+def doc_period_end_date_check(val, *args, **kwargs):
     """
     Creates an error with all the relevant information from each of the bad
     DocumentPeriodEndDates returned from _doc_period_end_date_check
@@ -131,7 +131,7 @@ def _doc_period_end_date_check(model_xbrl):
                     delta = context_eop_date - dateunionDate(
                         fact.context.endDatetime, subtractOneDay=True
                     )
-                    if delta.days != 0 and abs(delta.days) <= 3:
+                    if abs(delta.days) > 3:
                         result_group.append((
                             '{}.2'.format(_CODE_NAME_33),
                             messages.get_message(_CODE_NAME_33),
