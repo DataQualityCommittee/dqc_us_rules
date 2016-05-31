@@ -265,7 +265,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        self.assertEqual(len(res), 2)  # Because both 33 and 36 should fire
+        self.assertEqual(len(res), 1)  # Only 36 fires since they have no dims
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
@@ -356,7 +356,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         returned when the fact has the legal entity member
         """
         not_valid_dped = ['vault', 'bars', 'foo', 'beam', 'floor', 'boo']
-
+        fire_undimensionalized_33s = True
         mock_mem1_qn = mock.Mock(spec=QName)
         mock_mem1_qn.localName = 'foo'
         mock_dim1_qn = mock.Mock(spec=QName)
@@ -400,13 +400,13 @@ class TestDocPerEndDateChk(unittest.TestCase):
         self.fact_three = mock.Mock(spec=ModelFact, context=mock_context3)
 
         self.assertFalse(dqc_us_0033_0036.check_for_lea_member(
-            self.fact_one, not_valid_dped
+            self.fact_one, not_valid_dped, fire_undimensionalized_33s
         ))
         self.assertTrue(dqc_us_0033_0036.check_for_lea_member(
-            self.fact_two, not_valid_dped
+            self.fact_two, not_valid_dped, fire_undimensionalized_33s
         ))
         self.assertTrue(dqc_us_0033_0036.check_for_lea_member(
-            self.fact_three, not_valid_dped
+            self.fact_three, not_valid_dped, fire_undimensionalized_33s
         ))
 
 
