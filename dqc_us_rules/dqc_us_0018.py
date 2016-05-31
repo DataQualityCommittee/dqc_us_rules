@@ -267,10 +267,9 @@ def _catch_linkbase_deprecated_errors(val):
     Check for unused concept relationships of standard taxonomy elements
     and catches abstract deprecated concepts in linkbases
 
-    :param val:
-    :param ugtNamespace:
-    :return:
-    :rtype:
+    :param val: :class: '~arelle.ValdiateXbrl.ValidateXbrl'
+    :return: Returns deprecated concepts from the linkbase
+    :rtype: :class: '~arelle.ModelInstanceObject.ModelConcept'
     """
     relationships = val.modelXbrl.relationshipSet(XbrlConst.parentChild)
     for rel in relationships.modelRelationships:
