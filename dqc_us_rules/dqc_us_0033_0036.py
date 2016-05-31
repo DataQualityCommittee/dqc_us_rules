@@ -68,6 +68,7 @@ def _doc_period_end_date_check(model_xbrl):
     not_valid_dped = []
     # loop through the DocumentPeriodEndDate's to check for
     # consistent dates
+    fire_undimensionalized_33s = True
     for eop_facts in dped_facts.values():
         eop_fact = eop_facts[0]
         eop_context = eop_fact.context
@@ -84,10 +85,13 @@ def _doc_period_end_date_check(model_xbrl):
             subtractOneDay=True
         )
         delta = context_eop_date - fact_eop_date
+
         if abs(delta.days) > 3:
             for axis, dim_value in eop_fact.context.segDimValues.items():
                 if 'LegalEntityAxis' in axis.qname.localName:
                     not_valid_dped.append(dim_value.memberQname.localName)
+            else:
+                fire_undimensionalized_33s = False
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -127,7 +131,9 @@ def _doc_period_end_date_check(model_xbrl):
                      )):
                     continue
 
-                if check_for_lea_member(fact, not_valid_dped):
+                if check_for_lea_member(
+                    fact, not_valid_dped, fire_undimensionalized_33s
+                ):
                     delta = context_eop_date - dateunionDate(
                         fact.context.endDatetime, subtractOneDay=True
                     )
@@ -142,7 +148,7 @@ def _doc_period_end_date_check(model_xbrl):
     return result_group
 
 
-def check_for_lea_member(fact, not_valid_dped):
+def check_for_lea_member(fact, not_valid_dped, fire_undimensionalized_33s):
     """
     Checks facts to determine whether the fact contains a LEA member that we
     do not want to fire rule 33 for
@@ -157,11 +163,16 @@ def check_for_lea_member(fact, not_valid_dped):
         True (so we do continue) otherwise.
     :rtype: bool
     """
+
     for fact_axis, fact_dim_value in fact.context.segDimValues.items():
         if fact_dim_value.memberQname.localName in not_valid_dped:
             # If we find the member, we do not want to continue with rule 33
             # check
             return False
+    else:
+        if not fire_undimensionalized_33s:
+            return False
+
     return True
 
 
