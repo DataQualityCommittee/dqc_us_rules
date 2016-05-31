@@ -86,7 +86,7 @@ def _doc_period_end_date_check(model_xbrl):
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
             for axis, dim_value in eop_fact.context.segDimValues.items():
-                if axis.qname.localName == 'LegalEntityAxis':
+                if 'LegalEntityAxis' in axis.qname.localName:
                     not_valid_dped.append(dim_value.memberQname.localName)
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
