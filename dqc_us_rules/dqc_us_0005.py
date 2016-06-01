@@ -151,7 +151,8 @@ def run_checks(val, fact, eop_results, lookup):
                 ruleVersion=_RULE_VERSION
             )
     elif facts.axis_exists(
-            val, fact, 'SubsequentEventTypeAxis'):
+            val, fact, 'SubsequentEventTypeAxis'
+    ):
         val.modelXbrl.error(
             '{base_code}.48'.format(base_code=_CODE_NAME),
             messages.get_message(_CODE_NAME, "48"),
@@ -162,12 +163,14 @@ def run_checks(val, fact, eop_results, lookup):
             val,
             fact,
             'StatementScenarioAxis',
-            'ScenarioForecastMember'):
+            'ScenarioForecastMember'
+    ):
         val.modelXbrl.error(
             '{base_code}.49'.format(base_code=_CODE_NAME),
             messages.get_message(_CODE_NAME, "49"),
             modelObject=[fact] + list(eop_results[lookup]),
-            ruleVersion=_RULE_VERSION)
+            ruleVersion=_RULE_VERSION
+        )
 
 
 __pluginInfo__ = {
