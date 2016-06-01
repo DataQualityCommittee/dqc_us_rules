@@ -265,7 +265,7 @@ def _catch_linkbase_deprecated_errors(val, deprecated_concepts):
     and catches abstract deprecated concepts in linkbases
 
     :param val: :class: '~arelle.ValdiateXbrl.ValidateXbrl'
-    :return: Returns deprecated concepts from the linkbase
+    :return: No Return
     :rtype: None
     """
     relationships = val.modelXbrl.relationshipSet(XbrlConst.parentChild)
@@ -307,7 +307,7 @@ def _catch_deprecated_fact_errors(val, deprecated_concepts):
     :param val: ValidateXbrl to check for deprecated item
 
     :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
-    :return: Returns information needed to create error message
+    :return: No Return
     :rype: None
     """
     for fact in val.modelXbrl.facts:
