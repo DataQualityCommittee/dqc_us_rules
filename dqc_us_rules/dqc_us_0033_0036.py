@@ -138,9 +138,7 @@ def _doc_period_end_date_check(model_xbrl):
                 if no_dimensions and len(fact.context.segDimValues) == 0:
                     continue
 
-                if check_for_lea_member(
-                    fact, not_valid_dped
-                ):
+                if check_for_lea_member(fact, not_valid_dped):
                     delta = context_eop_date - dateunionDate(
                         fact.context.endDatetime, subtractOneDay=True
                     )
