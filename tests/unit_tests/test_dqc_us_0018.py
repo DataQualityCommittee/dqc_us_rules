@@ -119,8 +119,9 @@ class TestCompareFacts(unittest.TestCase):
         Tests for deprecated concepts in relationships
         """
         val = mock.Mock()
-        val.modelXbrl.namespaceDocs = {}
-        val.modelXbrl.namespaceDocs["http://fasb.org/us-gaap/2015-01-31"] = [0]
+        val.modelXbrl.namespaceDocs = {
+            "http://fasb.org/us-gaap/2015-01-31": [0]
+        }
         deprecated_concept = "PolicyChargesInsurance"
         from_model = mock.Mock()
         from_model.name = deprecated_concept
@@ -131,8 +132,7 @@ class TestCompareFacts(unittest.TestCase):
             fromModelObject=from_model,
             toModelObject=to_model
         )
-        relset = mock.Mock()
-        relset.modelRelationships = [relationship]
+        relset = mock.Mock(modelRelationships=[relationship])
         val.modelXbrl.relationshipSet.return_value = relset
         deprecated_concepts = {}
         dqc_us_0018._catch_linkbase_deprecated_errors(val, deprecated_concepts)
