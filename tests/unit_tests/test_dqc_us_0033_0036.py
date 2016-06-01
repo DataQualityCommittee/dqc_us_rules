@@ -271,6 +271,94 @@ class TestDocPerEndDateChk(unittest.TestCase):
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
         side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
+    def test_both_warn_and_error_fire(self, mock_func):
+        mock_mem1_qn = mock.Mock(localName='foo')
+        mock_dim1_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim1_dim = mock.Mock(qname=mock_dim1_qn)
+        mock_member1 = mock.Mock(qname=mock_mem1_qn)
+        mock_dim1 = mock.Mock(
+            isExplicit=True, member=mock_member1, dimension=mock_dim1_dim
+        )
+        mock_more_dims1 = {mock_dim1_dim: mock_dim1}
+
+        mock_mem2_qn = mock.Mock(localName='bar')
+        mock_dim2_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim2_dim = mock.Mock(qname=mock_dim2_qn)
+        mock_member2 = mock.Mock(qname=mock_mem2_qn)
+        mock_dim2 = mock.Mock(
+            isExplicit=True, member=mock_member2, dimension=mock_dim2_dim
+        )
+        mock_more_dims2 = {mock_dim2_dim: mock_dim2}
+
+        mock_edt_norm = mock.Mock()
+        mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
+
+        mock_edt_off = mock.Mock()
+        # This will cause 36 to fire
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
+        mock_off_context = mock.Mock(
+            endDatetime=mock_edt_off, segDimValues=mock_more_dims1
+        )
+
+        mock_edt_off2 = mock.Mock()
+        # This will cause 33 to fire
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=10)
+        mock_off2_context = mock.Mock(
+            endDatetime=mock_edt_off2, segDimValues=mock_more_dims2
+        )
+
+        m_qn_bad = mock.Mock(
+            localName='DocumentPeriodEndDate',
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31'
+        )
+        concept_enddate = mock.Mock(qname=m_qn_bad)
+        mock_dped_off = mock.Mock(
+            context=mock_off_context, xValue=mock_edt_off,
+            concept=concept_enddate, qname=m_qn_bad,
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31'
+        )
+        self.fact_end.xValue = mock_edt_off
+
+        self.fact_good1.context = mock_off_context  # fact for 36
+        self.fact_good2.context = mock_off2_context  # fact for 33
+        mock_model = mock.Mock(
+            facts=[
+                self.fact_good1, self.fact_good2, self.fact_good3,
+                self.fact_bad1, self.fact_bad2, self.fact_bad3,
+                self.fact_end, mock_dped_off
+            ]
+        )
+
+        # # fact for 36
+        # self.fact_end.xValue = mock_edt_off
+        #
+        # # facts for 33 but neither will fire because 36 fires on fact_end
+        # self.fact_good1.context = mock_off2_context
+        # self.fact_good3.context = mock_off2_context
+        #
+        # # Setting the dimensions on the fact_end fact
+        # self.fact_end.context.segDimValues = mock_more_dims1
+        #
+        # # fact for 33 but won't fire because it is on the exclude list
+        # self.fact_shares.context = mock_off2_context
+        #
+        # mock_model = mock.Mock(
+        #     facts=[
+        #         self.fact_good1, self.fact_good2, self.fact_good3,
+        #         self.fact_bad1, self.fact_bad2, self.fact_bad3,
+        #         self.fact_shares, self.fact_end, mock_dped_off
+        #     ]
+        # )
+
+        res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
+        for i in res:
+            print('IiiiiIiiiIiii = {}'.format(i))
+        self.assertEqual(len(res), 2)  # Only 36 fires since they have no dims
+
+    @mock.patch(
+        'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
+    )
     def test_33_no_fire_on_lea_that_fires_36(self, moc_func):
         """
         Tests _doc_period_end_date_check to ensure that facts that should fire
