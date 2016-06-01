@@ -10,6 +10,7 @@ from arelle import XbrlConst, ModelXbrl
 from arelle.ModelDtsObject import ModelConcept
 from arelle.FileSource import openFileStream, openFileSource, saveFile
 
+
 _CODE_NAME = 'DQC.US.0018'
 _RULE_VERSION = '1.1'
 _EARLIEST_US_GAAP_YEAR = 2014
@@ -60,6 +61,7 @@ def _load_cache(val):
                 '{}_deprecated-concepts.json'.format(str(year))
             )
             file = None
+
             try:
                 file = openFileStream(
                     cntlr,
@@ -160,7 +162,7 @@ def _create_cache(val):
         year += 1
 
 
-def deprecated_facts_errors(val, *args, **kwargs):
+def deprecated_concept_errors(val, *args, **kwargs):
     """
     Makes error messages for all deprecation errors
 
@@ -172,12 +174,17 @@ def deprecated_facts_errors(val, *args, **kwargs):
     cache_exists = _load_cache(val)
     if not cache_exists:
         _create_cache(val)
-    for fact in _catch_deprecated_errors(val):
+
+    deprecated_concepts = {}
+    _catch_deprecated_fact_errors(val, deprecated_concepts)
+    _catch_linkbase_deprecated_errors(val, deprecated_concepts)
+
+    for key in deprecated_concepts.keys():
         val.modelXbrl.error(
             '{}.34'.format(_CODE_NAME),
             messages.get_message(_CODE_NAME),
-            concept=fact.concept.label(),
-            modelObject=fact,
+            concept=key,
+            modelObject=deprecated_concepts[key],
             ruleVersion=_RULE_VERSION
         )
 
@@ -244,12 +251,32 @@ def _fact_checkable(fact):
     :param fact: Fact to check concept and context for None
     :type fact: :class:'~arelle.ModelDtsObject.ModelFact'
     :return: Returns true if the fact can be checked
-    :rtype; bool
+    :rtype: bool
     """
     return (
         fact.concept is not None and
         fact.context is not None
     )
+
+
+def _catch_linkbase_deprecated_errors(val, deprecated_concepts):
+    """
+    Check for unused concept relationships of standard taxonomy elements
+    and catches abstract deprecated concepts in linkbases
+
+    :param val: :class: '~arelle.ValdiateXbrl.ValidateXbrl'
+    :return: No Return
+    :rtype: None
+    """
+    relationships = val.modelXbrl.relationshipSet(XbrlConst.parentChild)
+    for rel in relationships.modelRelationships:
+        for concept in (rel.fromModelObject, rel.toModelObject):
+            if _deprecated_concept(val, concept):
+                if not deprecated_concepts.get(concept.name):
+                    deprecated_concepts[concept.name] = []
+                deprecated_concepts[concept.name].append(
+                    rel.locatorOf(concept)
+                )
 
 
 def _fact_uses_deprecated_item(val, fact):
@@ -276,18 +303,20 @@ def _fact_uses_deprecated_item(val, fact):
     return False
 
 
-def _catch_deprecated_errors(val):
+def _catch_deprecated_fact_errors(val, deprecated_concepts):
     """
     Checks to see if facts are using deprecated items
     :param val: ValidateXbrl to check for deprecated item
 
     :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
-    :return: Returns information needed to create error message
-    :rype: tuple
+    :return: No Return
+    :rype: None
     """
     for fact in val.modelXbrl.facts:
         if _fact_uses_deprecated_item(val, fact):
-            yield fact
+            if not deprecated_concepts.get(fact.concept.name):
+                deprecated_concepts[fact.concept.name] = []
+            deprecated_concepts[fact.concept.name].append(fact)
 
 
 __pluginInfo__ = {
@@ -299,5 +328,5 @@ __pluginInfo__ = {
         'parameters for the fiscal periods'
     ),
     # Mount points
-    'Validate.XBRL.Finally': deprecated_facts_errors
+    'Validate.XBRL.Finally': deprecated_concept_errors
 }
