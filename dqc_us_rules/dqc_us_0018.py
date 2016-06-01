@@ -274,7 +274,9 @@ def _catch_linkbase_deprecated_errors(val, deprecated_concepts):
             if _deprecated_concept(val, concept):
                 if not deprecated_concepts.get(concept.name):
                     deprecated_concepts[concept.name] = []
-                deprecated_concepts[concept.name].append(rel.locatorOf(concept))
+                deprecated_concepts[concept.name].append(
+                    rel.locatorOf(concept)
+                )
 
 
 def _fact_uses_deprecated_item(val, fact):
