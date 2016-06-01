@@ -85,12 +85,13 @@ def _doc_period_end_date_check(model_xbrl):
             subtractOneDay=True
         )
         delta = context_eop_date - fact_eop_date
-
+        print('First DELTA = {}'.format(delta))
         if abs(delta.days) > 3:
             for axis, dim_value in eop_fact.context.segDimValues.items():
                 print('In the FOR')
                 if 'LegalEntityAxis' in axis.qname.localName:
                     not_valid_dped.append(dim_value.memberQname.localName)
+                    print('not_valid_dped = {}'.format(not_valid_dped))
             else:
                 print('Nope...in the ELSE')
                 fire_undimensionalized_33s = False
@@ -174,6 +175,8 @@ def check_for_lea_member(fact, not_valid_dped, fire_undimensionalized_33s):
         if fact_dim_value.memberQname.localName in not_valid_dped:
             # If we find the member, we do not want to continue with rule 33
             # check
+            print('fact_dim_value.memberQname.localName = {}'.format(fact_dim_value.memberQname.localName))
+            print('not_valid_dped = {}'.format(not_valid_dped))
             print('ONE')
             return False
     else:

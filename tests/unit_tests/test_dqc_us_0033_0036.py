@@ -290,8 +290,13 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
         mock_more_dims2 = {mock_dim2_dim: mock_dim2}
 
+        mock_no_dimensions = {}
+
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
+        mock_edt_norm_context = mock.Mock(
+            endDatetime=mock_edt_norm, segDimValues=mock_no_dimensions
+        )
 
         mock_edt_off = mock.Mock()
         # This will cause 36 to fire
@@ -321,6 +326,11 @@ class TestDocPerEndDateChk(unittest.TestCase):
 
         self.fact_good1.context = mock_off_context  # fact for 36
         self.fact_good2.context = mock_off2_context  # fact for 33
+        self.fact_good3.context = mock_edt_norm_context
+        self.fact_bad1.context = mock_edt_norm_context
+        self.fact_bad2.context = mock_edt_norm_context
+        self.fact_bad3.context = mock_edt_norm_context
+
         mock_model = mock.Mock(
             facts=[
                 self.fact_good1, self.fact_good2, self.fact_good3,
