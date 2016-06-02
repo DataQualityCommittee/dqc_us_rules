@@ -4,6 +4,7 @@
 import unittest
 from unittest.mock import Mock, patch
 from arelle.ModelDtsObject import ModelConcept
+from collections import defaultdict
 
 from dqc_us_rules import dqc_us_0001
 
@@ -61,10 +62,12 @@ class TestRunChecks(unittest.TestCase):
         self.assertTrue(checks.called)
         checks.assert_called_with(
             mock_obj1,
+            'foo',
             expected_config,
             mock_relset_obj,
             val,
-            'page'
+            'page',
+            defaultdict(list)
         )
 
 
@@ -97,10 +100,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -143,10 +148,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertFalse(mock_error_func.called)
@@ -177,10 +184,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -222,10 +231,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -268,10 +279,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -304,9 +317,11 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             Mock(),
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
+            Mock(),
             Mock()
         )
         self.assertFalse(mock_error_func.called)
@@ -330,10 +345,12 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             Mock(),
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            Mock()
+            Mock(),
+            defaultdict(list)
         )
         self.assertFalse(mock_error_func.called)
 
@@ -362,10 +379,12 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
@@ -404,10 +423,12 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
