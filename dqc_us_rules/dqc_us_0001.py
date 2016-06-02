@@ -6,6 +6,7 @@ import os
 from arelle.ModelDtsObject import ModelConcept
 from .util import facts, messages
 import itertools
+from collections import defaultdict
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '1.1'
@@ -37,6 +38,7 @@ def run_checks(val, *args, **kwargs):
     :return: No direct return
     :rtype: None
     """
+    checked_axes = defaultdict(list)
     config = _load_config(_DQC_01_AXIS_FILE)
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
@@ -51,10 +53,10 @@ def run_checks(val, *args, **kwargs):
                 )
 
             for axis in filter(filter_func, relset.fromModelObjects()):
-                _run_axis_checks(axis, axis_config, relset, val, role)
+                _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
 
 
-def _run_axis_checks(axis, axis_config, relset, val, role):
+def _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
     """
     Run the axis checks for a given axis, config dict,
     and set of children.
@@ -72,11 +74,11 @@ def _run_axis_checks(axis, axis_config, relset, val, role):
     :return: No direct return
     :rtype: None
     """
-    _run_member_checks(axis, axis_config, relset, val, role)
-    _run_extension_checks(axis, axis_config, relset, val, role)
+    _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
+    _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
 
 
-def _run_member_checks(axis, axis_config, relset, val, role):
+def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
     """
     Run the checks on included and excluded members and companion axes.
     Extensions are not checked.  Error as appropriate.
@@ -123,7 +125,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
+                if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -135,6 +137,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         modelObject=fact_list,
                         ruleVersion=_RULE_VERSION
                     )
+                    checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -157,7 +160,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
+                if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -169,6 +172,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         modelObject=fact_list,
                         ruleVersion=_RULE_VERSION
                     )
+                    checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -183,7 +187,7 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     )
 
 
-def _run_extension_checks(axis, axis_config, relset, val, role):
+def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
     """
     Check extension members under the given axis.
 
@@ -214,7 +218,7 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if len(fact_list) != 0:
+                    if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
@@ -226,6 +230,7 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                             modelObject=fact_list,
                             ruleVersion=_RULE_VERSION
                         )
+                        checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
                     else:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
