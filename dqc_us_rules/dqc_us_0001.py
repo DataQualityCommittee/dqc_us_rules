@@ -154,14 +154,14 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
                     child.qname.localName in disallowed_children)):
+                axis_mem_pair = (axis.qname, child.qname)
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
                 fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                axis_mem_pair = (axis.qname, child.qname)
-                if axis_mem_pair in checked_axes[axis_key]:
-                    continue
                 if len(fact_list) != 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -192,14 +192,14 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
                  child.qname.localName not in allowed_children)):
+                axis_mem_pair = (axis.qname, child.qname)
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
                 fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                axis_mem_pair = (axis.qname, child.qname)
-                if axis_mem_pair in checked_axes[axis_key]:
-                    continue
                 if len(fact_list) != 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -258,14 +258,14 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
         for child in _all_members_under(axis, relset):
             if _is_extension(child, val):
                 if child.qname.localName not in allowed_extensions:
+                    axis_mem_pair = (axis.qname, child.qname)
+                    if axis_mem_pair in checked_axes[axis_key]:
+                        continue
                     fact_list = facts.axis_member_fact(
                         axis.qname.localName,
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    axis_mem_pair = (axis.qname, child.qname)
-                    if axis_mem_pair in checked_axes[axis_key]:
-                        continue
                     if len(fact_list) != 0:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
