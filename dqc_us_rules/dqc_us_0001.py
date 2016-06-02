@@ -133,7 +133,8 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         axis=axis.label(),
                         member=child.label(),
                         modelObject=fact_list,
-                        ruleVersion=_RULE_VERSION
+                        ruleVersion=_RULE_VERSION,
+                        errorCount=len(fact_list)
                     )
                 else:
                     val.modelXbrl.error(
@@ -167,7 +168,8 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         axis=axis.label(),
                         member=child.label(),
                         modelObject=fact_list,
-                        ruleVersion=_RULE_VERSION
+                        ruleVersion=_RULE_VERSION,
+                        errorCount=len(fact_list)
                     )
                 else:
                     val.modelXbrl.error(
@@ -224,7 +226,8 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
                             axis=axis.label(),
                             member=child.label(),
                             modelObject=fact_list,
-                            ruleVersion=_RULE_VERSION
+                            ruleVersion=_RULE_VERSION,
+                            errorCount=len(fact_list)
                         )
                     else:
                         val.modelXbrl.error(

@@ -193,7 +193,8 @@ class TestMemberChecks(unittest.TestCase):
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=[mock_fact],
-            ruleVersion=dqc_us_0001._RULE_VERSION
+            ruleVersion=dqc_us_0001._RULE_VERSION,
+            errorCount=1
         )
 
     @patch('dqc_us_rules.dqc_us_0001.facts.axis_member_fact')
@@ -238,7 +239,8 @@ class TestMemberChecks(unittest.TestCase):
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=[mock_fact],
-            ruleVersion=dqc_us_0001._RULE_VERSION
+            ruleVersion=dqc_us_0001._RULE_VERSION,
+            errorCount=1
         )
 
     @patch(
@@ -419,7 +421,8 @@ class TestExtensionChecks(unittest.TestCase):
             axis=mock_axis.label(),
             member=mock_child.label(),
             modelObject=[mock_fact],
-            ruleVersion=dqc_us_0001._RULE_VERSION
+            ruleVersion=dqc_us_0001._RULE_VERSION,
+            errorCount=1
         )
 
 
