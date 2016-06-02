@@ -63,6 +63,8 @@ def _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axe
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -71,6 +73,8 @@ def _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axe
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
@@ -85,6 +89,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -93,6 +99,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
@@ -125,7 +133,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
+                if (len(fact_list) != 0 and
+                    (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -160,7 +169,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
+                if (len(fact_list) != 0 
+                    and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -193,6 +203,8 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checke
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -201,6 +213,8 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checke
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
@@ -218,7 +232,8 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checke
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if len(fact_list) != 0 and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]:
+                    if (len(fact_list) != 0
+                        and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
