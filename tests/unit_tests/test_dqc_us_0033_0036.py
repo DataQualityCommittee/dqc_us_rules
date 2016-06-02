@@ -466,7 +466,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
         returned when the fact has the legal entity member
         """
         not_valid_dped = ['vault', 'bars', 'foo', 'beam', 'floor', 'boo']
-        # fire_undimensionalized_33s = True
         mock_mem1_qn = mock.Mock(spec=QName)
         mock_mem1_qn.localName = 'foo'
         mock_dim1_qn = mock.Mock(spec=QName)
