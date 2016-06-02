@@ -160,8 +160,9 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     val.modelXbrl
                 )
                 axis_mem_pair = (axis.qname, child.qname)
-                if (len(fact_list) != 0 and
-                        axis_mem_pair not in checked_axes[axis_key]):
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
+                if len(fact_list) != 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -197,8 +198,9 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     val.modelXbrl
                 )
                 axis_mem_pair = (axis.qname, child.qname)
-                if (len(fact_list) != 0 and
-                        axis_mem_pair not in checked_axes[axis_key]):
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
+                if len(fact_list) != 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -262,8 +264,9 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
                         val.modelXbrl
                     )
                     axis_mem_pair = (axis.qname, child.qname)
-                    if (len(fact_list) != 0 and
-                            axis_mem_pair not in checked_axes[axis_key]):
+                    if axis_mem_pair in checked_axes[axis_key]:
+                        continue
+                    if len(fact_list) != 0:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
