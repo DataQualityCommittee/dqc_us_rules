@@ -159,7 +159,7 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                axis_mem_pair = (axis.qname, child.qname)
+                axis_mem_pair = (axis.qname.localName, child.qname.localName)
                 if (len(fact_list) != 0 and
                         axis_mem_pair not in checked_axes[axis_key]):
                     val.modelXbrl.error(
@@ -198,7 +198,7 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                axis_mem_pair = (axis.qname, child.qname)
+                axis_mem_pair = (axis.qname.localName, child.qname.localName)
                 if (len(fact_list) != 0 and
                         axis_mem_pair not in checked_axes[axis_key]):
                     val.modelXbrl.error(
@@ -265,7 +265,9 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    axis_mem_pair = (axis.qname, child.qname)
+                    axis_mem_pair = (
+                        axis.qname.localName, child.qname.localName
+                    )
                     if (len(fact_list) != 0 and
                             axis_mem_pair not in checked_axes[axis_key]):
                         val.modelXbrl.error(
