@@ -53,10 +53,19 @@ def run_checks(val, *args, **kwargs):
                 )
 
             for axis in filter(filter_func, relset.fromModelObjects()):
-                _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
+                _run_axis_checks(
+                    axis,
+                    axis_key,
+                    axis_config,
+                    relset,
+                    val,
+                    role,
+                    checked_axes
+                )
 
 
-def _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
+def _run_axis_checks(axis, axis_key, axis_config, relset, val, role,
+                     checked_axes):
     """
     Run the axis checks for a given axis, config dict,
     and set of children.
@@ -78,11 +87,28 @@ def _run_axis_checks(axis, axis_key, axis_config, relset, val, role, checked_axe
     :return: No direct return
     :rtype: None
     """
-    _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
-    _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checked_axes)
+    _run_member_checks(
+        axis,
+        axis_key,
+        axis_config,
+        relset,
+        val,
+        role,
+        checked_axes
+    )
+    _run_extension_checks(
+        axis,
+        axis_key,
+        axis_config,
+        relset,
+        val,
+        role,
+        checked_axes
+    )
 
 
-def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
+def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
+                       checked_axes):
     """
     Run the checks on included and excluded members and companion axes.
     Extensions are not checked.  Error as appropriate.
@@ -127,14 +153,15 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
         # Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
-                 child.qname.localName in disallowed_children)):
+                    child.qname.localName in disallowed_children)):
                 fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
                 if (len(fact_list) != 0 and
-                    (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
+                    (axis.qname.localName, child.qname.localName) not in
+                        checked_axes[axis_key]):
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -146,7 +173,9 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                         modelObject=fact_list,
                         ruleVersion=_RULE_VERSION
                     )
-                    checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
+                    checked_axes[axis_key].append(
+                        (axis.qname.localName, child.qname.localName)
+                    )
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -169,8 +198,9 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if (len(fact_list) != 0 
-                    and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
+                if (len(fact_list) != 0 and
+                    (axis.qname.localName, child.qname.localName) not in
+                        checked_axes[axis_key]):
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -182,7 +212,9 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                         modelObject=fact_list,
                         ruleVersion=_RULE_VERSION
                     )
-                    checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
+                    checked_axes[axis_key].append(
+                        (axis.qname.localName, child.qname.localName)
+                    )
                 else:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
@@ -197,7 +229,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role, checked_a
                     )
 
 
-def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checked_axes):
+def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
+                          checked_axes):
     """
     Check extension members under the given axis.
 
@@ -232,8 +265,9 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checke
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if (len(fact_list) != 0
-                        and (axis.qname.localName, child.qname.localName) not in checked_axes[axis_key]):
+                    if (len(fact_list) != 0 and
+                        (axis.qname.localName, child.qname.localName) not in
+                            checked_axes[axis_key]):
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
@@ -245,7 +279,9 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role, checke
                             modelObject=fact_list,
                             ruleVersion=_RULE_VERSION
                         )
-                        checked_axes[axis_key].append((axis.qname.localName, child.qname.localName))
+                        checked_axes[axis_key].append(
+                            (axis.qname.localName, child.qname.localName)
+                        )
                     else:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
