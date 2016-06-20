@@ -5,8 +5,6 @@ All published final recommendations of the Data Quality Committee are copyrighte
 Copyright © 2015-2016, American Institute of CPAs (AICPA)  
 Copyright © 2015-2016, Calcbench, Inc.  
 Copyright © 2015-2016, Merrill Communications LLC  
-Copyright © 2015, Research Data Group Inc.  
-Copyright © 2015, R. R. Donnelley & Sons Company  
 Copyright © 2015-2016, Vintage, a division of PR Newswire  
 Copyright © 2015-2016, Workiva Inc.  
 Copyright © 2015-2016, XBRL US, Inc.  
