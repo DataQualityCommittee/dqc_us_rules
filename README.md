@@ -74,16 +74,10 @@ We actively accept, and encourage, pull requests for code changes. A list of the
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
   - The pull request must have at least one `+1` from another community member.
   - There must be no unaddressed comments.
-  - PR text must be in the specified format:
-    ```
-    #### Changes:
 
-    - Change_one with reasoning
-    - Change_two with reasoning
-
-    Please review: @hefischer  @andrewperkins-wf
-    ```
-
+### QA'ing a Pull request
+  - Do the PR things.
+    
 ## License
 
 See [License](License.md) for license information.  
