@@ -65,19 +65,48 @@ The rule definition index is [here](docs/README.md).
 
 We actively accept, and encourage, pull requests for code changes. A list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project. If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement. If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
 
-### Requirements for a Pull Request(PR):
+### Requirements for a Pull Request (PR):
 
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
   - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
   - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
   - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/PYTHON.rst#docstrings) are required.
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
-  - The pull request must have at least one `+1` from another community member.
-  - There must be no unaddressed comments.
+  - The pull request must go through the review process described below.
 
-### QA'ing a Pull request
-  - Do the PR things.
-    
+### Pull Request Review Process:
+
+  - Each pull request must have at least one `+1` from another community member.
+  - For code changes, you must have a second `+1` from yet another community member.
+  - The request will need to go through the Quality Assurance process defined below and receive a `+10`. This can be from any other community member, including one of the reviewers.
+  - At this point, the request can be submitted to one of the project maintainers to be merged.
+
+### Quality Assurance (QA) of a Pull Request:
+  - Verify that the code passes flake8 on both the code and tests.
+  - Verify that the code passes unit tests.
+  - Verify that tests were added or updated to reflect the changes made. If tests were not added, check for a reasoning in the pull request to justify the absence.
+  - This template contains all the steps, and can be used as a step-by-step guide.
+
+        #### QA Steps:
+
+        - Manual testing: Enter Manual testing notes here.
+        - Flake8 on dqc_us_rules:
+        ```
+        <Paste output of flake8 on the dqc_us_rules directory here.>
+        ```
+        - Flake8 on tests:
+        ```
+        <Paste output of flake8 on the tests directory here.>
+        ```
+        - Nosetest result:
+        ```
+        <Paste output of nose tests here.>
+        ```
+
+        #### Result: <Put result here.>
+
+The result will be any of a few things. For example a +10 for passing, or just a comment like "sent back for rework", or whatever else is needed to be done before another pass at QA.
+
 ## License
 
 See [License](License.md) for license information.  
