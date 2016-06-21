@@ -19,7 +19,7 @@ dqc_us_rules is a plugin for Arelle
 
 The dqc_us_rules library follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified when a new batch of rules have been approved, coded, and accepted by the DQC after a public comment period.
 
-The version specified by each individual rule is tied to the last release version which the rule was altered. For example, a rule being marked as v2.0.0 would have last been modified during the 2.0.0 release of the DQC library.
+The version specified by each individual rule is tied to the last release version which the rule was altered. For example, a rule being marked as v2.0.0 would have last been functionally modified during the 2.0.0 release of the DQC library.
 
 ## Requirements
 
