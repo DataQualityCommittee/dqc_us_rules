@@ -162,7 +162,8 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
+
+                for fact in fact_list:  # remove grouped messages
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -171,11 +172,11 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                         messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        modelObject=fact_list,
+                        modelObject=fact,
                         ruleVersion=_RULE_VERSION
                     )
-                    checked_axes[axis_key].append(axis_mem_pair)
-                else:
+                checked_axes[axis_key].append(axis_mem_pair)
+                if len(fact_list) == 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -200,22 +201,21 @@ def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
-                    for fact in fact_list:  # remove for grouped messages
-                        val.modelXbrl.error(
-                            '{base_key}.{extension_key}'.format(
-                                base_key=_CODE_NAME,
-                                extension_key=axis_config[_RULE_INDEX_KEY]
-                            ),
-                            messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
-                            axis=axis.label(),
-                            member=child.label(),
-                            modelObject=fact,
-                            ruleVersion=_RULE_VERSION,
+                for fact in fact_list:  # remove for grouped messages
+                    val.modelXbrl.error(
+                        '{base_key}.{extension_key}'.format(
+                            base_key=_CODE_NAME,
+                            extension_key=axis_config[_RULE_INDEX_KEY]
+                        ),
+                        messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
+                        axis=axis.label(),
+                        member=child.label(),
+                        modelObject=fact,
+                        ruleVersion=_RULE_VERSION,
 
-                        )
-                    checked_axes[axis_key].append(axis_mem_pair)
-                else:
+                    )
+                checked_axes[axis_key].append(axis_mem_pair)
+                if len(fact_list) == 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -268,23 +268,22 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if len(fact_list) != 0:
-                        for fact in fact_list:  # remove for grouped messages
-                            val.modelXbrl.error(
-                                '{base_key}.{extension_key}'.format(
-                                    base_key=_CODE_NAME,
-                                    extension_key=axis_config[_RULE_INDEX_KEY]
-                                ),
-                                messages.get_message(
-                                    _CODE_NAME, _EXT_FACT_KEY
-                                ),
-                                axis=axis.label(),
-                                member=child.label(),
-                                modelObject=fact,
-                                ruleVersion=_RULE_VERSION,
-                            )
-                        checked_axes[axis_key].append(axis_mem_pair)
-                    else:
+                    for fact in fact_list:  # remove for grouped messages
+                        val.modelXbrl.error(
+                            '{base_key}.{extension_key}'.format(
+                                base_key=_CODE_NAME,
+                                extension_key=axis_config[_RULE_INDEX_KEY]
+                            ),
+                            messages.get_message(
+                                _CODE_NAME, _EXT_FACT_KEY
+                            ),
+                            axis=axis.label(),
+                            member=child.label(),
+                            modelObject=fact,
+                            ruleVersion=_RULE_VERSION,
+                        )
+                    checked_axes[axis_key].append(axis_mem_pair)
+                    if len(fact_list) == 0:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,

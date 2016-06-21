@@ -201,7 +201,7 @@ class TestMemberChecks(unittest.TestCase):
             ),
             axis=mock_axis.label(),
             member=mock_child.label(),
-            modelObject=[mock_fact],
+            modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
         )
 
