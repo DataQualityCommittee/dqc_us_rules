@@ -67,7 +67,7 @@ We actively accept, and encourage, pull requests for code changes. A list of the
 
 ### Development of Rules that are "Ready for Coding":
 
-When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged and released on the global pypi index as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch merged into master, and a new major version of the library will be released on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/). 
+When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged and released on the global pypi index as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/).
 
 ### Requirements for a Pull Request (PR):
 
@@ -80,9 +80,9 @@ When new rules that have been approved for coding are released by the DQC, the r
 
 ### Pull Request Review Process:
 
-  - Each pull request must have at least one `+1` from another community member.
-  - For code changes, you must have a second `+1` from yet another community member.
-  - The request will need to go through the Quality Assurance process defined below and receive a `+10`. This can be from any other community member, including one of the reviewers.
+  - Each pull request must have at least one `+1` comment from another community member.
+  - For code changes, you must have a second `+1` comment from a second community member.
+  - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
 
 ### Quality Assurance (QA) of a Pull Request:
@@ -93,7 +93,7 @@ When new rules that have been approved for coding are released by the DQC, the r
 
         #### QA Steps:
 
-        - Manual testing: Enter Manual testing notes here.
+        - Manual testing: <Enter Manual testing notes here.>
         - Flake8 on dqc_us_rules:
         ```
         <Paste output of flake8 on the dqc_us_rules directory here.>
