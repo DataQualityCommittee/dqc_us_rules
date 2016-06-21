@@ -8,7 +8,7 @@ from .util import facts as facts_util
 
 
 _CODE_NAME = 'DQC.US.0014'
-_RULE_VERSION = '2.0'
+_RULE_VERSION = '2.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',

@@ -14,7 +14,7 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 
 
 _CODE_NAME = 'DQC.US.0041'
-_RULE_VERSION = '2.0'
+_RULE_VERSION = '2.0.0'
 
 _EARLIEST_GAAP_YEAR = 2014
 

@@ -8,7 +8,7 @@ from .util import facts, messages, neg_num
 
 
 _CODE_NAME = 'DQC.US.0013'
-_RULE_VERSION = '2.0'
+_RULE_VERSION = '2.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -26,7 +26,7 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
 # This is setup as a list of tuples.  The first item is the concept to check
 # for existence of, the second is a list of concept(s) to sum and check if
 # they are greater than zero.
-_pre_cfg = [
+_PRE_CFG = [
     (
         'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',  # noqa
         [
@@ -58,7 +58,7 @@ _pre_cfg = [
     )
 ]
 
-_PRECONDITION_ELEMENTS = collections.OrderedDict(_pre_cfg)
+_PRECONDITION_ELEMENTS = collections.OrderedDict(_PRE_CFG)
 
 
 def run_negative_values_with_dependence(val, *args, **kwargs):

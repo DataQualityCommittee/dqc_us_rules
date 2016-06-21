@@ -12,7 +12,7 @@ from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 
 _CODE_NAME = 'DQC.US.0018'
-_RULE_VERSION = '2.0'
+_RULE_VERSION = '2.0.0'
 _EARLIEST_US_GAAP_YEAR = 2014
 
 ugtDocs = (
