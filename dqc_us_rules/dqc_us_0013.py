@@ -8,7 +8,7 @@ from .util import facts, messages, neg_num
 
 
 _CODE_NAME = 'DQC.US.0013'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -23,34 +23,42 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
     'dqc_15_exclusion_rules.csv'
 )
 
-_PRECONDITION_ELEMENTS = collections.OrderedDict([
+# This is setup as a list of tuples.  The first item is the concept to check
+# for existence of, the second is a list of concept(s) to sum and check if
+# they are greater than zero.
+_pre_cfg = [
     (
-        (
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxes'
-            'ExtraordinaryItemsNoncontrollingInterest'
-        ), []),
+        'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest',  # noqa
+        [
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest'  # noqa
+        ]
+    ),
     (
-        (
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinority'
-            'InterestAndIncomeLossFromEquityMethodInvestments'
-        ),
-        ['IncomeLossFromEquityMethodInvestments']
+        'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',  # noqa
+        [
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments',  # noqa
+            'IncomeLossFromEquityMethodInvestments'
+        ]
     ),
     (
         'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
         [
-            'IncomeLossFromEquityMethodInvestments',
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign'
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
+            'IncomeLossFromEquityMethodInvestments'
         ]
     ),
     (
         'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
         [
-            'IncomeLossFromEquityMethodInvestments',
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic',
+            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign',
+            'IncomeLossFromEquityMethodInvestments'
         ]
     )
-])
+]
+
+_PRECONDITION_ELEMENTS = collections.OrderedDict(_pre_cfg)
 
 
 def run_negative_values_with_dependence(val, *args, **kwargs):

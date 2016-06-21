@@ -14,7 +14,7 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 
 
 _CODE_NAME = 'DQC.US.0041'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0'
 
 _EARLIEST_GAAP_YEAR = 2014
 
@@ -224,7 +224,7 @@ def _load_cache(val):
                 val.usgaapDefaultDimensions = json.load(file)
                 file.close()
 
-            except FileNotFoundError:
+            except FileNotFoundError:  # noqa
                 if file:
                     file.close()
         year += 1

@@ -12,7 +12,7 @@ from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 
 _CODE_NAME = 'DQC.US.0018'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0'
 _EARLIEST_US_GAAP_YEAR = 2014
 
 ugtDocs = (
@@ -73,7 +73,7 @@ def _load_cache(val):
                 val.usgaapDeprecations = json.load(file)
                 file.close()
 
-            except FileNotFoundError:
+            except FileNotFoundError:  # noqa
                 if file:
                     file.close()
                 # year should be cached. It is not, so return False
