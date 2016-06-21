@@ -8,6 +8,6 @@
 - [ ] Full description of changes provided above.
 - [ ] Reviewed by another person. (+1)
 - [ ] If a code change, reviewed by a second person. (+1)
-- [ ] QA'd to the specifications listed [here](README.md#poop). Documentation only changes do not require the formal code quality assurance process. (+10)
+- [ ] QA'd to the specifications listed [here](https://github.com/Workiva/dqc_us_rules#quality-assurance-qa-of-a-pull-request). Documentation only changes do not require the formal code quality assurance process. (+10)
 
 ##### Once checklist is complete, @hefischer  @andrewperkins-wf please review for merge.
