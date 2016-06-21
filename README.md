@@ -17,7 +17,7 @@ dqc_us_rules is a plugin for Arelle
 
 ### Requirements
 
-* Python 3.x (3.2 or greater is preferred)
+* Python 3.x (3.4 or greater is preferred)
 * Git 1.7+
 * C compiler toolchain (for LXML)
 * libxml2 (also for LXML)
@@ -64,6 +64,10 @@ The rule definition index is [here](docs/README.md).
 ## Proposed Changes
 
 We actively accept, and encourage, pull requests for code changes. A list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project. If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement. If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
+
+### Development of Rules that are "Ready for Coding":
+
+When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged and released on the global pypi index as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch merged into master, and a new major version of the library will be released on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/). 
 
 ### Requirements for a Pull Request (PR):
 
