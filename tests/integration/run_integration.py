@@ -23,7 +23,7 @@ _REPORT_OUTPUT_FILE = os.path.join(
 def main():
     with open(_REPORT_OUTPUT_FILE, 'rt') as f:
         reader = csv.reader(f)
-        #skip header
+        # skip header
         next(reader, None)
         failed_rows = []
         for row in reader:
