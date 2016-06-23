@@ -114,6 +114,33 @@ class TestCompareFacts(unittest.TestCase):
            )
         )
 
+    def test_fact_uses_deprecated_item(self):
+        """
+        Tests to make sure that fact errors it it contains a deprecated member
+        """
+        val = mock.Mock()
+        gaapDeps = {}
+        gaapDeps['old'] = (
+             "Element was deprecated. Possible replacement is "
+             "new."
+        )
+        val.usgaapDeprecations = gaapDeps
+        dep_concept = mock.Mock(spec=ModelConcept)
+        dep_concept.name = 'old'
+
+        context = mock.Mock()
+        context.segDimValues = {}
+
+        fact = mock.Mock(concept=dep_concept, context=context)
+
+        fire, item = dqc_us_0018._fact_uses_deprecated_item(
+            val,
+            fact
+        )
+
+        self.assertTrue(fire)
+        self.assertEqual(item, 'old')
+
     def test_catch_linkbase_deprecated_errors(self):
         """
         Tests for deprecated concepts in relationships
