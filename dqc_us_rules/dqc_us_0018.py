@@ -287,8 +287,9 @@ def _fact_uses_deprecated_item(val, fact):
     :type val: :class:'~arelle.ValidateXbrl.ValidateXbrl'
     :param fact: Fact to check
     :type fact: :class:'~arelle.ModelInstanceObject.ModelFact'
-    :return: Returns true if fact uses deprecated item
-    :rtype: False
+    :return: Returns true if fact uses deprecated item,
+        as well as the item's name.
+    :rtype: tuple(bool, str)
     """
 
     if _fact_checkable(fact):
