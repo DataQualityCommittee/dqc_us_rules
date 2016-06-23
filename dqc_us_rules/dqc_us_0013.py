@@ -108,27 +108,31 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
         _DEFAULT_EXCLUSIONS_FILE
     )
     bad_blacklist = []
+    numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
     # Checks if the precondition concept exists and only proceeds with check
-    # if true
-    if dqc_13_precondition_check(val):
-        numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
-        # other filters before running negative numbers check
-        # numeric_facts has already checked if fact.value can be made into
-        # a number
-        facts_to_check = [
-            fact for fact in numeric_facts
-            if fact.xValue < 0 and
-            fact.concept.type is not None and
-            # facts with numerical values less than 0 and contexts and
-            fact.context is not None
-        ]
+    # if true and if the facts context matches the context of the
+    # precondition fact
+    precondition_exists, precondition_context = dqc_13_precondition_check(val)
+    # other filters before running negative numbers check
+    # numeric_facts has already checked if fact.value can be made into
+    # a number
+    facts_to_check = [
+        fact for fact in numeric_facts
+        # facts with numerical values less than 0
+        if fact.xValue < 0 and
+        fact.concept.type is not None and
+        # and precondition exists
+        precondition_exists and
+        # and the facts context matches the context of the precondition fact
+        fact.context == precondition_context
+    ]
 
-        # identify facts which should be reported as included in the list
-        for fact in facts_to_check:
-            if neg_num.check_rules(fact, blacklist_exclusion_rules):
-                continue  # cannot be black
-            if fact.qname.localName in blacklist_concepts:
-                bad_blacklist.append(fact)
+    # identify facts which should be reported as included in the list
+    for fact in facts_to_check:
+        if neg_num.check_rules(fact, blacklist_exclusion_rules):
+            continue  # cannot be black
+        if fact.qname.localName in blacklist_concepts:
+            bad_blacklist.append(fact)
 
     return bad_blacklist
 
@@ -141,24 +145,25 @@ def dqc_13_precondition_check(val):
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: True or False depending on the precondition check
-    :rtype: bool
+    :return: True or False depending on the precondition check. Additionally,
+        it also returns the context of the precondition fact.
+    :rtype: bool, :class:'~arelle.ModelInstanceObject.ModelContext'
 
     """
     facts_list = list(val.modelXbrl.facts)
-
     for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
-        check, value = facts.precondition_fact_exists(facts_list, precondition)
+        check, value, context = facts.precondition_fact_exists(
+            facts_list, precondition
+        )
         if check:
             for element in pre_checks:
-                new_check, new_value = facts.precondition_fact_exists(
+                new_check, new_value, new_context = facts.precondition_fact_exists(
                     facts_list, element
                 )
                 value = value + new_value
         if value > 0:
-            return True
-
-    return False
+            return True, context
+    return False, ''
 
 
 __pluginInfo__ = {

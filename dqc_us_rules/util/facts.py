@@ -448,10 +448,11 @@ def precondition_fact_exists(facts_list, precondition_concept):
     :type precondition_concept: str
     :return: return true or false depending on whether the precondition
         concept exists and then also return the value of the precondition
-        fact if it exist (return 0 for the value if it does not exist)
-    :rtype: tuple (bool, decimal)
+        fact if it exist (return 0 for the value if it does not exist). Lastly,
+        return the context of the precondition fact.
+    :rtype: tuple (bool, decimal, :class:'~arelle.ModelInstanceObject.ModelContext')
     """
     for fact in facts_list:
         if fact.concept.qname.localName == precondition_concept:
-            return True, fact.xValue
-    return False, 0
+            return True, fact.xValue, fact.context
+    return False, 0, ''

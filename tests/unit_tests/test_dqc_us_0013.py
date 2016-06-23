@@ -46,6 +46,7 @@ class TestDQC0013(unittest.TestCase):
         )
         mock_no_dimensions = {}
         mock_context = mock.Mock(segDimValues=mock_no_dimensions)
+
         # Concept is in blacklist, type is numeric with decimal, value is
         # NEGATIVE = Fire
         self.fact_fire1 = mock.Mock(
@@ -114,11 +115,11 @@ class TestDQC0013(unittest.TestCase):
             context=mock_context
         )
 
+
     def test_precondition_fact_exists(self):
         """
         Verifies that the check for whether a precondition concept exists
-            returns
-        the expected results
+        returns the expected results
         """
         # Contains precondition element and the associated value is
         # positive = Fire
@@ -176,7 +177,7 @@ class TestDQC0013(unittest.TestCase):
     def test_negative_number_with_dependence(self):
         """
         Verifies the check for negative numbers with dependencies works as
-            expected
+        expected
         """
         # The precondition fact is positive so the rule should execute
         mock_fact_model1 = mock.Mock(
