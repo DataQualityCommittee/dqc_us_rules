@@ -293,14 +293,15 @@ def _fact_uses_deprecated_item(val, fact):
 
     if _fact_checkable(fact):
         if _deprecated_concept(val, fact.concept):
-            return True
+            return True, fact.concept.name
 
         if fact.isItem:
             for dimConcept, modelDim in fact.context.segDimValues.items():
-                if ((_deprecated_concept(val, dimConcept) or
-                     _deprecated_dimension(val, modelDim))):
-                    return True
-    return False
+                if _deprecated_concept(val, dimConcept):
+                    return True, dimConcept.name
+                elif _deprecated_dimension(val, modelDim):
+                    return True, modelDim.name
+    return False, None
 
 
 def _catch_deprecated_fact_errors(val, deprecated_concepts):
@@ -313,10 +314,11 @@ def _catch_deprecated_fact_errors(val, deprecated_concepts):
     :rype: None
     """
     for fact in val.modelXbrl.facts:
-        if _fact_uses_deprecated_item(val, fact):
-            if not deprecated_concepts.get(fact.concept.name):
-                deprecated_concepts[fact.concept.name] = []
-            deprecated_concepts[fact.concept.name].append(fact)
+        fire, item = _fact_uses_deprecated_item(val, fact)
+        if fire:
+            if not deprecated_concepts.get(item):
+                deprecated_concepts[item] = []
+            deprecated_concepts[item].append(fact)
 
 
 __pluginInfo__ = {
