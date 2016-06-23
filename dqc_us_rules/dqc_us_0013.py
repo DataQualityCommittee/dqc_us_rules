@@ -112,7 +112,8 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     # Checks if the precondition concept exists and only proceeds with check
     # if true and if the facts context matches the context of the
     # precondition fact
-    precondition_exists, precondition_context = dqc_13_precondition_check(val)
+    precondition_exists, precondition_contexts = dqc_13_precondition_check(val)
+
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into
     # a number
@@ -122,9 +123,9 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
         if fact.xValue < 0 and
         fact.concept.type is not None and
         # and precondition exists
-        precondition_exists and
+        precondition_exists
         # and the facts context matches the context of the precondition fact
-        fact.context == precondition_context
+        # fact.context in precondition_contexts
     ]
 
     # identify facts which should be reported as included in the list
@@ -151,18 +152,21 @@ def dqc_13_precondition_check(val):
 
     """
     facts_list = list(val.modelXbrl.facts)
+    precondition_contexts = []
     for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
         check, value, context = facts.precondition_fact_exists(
             facts_list, precondition
         )
         if check:
+            precondition_contexts.append(context)
             for element in pre_checks:
                 new_check, new_value, new_context = facts.precondition_fact_exists(
                     facts_list, element
                 )
+                precondition_contexts.append(new_context)
                 value = value + new_value
         if value > 0:
-            return True, context
+            return True, precondition_contexts
     return False, ''
 
 
