@@ -299,8 +299,8 @@ def _fact_uses_deprecated_item(val, fact):
             for dimConcept, modelDim in fact.context.segDimValues.items():
                 if _deprecated_concept(val, dimConcept):
                     return True, dimConcept.name
-                elif _deprecated_dimension(val, modelDim):
-                    return True, modelDim.name
+                elif _deprecated_dimension(val, modelDim.dimension):
+                    return True, modelDim.dimension.name
     return False, None
 
 
