@@ -151,8 +151,8 @@ def dqc_13_precondition_check(val):
     pre_cache = {
         x: {
             y: [] for y in pre_checks
-            } for x, pre_checks in _PRECONDITION_ELEMENTS.items()
-        }
+        } for x, pre_checks in _PRECONDITION_ELEMENTS.items()
+    }
     for fact in list(val.modelXbrl.facts):
         for precondition, pre_check_dict in pre_cache.items():
             for pre_check in pre_check_dict:
