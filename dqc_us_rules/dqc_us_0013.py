@@ -128,7 +128,6 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     # identify facts which should be reported as included in the list
     for fact in facts_to_check:
         if neg_num.check_rules(fact, blacklist_exclusion_rules):
-
             continue  # cannot be black
         if fact.qname.localName in blacklist_concepts:
             bad_blacklist.append(fact)
@@ -144,7 +143,7 @@ def dqc_13_precondition_check(val):
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: Returns the list of context(s) of the precondition fact(s)
-    :rtype: :class:'~arelle.ModelInstanceObject.ModelContext'
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelContext']
 
     """
     check_contexts = set()
