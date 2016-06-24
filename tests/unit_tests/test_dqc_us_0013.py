@@ -46,6 +46,7 @@ class TestDQC0013(unittest.TestCase):
         )
         mock_no_dimensions = {}
         mock_context = mock.Mock(segDimValues=mock_no_dimensions)
+
         # Concept is in blacklist, type is numeric with decimal, value is
         # NEGATIVE = Fire
         self.fact_fire1 = mock.Mock(
@@ -114,69 +115,71 @@ class TestDQC0013(unittest.TestCase):
             context=mock_context
         )
 
-    def test_precondition_fact_exists(self):
+    def test_dqc_13_precondition_check(self):
         """
         Verifies that the check for whether a precondition concept exists
-            returns
-        the expected results
+        returns the expected results
         """
         # Contains precondition element and the associated value is
         # positive = Fire
-        fact_list1 = [
-            self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
-            self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
-            self.fact_no_fire5, self.fact_precondition_positive
-        ]
+        mock_fact_model1 = mock.Mock(
+            modelXbrl=mock.Mock(
+                facts=[
+                    self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
+                    self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
+                    self.fact_no_fire5, self.fact_precondition_positive
+                ]
+            )
+        )
         # Contains precondition element and the associated value is
         # zero = No Fire
-        fact_list2 = [
-            self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
-            self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
-            self.fact_no_fire5, self.fact_precondition_zero
-        ]
+        mock_fact_model2 = mock.Mock(
+            modelXbrl=mock.Mock(
+                facts=[
+                    self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
+                    self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
+                    self.fact_no_fire5, self.fact_precondition_zero
+                ]
+            )
+        )
         # Contains precondition element and the associated value is
         # negative = No Fire
-        fact_list3 = [
-            self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
-            self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
-            self.fact_no_fire5, self.fact_precondition_negative
-        ]
+        mock_fact_model3 = mock.Mock(
+            modelXbrl=mock.Mock(
+                facts=[
+                    self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
+                    self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
+                    self.fact_no_fire5, self.fact_precondition_negative
+                ]
+            )
+        )
         # The precondition element does not exist = No Fire
-        fact_list4 = [
-            self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
-            self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
-            self.fact_no_fire5
-        ]
-
-        result1 = util.facts.precondition_fact_exists(
-            fact_list1,
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
+        mock_fact_model4 = mock.Mock(
+            modelXbrl=mock.Mock(
+                facts=[
+                    self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
+                    self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
+                    self.fact_no_fire5
+                ]
+            )
         )
-        self.assertEqual(True, result1[0])
-        self.assertEqual(77, result1[1])
-        result2 = util.facts.precondition_fact_exists(
-            fact_list2,
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
-        )
-        self.assertEqual(True, result2[0])
-        self.assertEqual(0, result2[1])
-        result3 = util.facts.precondition_fact_exists(
-            fact_list3,
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
-        )
-        self.assertEqual(True, result3[0])
-        self.assertEqual(-77, result3[1])
-        result4 = util.facts.precondition_fact_exists(
-            fact_list4,
-            'IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic'
-        )
-        self.assertEqual(False, result4[0])
-        self.assertEqual(0, result4[1])
+        # Precondition value is positive so one context is returned
+        result1 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model1)
+        self.assertEqual(1, len(result1))
+        # Precondition value is zero so no contexts are returned
+        result2 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model2)
+        self.assertEqual(0, len(result2))
+        # Precondition value is negative so no contexts are returned
+        result3 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model3)
+        self.assertEqual(0, len(result3))
+        # No preconditions in the fact list so no contexts are returned
+        result4 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model4)
+        self.assertEqual(0, len(result4))
 
     def test_negative_number_with_dependence(self):
         """
         Verifies the check for negative numbers with dependencies works as
-            expected
+        expected
         """
         # The precondition fact is positive so the rule should execute
         mock_fact_model1 = mock.Mock(
