@@ -112,30 +112,26 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     # Checks if the precondition concept exists and only proceeds with check
     # if true and if the fact context matches the context of the
     # precondition fact
-    precondition_met, precondition_contexts = dqc_13_precondition_check(val)
-    # precondition_contexts = dqc_13_precondition_check(val)
+    precondition_contexts = dqc_13_precondition_check(val)
 
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into
     # a number
-    facts_to_check = [
-        fact for fact in numeric_facts
-        # facts with numerical values less than 0
-        if fact.xValue < 0 and
-        fact.concept.type is not None and
-        # and the precondition value is greater than zero
-        precondition_met and
-        # and the fact context matches the context of the precondition fact
-        fact.context in precondition_contexts
-    ]
-
+    if len(precondition_contexts):
+        facts_to_check = [
+            fact for fact in numeric_facts
+            if fact.xValue < 0 and
+            fact.context in precondition_contexts
+        ]
+    else:
+        facts_to_check = []
     # identify facts which should be reported as included in the list
     for fact in facts_to_check:
         if neg_num.check_rules(fact, blacklist_exclusion_rules):
+
             continue  # cannot be black
         if fact.qname.localName in blacklist_concepts:
             bad_blacklist.append(fact)
-
     return bad_blacklist
 
 
@@ -153,26 +149,33 @@ def dqc_13_precondition_check(val):
     :rtype: bool, :class:'~arelle.ModelInstanceObject.ModelContext'
 
     """
-    facts_list = list(val.modelXbrl.facts)
-    precondition_contexts = []
-    value = 0
-    for fact in facts_list:
-        print('NAME = {}'.format(fact.concept.qname.localName))
-        value = 0
-        for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
-            if fact.concept.qname.localName == precondition:
-                precondition_contexts.append(fact.context)
-                value = value + fact.xValue
-                print('FIRST TOTAL = {}'.format(value))
-            for element in pre_checks:
-                if fact.concept.qname.localName == element:
-                    precondition_contexts.append(fact.context)
-                    value = value + fact.xValue
-    print('FINAL TOTAL = {}'.format(value))
-    if value > 0:
-        return True, precondition_contexts
-    else:
-        return False, precondition_contexts
+    check_contexts = set()
+    seen_contexts = set()
+    pre_cache = {
+        x: {
+            y: [] for y in pre_checks
+            }
+        for x, pre_checks in _PRECONDITION_ELEMENTS.items()
+    }
+    for fact in list(val.modelXbrl.facts):
+        for precondition, pre_check_dict in pre_cache.items():
+            for pre_check in pre_check_dict:
+                if fact.concept.qname.localName == pre_check:
+                    pre_check_dict[pre_check].append(fact)
+    for precondition_name in _PRECONDITION_ELEMENTS.keys():
+        group_dict = collections.defaultdict(list)
+        for fact_list in pre_cache[precondition_name].values():
+            for fact in fact_list:
+                group_dict[fact.context].append(fact)
+        for context, fact_list in group_dict.items():
+            if context in seen_contexts:
+                continue
+            value = sum([f.xValue for f in fact_list])
+            if value > 0:
+                check_contexts.add(context)
+            else:
+                seen_contexts.add(context)
+    return check_contexts
 
 
 __pluginInfo__ = {
