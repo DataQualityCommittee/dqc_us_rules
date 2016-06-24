@@ -110,9 +110,10 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
     bad_blacklist = []
     numeric_facts = facts.grab_numeric_facts(list(val.modelXbrl.facts))
     # Checks if the precondition concept exists and only proceeds with check
-    # if true and if the facts context matches the context of the
+    # if true and if the fact context matches the context of the
     # precondition fact
-    precondition_exists, precondition_contexts = dqc_13_precondition_check(val)
+    precondition_met, precondition_contexts = dqc_13_precondition_check(val)
+    # precondition_contexts = dqc_13_precondition_check(val)
 
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into
@@ -122,10 +123,10 @@ def filter_negative_number_with_dependence_facts(val, blacklist_concepts):
         # facts with numerical values less than 0
         if fact.xValue < 0 and
         fact.concept.type is not None and
-        # and precondition exists
-        precondition_exists
-        # and the facts context matches the context of the precondition fact
-        # fact.context in precondition_contexts
+        # and the precondition value is greater than zero
+        precondition_met and
+        # and the fact context matches the context of the precondition fact
+        fact.context in precondition_contexts
     ]
 
     # identify facts which should be reported as included in the list
@@ -146,28 +147,32 @@ def dqc_13_precondition_check(val):
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: True or False depending on the precondition check. Additionally,
-        it also returns the context of the precondition fact.
+    :return: True or False depending on whether the precondition value is
+        greater than zero or not. Additionally, it also returns the list of
+        context(s) of the precondition fact(s).
     :rtype: bool, :class:'~arelle.ModelInstanceObject.ModelContext'
 
     """
     facts_list = list(val.modelXbrl.facts)
     precondition_contexts = []
-    for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
-        check, value, context = facts.precondition_fact_exists(
-            facts_list, precondition
-        )
-        if check:
-            precondition_contexts.append(context)
+    value = 0
+    for fact in facts_list:
+        print('NAME = {}'.format(fact.concept.qname.localName))
+        value = 0
+        for precondition, pre_checks in _PRECONDITION_ELEMENTS.items():
+            if fact.concept.qname.localName == precondition:
+                precondition_contexts.append(fact.context)
+                value = value + fact.xValue
+                print('FIRST TOTAL = {}'.format(value))
             for element in pre_checks:
-                new_check, new_value, new_context = facts.precondition_fact_exists(
-                    facts_list, element
-                )
-                precondition_contexts.append(new_context)
-                value = value + new_value
-        if value > 0:
-            return True, precondition_contexts
-    return False, ''
+                if fact.concept.qname.localName == element:
+                    precondition_contexts.append(fact.context)
+                    value = value + fact.xValue
+    print('FINAL TOTAL = {}'.format(value))
+    if value > 0:
+        return True, precondition_contexts
+    else:
+        return False, precondition_contexts
 
 
 __pluginInfo__ = {
