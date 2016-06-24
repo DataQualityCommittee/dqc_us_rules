@@ -143,10 +143,8 @@ def dqc_13_precondition_check(val):
 
     :param val: val whose modelXbrl provides the facts to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: True or False depending on whether the precondition value is
-        greater than zero or not. Additionally, it also returns the list of
-        context(s) of the precondition fact(s).
-    :rtype: bool, :class:'~arelle.ModelInstanceObject.ModelContext'
+    :return: Returns the list of context(s) of the precondition fact(s)
+    :rtype: :class:'~arelle.ModelInstanceObject.ModelContext'
 
     """
     check_contexts = set()
@@ -154,26 +152,26 @@ def dqc_13_precondition_check(val):
     pre_cache = {
         x: {
             y: [] for y in pre_checks
-            }
-        for x, pre_checks in _PRECONDITION_ELEMENTS.items()
-    }
+            } for x, pre_checks in _PRECONDITION_ELEMENTS.items()
+        }
     for fact in list(val.modelXbrl.facts):
         for precondition, pre_check_dict in pre_cache.items():
             for pre_check in pre_check_dict:
                 if fact.concept.qname.localName == pre_check:
                     pre_check_dict[pre_check].append(fact)
     for precondition_name in _PRECONDITION_ELEMENTS.keys():
-        group_dict = collections.defaultdict(list)
+        context_group_dict = collections.defaultdict(list)
         for fact_list in pre_cache[precondition_name].values():
             for fact in fact_list:
-                group_dict[fact.context].append(fact)
-        for context, fact_list in group_dict.items():
+                context_group_dict[fact.context].append(fact)
+        for context, fact_list in context_group_dict.items():
             if context in seen_contexts:
                 continue
             value = sum([f.xValue for f in fact_list])
             if value > 0:
                 check_contexts.add(context)
             else:
+                # We've already checked this context so no need to check again
                 seen_contexts.add(context)
     return check_contexts
 
