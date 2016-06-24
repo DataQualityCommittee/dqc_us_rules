@@ -7,7 +7,7 @@ from .util import messages, neg_num
 from .util import facts as facts_util
 
 _CODE_NAME = 'DQC.US.0015'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '2.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',

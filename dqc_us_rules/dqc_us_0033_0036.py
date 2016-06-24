@@ -8,7 +8,7 @@ from arelle.ModelValue import dateunionDate
 
 _CODE_NAME_33 = 'DQC.US.0033'
 _CODE_NAME_36 = 'DQC.US.0036'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '2.0.0'
 
 
 def doc_period_end_date_check(val, *args, **kwargs):
