@@ -14,7 +14,7 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 
 
 _CODE_NAME = 'DQC.US.0041'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0.0'
 
 _EARLIEST_GAAP_YEAR = 2014
 
@@ -224,13 +224,13 @@ def _load_cache(val):
                 val.usgaapDefaultDimensions = json.load(file)
                 file.close()
 
-            except FileNotFoundError:
+            except FileNotFoundError:  # noqa
                 if file:
                     file.close()
         year += 1
 
 
-def fire_dqc_us_0041_errors(val):
+def fire_dqc_us_0041_errors(val, *args, **kwargs):
     """
     Fires all the dqc_us_0041 errors returned by _catch_dqc_us_0041_errors
 
@@ -244,7 +244,7 @@ def fire_dqc_us_0041_errors(val):
     for error_info in _catch_dqc_us_0041_errors(val):
         axis_name, axis_default_name, def_name = error_info
         val.modelXbrl.error(
-            '{}.16'.format(_CODE_NAME),
+            '{}.73'.format(_CODE_NAME),
             messages.get_message(_CODE_NAME),
             axis_name=axis_name,
             axis_default_name=axis_default_name,

@@ -1,5 +1,5 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# Copyright (c) 2015-2016, Workiva Inc.  All rights reserved.
+# Copyright (c) 2015-2016, XBRL US Inc.  All rights reserved.
 from collections import defaultdict
 from arelle import ValidateXbrlCalcs
 
@@ -435,23 +435,3 @@ def grab_numeric_facts(facts_list):
         elif fact.xValue is not None:
             numeric_facts.append(fact)
     return numeric_facts
-
-
-def precondition_fact_exists(facts_list, precondition_concept):
-    """
-    Given a list of facts, check that the precondition concept is
-    included in the list
-
-    :param facts_list: list of facts to check for precondition concept
-    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact'
-    :param precondition_concept: name of the concept to look for
-    :type precondition_concept: str
-    :return: return true or false depending on whether the precondition
-        concept exists and then also return the value of the precondition
-        fact if it exist (return 0 for the value if it does not exist)
-    :rtype: tuple (bool, decimal)
-    """
-    for fact in facts_list:
-        if fact.concept.qname.localName == precondition_concept:
-            return True, fact.xValue
-    return False, 0

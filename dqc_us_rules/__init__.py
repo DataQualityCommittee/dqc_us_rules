@@ -6,7 +6,7 @@ import sys
 import inspect
 
 
-def run_checks(val):
+def run_checks(val, *args, **kwargs):
     """
     The function to run all of the validation checks under the SEC package
     """
@@ -18,7 +18,7 @@ def run_checks(val):
                  hasattr(plugin, '__pluginInfo__'))):
 
                 func = plugin.__pluginInfo__['Validate.XBRL.Finally']
-                func(val)
+                func(val, *args, **kwargs)
         except Exception as err:
             # This is an overly generic error catch, but it will hopefully
             # be able to be pared down in the future.

@@ -6,9 +6,10 @@ import os
 from arelle.ModelDtsObject import ModelConcept
 from .util import facts, messages
 import itertools
+from collections import defaultdict
 
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0.0'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -27,7 +28,7 @@ _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 
 
-def run_checks(val):
+def run_checks(val, *args, **kwargs):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     each axis of interest, and call validations on them.
@@ -37,6 +38,7 @@ def run_checks(val):
     :return: No direct return
     :rtype: None
     """
+    checked_axes = defaultdict(list)
     config = _load_config(_DQC_01_AXIS_FILE)
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
@@ -51,16 +53,27 @@ def run_checks(val):
                 )
 
             for axis in filter(filter_func, relset.fromModelObjects()):
-                _run_axis_checks(axis, axis_config, relset, val, role)
+                _run_axis_checks(
+                    axis,
+                    axis_key,
+                    axis_config,
+                    relset,
+                    val,
+                    role,
+                    checked_axes
+                )
 
 
-def _run_axis_checks(axis, axis_config, relset, val, role):
+def _run_axis_checks(axis, axis_key, axis_config, relset, val, role,
+                     checked_axes):
     """
     Run the axis checks for a given axis, config dict,
     and set of children.
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -69,20 +82,41 @@ def _run_axis_checks(axis, axis_config, relset, val, role):
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
-    _run_member_checks(axis, axis_config, relset, val, role)
-    _run_extension_checks(axis, axis_config, relset, val, role)
+    _run_member_checks(
+        axis,
+        axis_key,
+        axis_config,
+        relset,
+        val,
+        role,
+        checked_axes
+    )
+    _run_extension_checks(
+        axis,
+        axis_key,
+        axis_config,
+        relset,
+        val,
+        role,
+        checked_axes
+    )
 
 
-def _run_member_checks(axis, axis_config, relset, val, role):
+def _run_member_checks(axis, axis_key, axis_config, relset, val, role,
+                       checked_axes):
     """
     Run the checks on included and excluded members and companion axes.
     Extensions are not checked.  Error as appropriate.
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -91,6 +125,8 @@ def _run_member_checks(axis, axis_config, relset, val, role):
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
@@ -117,13 +153,17 @@ def _run_member_checks(axis, axis_config, relset, val, role):
         # Default to blacklist if both are present.
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
-                 child.qname.localName in disallowed_children)):
+                    child.qname.localName in disallowed_children)):
+                axis_mem_pair = (axis.qname, child.qname)
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
                 fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
+
+                for fact in fact_list:  # remove grouped messages
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -132,10 +172,11 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        modelObject=fact_list,
+                        modelObject=fact,
                         ruleVersion=_RULE_VERSION
                     )
-                else:
+                checked_axes[axis_key].append(axis_mem_pair)
+                if len(fact_list) == 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -152,12 +193,15 @@ def _run_member_checks(axis, axis_config, relset, val, role):
         for child in _all_members_under(axis, relset):
             if ((not _is_extension(child, val) and
                  child.qname.localName not in allowed_children)):
+                axis_mem_pair = (axis.qname, child.qname)
+                if axis_mem_pair in checked_axes[axis_key]:
+                    continue
                 fact_list = facts.axis_member_fact(
                     axis.qname.localName,
                     child.qname.localName,
                     val.modelXbrl
                 )
-                if len(fact_list) != 0:
+                for fact in fact_list:  # remove for grouped messages
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -166,10 +210,12 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                         messages.get_message(_CODE_NAME, _UGT_FACT_KEY),
                         axis=axis.label(),
                         member=child.label(),
-                        modelObject=fact_list,
-                        ruleVersion=_RULE_VERSION
+                        modelObject=fact,
+                        ruleVersion=_RULE_VERSION,
+
                     )
-                else:
+                checked_axes[axis_key].append(axis_mem_pair)
+                if len(fact_list) == 0:
                     val.modelXbrl.error(
                         '{base_key}.{extension_key}'.format(
                             base_key=_CODE_NAME,
@@ -183,12 +229,15 @@ def _run_member_checks(axis, axis_config, relset, val, role):
                     )
 
 
-def _run_extension_checks(axis, axis_config, relset, val, role):
+def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
+                          checked_axes):
     """
     Check extension members under the given axis.
 
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
+    :param axis_key: The axis name to check
+    :type axis_key: str
     :param axis_config: The axis-specific config.
     :type axis_config: dict
     :param relset: The relationshipSet for the axis.
@@ -197,6 +246,8 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param role: The role for the relationship
     :type role: str
+    :param checked_axes: Dictionary of already-fired axis_key: axis/member.
+    :type checked_axes: dict
     :return: No direct return
     :rtype: None
     """
@@ -209,24 +260,30 @@ def _run_extension_checks(axis, axis_config, relset, val, role):
         for child in _all_members_under(axis, relset):
             if _is_extension(child, val):
                 if child.qname.localName not in allowed_extensions:
-                    fact = facts.axis_member_fact(
+                    axis_mem_pair = (axis.qname, child.qname)
+                    if axis_mem_pair in checked_axes[axis_key]:
+                        continue
+                    fact_list = facts.axis_member_fact(
                         axis.qname.localName,
                         child.qname.localName,
                         val.modelXbrl
                     )
-                    if fact is not None:
+                    for fact in fact_list:  # remove for grouped messages
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,
                                 extension_key=axis_config[_RULE_INDEX_KEY]
                             ),
-                            messages.get_message(_CODE_NAME, _EXT_FACT_KEY),
+                            messages.get_message(
+                                _CODE_NAME, _EXT_FACT_KEY
+                            ),
                             axis=axis.label(),
                             member=child.label(),
                             modelObject=fact,
-                            ruleVersion=_RULE_VERSION
+                            ruleVersion=_RULE_VERSION,
                         )
-                    else:
+                    checked_axes[axis_key].append(axis_mem_pair)
+                    if len(fact_list) == 0:
                         val.modelXbrl.error(
                             '{base_key}.{extension_key}'.format(
                                 base_key=_CODE_NAME,

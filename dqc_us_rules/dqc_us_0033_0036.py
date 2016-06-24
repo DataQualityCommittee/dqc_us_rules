@@ -8,10 +8,10 @@ from arelle.ModelValue import dateunionDate
 
 _CODE_NAME_33 = 'DQC.US.0033'
 _CODE_NAME_36 = 'DQC.US.0036'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '2.0.0'
 
 
-def doc_period_end_date_check(val):
+def doc_period_end_date_check(val, *args, **kwargs):
     """
     Creates an error with all the relevant information from each of the bad
     DocumentPeriodEndDates returned from _doc_period_end_date_check
@@ -66,6 +66,7 @@ def _doc_period_end_date_check(model_xbrl):
         return result_group
 
     not_valid_dped = []
+    no_dimensions = False
     # loop through the DocumentPeriodEndDate's to check for
     # consistent dates
     for eop_facts in dped_facts.values():
@@ -85,9 +86,13 @@ def _doc_period_end_date_check(model_xbrl):
         )
         delta = context_eop_date - fact_eop_date
         if abs(delta.days) > 3:
-            for axis, dim_value in eop_fact.context.segDimValues.items():
-                if axis.qname.localName == 'LegalEntityAxis':
-                    not_valid_dped.append(dim_value.memberQname.localName)
+            if len(eop_fact.context.segDimValues) != 0:
+                for axis, dim_value in eop_fact.context.segDimValues.items():
+                    if 'LegalEntityAxis' in axis.qname.localName:
+                        not_valid_dped.append(dim_value.memberQname.localName)
+            # Handles the case of no dimensions for the DPED fact
+            else:
+                no_dimensions = True
             result_group.append((
                 '{}.1'.format(_CODE_NAME_36),
                 messages.get_message(_CODE_NAME_36),
@@ -127,11 +132,17 @@ def _doc_period_end_date_check(model_xbrl):
                      )):
                     continue
 
+                # If there are no dimensions on the DPED (DQC36) fact and the
+                # fact being checked for DQC33 has no dimensions, we do not
+                # want to fire DQC33 so we go on to the next fact
+                if no_dimensions and len(fact.context.segDimValues) == 0:
+                    continue
+
                 if check_for_lea_member(fact, not_valid_dped):
                     delta = context_eop_date - dateunionDate(
                         fact.context.endDatetime, subtractOneDay=True
                     )
-                    if delta.days != 0 and abs(delta.days) <= 3:
+                    if abs(delta.days) > 3:
                         result_group.append((
                             '{}.2'.format(_CODE_NAME_33),
                             messages.get_message(_CODE_NAME_33),

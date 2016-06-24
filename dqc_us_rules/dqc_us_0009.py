@@ -10,7 +10,7 @@ _CODE_NAME = 'DQC.US.0009'
 _RULE_VERSION = '1.0'
 
 
-def fact_gt_other_fact(val):
+def fact_gt_other_fact(val, *args, **kwargs):
     """
     Checks that the various fact pairs that are defined in the configuration
     are of an appropriate relative value (lesser or greater than one or the

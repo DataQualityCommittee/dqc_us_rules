@@ -4,6 +4,7 @@
 import unittest
 from unittest.mock import Mock, patch
 from arelle.ModelDtsObject import ModelConcept
+from collections import defaultdict
 
 from dqc_us_rules import dqc_us_0001
 
@@ -61,10 +62,12 @@ class TestRunChecks(unittest.TestCase):
         self.assertTrue(checks.called)
         checks.assert_called_with(
             mock_obj1,
+            'foo',
             expected_config,
             mock_relset_obj,
             val,
-            'page'
+            'page',
+            defaultdict(list)
         )
 
 
@@ -97,10 +100,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -143,10 +148,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertFalse(mock_error_func.called)
@@ -177,10 +184,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -192,7 +201,7 @@ class TestMemberChecks(unittest.TestCase):
             ),
             axis=mock_axis.label(),
             member=mock_child.label(),
-            modelObject=[mock_fact],
+            modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
         )
 
@@ -222,10 +231,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -237,7 +248,7 @@ class TestMemberChecks(unittest.TestCase):
             ),
             axis=mock_axis.label(),
             member=mock_child.label(),
-            modelObject=[mock_fact],
+            modelObject=mock_fact,
             ruleVersion=dqc_us_0001._RULE_VERSION
         )
 
@@ -268,10 +279,12 @@ class TestMemberChecks(unittest.TestCase):
         mock_role = 'RoDriftBoats'
         dqc_us_0001._run_member_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
 
         self.assertTrue(mock_error_func.called)
@@ -304,9 +317,11 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             Mock(),
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
+            Mock(),
             Mock()
         )
         self.assertFalse(mock_error_func.called)
@@ -330,16 +345,18 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             Mock(),
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            Mock()
+            Mock(),
+            defaultdict(list)
         )
         self.assertFalse(mock_error_func.called)
 
     @patch(
         'dqc_us_rules.dqc_us_0001.facts.axis_member_fact',
-        return_value=None
+        return_value=[]
     )
     @patch('dqc_us_rules.dqc_us_0001._is_extension', return_value=True)
     @patch('dqc_us_rules.dqc_us_0001._all_members_under')
@@ -362,10 +379,12 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(
@@ -388,7 +407,7 @@ class TestExtensionChecks(unittest.TestCase):
         Tests extension blacklisting with a fact.
         """
         mock_fact = Mock()
-        fact.return_value = mock_fact
+        fact.return_value = [mock_fact]
         mock_error_func = Mock()
         mock_model_xbrl = Mock(error=mock_error_func)
         mock_val = Mock(modelXbrl=mock_model_xbrl)
@@ -404,10 +423,12 @@ class TestExtensionChecks(unittest.TestCase):
 
         dqc_us_0001._run_extension_checks(
             mock_axis,
+            Mock(),
             mock_config,
             Mock(),
             mock_val,
-            mock_role
+            mock_role,
+            defaultdict(list)
         )
         self.assertTrue(mock_error_func.called)
         mock_error_func.assert_called_with(

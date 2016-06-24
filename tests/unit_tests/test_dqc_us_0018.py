@@ -113,3 +113,28 @@ class TestCompareFacts(unittest.TestCase):
                good_mem
            )
         )
+
+    def test_catch_linkbase_deprecated_errors(self):
+        """
+        Tests for deprecated concepts in relationships
+        """
+        val = mock.Mock()
+        val.modelXbrl.namespaceDocs = {
+            "http://fasb.org/us-gaap/2015-01-31": [0]
+        }
+        deprecated_concept = "PolicyChargesInsurance"
+        from_model = mock.Mock()
+        from_model.name = deprecated_concept
+        to_model = mock.Mock()
+        to_model.name = deprecated_concept
+        val.usgaapDeprecations = [deprecated_concept]
+        relationship = mock.Mock(
+            fromModelObject=from_model,
+            toModelObject=to_model
+        )
+        relset = mock.Mock(modelRelationships=[relationship])
+        val.modelXbrl.relationshipSet.return_value = relset
+        deprecated_concepts = {}
+        dqc_us_0018._catch_linkbase_deprecated_errors(val, deprecated_concepts)
+        self.assertEqual(1, len(deprecated_concepts.keys()))
+        self.assertTrue(deprecated_concept in deprecated_concepts.keys())

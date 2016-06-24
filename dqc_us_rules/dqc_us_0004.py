@@ -12,7 +12,7 @@ _CODE_NAME = 'DQC.US.0004'
 _RULE_VERSION = '1.0'
 
 
-def assets_eq_liability_equity(val):
+def assets_eq_liability_equity(val, *args, **kwargs):
     """
     Assets equals Liabilities and Stockholders Equity
 
