@@ -3,20 +3,13 @@ import csv
 import sys
 
 _EXCLUDED_TESTS = [
-    'DQC_0001.58.2593',
-    'DQC_0001.60.3062',
-    'DQC_0001.64.3058',
-    'DQC_0001.65.3057',
-    'DQC_0001.72.3052',
-    'DQC_0018.34.3452',
-    'DQC_0018.34.2781'
 ]
 
 _REPORT_OUTPUT_FILE = os.path.join(
     os.path.dirname(__file__),
     '..',
     '..',
-    'DQC-v70-report.csv'
+    'DQC-report.csv'
 )
 
 
