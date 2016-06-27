@@ -1,6 +1,5 @@
 #!/bin/bash
 # Run DQC Conformance Suite tests
-
 TESTCASESROOT=./DQC_Testcases
 OUTPUTLOGFILE=./DQC-log.xml
 OUTPUTERRFILE=./DQC-err.txt

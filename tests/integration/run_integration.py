@@ -5,7 +5,6 @@ import sys
 _EXCLUDED_TESTS = [
 ]
 
-
 _REPORT_OUTPUT_FILE = os.path.join(
     os.path.dirname(__file__),
     '..',
