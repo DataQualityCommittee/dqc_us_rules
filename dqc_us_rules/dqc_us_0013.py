@@ -159,12 +159,19 @@ def dqc_13_precondition_check(val):
                 if fact.concept.qname.localName == pre_check:
                     pre_check_dict[pre_check].append(fact)
     for precondition_name in _PRECONDITION_ELEMENTS.keys():
+        precondition_contexts = set()  # To keep track of preconditions
         context_group_dict = collections.defaultdict(list)
-        for fact_list in pre_cache[precondition_name].values():
+        for concept_name, fact_list in pre_cache[precondition_name].items():
             for fact in fact_list:
                 context_group_dict[fact.context].append(fact)
+                if concept_name == precondition_name:
+                    precondition_contexts.add(fact.context)
         for context, fact_list in context_group_dict.items():
             if context in seen_contexts:
+                # We have already found a rule for this context, ignored
+                continue
+            if context not in precondition_contexts:
+                # This context does not have the precondition element, ignored
                 continue
             value = sum([f.xValue for f in fact_list])
             if value > 0:
