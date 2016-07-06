@@ -235,7 +235,10 @@ def _get_default_dped(dped_facts):
     :return: the default DocumentPeriodEndDate
     :rtype: str
     """
-    keys = dped_facts.keys()
+    keys = []
+    for key in dped_facts.items():
+        keys.append(key)
+    print('keys = {}'.format(keys))
     if len(keys) == 0:
         return None
     elif len(keys) == 1:
