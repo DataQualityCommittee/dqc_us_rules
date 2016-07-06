@@ -259,18 +259,23 @@ class TestDeiChecks(unittest.TestCase):
             endDatetime=date(2015, 1, 1),
             segDimValues=mock_segdimval
         )
-        mock_doc_type_fact = Mock(
+        mock_doc_type_fact_1 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue=None
+        )
+        mock_doc_type_fact_2 = Mock(
             context=mock_doc_type_context,
             concept=mock_doc_type_concept,
             xValue="S-11 Ammended"
         )
-        mock_factsbyqname = {mock_doc_type_context.qname: [mock_doc_type_fact]}
+        mock_factsbyqname = {mock_doc_type_context.qname: [mock_doc_type_fact_1, mock_doc_type_fact_2]}
         self.mock_disclosure = Mock(
             standardTaxonomiesDict={'http://xbrl.sec.gov/dei/2014-01-31': None}
         )
         self.mock_model = Mock(
             factsByQname=mock_factsbyqname,
-            facts=[mock_doc_type_fact],
+            facts=[mock_doc_type_fact_1, mock_doc_type_fact_2],
             nameConcepts=mock_name_concepts
         )
         mock_val = Mock(modelXbrl=self.mock_model)

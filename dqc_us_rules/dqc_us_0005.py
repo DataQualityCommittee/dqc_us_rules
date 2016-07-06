@@ -84,7 +84,7 @@ def validate_facts(val, *args, **kwargs):
     dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val.modelXbrl)
     for dei in dei_list:
         is_an_excluded_report = any(
-            True if ex in dei.xValue else False
+            True if dei.xValue and ex in dei.xValue else False
             for ex in _REPORT_TYPE_EXCLUSIONS
         )
         if is_an_excluded_report:
