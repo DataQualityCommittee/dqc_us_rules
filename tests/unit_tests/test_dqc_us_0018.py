@@ -113,3 +113,129 @@ class TestCompareFacts(unittest.TestCase):
                good_mem
            )
         )
+
+    def test_fact_uses_deprecated_item_concept(self):
+        """
+        Tests to make sure that fact errors it it contains a deprecated member
+        """
+        val = mock.Mock()
+        gaapDeps = {}
+        gaapDeps['old'] = (
+             "Element was deprecated. Possible replacement is "
+             "new."
+        )
+        val.usgaapDeprecations = gaapDeps
+        dep_concept = mock.Mock(spec=ModelConcept)
+        dep_concept.name = 'old'
+
+        context = mock.Mock()
+        context.segDimValues = {}
+
+        fact = mock.Mock(concept=dep_concept, context=context)
+
+        fire, item = dqc_us_0018._fact_uses_deprecated_item(
+            val,
+            fact
+        )
+
+        self.assertTrue(fire)
+        self.assertEqual(item, 'old')
+
+    def test_fact_uses_deprecated_item_dimconcept(self):
+        """
+        Tests to make sure that fact errors it it contains a deprecated member
+        """
+        val = mock.Mock()
+        gaapDeps = {}
+        gaapDeps['old'] = (
+             "Element was deprecated. Possible replacement is "
+             "new."
+        )
+        val.usgaapDeprecations = gaapDeps
+        dep_concept = mock.Mock(spec=ModelConcept)
+        dep_concept.name = 'old'
+
+        good_concept = mock.Mock(spec=ModelConcept)
+        good_concept.name = 'trey'
+
+        context = mock.Mock()
+        context.segDimValues = {
+            dep_concept: mock.Mock()
+        }
+
+        fact = mock.Mock(
+            concept=good_concept,
+            context=context,
+            isItem=True
+        )
+
+        fire, item = dqc_us_0018._fact_uses_deprecated_item(
+            val,
+            fact
+        )
+
+        self.assertTrue(fire)
+        self.assertEqual(item, 'old')
+
+    def test_fact_uses_deprecated_item_dimvalue(self):
+        """
+        Tests to make sure that fact errors it it contains a deprecated member
+        """
+        val = mock.Mock()
+        gaapDeps = {}
+        gaapDeps['old'] = (
+             "Element was deprecated. Possible replacement is "
+             "new."
+        )
+        val.usgaapDeprecations = gaapDeps
+        dep_concept = mock.Mock(spec=ModelConcept)
+        dep_concept.name = 'old'
+
+        good_concept = mock.Mock(spec=ModelConcept)
+        good_concept.name = 'trey'
+
+        dep_dim = mock.Mock(dimension=dep_concept)
+
+        context = mock.Mock()
+        context.segDimValues = {
+            good_concept: dep_dim
+        }
+
+        fact = mock.Mock(
+            concept=good_concept,
+            context=context,
+            isItem=True
+        )
+
+        fire, item = dqc_us_0018._fact_uses_deprecated_item(
+            val,
+            fact
+        )
+
+        self.assertTrue(fire)
+        self.assertEqual(item, 'old')
+
+    def test_catch_linkbase_deprecated_errors(self):
+        """
+        Tests for deprecated concepts in relationships
+        """
+        val = mock.Mock()
+        val.modelXbrl.namespaceDocs = {
+            "http://fasb.org/us-gaap/2015-01-31": [0]
+        }
+        deprecated_concept = "PolicyChargesInsurance"
+        from_model = mock.Mock()
+        from_model.name = deprecated_concept
+        to_model = mock.Mock()
+        to_model.name = deprecated_concept
+        val.usgaapDeprecations = [deprecated_concept]
+        relationship = mock.Mock(
+            fromModelObject=from_model,
+            toModelObject=to_model
+        )
+        relset = mock.Mock(modelRelationships=[relationship])
+        val.modelXbrl.relationshipSet.return_value = relset
+        deprecated_concepts = {}
+        dqc_us_0018._catch_linkbase_deprecated_errors(val, deprecated_concepts)
+        self.assertEqual(1, len(deprecated_concepts.keys()))
+        self.assertTrue(deprecated_concept in deprecated_concepts.keys())

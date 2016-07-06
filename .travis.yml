@@ -1,0 +1,10 @@
+language: python
+python:
+  - "3.4"
+# command to install dependencies
+install: "pip install -r requirements-dev.txt"
+# command to run tests
+script: 
+  - nosetests tests.unit_tests
+  - flake8 dqc_us_rules tests
+  - travis_wait 30 ./run_integration.sh

@@ -7,7 +7,7 @@ from .util import messages, neg_num
 from .util import facts as facts_util
 
 _CODE_NAME = 'DQC.US.0015'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '2.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -22,7 +22,7 @@ _DEFAULT_EXCLUSIONS_FILE = os.path.join(
 )
 
 
-def run_negative_numbers(val):
+def run_negative_numbers(val, *args, **kwargs):
     """
     Run the list of facts against our negative number checks and add errors for
     the hits in the various lists.

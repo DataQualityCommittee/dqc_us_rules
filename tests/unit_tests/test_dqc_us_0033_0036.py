@@ -196,7 +196,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_edt_norm = mock.Mock()
         mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
         mock_edt_off = mock.Mock()
-        mock_edt_off.date.return_value = date(year=2015, month=1, day=3)
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
         mock_off_context = mock.Mock(
             endDatetime=mock_edt_off, segDimValues=mock_segdimvalues
         )
@@ -218,10 +218,10 @@ class TestDocPerEndDateChk(unittest.TestCase):
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
         side_effect=lambda x, subtractOneDay: x.date()  # noqa
     )
-    def test_a_warn_and_error(self, mock_func):
+    def test_a_warn_and_error_no_dims(self, mock_func):
         """
-        Tests _doc_period_end_date_check when it should return a warning and an
-        error
+        Tests _doc_period_end_date_check when it should return a 36 but not a
+        33 since there are no dimensions
         """
         mock_segdimvalues = {}
 
@@ -265,7 +265,117 @@ class TestDocPerEndDateChk(unittest.TestCase):
         )
 
         res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
-        self.assertEqual(len(res), 2)  # Because both 33 and 36 should fire
+        self.assertEqual(len(res), 1)  # Only 36 fires since they have no dims
+
+    @mock.patch(
+        'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
+        side_effect=lambda x, subtractOneDay: x.date()  # noqa
+    )
+    def test_both_warn_and_error_dimensions(self, mock_func):
+        """
+        Tests _doc_period_end_date_check when there are dimensions.  This
+        should return a 36 and 33(s)
+        """
+        # Dimensions for the 36 fact
+        mock_mem1_qn = mock.Mock(localName='foo')
+        mock_dim1_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim1_dim = mock.Mock(qname=mock_dim1_qn)
+        mock_member1 = mock.Mock(qname=mock_mem1_qn)
+        mock_dim1 = mock.Mock(
+            isExplicit=True, member=mock_member1, dimension=mock_dim1_dim
+        )
+        mock_more_dims1 = {mock_dim1_dim: mock_dim1}
+
+        # Dimensions for the 33 fact
+        mock_mem2_qn = mock.Mock(localName='bar')
+        mock_dim2_qn = mock.Mock(localName='LegalEntityAxis')
+        mock_dim2_dim = mock.Mock(qname=mock_dim2_qn)
+        mock_member2 = mock.Mock(qname=mock_mem2_qn)
+        mock_dim2 = mock.Mock(
+            isExplicit=True, member=mock_member2, dimension=mock_dim2_dim
+        )
+        mock_more_dims2 = {mock_dim2_dim: mock_dim2}
+
+        mock_no_dims = {}
+
+        mock_edt_norm = mock.Mock()
+        mock_edt_norm.date.return_value = date(year=2015, month=1, day=1)
+
+        # This will cause 36 to fire
+        mock_edt_off = mock.Mock()
+        mock_edt_off.date.return_value = date(year=2015, month=1, day=5)
+        mock_off_context = mock.Mock(
+            endDatetime=mock_edt_off, segDimValues=mock_more_dims1
+        )
+
+        # This will cause 33 to fire (LEA axis but different member than the
+        # DocumentPeriodEndDate (DQC 36) fact)
+        mock_edt_off2 = mock.Mock()
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=8)
+        mock_off2_context = mock.Mock(
+            endDatetime=mock_edt_off2, segDimValues=mock_more_dims2
+        )
+
+        # This will cause 33 to fire (no dimensions but date is greater than
+        # three days from the DocumentPeriodEndDate
+        mock_edt_off3 = mock.Mock()
+        mock_edt_off3.date.return_value = date(year=2015, month=1, day=9)
+        mock_off3_context = mock.Mock(
+            endDatetime=mock_edt_off3, segDimValues=mock_no_dims
+        )
+
+        # This will not cause 33 to fire (same LEA axis and member but the
+        # context end date is not greater than three days from the
+        # DocumentPeriodEndDate)
+        mock_edt_off4 = mock.Mock()
+        mock_edt_off4.date.return_value = date(year=2015, month=1, day=4)
+        mock_off4_context = mock.Mock(
+            endDatetime=mock_edt_off4, segDimValues=mock_more_dims1
+        )
+
+        m_qn_bad = mock.Mock(
+            localName='DocumentPeriodEndDate',
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+        )
+        concept_enddate = mock.Mock(qname=m_qn_bad)
+        mock_dped_off = mock.Mock(
+            context=mock_off_context, xValue=mock_edt_off,
+            concept=concept_enddate, qname=m_qn_bad,
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+            segDimValues=mock_more_dims1
+        )
+
+        # fact for 36
+        self.fact_end.xValue = mock_edt_off
+
+        # facts for 33 and both will fire
+        self.fact_good1.context = mock_off2_context
+        self.fact_good3.context = mock_off3_context
+
+        # fact for 33 but won't fire because the context end date is less than
+        # three days from the DPED even though it has the same axis/member that
+        # DQC 36 fired on
+        self.fact_bad1.context = mock_off4_context
+
+        # fact for 33 but won't fire because it is on the exclude list
+        self.fact_shares.context = mock_off2_context
+
+        # Setting the dimensions on the fact_end fact
+        self.fact_end.context.segDimValues = mock_more_dims1
+
+        mock_model = mock.Mock(
+            facts=[
+                self.fact_good1, self.fact_good2, self.fact_good3,
+                self.fact_bad1, self.fact_bad2, self.fact_bad3,
+                self.fact_shares, self.fact_end, mock_dped_off
+            ]
+        )
+
+        res = dqc_us_0033_0036._doc_period_end_date_check(mock_model)
+        # 36 should fire and both 33's should fire because the LEA/member is
+        # different on one and the axis/member are completely different (there
+        # aren't any dimensions) on the other
+        self.assertEqual(len(res), 3)
 
     @mock.patch(
         'dqc_us_rules.dqc_us_0033_0036.dateunionDate',
@@ -300,7 +410,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         # This will cause 33 to fire (except it won't in this test as per the
         # reason noted in the docstring)
         mock_edt_off2 = mock.Mock()
-        mock_edt_off2.date.return_value = date(year=2015, month=1, day=3)
+        mock_edt_off2.date.return_value = date(year=2015, month=1, day=6)
         mock_off2_context = mock.Mock(
             endDatetime=mock_edt_off2, segDimValues=mock_more_dims
         )
@@ -308,7 +418,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
         # This will cause 33 to fire (except it won't in this test as per the
         # reason noted in the docstring)
         mock_edt_off3 = mock.Mock()
-        mock_edt_off3.date.return_value = date(year=2015, month=1, day=2)
+        mock_edt_off3.date.return_value = date(year=2015, month=1, day=7)
         mock_off3_context = mock.Mock(
             endDatetime=mock_edt_off3, segDimValues=mock_more_dims
         )
@@ -356,7 +466,6 @@ class TestDocPerEndDateChk(unittest.TestCase):
         returned when the fact has the legal entity member
         """
         not_valid_dped = ['vault', 'bars', 'foo', 'beam', 'floor', 'boo']
-
         mock_mem1_qn = mock.Mock(spec=QName)
         mock_mem1_qn.localName = 'foo'
         mock_dim1_qn = mock.Mock(spec=QName)

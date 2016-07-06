@@ -129,6 +129,12 @@ class TestContextChecks(unittest.TestCase):
         )
 
     def test_run_checks_EntityCommonStockSharesOutstanding(self):
+        """
+        Tests DQC_0005.17 - Checks that the date associated with the value for
+        the Entity Common Stock, Shares Outstanding fact is on or after the
+        reporting period end date.  Rule fires if the date is earlier than the
+        reporting period end date.
+        """
         msg = messages.get_message('DQC.US.0005', "17")
         mock_context = Mock(endDatetime=1)
         fact = Mock(
@@ -158,6 +164,9 @@ class TestContextChecks(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0005.facts.axis_exists')
     def test_run_checks_axis_exists(self, axis_exists):
+        """
+        Tests DQC_0005.48 - the check is based on the axis
+        """
         axis_exists.return_value = True
         msg = messages.get_message('DQC.US.0005', "48")
         mock_context = Mock(endDatetime=1)
@@ -179,6 +188,9 @@ class TestContextChecks(unittest.TestCase):
     @patch('dqc_us_rules.dqc_us_0005.facts.axis_member_exists')
     def test_run_checks_axis_member_exists(self, axis_member_exists,
                                            axis_exists):
+        """
+        Tests DQC_0005.49 - this check is based on the axis/member
+        """
         axis_exists.return_value = False
         axis_member_exists.return_value = True
         msg = messages.get_message('DQC.US.0005', "49")
@@ -225,7 +237,9 @@ class TestDeiChecks(unittest.TestCase):
 
     @patch('dqc_us_rules.dqc_us_0005._get_end_of_period', autospec=True)
     def test_report_exclusion(self, get_end_of_period):
-        """Tests to make sure excluded reports are not validated."""
+        """
+        Tests to make sure excluded reports are not validated.
+        """
         mock_type = Mock()
         mock_type.name = 'textBlockItemType'
         mock_doc_type_qname = Mock(

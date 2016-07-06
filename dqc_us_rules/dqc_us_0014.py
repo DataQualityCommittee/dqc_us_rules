@@ -8,7 +8,7 @@ from .util import facts as facts_util
 
 
 _CODE_NAME = 'DQC.US.0014'
-_RULE_VERSION = '1.1'
+_RULE_VERSION = '2.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -17,7 +17,7 @@ _DEFAULT_CONCEPTS_FILE = os.path.join(
 )
 
 
-def run_negative_numbers_no_dimensions(val):
+def run_negative_numbers_no_dimensions(val, *args, **kwargs):
     """
     Run the list of facts against our negative number check for facts with
     no dimensions and add errors for the hits in the various lists.

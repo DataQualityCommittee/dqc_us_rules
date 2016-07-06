@@ -1,5 +1,5 @@
 {
-    "copyright": "Copyright (c) 2015, Workiva Inc.  All rights reserved\nCopyright (c) 2015, XBRL US Inc.  All rights reserved",
+    "copyright": "Copyright (c) 2015-2016, Workiva Inc.  All rights reserved.\nCopyright (c) 2015-2016, XBRL US Inc.  All rights reserved.",
     "DQC.US.0004": {
         "default": "${fact1.label} with a value of ${fact1.value} is not equal to the total of ${fact2.label} with a value of ${fact2.value}.  These values should be equal. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
         },
@@ -51,7 +51,7 @@
         "2169": "${fact1.label} has a value of ${fact1.value} which is less than zero. This element represents the increase in the value of real estate during the period, and is not the cash payments made for real estate improvements. This element should not be used for payments for capital improvements. This element should not be used for payments for capital improvements.\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
     },
     "DQC.US.0018": {
-        "default": "${fact1.label} is a deprecated item, but has been reported in the Instance with a value of ${fact1.value}. Deprecated items should not be used in the filing."
+        "default": "${concept} is a deprecated item, but has been included in the company's presentation tree. Deprecated items should not be used in the filing.\nGuidance on the replacement item to use for this item is provided in the Deprecated Label of the ${concept} concept."
         },
     "DQC.US.0033": {
         "default": "The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
@@ -63,8 +63,8 @@
         "default": "The dimension default defined for the axis in the US GAAP taxonomy should not be changed in a company extension taxonomy. The default for the ${axis_name} in the base taxonomy is ${axis_default_name}, but the default has been replaced with ${def_name}."
         },
     "DQC.US.0001": {
-        "default": "The extension member, ${member}  is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
-        "ext_fact": "The extension member, ${member}  is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
+        "default": "The extension member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
+        "ext_fact": "The extension member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "ugt_fact": "The member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  This member should not be used with the ${axis}.\n\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "no_fact": "The member, ${member}, is used on the axis, ${axis} in the disclosure group ${group}. There are no facts associated with this member and axis.  Extension members should not be used with the ${axis.label}.\nRule version: ${ruleVersion}"
     }
