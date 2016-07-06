@@ -269,7 +269,12 @@ class TestDeiChecks(unittest.TestCase):
             concept=mock_doc_type_concept,
             xValue="S-11 Ammended"
         )
-        mock_factsbyqname = {mock_doc_type_context.qname: [mock_doc_type_fact_1, mock_doc_type_fact_2]}
+        mock_factsbyqname = {
+            mock_doc_type_context.qname: [
+                mock_doc_type_fact_1,
+                mock_doc_type_fact_2
+            ]
+        }
         self.mock_disclosure = Mock(
             standardTaxonomiesDict={'http://xbrl.sec.gov/dei/2014-01-31': None}
         )
