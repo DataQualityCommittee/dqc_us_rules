@@ -267,12 +267,24 @@ class TestDeiChecks(unittest.TestCase):
         mock_doc_type_fact_2 = Mock(
             context=mock_doc_type_context,
             concept=mock_doc_type_concept,
+            xValue=0
+        )
+        mock_doc_type_fact_3 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue=""
+        )
+        mock_doc_type_fact_4 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
             xValue="S-11 Ammended"
         )
         mock_factsbyqname = {
             mock_doc_type_context.qname: [
                 mock_doc_type_fact_1,
-                mock_doc_type_fact_2
+                mock_doc_type_fact_2,
+                mock_doc_type_fact_3,
+                mock_doc_type_fact_4
             ]
         }
         self.mock_disclosure = Mock(
@@ -280,7 +292,12 @@ class TestDeiChecks(unittest.TestCase):
         )
         self.mock_model = Mock(
             factsByQname=mock_factsbyqname,
-            facts=[mock_doc_type_fact_1, mock_doc_type_fact_2],
+            facts=[
+                mock_doc_type_fact_1,
+                mock_doc_type_fact_2,
+                mock_doc_type_fact_3,
+                mock_doc_type_fact_4
+            ],
             nameConcepts=mock_name_concepts
         )
         mock_val = Mock(modelXbrl=self.mock_model)
