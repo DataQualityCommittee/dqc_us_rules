@@ -1,5 +1,5 @@
-# Copyright (c) 2015, Workiva Inc.  All rights reserved
-# Copyright (c) 2015, XBRL US Inc.  All rights reserved
+# Copyright (c) 2015-2016, Workiva Inc.  All rights reserved.
+# Copyright (c) 2015-2016, XBRL US Inc.  All rights reserved.
 from collections import defaultdict
 from arelle import ValidateXbrlCalcs
 
@@ -331,6 +331,34 @@ def legal_entity_axis_facts_by_member(facts):
     return results
 
 
+def axis_member_fact(axis_name, member_name, model_xbrl):
+    """
+    Return the fact present, if any, under the axis/member combination.
+
+    :param axis_name: The axis name to check
+    :type axis_name: str
+    :param member_name: The member name to check
+    :type member_name: str
+    :return: The fact found or None
+    :rtype: :class:'~arelle.InstanceModelObject.ModelFact' or None
+    """
+    fact_list = []
+    for fact in model_xbrl.facts:
+        if _fact_components_valid(fact):
+            dims = [
+                dim for dim in fact.context.segDimValues.values()
+                if (
+                    dim.isExplicit and
+                    dim.member is not None and
+                    dim.member.qname.localName == member_name
+                )
+            ]
+            for dim in dims:
+                if dim.dimension.qname.localName == axis_name:
+                    fact_list.append(fact)
+    return fact_list
+
+
 def _fact_components_valid(fact):
     """
     Return true if all of the components in a fact are not none
@@ -389,3 +417,21 @@ def axis_qnames(fact):
         str(dim.dimensionQname) for dim in fact.context.segDimValues.values()
         if dim.dimensionQname is not None
     ]
+
+
+def grab_numeric_facts(facts_list):
+    """
+    Given a list of facts, return those facts whose values are numeric
+
+    :param facts_list: list of fact to return numeric values for
+    :type facts_list: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    :return: return list of facts with numeric values
+    :rtype: list [:class:'~arelle.ModelInstanceObject.ModelFact']
+    """
+    numeric_facts = []
+    for fact in facts_list:
+        if not fact.isNumeric:
+            continue
+        elif fact.xValue is not None:
+            numeric_facts.append(fact)
+    return numeric_facts
