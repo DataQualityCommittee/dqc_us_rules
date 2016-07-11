@@ -148,7 +148,7 @@ def _doc_period_end_date_check(model_xbrl):
                             messages.get_message(_CODE_NAME_33),
                             fact.concept.label(),
                             fact,
-                            default_dped_fact
+                            eop_fact
                         ))
     return result_group
 
