@@ -36,22 +36,24 @@ class TestCompareFacts(unittest.TestCase):
             "Possible replacement is "
             "AllowanceForDoubtfulAccountsReceivableWriteOffs."
         )
-        bad_fact = mock.Mock()
-        bad_fact.concept = mock.Mock()
-        bad_fact.concept.name = 'HealthCareOrganizationChangeInWriteOffs'
-
-        good_fact = mock.Mock()
-        good_fact.concept = mock.Mock()
-        good_fact.concept.name = (
+        bad_concept = mock.Mock(spec=ModelConcept)
+        bad_concept.name = 'HealthCareOrganizationChangeInWriteOffs'
+        good_concept = mock.Mock(spec=ModelConcept)
+        good_concept.name = (
             'AllowanceForDoubtfulAccountsReceivableWriteOffs'
         )
+        none_concept = None
 
         self.assertTrue(
-            dqc_us_0018._deprecated_concept(val, bad_fact.concept)
+            dqc_us_0018._deprecated_concept(val, bad_concept)
         )
 
         self.assertFalse(
-            dqc_us_0018._deprecated_concept(val, good_fact.concept)
+            dqc_us_0018._deprecated_concept(val, good_concept)
+        )
+
+        self.assertFalse(
+            dqc_us_0018._deprecated_concept(val, none_concept)
         )
 
     def test_deprecated_dimension(self):
@@ -69,6 +71,7 @@ class TestCompareFacts(unittest.TestCase):
         bad_dim.name = 'ComponentOfOtherExpenseNonoperatingAxis'
         good_dim = mock.Mock(spec=ModelConcept)
         good_dim.name = 'LegalEntityAxis'
+        none_dim = None
 
         self.assertTrue(
             dqc_us_0018._deprecated_dimension(
@@ -81,6 +84,13 @@ class TestCompareFacts(unittest.TestCase):
            dqc_us_0018._deprecated_dimension(
                val,
                good_dim
+           )
+        )
+
+        self.assertFalse(
+           dqc_us_0018._deprecated_dimension(
+               val,
+               none_dim
            )
         )
 
@@ -224,9 +234,9 @@ class TestCompareFacts(unittest.TestCase):
             "http://fasb.org/us-gaap/2015-01-31": [0]
         }
         deprecated_concept = "PolicyChargesInsurance"
-        from_model = mock.Mock()
+        from_model = mock.Mock(spec=ModelConcept)
         from_model.name = deprecated_concept
-        to_model = mock.Mock()
+        to_model = mock.Mock(spec=ModelConcept)
         to_model.name = deprecated_concept
         val.usgaapDeprecations = [deprecated_concept]
         relationship = mock.Mock(

@@ -200,9 +200,10 @@ def _deprecated_concept(val, concept):
     :return: Returns true if the fact uses a deprecated concept
     :rtype: bool
     """
-    if not hasattr(val, "usgaapDeprecations"):
+    if not isinstance(concept, ModelConcept):
         return False
-    if concept.name in val.usgaapDeprecations:
+    elif ((hasattr(val, 'usgaapDeprecations') and
+           concept.name in val.usgaapDeprecations)):
         return True
     return False
 
