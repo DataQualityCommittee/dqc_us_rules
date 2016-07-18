@@ -305,7 +305,7 @@ class TestDeiChecks(unittest.TestCase):
         self.assertFalse(get_end_of_period.called)
 
     @patch('dqc_us_rules.dqc_us_0005._get_end_of_period', autospec=True)
-    def test_report_exclusion2(self, get_end_of_period):
+    def test_other_report_exclusion(self, get_end_of_period):
         """
         Tests to make sure excluded reports are not validated.
         """
