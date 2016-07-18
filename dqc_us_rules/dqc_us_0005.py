@@ -15,8 +15,6 @@ _RULE_VERSION = '1.1.0'
 
 _REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
 
-_REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
-
 
 def _get_end_of_period(val):
     """
