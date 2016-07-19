@@ -31,6 +31,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0009.15.48">
+    <name>CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in default</name>
+    <description>Creates a pass case when CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in the default context</description>
+    <data>
+      <schema>DQC_0009.15/CASE_48/testco-20141231_48.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.15/CASE_48/testco-20141231_48.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0009.15.47">
     <name>CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized in a geography dimension</name>
     <description>Creates a fail case when CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized in the same geography US context</description>
@@ -57,15 +66,6 @@
         <message>The value of ${fact1.label}, 550000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0009.15.48">
-    <name>CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in default</name>
-    <description>Creates a pass case when CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in the default context</description>
-    <data>
-      <schema>DQC_0009.15/CASE_48/testco-20141231_48.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.15/CASE_48/testco-20141231_48.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0009.19.53">
     <name>PreferredStockSharesOutstanding is greater than PreferredStockShareIssued</name>
@@ -95,24 +95,6 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
-  <variation id="DQC_0009.21.56">
-    <name>Common Stock Shares Issued is less than Common Stock Shares Authorized in a different context.</name>
-    <description>Creates a pass case when CommonStockSharesIssued is less than CommonStockSharesAuthorized in a different context.</description>
-    <data>
-      <schema>DQC_0009.21/CASE_56/testco-20141231_56.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.21/CASE_56/testco-20141231_56.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
-  </variation>
-  <variation id="DQC_0009.21.55">
-    <name>Common Stock Shares Issued is greater than Common Stock Shares Authorized. However the Authorized is dimensionally qualified.</name>
-    <description>Creates a pass case when CommonStockSharesIssued is greater than CommonStockSharesAuthorized in a different context.</description>
-    <data>
-      <schema>DQC_0009.21/CASE_55/testco-20141231_55.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.21/CASE_55/testco-20141231_55.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
-  </variation>
   <variation id="DQC_0009.21.57">
     <name>Common Stock Shares Issued is less than Common Stock Shares Authorized.</name>
     <description>Creates a fail case when CommonStockSharesIssued is greater than CommonStockSharesAuthorized in the same context</description>
@@ -132,6 +114,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0009.21.55">
+    <name>Common Stock Shares Issued is greater than Common Stock Shares Authorized. However the Authorized is dimensionally qualified.</name>
+    <description>Creates a pass case when CommonStockSharesIssued is greater than CommonStockSharesAuthorized in a different context.</description>
+    <data>
+      <schema>DQC_0009.21/CASE_55/testco-20141231_55.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_55/testco-20141231_55.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0009.21.58">
     <name>Common Stock Shares Issued is less than Common Stock Shares Authorized.</name>
     <description>Creates a pass case when CommonStockSharesIssued is less than CommonStockSharesAuthorized in the same context</description>
@@ -141,12 +132,12 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
-  <variation id="DQC_0009.22.60">
-    <name>Preferred Stock Shares Issued is equal to Preferred Stock Shares Authorized.</name>
-    <description>Creates a pass case when "Preferred Stock Shares Issued" equals "Preferred Stock Shares Authorized". This case also checks that the rule is making appropriate tolerance for different decimal values. Even though the authorized is less it shohould not fail as the decimals are different.</description>
+  <variation id="DQC_0009.21.56">
+    <name>Common Stock Shares Issued is less than Common Stock Shares Authorized in a different context.</name>
+    <description>Creates a pass case when CommonStockSharesIssued is less than CommonStockSharesAuthorized in a different context.</description>
     <data>
-      <schema>DQC_0009.22/CASE_60/testco-20141231_60.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.22/CASE_60/testco-20141231_60.xml</instance>
+      <schema>DQC_0009.21/CASE_56/testco-20141231_56.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_56/testco-20141231_56.xml</instance>
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
@@ -169,12 +160,12 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0009.23.62">
-    <name>The element "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized</name>
-    <description>Creates a pass case when "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized"</description>
+  <variation id="DQC_0009.22.60">
+    <name>Preferred Stock Shares Issued is equal to Preferred Stock Shares Authorized.</name>
+    <description>Creates a pass case when "Preferred Stock Shares Issued" equals "Preferred Stock Shares Authorized". This case also checks that the rule is making appropriate tolerance for different decimal values. Even though the authorized is less it shohould not fail as the decimals are different.</description>
     <data>
-      <schema>DQC_0009.23/CASE_62/testco-20141231_62.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.23/CASE_62/testco-20141231_62.xml</instance>
+      <schema>DQC_0009.22/CASE_60/testco-20141231_60.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.22/CASE_60/testco-20141231_60.xml</instance>
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
@@ -196,6 +187,15 @@
         <message>The value of ${fact1.label}, 500000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:PreferredStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0009.23.62">
+    <name>The element "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized</name>
+    <description>Creates a pass case when "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized"</description>
+    <data>
+      <schema>DQC_0009.23/CASE_62/testco-20141231_62.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.23/CASE_62/testco-20141231_62.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.24.63">
     <name>The element "Common Stock Shares Outstanding" is greater than the value of the element "Common Stock Shares Issued</name>
@@ -225,6 +225,15 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
+  <variation id="DQC_0009.39.68">
+    <name>The element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation " is less than the value of the element "DefinedBenefitPlanBenefitObligation"</name>
+    <description>Creates a pass case when the element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation" is less than the value of the element "DefinedBenefitPlanBenefitObligation"</description>
+    <data>
+      <schema>DQC_0009.39/CASE_68/testco-20141231_68.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.39/CASE_68/testco-20141231_68.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0009.39.67">
     <name>The element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation " is greater than the value of the element "DefinedBenefitPlanBenefitObligation"</name>
     <description>Creates a fail case when the element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation" is greater than the value of the element "DefinedBenefitPlanBenefitObligation"</description>
@@ -243,15 +252,6 @@
         <message>The value of ${fact1.label}, 24000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0009.39.68">
-    <name>The element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation " is less than the value of the element "DefinedBenefitPlanBenefitObligation"</name>
-    <description>Creates a pass case when the element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation" is less than the value of the element "DefinedBenefitPlanBenefitObligation"</description>
-    <data>
-      <schema>DQC_0009.39/CASE_68/testco-20141231_68.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.39/CASE_68/testco-20141231_68.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.40.70">
     <name>The element us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation is equal to the value of us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation in the same context.</name>
@@ -281,15 +281,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0009.41.72">
-    <name>The value of plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
-    <description>Creates a pass case when plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
-    <data>
-      <schema>DQC_0009.41/CASE_72/testco-20141231_72.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.41/CASE_72/testco-20141231_72.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
-  </variation>
   <variation id="DQC_0009.41.71">
     <name>The value of plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
     <description>Creates a fail case when plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
@@ -308,6 +299,15 @@
         <message>The value of ${fact1.label}, 27000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0009.41.72">
+    <name>The value of plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
+    <description>Creates a pass case when plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.41/CASE_72/testco-20141231_72.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.41/CASE_72/testco-20141231_72.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.42.74">
     <name>The value of pension benefit obligation (PBO) is greater than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</name>
@@ -337,15 +337,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0009.45.90">
-    <name>The value of the remaining contribution for the year by the employer is less than than the aggregate expected contributions for the entire year</name>
-    <description>Creates a pass case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is less than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
-    <data>
-      <schema>DQC_0009.45/CASE_90/testco-20141231_90.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.45/CASE_90/testco-20141231_90.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
-  </variation>
   <variation id="DQC_0009.45.89">
     <name>The value of the remaining contribution for the year by the employer is greater than the aggregate expected contributions for the entire year</name>
     <description>Creates a fail case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is greater than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
@@ -365,6 +356,15 @@
         <message>The value of ${fact1.label}, 21000000, should be less than or equal to ${fact2.label}, ${fact2.value}. The value of the remaining contribution for the year should be less than or equal to the expected contributions for the entire year. \nThe properties of this us-gaap:DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear fact are:\nPeriod: 2014-12-31 - 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0009.45.90">
+    <name>The value of the remaining contribution for the year by the employer is less than than the aggregate expected contributions for the entire year</name>
+    <description>Creates a pass case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is less than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
+    <data>
+      <schema>DQC_0009.45/CASE_90/testco-20141231_90.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.45/CASE_90/testco-20141231_90.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.46.91">
     <name>The value of ABO is greater than PBO</name>
@@ -394,6 +394,15 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
+  <variation id="DQC_0009.47.94">
+    <name>The value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</name>
+    <description>Creates a pass case when the value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</description>
+    <data>
+      <schema>DQC_0009.47/CASE_94/testco-20141231_94.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.47/CASE_94/testco-20141231_94.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0009.47.93">
     <name>The value of UndistributedEarningsOfForeignSubsidiaries is less than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</name>
     <description>Creates a fail case when the value of UndistributedEarningsOfForeignSubsidiaries is less than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</description>
@@ -412,14 +421,5 @@
         <message>The value of ${fact1.label}, 96000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0009.47.94">
-    <name>The value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</name>
-    <description>Creates a pass case when the value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</description>
-    <data>
-      <schema>DQC_0009.47/CASE_94/testco-20141231_94.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.47/CASE_94/testco-20141231_94.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
 </testcase>

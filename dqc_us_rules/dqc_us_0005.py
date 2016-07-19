@@ -11,7 +11,7 @@ _dei_pattern = (
     re.compile(r'^http://xbrl\.((sec\.gov)|(us))/dei/\d{4}-\d{2}-\d{2}')
 )
 _CODE_NAME = 'DQC.US.0005'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.1.0'
 
 _REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-11']
 
