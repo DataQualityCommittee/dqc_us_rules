@@ -114,12 +114,13 @@ class TestDQC0013(unittest.TestCase):
             xValue=-77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-        # Precondition fact that will NOT cause the rule to fire (value is null)
+        # Precondition fact that will NOT cause the rule to fire (null value)
         self.fact_precondition_null = mock.Mock(
             concept=mock_precondition_concept, qname=m_qn_precondition,
             xValue='', namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
+
     def test_dqc_13_precondition_check(self):
         """
         Verifies that the check for whether a precondition concept exists
