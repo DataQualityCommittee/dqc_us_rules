@@ -114,7 +114,12 @@ class TestDQC0013(unittest.TestCase):
             xValue=-77, namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
             context=mock_context
         )
-
+        # Precondition fact that will NOT cause the rule to fire (value is null)
+        self.fact_precondition_null = mock.Mock(
+            concept=mock_precondition_concept, qname=m_qn_precondition,
+            xValue='', namespaceURI='http://xbrl.sec.gov/us-gaap/2014-01-31',
+            context=mock_context
+        )
     def test_dqc_13_precondition_check(self):
         """
         Verifies that the check for whether a precondition concept exists
@@ -163,6 +168,17 @@ class TestDQC0013(unittest.TestCase):
                 ]
             )
         )
+        # Contains precondition element and the associated value is
+        # null = No Fire
+        mock_fact_model5 = mock.Mock(
+            modelXbrl=mock.Mock(
+                facts=[
+                    self.fact_fire1, self.fact_fire2, self.fact_no_fire1,
+                    self.fact_no_fire2, self.fact_no_fire3, self.fact_no_fire4,
+                    self.fact_no_fire5, self.fact_precondition_null
+                ]
+            )
+        )
         # Precondition value is positive so one context is returned
         result1 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model1)
         self.assertEqual(1, len(result1))
@@ -175,6 +191,9 @@ class TestDQC0013(unittest.TestCase):
         # No preconditions in the fact list so no contexts are returned
         result4 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model4)
         self.assertEqual(0, len(result4))
+        # Precondition value is null so no contexts are returned
+        result5 = dqc_us_0013.dqc_13_precondition_check(mock_fact_model5)
+        self.assertEqual(0, len(result5))
 
     def test_negative_number_with_dependence(self):
         """
