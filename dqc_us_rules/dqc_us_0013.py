@@ -173,7 +173,7 @@ def dqc_13_precondition_check(val):
             if context not in precondition_contexts:
                 # This context does not have the precondition element, ignored
                 continue
-            value = sum([f.xValue for f in fact_list])
+            value = sum(filter(None, [f.xValue for f in fact_list]))
             if value > 0:
                 check_contexts.add(context)
             else:
