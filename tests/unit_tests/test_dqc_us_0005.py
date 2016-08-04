@@ -259,6 +259,75 @@ class TestDeiChecks(unittest.TestCase):
             endDatetime=date(2015, 1, 1),
             segDimValues=mock_segdimval
         )
+        mock_doc_type_fact_1 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue=None
+        )
+        mock_doc_type_fact_2 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue=0
+        )
+        mock_doc_type_fact_3 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue=""
+        )
+        mock_doc_type_fact_4 = Mock(
+            context=mock_doc_type_context,
+            concept=mock_doc_type_concept,
+            xValue="S-11 Ammended"
+        )
+        mock_factsbyqname = {
+            mock_doc_type_context.qname: [
+                mock_doc_type_fact_1,
+                mock_doc_type_fact_2,
+                mock_doc_type_fact_3,
+                mock_doc_type_fact_4
+            ]
+        }
+        self.mock_disclosure = Mock(
+            standardTaxonomiesDict={'http://xbrl.sec.gov/dei/2014-01-31': None}
+        )
+        self.mock_model = Mock(
+            factsByQname=mock_factsbyqname,
+            facts=[
+                mock_doc_type_fact_1,
+                mock_doc_type_fact_2,
+                mock_doc_type_fact_3,
+                mock_doc_type_fact_4
+            ],
+            nameConcepts=mock_name_concepts
+        )
+        mock_val = Mock(modelXbrl=self.mock_model)
+        dqc_us_0005.validate_facts(mock_val)
+        self.assertFalse(get_end_of_period.called)
+
+    @patch('dqc_us_rules.dqc_us_0005._get_end_of_period', autospec=True)
+    def test_other_report_exclusion(self, get_end_of_period):
+        """
+        Tests to make sure excluded reports are not validated.
+        """
+        mock_type = Mock()
+        mock_type.name = 'textBlockItemType'
+        mock_doc_type_qname = Mock(
+            return_value=(
+                '{http://xbrl.sec.gov/dei/2014-01-31}DocumentType'
+            ),
+            namespaceURI='http://xbrl.sec.gov/dei/2014-01-31',
+            localName='DocumentType'
+        )
+        mock_doc_type_concept = Mock(
+            qname=mock_doc_type_qname, type=mock_type
+        )
+
+        mock_name_concepts = {'DocumentType': [mock_doc_type_concept]}
+        mock_segdimval = {}
+        mock_doc_type_context = Mock(
+            endDatetime=date(2015, 1, 1),
+            segDimValues=mock_segdimval
+        )
         mock_doc_type_fact = Mock(
             context=mock_doc_type_context,
             concept=mock_doc_type_concept,

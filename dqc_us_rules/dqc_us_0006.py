@@ -24,7 +24,7 @@ _DEFAULT_DATE_BOUNDS_FILE = os.path.join(
 )
 
 
-def validate_dates_within_periods(val):
+def validate_dates_within_periods(val, *args, **kwargs):
     """
     Checks date ranges are within expected values for the fiscal focus period
 
@@ -161,7 +161,7 @@ __pluginInfo__ = {
     'version': _RULE_VERSION,
     'description': (
         'Checks all of the specified types and concepts for their date '
-        'ranges to verify the ranges are within expected paramters for the '
+        'ranges to verify the ranges are within expected parameters for the '
         'fiscal periods'
     ),
     # Mount points
