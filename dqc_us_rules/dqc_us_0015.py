@@ -73,7 +73,6 @@ def filter_negative_number_facts(val, blacklist_concepts):
     # other filters before running negative numbers check
     # numeric_facts has already checked if fact.value can be made into a number
     facts_to_check = [
-        #f for f in numeric_facts if float(f.value) < 0 and
         f for f in numeric_facts if f.xValid >= VALID and f.xValue < 0 and
 	f.concept.type is not None and
         # facts with numerical values less than 0 and contexts and
