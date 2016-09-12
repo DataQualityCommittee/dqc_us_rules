@@ -802,3 +802,41 @@ class TestFactsAreValid(unittest.TestCase):
         fact = Mock(decimals='-2', value='6500', xValue=6500, precision=None)
         fact.context.segDimValues = None
         self.assertFalse(fact_lib._fact_components_valid(fact))
+
+
+class TestAllFactsUnder(unittest.TestCase):
+    def test_all_facts_under(self):
+        "Tests that all facts a certain axis/member are returned."
+        mock_qname = Mock(localName="foo")
+        mock_qname2 = Mock(localName="bar")
+        mock_member = Mock(qname=mock_qname)
+        mock_dimension = Mock(qname=mock_qname2)
+        mock_dim = Mock(
+            member=mock_member,
+            dimension=mock_dimension,
+            isExplicit=True
+        )
+        segDimValues = {'1': mock_dim}
+        mock_context = Mock(segDimValues=segDimValues)
+        mock_fact = Mock(context=mock_context)
+        mock_modelxbrl = Mock(facts=[mock_fact])
+        self.assertEqual(
+            fact_lib.axis_member_fact('bar', 'foo', mock_modelxbrl),
+            [mock_fact]
+        )
+
+        mock_qname3 = Mock(localName="NOPE")
+        mock_member2 = Mock(qname=mock_qname3)
+        mock_dim2 = Mock(
+            member=mock_member2,
+            dimension=mock_dimension,
+            isExplicit=True
+        )
+        segDimValues = {'1': mock_dim2, '2': mock_dim2}
+        mock_context = Mock(segDimValues=segDimValues)
+        mock_fact = Mock(context=mock_context)
+        mock_modelxbrl = Mock(facts=[mock_fact])
+        self.assertEqual(
+            fact_lib.axis_member_fact('bar', 'foo', mock_modelxbrl),
+            []
+        )
