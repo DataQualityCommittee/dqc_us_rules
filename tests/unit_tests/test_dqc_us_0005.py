@@ -4,6 +4,7 @@
 from datetime import date
 import unittest
 from unittest.mock import Mock, patch
+from arelle.ModelInstanceObject import ModelFact
 
 from dqc_us_rules import dqc_us_0005
 from dqc_us_rules.util import facts, messages
@@ -137,8 +138,10 @@ class TestContextChecks(unittest.TestCase):
         """
         msg = messages.get_message('DQC.US.0005', "17")
         mock_context = Mock(endDatetime=1)
+        qname_mock = Mock(localName='EntityCommonStockSharesOutstanding')
         fact = Mock(
-            localName='EntityCommonStockSharesOutstanding',
+            spec=ModelFact,
+            qname=qname_mock,
             context=mock_context
         )
         lookup = 'foo'
@@ -148,10 +151,11 @@ class TestContextChecks(unittest.TestCase):
         mock_val = Mock(modelXbrl=mock_modelxbrl)
         dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
         self.assertFalse(mock_error.called)
-
         mock_context = Mock(endDatetime=0)
+        qname_mock = Mock(localName='EntityCommonStockSharesOutstanding')
         fact = Mock(
-            localName='EntityCommonStockSharesOutstanding',
+            spec=ModelFact,
+            qname=qname_mock,
             context=mock_context
         )
         dqc_us_0005.run_checks(mock_val, fact, eop_results, lookup)
