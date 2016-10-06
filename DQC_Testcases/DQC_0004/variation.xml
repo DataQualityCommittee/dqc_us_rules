@@ -1,8 +1,7 @@
 <!--FILENAME-->
 <!--DQC_0004-->
-<!-- Copyright 2015 XBRL US Inc. All Rights Reserved. -->
-<!-- Validation File Version 1.0 -->
-<?xml-stylesheet type="text/xsl" href="."?>
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
 <testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <creator>
     <name>Campbell Pryde</name>
@@ -12,6 +11,15 @@
   <ruleIdentifier>DQC_0004</ruleIdentifier>
   <description>This rule tests that the value reported for the element Assets equals the value reported for the element Liabilities and Equity. The rule allows a tolerance for rounding between the values tested of 2 based on the scale of the values. For example, if the values are reported in millions, the rounding tolerance would be $2 million.</description>
   <ruleMessage>${fact1.label} with a value of ${fact1.value} is not equal to the total of ${fact2.label} with a value of ${fact2.value}. These values should be equal. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0004.16.2530">
+    <name>Assets equals Liabilities and stock holders equity in the default with different values but are ignored because the decimals make the values equivalent.</name>
+    <description>Creates a pass case where Assets equals liabilities and stockholders Equity after taking into account the tolerance for a difference in decimals.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2530/testco-20141231_2530.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2530/testco-20141231_2530.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0004.16.2531">
     <name>Assets equalsLiabilities and stock holders equiuty in the default</name>
     <description>Creates a pass case where Assets equals liabilities and stockholders Equity after taking into account the tolerance for a difference in decimals. This is tricky because it implements round half to nearest even as per the XBRL specification.</description>
@@ -74,15 +82,6 @@
     <data>
       <schema>DQC_0004.16/CASE_2777/testco-20141231_2777.xsd</schema>
       <instance readMeFirst="true">DQC_0004.16/CASE_2777/testco-20141231_2777.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
-  </variation>
-  <variation id="DQC_0004.16.2530">
-    <name>Assets equals Liabilities and stock holders equity in the default with different values but are ignored because the decimals make the values equivalent.</name>
-    <description>Creates a pass case where Assets equals liabilities and stockholders Equity after taking into account the tolerance for a difference in decimals.</description>
-    <data>
-      <schema>DQC_0004.16/CASE_2530/testco-20141231_2530.xsd</schema>
-      <instance readMeFirst="true">DQC_0004.16/CASE_2530/testco-20141231_2530.xml</instance>
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>

@@ -11,7 +11,6 @@
   <arcroleRef xlink:type="simple" xlink:href="http://www.xbrl.org/2005/xbrldt-2005.xsd#domain-member" arcroleURI="http://xbrl.org/int/dim/arcrole/domain-member" />
   <arcroleRef xlink:type="simple" xlink:href="http://www.xbrl.org/2005/xbrldt-2005.xsd#hypercube-dimension" arcroleURI="http://xbrl.org/int/dim/arcrole/hypercube-dimension" />
   <definitionLink xlink:type="extended" xlink:role="http://www.testco.com/role/OperatingSegmentsAssetsDetails">
-    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationAxis" xlink:label="loc_us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationAxis" xlink:type="locator" />
     <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_SegmentDomain" xlink:label="loc_us-gaap_SegmentDomain" xlink:type="locator" />
     <definitionArc order="1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/dimension-domain" xlink:from="loc_us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationAxis" xlink:to="loc_us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationDomain" xlink:type="arc" />
     <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_StatementGeographicalAxis" xlink:label="loc_us-gaap_StatementGeographicalAxis" xlink:type="locator" />
@@ -32,11 +31,7 @@
     <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_ConsolidationItemsDomain" xlink:label="loc_us-gaap_ConsolidationItemsDomain" xlink:type="locator" />
     <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_SubsequentEventTypeAxis" xlink:label="loc_us-gaap_SubsequentEventTypeAxis" xlink:type="locator" />
     <definitionArc order="1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/dimension-domain" xlink:from="loc_us-gaap_StatementBusinessSegmentsAxis" xlink:to="loc_us-gaap_SegmentDomain" xlink:type="arc" />
-  </definitionLink>
-  <definitionLink xlink:type="extended" xlink:role="http://www.testco.com/role/OperatingSegmentsAssetsDetails">
-    <definitionArc order="-1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/all" xlink:from="loc_us-gaap_SegmentReportingInformationLineItems" xlink:to="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:type="arc" xbrldt:contextElement="segment" xbrldt:closed="true" />
-    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_SegmentReportingInformationLineItems" xlink:label="loc_us-gaap_SegmentReportingInformationLineItems" xlink:type="locator" />
-    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:label="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:type="locator" />
+    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationAxis" xlink:label="loc_us-gaap_InvestmentsInAndAdvancesToAffiliatesCategorizationAxis" xlink:type="locator" />
   </definitionLink>
   <definitionLink xlink:type="extended" xlink:role="http://www.testco.com/role/OperatingSegmentsAssetsDetails">
     <definitionArc order="1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/dimension-default" xlink:from="loc_us-gaap_StatementBusinessSegmentsAxis" xlink:to="loc_us-gaap_SegmentDomain" xlink:type="arc" />
@@ -77,6 +72,11 @@
     <definitionArc order="1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/hypercube-dimension" xlink:from="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:to="loc_us-gaap_ConsolidationItemsAxis" xlink:type="arc" />
     <loc xlink:href="http://xbrl.sec.gov/dei/2014/dei-2014-01-31.xsd#dei_LegalEntityAxis" xlink:label="loc_dei_LegalEntityAxis" xlink:type="locator" />
     <definitionArc order="2" xlink:arcrole="http://xbrl.org/int/dim/arcrole/hypercube-dimension" xlink:from="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:to="loc_us-gaap_SubsequentEventTypeAxis" xlink:type="arc" />
+  </definitionLink>
+  <definitionLink xlink:type="extended" xlink:role="http://www.testco.com/role/OperatingSegmentsAssetsDetails">
+    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_SegmentReportingInformationLineItems" xlink:label="loc_us-gaap_SegmentReportingInformationLineItems" xlink:type="locator" />
+    <loc xlink:href="http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-2014-01-31.xsd#us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:label="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:type="locator" />
+    <definitionArc order="-1" xlink:arcrole="http://xbrl.org/int/dim/arcrole/all" xlink:from="loc_us-gaap_SegmentReportingInformationLineItems" xlink:to="loc_us-gaap_ScheduleOfSegmentReportingInformationBySegmentTable" xlink:type="arc" xbrldt:contextElement="segment" xbrldt:closed="true" />
   </definitionLink>
   <definitionLink xlink:type="extended" xlink:role="http://www.testco.com/role/OperatingSegmentsAssetsDetails">
     <loc xlink:href="http://xbrl.sec.gov/dei/2014/dei-2014-01-31.xsd#dei_EntityDomain" xlink:label="loc_dei_EntityDomain" xlink:type="locator" />

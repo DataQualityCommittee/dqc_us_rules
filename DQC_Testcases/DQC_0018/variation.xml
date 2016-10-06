@@ -1,0 +1,155 @@
+<!--FILENAME-->
+<!--DQC_0018-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0018</number>
+  <ruleIdentifier>DQC_0018</ruleIdentifier>
+  <description />
+  <ruleMessage>${element.label} is a deprecated item, but has been included in the company extension. Deprecated items should not be used in the filing. Guidance on the replacement item to use for this item is provided in the Deprecated Label of the ${element.name} concept.</ruleMessage>
+  <variation id="DQC_0018.34.3480">
+    <name>Creates a pass case when deprecated elements in the companies namespace are used in the presentation linkbase of the extension taxonomy with a value or not.</name>
+    <description>Creates a pass case when the element StockOptionsMember in the companies namespace appears in the presentation linkbase of the extension taxonomy.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3480/testco-20160331.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3480/testco-20160331.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0005.48|DQC.US.0001.75" />
+  </variation>
+  <variation id="DQC_0018.34.3482">
+    <name>Creates a fail case deprecated elements are used in the presentation linkbase of the extension taxonomy with a value or not.</name>
+    <description>Creates 3 fail cases when the element StockOptionsMember, EmployeeServiceShareBasedCompensationAllocationOfRecognizedPeriodCostsReportLineDomain and ScheduleOfEmployeeServiceShareBasedCompensationAllocationOfRecognizedPeriodCostsByReportLineAxis appears in the presentation linkbase of the extension taxonomy.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3482/testco-20160331.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3482/testco-20160331.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0041.73|DQC.US.0015.721">
+      <error count="3">DQC.US.0018.34</error>
+      <result>
+        <primaryElement>us-gaap:EmployeeServiceShareBasedCompensationAllocationOfRecognizedPeriodCostsReportLineDomain</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:ScheduleOfEmployeeServiceShareBasedCompensationAllocationOfRecognizedPeriodCostsByReportLineAxis</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockOptionsMember</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0018.34.3452">
+    <name>Creates a fail case deprecated elements are used in the presentation linkbase of the extension taxonomy</name>
+    <description>Creates a fail case when each of the following elements are used in the presentation linkbase of the extension taxonomy: BusinessAcquisitionPurchasePriceAllocationCurrentLiabilitiesDeferredRevenue, BusinessAcquisitionPurchasePriceAllocationCurrentLiabilitiesDeferredRevenue and AccumulatedDepreciationDepletionAndAmortizationSaleOfPropertyPlantAndEquipment.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3452/testco-20151231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3452/testco-20151231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.2746|DQC.US.0015.2826">
+      <error count="3">DQC.US.0018.34</error>
+      <result>
+        <primaryElement>us-gaap:DepositAssetsOrLiabilitiesEffectOfChangeInPresentValueAssumptionsResultingInReductionsInExpectedRecoveries</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:BusinessAcquisitionPurchasePriceAllocationCurrentLiabilitiesDeferredRevenue</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:AccumulatedDepreciationDepletionAndAmortizationSaleOfPropertyPlantAndEquipment</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0018.34.3481">
+    <name>Creates a fail case deprecated elements are used in the presentation linkbase of the extension taxonomy with a value or not.</name>
+    <description>Creates 4 fail case when the following items appear in the presentation linkbase of the extension taxonomy. FinancingReceivableTroubledDebtRestructuringAxis , FinancingReceivableRecordedInvestment30To59DaysPastDue, FinancingReceivableRecordedInvestmentEqualToGreaterThan90DaysPastDue, FinancingReceivableRecordedInvestment60To89DaysPastDue.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3481/testco-20150630.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3481/testco-20150630.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0005.48|DQC.US.0006.14|DQC.US.0009.19|DQC.US.0009.23|DQC.US.0015.1615|DQC.US.0015.2717|DQC.US.0041.73">
+      <error count="4">DQC.US.0018.34</error>
+      <result>
+        <primaryElement>us-gaap:FinancingReceivableRecordedInvestmentEqualToGreaterThan90DaysPastDue</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:FinancingReceivableRecordedInvestment60To89DaysPastDue</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:FinancingReceivableRecordedInvestment30To59DaysPastDue</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+      <result>
+        <primaryElement>us-gaap:FinancingReceivableTroubledDebtRestructuringAxis</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0018.34.3453">
+    <name>Creates a fail case deprecated elements are used in the presentation linkbase of the extension taxonomy with a value or not.</name>
+    <description>Creates a fail case when the element BusinessCombinationProFormaInformationAbstract appears in the presentation linkbase of the extension taxonomy with no value.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3453/testco-20141231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3453/testco-20141231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.51|DQC.US.0001.70|DQC.US.0015.1257|DQC.US.0015.410|DQC.US.0015.623|DQC.US.0041.73">
+      <error count="1">DQC.US.0018.34</error>
+      <result>
+        <primaryElement>us-gaap:BusinessCombinationProFormaInformationAbstract</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <message />
+      </result>
+    </results>
+  </variation>
+</testcase>
