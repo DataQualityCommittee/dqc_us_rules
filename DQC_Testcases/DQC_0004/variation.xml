@@ -1,0 +1,116 @@
+<!--FILENAME-->
+<!--DQC_0004-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0004</number>
+  <ruleIdentifier>DQC_0004</ruleIdentifier>
+  <description>This rule tests that the value reported for the element Assets equals the value reported for the element Liabilities and Equity. The rule allows a tolerance for rounding between the values tested of 2 based on the scale of the values. For example, if the values are reported in millions, the rounding tolerance would be $2 million.</description>
+  <ruleMessage>${fact1.label} with a value of ${fact1.value} is not equal to the total of ${fact2.label} with a value of ${fact2.value}. These values should be equal. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0004.16.2776">
+    <name>Flags a fail case when the value of us-gaap:Assets is different from us-gaap:LiabilitiesAndStockholdersEquity with a difference of a penny and decimals equal to infinite. Both values are infinite.</name>
+    <description>Creates a fail case when the value of us-gaap:Assets is different from us-gaap:LiabilitiesAndStockholdersEquity with a difference of a penny and decimals equal to infinite. Both values are infinite and as such means that the values should be exactly equal. The tolerance level is based on decimals so the tolerance should be infintesimal, and not prevent a error condition.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2776/testco-20141231_2776.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2776/testco-20141231_2776.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0004.16</error>
+      <result>
+        <primaryElement>us-gaap:Assets</primaryElement>
+        <factValue>234567.23</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>${fact1.label} with a value of 234567.23 is not equal to the total of ${fact2.label} with a value of ${fact2.value}. These values should be equal. \nThe properties of this us-gaap:Assets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0004.16.2530">
+    <name>Assets equals Liabilities and stock holders equity in the default with different values but are ignored because the decimals make the values equivalent.</name>
+    <description>Creates a pass case where Assets equals liabilities and stockholders Equity after taking into account the tolerance for a difference in decimals.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2530/testco-20141231_2530.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2530/testco-20141231_2530.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0004.16.2531">
+    <name>Assets equalsLiabilities and stock holders equiuty in the default</name>
+    <description>Creates a pass case where Assets equals liabilities and stockholders Equity after taking into account the tolerance for a difference in decimals. This is tricky because it implements round half to nearest even as per the XBRL specification.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2531/testco-20141231_2531.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2531/testco-20141231_2531.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0004.16.49">
+    <name>Assets is less than Liabilities and stock holders equiuty in the default</name>
+    <description>Creates a fail case where Assets is less than liabilities and stockholders Equity</description>
+    <data>
+      <schema>DQC_0004.16/CASE_49/testco-20141231_49.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_49/testco-20141231_49.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0004.16</error>
+      <result>
+        <primaryElement>us-gaap:Assets</primaryElement>
+        <factValue>200000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>${fact1.label} with a value of 200000000 is not equal to the total of ${fact2.label} with a value of ${fact2.value}. These values should be equal. \nThe properties of this us-gaap:Assets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0004.16.2777">
+    <name>Flags a pass case when the value of us-gaap:Assets is different from us-gaap:LiabilitiesAndStockholdersEquity with a difference of a 55 cents and decimals equal to infinite for assets and -3 for liabilities &amp; Equity.</name>
+    <description>Creates a pass case when the value of us-gaap:Assets is different from us-gaap:LiabilitiesAndStockholdersEquity with a difference of a 55 cents and decimals equal to infinite and -3. Assets value is infinite Liabiloties -3 The tolerance level is based on decimals so the tolerance should be based on -3 and accurate to $2,000. Given the difference is 55 cents these values are considered equal..</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2777/testco-20141231_2777.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2777/testco-20141231_2777.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0004.16.2602">
+    <name>Assets equals Liabilities and stock holders equity in the default</name>
+    <description>Creates a fail case where Assets does not equal liabilities and stockholders Equity as it is out by 3mill with decimals of - 6.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2602/testco-20141231_2602.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2602/testco-20141231_2602.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0004.16</error>
+      <result>
+        <primaryElement>us-gaap:Assets</primaryElement>
+        <factValue>300000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>${fact1.label} with a value of 300000000 is not equal to the total of ${fact2.label} with a value of ${fact2.value}. These values should be equal. \nThe properties of this us-gaap:Assets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0004.16.2603">
+    <name>Assets equals Liabilities and stock holders equity in the default</name>
+    <description>Creates a pass case where Assets does not equal liabilities and stockholders Equity as it is out by 2mill with decimals of - 6 which is an allowable tolerance. In addition the liabilities amount also has 500,000 difference which should be rounded down based on the decimals of -6 as we round down on even.</description>
+    <data>
+      <schema>DQC_0004.16/CASE_2603/testco-20141231_2603.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_2603/testco-20141231_2603.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0004.16.50">
+    <name>Assets equalsLiabilities and stock holders equiuty in the default</name>
+    <description>Creates a pass case where Assets equals liabilities and stockholders Equity</description>
+    <data>
+      <schema>DQC_0004.16/CASE_50/testco-20141231_50.xsd</schema>
+      <instance readMeFirst="true">DQC_0004.16/CASE_50/testco-20141231_50.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+</testcase>

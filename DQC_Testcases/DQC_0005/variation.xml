@@ -1,0 +1,253 @@
+<!--FILENAME-->
+<!--DQC_0005-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0005</number>
+  <ruleIdentifier>DQC_0005</ruleIdentifier>
+  <description>This rule tests that the use of dates associated with subsequent events, forecasts and the element Entity Common Stock, Shares Outstanding are appropriate.\n\nEntity Common Stock, Shares Outstanding\n\nWhen a value is reported for the element Entity Common Stock, Shares Outstanding the date associated with this value must be on or after the reporting period end date. If the date associated with the value for Entity Common Stock, Shares Outstanding is earlier than the reporting period end date then an error will be reported. (DQC_0005.17)\n\nSubsequent events\n\nWhen a value is reported for a fact which is indicated in the filing as a subsequent event the date associated with this value must be after the reporting period end date. If the date associated with this fact value is on or earlier than the reporting period end date, then an error will be reported. (Note: Fact values are indicated as being subsequent events in XBRL files by using the Subsequent Event Type [Axis] as a dimension of the fact in an XBRL instance.) (DQC_0005.48)\n\nForecasts\n\nWhen a value is reported for a fact which is indicated in the filing as a forecast the date or end date of a date range associated with this value must be after the reporting period end date. If the date or end date of a date range associated with this fact value is on or earlier than the reporting period end date then an error will be reported. (Note: Fact values are indicated as being forecasts in the XBRL file by using the Statement Scenario [Axis] and Scenario Forecast [Member] as dimensions of the fact in an XBRL instance.) (DQC_0005.49)</description>
+  <ruleMessage>The date of ${fact1.period} used for ${fact1.label} with a value of ${fact1.value} is earlier than the reporting period end date ${dei:DocumentPeriodEndDate.fact.value}. Update the date used for ${fact1.label} to be the same as the cover sheet of the filing.\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version : ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0005.17.52">
+    <name>Flags a pass case when EntityCommonStockSharesOutstanding has a later context date than the actual reporting date of the filing based on the period end date.</name>
+    <description>Creates a pass case when EntityCommonStockSharesOutstanding has a later context date than the actual reporting date of the filing based on the value in the period end date. The period end date is required to be included in the filing.</description>
+    <data>
+      <schema>DQC_0005.17/CASE_52/testco-20141231_52.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.17/CASE_52/testco-20141231_52.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0005.17.2525">
+    <name>Flags a pass case when EntityCommonStockSharesOutstanding has a context date that is the same as the actual reporting date of the filing based on the period end date.</name>
+    <description>Creates a pass case when EntityCommonStockSharesOutstanding has a context date that is the same as the actual reporting date of the filing based on the value in the period end date. The period end date is required to be included in the filing.</description>
+    <data>
+      <schema>DQC_0005.17/CASE_2525/testco-20141231_2525.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.17/CASE_2525/testco-20141231_2525.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0005.17.51">
+    <name>Flags a fail case when EntityCommonStockSharesOutstanding has an earlier context date than the actual reporting date of the filing based on the period end date.</name>
+    <description>Creates a fail case when EntityCommonStockSharesOutstanding has an earlier context date than the actual reporting date of the filing based on the value in the period end date. The period end date is required to be included in the filing.</description>
+    <data>
+      <schema>DQC_0005.17/CASE_51/testco-20141231_51.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.17/CASE_51/testco-20141231_51.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0005.17</error>
+      <result>
+        <primaryElement>dei:EntityCommonStockSharesOutstanding</primaryElement>
+        <factValue>25000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The date of 2013-12-31 used for ${fact1.label} with a value of 25000000 is earlier than the reporting period end date ${dei:DocumentPeriodEndDate.fact.value}. Update the date used for ${fact1.label} to be the same as the cover sheet of the filing.\nThe properties of this dei:EntityCommonStockSharesOutstanding fact are:\nPeriod: 2013-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version : ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0005.48.3450">
+    <name>Creates a pass case for rule DQC.US.0005.48 when the filing is an S1 filing type.</name>
+    <description>Creates a pass case for rule DQC.US.0005.48 when the filing is an S1 filing type evrn though the date of 2013-12-31 used for Interest converted to common stock and the Subsequent Event Type [Axis] with a value of 32,500 is earlier than or the same as the reporting period end date of 2014-09-30.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3450/testco-20140930.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3450/testco-20140930.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.1930|DQC.US.0015.2767|DQC.US.0001.75|DQC.US.0001.76" />
+  </variation>
+  <variation id="DQC_0005.48.2619">
+    <name>The SubsequentEventTypeAxis is used with an extension member and not the standard element SubsequentEventMember.</name>
+    <description>Returns 11 fail cases when the dimension SubsequentEventTypeAxis is used with an extension member that is not the SubsequentEventMember and the date of the facts are before the balance date. There are 11 cases where an element is used with this axis and extension member and the date is before or at the balance date.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_2619/testco-20140531.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_2619/testco-20140531.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="11">DQC.US.0005.48</error>
+      <result>
+        <primaryElement>ext:SubsequentEventDurationAfterDateOfNoteRequiredBeforeRedemptionWith5DaysNotice</primaryElement>
+        <factValue>P20D</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of P20D is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventDurationAfterDateOfNoteRequiredBeforeRedemptionWith5DaysNotice fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventNotesAmendedOustandingPrincipalAmount</primaryElement>
+        <factValue>542294</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit>USD</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 542294 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventNotesAmendedOustandingPrincipalAmount fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: USD\nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventNotesAmendedInitialMaturityDateExtendedAggregatePrepaymentsRequired</primaryElement>
+        <factValue>250000</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit>USD</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 250000 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventNotesAmendedInitialMaturityDateExtendedAggregatePrepaymentsRequired fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: USD\nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventDurationOfNoticeRequiredForNoteRedemptionAfter20BusinessDaysFromDateOfNote</primaryElement>
+        <factValue>P5D</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of P5D is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventDurationOfNoticeRequiredForNoteRedemptionAfter20BusinessDaysFromDateOfNote fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventUnsecuredDebtProceedsFromEachNote</primaryElement>
+        <factValue>10000</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember</dimensions>
+        <unit>USD</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 10000 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventUnsecuredDebtProceedsFromEachNote fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember\nUnit: USD\nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventsDate</primaryElement>
+        <factValue>2014-07-11</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 2014-07-11 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventsDate fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventsDate</primaryElement>
+        <factValue>2014-07-16</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 2014-07-16 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventsDate fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = UnsecuredCorporateDemandNoteChairmanOfTheBoardMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventDebtInstrumentDescriptionOfVariableRateBasis</primaryElement>
+        <factValue>One-month LIBOR</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of One-month LIBOR is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventDebtInstrumentDescriptionOfVariableRateBasis fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventNotesAmendedInitialMaturityDateExtendedProvidedPrepaymentsMade</primaryElement>
+        <factValue>2014-10-31</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 2014-10-31 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventNotesAmendedInitialMaturityDateExtendedProvidedPrepaymentsMade fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:SubsequentEventNotesAmendedMaturityDateExtended</primaryElement>
+        <factValue>2014-09-12</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit></unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 2014-09-12 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:SubsequentEventNotesAmendedMaturityDateExtended fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: \nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>ext:DebtInstrumentBasisSpreadOnVariableRate1</primaryElement>
+        <factValue>.03</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>SubsequentEventTypeAxis = LibertyNoteAmendedMember</dimensions>
+        <unit>pure</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of .03 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ext:DebtInstrumentBasisSpreadOnVariableRate1 fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: SubsequentEventTypeAxis = LibertyNoteAmendedMember\nUnit: pure\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0005.48.95">
+    <name>The value of assets has a subsequent event member but is in a prior period.</name>
+    <description>Creates a fail case when a fact value uses the subsequent event member on a value erlier than the balance date.</description>
+    <data>
+      <schema>DQC_0005.48/CASE_95/testco-20141231_95.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.48/CASE_95/testco-20141231_95.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0005.48</error>
+      <result>
+        <primaryElement>us-gaap:Assets</primaryElement>
+        <factValue>76000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions>us-gaap:SubsequentEventTypeAxis = us-gaap:SubsequentEventMember</dimensions>
+        <unit>iso4217:USD</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of 76000000 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this us-gaap:Assets fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:SubsequentEventTypeAxis = us-gaap:SubsequentEventMember\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0005.48.96">
+    <name>The value of assets has a subsequent event member and is in a subsequent period.</name>
+    <description>Creates a pass case when a fact value uses the subsequent event member on a value later than the balance date.</description>
+    <data>
+      <schema>DQC_0005.48/CASE_96/testco-20141231_96.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.48/CASE_96/testco-20141231_96.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0005.49.97">
+    <name>The value of assets has a forecast member but is in a prior period.</name>
+    <description>Creates a fail case when a fact value uses the forecast member on a value earlier than the balance date.</description>
+    <data>
+      <schema>DQC_0005.49/CASE_97/testco-20141231_97.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.49/CASE_97/testco-20141231_97.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0005.49</error>
+      <result>
+        <primaryElement>us-gaap:Assets</primaryElement>
+        <factValue>78000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions>us-gaap:StatementScenarioAxis = us-gaap:ScenarioForecastMember</dimensions>
+        <unit>iso4217:USD</unit>
+        <message>The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:StatementScenarioAxis.label} and ${us-gaap:ScenarioForcastMember.label} with a value of 78000000 is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date. \nThe properties of this us-gaap:Assets fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:StatementScenarioAxis = us-gaap:ScenarioForecastMember\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0005.49.3451">
+    <name>Creates a pass case for rule DQC.US.0005.48 when the filing is an S-11 filing type.</name>
+    <description>Creates a pass case for rule DQC.US.0005.48 when the filing is an S-11 filing type even though the date of 2014-12-31 used for Finite Lived Intangible Assets Amortization Expense Year Four and the Statement Scenario [Axis] and us-gaap:ScenarioForecastMember with a value of 1,994,000 is earlier than or the same as the reporting period end date of 2015-03-31.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3451/testco-20150623.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3451/testco-20150623.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0005.49.98">
+    <name>The value of assets has a forecast member and is in a subsequent period.</name>
+    <description>Creates a pass case when a fact value uses the forecast member on a value later than the balance date.</description>
+    <data>
+      <schema>DQC_0005.49/CASE_98/testco-20141231_98.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.49/CASE_98/testco-20141231_98.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0005.50.96">
+    <name>The value of assets has a subsequent event member and is in a subsequent period.</name>
+    <description>Creates a pass case when a fact value uses the subsequent event member on a value later than the balance date.</description>
+    <data>
+      <schema>DQC_0005.48/CASE_96/testco-20141231_96.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.48/CASE_96/testco-20141231_96.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0005.50.98">
+    <name>The value of assets has a forecast member and is in a subsequent period.</name>
+    <description>Creates a pass case when a fact value uses the forecast member on a value later than the balance date.</description>
+    <data>
+      <schema>DQC_0005.49/CASE_98/testco-20141231_98.xsd</schema>
+      <instance readMeFirst="true">DQC_0005.49/CASE_98/testco-20141231_98.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+</testcase>

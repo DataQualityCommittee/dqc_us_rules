@@ -1,0 +1,450 @@
+<!--FILENAME-->
+<!--DQC_0033-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0033</number>
+  <ruleIdentifier>DQC_0033</ruleIdentifier>
+  <description>This rule tests that the ending date used with Document and Entity Information elements matches the ending context date for the value of the Document and Entity Information element Document Period End Date.\n\nThis rule excludes the following elements from the test: Entity Common Stock, Shares Outstanding Entity Public Float Entity Number of Employees Entity Listing, Depository Receipt Ratio\n\nThis rule will not run if the context date for the Document Period End Date is different by more than 3 days from the value of that element.</description>
+  <ruleMessage>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0033.2.33">
+    <name>Context date of the element EntityCentralIndexKey is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityCentralIndexKey is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_33/testco-20141231_33.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_33/testco-20141231_33.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityCentralIndexKey</primaryElement>
+        <factValue>0000000014</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityCentralIndexKey fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.16">
+    <name>Context date of the element EntityCurrentReportingStatus is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityCurrentReportingStatus is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_16/testco-20141231_16.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_16/testco-20141231_16.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityCurrentReportingStatus</primaryElement>
+        <factValue>Yes</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityCurrentReportingStatus fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.31">
+    <name>Context date of the element DocumentFiscalPeriodFocus is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentFiscalPeriodFocus is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_31/testco-20141231_31.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_31/testco-20141231_31.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentFiscalPeriodFocus</primaryElement>
+        <factValue>FY</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentFiscalPeriodFocus fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.38">
+    <name>Context date of the element EntityWellKnownSeasonedIssuer is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityWellKnownSeasonedIssuer is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_38/testco-20141231_38.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_38/testco-20141231_38.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityWellKnownSeasonedIssuer</primaryElement>
+        <factValue>Yes</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityWellKnownSeasonedIssuer fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.24">
+    <name>Context date of the element EntityWellKnownSeasonedIssuer is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityWellKnownSeasonedIssuer is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_24/testco-20141231_24.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_24/testco-20141231_24.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityWellKnownSeasonedIssuer</primaryElement>
+        <factValue>Yes</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityWellKnownSeasonedIssuer fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.22">
+    <name>Context date of the element EntityFilerCategory is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityFilerCategory is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_22/testco-20141231_22.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_22/testco-20141231_22.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityFilerCategory</primaryElement>
+        <factValue>Large Accelerated Filer</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityFilerCategory fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.35">
+    <name>Context date of the element EntityVoluntaryFilers is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityVoluntaryFilers is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_35/testco-20141231_35.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_35/testco-20141231_35.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityVoluntaryFilers</primaryElement>
+        <factValue>No</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityVoluntaryFilers fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.30">
+    <name>Context date of the element AmendmentFlag is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element AmendmentFlag is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_30/testco-20141231_30.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_30/testco-20141231_30.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:AmendmentFlag</primaryElement>
+        <factValue>false</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:AmendmentFlag fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.6">
+    <name>Context date of the element DocumentType is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentType is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_6/testco-20141231_6.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_6/testco-20141231_6.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentType</primaryElement>
+        <factValue>10-K</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentType fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.39">
+    <name>Context date of the element DocumentFiscalYearFocus is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentFiscalYearFocus is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_39/testco-20141231_39.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_39/testco-20141231_39.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentFiscalYearFocus</primaryElement>
+        <factValue>2014</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentFiscalYearFocus fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.10">
+    <name>Context date of the element DocumentFiscalPeriodFocus is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentFiscalPeriodFocus is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_10/testco-20141231_10.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_10/testco-20141231_10.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentFiscalPeriodFocus</primaryElement>
+        <factValue>FY</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentFiscalPeriodFocus fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.29">
+    <name>Context date of the element DocumentType is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentType is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_29/testco-20141231_29.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_29/testco-20141231_29.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentType</primaryElement>
+        <factValue>10-K</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentType fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.2615">
+    <name>Context date of the element dei: EntityNumberOfEmployees is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context is on the element dei: EntityNumberOfEmployees is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_2615/testco-20141231_2615.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_2615/testco-20141231_2615.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0033.2.14">
+    <name>Context date of the element EntityCentralIndexKey is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityCentralIndexKey is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_14/testco-20141231_14.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_14/testco-20141231_14.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityCentralIndexKey</primaryElement>
+        <factValue>0000000014</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityCentralIndexKey fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.36">
+    <name>Context date of the element CurrentFiscalYearEndDate is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element CurrentFiscalYearEndDate is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_36/testco-20141231_36.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_36/testco-20141231_36.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:CurrentFiscalYearEndDate</primaryElement>
+        <factValue>--12-31</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:CurrentFiscalYearEndDate fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.34">
+    <name>Context date of the element EntityCurrentReportingStatus is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityCurrentReportingStatus is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_34/testco-20141231_34.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_34/testco-20141231_34.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityCurrentReportingStatus</primaryElement>
+        <factValue>Yes</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityCurrentReportingStatus fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.8">
+    <name>Context date of the element AmendmentFlag is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element AmendmentFlag is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_8/testco-20141231_8.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_8/testco-20141231_8.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:AmendmentFlag</primaryElement>
+        <factValue>false</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:AmendmentFlag fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.37">
+    <name>Context date of the element EntityFilerCategory is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityFilerCategory is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_37/testco-20141231_37.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_37/testco-20141231_37.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityFilerCategory</primaryElement>
+        <factValue>Large Accelerated Filer</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityFilerCategory fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.20">
+    <name>Context date of the element CurrentFiscalYearEndDate is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element CurrentFiscalYearEndDate is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_20/testco-20141231_20.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_20/testco-20141231_20.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:CurrentFiscalYearEndDate</primaryElement>
+        <factValue>--12-31</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:CurrentFiscalYearEndDate fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.2616">
+    <name>Context date of the element dei:EntityCommonStockSharesOutstanding is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context is on the element dei:EntityCommonStockSharesOutstanding is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_2616/testco-20141231_2616.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_2616/testco-20141231_2616.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0033.2.12">
+    <name>Context date of the element EntityRegistrantName is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityRegistrantName is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_12/testco-20141231_12.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_12/testco-20141231_12.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityRegistrantName</primaryElement>
+        <factValue>General Example Company</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityRegistrantName fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.18">
+    <name>Context date of the element EntityVoluntaryFilers is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityVoluntaryFilers is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_18/testco-20141231_18.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_18/testco-20141231_18.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityVoluntaryFilers</primaryElement>
+        <factValue>No</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityVoluntaryFilers fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.26">
+    <name>Context date of the element DocumentFiscalYearFocus is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentFiscalYearFocus is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_26/testco-20141231_26.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_26/testco-20141231_26.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:DocumentFiscalYearFocus</primaryElement>
+        <factValue>2014</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:DocumentFiscalYearFocus fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0033.2.32">
+    <name>Context date of the element EntityRegistrantName is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element EntityRegistrantName is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0033.2/CASE_32/testco-20141231_32.xsd</schema>
+      <instance readMeFirst="true">DQC_0033.2/CASE_32/testco-20141231_32.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0033.2</error>
+      <result>
+        <primaryElement>dei:EntityRegistrantName</primaryElement>
+        <factValue>General Example Company</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this dei:EntityRegistrantName fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+</testcase>

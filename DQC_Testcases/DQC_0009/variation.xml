@@ -1,0 +1,424 @@
+<!--FILENAME-->
+<!--DQC_0009-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0009</number>
+  <ruleIdentifier>DQC_0009</ruleIdentifier>
+  <description>This rule tests that the fact value for certain elements are less than or equal to the fact value of other elements.\n\nXBRL facts reported are expected to follow accounting logic. Consequently, certain reported values are expected to have a mathematical relationship to other reported values.\n\nExample - The value reported for the element Common Stock, Shares, Outstanding is expected to be less than or equal to the value reported for the element Common Stock, Shares, Issued, which in turn are expected to be less than or equal to the values reported for the element Common Stock, Shares Authorized. This is because shares must be authorized before they can be issued, and before they become outstanding.\n\nExample - The element Undistributed Earnings of Foreign Subsidiaries is used for the amount of foreign earnings permanently reinvested outside the country of domicile. The related deferred tax liability value, tagged with the element Deferred Tax Liability Not Recognized, Amount of Unrecognized Deferred Tax Liability, Undistributed Earnings of Foreign Subsidiaries should be less than or equal to the value reported for the element Undistributed Earnings of Foreign Subsidiaries.\n\nExample - The value reported for the element Defined Benefit Plans, Estimated Future Employer Contributions in Current Fiscal Year should be less than or equal to the value reported for the element Defined Benefit Plan, Expected Contributions in Current Fiscal Year, which represents the total of actual contributions and estimated future contributions for the fiscal period.\n\nimage alt text\n\nExample - The element Defined Benefit Plan, Accumulated Benefit Obligation differs from the element Defined Benefit Plan, Benefit Obligation in that the definition for the accumulated benefit obligation includes no assumption about future compensation levels. For plans with flat-benefit or nonpay-related pension benefit formulas, the values for accumulated benefit obligation and projected benefit obligation are the same. Based on this accounting difference it is expected that the value for the element Defined Benefit Plan, Accumulated Benefit Obligation would always be less than or equal to the value being reported for the element Defined Benefit Plan, Benefit Obligation.\n\nExample - The value reported for the element Defined Benefit Plan, Pension Plans with Accumulated Benefit Obligations in Excess of Plan Assets, Aggregate Projected Benefit Obligation must be less than or equal to the value reported for the element of Defined Benefit Plan, Accumulated Benefit Obligation (ABO) because the ABO of the first element is a portion of the aggregate ABO amount of the second amount.\n\nSee file DQC_0009_ListOfElements for the elements tested by this rule. Elements are listed in order by the most commonly occurring errors.</description>
+  <ruleMessage>The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0009.15.48">
+    <name>CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in default</name>
+    <description>Creates a pass case when CommonStockSharesOutstanding is less than CommonStockSharesAuthorized in the default context</description>
+    <data>
+      <schema>DQC_0009.15/CASE_48/testco-20141231_48.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.15/CASE_48/testco-20141231_48.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0009.15.47">
+    <name>CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized in a geography dimension</name>
+    <description>Creates a fail case when CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized in the same geography US context</description>
+    <data>
+      <schema>DQC_0009.15/CASE_47/testco-20141231_47.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.15/CASE_47/testco-20141231_47.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="2">DQC.US.0009.15</error>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
+        <factValue>600000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions>us-gaap:StatementGeographicalAxis = country:US</dimensions>
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 600000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
+        <factValue>550000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions>us-gaap:StatementGeographicalAxis = country:US</dimensions>
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 550000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.15.46">
+    <name>CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized</name>
+    <description>Creates a fail case when CommonStockSharesOutstanding is greater than CommonStockSharesAuthorized in the same context</description>
+    <data>
+      <schema>DQC_0009.15/CASE_46/testco-20141231_46.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.15/CASE_46/testco-20141231_46.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0009.15</error>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
+        <factValue>500000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 500000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.19.53">
+    <name>PreferredStockSharesOutstanding is greater than PreferredStockShareIssued</name>
+    <description>Creates a fail case when PreferredStockSharesOutstanding is greater than PreferredStockSharesIssued in the same context</description>
+    <data>
+      <schema>DQC_0009.19/CASE_53/testco-20141231_53.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.19/CASE_53/testco-20141231_53.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.19</error>
+      <result>
+        <primaryElement>us-gaap:PreferredStockSharesOutstanding</primaryElement>
+        <factValue>500000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 500000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:PreferredStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.19.54">
+    <name>PreferredStockSharesOutstanding is less than PreferredStockShareIssued</name>
+    <description>Creates a fail pass when PreferredStockSharesOutstanding is less than PreferredStockSharesIssued in the same context</description>
+    <data>
+      <schema>DQC_0009.19/CASE_54/testco-20141231_54.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.19/CASE_54/testco-20141231_54.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.21.58">
+    <name>Common Stock Shares Issued is less than Common Stock Shares Authorized.</name>
+    <description>Creates a pass case when CommonStockSharesIssued is less than CommonStockSharesAuthorized in the same context</description>
+    <data>
+      <schema>DQC_0009.21/CASE_58/testco-20141231_58.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_58/testco-20141231_58.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.21.55">
+    <name>Common Stock Shares Issued is greater than Common Stock Shares Authorized. However the Authorized is dimensionally qualified.</name>
+    <description>Creates a pass case when CommonStockSharesIssued is greater than CommonStockSharesAuthorized in a different context.</description>
+    <data>
+      <schema>DQC_0009.21/CASE_55/testco-20141231_55.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_55/testco-20141231_55.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.21.57">
+    <name>Common Stock Shares Issued is less than Common Stock Shares Authorized.</name>
+    <description>Creates a fail case when CommonStockSharesIssued is greater than CommonStockSharesAuthorized in the same context</description>
+    <data>
+      <schema>DQC_0009.21/CASE_57/testco-20141231_57.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_57/testco-20141231_57.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.21</error>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesIssued</primaryElement>
+        <factValue>600000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 600000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesIssued fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.21.56">
+    <name>Common Stock Shares Issued is less than Common Stock Shares Authorized in a different context.</name>
+    <description>Creates a pass case when CommonStockSharesIssued is less than CommonStockSharesAuthorized in a different context.</description>
+    <data>
+      <schema>DQC_0009.21/CASE_56/testco-20141231_56.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.21/CASE_56/testco-20141231_56.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.22.59">
+    <name>Preferred Stock Shares Issued is greater than Preferred Stock Shares Authorized.</name>
+    <description>Creates a fail case when "Preferred Stock Shares Issued" is greater than "Preferred Stock Shares Authorized".</description>
+    <data>
+      <schema>DQC_0009.22/CASE_59/testco-20141231_59.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.22/CASE_59/testco-20141231_59.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.22</error>
+      <result>
+        <primaryElement>us-gaap:PreferredStockSharesIssued</primaryElement>
+        <factValue>430000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 430000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:PreferredStockSharesIssued fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.22.60">
+    <name>Preferred Stock Shares Issued is equal to Preferred Stock Shares Authorized.</name>
+    <description>Creates a pass case when "Preferred Stock Shares Issued" equals "Preferred Stock Shares Authorized". This case also checks that the rule is making appropriate tolerance for different decimal values. Even though the authorized is less it shohould not fail as the decimals are different.</description>
+    <data>
+      <schema>DQC_0009.22/CASE_60/testco-20141231_60.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.22/CASE_60/testco-20141231_60.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.23.61">
+    <name>The element "Preferred Stock Shares Outstanding" is greater than "Preferred Stock Shares Authorized</name>
+    <description>Creates a fail case when "Preferred Stock Shares Outstanding" is greater than "Preferred Stock Shares Authorized"</description>
+    <data>
+      <schema>DQC_0009.23/CASE_61/testco-20141231_61.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.23/CASE_61/testco-20141231_61.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.23</error>
+      <result>
+        <primaryElement>us-gaap:PreferredStockSharesOutstanding</primaryElement>
+        <factValue>500000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 500000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:PreferredStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.23.62">
+    <name>The element "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized</name>
+    <description>Creates a pass case when "Preferred Stock Shares Outstanding" is less than "Preferred Stock Shares Authorized"</description>
+    <data>
+      <schema>DQC_0009.23/CASE_62/testco-20141231_62.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.23/CASE_62/testco-20141231_62.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.24.64">
+    <name>The element "Common Stock Shares Outstanding" is less thanor equal to the value of the element "Common Stock Shares Issued</name>
+    <description>Creates a pass case when the element "Common Stock Shares Outstanding" is less thanor equal to the value of the element "Common Stock Shares Issued</description>
+    <data>
+      <schema>DQC_0009.24/CASE_64/testco-20141231_64.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.24/CASE_64/testco-20141231_64.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.24.63">
+    <name>The element "Common Stock Shares Outstanding" is greater than the value of the element "Common Stock Shares Issued</name>
+    <description>Creates a fail casw when the element "Common Stock Shares Outstanding" is greater than the value of the element "Common Stock Shares Issued</description>
+    <data>
+      <schema>DQC_0009.24/CASE_63/testco-20141231_63.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.24/CASE_63/testco-20141231_63.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.24</error>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
+        <factValue>500000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 500000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.39.68">
+    <name>The element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation " is less than the value of the element "DefinedBenefitPlanBenefitObligation"</name>
+    <description>Creates a pass case when the element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation" is less than the value of the element "DefinedBenefitPlanBenefitObligation"</description>
+    <data>
+      <schema>DQC_0009.39/CASE_68/testco-20141231_68.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.39/CASE_68/testco-20141231_68.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.39.67">
+    <name>The element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation " is greater than the value of the element "DefinedBenefitPlanBenefitObligation"</name>
+    <description>Creates a fail case when the element "DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation" is greater than the value of the element "DefinedBenefitPlanBenefitObligation"</description>
+    <data>
+      <schema>DQC_0009.39/CASE_67/testco-20141231_67.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.39/CASE_67/testco-20141231_67.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.39</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation</primaryElement>
+        <factValue>24000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 24000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.40.70">
+    <name>The element us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation is equal to the value of us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation in the same context.</name>
+    <description>Creates a pass case when is equal to the value of us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation in the same context.</description>
+    <data>
+      <schema>DQC_0009.40/CASE_70/testco-20141231_70.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.40/CASE_70/testco-20141231_70.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.40.69">
+    <name>The element us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation is greater than the value of us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation in the same context.</name>
+    <description>Creates a fail case when us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation is greater than the value of us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation in the same context.</description>
+    <data>
+      <schema>DQC_0009.40/CASE_69/testco-20141231_69.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.40/CASE_69/testco-20141231_69.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.40</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation</primaryElement>
+        <factValue>25000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 25000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.41.72">
+    <name>The value of plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
+    <description>Creates a pass case when plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.41/CASE_72/testco-20141231_72.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.41/CASE_72/testco-20141231_72.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.41.71">
+    <name>The value of plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
+    <description>Creates a fail case when plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.41/CASE_71/testco-20141231_71.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.41/CASE_71/testco-20141231_71.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.41</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets</primaryElement>
+        <factValue>27000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 27000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.42.74">
+    <name>The value of pension benefit obligation (PBO) is greater than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</name>
+    <description>Creates a fail case when pension benefit obligation (PBO) is less than or equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.42/CASE_74/testco-20141231_74.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.42/CASE_74/testco-20141231_74.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.42.73">
+    <name>The value of pension benefit obligation (PBO) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</name>
+    <description>Creates a fail case when pension benefit obligation (PBO) is less than or equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.42/CASE_73/testco-20141231_73.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.42/CASE_73/testco-20141231_73.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.42</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation</primaryElement>
+        <factValue>25000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 25000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.45.90">
+    <name>The value of the remaining contribution for the year by the employer is less than than the aggregate expected contributions for the entire year</name>
+    <description>Creates a pass case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is less than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
+    <data>
+      <schema>DQC_0009.45/CASE_90/testco-20141231_90.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.45/CASE_90/testco-20141231_90.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.45.89">
+    <name>The value of the remaining contribution for the year by the employer is greater than the aggregate expected contributions for the entire year</name>
+    <description>Creates a fail case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is greater than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
+    <data>
+      <schema>DQC_0009.45/CASE_89/testco-20141231_89.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.45/CASE_89/testco-20141231_89.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.45</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear</primaryElement>
+        <factValue>21000000</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 21000000, should be less than or equal to ${fact2.label}, ${fact2.value}. The value of the remaining contribution for the year should be less than or equal to the expected contributions for the entire year. \nThe properties of this us-gaap:DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear fact are:\nPeriod: 2014-12-31 - 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.46.92">
+    <name>The value of ABO is less than PBO</name>
+    <description>Creates a pass case when DefinedBenefitPlanAccumulatedBenefitObligation is less than the value of DefinedBenefitPlanBenefitObligation in the same context.</description>
+    <data>
+      <schema>DQC_0009.46/CASE_92/testco-20141231_92.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.46/CASE_92/testco-20141231_92.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.46.91">
+    <name>The value of ABO is greater than PBO</name>
+    <description>Creates a fail case when DefinedBenefitPlanAccumulatedBenefitObligation is greater than the value of DefinedBenefitPlanBenefitObligation in the same context.</description>
+    <data>
+      <schema>DQC_0009.46/CASE_91/testco-20141231_91.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.46/CASE_91/testco-20141231_91.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.46</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation</primaryElement>
+        <factValue>16000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 16000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} must be less than or equal to ${fact2.label}, as it does not include assumptions about future compensation levels. \nThe properties of this us-gaap:DefinedBenefitPlanAccumulatedBenefitObligation fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0009.47.94">
+    <name>The value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</name>
+    <description>Creates a pass case when the value of UndistributedEarningsOfForeignSubsidiaries is greater than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</description>
+    <data>
+      <schema>DQC_0009.47/CASE_94/testco-20141231_94.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.47/CASE_94/testco-20141231_94.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0009.47.93">
+    <name>The value of UndistributedEarningsOfForeignSubsidiaries is less than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</name>
+    <description>Creates a fail case when the value of UndistributedEarningsOfForeignSubsidiaries is less than the value of DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</description>
+    <data>
+      <schema>DQC_0009.47/CASE_93/testco-20141231_93.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.47/CASE_93/testco-20141231_93.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0009.47</error>
+      <result>
+        <primaryElement>us-gaap:DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries</primaryElement>
+        <factValue>96000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>iso4217:USD</unit>
+        <message>The value of ${fact1.label}, 96000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+</testcase>
