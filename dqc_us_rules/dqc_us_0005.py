@@ -13,7 +13,7 @@ _dei_pattern = (
 _CODE_NAME = 'DQC.US.0005'
 _RULE_VERSION = '1.1.0'
 
-_REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A'] # noqa
+_REPORT_TYPE_EXCLUSIONS = ['S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A']  # noqa
 
 
 def _get_end_of_period(val):
@@ -73,14 +73,14 @@ def validate_facts(val, *args, **kwargs):
     """
     This function validates facts. In other words this function checks to see
     if the facts contained in val are correctly implemented. Ignores these
-    checks with S-1 and S-11 type of documents.
+    checks with any forms in the _REPORT_TYPE_EXCLUSIONS list.
 
     :param val: val to check
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, throws errors when facts can't be validated
     :rtype: None
     """
-    # Ignore 0005 checks if this document is an S-1 or S-11
+    # Ignore checks if this document is in the REPORT_TYPE_EXCLUSIONS list.
     dei_list = facts.get_facts_dei(['DocumentType'], model_xbrl=val.modelXbrl)
     for dei in dei_list:
         is_an_excluded_report = any(
