@@ -7,7 +7,7 @@ import os
 
 
 _CODE_NAME = 'DQC.US.0009'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.0.0'
 
 
 def fact_gt_other_fact(val, *args, **kwargs):

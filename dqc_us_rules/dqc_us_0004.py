@@ -9,7 +9,7 @@ from arelle.ValidateXbrlCalcs import inferredDecimals, roundValue
 _ASSETS_CONCEPT = 'Assets'
 _LIABILITIES_CONCEPT = 'LiabilitiesAndStockholdersEquity'
 _CODE_NAME = 'DQC.US.0004'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.0.0'
 
 
 def assets_eq_liability_equity(val, *args, **kwargs):
