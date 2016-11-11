@@ -15,7 +15,7 @@ CHECK_DEI = [
     'EntityCentralIndexKey', 'EntityFilerCategory'
 ]
 _CODE_NAME = 'DQC.US.0006'
-_RULE_VERSION = '1.0'
+_RULE_VERSION = '1.0.0'
 _DEFAULT_DATE_BOUNDS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
