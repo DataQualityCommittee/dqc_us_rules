@@ -2,7 +2,7 @@
 
 The rules linked below are either available for public review or have been approved by the DQC.
 
-| Number | Short name | Status | Rule version <br />(see [Guidance](../README.md)) |
+| Number | Short name | Status | Rule version (see [Guidance](../README.md)) |
 | ----- | ----- | ----- | ----- |
 | [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 2.1.0 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 1.0.0 |
