@@ -1,0 +1,34 @@
+<!--FILENAME-->
+<!--DQC_0041-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0041</number>
+  <ruleIdentifier>DQC_0041</ruleIdentifier>
+  <description>This rule evaluates whether the dimension default is associated with a given axis in the company&#226;&#8364;&#8482;s extension taxonomy. Companies should not change the default member defined in the US GAAP Taxonomy for a given axis in their extension taxonomy.\n</description>
+  <ruleMessage>The dimension default defined for the axis in the US GAAP taxonomy should not be changed in a company extension taxonomy. The default for the ${axis_name} in the base taxonomy is ${axis_default_name}, but the default has been replaced with ${def_name}.</ruleMessage>
+  <variation id="DQC_0041.73.3050">
+    <name>Creates a fail case when a dimension default defined in the company extension is different from that defined in the US GAAP taxonomy.</name>
+    <description>The default for the InvestmentTypeAxis (in the us-gaap taxonomy) in the base taxonomy is InvestmentTypeCategorizationMember (in the us-gaap taxonomy), but has been replaced with InvestmentDomain (in the invest taxonomy).</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3050/testco-20151130.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3050/testco-20151130.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0041.73</error>
+      <result>
+        <primaryElement>us-gaap:InvestmentDomain</primaryElement>
+        <factValue />
+        <startDate />
+        <endDate />
+        <dimensions />
+        <unit></unit>
+        <message />
+      </result>
+    </results>
+  </variation>
+</testcase>
