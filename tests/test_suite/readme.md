@@ -125,5 +125,5 @@ Review the DQC-report.csv file to see the results of the test cases against the 
 
 
 © Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-See [License](../../License.md) for license information.  
-See [Patent Notice](../../PatentNotice.md) for patent infringement notice.
+See [License](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/License.md) for license information.  
+See [Patent Notice](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/PatentNotice.md) for patent infringement notice.
