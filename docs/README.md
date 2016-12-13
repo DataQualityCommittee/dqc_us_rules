@@ -19,5 +19,5 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 2.0.0 |
 
 © Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-See [License](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/License.md) for license information.  
-See [Patent Notice](https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/PatentNotice.md) for patent infringement notice.
+See [License](https://xbrl.us/dqc-license) for license information.  
+See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
