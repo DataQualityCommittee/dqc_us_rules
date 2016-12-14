@@ -1,4 +1,4 @@
-## XBRL US Data Quality Committee Rules
+# XBRL US Data Quality Committee Rules
 
 dqc_us_rules is a plugin for Arelle
 
