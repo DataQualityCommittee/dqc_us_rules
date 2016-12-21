@@ -1,6 +1,6 @@
 # (c) Copyright 2016, XBRL US Inc. All rights reserved.
-# See license.md for license information.
-# See PatentNotice.md for patent infringement notice.
+# See https://xbrl.us/dqc-license for license information.
+# See https://xbrl.us/dqc-patent for patent infringement notice.
 import os
 
 from .util import messages, neg_num
