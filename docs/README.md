@@ -18,6 +18,6 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 2.0.0 |
 
-© Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
+© Copyright 2015 - 2017, XBRL US Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
