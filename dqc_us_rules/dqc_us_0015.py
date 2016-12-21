@@ -1,6 +1,6 @@
 # (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
-# See https://xbrl.us/dqc-license for license information.
-# See https://xbrl.us/dqc-patent for patent infringement notice.
+# See license.md for license information.
+# See PatentNotice.md for patent infringement notice.
 import os
 import csv
 from .util import messages, neg_num
@@ -8,7 +8,7 @@ from .util import facts as facts_util
 from arelle.XmlValidate import VALID
 
 _CODE_NAME = 'DQC.US.0015'
-_RULE_VERSION = '2.2.0'
+_RULE_VERSION = '2.1.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',

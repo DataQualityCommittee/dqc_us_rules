@@ -12,12 +12,12 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 2.0.0 |
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 2.0.0 |
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 2.1.0 |
-| [DQC_US_0015_V3](DQC_US_0015/DQC_0015_V3.md) | Negative Values - Additions to Existing Rule DQC_0015 | Public Exposure Draft | 2.1.0 |
+| [DQC_US_0015_V3](DQC_0015_V3.md) | Negative Values - Additions to Existing Rule DQC_0015 | Public Exposure Draft | 2.1.0 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 2.0.0 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 2.0.0   |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 2.0.0 |
 
 © Copyright 2015 - 2016, XBRL US Inc. All rights reserved.   
-See [License](https://xbrl.us/dqc-license) for license information.  
-See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
+See [License](../License.md) for license information.  
+See [Patent Notice](../PatentNotice.md) for patent infringement notice.
