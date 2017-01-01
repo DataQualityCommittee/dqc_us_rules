@@ -51,8 +51,8 @@ ugtDocs = (
     },
 )
 
-def _create_config(val):
 
+def _create_config(val):
     """
     Creates the configs needed for dqc_us_0001
 
@@ -67,8 +67,6 @@ def _create_config(val):
     year = _EARLIEST_US_GAAP_YEAR
     config = _load_config(_DQC_01_AXIS_FILE)
     #Create a list of axes in the base config file
-
-
     axisMembers = set()  # receives list of members of above axes
 
     def traverseMembers(axisConceptName, parentModelObject, relName, ELR):
@@ -102,7 +100,6 @@ def _create_config(val):
             if axisConcept is not None:
                 traverseMembers(axis, axisConcept, XbrlConst.dimensionDomain, None)
                 working_json_file[axis]['defined_members'] = list(axisMembers)
-
         json_str = str(
             json.dumps(
                 working_json_file,
@@ -110,7 +107,6 @@ def _create_config(val):
         )
         saveFile(cntlr,config_json_file, json_str)
         dimLoadingInstance.close()
-
         del dimLoadingInstance
         year += 1
 
@@ -125,26 +121,22 @@ def run_checks(val, *args, **kwargs):
     :return: No direct return
     :rtype: None
     """
-
     checked_axes = defaultdict(list)
     ns_2016 = "http://fasb.org/us-gaap/2016-01-31"
     ns_2015 = "http://fasb.org/us-gaap/2015-01-31"
     ns_2014 = "http://fasb.org/us-gaap/2014-01-31"
-
     if ns_2016 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
             'DQC_US_0001',
             'dqc_0001_2016.json')
-
     elif ns_2015 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
             'DQC_US_0001',
             'dqc_0001_2015.json')
-
     elif ns_2014 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
             os.path.dirname(__file__),
