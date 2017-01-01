@@ -11,7 +11,7 @@ from collections import defaultdict
 from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '2.1.0'
+_RULE_VERSION = '2.1.1'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
