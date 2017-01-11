@@ -18,7 +18,7 @@ _DQC_01_AXIS_FILE = os.path.join(
     'DQC_US_0001',
     'dqc_0001.json'
 )
-_PARENT_CHILD_ARCROLE = 'http://www.xbE265rl.org/2003/arcrole/parent-child'
+_PARENT_CHILD_ARCROLE = 'http://www.xbrl.org/2003/arcrole/parent-child'
 _ADDITIONAL_AXES_KEY = 'additional_axes'
 _EXCLUDED_AXES_KEY = 'excluded_axes'
 _DEFINED_MEMBERS_KEY = 'defined_members'
