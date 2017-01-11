@@ -43,7 +43,7 @@ class TestRunChecks(unittest.TestCase):
         }
         value = Mock()
         value.modelXbrl = Mock(spec='arelle.modelXbrl')
-        value.modelXbrl.namespaceDocs = {"http://fasb.org/us-gaap/2016-01-31": "val1"}        
+        value.modelXbrl.namespaceDocs = {"http://fasb.org/us-gaap/2016-01-31": "val1"}  # noqa
         value.modelXbrl.roleTypes = ['trey', 'page']
         mock_qname = Mock(localName='foo')
         mock_qname2 = Mock(localName='mike')
@@ -51,7 +51,7 @@ class TestRunChecks(unittest.TestCase):
         mock_obj1 = Mock(qname=mock_qname)
         mock_obj2 = Mock(qname=mock_qname2)
         mock_obj3 = Mock(qname=mock_qname3)
-        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))
+        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))  # noqa
         mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
         mock_relationship_set_func = Mock(return_value=mock_relset_obj)
         value.modelXbrl.relationshipSet = mock_relationship_set_func
