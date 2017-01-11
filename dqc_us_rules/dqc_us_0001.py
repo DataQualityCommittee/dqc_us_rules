@@ -4,11 +4,11 @@
 import json
 import os
 from arelle.ModelDtsObject import ModelConcept
-from arelle import Cntlr, XbrlConst, ModelXbrl
+from arelle import XbrlConst, ModelXbrl
 from .util import facts, messages
 import itertools
 from collections import defaultdict
-from arelle.FileSource import openFileStream, openFileSource, saveFile
+from arelle.FileSource import saveFile
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '2.1.1'
@@ -18,7 +18,7 @@ _DQC_01_AXIS_FILE = os.path.join(
     'DQC_US_0001',
     'dqc_0001.json'
 )
-_PARENT_CHILD_ARCROLE = 'http://www.xbrl.org/2003/arcrole/parent-child'
+_PARENT_CHILD_ARCROLE = 'http://www.xbE265rl.org/2003/arcrole/parent-child'
 _ADDITIONAL_AXES_KEY = 'additional_axes'
 _EXCLUDED_AXES_KEY = 'excluded_axes'
 _DEFINED_MEMBERS_KEY = 'defined_members'
@@ -66,17 +66,20 @@ def _create_config(val):
     cntlr = val.modelXbrl.modelManager.cntlr
     year = _EARLIEST_US_GAAP_YEAR
     config = _load_config(_DQC_01_AXIS_FILE)
-    #Create a list of axes in the base config file
-    axisMembers = set()  # receives list of members of above axes
+    # Create a list of axes in the base config file
+    axisMembers = set()
+    # receives list of members of above axes
 
-    def traverseMembers(axisConceptName, parentModelObject, relName, ELR):
-        for rel in dimLoadingInstance.relationshipSet(relName, ELR).fromModelObject(parentModelObject):
+    def traverseMembers(axisConceptName, parentModelObject,
+                        relName, ELR):
+        for rel in dimLoadingInstance.relationshipSet(relName, ELR).fromModelObject(parentModelObject):  # noqa
             if rel.isUsable:
                 axisMembers.add(rel.toModelObject.qname.localName)
-                traverseMembers(axisConceptName, rel.toModelObject, XbrlConst.domainMember, rel.targetRole)
+                traverseMembers(axisConceptName, rel.toModelObject,
+                                XbrlConst.domainMember, rel.targetRole)
 
     for ugt in ugtDocs:
-        #create taxonomy specific name
+        # create taxonomy specific name
         config_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
@@ -84,28 +87,29 @@ def _create_config(val):
             'dqc_0001_{}.json'.format(str(year))
         )
         # copy the base config file
-        working_json_file=config
+        working_json_file = config
         ugtEntryXsd = ugt["entryXsd"]
-        priorValidateDisclosureSystem = val.modelXbrl.modelManager.validateDisclosureSystem
+        priorValidateDisclosureSystem = val.\
+            modelXbrl.modelManager.validateDisclosureSystem
         val.modelXbrl.modelManager.validateDisclosureSystem = False
-        dimLoadingInstance = ModelXbrl.load(val.modelXbrl.modelManager,
-                                              openFileSource(ugtEntryXsd, cntlr),
-                                              _("built us-gaap member cache"))
-        val.modelXbrl.modelManager.validateDisclosureSystem = priorValidateDisclosureSystem
+        dimLoadingInstance = ModelXbrl.load(val.modelXbrl.modelManager, openFileSource(  # noqa
+            ugtEntryXsd, cntlr),
+                                              ("built us-gaap member cache"))
+        val.modelXbrl.modelManager.validateDisclosureSystem = priorValidateDisclosureSystem  # noqa
 
         for axis, info in config.items():
             axisMembers.clear()  # clear list of members
             info['defined_members'] = defaultdict(set)
             axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
             if axisConcept is not None:
-                traverseMembers(axis, axisConcept, XbrlConst.dimensionDomain, None)
+                traverseMembers(axis, axisConcept, XbrlConst.dimensionDomain, None)  # noqa
                 working_json_file[axis]['defined_members'] = list(axisMembers)
         json_str = str(
             json.dumps(
                 working_json_file,
                 ensure_ascii=False, indent=4)
         )
-        saveFile(cntlr,config_json_file, json_str)
+        saveFile(cntlr, config_json_file, json_str)
         dimLoadingInstance.close()
         del dimLoadingInstance
         year += 1
@@ -122,33 +126,7 @@ def run_checks(val, *args, **kwargs):
     :rtype: None
     """
     checked_axes = defaultdict(list)
-    ns_2016 = "http://fasb.org/us-gaap/2016-01-31"
-    ns_2015 = "http://fasb.org/us-gaap/2015-01-31"
-    ns_2014 = "http://fasb.org/us-gaap/2014-01-31"
-    if ns_2016 in val.modelXbrl.namespaceDocs.keys():
-        config_json_file = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001_2016.json')
-    elif ns_2015 in val.modelXbrl.namespaceDocs.keys():
-        config_json_file = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001_2015.json')
-    elif ns_2014 in val.modelXbrl.namespaceDocs.keys():
-        config_json_file = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001_2015.json')
-    else:
-        config_json_file = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001.json')
+    config_json_file = _determine_namespace(val)
 
     config = _load_config(config_json_file)
     if not config:
@@ -176,6 +154,49 @@ def run_checks(val, *args, **kwargs):
                     role,
                     checked_axes
                 )
+
+
+def _determine_namespace(val):
+    """
+    Determines which json file to use based off of the
+    namespace of the filing.
+
+    :param val: val from which to determine namespace
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: Name of config file to use
+    :rtype: String
+    """
+    NS_2016 = "http://fasb.org/us-gaap/2016-01-31"
+    NS_2015 = "http://fasb.org/us-gaap/2015-01-31"
+    NS_2014 = "http://fasb.org/us-gaap/2014-01-31"
+    RESOURCE_DIR = 'resources'
+    RULE = 'DQC_US_0001'
+
+    if NS_2016 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2016.json')
+    elif NS_2015 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2015.json')
+    elif NS_2014 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2015.json')
+    else:
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001.json')
+    return config_json_file
 
 
 def _run_axis_checks(axis, axis_key, axis_config, relset, val, role,
@@ -347,7 +368,6 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
                           checked_axes):
     """
     Check extension members under the given axis.
-
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
     :param axis_key: The axis name to check
@@ -515,4 +535,3 @@ __pluginInfo__ = {
     # Mount points
     'Validate.XBRL.Finally': run_checks,
 }
-

@@ -41,31 +41,28 @@ class TestRunChecks(unittest.TestCase):
             'additional_axes': {},
             'rule_index': 66
         }
+        value = Mock()
+        value.modelXbrl = Mock(spec='arelle.modelXbrl')
+        value.modelXbrl.namespaceDocs = {"http://fasb.org/us-gaap/2016-01-31": "val1"}        
+        value.modelXbrl.roleTypes = ['trey', 'page']
         mock_qname = Mock(localName='foo')
         mock_qname2 = Mock(localName='mike')
         mock_qname3 = Mock(localName='fish')
         mock_obj1 = Mock(qname=mock_qname)
         mock_obj2 = Mock(qname=mock_qname2)
         mock_obj3 = Mock(qname=mock_qname3)
-        mock_frommodelobj = Mock(
-            return_value=(mock_obj1, mock_obj2, mock_obj3)
-        )
+        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))
         mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
         mock_relationship_set_func = Mock(return_value=mock_relset_obj)
-        mock_model_xbrl = Mock(
-            roleTypes=['trey', 'page'],
-            relationshipSet=mock_relationship_set_func
-        )
-        val = Mock(modelXbrl=mock_model_xbrl)
-
-        dqc_us_0001.run_checks(val)
+        value.modelXbrl.relationshipSet = mock_relationship_set_func
+        dqc_us_0001.run_checks(value)
         self.assertTrue(checks.called)
         checks.assert_called_with(
             mock_obj1,
             'foo',
             expected_config,
             mock_relset_obj,
-            val,
+            value,
             'page',
             defaultdict(list)
         )
