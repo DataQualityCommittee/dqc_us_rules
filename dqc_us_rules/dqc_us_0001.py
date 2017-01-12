@@ -89,12 +89,12 @@ def _create_config(val):
         # copy the base config file
         working_json_file = config
         ugtEntryXsd = ugt["entryXsd"]
-        priorValidateDisclosureSystem = val.\
-            modelXbrl.modelManager.validateDisclosureSystem
+        priorValidateDisclosureSystem = val.modelXbrl.modelManager.validateDisclosureSystem  # noqa
         val.modelXbrl.modelManager.validateDisclosureSystem = False
         dimLoadingInstance = ModelXbrl.load(
             val.modelXbrl.modelManager, FileSource(ugtEntryXsd, cntlr),
-            ("built us-gaap member cache"))
+            ("built us-gaap member cache")
+        )
         val.modelXbrl.modelManager.validateDisclosureSystem = priorValidateDisclosureSystem  # noqa
 
         for axis, info in config.items():
