@@ -3,12 +3,12 @@
 # See PatentNotice.md for patent infringement notice.
 import json
 import os
-from arelle.ModelDtsObject import ModelConcept
+from arelle import ModelDtsObject
 from arelle import XbrlConst, ModelXbrl
 from .util import facts, messages
 import itertools
 from collections import defaultdict
-from arelle.FileSource import saveFile
+from arelle import FileSource
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '2.1.1'
@@ -92,9 +92,9 @@ def _create_config(val):
         priorValidateDisclosureSystem = val.\
             modelXbrl.modelManager.validateDisclosureSystem
         val.modelXbrl.modelManager.validateDisclosureSystem = False
-        dimLoadingInstance = ModelXbrl.load(val.modelXbrl.modelManager, openFileSource(  # noqa
-            ugtEntryXsd, cntlr),
-                                              ("built us-gaap member cache"))
+        dimLoadingInstance = ModelXbrl.load(
+            val.modelXbrl.modelManager, FileSource(ugtEntryXsd, cntlr),
+            ("built us-gaap member cache"))
         val.modelXbrl.modelManager.validateDisclosureSystem = priorValidateDisclosureSystem  # noqa
 
         for axis, info in config.items():
@@ -107,9 +107,10 @@ def _create_config(val):
         json_str = str(
             json.dumps(
                 working_json_file,
-                ensure_ascii=False, indent=4)
+                ensure_ascii=False, indent=4
+            )
         )
-        saveFile(cntlr, config_json_file, json_str)
+        FileSource.saveFile(cntlr, config_json_file, json_str)
         dimLoadingInstance.close()
         del dimLoadingInstance
         year += 1
@@ -177,25 +178,29 @@ def _determine_namespace(val):
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001_2016.json')
+             'dqc_0001_2016.json'
+        )
     elif NS_2015 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001_2015.json')
+             'dqc_0001_2015.json'
+        )
     elif NS_2014 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001_2015.json')
+             'dqc_0001_2015.json'
+        )
     else:
         config_json_file = os.path.join(
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001.json')
+             'dqc_0001.json'
+        )
     return config_json_file
 
 
@@ -459,7 +464,7 @@ def _is_concept(concept):
     :rtype: bool
     """
     return (
-        isinstance(concept, ModelConcept) and
+        isinstance(concept, ModelDtsObject.ModelConcept) and
         concept.qname
     )
 
