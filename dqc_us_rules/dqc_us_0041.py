@@ -1,6 +1,6 @@
-# (c) Copyright 2016, XBRL US Inc. All rights reserved.
-# See license.md for license information.
-# See PatentNotice.md for patent infringement notice.
+# (c) Copyright 2016 - 2017, XBRL US Inc. All rights reserved.
+# See https://xbrl.us/dqc-license for license information.
+# See https://xbrl.us/dqc-patent for patent infringement notice.
 from .util import messages
 
 import json
