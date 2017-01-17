@@ -18,6 +18,7 @@ class TestRunChecks(unittest.TestCase):
         """
         Tests that we only check on the axes specified in the config.
         """
+
         config.return_value = {
             "foo": {
                 "rule_index": 66,
@@ -48,17 +49,17 @@ class TestRunChecks(unittest.TestCase):
         mock_qname = Mock(localName='foo')
         mock_qname2 = Mock(localName='mike')
         mock_qname3 = Mock(localName='fish')
-        mock_obj1 = Mock(qname=mock_qname)
-        mock_obj2 = Mock(qname=mock_qname2)
-        mock_obj3 = Mock(qname=mock_qname3)
-        mock_frommodelobj = Mock(return_value=(mock_obj1, mock_obj2, mock_obj3))  # noqa
+        mock_ob1 = Mock(qname=mock_qname)
+        mock_ob2 = Mock(qname=mock_qname2)
+        mock_ob3 = Mock(qname=mock_qname3)
+        mock_frommodelobj = Mock(return_value=(mock_ob1, mock_ob2, mock_ob3))
         mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
         mock_relationship_set_func = Mock(return_value=mock_relset_obj)
         value.modelXbrl.relationshipSet = mock_relationship_set_func
         dqc_us_0001.run_checks(value)
         self.assertTrue(checks.called)
         checks.assert_called_with(
-            mock_obj1,
+            mock_ob1,
             'foo',
             expected_config,
             mock_relset_obj,

@@ -8,7 +8,7 @@ from arelle import XbrlConst, ModelXbrl
 from .util import facts, messages
 import itertools
 from collections import defaultdict
-from arelle import FileSource
+from arelle.FileSource import saveFile, openFileSource
 
 _CODE_NAME = 'DQC.US.0001'
 _RULE_VERSION = '3.0.0'
@@ -29,6 +29,12 @@ _UGT_FACT_KEY = 'ugt_fact'
 _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 _EARLIEST_US_GAAP_YEAR = 2014
+_CONFIG_JSON_FILE = os.path.join(
+            os.path.dirname(__file__),
+            'resources',
+            'DQC_US_0001',
+            'dqc_0001.json'
+        )
 
 ugtDocs = (
     {
@@ -52,6 +58,39 @@ ugtDocs = (
 )
 
 
+def _tr_mem(val,
+            ugt,
+            parent_model_object,
+            rel_name,
+            elr):
+    """
+    Walks the taxonomy for a given axis
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param ugt: dict of taxonomies and their entirance points
+    :type ugt: dict
+    :param parent_model_object: model object for Axis
+    :type parent_model_object:class:'~arelle.ModelDTSObject.ModelConcept'
+    :param rel_name: The role for the relationship
+    :type rel_name: str
+    :param elr: Linkrole
+    :type elr: str
+    :return: list of members for the axis specified
+    :rtype: dict
+    """
+    axMem = set()
+    cntlr = val.modelXbrl.modelManager.cntlr
+    ugt_entry_xsd = ugt["entryXsd"]
+    dm_ld_inst = ModelXbrl.load(
+        val.modelXbrl.modelManager, openFileSource(ugt_entry_xsd, cntlr),
+        ("built us-gaap member cache"))
+    rels = dm_ld_inst.relationshipSet(rel_name,
+                                      elr).fromModelObject(parent_model_object)
+    for rel in rels:
+        if rel.isUsable:
+            axMem.add(rel.toModelObject.qname.localName)
+
+
 def _create_config(val):
     """
     Creates the configs needed for dqc_us_0001
@@ -70,14 +109,6 @@ def _create_config(val):
     axisMembers = set()
     # receives list of members of above axes
 
-    def traverseMembers(axisConceptName, parentModelObject,
-                        relName, ELR):
-        for rel in dimLoadingInstance.relationshipSet(relName, ELR).fromModelObject(parentModelObject):  # noqa
-            if rel.isUsable:
-                axisMembers.add(rel.toModelObject.qname.localName)
-                traverseMembers(axisConceptName, rel.toModelObject,
-                                XbrlConst.domainMember, rel.targetRole)
-
     for ugt in ugtDocs:
         # create taxonomy specific name
         config_json_file = os.path.join(
@@ -89,20 +120,25 @@ def _create_config(val):
         # copy the base config file
         working_json_file = config
         ugtEntryXsd = ugt["entryXsd"]
-        priorValidateDisclosureSystem = val.modelXbrl.modelManager.validateDisclosureSystem  # noqa
+        prior_vds = val.modelXbrl.modelManager.validateDisclosureSystem
         val.modelXbrl.modelManager.validateDisclosureSystem = False
         dimLoadingInstance = ModelXbrl.load(
-            val.modelXbrl.modelManager, FileSource(ugtEntryXsd, cntlr),
+            val.modelXbrl.modelManager, openFileSource(ugtEntryXsd, cntlr),
             ("built us-gaap member cache")
         )
-        val.modelXbrl.modelManager.validateDisclosureSystem = priorValidateDisclosureSystem  # noqa
+        val.modelXbrl.modelManager.validateDisclosureSystem = prior_vds
 
         for axis, info in config.items():
             axisMembers.clear()  # clear list of members
             info['defined_members'] = defaultdict(set)
             axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
             if axisConcept is not None:
-                traverseMembers(axis, axisConcept, XbrlConst.dimensionDomain, None)  # noqa
+                _tr_mem(val,
+                        ugt,
+                        axisConcept,
+                        XbrlConst.dimensionDomain,
+                        None
+                        )
                 working_json_file[axis]['defined_members'] = list(axisMembers)
         json_str = str(
             json.dumps(
@@ -110,7 +146,7 @@ def _create_config(val):
                 ensure_ascii=False, indent=4
             )
         )
-        FileSource.saveFile(cntlr, config_json_file, json_str)
+        saveFile(cntlr, config_json_file, json_str)
         dimLoadingInstance.close()
         del dimLoadingInstance
         year += 1
@@ -128,7 +164,6 @@ def run_checks(val, *args, **kwargs):
     """
     checked_axes = defaultdict(list)
     config_json_file = _determine_namespace(val)
-
     config = _load_config(config_json_file)
     if not config:
         _create_config(val)
@@ -192,7 +227,7 @@ def _determine_namespace(val):
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001_2015.json'
+             'dqc_0001_2014.json'
         )
     else:
         config_json_file = os.path.join(
