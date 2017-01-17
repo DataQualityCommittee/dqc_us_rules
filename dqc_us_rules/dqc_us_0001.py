@@ -3,13 +3,15 @@
 # See https://xbrl.us/dqc-patent for patent infringement notice.
 import json
 import os
-from arelle.ModelDtsObject import ModelConcept
+from arelle import ModelDtsObject
+from arelle import XbrlConst, ModelXbrl
 from .util import facts, messages
 import itertools
 from collections import defaultdict
+from arelle.FileSource import saveFile, openFileSource
 
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '2.1.0'
+_RULE_VERSION = '2.1.1'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -26,6 +28,128 @@ _RULE_INDEX_KEY = 'rule_index'
 _UGT_FACT_KEY = 'ugt_fact'
 _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
+_EARLIEST_US_GAAP_YEAR = 2014
+_CONFIG_JSON_FILE = os.path.join(
+            os.path.dirname(__file__),
+            'resources',
+            'DQC_US_0001',
+            'dqc_0001.json'
+        )
+
+ugtDocs = (
+    {
+        "year": 2014,
+        "namespace": "http://fasb.org/us-gaap/2014-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
+    },
+    {
+        "year": 2015,
+        "namespace": "http://fasb.org/us-gaap/2015-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
+    },
+    {
+        "year": 2016,
+        "namespace": "http://fasb.org/us-gaap/2016-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
+    },
+)
+
+
+def _tr_mem(val,
+            ugt,
+            parent_model_object,
+            rel_name,
+            elr):
+    """
+    Walks the taxonomy for a given axis
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :param ugt: dict of taxonomies and their entirance points
+    :type ugt: dict
+    :param parent_model_object: model object for Axis
+    :type parent_model_object:class:'~arelle.ModelDTSObject.ModelConcept'
+    :param rel_name: The role for the relationship
+    :type rel_name: str
+    :param elr: Linkrole
+    :type elr: str
+    :return: list of members for the axis specified
+    :rtype: dict
+    """
+    axMem = set()
+    cntlr = val.modelXbrl.modelManager.cntlr
+    ugt_entry_xsd = ugt["entryXsd"]
+    dm_ld_inst = ModelXbrl.load(
+        val.modelXbrl.modelManager, openFileSource(ugt_entry_xsd, cntlr),
+        ("built us-gaap member cache"))
+    rels = dm_ld_inst.relationshipSet(rel_name,
+                                      elr).fromModelObject(parent_model_object)
+    for rel in rels:
+        if rel.isUsable:
+            axMem.add(rel.toModelObject.qname.localName)
+
+
+def _create_config(val):
+    """
+    Creates the configs needed for dqc_us_0001
+
+    :param val: ValidateXbrl needed in order to save the cache
+    :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
+    :return: no explicit return but creates and saves configs in
+        dqc_us_rule\resources\DQC_US_0001
+    :rtype: None
+    """
+    val.ugtNamespace = None
+    cntlr = val.modelXbrl.modelManager.cntlr
+    year = _EARLIEST_US_GAAP_YEAR
+    config = _load_config(_DQC_01_AXIS_FILE)
+    # Create a list of axes in the base config file
+    axisMembers = set()
+    # receives list of members of above axes
+
+    for ugt in ugtDocs:
+        # create taxonomy specific name
+        config_json_file = os.path.join(
+            os.path.dirname(__file__),
+            'resources',
+            'DQC_US_0001',
+            'dqc_0001_{}.json'.format(str(year))
+        )
+        # copy the base config file
+        working_json_file = config
+        ugtEntryXsd = ugt["entryXsd"]
+        prior_vds = val.modelXbrl.modelManager.validateDisclosureSystem
+        val.modelXbrl.modelManager.validateDisclosureSystem = False
+        dimLoadingInstance = ModelXbrl.load(
+            val.modelXbrl.modelManager, openFileSource(ugtEntryXsd, cntlr),
+            ("built us-gaap member cache")
+        )
+        val.modelXbrl.modelManager.validateDisclosureSystem = prior_vds
+
+        for axis, info in config.items():
+            axisMembers.clear()  # clear list of members
+            info['defined_members'] = defaultdict(set)
+            axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
+            if axisConcept is not None:
+                _tr_mem(val,
+                        ugt,
+                        axisConcept,
+                        XbrlConst.dimensionDomain,
+                        None
+                        )
+                working_json_file[axis]['defined_members'] = list(axisMembers)
+        json_str = str(
+            json.dumps(
+                working_json_file,
+                ensure_ascii=False, indent=4
+            )
+        )
+        saveFile(cntlr, config_json_file, json_str)
+        dimLoadingInstance.close()
+        del dimLoadingInstance
+        year += 1
 
 
 def run_checks(val, *args, **kwargs):
@@ -39,7 +163,11 @@ def run_checks(val, *args, **kwargs):
     :rtype: None
     """
     checked_axes = defaultdict(list)
-    config = _load_config(_DQC_01_AXIS_FILE)
+    config_json_file = _determine_namespace(val)
+    config = _load_config(config_json_file)
+    if not config:
+        _create_config(val)
+
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
             relset = val.modelXbrl.relationshipSet(
@@ -62,6 +190,53 @@ def run_checks(val, *args, **kwargs):
                     role,
                     checked_axes
                 )
+
+
+def _determine_namespace(val):
+    """
+    Determines which json file to use based off of the
+    namespace of the filing.
+
+    :param val: val from which to determine namespace
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: Name of config file to use
+    :rtype: String
+    """
+    NS_2016 = "http://fasb.org/us-gaap/2016-01-31"
+    NS_2015 = "http://fasb.org/us-gaap/2015-01-31"
+    NS_2014 = "http://fasb.org/us-gaap/2014-01-31"
+    RESOURCE_DIR = 'resources'
+    RULE = 'DQC_US_0001'
+
+    if NS_2016 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2016.json'
+        )
+    elif NS_2015 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2015.json'
+        )
+    elif NS_2014 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001_2014.json'
+        )
+    else:
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0001.json'
+        )
+    return config_json_file
 
 
 def _run_axis_checks(axis, axis_key, axis_config, relset, val, role,
@@ -233,7 +408,6 @@ def _run_extension_checks(axis, axis_key, axis_config, relset, val, role,
                           checked_axes):
     """
     Check extension members under the given axis.
-
     :param axis: The axis to check
     :type axis: :class:'~arelle.ModelDTSObject.ModelConcept'
     :param axis_key: The axis name to check
@@ -325,7 +499,7 @@ def _is_concept(concept):
     :rtype: bool
     """
     return (
-        isinstance(concept, ModelConcept) and
+        isinstance(concept, ModelDtsObject.ModelConcept) and
         concept.qname
     )
 
@@ -387,9 +561,12 @@ def _load_config(axis_file):
     :return: A map of the config file.
     :rtype: dict
     """
+    try:
+        config = open(axis_file)
+    except FileNotFoundError:
+        return False
+    return json.load(config)
 
-    with open(axis_file) as config:
-        return json.load(config)
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
