@@ -227,7 +227,7 @@ def _determine_namespace(val):
              os.path.dirname(__file__),
              RESOURCE_DIR,
              RULE,
-             'dqc_0001_2015.json'
+             'dqc_0001_2014.json'
         )
     else:
         config_json_file = os.path.join(
