@@ -31,11 +31,11 @@ _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 _EARLIEST_US_GAAP_YEAR = 2014
 _CONFIG_JSON_FILE = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001.json'
-        )
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0001',
+    'dqc_0001.json'
+)
 
 _UGT_DOCS = (
     {
@@ -130,12 +130,11 @@ def _create_config(val):
             info['defined_members'] = defaultdict(set)
             axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
             if axisConcept is not None:
-                _tr_mem(val,
-                        ugt,
-                        axisConcept,
-                        XbrlConst.dimensionDomain,
-                        None
-                        )
+                _tr_mem(
+                    val, ugt, axisConcept,
+                    XbrlConst.dimensionDomain, None
+                )
+
                 working_json_file[axis]['defined_members'] = list(axisMembers)
         json_str = str(
             json.dumps(
