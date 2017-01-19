@@ -84,16 +84,14 @@ def _tr_mem(val,
     :return: set of members for the axis specified
     :rtype: set
     """
-    cntlr = val.modelXbrl.modelManager.cntlr
-    ugt_entry_xsd = ugt["entryXsd"]
     rels = dm_ld_inst.relationshipSet(rel_name,
                                       elr).fromModelObject(parent_model_object)
     for rel in rels:
         if rel.isUsable:
             ax_mem.add(rel.toModelObject.qname.localName)
             _tr_mem(val, ugt, dm_ld_inst,
-                rel.toModelObject,
-                XbrlConst.domainMember, rel.targetRole, ax_mem)
+                    rel.toModelObject,
+                    XbrlConst.domainMember, rel.targetRole, ax_mem)
 
     return ax_mem
 
@@ -113,8 +111,6 @@ def _create_config(val):
     year = _EARLIEST_US_GAAP_YEAR
     config = _load_config(_DQC_01_AXIS_FILE)
     # Create a list of axes in the base config file
-    axisMembers = set()
-    # receives list of members of above axes
 
     for ugt in ugtDocs:
         # create taxonomy specific name
