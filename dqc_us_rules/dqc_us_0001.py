@@ -10,8 +10,9 @@ import itertools
 from collections import defaultdict
 from arelle.FileSource import saveFile, openFileSource
 
+
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '2.1.1'
+_RULE_VERSION = '3.0.0'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -30,39 +31,33 @@ _NO_FACT_KEY = 'no_fact'
 _EXT_FACT_KEY = 'ext_fact'
 _EARLIEST_US_GAAP_YEAR = 2014
 _CONFIG_JSON_FILE = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0001',
-            'dqc_0001.json'
-        )
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0001',
+    'dqc_0001.json'
+)
 
-ugtDocs = (
+_UGT_DOCS = (
     {
         "year": 2014,
         "namespace": "http://fasb.org/us-gaap/2014-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/elts/us-gaap-doc-2014-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/us-gaap-2014-01-31.zip/us-gaap-2014-01-31/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
-    },
-    {
+    }, {
         "year": 2015,
         "namespace": "http://fasb.org/us-gaap/2015-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
-    },
-    {
+    }, {
         "year": 2016,
         "namespace": "http://fasb.org/us-gaap/2016-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
-    },
+    }
 )
 
 
-def _tr_mem(val,
-            ugt,
-            parent_model_object,
-            rel_name,
-            elr):
+def _tr_mem(val, ugt, parent_model_object, rel_name, elr):
     """
     Walks the taxonomy for a given axis
     :param val: val from which to gather end dates
@@ -83,9 +78,11 @@ def _tr_mem(val,
     ugt_entry_xsd = ugt["entryXsd"]
     dm_ld_inst = ModelXbrl.load(
         val.modelXbrl.modelManager, openFileSource(ugt_entry_xsd, cntlr),
-        ("built us-gaap member cache"))
-    rels = dm_ld_inst.relationshipSet(rel_name,
-                                      elr).fromModelObject(parent_model_object)
+        ("built us-gaap member cache")
+    )
+    rels = dm_ld_inst.relationshipSet(
+        rel_name, elr
+    ).fromModelObject(parent_model_object)
     for rel in rels:
         if rel.isUsable:
             axMem.add(rel.toModelObject.qname.localName)
@@ -109,7 +106,7 @@ def _create_config(val):
     axisMembers = set()
     # receives list of members of above axes
 
-    for ugt in ugtDocs:
+    for ugt in _UGT_DOCS:
         # create taxonomy specific name
         config_json_file = os.path.join(
             os.path.dirname(__file__),
@@ -133,12 +130,11 @@ def _create_config(val):
             info['defined_members'] = defaultdict(set)
             axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
             if axisConcept is not None:
-                _tr_mem(val,
-                        ugt,
-                        axisConcept,
-                        XbrlConst.dimensionDomain,
-                        None
-                        )
+                _tr_mem(
+                    val, ugt, axisConcept,
+                    XbrlConst.dimensionDomain, None
+                )
+
                 working_json_file[axis]['defined_members'] = list(axisMembers)
         json_str = str(
             json.dumps(
