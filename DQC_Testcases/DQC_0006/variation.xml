@@ -30,15 +30,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0006.14.2618">
-    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will not fire as the document is a 10-KT/A.</name>
-    <description>Creates a pass case where the document focus is FY but the document period end date as a context that is different than the required context, however the rule does not fire because of the document type which is a 10-KT/A.</description>
-    <data>
-      <schema>DQC_0006.14/CASE_2618/testco-20141231_2618.xsd</schema>
-      <instance readMeFirst="true">DQC_0006.14/CASE_2618/testco-20141231_2618.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0036.1" />
-  </variation>
   <variation id="DQC_0006.14.2604">
     <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will not fire as the document is a 10-KT.</name>
     <description>Creates a pass case where the document focus is FY but the document period end date as a context that is different than the required context, however the rule does not fire because of the document type which is a 10-KT.</description>
@@ -48,40 +39,21 @@
     </data>
     <results blockedMessageCodes="DQC.US.0036.1" />
   </variation>
-  <variation id="DQC_0006.14.2613">
-    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will not fire as the document period end is 20 days difference.</name>
-    <description>Creates a pass case where the document focus is FY but the document period end date as a context that is different than the required context, however the rule does not fire because the difference does not exceed 25 days.</description>
-    <data>
-      <schema>DQC_0006.14/CASE_2613/testco-20141231_2613.xsd</schema>
-      <instance readMeFirst="true">DQC_0006.14/CASE_2613/testco-20141231_2613.xml</instance>
-    </data>
-    <results />
-  </variation>
-  <variation id="DQC_0006.14.2614">
-    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will fire as the document period end is 30 days difference.</name>
-    <description>Creates a fail case where the document focus is FY but the document period end date as a context that is different than the required context, the rule fires because the difference is greater than 25 days and is 30 days.</description>
-    <data>
-      <schema>DQC_0006.14/CASE_2614/testco-20141231_2614.xsd</schema>
-      <instance readMeFirst="true">DQC_0006.14/CASE_2614/testco-20141231_2614.xml</instance>
-    </data>
-    <results>
-      <error severity="error" count="1">DQC.US.0006.14</error>
-      <result>
-        <primaryElement>dei:DocumentFiscalPeriodFocus</primaryElement>
-        <factValue>FY</factValue>
-        <startDate>2014-01-01</startDate>
-        <endDate>2014-12-31</endDate>
-        <dimensions />
-        <message>The number of days, ${fact1.period.durationDays} in the date range reported for ${fact1.label}, ${fact1.period.startDate} to ${fact1.period.endDate} is not consistent with the ${dei:DocumentFiscalPeriodFocus.fact.label} with a value of ${dei:DocumentFiscalPeriodFocus.fact.value}. \nThe properties of this dei:DocumentFiscalPeriodFocus fact are:\nPeriod: 2014-12-31 - 2014-12-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
-      </result>
-    </results>
-  </variation>
   <variation id="DQC_0006.14.2617">
     <name>The Fiscal Period is Q1 but the element document period end date has a different context, however the rule will not fire as the document is a 10-QT/A.</name>
     <description>The Fiscal Period is Q1 but the element document period end date has a different context, however the rule will not fire as the document is a 10-QT/A.</description>
     <data>
       <schema>DQC_0006.14/CASE_2617/testco-20141231_2617.xsd</schema>
       <instance readMeFirst="true">DQC_0006.14/CASE_2617/testco-20141231_2617.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0036.1" />
+  </variation>
+  <variation id="DQC_0006.14.2618">
+    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will not fire as the document is a 10-KT/A.</name>
+    <description>Creates a pass case where the document focus is FY but the document period end date as a context that is different than the required context, however the rule does not fire because of the document type which is a 10-KT/A.</description>
+    <data>
+      <schema>DQC_0006.14/CASE_2618/testco-20141231_2618.xsd</schema>
+      <instance readMeFirst="true">DQC_0006.14/CASE_2618/testco-20141231_2618.xml</instance>
     </data>
     <results blockedMessageCodes="DQC.US.0036.1" />
   </variation>
@@ -113,6 +85,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0006.14.2613">
+    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will not fire as the document period end is 20 days difference.</name>
+    <description>Creates a pass case where the document focus is FY but the document period end date as a context that is different than the required context, however the rule does not fire because the difference does not exceed 25 days.</description>
+    <data>
+      <schema>DQC_0006.14/CASE_2613/testco-20141231_2613.xsd</schema>
+      <instance readMeFirst="true">DQC_0006.14/CASE_2613/testco-20141231_2613.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0006.14.5">
     <name>Context date of the element DocumentPeriodEndDate is the same as the value of DocumentPeriodEndDate.</name>
     <description>Creates a pass case when the period end date on the context of the element DocumentPeriodEndDate is the same as the value of the element DocumentPeriodEndDate</description>
@@ -121,5 +102,24 @@
       <instance readMeFirst="true">DQC_0006.14/CASE_5/testco-20141231_5.xml</instance>
     </data>
     <results />
+  </variation>
+  <variation id="DQC_0006.14.2614">
+    <name>The Fiscal Period is FY but the element document period end date has a different context, however the rule will fire as the document period end is 30 days difference.</name>
+    <description>Creates a fail case where the document focus is FY but the document period end date as a context that is different than the required context, the rule fires because the difference is greater than 25 days and is 30 days.</description>
+    <data>
+      <schema>DQC_0006.14/CASE_2614/testco-20141231_2614.xsd</schema>
+      <instance readMeFirst="true">DQC_0006.14/CASE_2614/testco-20141231_2614.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0006.14</error>
+      <result>
+        <primaryElement>dei:DocumentFiscalPeriodFocus</primaryElement>
+        <factValue>FY</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <message>The number of days, ${fact1.period.durationDays} in the date range reported for ${fact1.label}, ${fact1.period.startDate} to ${fact1.period.endDate} is not consistent with the ${dei:DocumentFiscalPeriodFocus.fact.label} with a value of ${dei:DocumentFiscalPeriodFocus.fact.value}. \nThe properties of this dei:DocumentFiscalPeriodFocus fact are:\nPeriod: 2014-12-31 - 2014-12-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
   </variation>
 </testcase>
