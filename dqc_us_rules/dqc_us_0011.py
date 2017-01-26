@@ -9,7 +9,7 @@ from arelle.ValidateXbrlCalcs import roundFact
 
 
 _CODE_NAME = 'DQC.US.0011'
-_RULE_VERSION = '2.1.1'
+_RULE_VERSION = '3.1.0'
 _DQC_11_ITEMS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
