@@ -1,6 +1,6 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
-# See license.md for license information.
-# See PatentNotice.md for patent infringement notice.
+# (c) Copyright 2015 - 2017, XBRL US Inc. All rights reserved.
+# See https://xbrl.us/dqc-license for license information.
+# See https://xbrl.us/dqc-patent for patent infringement notice.
 import unittest
 from unittest.mock import Mock, patch
 from arelle.ModelDtsObject import ModelConcept
@@ -18,6 +18,7 @@ class TestRunChecks(unittest.TestCase):
         """
         Tests that we only check on the axes specified in the config.
         """
+
         config.return_value = {
             "foo": {
                 "rule_index": 66,
@@ -41,31 +42,28 @@ class TestRunChecks(unittest.TestCase):
             'additional_axes': {},
             'rule_index': 66
         }
+        value = Mock()
+        value.modelXbrl = Mock(spec='arelle.modelXbrl')
+        value.modelXbrl.namespaceDocs = {"http://fasb.org/us-gaap/2016-01-31": "val1"}  # noqa
+        value.modelXbrl.roleTypes = ['trey', 'page']
         mock_qname = Mock(localName='foo')
         mock_qname2 = Mock(localName='mike')
         mock_qname3 = Mock(localName='fish')
-        mock_obj1 = Mock(qname=mock_qname)
-        mock_obj2 = Mock(qname=mock_qname2)
-        mock_obj3 = Mock(qname=mock_qname3)
-        mock_frommodelobj = Mock(
-            return_value=(mock_obj1, mock_obj2, mock_obj3)
-        )
+        mock_ob1 = Mock(qname=mock_qname)
+        mock_ob2 = Mock(qname=mock_qname2)
+        mock_ob3 = Mock(qname=mock_qname3)
+        mock_frommodelobj = Mock(return_value=(mock_ob1, mock_ob2, mock_ob3))
         mock_relset_obj = Mock(fromModelObjects=mock_frommodelobj)
         mock_relationship_set_func = Mock(return_value=mock_relset_obj)
-        mock_model_xbrl = Mock(
-            roleTypes=['trey', 'page'],
-            relationshipSet=mock_relationship_set_func
-        )
-        val = Mock(modelXbrl=mock_model_xbrl)
-
-        dqc_us_0001.run_checks(val)
+        value.modelXbrl.relationshipSet = mock_relationship_set_func
+        dqc_us_0001.run_checks(value)
         self.assertTrue(checks.called)
         checks.assert_called_with(
-            mock_obj1,
+            mock_ob1,
             'foo',
             expected_config,
             mock_relset_obj,
-            val,
+            value,
             'page',
             defaultdict(list)
         )

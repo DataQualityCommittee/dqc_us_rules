@@ -1,6 +1,6 @@
-# (c) Copyright 2015 - 2016, XBRL US Inc. All rights reserved.
-# See license.md for license information.
-# See PatentNotice.md for patent infringement notice.
+# (c) Copyright 2015 - 2017, XBRL US Inc. All rights reserved.
+# See https://xbrl.us/dqc-license for license information.
+# See https://xbrl.us/dqc-patent for patent infringement notice.
 import pkgutil
 import sys
 import inspect
@@ -59,7 +59,7 @@ def _plugins_to_run(mod, include_start=True):
 
 __pluginInfo__ = {
     'name': 'DQC.SEC.ALL',
-    'version': '2.0',
+    'version': '3.0',
     'description': 'All Data Quality Committee SEC Filing Checks',
     'author': '',
     'license': 'See accompanying license text',
