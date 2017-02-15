@@ -3,7 +3,7 @@ from unittest.mock import Mock, MagicMock
 from dqc_us_rules import util
 
 from dqc_us_rules import dqc_us_0008
-from arelle import ModelRelationshipSet, ModelXbrl, Cntlr, ModelManager
+from arelle import ModelRelationshipSet, ModelXbrl, Cntlr, ModelManager, WebCache
 
 
 from arelle.ModelDtsObject import ModelRoleType, ModelRelationship, ModelConcept
@@ -13,7 +13,7 @@ from arelle.ModelDtsObject import ModelRoleType, ModelRelationship, ModelConcept
 class TestDQC0008(unittest.TestCase):
     def test_create_config(self):
         """
-        Tests that fact errors if it contains a deprecated concept
+        Tests config file creation
         """
         model_document_doc = Mock(uri='http://www.documenturi.com/dir1/dir2')
 
@@ -95,10 +95,12 @@ class TestDQC0008(unittest.TestCase):
             spec=ModelRelationshipSet,
             modelRelationships=[rel_1, rel_2, rel_3, rel_4]
         )
-        mock_cntrl = MagicMock(spec=Cntlr)
-        mock_manager = Mock(spec= ModelManager, cntrl = mock_cntrl, validateDisclosureSystem='false')
-        mock_modelXbrl = Mock(spec= ModelXbrl, modelManager = mock_manager)
-        val = Mock(modelXbrl=mock_modelXbrl, RelationshipSet=model_rel_set)
+        mock_getfilename=Mock()
+        mock_webCache=Mock(spec=WebCache, getfilename=mock_getfilename)
+        mock_cntrl=MagicMock(spec=Cntlr, webCache=mock_webCache)
+        mock_manager=Mock(spec= ModelManager, cntlr=mock_cntrl, validateDisclosureSystem='false')
+        mock_modelXbrl=Mock(spec= ModelXbrl, modelManager=mock_manager)
+        val=Mock(modelXbrl=mock_modelXbrl, RelationshipSet=model_rel_set)
 
 
         self.assertTrue(
