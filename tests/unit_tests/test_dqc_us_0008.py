@@ -96,17 +96,12 @@ class TestDQC0008(unittest.TestCase):
             modelRelationships=[rel_1, rel_2, rel_3, rel_4]
         )
         mock_cntrl = MagicMock(spec=Cntlr)
-        mock_manager = Mock(spec= ModelManager, cntrl = mock_cntrl)
+        mock_manager = Mock(spec= ModelManager, cntrl = mock_cntrl, validateDisclosureSystem='false')
         mock_modelXbrl = Mock(spec= ModelXbrl, modelManager = mock_manager)
-        validateDisclosureSystem = 'False'
-        val=Mock()
-        val.modelXbrl=mock_modelXbrl
-        val.RelationshipSet=model_rel_set
-        val.modelXbrl.modelManager.cntlr = mock_cntrl
-        val.ModelXbrl.modelManager.validateDisclosureSystem=validateDisclosureSystem
+        val = Mock(modelXbrl=mock_modelXbrl, RelationshipSet=model_rel_set)
 
 
-        self.assertNotNone(
+        self.assertTrue(
             dqc_us_0008._create_config(val)
         )
 
@@ -130,6 +125,15 @@ class TestDQC0008(unittest.TestCase):
         val.ModelXbrl=mock_modelXbrl
         val.ModelXbrl.namespaceDocs=namespaceDocs
 
-        self.assertNotNone(
+        self.assertTrue(
             dqc_us_0008._determine_namespace(val)
         )
+
+        # def test_run_checks(self):
+        #     """
+        #     Tests validation check is running
+        #     :param self:
+        #     :type self:
+        #     :return:
+        #     :rtype:
+        #     """
