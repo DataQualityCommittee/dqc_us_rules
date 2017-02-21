@@ -124,7 +124,7 @@ def _create_config(val):
         year += 1
 
 
-def run_checks(val, *args, **kwargs):
+def _run_checks(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     reversed calculation relationships.
@@ -229,5 +229,5 @@ __pluginInfo__ = {
     'version': _RULE_VERSION,
     'description': 'Calcs reversed checks.',
     # Mount points
-    'Validate.XBRL.Finally': run_checks,
+    'Validate.XBRL.Finally': _run_checks,
 }
