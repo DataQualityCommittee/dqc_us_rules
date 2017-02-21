@@ -16,6 +16,7 @@ _DQC_11_ITEMS_FILE = os.path.join(
     'DQC_US_0011',
     'dqc_0011.csv'
 )
+_RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 
 
@@ -50,11 +51,15 @@ def run_checks(val, *args, **kwargs):
                                                                      True)
                                 * check.weight):
                             val.modelXbrl.error(
-                                _CODE_NAME + ".1",
+                                '{base_key}.{extension_key}'.format(
+                                    base_key=_CODE_NAME,
+                                    extension_key=_RULE_INDEX_KEY
+                            ),
                                 messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                                 modelObject=(n_fact, d_fact),
                                 weight=check.weight,
-                                ruleVersion=_RULE_VERSION)
+                                ruleVersion=_RULE_VERSION
+                            )
         except (IndexError, KeyError):
             # no facts to gripe about for this check
             pass
