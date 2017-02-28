@@ -11,11 +11,19 @@ from arelle.ModelDtsObject import ModelRoleType, ModelRelationship, ModelConcept
 
 
 class TestDQC0008(unittest.TestCase):
-    @patch('arelle.ModelXbrl.load')
+    def setUp(self):
+        self.mock_value=MagicMock(spec='arelle.ValidateXbrl.ValidateXbrl')
+        pass
+
+    def tearDown(self):
+        pass
+
+    @patch('dqc_us_rules.dqc_us_0008.ModelXbrl', autospec=True)
     def test_create_config(self, mock_modelXbrl_1):
         """
         Tests config file creation
         """
+        mock_modelXbrl_1.load.return_value = mock_modelXbrl_1
         model_document_doc = Mock(uri='http://www.documenturi.com/dir1/dir2')
 
         # modelRoleTypes
@@ -176,19 +184,17 @@ class TestDQC0008(unittest.TestCase):
         mock_modelXbrl_2=Mock(spec= ModelXbrl, modelManager=mock_manager)
         val=Mock(modelXbrl=mock_modelXbrl_2, RelationshipSet=model_rel_set)
 
-        mock_modelXbrl_1= Mock(
-            spec=ModelXbrl,
-            modelDocument=model_document_doc,
-            factsByQname=facts_by_qname,
-            modelManager=mock_manager
-        )
-        mock_modelXbrl_3=return.value
+        mock_modelXbrl_1.modelDocument=model_document_doc
+        mock_modelXbrl_1.factsByQname=facts_by_qname
+        mock_modelXbrl_1.modelManager=mock_manager
+
+        # mock_modelXbrl_3=return.value
 
 
 
 
         self.assertTrue(
-            dqc_us_0008._create_config(self)
+            dqc_us_0008._create_config(val)
         )
 
     def test_determine_namespace(self):
@@ -198,22 +204,23 @@ class TestDQC0008(unittest.TestCase):
         :rtype:
         """
         # val.modelXbrl.namespaceDocs
-        namespace_docs = {
-        'http://www.xbrl.org/2003/linkbase': '[ModelDocument[__19]())]',
-        'http://xbrl.sec.gov/currency/2016-01-31': '[ModelDocument[__19401]())]',
-        'http://fasb.org/us-gaap/2016-01-31': '[ModelDocument[__7]())]',
-        'http://xbrl.sec.gov/country/2016-01-31': '[ModelDocument[__19122]())]'
-        }
-        mock_manager = Mock(spec= modelManager, cntrl = Mock())
-        mock_modelXbrl = Mock(spec= ModelXbrl, modelManager = mock_manager)
-        namespaceDocs = Mock(spec=ModelXbrl.namespaceDocs, cntrl=Mock(), namespaceDocs=namespace_docs)
-        val = Mock()
+        namespace_docs1={'http://www.xbrl.org/2003/linkbase': "val1"}
+        namespace_docs2={'http://xbrl.sec.gov/currency/2016-01-31': "val2"}
+        namespace_docs3={'http://fasb.org/us-gaap/2016-01-31': "val3"}
+        namespace_docs4={'http://xbrl.sec.gov/country/2016-01-31': "val4"}
+        mock_namespace=[namespace_docs1, namespace_docs2, namespace_docs3, namespace_docs4]
+
+        mock_manager=Mock(spec= ModelManager, cntrl=Mock())
+        mock_modelXbrl=Mock(spec= ModelXbrl, modelManager=mock_manager)
+        # namespaceDocs=Mock(spec=arelle.ModelXbrl.namespaceDocs, cntrl=Mock(), namespaceDocs=namespace_docs)
+        val = self.mock_value
         val.ModelXbrl=mock_modelXbrl
-        val.ModelXbrl.namespaceDocs=namespaceDocs
+        val.ModelXbrl.namespaceDocs.keys.side_effect=mock_namespace
 
         self.assertTrue(
             dqc_us_0008._determine_namespace(val)
         )
+        self.assert
 
         # def test_run_checks(self):
         #     """

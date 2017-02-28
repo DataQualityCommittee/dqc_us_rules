@@ -110,18 +110,34 @@ def _create_config(val):
             calc_children)
         # lexicographically order for readability and QA checking
         calc_children_ordered = OrderedDict()
-        for k, v in sorted(calc_children.items(), key=lambda i:i[0]):
-            calc_children_ordered[k] = sorted(v)
-        json_str = str(
-            json.dumps(
-                calc_children_ordered,
-                ensure_ascii=False, indent=4
-            )
-        )
+
+        json_str = _reorder_dictionary(calc_children, calc_children_ordered)
         saveFile(cntlr, config_json_file, json_str)
         calc_loading_instance.close()
         del calc_loading_instance
         year += 1
+
+
+def _reorder_dictionary(calc_children, calc_children_ordered):
+    """
+
+
+    :param calc_children:
+    :type calc_children:
+    :param calc_children_ordered:
+    :type calc_children_ordered:
+    :return:
+    :rtype:
+    """
+    for k, v in sorted(calc_children.items(), key=lambda i: i[0]):
+        calc_children_ordered[k] = sorted(v)
+    json_str = str(
+        json.dumps(
+            calc_children_ordered,
+            ensure_ascii=False, indent=4
+        )
+    )
+    return json_str
 
 
 def _run_checks(val):
