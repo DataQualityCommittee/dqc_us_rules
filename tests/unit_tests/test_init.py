@@ -2,7 +2,9 @@
 # See https://xbrl.us/dqc-license for license information.
 # See https://xbrl.us/dqc-patent for patent infringement notice.
 import unittest
+import arelle.ValidateXbrl
 from unittest.mock import patch, MagicMock
+
 
 import dqc_us_rules
 
@@ -24,8 +26,17 @@ class TestInitFunctions(unittest.TestCase):
                 __file__='some_other_file'
             )
         ]
+        disclosuresystem = 'arelle.ValidateXbrl.ValidateXbrl.disclosureSystem'
         plugins_func.return_value = mock_plugins
-        mock_val = "Something here"
+        mock_disclosure = MagicMock(
+            spec=disclosuresystem,
+            validationType='EFM'
+        )
+        val_spec = arelle.ValidateXbrl.ValidateXbrl
+        mock_val = MagicMock(
+            spec=val_spec,
+            disclosureSystem=mock_disclosure
+        )
         dqc_us_rules.run_checks(mock_val)
         self.assertTrue(
             mock_plugins[0].__pluginInfo__['Validate.XBRL.Finally'].called
