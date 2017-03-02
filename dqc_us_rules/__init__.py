@@ -10,6 +10,14 @@ def run_checks(val, *args, **kwargs):
     """
     The function to run all of the validation checks under the SEC package
     """
+    if val.disclosureSystem.validationType != "EFM":
+        val.modelXbrl.error(
+            "dqc_us_rules.exception:disclosureSystem",
+            (
+                "A disclosureSystem of type EFM is required."
+            ),
+            modelXbrl=val.modelXbrl,
+        )
     plugin_modules = _plugins_to_run(sys.modules[__name__])
     for plugin in plugin_modules:
         try:
@@ -59,12 +67,12 @@ def _plugins_to_run(mod, include_start=True):
 
 __pluginInfo__ = {
     'name': 'DQC.SEC.ALL',
-    'version': '3.0',
+    'version': '3.1',
     'description': 'All Data Quality Committee SEC Filing Checks',
     'author': '',
     'license': 'See accompanying license text',
     # Required plugin for logging
-    'import': ('logging/dqcParameters.py', ),
+    'import': ('logging/dqcParameters.py', 'validate/EFM'),
     # Mount points
     'Validate.XBRL.Finally': run_checks,
 }
