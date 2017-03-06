@@ -2,7 +2,7 @@
 # See https://xbrl.us/dqc-license for license information.
 # See https://xbrl.us/dqc-patent for patent infringement notice.
 import unittest
-import arelle.ValidateXbrl
+from arelle import ValidateXbrl
 from unittest.mock import patch, MagicMock
 
 
@@ -32,7 +32,7 @@ class TestInitFunctions(unittest.TestCase):
             spec=disclosuresystem,
             validationType='EFM'
         )
-        val_spec = arelle.ValidateXbrl.ValidateXbrl
+        val_spec = ValidateXbrl.ValidateXbrl
         mock_val = MagicMock(
             spec=val_spec,
             disclosureSystem=mock_disclosure
