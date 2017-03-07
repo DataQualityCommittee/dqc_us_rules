@@ -10,6 +10,14 @@ def run_checks(val, *args, **kwargs):
     """
     The function to run all of the validation checks under the SEC package
     """
+    if val.disclosureSystem.validationType != "EFM":
+        val.modelXbrl.error(
+            "dqc_us_rules.exception:disclosureSystem",
+            (
+                "A disclosureSystem of type EFM is required."
+            ),
+            modelXbrl=val.modelXbrl,
+        )
     plugin_modules = _plugins_to_run(sys.modules[__name__])
     for plugin in plugin_modules:
         try:
