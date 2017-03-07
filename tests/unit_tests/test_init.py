@@ -2,11 +2,9 @@
 # See https://xbrl.us/dqc-license for license information.
 # See https://xbrl.us/dqc-patent for patent infringement notice.
 import unittest
+import dqc_us_rules
 from arelle import ValidateXbrl
 from unittest.mock import patch, MagicMock
-
-
-import dqc_us_rules
 
 
 class TestInitFunctions(unittest.TestCase):
