@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock, MagicMock, patch
 from arelle.ModelInstanceObject import ModelFact, ModelDimensionValue
+import os
 from dqc_us_rules import util
 
 from dqc_us_rules import dqc_us_0008
@@ -199,34 +200,45 @@ class TestDQC0008(unittest.TestCase):
 
     def test_determine_namespace(self):
         """
-        Tests the
+        Tests the function that detects the namespace of the filing
+        """
+        comp_result='dqc_0008_2016.json'
+
+        namespace_docs = {'http://www.xbrl.org/2003/linkbase': "val1",
+            'http://xbrl.sec.gov/currency/2016-01-31': "val2",
+            'http://fasb.org/us-gaap/2016-01-31': "val3",
+            'http://xbrl.sec.gov/country/2016-01-31': "val4"
+        }
+        mock_namespace = namespace_docs
+        mock_manager = Mock(spec='arelle.ModelManager', cntrl=Mock())
+        mock_modelxbrl = Mock(spec='arelle.modelXbrl',
+            modelManager=mock_manager
+        )
+        val = self.mock_value
+        val.modelXbrl = mock_modelxbrl
+        val.modelXbrl.namespaceDocs = mock_namespace
+
+
+        self.assertEqual(
+            dqc_us_0008._determine_namespace(val)[-18:], comp_result
+        )
+
+    @patch('arelle.ModelXbrlrelationshipSet')
+    def test_run_checks(self, mock_relationships):
+        """
+
+        :param self:
+        :type self:
         :return:
         :rtype:
         """
-        # val.modelXbrl.namespaceDocs
-        namespace_docs1={'http://www.xbrl.org/2003/linkbase': "val1"}
-        namespace_docs2={'http://xbrl.sec.gov/currency/2016-01-31': "val2"}
-        namespace_docs3={'http://fasb.org/us-gaap/2016-01-31': "val3"}
-        namespace_docs4={'http://xbrl.sec.gov/country/2016-01-31': "val4"}
-        mock_namespace=[namespace_docs1, namespace_docs2, namespace_docs3, namespace_docs4]
-
-        mock_manager=Mock(spec= ModelManager, cntrl=Mock())
-        mock_modelXbrl=Mock(spec= ModelXbrl, modelManager=mock_manager)
-        # namespaceDocs=Mock(spec=arelle.ModelXbrl.namespaceDocs, cntrl=Mock(), namespaceDocs=namespace_docs)
-        val = self.mock_value
-        val.ModelXbrl=mock_modelXbrl
-        val.ModelXbrl.namespaceDocs.keys.side_effect=mock_namespace
-
-        self.assertTrue(
-            dqc_us_0008._determine_namespace(val)
+        mock_relationships = MagicMock(spec='arelle.modelXbrl.relationshipSet.modelRelationships',
+        return_value=['55569, linkrole: statement-note-14-income-taxes-provision-for-income-taxes-details, arcrole: summation-item, from: us-gaap:IncomeTaxExpenseBenefit, to: us-gaap:IncomeTaxExpenseBenefitIntraperiodTaxAllocation, cznc-20161231_cal.xml, line 39']
         )
-        self.assert
-
-        # def test_run_checks(self):
-        #     """
-        #     Tests validation check is running
-        #     :param self:
-        #     :type self:
-        #     :return:
-        #     :rtype:
-        #     """
+        mock_rel_set = MagicMock(spec='arelle.modelXbrl.relationshipSet',
+            modelRelationships=mock_relationships
+        )
+        mock_modelXbrl = MagicMock(spec='arelle.modelXbrl')
+        val = self.mock_value
+        val.modelXbrl=mock_modelXbrl
+        val.modelXbrl.relationshipSet=mock_rel_set

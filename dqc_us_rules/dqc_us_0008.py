@@ -157,14 +157,18 @@ def _run_checks(val):
         _create_config(val)
         calc_children = _load_config(config_json_file)
         if not calc_children:
-            # print some message if no calc LB found??
             return # nothing can be checked
 
     # convert children lists into sets for faster "in" function processing
     calc_children = dict((k, set(v)) for k, v in calc_children.items())
-        
-    for rel in val.modelXbrl.relationshipSet(XbrlConst.summationItem).modelRelationships:
-        if rel.fromModelObject.qname.localName in calc_children.get(rel.toModelObject.qname.localName, _EMPTY_LIST):
+    calc_rels = val.modelXbrl.relationshipSet(XbrlConst.summationItem).modelRelationships
+    #print(calc_rels)
+    for rel in calc_rels:
+        calc_child_rels=calc_children.get(rel.toModelObject.qname.localName,
+            _EMPTY_LIST
+        )
+        print(calc_child_rels)
+        if rel.fromModelObject.qname.localName in calc_child_rels:
             # ugt has reversed relationship
             val.modelXbrl.error(
                 '{base_key}.{extension_key}'.format(
