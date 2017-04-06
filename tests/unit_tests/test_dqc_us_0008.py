@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 from dqc_us_rules import dqc_us_0008
 
@@ -20,8 +20,8 @@ class TestDQC0008(unittest.TestCase):
             'http://xbrl.sec.gov/country/2016-01-31': "val4"
         }
         self.mock_namespace = self.namespace_docs
-        self.mock_manager = Mock(spec='arelle.ModelManager', cntrl=Mock())
-        self.mock_modelxbrl = Mock(spec='arelle.modelXbrl',
+        self.mock_manager = MagicMock(spec='arelle.ModelManager', cntrl=MagicMock())
+        self.mock_modelxbrl = MagicMock(spec='arelle.modelXbrl',
             modelManager=self.mock_manager
         )
         pass
