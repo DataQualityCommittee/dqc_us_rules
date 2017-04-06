@@ -46,13 +46,16 @@ ugtDocs = (
         "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
     },
+    {
+        "year": 2017,
+        "namespace": "http://fasb.org/us-gaap/2017-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/elts/us-gaap-doc-2017-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/entire/us-gaap-entryPoint-std-2017-01-31.xsd",  # noqa
+    }
 )
 
 
-def _tr_calc(val,
-             calc_ld_inst,
-             rel_name,
-             cal_ch):
+def _tr_calc(val, calc_ld_inst, rel_name, cal_ch):
     """
     Walks the taxonomy for a given calc
     :param val: val from which to gather end dates
@@ -66,7 +69,9 @@ def _tr_calc(val,
     """
 
     for rel in calc_ld_inst.relationshipSet(rel_name).modelRelationships:
-        cal_ch[rel.fromModelObject.qname.localName].add(rel.toModelObject.qname.localName)
+        cal_ch[rel.fromModelObject.qname.localName].add(
+            rel.toModelObject.qname.localName
+        )
 
 
 def _create_config(val):
@@ -104,10 +109,10 @@ def _create_config(val):
         )
         val.modelXbrl.modelManager.validateDisclosureSystem = prior_vds
 
-        _tr_calc(val,
-            calc_loading_instance,
-            XbrlConst.summationItem,
-            calc_children)
+        _tr_calc(
+            val, calc_loading_instance,
+            XbrlConst.summationItem, calc_children
+        )
         # lexicographically order for readability and QA checking
         calc_children_ordered = OrderedDict()
 
@@ -120,8 +125,6 @@ def _create_config(val):
 
 def _reorder_dictionary(calc_children, calc_children_ordered):
     """
-
-
     :param calc_children:
     :type calc_children:
     :param calc_children_ordered:
@@ -157,14 +160,15 @@ def _run_checks(val):
         _create_config(val)
         calc_children = _load_config(config_json_file)
         if not calc_children:
-            return # nothing can be checked
+            return  # nothing can be checked
 
     # convert children lists into sets for faster "in" function processing
     calc_children = dict((k, set(v)) for k, v in calc_children.items())
-    calc_rels = val.modelXbrl.relationshipSet(XbrlConst.summationItem).modelRelationships
-    #print(calc_rels)
+    calc_rels = val.modelXbrl.relationshipSet(
+        XbrlConst.summationItem).modelRelationships
     for rel in calc_rels:
-        calc_child_rels=calc_children.get(rel.toModelObject.qname.localName,
+        calc_child_rels = calc_children.get(
+            rel.toModelObject.qname.localName,
             _EMPTY_LIST
         )
         print(calc_child_rels)
@@ -180,7 +184,12 @@ def _run_checks(val):
                 extCalcTargetName=rel.toModelObject.label(),
                 ruleVersion=_RULE_VERSION
             )
-            print("extension parent " + rel.fromModelObject.qname.localName + " and child " + rel.toModelObject.qname.localName + " reversed from ugt")
+            print(
+                "extension parent " + rel.fromModelObject.qname.localName +
+                " and child " + rel.toModelObject.qname.localName +
+                " reversed from ugt"
+            )
+
 
 def _determine_namespace(val):
     """
@@ -192,13 +201,21 @@ def _determine_namespace(val):
     :return: Name of config file to use
     :rtype: String
     """
+    NS_2017 = "http://fasb.org/us-gaap/2017-01-31"
     NS_2016 = "http://fasb.org/us-gaap/2016-01-31"
     NS_2015 = "http://fasb.org/us-gaap/2015-01-31"
     NS_2014 = "http://fasb.org/us-gaap/2014-01-31"
     RESOURCE_DIR = 'resources'
     RULE = 'DQC_US_0008'
 
-    if NS_2016 in val.modelXbrl.namespaceDocs.keys():
+    if NS_2017 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+             os.path.dirname(__file__),
+             RESOURCE_DIR,
+             RULE,
+             'dqc_0008_2017.json'
+        )
+    elif NS_2016 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
              os.path.dirname(__file__),
              RESOURCE_DIR,
@@ -227,6 +244,7 @@ def _determine_namespace(val):
              'dqc_0008.json'
         )
     return config_json_file
+
 
 def _load_config(calcs_file):
     """
