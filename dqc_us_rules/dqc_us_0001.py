@@ -95,7 +95,6 @@ def _tr_mem(val,
             _tr_mem(val, ugt, dm_ld_inst,
                     rel.toModelObject,
                     XbrlConst.domainMember, rel.consecutiveLinkrole, ax_mem)
-
     return ax_mem
 
 
@@ -177,7 +176,6 @@ def run_checks(val, *args, **kwargs):
     if not config:
         _create_config(val)
         config = _load_config(config_json_file)
-    print(config)
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
             relset = val.modelXbrl.relationshipSet(
