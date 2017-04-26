@@ -16,7 +16,6 @@ _DQC_11_ITEMS_FILE = os.path.join(
     'DQC_US_0011',
     'dqc_0011.csv'
 )
-_RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 
 
@@ -32,6 +31,7 @@ def run_checks(val, *args, **kwargs):
     """
     model_xbrl = val.modelXbrl
     for check in _load_checks(model_xbrl):
+        rule_index_key=check.rule_num
         try:  # allow exceptions when no fact or concept for QName
             for n_fact in model_xbrl.factsByQname[check.nondim_concept]:
                 # here want dimensionless line items only
@@ -53,7 +53,7 @@ def run_checks(val, *args, **kwargs):
                             val.modelXbrl.error(
                                 '{base_key}.{extension_key}'.format(
                                     base_key=_CODE_NAME,
-                                    extension_key=_RULE_INDEX_KEY
+                                    extension_key=rule_index_key
                             ),
                                 messages.get_message(_CODE_NAME, _NO_FACT_KEY),
                                 modelObject=(n_fact, d_fact),
@@ -81,11 +81,14 @@ def _load_checks(model_xbrl):
         with open(_DQC_11_ITEMS_FILE, 'rt') as f:
             reader = csv.reader(f)
             next(reader)  # skip header
-            return [attrdict(nondim_concept=_qname(row[0]),
-                             dim_concept=_qname(row[1]),
-                             axis=_qname(row[2]),
-                             member=_qname(row[3]),
-                             weight=int(row[4]))
+            return [attrdict(
+                rule_num=int(row[0]),
+                nondim_concept=_qname(row[1]),
+                dim_concept=_qname(row[2]),
+                axis=_qname(row[3]),
+                member=_qname(row[4]),
+                weight=int(row[5])
+            )
                     for row in reader]
     except (FileNotFoundError, ValueError):
         return ()
