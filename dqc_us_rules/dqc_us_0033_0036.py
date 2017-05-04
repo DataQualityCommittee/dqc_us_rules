@@ -169,7 +169,7 @@ def check_for_lea_member(fact, not_valid_dped):
     :rtype: bool
     """
     for fact_axis, fact_dim_value in fact.context.segDimValues.items():
-        if fact_dim_value.memberQname.localName in not_valid_dped:
+        if not fact_dim_value.isTyped and fact_dim_value.memberQname.localName in not_valid_dped:
             # If we find the member, we do not want to continue with rule 33
             # check
             return False
