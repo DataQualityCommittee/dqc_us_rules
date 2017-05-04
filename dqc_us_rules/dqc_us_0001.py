@@ -7,12 +7,11 @@ from arelle import ModelDtsObject
 from arelle import XbrlConst, ModelXbrl
 from .util import facts, messages
 import itertools
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
 from arelle.FileSource import saveFile, openFileSource
 
-
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '3.0.0'
+_RULE_VERSION = '3.2.0'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -35,7 +34,7 @@ _CONFIG_JSON_FILE = os.path.join(
     'resources',
     'DQC_US_0001',
     'dqc_0001.json'
-)
+    )
 
 _UGT_DOCS = (
     {
@@ -57,35 +56,42 @@ _UGT_DOCS = (
 )
 
 
-def _tr_mem(val, ugt, parent_model_object, rel_name, elr):
+def _tr_mem(val,
+            ugt,
+            dm_ld_inst,
+            parent_model_object,
+            rel_name,
+            elr,
+            ax_mem):
     """
     Walks the taxonomy for a given axis
     :param val: val from which to gather end dates
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :param ugt: dict of taxonomies and their entirance points
     :type ugt: dict
+    :param dm_ld_inst: loaded ugt instance,
+    :type dm_ld_inst: ModelXbrl,
     :param parent_model_object: model object for Axis
     :type parent_model_object:class:'~arelle.ModelDTSObject.ModelConcept'
     :param rel_name: The role for the relationship
     :type rel_name: str
     :param elr: Linkrole
     :type elr: str
-    :return: list of members for the axis specified
-    :rtype: dict
+    :param ax_mem: set into which to accumulate members
+    :type ax_mem: set
+    :return: set of members for the axis specified
+    :rtype: set
     """
-    axMem = set()
-    cntlr = val.modelXbrl.modelManager.cntlr
-    ugt_entry_xsd = ugt["entryXsd"]
-    dm_ld_inst = ModelXbrl.load(
-        val.modelXbrl.modelManager, openFileSource(ugt_entry_xsd, cntlr),
-        ("built us-gaap member cache")
-    )
-    rels = dm_ld_inst.relationshipSet(
-        rel_name, elr
-    ).fromModelObject(parent_model_object)
+    rels = dm_ld_inst.relationshipSet(rel_name,
+                                      elr).fromModelObject(parent_model_object)
     for rel in rels:
         if rel.isUsable:
-            axMem.add(rel.toModelObject.qname.localName)
+            ax_mem.add(rel.toModelObject.qname.localName)
+            _tr_mem(val, ugt, dm_ld_inst,
+                    rel.toModelObject,
+                    XbrlConst.domainMember, rel.targetRole, ax_mem)
+
+    return ax_mem
 
 
 def _create_config(val):
@@ -103,8 +109,6 @@ def _create_config(val):
     year = _EARLIEST_US_GAAP_YEAR
     config = _load_config(_DQC_01_AXIS_FILE)
     # Create a list of axes in the base config file
-    axisMembers = set()
-    # receives list of members of above axes
 
     for ugt in _UGT_DOCS:
         # create taxonomy specific name
@@ -126,19 +130,23 @@ def _create_config(val):
         val.modelXbrl.modelManager.validateDisclosureSystem = prior_vds
 
         for axis, info in config.items():
-            axisMembers.clear()  # clear list of members
             info['defined_members'] = defaultdict(set)
             axisConcept = dimLoadingInstance.nameConcepts.get(axis, (None,))[0]
             if axisConcept is not None:
-                _tr_mem(
-                    val, ugt, axisConcept,
-                    XbrlConst.dimensionDomain, None
+                working_json_file[axis]['defined_members'] = sorted(
+                    _tr_mem(
+                        val,
+                        ugt,
+                        dimLoadingInstance,
+                        axisConcept,
+                        XbrlConst.dimensionDomain,
+                        None,
+                        set()
+                    )
                 )
-
-                working_json_file[axis]['defined_members'] = list(axisMembers)
         json_str = str(
             json.dumps(
-                working_json_file,
+                OrderedDict(sorted(working_json_file.items())),
                 ensure_ascii=False, indent=4
             )
         )
@@ -163,6 +171,7 @@ def run_checks(val, *args, **kwargs):
     config = _load_config(config_json_file)
     if not config:
         _create_config(val)
+        config = _load_config(config_json_file)
 
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
