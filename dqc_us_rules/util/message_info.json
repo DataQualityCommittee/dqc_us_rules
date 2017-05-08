@@ -2,16 +2,16 @@
     "copyright": "Copyright (c) 2015-2016, Workiva Inc.  All rights reserved.\nCopyright (c) 2015-2016, XBRL US Inc.  All rights reserved.",
     "DQC.US.0004": {
         "default": "${fact1.label} with a value of ${fact1.value} is not equal to the total of ${fact2.label} with a value of ${fact2.value}.  These values should be equal. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0005": {
         "default": "(Message coding error, there is no default message for DQC_0005.)",
         "17": "The date of ${fact1.period} used for ${fact1.label} with a value of ${fact1.value} is earlier than the reporting period end date ${dei:DocumentPeriodEndDate.fact.value}. Update the date used for ${fact1.label} to be the same as the cover sheet of the filing.\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version : ${ruleVersion}",
         "48": "The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:SubsequentEventTypeAxis.label} with a value of ${fact1.value} is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "49": "The date of ${fact1.period.endDate} used for ${fact1.label} and the ${us-gaap:StatementScenarioAxis.label} and ${us-gaap:ScenarioForecastMember.label} with a value of ${fact1.value} is earlier than or the same as the reporting period end date of ${dei:DocumentPeriodEndDate.fact.value}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0006": {
         "default": "The number of days, ${fact1.period.durationDays} in the date range reported for ${fact1.label}, ${fact1.period.startDate} to ${fact1.period.endDate} is not consistent with the ${dei:DocumentFiscalPeriodFocus.fact.label} with a value of ${dei:DocumentFiscalPeriodFocus.fact.value}. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0009": {
         "default": "The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}.  \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "39": "The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}.  ${fact1.label} is a subset of  ${fact2.label}.  \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
@@ -20,12 +20,12 @@
         "42": "The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of  ${fact2.label}. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "45": "The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}. The value of the remaining contribution for the year should be less than or equal to the expected contributions for the entire year.  \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "46": "The value of ${fact1.label}, ${fact1.value}, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} must be less than or equal to ${fact2.label}, as it does not include assumptions about future compensation levels.  \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0013": {
         "default": "${fact1.label} has a value of ${fact1.value} which is less than zero. This element should not have a negative value when the value for the element ${preconditionfact.label} is greater than zero.\n\nThe properties of this ${fact1.name} fact are: Period: ${fact1.period} Unit: ${fact1.unit} Rule version: ${ruleVersion} Rule element ID index The rule element id is used to identify unique elements or combinations of elements tested in the rule."
     },
     "DQC.US.0014": {
-      "default": "${fact1.label} has a value of ${fact1.value} which is less than zero. This element should not have a negative value. The properties of this ${fact1.name} fact are: Period: ${fact1.period} Unit: ${fact1.unit} Rule version: ${ruleVersion}"
+        "default": "${fact1.label} has a value of ${fact1.value} which is less than zero. This element should not have a negative value. The properties of this ${fact1.name} fact are: Period: ${fact1.period} Unit: ${fact1.unit} Rule version: ${ruleVersion}"
     },
     "DQC.US.0015": {
         "default": "${fact1.label} has a value of ${fact1.value} which is less than zero. This element should not have a negative value.\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
@@ -52,20 +52,23 @@
     },
     "DQC.US.0018": {
         "default": "${concept} is a deprecated item, but has been included in the company's presentation tree. Deprecated items should not be used in the filing.\nGuidance on the replacement item to use for this item is provided in the Deprecated Label of the ${concept} concept."
-        },
+    },
     "DQC.US.0033": {
         "default": "The ending date of ${fact1.period.endDate} used for ${fact1.label} must be the same as the Document Period End Date, ${dei:DocumentPeriodEndDate.fact.period.endDate}. Revise either the date of the ${fact1.label} or the date of the Document Period End Date. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0036": {
         "default": "The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, ${fact1.value}. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}"
-        },
+    },
     "DQC.US.0041": {
         "default": "The dimension default defined for the axis in the US GAAP taxonomy should not be changed in a company extension taxonomy. The default for the ${axis_name} in the base taxonomy is ${axis_default_name}, but the default has been replaced with ${def_name}."
-        },
+    },
     "DQC.US.0001": {
         "default": "The extension member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "ext_fact": "The extension member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  Extension members should not be used with the ${axis}\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "ugt_fact": "The member, ${member} is used on the axis ${axis} with the element ${fact1.label} with a value of ${fact1.value}.  This member should not be used with the ${axis}.\n\nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}",
         "no_fact": "The member, ${member}, is used on the axis, ${axis} in the disclosure group ${group}. There are no facts associated with this member and axis.  Extension members should not be used with the ${axis.label}.\nRule version: ${ruleVersion}"
+    },
+    "DQC.US.0046": {
+        "default": "In the company's extension taxonomy the concept ${extCalcSourceName} includes ${extCalcTargetName} as a summation-child. The concept ${extCalcTargetName} should not appear as a child of ${extCalcSourceName}.\nRule version: ${ruleVersion}"
     }
 }
