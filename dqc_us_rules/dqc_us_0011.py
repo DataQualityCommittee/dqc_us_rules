@@ -9,7 +9,7 @@ from arelle.ValidateXbrlCalcs import roundFact
 
 
 _CODE_NAME = 'DQC.US.0011'
-_RULE_VERSION = '3.1.0'
+_RULE_VERSION = '3.3.0'
 _DQC_11_ITEMS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -19,7 +19,7 @@ _DQC_11_ITEMS_FILE = os.path.join(
 _NO_FACT_KEY = 'no_fact'
 
 
-def run_checks(val, *args, **kwargs):
+def run_checks(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     reversed calculation relationships.
@@ -31,35 +31,39 @@ def run_checks(val, *args, **kwargs):
     """
     model_xbrl = val.modelXbrl
     for check in _load_checks(model_xbrl):
-        rule_index_key=check.rule_num
+        rule_index_key = check.rule_num
         try:  # allow exceptions when no fact or concept for QName
             for n_fact in model_xbrl.factsByQname[check.nondim_concept]:
                 # here want dimensionless line items only
                 if not n_fact.context.qnameDims:
                     # find fact expressed with dimensions
-
                     for d_fact in model_xbrl.factsByQname[check.dim_concept]:
-                        d_fact_mem = d_fact.context.dimMemberQname(
-                            check.axis)
-
-                        if (d_fact_mem == check.member
-                            and n_fact.context.isPeriodEqualTo(d_fact.context)
-                            and n_fact.context.isEntityIdentifierEqualTo(
-                                d_fact.context)
-                            and n_fact.unit.isEqualTo(d_fact.unit)
-                            and roundFact(n_fact, True) != roundFact(d_fact,
-                                                                     True)
-                                * check.weight):
-                            val.modelXbrl.error(
-                                '{base_key}.{extension_key}'.format(
-                                    base_key=_CODE_NAME,
-                                    extension_key=rule_index_key
-                            ),
-                                messages.get_message(_CODE_NAME, _NO_FACT_KEY),
-                                modelObject=(n_fact, d_fact),
-                                weight=check.weight,
-                                ruleVersion=_RULE_VERSION
-                            )
+                        if (_check_for_exclusions(d_fact)):
+                            d_fact_mem = d_fact.context.dimMemberQname(
+                                check.axis)
+                            if (d_fact_mem == check.member and
+                                n_fact.context.isPeriodEqualTo(
+                                    d_fact.context
+                                ) and
+                                n_fact.context.isEntityIdentifierEqualTo(
+                                    d_fact.context
+                                ) and
+                                n_fact.unit.isEqualTo(d_fact.unit) and
+                                    roundFact(n_fact,
+                                              True) != roundFact(d_fact,
+                                                                 True) *
+                                    check.weight):
+                                val.modelXbrl.error(
+                                    '{base_key}.{extension_key}'.format(
+                                        base_key=_CODE_NAME,
+                                        extension_key=rule_index_key
+                                    ),
+                                    messages.get_message(_CODE_NAME,
+                                                         _NO_FACT_KEY),
+                                    modelObject=(n_fact, d_fact),
+                                    weight=check.weight,
+                                    ruleVersion=_RULE_VERSION
+                                )
         except (IndexError, KeyError):
             # no facts to gripe about for this check
             pass
@@ -92,6 +96,34 @@ def _load_checks(model_xbrl):
                     for row in reader]
     except (FileNotFoundError, ValueError):
         return ()
+
+
+def _check_for_exclusions(fact):
+    """
+    Checks facts to determine whether the facts contains members or axes we
+    do not want to check
+
+    :param fact: fact to check
+    :type fact: :class:'~arelle.InstanceModelObject.ModelFact'
+    :return: False (so we don't continue) if the fact contains exclusion
+        criteria.
+        True (so we do continue) otherwise.
+    :rtype: bool
+    """
+    for fact_axis, fact_dim_value in fact.context.segDimValues.items():
+        if not fact_dim_value.isTyped and ('ScenarioPreviouslyReportedMember'
+                == fact_dim_value.memberQname.localName
+                or 'LegalEntityAxis' == fact_axis.qname.localName
+                or ('StatementScenarioAxis' == fact_axis.qname.localName
+                    and ('RestatementAdjustmentMember'
+                        == fact_dim_value.memberQname.localName
+                        or 'ScenarioPreviouslyReportedMember'
+                            == fact_dim_value.memberQname.localName
+                        )
+                    )
+                ):
+            return False
+    return True
 
 
 __pluginInfo__ = {
