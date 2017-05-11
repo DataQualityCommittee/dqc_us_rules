@@ -11,7 +11,7 @@ from collections import defaultdict, OrderedDict
 from arelle.FileSource import saveFile, openFileSource
 
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '3.2.0'
+_RULE_VERSION = '3.3.0'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -52,6 +52,11 @@ _UGT_DOCS = (
         "namespace": "http://fasb.org/us-gaap/2016-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
+    }, {
+        "year": 2017,
+        "namespace": "http://fasb.org/us-gaap/2017-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/elts/us-gaap-doc-2017-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/entire/us-gaap-entryPoint-std-2017-01-31.xsd",  # noqa
     }
 )
 
@@ -89,8 +94,7 @@ def _tr_mem(val,
             ax_mem.add(rel.toModelObject.qname.localName)
             _tr_mem(val, ugt, dm_ld_inst,
                     rel.toModelObject,
-                    XbrlConst.domainMember, rel.targetRole, ax_mem)
-
+                    XbrlConst.domainMember, rel.consecutiveLinkrole, ax_mem)
     return ax_mem
 
 
@@ -147,7 +151,7 @@ def _create_config(val):
         json_str = str(
             json.dumps(
                 OrderedDict(sorted(working_json_file.items())),
-                ensure_ascii=False, indent=4
+                ensure_ascii=False, indent=4, sort_keys=True
             )
         )
         saveFile(cntlr, config_json_file, json_str)
@@ -172,7 +176,6 @@ def run_checks(val, *args, **kwargs):
     if not config:
         _create_config(val)
         config = _load_config(config_json_file)
-
     for axis_key, axis_config in config.items():
         for role in val.modelXbrl.roleTypes:
             relset = val.modelXbrl.relationshipSet(
@@ -207,13 +210,21 @@ def _determine_namespace(val):
     :return: Name of config file to use
     :rtype: String
     """
+    NS_2017 = "http://fasb.org/us-gaap/2017-01-31"
     NS_2016 = "http://fasb.org/us-gaap/2016-01-31"
     NS_2015 = "http://fasb.org/us-gaap/2015-01-31"
     NS_2014 = "http://fasb.org/us-gaap/2014-01-31"
     RESOURCE_DIR = 'resources'
     RULE = 'DQC_US_0001'
 
-    if NS_2016 in val.modelXbrl.namespaceDocs.keys():
+    if NS_2017 in val.modelXbrl.namespaceDocs.keys():
+        config_json_file = os.path.join(
+            os.path.dirname(__file__),
+            RESOURCE_DIR,
+            RULE,
+            'dqc_0001_2017.json'
+        )
+    elif NS_2016 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
              os.path.dirname(__file__),
              RESOURCE_DIR,
