@@ -392,7 +392,8 @@ class TestDocPerEndDateChk(unittest.TestCase):
         mock_dim_dim = mock.Mock(qname=mock_dim_qn)
         mock_member = mock.Mock(qname=mock_mem_qn)
         mock_dim = mock.Mock(
-            isExplicit=True, member=mock_member, dimension=mock_dim_dim
+            isExplicit=True, isTyped=False,
+            member=mock_member, dimension=mock_dim_dim
         )
 
         mock_more_dims = {mock_dim_dim: mock_dim}
@@ -474,7 +475,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
             spec=ModelDimensionValue, dimensionQname=mock_dim1_qn
         )
         mock_dimension1 = mock.Mock(
-            spec=ModelDimensionValue, isExplicit=True,
+            spec=ModelDimensionValue, isExplicit=True, isTyped=False,
             memberQname=mock_mem1_qn, dimension=mock_dim1_dim
         )
 
@@ -486,7 +487,7 @@ class TestDocPerEndDateChk(unittest.TestCase):
             spec=ModelDimensionValue, dimensionQname=mock_dim2_qn
         )
         mock_dimension2 = mock.Mock(
-            spec=ModelDimensionValue, isExplicit=True,
+            spec=ModelDimensionValue, isExplicit=True, isTyped=False,
             memberQname=mock_mem2_qn, dimension=mock_dim2_dim
         )
 
