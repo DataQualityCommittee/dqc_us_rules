@@ -1,19 +1,40 @@
 import unittest
 from unittest.mock import MagicMock, patch
+from arelle.ModelManager import ModelManager
+from arelle.ModelXbrl import ModelXbrl
+from arelle.ModelRelationshipSet import ModelRelationshipSet
+import arelle.ValidateXbrl, arelle.ModelDtsObject, arelle.ModelRelationshipSet
+
+
+
 
 from dqc_us_rules import dqc_us_0008
 
 
 class TestDQC0008(unittest.TestCase):
     def setUp(self):
-        self.mock_rel = MagicMock(
-            spec='arelle.ModelXbrl.ModelRelationshipSet',
-            return_value=[
-                '55569, linkrole: statement-note-14-income-taxes-provision-for-income-taxes-details, arcrole: summation-item, from: us-gaap:IncomeTaxExpenseBenefit, to: us-gaap:IncomeTaxExpenseBenefitIntraperiodTaxAllocation, yyyy-20161231_cal.xml, line 39']  # noqa
+        self.concept_1 = MagicMock(
+            spec=arelle.ModelDtsObject.ModelConcept,
+            qname='us-gaap:IncomeTaxExpenseBenefit'
         )
-        self.mock_value = MagicMock(spec='arelle.ValidateXbrl.ValidateXbrl')
+        self.concept_2 = MagicMock(
+            spec=arelle.ModelDtsObject.ModelConcept,
+            qname='us-gaap:IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
+        )
+        #modelRelationship
+        self.rel_1 = MagicMock(
+            spec=ModelRelationshipSet,
+            fromModelObject=self.concept_1,
+            toModelObject=self.concept_2,
+            arcrole='summation-item'
+        )
+        self.rel_set_1 = MagicMock()
+        self.rel_set_1.toModelRelationships.return_value = [self.rel_1]
+        # self.rel_set_1.fromModelObject.return_value = [self.concept_2]
+
+
         self.mock_ModelXbrlrelationshipSet = MagicMock(
-            spec='arelle.ModelXbrl.ModelRelationshipSet'
+            spec=arelle.ModelXbrl.ModelRelationshipSet
         )
         self.namespace_docs = {
             'http://www.xbrl.org/2003/linkbase': "val1",
@@ -23,12 +44,18 @@ class TestDQC0008(unittest.TestCase):
         }
         self.mock_namespace = self.namespace_docs
         self.mock_manager = MagicMock(
-            spec='arelle.ModelManager',
+            spec=ModelManager,
             cntrl=MagicMock()
         )
         self.mock_modelxbrl = MagicMock(
-            spec='arelle.modelXbrl',
-            modelManager=self.mock_manager
+            modelManager=self.mock_manager,
+            spec=ModelXbrl,
+            namespaceDocs = self.mock_namespace
+            )
+        self.mock_modelxbrl.relationshipSet.return_value = self.rel_set_1
+        self.mock_value = MagicMock(
+            spec=arelle.ValidateXbrl.ValidateXbrl,
+            modelXbrl=self.mock_modelxbrl
         )
         pass
 
@@ -39,12 +66,9 @@ class TestDQC0008(unittest.TestCase):
         """
         Tests the function that detects the namespace of the filing
         """
-        comp_result = 'dqc_0008_2016.json'
-        val = self.mock_value
-        val.modelXbrl = self.mock_modelxbrl
-        val.modelXbrl.namespaceDocs = self.mock_namespace
+        cmp_result = 'dqc_0008_2016.json'
         self.assertEqual(
-            dqc_us_0008._determine_namespace(val)[-18:], comp_result
+            dqc_us_0008._determine_namespace(self.mock_value)[-18:], cmp_result
         )
 
     @patch('arelle.ModelXbrl.ModelRelationshipSet')
@@ -52,12 +76,7 @@ class TestDQC0008(unittest.TestCase):
         """
         Tests the check itself
         """
-        val = self.mock_value
-        val.modelXbrl = self.mock_modelxbrl
-        val.modelXbrl.relationshipSet = self.mock_ModelXbrlrelationshipSet
-        val.modelXbrl.relationshipSet.modelRelationships = self.mock_rel
-        val.modelXbrl.namespaceDocs = self.mock_namespace
-
+        tmp = dqc_us_0008._run_checks(self.mock_value)
         self.assertEqual(
-            dqc_us_0008._run_checks(val), None
+            dqc_us_0008._run_checks(self.mock_value), None
         )
