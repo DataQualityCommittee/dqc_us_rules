@@ -4,7 +4,7 @@ The rules linked below are either available for public review or have been appro
 
 | Number | Short name | Status | Rule version (see [Guidance](../README.md)) |
 | ----- | ----- | ----- | ----- |
-| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 3.3.0 |
+| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 3.3.1 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 1.0.0 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 2.1.0 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 1.0.0 |
