@@ -6,7 +6,7 @@ import os
 
 from .util import messages
 
-from arelle import XbrlConst, ModelXbrl, ModelDocument
+from arelle import XbrlConst, ModelXbrl
 from arelle.ModelDtsObject import ModelConcept
 from arelle.FileSource import openFileStream, openFileSource, saveFile
 
