@@ -153,7 +153,6 @@ def _run_checks(val):
     :return: No direct return
     :rtype: None
     """
-    checked_axes = defaultdict(list)
     config_json_file = _determine_namespace(val)
     calc_children = _load_config(config_json_file)
     if not calc_children:
@@ -171,7 +170,6 @@ def _run_checks(val):
             rel.toModelObject.qname.localName,
             _EMPTY_LIST
         )
-        print(calc_child_rels)
         if rel.fromModelObject.qname.localName in calc_child_rels:
             # ugt has reversed relationship
             val.modelXbrl.error(

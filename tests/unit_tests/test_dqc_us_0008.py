@@ -4,10 +4,6 @@ from arelle.ModelManager import ModelManager
 from arelle.ModelXbrl import ModelXbrl
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 import arelle.ValidateXbrl, arelle.ModelDtsObject, arelle.ModelRelationshipSet
-
-
-
-
 from dqc_us_rules import dqc_us_0008
 
 
@@ -15,11 +11,17 @@ class TestDQC0008(unittest.TestCase):
     def setUp(self):
         self.concept_1 = MagicMock(
             spec=arelle.ModelDtsObject.ModelConcept,
-            qname='us-gaap:IncomeTaxExpenseBenefit'
+            qname=MagicMock(
+            namespaceURI='http://fasb.org/us-gaap/2015-01-31',
+            localName='IncomeTaxExpenseBenefit'
+            )
         )
         self.concept_2 = MagicMock(
             spec=arelle.ModelDtsObject.ModelConcept,
-            qname='us-gaap:IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
+            qname=MagicMock(
+            namespaceURI='http://fasb.org/us-gaap/2015-01-31',
+            localName='IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
+            )
         )
         #modelRelationship
         self.rel_1 = MagicMock(
@@ -28,10 +30,10 @@ class TestDQC0008(unittest.TestCase):
             toModelObject=self.concept_2,
             arcrole='summation-item'
         )
-        self.rel_set_1 = MagicMock()
-        self.rel_set_1.toModelRelationships.return_value = [self.rel_1]
-        # self.rel_set_1.fromModelObject.return_value = [self.concept_2]
-
+        self.rel_set_1 = MagicMock(
+            spec=ModelRelationshipSet,
+            modelRelationships=[self.rel_1]
+        )
 
         self.mock_ModelXbrlrelationshipSet = MagicMock(
             spec=arelle.ModelXbrl.ModelRelationshipSet
@@ -76,7 +78,6 @@ class TestDQC0008(unittest.TestCase):
         """
         Tests the check itself
         """
-        tmp = dqc_us_0008._run_checks(self.mock_value)
         self.assertEqual(
             dqc_us_0008._run_checks(self.mock_value), None
         )
