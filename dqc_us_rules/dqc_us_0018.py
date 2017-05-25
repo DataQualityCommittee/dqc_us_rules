@@ -12,7 +12,7 @@ from arelle.FileSource import openFileStream, openFileSource, saveFile
 
 
 _CODE_NAME = 'DQC.US.0018'
-_RULE_VERSION = '2.0.0'
+_RULE_VERSION = '3.4.0'
 _EARLIEST_US_GAAP_YEAR = 2014
 
 ugtDocs = (
@@ -33,6 +33,13 @@ ugtDocs = (
         "namespace": "http://fasb.org/us-gaap/2016-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
+    },
+    {
+        "year": 2017,
+        "namespace": "http://fasb.org/us-gaap/2017-01-31",
+        # use change notices reference parts instead of doc LB
+        "docLB": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/elts/us-gaap-cn-ref-2017-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/entire/us-gaap-entryPoint-std-2017-01-31.xsd",  # noqa
     },
 )
 
@@ -142,18 +149,44 @@ def _create_cache(val):
 
                     if model_documentation.role == dep_label:
                         val.usgaapDeprecations[concept] = (
-                            model_documentation.text,
-                            val.usgaapDeprecations.get(concept, ('', ''))[0]
+                            val.usgaapDeprecations.get(concept, ('', ''))[0],
+                            model_documentation.text
                         )
                     elif model_documentation.role == dep_date_label:
                         val.usgaapDeprecations[concept] = (
                             model_documentation.text,
                             val.usgaapDeprecations.get(concept, ('', ''))[1]
                         )
+                dep_ref = 'http://fasb.org/us-gaap/role/changeNote/changeNote'
+                concept_reference = XbrlConst.conceptReference
+                relationship_set = (
+                    deprecations_instance.relationshipSet(concept_reference)
+                )
+                model_relationships = relationship_set.modelRelationships
+
+                for refRel in model_relationships:
+                    model_resource = refRel.toModelObject
+                    if model_resource.role == dep_ref:
+                        concept = refRel.fromModelObject.name
+                        for refPart in model_resource.iterchildren():
+                            if refPart.localName == "DeprecatedLabel":
+                                val.usgaapDeprecations[concept] = (
+                                    val.usgaapDeprecations.get(
+                                        concept,
+                                        ('', ''))[0],
+                                    refPart.text
+                                )
+                            elif refPart.localName == "DeprecatedDate":
+                                val.usgaapDeprecations[concept] = (
+                                    refPart.text,
+                                    val.usgaapDeprecations.get(
+                                        concept,
+                                        ('', ''))[1]
+                                )
                 json_str = str(
                     json.dumps(
                         val.usgaapDeprecations,
-                        ensure_ascii=False, indent=0
+                        ensure_ascii=False, indent=0, sort_keys=True
                     )
                 )  # might not be unicode in 2.7
                 saveFile(cntlr, deprecations_json_file, json_str)
