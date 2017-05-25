@@ -79,13 +79,13 @@ class TestDQC0008(unittest.TestCase):
         """
         Tests the check itself
         """
-        to_mo = dqc_us_0008._find_errors(self.mock_value)[
-            0].fromModelObject.qname.localName
         from_mo = dqc_us_0008._find_errors(self.mock_value)[
+            0].fromModelObject.qname.localName
+        to_mo = dqc_us_0008._find_errors(self.mock_value)[
             0].toModelObject.qname.localName
         self.assertEqual(
-            to_mo, 'IncomeTaxExpenseBenefit'
+            from_mo, 'IncomeTaxExpenseBenefit'
         )
         self.assertEqual(
-            from_mo, 'IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
+            to_mo, 'IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
         )

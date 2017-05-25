@@ -68,7 +68,6 @@ def _tr_calc(val, calc_ld_inst, rel_name, cal_ch):
     :param calc_children: calcChildren
     :type calc_children: dict
     """
-
     for rel in calc_ld_inst.relationshipSet(rel_name).modelRelationships:
         cal_ch[rel.fromModelObject.qname.localName].add(
             rel.toModelObject.qname.localName
@@ -91,7 +90,6 @@ def _create_config(val):
     # Create a list of axes in the base config file
     calc_children = defaultdict(set)
     # receives list of members of above axes
-
     for ugt in ugtDocs:
         # create taxonomy specific name
         config_json_file = os.path.join(
@@ -109,14 +107,12 @@ def _create_config(val):
             ("built us-gaap calcs cache")
         )
         val.modelXbrl.modelManager.validateDisclosureSystem = prior_vds
-
         _tr_calc(
             val, calc_loading_instance,
             XbrlConst.summationItem, calc_children
         )
         # lexicographically order for readability and QA checking
         calc_children_ordered = OrderedDict()
-
         json_str = _reorder_dictionary(calc_children, calc_children_ordered)
         saveFile(cntlr, config_json_file, json_str)
         calc_loading_instance.close()
@@ -161,7 +157,6 @@ def _find_errors(val):
         calc_children = _load_config(config_json_file)
         if not calc_children:
             return  # nothing can be checked
-
     # convert children lists into sets for faster "in" function processing
     calc_children = dict((k, set(v)) for k, v in calc_children.items())
     calc_rels = val.modelXbrl.relationshipSet(
@@ -189,8 +184,6 @@ def _run_checks(val):
     """
     _find_errors(val)
     for error in _ERROR_LIST:
-        print(_ERROR_LIST)
-        print(error)
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
                 base_key=_CODE_NAME,
