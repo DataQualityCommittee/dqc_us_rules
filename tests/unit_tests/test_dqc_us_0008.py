@@ -73,11 +73,19 @@ class TestDQC0008(unittest.TestCase):
             dqc_us_0008._determine_namespace(self.mock_value)[-18:], cmp_result
         )
 
+
     @patch('arelle.ModelXbrl.ModelRelationshipSet')
-    def test_run_checks(self, relationship):
+    def test_find_errors(self, relationship):
         """
         Tests the check itself
         """
+        to_mo = dqc_us_0008._find_errors(self.mock_value)[
+            0].fromModelObject.qname.localName
+        from_mo = dqc_us_0008._find_errors(self.mock_value)[
+            0].toModelObject.qname.localName
         self.assertEqual(
-            dqc_us_0008._run_checks(self.mock_value), None
+            to_mo, 'IncomeTaxExpenseBenefit'
+        )
+        self.assertEqual(
+            from_mo, 'IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
         )

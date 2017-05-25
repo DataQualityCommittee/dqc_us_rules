@@ -26,6 +26,7 @@ _CONFIG_JSON_FILE = os.path.join(
             'dqc_0008.json'
         )
 _EMPTY_LIST = []
+_ERROR_LIST = []
 
 ugtDocs = (
     {
@@ -81,7 +82,7 @@ def _create_config(val):
     :param val: ValidateXbrl needed in order to save the cache
     :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
     :return: no explicit return but creates and saves configs in
-        dqc_us_rule\resources\DQC_US_0001
+        dqc_us_rule\resources\DQC_US_0008
     :rtype: None
     """
     val.ugtNamespace = None
@@ -143,15 +144,15 @@ def _reorder_dictionary(calc_children, calc_children_ordered):
     return json_str
 
 
-def _run_checks(val):
+def _find_errors(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     reversed calculation relationships.
 
     :param val: val from which to gather end dates
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: No direct return
-    :rtype: None
+    :return: list of model relationshipsets
+    :rtype: arelle.ModelXbrl.ModelRelationshipSet
     """
     config_json_file = _determine_namespace(val)
     calc_children = _load_config(config_json_file)
@@ -172,21 +173,39 @@ def _run_checks(val):
         )
         if rel.fromModelObject.qname.localName in calc_child_rels:
             # ugt has reversed relationship
-            val.modelXbrl.error(
-                '{base_key}.{extension_key}'.format(
-                    base_key=_CODE_NAME,
-                    extension_key=_RULE_INDEX_KEY
-                ),
-                messages.get_message(_CODE_NAME, _NO_FACT_KEY),
-                extCalcSourceName=rel.fromModelObject.label(),
-                extCalcTargetName=rel.toModelObject.label(),
-                ruleVersion=_RULE_VERSION
-            )
-            print(
-                "extension parent " + rel.fromModelObject.qname.localName +
-                " and child " + rel.toModelObject.qname.localName +
-                " reversed from ugt"
-            )
+            _ERROR_LIST.append(rel)
+            return _ERROR_LIST
+
+
+def _run_checks(val):
+    """
+    Entrypoint for the rule.  Load the config, search for instances of
+    reversed calculation relationships.
+
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: No direct return
+    :rtype: None
+    """
+    _find_errors(val)
+    for error in _ERROR_LIST:
+        print(_ERROR_LIST)
+        print(error)
+        val.modelXbrl.error(
+            '{base_key}.{extension_key}'.format(
+                base_key=_CODE_NAME,
+                extension_key=_RULE_INDEX_KEY
+            ),
+            messages.get_message(_CODE_NAME, _NO_FACT_KEY),
+            extCalcSourceName=error.fromModelObject.label(),
+            extCalcTargetName=error.toModelObject.label(),
+            ruleVersion=_RULE_VERSION
+        )
+        print(
+            "extension parent " + error.fromModelObject.qname.localName +
+            " and child " + error.toModelObject.qname.localName +
+            " reversed from ugt"
+        )
 
 
 def _determine_namespace(val):
