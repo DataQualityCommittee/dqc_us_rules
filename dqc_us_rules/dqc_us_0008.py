@@ -181,7 +181,7 @@ def _run_checks(val):
     :return: No direct return.  Instead it calls messages with any errors.
     :rtype: None
     """
-    errors=_find_errors(val)
+    errors = _find_errors(val)
     for error in errors:
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
