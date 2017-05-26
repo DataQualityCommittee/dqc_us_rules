@@ -8,12 +8,6 @@ from .util import messages
 
 _CODE_NAME = 'DQC.US.0046'
 _RULE_VERSION = '3.5.0'
-_DQC_46_CALC_FILE = os.path.join(
-    os.path.dirname(__file__),
-    'resources',
-    'DQC_US_0046',
-    'dqc_0046.json'
-)
 _RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 _CONFIG_JSON_FILE = os.path.join(
