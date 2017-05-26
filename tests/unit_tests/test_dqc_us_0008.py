@@ -3,7 +3,6 @@ from arelle import ValidateXbrl, ModelRelationshipSet
 from unittest.mock import MagicMock, patch
 from arelle.ModelManager import ModelManager
 from arelle.ModelXbrl import ModelXbrl
-from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelConcept
 from dqc_us_rules import dqc_us_0008
 
@@ -24,7 +23,6 @@ class TestDQC0008(unittest.TestCase):
                 localName='IncomeTaxExpenseBenefitIntraperiodTaxAllocation'
             )
         )
-        #modelRelationship
         self.rel_1 = MagicMock(
             spec=ModelRelationshipSet,
             fromModelObject=self.concept_1,
@@ -52,7 +50,7 @@ class TestDQC0008(unittest.TestCase):
         self.mock_modelxbrl = MagicMock(
             modelManager=self.mock_manager,
             spec=ModelXbrl,
-            namespaceDocs = self.mock_namespace
+            namespaceDocs=self.mock_namespace
             )
         self.mock_modelxbrl.relationshipSet.return_value = self.rel_set_1
         self.mock_value = MagicMock(
@@ -75,7 +73,6 @@ class TestDQC0008(unittest.TestCase):
             cmp_result,
             'Namespace mismatch'
         )
-
 
     @patch('arelle.ModelXbrl.ModelRelationshipSet', autospec=True)
     def test_find_errors(self, relationship):
