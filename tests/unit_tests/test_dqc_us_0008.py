@@ -5,7 +5,6 @@ from arelle.ModelManager import ModelManager
 from arelle.ModelXbrl import ModelXbrl
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelConcept
-
 from dqc_us_rules import dqc_us_0008
 
 
