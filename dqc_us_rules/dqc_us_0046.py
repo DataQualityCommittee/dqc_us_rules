@@ -5,10 +5,9 @@ import json
 import os
 from arelle import XbrlConst
 from .util import messages
-from collections import defaultdict
 
 _CODE_NAME = 'DQC.US.0046'
-_RULE_VERSION = '3.1.0'
+_RULE_VERSION = '3.5.0'
 _DQC_46_CALC_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -24,9 +23,10 @@ _CONFIG_JSON_FILE = os.path.join(
             'dqc_0046.json'
         )
 _EMPTY_LIST = []
+_ERROR_LIST = []
 
 
-def _run_checks(val):
+def _find_errors(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     reversed calculation relationships.
@@ -36,11 +36,10 @@ def _run_checks(val):
     :return: No direct return
     :rtype: None
     """
-    checked_axes = defaultdict(list)
     config_json_file = _CONFIG_JSON_FILE
     calc_children = _load_config(config_json_file)
     if not calc_children:
-            return  # nothing can be checked
+        return  # nothing can be checked
     # convert children lists into sets for faster "in" function processing
     calc_children = dict((k, set(v)) for k, v in calc_children.items())
     calc_rels = val.modelXbrl.relationshipSet(
@@ -51,17 +50,31 @@ def _run_checks(val):
             _EMPTY_LIST
         )
         if rel.toModelObject.qname.localName in calc_child_rels:
-            # ugt has reversed relationship
-            val.modelXbrl.error(
-                '{base_key}.{extension_key}'.format(
-                    base_key=_CODE_NAME,
-                    extension_key=_RULE_INDEX_KEY
-                ),
-                messages.get_message(_CODE_NAME, _NO_FACT_KEY),
-                extCalcSourceName=rel.fromModelObject.label(),
-                extCalcTargetName=rel.toModelObject.label(),
-                ruleVersion=_RULE_VERSION
-            )
+            _ERROR_LIST.append(rel)
+            return _ERROR_LIST
+
+
+def _run_checks(val):
+    """
+    Entrypoint for the rule.  Load the config, search for instances of
+    reversed calculation relationships.
+    :param val: val from which to gather end dates
+    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :return: No direct return
+    :rtype: None
+    """
+    _find_errors(val)
+    for error in _ERROR_LIST:
+        val.modelXbrl.error(
+            '{base_key}.{extension_key}'.format(
+                base_key=_CODE_NAME,
+                extension_key=_RULE_INDEX_KEY
+            ),
+            messages.get_message(_CODE_NAME, _NO_FACT_KEY),
+            extCalcSourceName=error.fromModelObject.label(),
+            extCalcTargetName=error.toModelObject.label(),
+            ruleVersion=_RULE_VERSION
+        )
 
 
 def _load_config(calcs_file):
