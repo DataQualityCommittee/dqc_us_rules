@@ -17,7 +17,6 @@ _CONFIG_JSON_FILE = os.path.join(
             'dqc_0046.json'
         )
 _EMPTY_LIST = []
-_ERROR_LIST = []
 
 
 def _find_errors(val):
@@ -30,12 +29,15 @@ def _find_errors(val):
     :return: No direct return
     :rtype: None
     """
+    error_list = []
     config_json_file = _CONFIG_JSON_FILE
     calc_children = _load_config(config_json_file)
     if not calc_children:
         return  # nothing can be checked
     # convert children lists into sets for faster "in" function processing
-    calc_children = dict((k, set(v)) for k, v in calc_children.items())
+    calc_children = dict(
+        (key, set(value)) for key, value in calc_children.items()
+    )
     calc_rels = val.modelXbrl.relationshipSet(
         XbrlConst.summationItem).modelRelationships
     for rel in calc_rels:
@@ -44,8 +46,8 @@ def _find_errors(val):
             _EMPTY_LIST
         )
         if rel.toModelObject.qname.localName in calc_child_rels:
-            _ERROR_LIST.append(rel)
-            return _ERROR_LIST
+            error_list.append(rel)
+            return error_list
 
 
 def _run_checks(val):
@@ -54,11 +56,11 @@ def _run_checks(val):
     reversed calculation relationships.
     :param val: val from which to gather end dates
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: No direct return
+    :return: No direct return, instead it calls message with any errors
     :rtype: None
     """
-    _find_errors(val)
-    for error in _ERROR_LIST:
+    errors = _find_errors(val)
+    for error in errors:
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
                 base_key=_CODE_NAME,

@@ -3,27 +3,26 @@ from unittest.mock import MagicMock, patch
 from arelle.ModelManager import ModelManager
 from arelle.ModelXbrl import ModelXbrl
 from arelle.ModelRelationshipSet import ModelRelationshipSet
-import arelle.ValidateXbrl, arelle.ModelDtsObject, arelle.ModelRelationshipSet
+from arelle import ValidateXbrl, ModelDtsObject
 from dqc_us_rules import dqc_us_0046
 
 
 class TestDQC0046(unittest.TestCase):
     def setUp(self):
         self.concept_1 = MagicMock(
-            spec=arelle.ModelDtsObject.ModelConcept,
+            spec=ModelDtsObject.ModelConcept,
             qname=MagicMock(
-            namespaceURI='http://fasb.org/us-gaap/2015-01-31',
-            localName='Assets'
+                namespaceURI='http://fasb.org/us-gaap/2015-01-31',
+                localName='Assets'
             )
         )
         self.concept_2 = MagicMock(
-            spec=arelle.ModelDtsObject.ModelConcept,
+            spec=ModelDtsObject.ModelConcept,
             qname=MagicMock(
-            namespaceURI='http://fasb.org/us-gaap/2015-01-31',
-            localName='NoncurrentAssets'
+                namespaceURI='http://fasb.org/us-gaap/2015-01-31',
+                localName='NoncurrentAssets'
             )
         )
-        #modelRelationship
         self.rel_1 = MagicMock(
             spec=ModelRelationshipSet,
             fromModelObject=self.concept_1,
@@ -36,12 +35,11 @@ class TestDQC0046(unittest.TestCase):
         )
 
         self.mock_ModelXbrlrelationshipSet = MagicMock(
-            spec=arelle.ModelXbrl.ModelRelationshipSet
+            spec=ModelRelationshipSet
         )
 
         self.mock_manager = MagicMock(
-            spec=ModelManager,
-            cntrl=MagicMock()
+            spec=ModelManager
         )
         self.mock_modelxbrl = MagicMock(
             modelManager=self.mock_manager,
@@ -49,7 +47,7 @@ class TestDQC0046(unittest.TestCase):
             )
         self.mock_modelxbrl.relationshipSet.return_value = self.rel_set_1
         self.mock_value = MagicMock(
-            spec=arelle.ValidateXbrl.ValidateXbrl,
+            spec=ValidateXbrl,
             modelXbrl=self.mock_modelxbrl
         )
         pass
@@ -65,7 +63,13 @@ class TestDQC0046(unittest.TestCase):
         result = dqc_us_0046._find_errors(self.mock_value)
         from_mo = result[0].fromModelObject.qname.localName
         to_mo = result[0].toModelObject.qname.localName
-        self.assertEqual(from_mo, 'Assets')
         self.assertEqual(
-            to_mo, 'NoncurrentAssets'
+            from_mo,
+            'Assets',
+            'From concept mismatch.'
+        )
+        self.assertEqual(
+            to_mo,
+            'NoncurrentAssets',
+            'To concept mismatch.'
         )
