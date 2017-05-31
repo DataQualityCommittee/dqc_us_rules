@@ -109,23 +109,21 @@ def _create_config(val):
             XbrlConst.summationItem, calc_children
         )
         # lexicographically order for readability and QA checking
-        calc_children_ordered = OrderedDict()
-        json_str = _reorder_dictionary(calc_children, calc_children_ordered)
+        json_str = _reorder_dictionary(calc_children)
         saveFile(cntlr, config_json_file, json_str)
         calc_loading_instance.close()
         del calc_loading_instance
         year += 1
 
 
-def _reorder_dictionary(calc_children, calc_children_ordered):
+def _reorder_dictionary(calc_children):
     """
-    :param calc_children:
-    :type calc_children:
-    :param calc_children_ordered:
-    :type calc_children_ordered:
+    :param calc_children: dictionary of calc_children
+    :type calc_children: dict
     :return: ordered dictionary of calc_children
     :rtype: dict
     """
+    calc_children_ordered = OrderedDict()
     for key, value in sorted(calc_children.items(), key=lambda i: i[0]):
         calc_children_ordered[key] = sorted(value)
     json_str = str(
