@@ -16,11 +16,11 @@ _RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 _EARLIEST_US_GAAP_YEAR = 2014
 _CONFIG_JSON_FILE = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0008',
-            'dqc_0008.json'
-        )
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0008',
+    'dqc_0008.json'
+)
 _EMPTY_LIST = []
 
 ugtDocs = (
@@ -54,10 +54,11 @@ ugtDocs = (
 def _tr_calc(val, calc_ld_inst, rel_name, cal_ch):
     """
     Walks the taxonomy for a given calc
+
     :param val: val from which to gather end dates
-    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :type val: :class:`arelle.ModelXbrl.ModelXbrl`
     :param calc_ld_inst: ugt instance
-    :type calc_ld_inst: ModelXbrl
+    :type calc_ld_inst: :class:`arelle.ModelXbrl.ModelXbrl`
     :param rel_name: The role for the relationship
     :type rel_name: str
     :param calc_children: calcChildren
@@ -76,7 +77,7 @@ def _create_config(val):
     Creates the configs needed for dqc_us_0008
 
     :param val: ValidateXbrl needed in order to save the cache
-    :type val: :class: '~arelle.ValidateXbrl.ValidateXbrl'
+    :type val: :class: 'arelle.ValidateXbrl.ValidateXbrl'
     :return: no explicit return but creates and saves configs in
         dqc_us_rule\resources\DQC_US_0008
     :rtype: None
@@ -118,6 +119,8 @@ def _create_config(val):
 
 def _reorder_dictionary(calc_children):
     """
+    Reorders dictionary for readability.
+
     :param calc_children: dictionary of calc_children
     :type calc_children: dict
     :return: ordered dictionary of calc_children
@@ -138,9 +141,9 @@ def _find_errors(val):
     reversed calculation relationships.
 
     :param val: val from which to gather end dates
-    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :type val: :class:`arelle.ModelXbrl.ModelXbrl`
     :return: list of model relationshipsets
-    :rtype: arelle.ModelXbrl.ModelRelationshipSet
+    :rtype: :class:`arelle.ModelXbrl.ModelRelationshipSet`
     """
     config_json_file = _determine_namespace(val)
     calc_children = _load_config(config_json_file)
@@ -175,7 +178,7 @@ def _run_checks(val):
     reversed calculation relationships.
 
     :param val: val from which to gather end dates
-    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :type val: :class:`~arelle.ModelXbrl.ModelXbrl`
     :return: No direct return.  Instead it calls messages with any errors.
     :rtype: None
     """
@@ -199,7 +202,7 @@ def _determine_namespace(val):
     namespace of the filing.
 
     :param val: val from which to determine namespace
-    :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
+    :type val: :class:`~arelle.ModelXbrl.ModelXbrl`
     :return: Name of config file to use
     :rtype: String
     """
