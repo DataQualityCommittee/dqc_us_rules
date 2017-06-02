@@ -8,7 +8,9 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 1.0.0 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 2.1.0 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 1.0.0 |
+| [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Public Exposure | 4.0.0RC |
 | [DQC_US_0009](DQC_US_0009/DQC_0009.md) | Element A must be less than or equal to element B | Approved | 1.0.0 |
+| [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Public Exposure | 4.0.0RC |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 2.0.0 |
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 2.0.0 |
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 3.0.1 |
