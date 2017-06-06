@@ -15,7 +15,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 3.4.0 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 3.2.1   |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
-| [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 2.0.0 |
+| [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 3.5.0 |
 
 <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/readme.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
 
