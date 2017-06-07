@@ -13,7 +13,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Public Exposure | 4.0.0RC |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 2.0.0 |
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 2.0.0 |
-| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 3.0.1 |
+| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 3.6.0 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 3.4.0 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 3.2.1   |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
