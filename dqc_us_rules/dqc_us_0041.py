@@ -14,31 +14,32 @@ from arelle.FileSource import openFileStream, saveFile, openFileSource
 
 
 _CODE_NAME = 'DQC.US.0041'
-_RULE_VERSION = '2.0.0'
+_RULE_VERSION = '3.5.0'
 
 _EARLIEST_GAAP_YEAR = 2014
 
-ugtDocs = (
+_UGT_DOCS = (
     {
         "year": 2014,
         "namespace": "http://fasb.org/us-gaap/2014-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2014/elts/us-gaap-doc-2014-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2014/entire/us-gaap-entryPoint-std-2014-01-31.xsd",  # noqa
-     },
-
-    {
+     }, {
         "year": 2015,
         "namespace": "http://fasb.org/us-gaap/2015-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/elts/us-gaap-doc-2015-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2015/us-gaap-2015-01-31.zip/us-gaap-2015-01-31/entire/us-gaap-entryPoint-std-2015-01-31.xsd",  # noqa
-     },
-
-    {
+     }, {
         "year": 2016,
         "namespace": "http://fasb.org/us-gaap/2016-01-31",
         "docLB": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/elts/us-gaap-doc-2016-01-31.xml",  # noqa
         "entryXsd": "http://xbrl.fasb.org/us-gaap/2016/us-gaap-2016-01-31.zip/us-gaap-2016-01-31/entire/us-gaap-entryPoint-std-2016-01-31.xsd",  # noqa
-     }
+     }, {
+        "year": 2017,
+        "namespace": "http://fasb.org/us-gaap/2017-01-31",
+        "docLB": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/elts/us-gaap-doc-2017-01-31.xml",  # noqa
+        "entryXsd": "http://xbrl.fasb.org/us-gaap/2017/us-gaap-2017-01-31.zip/us-gaap-2017-01-31/entire/us-gaap-entryPoint-std-2017-01-31.xsd",  # noqa
+    }
 )
 
 
@@ -97,7 +98,8 @@ def _make_cache(val, ugt, cntlr, ugt_default_dimensions_json_file):
             json.dumps(
                 val.usgaapDefaultDimensions,
                 ensure_ascii=False,
-                indent=0
+                indent=4,
+                sort_keys=True
             )
         )  # might not be unicode in 2.7
         # 2.7 gets unicode this way
@@ -133,7 +135,7 @@ def _setup_cache(val):
     cntlr = val.modelXbrl.modelManager.cntlr
 
     year = _EARLIEST_GAAP_YEAR
-    for ugt in ugtDocs:
+    for ugt in _UGT_DOCS:
         ugt_default_dimensions_json_file = os.path.join(
             os.path.dirname(__file__),
             'resources',
@@ -203,7 +205,7 @@ def _load_cache(val):
 
     year = _EARLIEST_GAAP_YEAR
 
-    for ugt in ugtDocs:
+    for ugt in _UGT_DOCS:
         ugt_namespace = ugt["namespace"]
         if _is_in_namespace(val, ugt_namespace):
             ugt_default_dimensions_json_file = os.path.join(
@@ -224,7 +226,8 @@ def _load_cache(val):
                 val.usgaapDefaultDimensions = json.load(file)
                 file.close()
 
-            except FileNotFoundError:  # noqa
+            except FileNotFoundError:
+                _setup_cache(val)
                 if file:
                     file.close()
         year += 1
