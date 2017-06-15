@@ -9,7 +9,7 @@ from arelle.ValidateXbrlCalcs import roundFact
 
 
 _CODE_NAME = 'DQC.US.0011'
-_RULE_VERSION = '3.3.0'
+_RULE_VERSION = '4.0.0'
 _DQC_11_ITEMS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -111,17 +111,15 @@ def _check_for_exclusions(fact):
     :rtype: bool
     """
     for fact_axis, fact_dim_value in fact.context.segDimValues.items():
-        if not fact_dim_value.isTyped and ('ScenarioPreviouslyReportedMember'
-                == fact_dim_value.memberQname.localName
-                or 'LegalEntityAxis' == fact_axis.qname.localName
-                or ('StatementScenarioAxis' == fact_axis.qname.localName
-                    and ('RestatementAdjustmentMember'
-                        == fact_dim_value.memberQname.localName
-                        or 'ScenarioPreviouslyReportedMember'
-                            == fact_dim_value.memberQname.localName
-                        )
-                    )
-                ):
+        mem_name = fact_dim_value.memberQname.localName
+        axis_name = fact_axis.qname.localName
+        if not fact_dim_value.isTyped and \
+                ('LegalEntityAxis' == axis_name and
+                    'ScenarioPreviouslyReportedMember' == mem_name or
+                    'StatementScenarioAxis' == axis_name and
+                    'RestatementAdjustmentMember' == mem_name or
+                    'StatementScenarioAxis' == axis_name and
+                    'ScenarioPreviouslyReportedMember' == mem_name):
             return False
     return True
 

@@ -11,7 +11,7 @@ from collections import defaultdict, OrderedDict
 from arelle.FileSource import saveFile, openFileSource
 
 _CODE_NAME = 'DQC.US.0008'
-_RULE_VERSION = '3.5.0'
+_RULE_VERSION = '4.0.0'
 _RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 _EARLIEST_US_GAAP_YEAR = 2014
