@@ -33,37 +33,40 @@ def run_checks(val):
     for check in _load_checks(model_xbrl):
         rule_index_key = check.rule_num
         try:  # allow exceptions when no fact or concept for QName
-            for n_fact in model_xbrl.factsByQname[check.nondim_concept]:
+            n_facts = [
+                fact for fact in
+                model_xbrl.factsByQname[check.nondim_concept] if
+                not fact.context.qnameDims
+            ]
+            for n_fact in n_facts:
                 # here want dimensionless line items only
-                if not n_fact.context.qnameDims:
-                    # find fact expressed with dimensions
-                    for d_fact in model_xbrl.factsByQname[check.dim_concept]:
-                        if (_check_for_exclusions(d_fact)):
-                            d_fact_mem = d_fact.context.dimMemberQname(
-                                check.axis)
-                            if (d_fact_mem == check.member and
-                                n_fact.context.isPeriodEqualTo(
-                                    d_fact.context
-                                ) and
-                                n_fact.context.isEntityIdentifierEqualTo(
-                                    d_fact.context
-                                ) and
-                                n_fact.unit.isEqualTo(d_fact.unit) and
-                                    roundFact(n_fact,
-                                              True) != roundFact(d_fact,
-                                                                 True) *
-                                    check.weight):
-                                val.modelXbrl.error(
-                                    '{base_key}.{extension_key}'.format(
-                                        base_key=_CODE_NAME,
-                                        extension_key=rule_index_key
-                                    ),
-                                    messages.get_message(_CODE_NAME,
-                                                         _NO_FACT_KEY),
-                                    modelObject=(n_fact, d_fact),
-                                    weight=check.weight,
-                                    ruleVersion=_RULE_VERSION
-                                )
+                # find fact expressed with dimensions
+                d_facts = [
+                    fact for fact in
+                    model_xbrl.factsByQname[check.dim_concept]
+                    if (_check_for_exclusions(fact))
+                ]
+                for d_fact in d_facts:
+                    d_fact_mem = d_fact.context.dimMemberQname(
+                        check.axis)
+                    n_context = n_fact.context
+                    n_round_fact = roundFact(n_fact, True)
+                    d_round_fact = roundFact(d_fact, True)
+                    if (d_fact_mem == check.member and
+                        n_context.isPeriodEqualTo(d_fact.context) and
+                        n_context.isEntityIdentifierEqualTo(d_fact.context) and
+                        n_fact.unit.isEqualTo(d_fact.unit) and
+                            n_round_fact != d_round_fact * check.weight):
+                        val.modelXbrl.error(
+                            '{base_key}.{extension_key}'.format(
+                                base_key=_CODE_NAME,
+                                extension_key=rule_index_key
+                            ),
+                            messages.get_message(_CODE_NAME, _NO_FACT_KEY),
+                            modelObject=(n_fact, d_fact),
+                            weight=check.weight,
+                            ruleVersion=_RULE_VERSION
+                        )
         except (IndexError, KeyError):
             # no facts to gripe about for this check
             pass
