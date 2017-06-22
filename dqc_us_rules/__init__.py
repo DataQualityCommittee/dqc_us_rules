@@ -67,7 +67,7 @@ def _plugins_to_run(mod, include_start=True):
 
 __pluginInfo__ = {
     'name': 'DQC.SEC.ALL',
-    'version': '3.4',
+    'version': '4.0',
     'description': 'All Data Quality Committee SEC Filing Checks',
     'author': '',
     'license': 'See accompanying license text',
