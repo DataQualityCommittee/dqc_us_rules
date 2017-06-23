@@ -7,7 +7,7 @@ from arelle import XbrlConst
 from .util import messages
 
 _CODE_NAME = 'DQC.US.0046'
-_RULE_VERSION = '3.5.0'
+_RULE_VERSION = '4.0.0'
 _RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 _CONFIG_JSON_FILE = os.path.join(
@@ -60,6 +60,8 @@ def _run_checks(val):
     :rtype: None
     """
     errors = _find_errors(val)
+    if not errors:
+        return
     for error in errors:
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
