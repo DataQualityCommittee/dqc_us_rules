@@ -1,5 +1,5 @@
 """
 This module contains the revision information for the dqc_us_rules library.
 """
-version_info = (4, 0, 0, 'RC2')
+version_info = (4, 0, 0, 'RC4')
 version = '.'.join(map(str, version_info))
