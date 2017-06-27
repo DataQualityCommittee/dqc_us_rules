@@ -50,9 +50,16 @@ class TestDQC0046(unittest.TestCase):
             spec=ValidateXbrl,
             modelXbrl=self.mock_modelxbrl
         )
-        pass
 
     def tearDown(self):
+        del self.concept_1
+        del self.concept_2
+        del self.rel_1
+        del self.rel_set_1
+        del self.mock_ModelXbrlrelationshipSet
+        del self.mock_manager
+        del self.mock_modelxbrl
+        del self.mock_value
         pass
 
     @patch('arelle.ModelXbrl.ModelRelationshipSet')

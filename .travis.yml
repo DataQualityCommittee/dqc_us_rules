@@ -10,3 +10,5 @@ script:
   - nosetests tests
   - flake8 dqc_us_rules tests
   - travis_wait 45 ./run_integration.sh
+  - cat DQC-err.txt
+  - tail -50 DQC-log.xml 
