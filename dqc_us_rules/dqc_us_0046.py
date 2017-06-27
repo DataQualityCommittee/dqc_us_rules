@@ -11,11 +11,11 @@ _RULE_VERSION = '4.0.0'
 _RULE_INDEX_KEY = '1'
 _NO_FACT_KEY = 'no_fact'
 _CONFIG_JSON_FILE = os.path.join(
-            os.path.dirname(__file__),
-            'resources',
-            'DQC_US_0046',
-            'dqc_0046.json'
-        )
+    os.path.dirname(__file__),
+    'resources',
+    'DQC_US_0046',
+    'dqc_0046.json'
+)
 _EMPTY_LIST = []
 
 
@@ -26,12 +26,11 @@ def _find_errors(val):
 
     :param val: val from which to gather end dates
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
-    :return: No direct return
-    :rtype: None
+    :return: error_list if errors are found and None otherwise
+    :rtype: List or None
     """
     error_list = []
-    config_json_file = _CONFIG_JSON_FILE
-    calc_children = _load_config(config_json_file)
+    calc_children = _load_config(_CONFIG_JSON_FILE)
     if not calc_children:
         return  # nothing can be checked
     # convert children lists into sets for faster "in" function processing
@@ -54,6 +53,7 @@ def _run_checks(val):
     """
     Entrypoint for the rule.  Load the config, search for instances of
     reversed calculation relationships.
+
     :param val: val from which to gather end dates
     :type val: :class:'~arelle.ModelXbrl.ModelXbrl'
     :return: No direct return, instead it calls message with any errors
@@ -82,12 +82,12 @@ def _load_config(calcs_file):
     :param axis_file: the file to open.
     :type axis_file: file
     :return: A map of the config file.
-    :rtype: dict
+    :rtype: dict or None
     """
     try:
         config = open(calcs_file)
     except FileNotFoundError:
-        return False
+        return
     return json.load(config)
 
 
