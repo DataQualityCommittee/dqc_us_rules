@@ -33,10 +33,6 @@ def _find_errors(val):
     calc_children = _load_config(_CONFIG_JSON_FILE)
     if not calc_children:
         return  # nothing can be checked
-    # convert children lists into sets for faster "in" function processing
-    calc_children = dict(
-        (key, set(value)) for key, value in calc_children.items()
-    )
     calc_rels = val.modelXbrl.relationshipSet(
         XbrlConst.summationItem).modelRelationships
     for rel in calc_rels:
