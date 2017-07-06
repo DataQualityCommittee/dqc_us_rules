@@ -148,6 +148,8 @@ def _create_config(val):
                         set()
                     )
                 )
+            if year == 2017:
+                working_json_file['HedgingDesignationAxis']['extensions'] = []
         json_str = str(
             json.dumps(
                 OrderedDict(sorted(working_json_file.items())),
