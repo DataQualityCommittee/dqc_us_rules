@@ -8,7 +8,7 @@ from .util import facts as facts_util
 from arelle.XmlValidate import VALID
 
 _CODE_NAME = 'DQC.US.0015'
-_RULE_VERSION = '3.6.0'
+_RULE_VERSION = '4.0.0'
 _DEFAULT_CONCEPTS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
