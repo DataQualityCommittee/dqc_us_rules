@@ -11,7 +11,7 @@ from collections import defaultdict, OrderedDict
 from arelle.FileSource import saveFile, openFileSource
 
 _CODE_NAME = 'DQC.US.0001'
-_RULE_VERSION = '3.3.1'
+_RULE_VERSION = '4.0.0'
 _DQC_01_AXIS_FILE = os.path.join(
     os.path.dirname(__file__),
     'resources',
@@ -148,6 +148,8 @@ def _create_config(val):
                         set()
                     )
                 )
+            if year == 2017:
+                working_json_file['HedgingDesignationAxis']['extensions'] = []
         json_str = str(
             json.dumps(
                 OrderedDict(sorted(working_json_file.items())),
