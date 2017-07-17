@@ -246,7 +246,6 @@ def _determine_namespace(val):
         )
     else:
         config_json_file = None
-
     return config_json_file
 
 
