@@ -215,6 +215,7 @@ def _determine_namespace(val):
     NS_2014 = 'http://fasb.org/us-gaap/2014-01-31'
     RESOURCE_DIR = 'resources'
     RULE = 'DQC_US_0008'
+    config_json_file = None
 
     if NS_2017 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
@@ -244,8 +245,6 @@ def _determine_namespace(val):
              RULE,
              'dqc_0008_2014.json'
         )
-    else:
-        config_json_file = None
     return config_json_file
 
 
