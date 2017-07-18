@@ -36,6 +36,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0065](DQC_US_0065/DQC_0065.md) | Interest Paid Net (Operating) Not on Cash Flow | Public Exposure | 5.0.0RC |
 
 <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/readme.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
+<a href="https://github.com/DataQualityCommittee/documentation/raw/master/guidance/PublicExposure2017-Q3-cashflows.pdf?raw=true">Statement of Cash Flows Guidance</a> - public exposure July-September, 2017
 
 © Copyright 2015 - 2017, XBRL US Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
