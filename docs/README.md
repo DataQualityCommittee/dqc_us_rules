@@ -21,7 +21,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0043](DQC_US_0043/DQC_0043.md) | Incorrect Calculation Weights in Operating Cash Flows | Approved | 3.5.0 |
 | [DQC_US_0044](DQC_US_0044/DQC_0044.md) | Accrual Items used in Investing/Financing Cash flow Reconciliation | Public Exposure | 5.0.0RC |
 | [DQC_US_0045](DQC_US_0045/DQC_0045.md) | Movement of Concepts between Calculation Trees | Public Exposure | 5.0.0RC |
-| [DQC_US_0046](DQC_US_0046/DQC_0046.md) | Inappropriate Calculation Descendent | Public Exposure | 5.0.0RC |
+| [DQC_US_0046](DQC_US_0046/DQC_0046.md) | Inappropriate Calculation descendant | Public Exposure | 5.0.0RC |
 | [DQC_US_0047](DQC_US_0047/DQC_0047.md) | Calculation Descendants with No Balance Type | Public Exposure | 5.0.0RC |
 | [DQC_US_0048](DQC_US_0048/DQC_0048.md) | Required Calculation Parent Element in the Cash Flow Statement | Public Exposure | 5.0.0RC |
 | [DQC_US_0049](DQC_US_0049/DQC_0049.md) | Single Calculation Tree for Change in Cash Flows | Public Exposure | 5.0.0RC |
