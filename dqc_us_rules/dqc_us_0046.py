@@ -40,6 +40,8 @@ def _find_errors(val):
             rel.fromModelObject.qname.localName,
             _EMPTY_LIST
         )
+        if not calc_child_rels:
+            continue  # For some reason there are no calcs defined.
         if rel.toModelObject.qname.localName in calc_child_rels:
             error_list.append(rel)
             return error_list

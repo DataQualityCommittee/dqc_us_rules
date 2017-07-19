@@ -22,7 +22,6 @@ _CONFIG_JSON_FILE = os.path.join(
     'dqc_0008.json'
 )
 _EMPTY_LIST = []
-
 ugtDocs = (
     {
         'year': 2014,
@@ -146,6 +145,8 @@ def _find_errors(val):
     :rtype: :class:`arelle.ModelXbrl.ModelRelationshipSet`
     """
     config_json_file = _determine_namespace(val)
+    if not config_json_file:
+        return
     calc_children = _load_config(config_json_file)
     error_list = []
     if not calc_children:
@@ -183,6 +184,8 @@ def _run_checks(val):
     :rtype: None
     """
     errors = _find_errors(val)
+    if not errors:
+        return
     for error in errors:
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
@@ -212,6 +215,7 @@ def _determine_namespace(val):
     NS_2014 = 'http://fasb.org/us-gaap/2014-01-31'
     RESOURCE_DIR = 'resources'
     RULE = 'DQC_US_0008'
+    config_json_file = None
 
     if NS_2017 in val.modelXbrl.namespaceDocs.keys():
         config_json_file = os.path.join(
@@ -240,13 +244,6 @@ def _determine_namespace(val):
              RESOURCE_DIR,
              RULE,
              'dqc_0008_2014.json'
-        )
-    else:
-        config_json_file = os.path.join(
-             os.path.dirname(__file__),
-             RESOURCE_DIR,
-             RULE,
-             'dqc_0008.json'
         )
     return config_json_file
 
