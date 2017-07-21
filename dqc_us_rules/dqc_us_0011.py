@@ -36,7 +36,7 @@ def run_checks(val):
             n_facts = [
                 fact for fact in
                 model_xbrl.factsByQname[check.nondim_concept] if
-                not fact.context.qnameDims
+                fact.context and not fact.context.qnameDims
             ]
             for n_fact in n_facts:
                 # here want dimensionless line items only
@@ -113,18 +113,19 @@ def _check_for_exclusions(fact):
         True (so we do continue) otherwise.
     :rtype: bool
     """
-    for fact_axis, fact_dim_value in fact.context.segDimValues.items():
-        mem_name = fact_dim_value.memberQname.localName
-        axis_name = fact_axis.qname.localName
-        if not fact_dim_value.isTyped and \
-                ('LegalEntityAxis' == axis_name and
-                    'ScenarioPreviouslyReportedMember' == mem_name or
-                    'StatementScenarioAxis' == axis_name and
-                    'RestatementAdjustmentMember' == mem_name or
-                    'StatementScenarioAxis' == axis_name and
-                    'ScenarioPreviouslyReportedMember' == mem_name):
-            return False
-    return True
+    if fact.context:
+        for fact_axis, fact_dim_value in fact.context.segDimValues.items():
+            mem_name = fact_dim_value.memberQname.localName
+            axis_name = fact_axis.qname.localName
+            if not fact_dim_value.isTyped and \
+                    ('LegalEntityAxis' == axis_name and
+                     'ScenarioPreviouslyReportedMember' == mem_name or
+                     'StatementScenarioAxis' == axis_name and
+                     'RestatementAdjustmentMember' == mem_name or
+                     'StatementScenarioAxis' == axis_name and
+                     'ScenarioPreviouslyReportedMember' == mem_name):
+                return False
+        return True
 
 
 __pluginInfo__ = {
