@@ -33,6 +33,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0057](DQC_US_0057/DQC_0057.md) | Cash Flow Opening and Closing Balances | Public Exposure | 5.0.0RC |
 | [DQC_US_0060](DQC_US_0060/DQC_0060.md) | Element Dependence for Specific Elements | Public Exposure | 5.0.0RC |
 | [DQC_US_0061](DQC_US_0061/DQC_0061.md) | Cash Flow Continuing Operations Elements not Used | Public Exposure | 5.0.0RC |
+| [DQC_US_0062](DQC_US_0062/DQC_0062.md) | No Fact Value for Change in Cash | Public Exposure | 5.0.0RC |
 | [DQC_US_0065](DQC_US_0065/DQC_0065.md) | Interest Paid Net (Operating) Not on Cash Flow | Public Exposure | 5.0.0RC |
 
 *  <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/readme.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
