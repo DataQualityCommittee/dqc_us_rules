@@ -12,7 +12,8 @@ DEI_NAMESPACE_LIST = [
 
 GAAP_NAMESPACE_LIST = [
     'http://fasb.org/us-gaap/2012-01-31', 'http://fasb.org/us-gaap/2013-01-31',
-    'http://fasb.org/us-gaap/2014-01-31', 'http://fasb.org/us-gaap/2015-01-31'
+    'http://fasb.org/us-gaap/2014-01-31', 'http://fasb.org/us-gaap/2015-01-31',
+    'http://fasb.org/us-gaap/2016-01-31', 'http://fasb.org/us-gaap/2017-01-31'
 ]
 
 
