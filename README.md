@@ -81,7 +81,7 @@ When new rules that have been approved for coding are released by the DQC, the r
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
   - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
   - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
-  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/PYTHON.rst#docstrings) are required.
+  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/python/style.rst) are required.
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
   - The pull request must go through the review process described below.
 
