@@ -36,7 +36,7 @@ def run_checks(val):
             n_facts = [
                 fact for fact in
                 model_xbrl.factsByQname[check.nondim_concept] if
-                fact.context and not fact.context.qnameDims
+                not fact.context.qnameDims
             ]
             for n_fact in n_facts:
                 # here want dimensionless line items only
@@ -70,6 +70,49 @@ def run_checks(val):
         except (IndexError, KeyError):
             # no facts to gripe about for this check
             pass
+
+
+        n_facts = [
+            fact for fact in
+            model_xbrl.factsByQname.get(check.nondim_concept, tuple()) if
+            check.axis not in fact.context.qnameDims
+        ]
+        d_facts = [
+            fact for fact in
+            model_xbrl.factsByQname.get(check.dim_concept, tuple())
+            if fact.context.dimMemberQname(check.axis) == check.member
+        ]
+        for n_fact in n_facts:
+            # here want dimensionless line items only
+            # find fact expressed with dimensions
+            for d_fact in d_facts:
+                n_context = n_fact.context
+                n_round_fact = roundFact(n_fact, True)
+                d_round_fact = roundFact(d_fact, True)
+                if (n_context.isPeriodEqualTo(d_fact.context) and
+                    n_context.isEntityIdentifierEqualTo(d_fact.context) and
+                    n_fact.unit.isEqualTo(d_fact.unit) and
+                    _dim_match(n_fact, d_fact, check.axis) and
+						n_round_fact != d_round_fact * check.weight):
+                    val.modelXbrl.error(
+						'{base_key}.{extension_key}'.format(
+						base_key=_CODE_NAME,
+						extension_key=rule_index_key
+						),
+					messages.get_message(_CODE_NAME, _NO_FACT_KEY),
+						modelObject=(n_fact, d_fact),
+						weight=check.weight,
+						ruleVersion=_RULE_VERSION
+                    )
+
+
+def _dim_match(n_fact, d_fact, check_axis):
+    n_dims = {k: (v.member.qname if v.isExplicit else v.typedMember.xValue)
+		for k, v in n_fact.context.qnameDims.items()}
+	d_dims = {k: (v.member.qname if v.isExplicit else v.typedMember.xValue)
+		for k, v in d_fact.context.qnameDims.items()
+	if k != check_axis}
+    return n_dims == d_dims
 
 
 def _load_checks(model_xbrl):
@@ -113,19 +156,18 @@ def _check_for_exclusions(fact):
         True (so we do continue) otherwise.
     :rtype: bool
     """
-    if fact.context:
-        for fact_axis, fact_dim_value in fact.context.segDimValues.items():
-            mem_name = fact_dim_value.memberQname.localName
-            axis_name = fact_axis.qname.localName
-            if not fact_dim_value.isTyped and \
-                    ('LegalEntityAxis' == axis_name and
-                     'ScenarioPreviouslyReportedMember' == mem_name or
-                     'StatementScenarioAxis' == axis_name and
-                     'RestatementAdjustmentMember' == mem_name or
-                     'StatementScenarioAxis' == axis_name and
-                     'ScenarioPreviouslyReportedMember' == mem_name):
-                return False
-        return True
+    for fact_axis, fact_dim_value in fact.context.segDimValues.items():
+        mem_name = fact_dim_value.memberQname.localName
+        axis_name = fact_axis.qname.localName
+        if not fact_dim_value.isTyped and \
+                ('LegalEntityAxis' == axis_name and
+				 'ScenarioPreviouslyReportedMember' == mem_name or
+				 'StatementScenarioAxis' == axis_name and
+				 'RestatementAdjustmentMember' == mem_name or
+				 'StatementScenarioAxis' == axis_name and
+				 'ScenarioPreviouslyReportedMember' == mem_name):
+            return False
+    return True
 
 
 __pluginInfo__ = {
