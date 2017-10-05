@@ -36,12 +36,12 @@ def run_checks(val):
         n_facts = [
             fact for fact in
             model_xbrl.factsByQname.get(check.nondim_concept, tuple()) if
-            check.axis not in fact.context.qnameDims 
+            check.axis not in fact.context.qnameDims
         ]
         d_facts = [
             fact for fact in
             model_xbrl.factsByQname.get(check.dim_concept, tuple())
-            if fact.context.dimMemberQname(check.axis) == check.member 
+            if fact.context.dimMemberQname(check.axis) == check.member
         ]
         for n_fact in n_facts:
             # here want dimensionless line items only
@@ -53,27 +53,29 @@ def run_checks(val):
                 if (n_context.isPeriodEqualTo(d_fact.context) and
                     n_context.isEntityIdentifierEqualTo(d_fact.context) and
                     n_fact.unit.isEqualTo(d_fact.unit) and
-                    _dim_match(n_fact, d_fact, check.axis) and 
+                    _dim_match(n_fact, d_fact, check.axis) and
 						n_round_fact != d_round_fact * check.weight):
-                    val.modelXbrl.error(
-						'{base_key}.{extension_key}'.format(
-						base_key=_CODE_NAME,
-						extension_key=rule_index_key
+                    val.modelXbrl.error( 
+						'{base_key}.{extension_key}'.format( 
+						base_key=_CODE_NAME, 
+						extension_key=rule_index_key 
 						),
-					messages.get_message(_CODE_NAME, _NO_FACT_KEY),
-                        modelObject=(n_fact, d_fact),
-                        weight=check.weight,
-                        ruleVersion=_RULE_VERSION
+					messages.get_message(_CODE_NAME, _NO_FACT_KEY), 
+						modelObject=(n_fact, d_fact), 
+						weight=check.weight, 
+						ruleVersion=_RULE_VERSION
                     )
 
+					
 def _dim_match(n_fact, d_fact, check_axis):
     n_dims = {k: (v.member.qname if v.isExplicit else v.typedMember.xValue)
-	for k, v in n_fact.context.qnameDims.items()}
-    d_dims = {k: (v.member.qname if v.isExplicit else v.typedMember.xValue)
-	for k, v in d_fact.context.qnameDims.items()
-               if k != check_axis}
+		for k, v in n_fact.context.qnameDims.items()}
+	d_dims = {k: (v.member.qname if v.isExplicit else v.typedMember.xValue)
+		for k, v in d_fact.context.qnameDims.items()
+	if k != check_axis}
     return n_dims == d_dims
 
+	
 def _load_checks(model_xbrl):
     """
     Returns a map of line items and dim items to test
@@ -102,6 +104,7 @@ def _load_checks(model_xbrl):
     except (FileNotFoundError, ValueError):
         return ()
 
+	
 def _check_for_exclusions(fact):
     """
     Checks facts to determine whether the facts contains members or axes we
