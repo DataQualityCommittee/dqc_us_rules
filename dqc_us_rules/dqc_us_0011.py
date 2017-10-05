@@ -161,11 +161,11 @@ def _check_for_exclusions(fact):
         axis_name = fact_axis.qname.localName
         if not fact_dim_value.isTyped and \
                 ('LegalEntityAxis' == axis_name and
-				 'ScenarioPreviouslyReportedMember' == mem_name or
-				 'StatementScenarioAxis' == axis_name and
-				 'RestatementAdjustmentMember' == mem_name or
-				 'StatementScenarioAxis' == axis_name and
-				 'ScenarioPreviouslyReportedMember' == mem_name):
+                 'ScenarioPreviouslyReportedMember' == mem_name or
+                 'StatementScenarioAxis' == axis_name and
+                 'RestatementAdjustmentMember' == mem_name or
+                 'StatementScenarioAxis' == axis_name and
+                 'ScenarioPreviouslyReportedMember' == mem_name):
             return False
     return True
 
