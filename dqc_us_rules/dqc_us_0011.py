@@ -167,6 +167,10 @@ def _check_for_exclusions(fact):
                     'ScenarioPreviouslyReportedMember' == mem_name):
             return False
     return True
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 1d96bfa66... XS-5306 Fixing issues identified by SpiceWeasel
 
 __pluginInfo__ = {
     'name': _CODE_NAME,
