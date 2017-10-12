@@ -75,14 +75,13 @@ We actively accept, and encourage, pull requests for code changes. A list of the
 
 ### Development of Rules that are "Ready for Coding":
 
-When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged and released on the global pypi index as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/).
-
+When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged <!--and released on the global pypi index -->as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released<!-- on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/)-->.
 ### Requirements for a Pull Request (PR):
 
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
   - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
   - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
-  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/PYTHON.rst#docstrings) are required.
+  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/python/style.rst) are required.
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
   - The pull request must go through the review process described below.
 
