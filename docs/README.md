@@ -19,7 +19,8 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 3.5.0 |
 
-<a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/readme.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
+<a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017
+<a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
 
 © Copyright 2015 - 2017, XBRL US Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
