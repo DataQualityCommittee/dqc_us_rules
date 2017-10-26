@@ -1,0 +1,73 @@
+<!--FILENAME-->
+<!--DQC_0054-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0054</number>
+  <ruleIdentifier>DQC_0054</ruleIdentifier>
+  <description />
+  <ruleMessage>The definition linkbase in the extension taxonomy defines the axis ${axis.label} as an axis of the table ${table.label}. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.\n \nRule version: ${ruleVersion}\n</ruleMessage>
+  <variation id="DQC_0054.7490.8120">
+    <name>Creates a fail case when Statement Geographical Axis is on the table Schedule Of Defined Benefit Plans Disclosures.</name>
+    <description>Creates the following fail case: The definition linkbase in the extension taxonomy defines the axis Statement Geographical Axis as an axis of the table Schedule Of Defined Benefit Plans Disclosures [Table]. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/31235/000156459017009865/0001564590-17-009865-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/31235/000156459017009865/0001564590-17-009865-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0054.7490</error>
+      <result>
+        <primaryElement>ext:NetPensionIncomeExpensePriorToOtherPensionCost</primaryElement>
+        <factValue>-2000000</factValue>
+        <startDate>2017-01-01</startDate>
+        <endDate>2017-04-01</endDate>
+        <dimensions>StatementGeographicalAxis = NonUsMember</dimensions>
+        <unit>USD</unit>
+        <message>The definition linkbase in the extension taxonomy defines the axis ${axis.label} as an axis of the table ${table.label}. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.\n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0054.7491.8121">
+    <name>Creates a fail case when Statement Geographical Axis is an axis on the table Defined Contribution Plan [Table]</name>
+    <description>Creates the following fail case: The definition linkbase in the extension taxonomy defines the axis Statement Geographical Axis as an axis of the table Defined Contribution Plan [Table]. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1582982/000149315217004970/0001493152-17-004970-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1582982/000149315217004970/0001493152-17-004970-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0054.7491</error>
+      <result>
+        <primaryElement>us-gaap:AssetsCurrent</primaryElement>
+        <factValue>241223</factValue>
+        <endDate>2017-04-01</endDate>
+        <dimensions>StatementGeographicalAxis = SubsidiaryInPakistanMember</dimensions>
+        <unit>USD</unit>
+        <message>The definition linkbase in the extension taxonomy defines the axis ${axis.label} as an axis of the table ${table.label}. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.\n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0054.7492.8122">
+    <name>Creates a fail case when Statement Geographical Axis is on the table Defined Benefit Plans and Other Postretirement Benefit Plans Disclosures [Table].</name>
+    <description>Creates the following fail case: The definition linkbase in the extension taxonomy defines the axis Statement Geographical Axis as an axis of the table Defined Benefit Plans and Other Postretirement Benefit Plans Disclosures [Table]. This axis cannot be used on this table as this axis is expressly prohibited from being used on this table by the 2017 FASB taxonomy and retirement benefits implementation guide. Consider using the axis Retirement Plan Sponsor Location [Axis] instead.</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1630805/000163080517000051/0001630805-17-000051-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1630805/000163080517000051/0001630805-17-000051-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0054.7492</error>
+      <result>
+        <primaryElement>ext:</primaryElement>
+        <factValue></factValue>
+        <startDate />
+        <endDate />
+        <dimensions />
+        <unit></unit>
+        <message />
+      </result>
+    </results>
+  </variation>
+</testcase>

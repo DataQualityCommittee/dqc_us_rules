@@ -1,0 +1,34 @@
+<!--FILENAME-->
+<!--DQC_0062-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0062</number>
+  <ruleIdentifier>DQC_0062</ruleIdentifier>
+  <description />
+  <ruleMessage>The filing includes a cash flow statement but does not report a value for the change in cash using any of the following elements:\nCashPeriodIncreaseDecrease,\nCashAndCashEquivalentsPeriodIncreaseDecrease,\nCashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect (As an extension element),\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (As an extension element), or \nNetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash);\n \nIf you have disclosed a change in cash for the period, one of the above elements should be used. Please update your filing if one of the following has occurred:\n \nThe change in cash has not been represented with a value, in this case the element should be tagged with a value of zero. \nThe change in cash flow is dimensionally qualified with an inappropriate dimension. The instance should have a value reported with no dimensions. The rule will identify where the successor member has been used or an extension member. The value for change in cash should not have a dimension.\nThe change in cash has been represented with an extension element. There is no reason the change in cash needs to be identified using an extension member.\n \n \nRule version: ${ruleVersion}\n</ruleMessage>
+  <variation id="DQC_0062.7501.8131">
+    <name>Creates a fail case when the filing includes a cash flow statement but does not report a value for the change in cash using any predefined elements.</name>
+    <description>Creates the following fail case: The filing includes a cash flow statement but does not report a value for the change in cash using any of the following elements:\n\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect (After adoption of ASU-2016-18) \nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (After adoption of ASU-2016-18) \nCashPeriodIncreaseDecrease,CashAndCashEquivalentsPeriodIncreaseDecrease (Prior to adoption of ASU-2016-18)\nCashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (Prior to adoption of ASU-2016-18) or \nNetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash)\n\nIf you have disclosed a change in cash for the period, one of the above elements should be used. Please update your filing if one of the following has occurred:\n\n1. The change in cash has not been represented with a value, in this case the element should be tagged with a value of zero. \n2. The change in cash flow is dimensionally qualified with an inappropriate dimension. The instance should have a value reported with no dimensions. The rule will identify where the successor member has been used or an extension member. The value for change in cash should not have a dimension.\n3. The change in cash has been represented with an extension element. There is no reason the change in cash needs to be identified using an extension member.\n\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1606698/000109690617000384/0001096906-17-000384-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1606698/000109690617000384/0001096906-17-000384-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0062.7501</error>
+      <result>
+        <primaryElement></primaryElement>
+        <factValue></factValue>
+        <startDate />
+        <endDate />
+        <dimensions />
+        <unit></unit>
+        <message />
+      </result>
+    </results>
+  </variation>
+</testcase>

@@ -1,0 +1,34 @@
+<!--FILENAME-->
+<!--DQC_0052-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0052</number>
+  <ruleIdentifier>DQC_0052</ruleIdentifier>
+  <description />
+  <ruleMessage>The element ${fact1.label} with a value of ${fact1.value} has been used with the axis ${fact1.axis.label} and the member ${fact1.member.label}. The ${fact1.member.label} element is not intended to be used in the instance document, instead the specific country from the SEC&#226;&#8364;&#8482;s Country Taxonomy is intended to tag the information.</ruleMessage>
+  <variation id="DQC_0052.7487.8117">
+    <name>Creates a fail case when the axis RetirementPlanSponsorLocationAxis is used with the member DomesticPlanMember.</name>
+    <description>Creates the following fail case: The element DefinedBenefitPlanContributionsByEmployer with a value of 3,500,000 has been used with the axis RetirementPlanSponsorLocationAxis and the member DomesticPlanMember. The DomesticPlanMember element is not intended to be used in the instance document, instead the specific country from the SEC&#226;&#8364;&#8482;s Country Taxonomy is intended to tag the information. \n{DefinedBenefitPlanContributionsByEmployer[period=duration(2016-07-01, 2017-03-31),\nunit=USD,\nentity=(http://www.sec.gov/CIK) 0000093676,\nRetirementPlanSponsorLocationAxis=DomesticPlanMember,\nRetirementPlanTypeAxis=PensionPlansDefinedBenefitMember]}</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/93676/000143774917007420/0001437749-17-007420-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/93676/000143774917007420/0001437749-17-007420-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0052.7487</error>
+      <result>
+        <primaryElement>us-gaap:DefinedBenefitPlanContributionsByEmployer</primaryElement>
+        <factValue>3500000</factValue>
+        <startDate>2016-07-01</startDate>
+        <endDate>2017-04-01</endDate>
+        <dimensions>RetirementPlanTypeAxis = PensionPlansDefinedBenefitMember; RetirementPlanSponsorLocationAxis = DomesticPlanMember</dimensions>
+        <unit>USD</unit>
+        <message>The element ${fact1.label} with a value of 3500000 has been used with the axis ${fact1.axis.label} and the member ${fact1.member.label}. The ${fact1.member.label} element is not intended to be used in the instance document, instead the specific country from the SEC&#226;&#8364;&#8482;s Country Taxonomy is intended to tag the information.</message>
+      </result>
+    </results>
+  </variation>
+</testcase>
