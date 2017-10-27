@@ -1,6 +1,6 @@
 <!--FILENAME-->
 <!--DQC_0014-->
-<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
 <!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
 <testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <creator>
@@ -11,15 +11,6 @@
   <ruleIdentifier>DQC_0014</ruleIdentifier>
   <description />
   <ruleMessage>${fact1.label} has a value of ${fact1.value} which is less than zero. This element should not have a negative value. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
-  <variation id="DQC_0014.2786.3000">
-    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability equals 3000000.</description>
-    <data>
-      <schema>DQC_0014.2786/CASE_3000/testco-20141231_3000.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2786/CASE_3000/testco-20141231_3000.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.2786.3024">
     <name>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability equals -3024000.</description>
@@ -38,6 +29,15 @@
         <message>${fact1.label} has a value of -3024000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:DerivativeFairValueOfDerivativeLiability fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.2786.3000">
+    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiability equals 3000000.</description>
+    <data>
+      <schema>DQC_0014.2786/CASE_3000/testco-20141231_3000.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2786/CASE_3000/testco-20141231_3000.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.2787.3025">
     <name>Creates a fail case when the value of us-gaap:DerivativeLiabilities is less than zero irrespective of the deciamal value.</name>
@@ -95,6 +95,15 @@
     </data>
     <results />
   </variation>
+  <variation id="DQC_0014.2789.3003">
+    <name>Flags a pass case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue equals 3003000.</description>
+    <data>
+      <schema>DQC_0014.2789/CASE_3003/testco-20141231_3003.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2789/CASE_3003/testco-20141231_3003.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0014.2789.3027">
     <name>Creates a fail case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue equals -3027000.</description>
@@ -113,15 +122,6 @@
         <message>${fact1.label} has a value of -3027000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0014.2789.3003">
-    <name>Flags a pass case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue equals 3003000.</description>
-    <data>
-      <schema>DQC_0014.2789/CASE_3003/testco-20141231_3003.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2789/CASE_3003/testco-20141231_3003.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0014.2790.3004">
     <name>Flags a pass case when the value of us-gaap:LiabilitiesFairValueDisclosure has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -180,15 +180,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2792.3006">
-    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral equals 3006000.</description>
-    <data>
-      <schema>DQC_0014.2792/CASE_3006/testco-20141231_3006.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2792/CASE_3006/testco-20141231_3006.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.2792.3030">
     <name>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral equals -3030000.</description>
@@ -208,12 +199,12 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2793.3007">
-    <name>Flags a pass case when the value of us-gaap:DerivativeAssets has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeAssets equals 3007000.</description>
+  <variation id="DQC_0014.2792.3006">
+    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral equals 3006000.</description>
     <data>
-      <schema>DQC_0014.2793/CASE_3007/testco-20141231_3007.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2793/CASE_3007/testco-20141231_3007.xml</instance>
+      <schema>DQC_0014.2792/CASE_3006/testco-20141231_3006.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2792/CASE_3006/testco-20141231_3006.xml</instance>
     </data>
     <results />
   </variation>
@@ -235,6 +226,15 @@
         <message>${fact1.label} has a value of -3031000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:DerivativeAssets fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.2793.3007">
+    <name>Flags a pass case when the value of us-gaap:DerivativeAssets has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeAssets equals 3007000.</description>
+    <data>
+      <schema>DQC_0014.2793/CASE_3007/testco-20141231_3007.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2793/CASE_3007/testco-20141231_3007.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.2794.3008">
     <name>Flags a pass case when the value of us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetTransfersOutOfLevel3 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -265,6 +265,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0014.2795.3009">
+    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral equals 3009000.</description>
+    <data>
+      <schema>DQC_0014.2795/CASE_3009/testco-20141231_3009.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2795/CASE_3009/testco-20141231_3009.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0014.2795.3033">
     <name>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral equals -3033000.</description>
@@ -283,15 +292,6 @@
         <message>${fact1.label} has a value of -3033000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0014.2795.3009">
-    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral equals 3009000.</description>
-    <data>
-      <schema>DQC_0014.2795/CASE_3009/testco-20141231_3009.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2795/CASE_3009/testco-20141231_3009.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0014.2796.3010">
     <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeLiabilityAmountOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -321,15 +321,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2797.3011">
-    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral equals 3011000.</description>
-    <data>
-      <schema>DQC_0014.2797/CASE_3011/testco-20141231_3011.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2797/CASE_3011/testco-20141231_3011.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.2797.3035">
     <name>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral equals -3035000.</description>
@@ -348,6 +339,15 @@
         <message>${fact1.label} has a value of -3035000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.2797.3011">
+    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral equals 3011000.</description>
+    <data>
+      <schema>DQC_0014.2797/CASE_3011/testco-20141231_3011.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2797/CASE_3011/testco-20141231_3011.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.2798.3012">
     <name>Flags a pass case when the value of us-gaap:DerivativeLiabilityFairValueGrossAsset has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -405,15 +405,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2800.3014">
-    <name>Flags a pass case when the value of us-gaap:DerivativeAssetFairValueGrossLiability has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeAssetFairValueGrossLiability equals 3014000.</description>
-    <data>
-      <schema>DQC_0014.2800/CASE_3014/testco-20141231_3014.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2800/CASE_3014/testco-20141231_3014.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.2800.3038">
     <name>Creates a fail case when the value of us-gaap:DerivativeAssetFairValueGrossLiability is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeAssetFairValueGrossLiability equals -3038000.</description>
@@ -432,6 +423,15 @@
         <message>${fact1.label} has a value of -3038000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:DerivativeAssetFairValueGrossLiability fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.2800.3014">
+    <name>Flags a pass case when the value of us-gaap:DerivativeAssetFairValueGrossLiability has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeAssetFairValueGrossLiability equals 3014000.</description>
+    <data>
+      <schema>DQC_0014.2800/CASE_3014/testco-20141231_3014.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2800/CASE_3014/testco-20141231_3014.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.2801.3039">
     <name>Creates a fail case when the value of us-gaap:CashDividendsPaidToParentCompany is less than zero irrespective of the deciamal value.</name>
@@ -462,6 +462,15 @@
     </data>
     <results />
   </variation>
+  <variation id="DQC_0014.2802.3016">
+    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset equals 3016000.</description>
+    <data>
+      <schema>DQC_0014.2802/CASE_3016/testco-20141231_3016.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2802/CASE_3016/testco-20141231_3016.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0014.2802.3040">
     <name>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset equals -3040000.</description>
@@ -481,12 +490,12 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2802.3016">
-    <name>Flags a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeFairValueOfDerivativeAsset equals 3016000.</description>
+  <variation id="DQC_0014.2803.3017">
+    <name>Flags a pass case when the value of us-gaap:DerivativeLiabilitiesCurrent has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeLiabilitiesCurrent equals 3017000.</description>
     <data>
-      <schema>DQC_0014.2802/CASE_3016/testco-20141231_3016.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2802/CASE_3016/testco-20141231_3016.xml</instance>
+      <schema>DQC_0014.2803/CASE_3017/testco-20141231_3017.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2803/CASE_3017/testco-20141231_3017.xml</instance>
     </data>
     <results />
   </variation>
@@ -509,12 +518,12 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2803.3017">
-    <name>Flags a pass case when the value of us-gaap:DerivativeLiabilitiesCurrent has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeLiabilitiesCurrent equals 3017000.</description>
+  <variation id="DQC_0014.2804.3018">
+    <name>Flags a pass case when the value of us-gaap:InvestmentsFairValueDisclosure has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:InvestmentsFairValueDisclosure equals 3018000.</description>
     <data>
-      <schema>DQC_0014.2803/CASE_3017/testco-20141231_3017.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2803/CASE_3017/testco-20141231_3017.xml</instance>
+      <schema>DQC_0014.2804/CASE_3018/testco-20141231_3018.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2804/CASE_3018/testco-20141231_3018.xml</instance>
     </data>
     <results />
   </variation>
@@ -536,15 +545,6 @@
         <message>${fact1.label} has a value of -3042000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:InvestmentsFairValueDisclosure fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0014.2804.3018">
-    <name>Flags a pass case when the value of us-gaap:InvestmentsFairValueDisclosure has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:InvestmentsFairValueDisclosure equals 3018000.</description>
-    <data>
-      <schema>DQC_0014.2804/CASE_3018/testco-20141231_3018.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2804/CASE_3018/testco-20141231_3018.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0014.2805.3019">
     <name>Flags a pass case when the value of us-gaap:CashDividendsPaidToParentCompanyByConsolidatedSubsidiaries has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -575,6 +575,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0014.2806.3020">
+    <name>Flags a pass case when the value of us-gaap:DerivativeCollateralObligationToReturnCash has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:DerivativeCollateralObligationToReturnCash equals 3020000.</description>
+    <data>
+      <schema>DQC_0014.2806/CASE_3020/testco-20141231_3020.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2806/CASE_3020/testco-20141231_3020.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0014.2806.3044">
     <name>Creates a fail case when the value of us-gaap:DerivativeCollateralObligationToReturnCash is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:DerivativeCollateralObligationToReturnCash equals -3044000.</description>
@@ -594,24 +603,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.2806.3020">
-    <name>Flags a pass case when the value of us-gaap:DerivativeCollateralObligationToReturnCash has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:DerivativeCollateralObligationToReturnCash equals 3020000.</description>
-    <data>
-      <schema>DQC_0014.2806/CASE_3020/testco-20141231_3020.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2806/CASE_3020/testco-20141231_3020.xml</instance>
-    </data>
-    <results />
-  </variation>
-  <variation id="DQC_0014.2807.3021">
-    <name>Flags a pass case when the value of us-gaap:Goodwill has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:Goodwill equals 3021000.</description>
-    <data>
-      <schema>DQC_0014.2807/CASE_3021/testco-20141231_3021.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.2807/CASE_3021/testco-20141231_3021.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.2807.3045">
     <name>Creates a fail case when the value of us-gaap:Goodwill is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:Goodwill equals -3045000.</description>
@@ -630,6 +621,15 @@
         <message>${fact1.label} has a value of -3045000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:Goodwill fact are:\nPeriod: 2014-12-31\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.2807.3021">
+    <name>Flags a pass case when the value of us-gaap:Goodwill has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:Goodwill equals 3021000.</description>
+    <data>
+      <schema>DQC_0014.2807/CASE_3021/testco-20141231_3021.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.2807/CASE_3021/testco-20141231_3021.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.2808.3046">
     <name>Creates a fail case when the value of us-gaap:LoansAndLeasesReceivableAllowance is less than zero irrespective of the deciamal value.</name>
@@ -744,15 +744,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.3005.3466">
-    <name>Flags a pass case when the value of us-gaap:ConversionOfStockSharesConverted1 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:ConversionOfStockSharesConverted1 equals 3466000.</description>
-    <data>
-      <schema>DQC_0014.3005/CASE_3466/testco-20141231_3466.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.3005/CASE_3466/testco-20141231_3466.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.3005.3473">
     <name>Creates a fail case when the value of us-gaap:ConversionOfStockSharesConverted1 is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:ConversionOfStockSharesConverted1 equals -3475000.</description>
@@ -772,6 +763,15 @@
         <message>${fact1.label} has a value of -3475000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:ConversionOfStockSharesConverted1 fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.3005.3466">
+    <name>Flags a pass case when the value of us-gaap:ConversionOfStockSharesConverted1 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:ConversionOfStockSharesConverted1 equals 3466000.</description>
+    <data>
+      <schema>DQC_0014.3005/CASE_3466/testco-20141231_3466.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.3005/CASE_3466/testco-20141231_3466.xml</instance>
+    </data>
+    <results />
   </variation>
   <variation id="DQC_0014.3006.3467">
     <name>Flags a pass case when the value of us-gaap:ConversionOfStockAmountConverted1 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -830,6 +830,15 @@
     </data>
     <results />
   </variation>
+  <variation id="DQC_0014.3008.3469">
+    <name>Flags a pass case when the value of us-gaap:CostOfServices has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:CostOfServices equals 3469000.</description>
+    <data>
+      <schema>DQC_0014.3008/CASE_3469/testco-20141231_3469.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.3008/CASE_3469/testco-20141231_3469.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0014.3008.3476">
     <name>Creates a fail case when the value of us-gaap:CostOfServices is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:CostOfServices equals -3476000.</description>
@@ -850,24 +859,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0014.3008.3469">
-    <name>Flags a pass case when the value of us-gaap:CostOfServices has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:CostOfServices equals 3469000.</description>
-    <data>
-      <schema>DQC_0014.3008/CASE_3469/testco-20141231_3469.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.3008/CASE_3469/testco-20141231_3469.xml</instance>
-    </data>
-    <results />
-  </variation>
-  <variation id="DQC_0014.3009.3470">
-    <name>Flags a pass case when the value of us-gaap:ConversionOfStockSharesIssued1 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:ConversionOfStockSharesIssued1 equals 3470000.</description>
-    <data>
-      <schema>DQC_0014.3009/CASE_3470/testco-20141231_3470.xsd</schema>
-      <instance readMeFirst="true">DQC_0014.3009/CASE_3470/testco-20141231_3470.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0014.3009.3477">
     <name>Creates a fail case when the value of us-gaap:ConversionOfStockSharesIssued1 is less than zero irrespective of the deciamal value.</name>
     <description>Creates a fail case when the value of us-gaap:ConversionOfStockSharesIssued1 equals -3477000.</description>
@@ -887,5 +878,14 @@
         <message>${fact1.label} has a value of -3477000 which is less than zero. This element should not have a negative value. \nThe properties of this us-gaap:ConversionOfStockSharesIssued1 fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0014.3009.3470">
+    <name>Flags a pass case when the value of us-gaap:ConversionOfStockSharesIssued1 has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:ConversionOfStockSharesIssued1 equals 3470000.</description>
+    <data>
+      <schema>DQC_0014.3009/CASE_3470/testco-20141231_3470.xsd</schema>
+      <instance readMeFirst="true">DQC_0014.3009/CASE_3470/testco-20141231_3470.xml</instance>
+    </data>
+    <results />
   </variation>
 </testcase>
