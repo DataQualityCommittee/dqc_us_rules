@@ -10,4 +10,4 @@
 - [ ] If this is a code change, reviewed by a second person. (+1)
 - [ ] QA'd to the specifications listed [here](https://github.com/DataQualityCommittee/dqc_us_rules#quality-assurance-qa-of-a-pull-request). Documentation only changes do not require the formal code quality assurance process. (+10)
 
-##### Once checklist is complete, @hefischer  @andrewperkins-wf please review for merge.
+##### Once checklist is complete, @hefischer please review for merge.
