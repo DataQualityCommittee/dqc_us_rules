@@ -66,9 +66,9 @@ def _plugins_to_run(mod, include_start=True):
 
 
 __pluginInfo__ = {
-    'name': 'DQC.SEC.ALL',
-    'version': '4.0',
-    'description': 'All Data Quality Committee SEC Filing Checks',
+    'name': 'DQC.SEC.PYTHON',
+    'version': '5.0',
+    'description': 'Data Quality Committee SEC Filing Checks - v4 .py reference',
     'author': '',
     'license': 'See accompanying license text',
     # Required plugin for logging
