@@ -183,6 +183,8 @@ def _run_checks(val):
     :rtype: None
     """
     errors = _find_errors(val)
+    if not errors:
+        return
     for error in errors:
         val.modelXbrl.error(
             '{base_key}.{extension_key}'.format(
