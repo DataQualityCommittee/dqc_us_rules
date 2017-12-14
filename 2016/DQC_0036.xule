@@ -1,0 +1,24 @@
+/**
+DQC Rules
+Copyright (c) 2017 XBRL US Inc.
+Taxonomy: US GAAP 2017
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0036.1 satisfied
+
+exists({@concept = dei:DocumentPeriodEndDate where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact)
+
+message
+"The context ending date of {$fact.period.end} used for Document Period End Date must match the value reported for the element of {$fact}. Revise either the ending context date or the value of the Document Period End Date.
+
+The properties of this {$fact.concept} fact are:
+Period :{$fact.period}
+Dimensions : {$fact.dimensions.join(', ','=')}
+Unit : {$fact.unit}
+Rule Version : 1.0"
+
+severity error
+
