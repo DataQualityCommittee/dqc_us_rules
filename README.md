@@ -123,4 +123,4 @@ The result will be any of a few things. For example a +10 for passing, or just a
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
 
-Copyright 2015 - 2017, XBRL US Inc. All rights reserved.
+Copyright 2015 - 2018, XBRL US Inc. All rights reserved.
