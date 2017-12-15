@@ -1,0 +1,98 @@
+<!--FILENAME-->
+<!--DQC_0036-->
+<!-- Copyright 2016 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0036</number>
+  <ruleIdentifier>DQC_0036</ruleIdentifier>
+  <description>This rule tests that the ending context date for the Document Period End Date is not different by more than 3 days from the value of that element.</description>
+  <ruleMessage>The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, ${fact1.value}. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this ${fact1.name} fact are:\nPeriod: ${fact1.period}\nDimensions: ${fact1.dimensions}\nUnit: ${fact1.unit}\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0036.1.4">
+    <name>Context date of the element DocumentPeriodEndDate is greater than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentPeriodEndDate is greater than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_4/testco-20141231_4.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_4/testco-20141231_4.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0036.1</error>
+      <result>
+        <primaryElement>dei:DocumentPeriodEndDate</primaryElement>
+        <factValue>2014-12-31</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-31</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, 2014-12-31. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this dei:DocumentPeriodEndDate fact are:\nPeriod: 2015-01-31 - 2015-01-31\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0036.1.2528">
+    <name>Context date of the element dei:DocumentPeriodEndDate is 3 days after the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context is on the element dei:DocumentPeriodEndDate is 3 days after the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_2528/testco-20141231_2528.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2528/testco-20141231_2528.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0036.1.2526">
+    <name>Context date of the element dei:DocumentPeriodEndDate is the same as the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context of dei:DocumentPeriodEndDate is the same as the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_2526/testco-20141231_2526.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2526/testco-20141231_2526.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0036.1.2527">
+    <name>Context date of the element dei:DocumentPeriodEndDate is 2 days after the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context is on the element dei:DocumentPeriodEndDate is 2 days after the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_2527/testco-20141231_2527.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2527/testco-20141231_2527.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
+  </variation>
+  <variation id="DQC_0036.1.28">
+    <name>Context date of the element DocumentPeriodEndDate is less than the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context of the element DocumentPeriodEndDate is less than the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_28/testco-20141231_28.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_28/testco-20141231_28.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14">
+      <error severity="error" count="1">DQC.US.0036.1</error>
+      <result>
+        <primaryElement>dei:DocumentPeriodEndDate</primaryElement>
+        <factValue>2014-12-31</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-11-30</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, 2014-12-31. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this dei:DocumentPeriodEndDate fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0036.1.2529">
+    <name>Context date of the element dei:DocumentPeriodEndDate is 4 days after the value of DocumentPeriodEndDate.</name>
+    <description>Creates a fail case when the period end date on the context is on the element dei:DocumentPeriodEndDate is 4 days after the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_2529/testco-20141231_2529.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2529/testco-20141231_2529.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74">
+      <error severity="error" count="1">DQC.US.0036.1</error>
+      <result>
+        <primaryElement>dei:DocumentPeriodEndDate</primaryElement>
+        <factValue>2014-12-31</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-04</endDate>
+        <dimensions />
+        <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, 2014-12-31. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this dei:DocumentPeriodEndDate fact are:\nPeriod: 2015-01-04 - 2015-01-04\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+</testcase>
