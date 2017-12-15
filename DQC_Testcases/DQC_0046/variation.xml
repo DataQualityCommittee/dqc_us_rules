@@ -1,0 +1,74 @@
+<!--FILENAME-->
+<!--DQC_0046-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0046</number>
+  <ruleIdentifier>DQC_0046</ruleIdentifier>
+  <description />
+  <ruleMessage>In the companys extension taxonomy the concept ${parentElement.name} includes ${childElement.name} as a summation-child. The concept ${childElement.name} should not appear as a child of ${parentElement.name}\n\nRule version: ${ruleVersion}</ruleMessage>
+  <variation id="DQC_0046.6839.8106">
+    <name>Creates a fail case when NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalents as a summation-child</name>
+    <description>Creates the following fail case: The element NetCashProvidedByUsedInContinuingOperations (Net Cash Provided by (Used in) Continuing Operations) does not include EffectOfExchangeRateOnCashAndCashEquivalents (Effect of Exchange Rate on Cash and Cash Equivalents) as defined in the US GAAP Taxonomy.\n\n However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalents as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease, instead of NetCashProvidedByUsedInContinuingOperations.\n\n \n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/792935/000072174817000259/0000721748-17-000259-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/792935/000072174817000259/0000721748-17-000259-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0043.7488|DQC.US.0047.7481|DQC.US.0005.17|DQC.US.0015.1873|DQC.US.0015.2050|DQC.US.0015.2094|DQC.US.0015.2433|DQC.US.0015.2685|DQC.US.0015.2837|DQC.US.0015.2882|DQC.US.0015.3525|DQC.US.0015.5814|DQC.US.0015.633|DQC.US.0049.7483">
+      <error severity="error" count="1">DQC.US.0046.6839</error>
+      <result>
+        <primaryElement>us-gaap:EffectOfExchangeRateOnCashAndCashEquivalents</primaryElement>
+        <factValue>494</factValue>
+        <startDate>2016-01-01</startDate>
+        <endDate>2017-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>In the companys extension taxonomy the concept ${parentElement.name} includes ${childElement.name} as a summation-child. The concept ${childElement.name} should not appear as a child of ${parentElement.name}\n\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0046.6840.8107">
+    <name>Creates a fail case when NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations as a summation-child</name>
+    <description>Creates the following fail case: The element NetCashProvidedByUsedInContinuingOperations (Net Cash Provided by (Used in) Continuing Operations) does not include EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations (Effect of Exchange Rate on Cash and Cash Equivalents, Continuing Operations) as defined in the US GAAP Taxonomy.\n\n However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease, instead of NetCashProvidedByUsedInContinuingOperations.\n {EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations\n {NetCashProvidedByUsedInContinuingOperations}}\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/103730/000010373017000007/0000103730-17-000007-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/103730/000010373017000007/0000103730-17-000007-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0044.6834|DQC.US.0048.7482|DQC.US.0054.7490|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497|DQC.US.0001.58|DQC.US.0001.75|DQC.US.0006.14|DQC.US.0015.1881|DQC.US.0015.2416|DQC.US.0015.2419|DQC.US.0015.243|DQC.US.0015.2594|DQC.US.0015.2730|DQC.US.0015.2738|DQC.US.0015.2747|DQC.US.0015.2772|DQC.US.0015.2773|DQC.US.0015.2833|DQC.US.0015.2928|DQC.US.0015.3111|DQC.US.0015.5492|DQC.US.0015.5816|DQC.US.0015.623|DQC.US.0015.657|DQC.US.0015.7206|DQC.US.0015.7213|DQC.US.0015.900">
+      <error severity="error" count="1">DQC.US.0046.6840</error>
+      <result>
+        <primaryElement>us-gaap:EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations</primaryElement>
+        <factValue>-9050000</factValue>
+        <startDate>2016-01-01</startDate>
+        <endDate>2017-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>In the companys extension taxonomy the concept ${parentElement.name} includes ${childElement.name} as a summation-child. The concept ${childElement.name} should not appear as a child of ${parentElement.name}\n\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0046.7480.8110">
+    <name>Creates a fail case when NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations as a summation-child</name>
+    <description>Creates the following fail case: The element NetCashProvidedByUsedInDiscontinuedOperations (Net Cash Provided by (Used in) Discontinued Operations) does not include EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations (Effect of Exchange Rate on Cash and Cash Equivalents, Discontinued Operations) as defined in the US GAAP Taxonomy.\n\n However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease, instead of NetCashProvidedByUsedInDiscontinuedOperations.\n {EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations\n {NetCashProvidedByUsedInDiscontinuedOperations}}\n\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1692115/000119312517164213/0001193125-17-164213-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1692115/000119312517164213/0001193125-17-164213-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0045.6835|DQC.US.0049.7483|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497">
+      <error severity="error" count="1">DQC.US.0046.7480</error>
+      <result>
+        <primaryElement>us-gaap:EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations</primaryElement>
+        <factValue>-153000</factValue>
+        <startDate>2016-04-01</startDate>
+        <endDate>2017-04-01</endDate>
+        <dimensions>LegalEntityAxis = SouthwestGasCorporationMember</dimensions>
+        <unit>USD</unit>
+        <message>In the companies extension taxonomy the concept ${parentElement.name} includes ${childElement.name} as a summation-child. The concept ${childElement.name} should not appear as a child of ${parentElement.name}\n\nRule version: ${ruleVersion}</message>
+      </result>
+    </results>
+  </variation>
+</testcase>
