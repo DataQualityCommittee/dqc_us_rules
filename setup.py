@@ -34,7 +34,7 @@ setup_args = dict(
         'Intended Audience :: Developers',
         'License :: Other/Proprietary License',
         'Natural Language :: English',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         "Topic :: Office/Business :: Financial :: Accounting"
     ],
     test_suite='test',
