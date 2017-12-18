@@ -16,7 +16,7 @@ for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuing
 	where $relationship.target.balance == none 
     and $relationship.target.name  != NetCashProvidedByUsedInOperatingActivitiesContinuingOperations
 	/** DOes not flag an error if the element is an extension element **/
-	and is_base($relationship.target.name);
+	and is_base($relationship.target);
 
 	for $x in $misplaced_concept true
 
