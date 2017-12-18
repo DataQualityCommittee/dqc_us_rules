@@ -1,6 +1,6 @@
 /**
 DQC Rules
-Copyright (c) 2017 XBRL US Inc.
+Copyright (c) 2017 - 2018 XBRL US Inc.
 Taxonomy: US GAAP 2017
 **/
 
@@ -45,7 +45,7 @@ $rule_suffix_id
 
 
 
-constant $dim_items = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/master/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
+
 
 function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
 $tolerance1 = if ($left.decimals < $right.decimals) 
