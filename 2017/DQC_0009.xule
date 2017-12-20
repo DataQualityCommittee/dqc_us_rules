@@ -1,0 +1,285 @@
+/**
+DQC Rules
+Copyright (c) 2017 - 2018 XBRL US, Inc.
+Taxonomy: US GAAP 2017
+**/
+
+
+
+rule-name-prefix DQC
+
+assert US.0009.15 satisfied
+
+$less_fact = {@CommonStockSharesOutstanding};
+$greater_fact = {@CommonStockSharesAuthorized};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+
+assert US.0009.19 satisfied
+$less_fact = {@PreferredStockSharesOutstanding};
+$greater_fact = {@PreferredStockSharesIssued};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+
+assert US.0009.21 satisfied
+$less_fact = {@CommonStockSharesIssued};
+$greater_fact = {@CommonStockSharesAuthorized};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.22 satisfied
+$less_fact = {@PreferredStockSharesIssued};
+$greater_fact = {@PreferredStockSharesAuthorized};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+
+assert US.0009.23 satisfied
+$less_fact = {@PreferredStockSharesOutstanding};
+$greater_fact = {@PreferredStockSharesAuthorized};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.24 satisfied
+$less_fact = {@CommonStockSharesOutstanding};
+$greater_fact = {@CommonStockSharesIssued};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+
+assert US.0009.47 satisfied
+$less_fact = {@DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries};
+$greater_fact = {@UndistributedEarningsOfForeignSubsidiaries};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.39 satisfied
+$less_fact = {@DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation};
+$greater_fact = {@DefinedBenefitPlanBenefitObligation};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. {$less_fact.label.text} is a subset of {$greater_fact.label.text}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.40 satisfied
+$less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation};
+$greater_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. {$less_fact.label.text} is a subset of {$greater_fact.label.text}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.41 satisfied
+$less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets};
+$greater_fact = {@DefinedBenefitPlanFairValueOfPlanAssets};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. {$less_fact.label.text} is a subset of {$greater_fact.label.text}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.42 satisfied
+$less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation};
+$greater_fact = {@DefinedBenefitPlanBenefitObligation};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. {$less_fact.label.text} is a subset of {$greater_fact.label.text}.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.45 satisfied
+$less_fact = {@DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear};
+$greater_fact = {@DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. The value of the remaining contribution for the year should be less than or equal to the expected contributions for the entire year.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+assert US.0009.46 satisfied
+$less_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
+$greater_fact = {@DefinedBenefitPlanBenefitObligation};
+
+tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+
+message
+
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. {$less_fact.label.text} must be less than or equal to {$greater_fact.label.text}, as it does not include assumptions about future compensation levels.
+
+The properties of this {$less_fact.name} fact are:
+
+Period: {$less_fact.period}
+Dimensions: {$less_fact.dimensions.join(', ','=')}
+Unit: {$less_fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+
+
+function tolerance_for_decimals_greater($left, $right, $decimal_tolerance_factor)
+$lowest_decimal = if ($left.decimals < $right.decimals) 
+					$left.decimals
+				else 	
+					$right.decimals;
+$tolerance2 = if ($lowest_decimal == inf) 
+					0
+				else 	
+					(10.power(-1 * $lowest_decimal)) * $decimal_tolerance_factor;
+
+if (($left - $right) > 0 )
+	if (abs(round($left,$lowest_decimal) - round($right,$lowest_decimal)) > $tolerance2)
+		true
+	else
+		false
+else 
+	false 
+
+
+
+

@@ -1,0 +1,45 @@
+/*
+DQC Rules
+Copyright (c) 2017 - 2018 XBRL US, Inc.
+
+Taxonomy: US GAAP 2017
+ 
+Rule Base Revision: 21751
+Date: 2017-06-12T10:25:08
+
+*/
+
+RULE-NAME-PREFIX DQC
+
+assert US.0053.7489 satisfied
+
+$fact = {@RetirementPlanSponsorLocationAxis=NonUsMember};
+
+$memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLocationAxis returns set (target-name);
+$memberSet =  FILTER $memberSetQname returns $item.local-name
+
+$message_text = if (exists($fact))
+		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] with the element " + $fact.concept.name.local-name +" with a value of $" +int_to_string($fact,"") +". The  NonUs [Member] member should not be used with the Retirement Plan Sponsor Location [Axis]."
+	else
+		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] . There are no facts associated with this member and axis. NonUs [Member] members should not be used with the Retirement Plan Sponsor Location [Axis].";
+		
+     if (exists($fact))
+	 	true
+     else 
+     	if ($memberSet.contains('NonUsMember'))
+			true
+     	 else
+     	 	skip
+message
+"{$message_text}
+
+The properties of this {$fact.name} fact are:
+Period : {$fact.period}
+Dimensions : {$fact.dimensions.join(', ','=')}
+Unit : {$fact.unit}
+
+Rule Element Id:7489
+Rule version: 5.0.0"
+
+
+severity error
