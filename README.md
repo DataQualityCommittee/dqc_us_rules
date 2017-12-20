@@ -21,7 +21,8 @@ The ruleset is compiled code representing rule submission forms that define the 
 ## Deploying the DQC Arelle Plugin
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
-* Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) * Extract the dqc_us_rules folder from the archive to the plugins directory of Arelle. The DQC plugin directory should be called "xule".
+* Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+* Extract the dqc_us_rules folder from the archive to the plugins directory of Arelle. The DQC plugin directory should be called "xule".
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 ```
