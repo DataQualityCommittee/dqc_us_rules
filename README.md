@@ -14,14 +14,15 @@
 
 The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. 
 
-The DQC Arelle plugin is a ruleset stored as a zip file. The ruleset is read by the DQC Arelle plugin and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, which triggers the creation of validation messages.
+The DQC Arelle plugin is a ruleset stored as a zip file. The ruleset is read by the DQC Arelle plugin and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
-The ruleset is compiled code representing rule submission forms that define the rules in a human readable syntax. Both the compiled code and the original rule submission forms are included in the distribution.
+The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
 ## Deploying the DQC Arelle Plugin
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
-* Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) * Extract the dqc_us_rules folder from the archive to the plugins directory of Arelle. The DQC plugin directory should be called "xule".
+* Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+* Extract the "xule" folder from the archive to the plugin directory of Arelle. 
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 ```
@@ -34,9 +35,9 @@ The DQC Arelle plugin ruleset can be [downloaded (v5 or later)](https://github.c
  
 To run the DQC plugin use the following command line syntax in Arelle:
 
-`
+```
 arelleCmdLine --plugins xule -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
-`
+```
 
 **Example:**
 `

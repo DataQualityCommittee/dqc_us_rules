@@ -34,7 +34,7 @@ Dimensions : {$line_item.dimensions.join(', ',' = ')}
 Unit : {$line_item.unit}
 Decimals of {$line_item.name.local-name} : {$line_item.decimals}
 Decimals of {$dim_equivalent.name.local-name} : {$dim_equivalent.decimals}
-Rule version: 4.0
+Rule version: 4.0.0
 "
 
 severity 
@@ -45,7 +45,7 @@ $rule_suffix_id
 
 
 
-constant $dim_items = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/master/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
+
 
 function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
 $tolerance1 = if ($left.decimals < $right.decimals) 

@@ -2,7 +2,7 @@
 
 The rules linked below are either available for public review or have been approved by the DQC.
 
-| Number | Short name | Status | Rule version (see [Guidance](../README.md)) |
+| Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
 | [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 3.3.1 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 1.0.0 |
@@ -13,12 +13,12 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Approved | 4.0.0 |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 2.0.0 |
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 2.0.0 |
-| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 4.0.0 |
+| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 5.0.0 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 3.4.0 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 3.2.1   |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 3.5.0 |
-| [DQC_US_0043](DQC_US_0043/DQC_0043.md) | Incorrect Calculation Weights in Operating Cash Flows | Approved | 3.5.0 |
+| [DQC_US_0043](DQC_US_0043/DQC_0043.md) | Incorrect Calculation Weights in Operating Cash Flows | Approved | 5.0.0 |
 | [DQC_US_0044](DQC_US_0044/DQC_0044.md) | Accrual Items used in Investing/Financing Cash flow Reconciliation | Approved | 5.0.0 |
 | [DQC_US_0045](DQC_US_0045/DQC_0045.md) | Movement of Concepts between Calculation Trees | Approved | 5.0.0 |
 | [DQC_US_0046](DQC_US_0046/DQC_0046.md) | Inappropriate Calculation Descendant | Approved | 5.0.0 |
