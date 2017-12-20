@@ -121,7 +121,7 @@ Packages in rule set:
 **Usages and switches**
 * **```--xule-add--packages```** followed by a ```|``` separated list of package files will add the packages to the rule set. If a package is already in the rule set it will overwrite it. It will attempt to activate the package in arelle to test that the package is valid.
 
-* **```--xule-remove-packages```** followed by a '|' separated list of package file names (this is the zip file name). If a package is not in the rule set, it will report it, but not fail. Any other packages in the list will be removed.
+* **```--xule-remove-packages```** followed by a ```|``` separated list of package file names (this is the zip file name). If a package is not in the rule set, it will report it, but not fail. Any other packages in the list will be removed.
 
 * **```--xule-add--packages```** and **```--xule-remove-packages```** options modify the ruleset file and can only be used on a locally stored ruleset.
 
