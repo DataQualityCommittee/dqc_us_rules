@@ -34,10 +34,14 @@ The DQC Arelle plugin ruleset can be [downloaded (v5 or later)](https://github.c
  
 To run the DQC plugin use the following command line syntax in Arelle:
 
-`arelleCmdLine --plugins xule -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}`
+`
+arelleCmdLine --plugins xule -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
+`
 
 **Example:**
-`arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml` 
+`
+arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
+` 
 
 The minimum parameters that need to be passed are the following:
 * **`--plugins xule`** : Loads the DQC plugin.
@@ -59,7 +63,7 @@ The DQC plugin options will be displayed at the bottom of the list under the tit
 
 There is a separate *dqc_us_rules* file for every *year* and *taxonomy* released. The format of the ruleset file is as follows:
 
-`dqc-{*taxonomy*}-{*year*}-{*dqc_us_rules version*}-ruleset.zip`
+`dqc-{`*`taxonomy`*`}-{`*`year`*`}-{`*`dqc_us_rules version`*`}-ruleset.zip`
 
 For example, the ruleset for the 2017 us-gaap taxonomy for the version 5 release would be called:
 
@@ -70,7 +74,7 @@ The ruleset for the 2017 ifrs taxonomy for the version 6 release would be called
 `dqc-ifrs-2017-V6-ruleset.zip`
 
 ### Results
-The DQC Arelle plugin produces validation messages using standard Arelle output. The option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.**xml**` will create an xml formatted file whereas `--logFile DQC-output.**json**` will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
+The DQC Arelle plugin produces validation messages using standard Arelle output. The option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.`**`xml`**` will create an xml formatted file whereas `--logFile DQC-output.`**`json`**` will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
 
 ```
 <entry code="DQC.US.0001.75" level="error">
