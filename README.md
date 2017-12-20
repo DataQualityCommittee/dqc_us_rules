@@ -1,6 +1,6 @@
 # XBRL US Data Quality Committee Rules
 
-## This Data Quality Committee (DQC) repository contains:
+**This Data Quality Committee (DQC) repository contains:**
 
 * Final rules that the XBRL US Data Quality Committee approved for public release
 * Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
