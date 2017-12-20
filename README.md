@@ -22,7 +22,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the "xule" folder from the archive to the plugin directory of Arelle. 
+* Extract the "xule" folder from the archive to the plugin directory of Arelle in your environment. 
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 ```
