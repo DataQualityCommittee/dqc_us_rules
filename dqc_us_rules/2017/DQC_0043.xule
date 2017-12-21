@@ -84,7 +84,7 @@ message
 
 
 Rule Element Id:6833
-Rule version: 5.0"
+Rule version: 5.0.0"
 
 severity  error
 
@@ -99,11 +99,11 @@ if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActiviti
 A credit balance type concept should always be assigned a negative one (-1) calculation weight as it is a deduction from net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a positive one (+1) calculation weight in the extension taxonomy. 
 Correct the calculation weight to negative one (-1) and input the value as a positive amount if it is a deduction of a non-cash income or gain, an increase in an asset, or a decrease in a liability. If the value is an add-back of a non-cash expense or loss, decrease in an asset, or an increase in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
 			else if ($bottom.balance == debit)
-				"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " is a debit balance type concept representing a natural cash inflow in the reconciliation of net income (loss) to " + $top.local-name + ".
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " is a debit balance type concept representing a natural cash inflow in the reconciliation of net income (loss) to " + $top.local-name + ".
 A debit balance type concept should always be assigned a positive one (+1) calculation weight as it is an addition to net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a negative one (-1) calculation weight in the extension taxonomy. 
 Correct the calculation weight to positive one (+1) and input the value as a positive amount if it is an addition of a non-cash expense or loss, a decrease in an asset, or an increase in a liability. If the value is an increase in an asset or a decrease in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
-				else
-				"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " does not have a balance type attribute.
+					else
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " does not have a balance type attribute.
 
 If " + $bottom.name.local-name + ", by definition, represents a natural cash inflow (i.e., a non-cash add-back, decrease in an asset, or an increase in a liability) in the reconciliation of net income (loss) to " + $top.local-name + ", then the concept should be given a positive one (+1) calculation weight.
 
@@ -164,7 +164,7 @@ message
 "{$message_text}
 
 Rule Element Id:7488
-Rule version: 5.0"
+Rule version: 5.0.0"
 
 severity  error
 
