@@ -24,9 +24,9 @@ The ruleset is comprised of compiled rule files representing rule submission for
 * Copy the "aniso8601" to the root of the Arelle install in your environment (In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle).
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
-```
+`
 [info] Activation of plug-in DQC XBRL rule processor (xule) successful, version 1.0. - xule
-```
+`
 
 ## Configuration and Use of the DQC Arelle Plugin
 
@@ -81,7 +81,7 @@ The ruleset for the 2017 ifrs taxonomy for the version 6 release would be called
 ### Results
 The DQC Arelle plugin produces validation messages using standard Arelle output. The option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.`**`xml`**` will create an xml formatted file whereas `--logFile DQC-output.json will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
 
-```
+`
 <entry code="DQC.US.0001.75" level="error">
 <message severity="error" cid="4508053008" filing_url="https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml">[DQC.US.0001.75] The concept SharesIssued with a value of 21,474,481 is dimensionally qualified with the StatementEquityComponentsAxis and the base taxonomy member CommonClassAMember. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis StatementEquityComponentsAxis.
 The properties of the fact for SharesIssued are:
@@ -92,13 +92,13 @@ Unit: shares
 Rule Element Id:75
 Rule Version: 2.0 'https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml’, 320</message>
 <ref href="('https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml#element(/1/317)', 320)"/></entry>
-```
+`
 
 In the XML example above, **the message portion starts with *[DQC.US.0001.75]* and ends with the instance filename and line number at the end of the message**. 
 
 The message portion of the log file output can be controlled by using the ```--logFormat``` option. The default format is specified as the following:
 
-```"[%(messageCode)s] %(message)s - %(file)s"```
+`"[%(messageCode)s] %(message)s - %(file)s"`
 
 To *exclude the rule number, filename and line number from the message*, use the command prompt ```--logFormat  "%(message)s"```.
 
@@ -108,14 +108,14 @@ The ruleset file includes packages with local versions of files used by the DQC 
 
 Mnage packages used in the ruleset with the following three options, which require ```--xule-rule-set```:
 
-* ```--xule-show-packages```
-* ```--xule-add-packages```
-* ```--xule-remove-packages```
+* `--xule-show-packages`
+* `--xule-add-packages`
+* `--xule-remove-packages`
 
 All these options also require the --xule-rule-set option to be used.
 
 **Example**
-```arelleCmdLine --plugins xule --xule-show-packages --xule-rule-set dqc-us-2017-V5-ruleset.zip```
+`arelleCmdLine --plugins xule --xule-show-packages --xule-rule-set dqc-us-2017-V5-ruleset.zip```
 
 Will return the following:
 ```
@@ -185,9 +185,9 @@ When new rules that have been approved for coding are released by the DQC, the r
 
 ### Pull Request Review Process:
 
-  - Each pull request must have at least one ```+1``` comment from another community member.
-  - For code changes, you must have a second ```+1``` comment from a second community member.
-  - The request will need to go through the Quality Assurance process defined below and receive a ```+10``` comment. This can be from any other community member, including one of the reviewers.
+  - Each pull request must have at least one ```+1` comment from another community member.
+  - For code changes, you must have a second `+1` comment from a second community member.
+  - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
 
 ### Quality Assurance (QA) of a Pull Request:
