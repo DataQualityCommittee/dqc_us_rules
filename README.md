@@ -32,9 +32,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 ## Configuration and Use of the DQC Arelle Plugin
 
-The DQC ruleset files are in the [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". The extracted files for US GAAP Taxonomies from 2015, 2016 and 2017 are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules. 
-
-The ruleset files as .zip can also be processed from GitHub by pointing to the appropriate URL using this syntax: `https://github.com/DataQualityCommittee/dqc_us_rules/`***raw***`/`**vMajor.Minor.FixRelease**`/dqc_us_rules/dqc-us-`**TaxonomyYear**`-V`**MajorRelease**`-ruleset.zip` when running the plugin from the command line (see below).  
+The DQC ruleset files are part of each [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". Copy the "dqc_us_rules" folder to your environment to run them locally, or reference them from the Internet using this format `https://github.com/DataQualityCommittee/dqc_us_rules/`***raw***`/`**vMajor.Minor.FixRelease**`/dqc_us_rules/dqc-us-`**TaxonomyYear**`-V`**MajorRelease**`-ruleset.zip` when running the plugin from the command line (see below). The extracted files for US GAAP Taxonomies from 2015, 2016 and 2017 are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules.   
  
 The minimum parameters that need to be passed are the following:
 * **`--plugins xule`** : Loads the DQC plugin.
@@ -44,18 +42,18 @@ The minimum parameters that need to be passed are the following:
 
 A typical command line syntax for Arelle is as follows (including optional parameters defined below:
 
-```
+`
 arelleCmdLine --plugins xule -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
-```
+`
 
-**Examples:**
+**Examples:**  
 `
 arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
-`
-or
+`  
+or  
 `
 arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set https://github.com/DataQualityCommittee/dqc_us_rules/raw/v5.0.0/dqc_us_rules/dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
-`
+`  
 
 In addition the following optional parameters can be passed:
 
