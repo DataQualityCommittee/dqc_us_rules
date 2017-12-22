@@ -96,11 +96,11 @@ Rule Version: 2.0 'https://www.sec.gov/Archives/edgar/data/1606698/0001096906170
 
 In the XML example above, **the message portion starts with *[DQC.US.0001.75]* and ends with the instance filename and line number at the end of the message**. 
 
-The message portion of the log file output can be controlled by using the ```--logFormat``` option. The default format is specified as the following:
+The message portion of the log file output can be controlled by using the `--logFormat` option. The default format is specified as the following:
 
 `"[%(messageCode)s] %(message)s - %(file)s"`
 
-To *exclude the rule number, filename and line number from the message*, use the command prompt ```--logFormat  "%(message)s"```.
+To *exclude the rule number, filename and line number from the message*, use the command prompt `--logFormat  "%(message)s"`.
 
 ### Managing the Ruleset File
 
