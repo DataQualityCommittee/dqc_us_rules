@@ -22,19 +22,19 @@
       <error severity="error" count="2">DQC.US.0009.15</error>
       <result>
         <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
-        <factValue>550000000</factValue>
-        <endDate>2013-12-31</endDate>
-        <dimensions>us-gaap:StatementGeographicalAxis = country:US</dimensions>
-        <unit>xbrli:shares</unit>
-        <message>The value of ${fact1.label}, 550000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
-      </result>
-      <result>
-        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
         <factValue>600000000</factValue>
         <endDate>2014-12-31</endDate>
         <dimensions>us-gaap:StatementGeographicalAxis = country:US</dimensions>
         <unit>xbrli:shares</unit>
         <message>The value of ${fact1.label}, 600000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2014-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:CommonStockSharesOutstanding</primaryElement>
+        <factValue>550000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions>us-gaap:StatementGeographicalAxis = country:US</dimensions>
+        <unit>xbrli:shares</unit>
+        <message>The value of ${fact1.label}, 550000000, should be less than or equal to ${fact2.label}, ${fact2.value}. \nThe properties of this us-gaap:CommonStockSharesOutstanding fact are:\nPeriod: 2013-12-31\nDimensions: us-gaap:StatementGeographicalAxis = country:US\nUnit: xbrli:shares\nRule version: ${ruleVersion}</message>
       </result>
     </results>
   </variation>
@@ -280,6 +280,15 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
+  <variation id="DQC_0009.41.72">
+    <name>The value of plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
+    <description>Creates a pass case when plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
+    <data>
+      <schema>DQC_0009.41/CASE_72/testco-20141231_72.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.41/CASE_72/testco-20141231_72.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0009.41.71">
     <name>The value of plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
     <description>Creates a fail case when plan assets (Assets) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
@@ -298,15 +307,6 @@
         <message>The value of ${fact1.label}, 27000000, should be less than or equal to ${fact2.label}, ${fact2.value}. ${fact1.label} is a subset of ${fact2.label}. \nThe properties of this us-gaap:DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets fact are:\nPeriod: 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0009.41.72">
-    <name>The value of plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</name>
-    <description>Creates a pass case when plan assets (Assets) is equal to the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets (Value of Assets with ABO greater than plan assets).</description>
-    <data>
-      <schema>DQC_0009.41/CASE_72/testco-20141231_72.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.41/CASE_72/testco-20141231_72.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.42.73">
     <name>The value of pension benefit obligation (PBO) is less than the value of DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation} (Value of PBO with ABO greater than plan assets).</name>
@@ -336,6 +336,15 @@
     </data>
     <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
+  <variation id="DQC_0009.45.90">
+    <name>The value of the remaining contribution for the year by the employer is less than than the aggregate expected contributions for the entire year</name>
+    <description>Creates a pass case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is less than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
+    <data>
+      <schema>DQC_0009.45/CASE_90/testco-20141231_90.xsd</schema>
+      <instance readMeFirst="true">DQC_0009.45/CASE_90/testco-20141231_90.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74" />
+  </variation>
   <variation id="DQC_0009.45.89">
     <name>The value of the remaining contribution for the year by the employer is greater than the aggregate expected contributions for the entire year</name>
     <description>Creates a fail case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is greater than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
@@ -355,15 +364,6 @@
         <message>The value of ${fact1.label}, 21000000, should be less than or equal to ${fact2.label}, ${fact2.value}. The value of the remaining contribution for the year should be less than or equal to the expected contributions for the entire year. \nThe properties of this us-gaap:DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear fact are:\nPeriod: 2014-12-31 - 2014-12-31\nDimensions: none\nUnit: iso4217:USD\nRule version: ${ruleVersion}</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0009.45.90">
-    <name>The value of the remaining contribution for the year by the employer is less than than the aggregate expected contributions for the entire year</name>
-    <description>Creates a pass case when DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear is less than the value of DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear in the same context.</description>
-    <data>
-      <schema>DQC_0009.45/CASE_90/testco-20141231_90.xsd</schema>
-      <instance readMeFirst="true">DQC_0009.45/CASE_90/testco-20141231_90.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0009.46.92">
     <name>The value of ABO is less than PBO</name>
