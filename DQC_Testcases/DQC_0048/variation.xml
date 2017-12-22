@@ -1,0 +1,34 @@
+<!--FILENAME-->
+<!--DQC_0048-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0048</number>
+  <ruleIdentifier>DQC_0048</ruleIdentifier>
+  <description />
+  <ruleMessage>The filing should include in the cash flow statement calculation linkbase(s) ${networkRole} one of the following elements as the root(first element) of the calculation tree to represent the aggregate change in cash for the period:\n \nPrior to adoption of ASU-2016-18\nCashAndCashEquivalentsPeriodIncreaseDecrease,\nCashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \n \nSubsequent to adoption of ASU-2016-18\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect,\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \n \nNetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash).\n \nThe calculation linkbase in the filing has the following root elements defined: ${elementNames}.\n \nIf you have used an extension element that reflects the changes made for ASU-2016-18 in the 2017 taxonomy then create either of the following extension elements with the following names:\n \nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect\n \nRule version: ${ruleVersion}\n</ruleMessage>
+  <variation id="DQC_0048.7482.8112">
+    <name>Creates a fail case when the calculation linkbase in the filing has incorrect root elements defined</name>
+    <description>Creates the following fail case: The filing should include in the cash flow statement calculation linkbase(s) http://DHCC/20161231/role/idr_CONSOLIDATEDSTATEMENTSOFCASHFLOWS one of the following elements as the root(first element) of the calculation tree to represent the aggregate change in cash for the period:\n\nPrior to adoption of ASU-2016-18\nCashAndCashEquivalentsPeriodIncreaseDecrease,\nCashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \nCashPeriodIncreaseDecrease,\nCashPeriodIncreaseDecreaseExcludingExchangeRateEffect\n \nSubsequent to adoption of ASU-2016-18\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect,\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \n\nNetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash).\n\nThe calculation linkbase in the filing has the following root elements defined: NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInFinancingActivities\n\nIf you have used an extension element that reflects the changes made for ASU-2016-18 in the 2017 taxonomy then update these elements from extension elements to standard taxonomy elements:\n\n1. CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect\n2. CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect\n\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/844887/000144586617000468/0001445866-17-000468-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/844887/000144586617000468/0001445866-17-000468-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.54|DQC.US.0015.1986">
+      <error severity="error" count="1">DQC.US.0048.7482</error>
+      <result>
+        <primaryElement>us-gaap:NetCashProvidedByUsedInOperatingActivities</primaryElement>
+        <factValue>-135549</factValue>
+        <startDate>2016-01-01</startDate>
+        <endDate>2017-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The filing should include in the cash flow statement calculation linkbase(s) ${networkRole} one of the following elements as the root(first element) of the calculation tree to represent the aggregate change in cash for the period:\n \nPrior to adoption of ASU-2016-18\nCashAndCashEquivalentsPeriodIncreaseDecrease,\nCashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \n \nSubsequent to adoption of ASU-2016-18\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect,\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, \n \nNetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash).\n \nThe calculation linkbase in the filing has the following root elements defined: ${elementNames}.\n \nIf you have used an extension element that reflects the changes made for ASU-2016-18 in the 2017 taxonomy then create either of the following extension elements with the following names:\n \nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect\nCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect\n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+</testcase>

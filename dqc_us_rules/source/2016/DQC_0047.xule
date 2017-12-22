@@ -1,0 +1,33 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2016
+
+**/
+
+rule-name-prefix DQC
+
+assert US.0047.7481 satisfied
+
+for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations,NetCashProvidedByUsedInOperatingActivities))
+
+	$misplaced_concept = navigate summation-item descendants from ($cashOperating) 
+	where $relationship.target.balance == none 
+    and $relationship.target.name  != NetCashProvidedByUsedInOperatingActivitiesContinuingOperations
+	/** DOes not flag an error if the element is an extension element **/
+	and is_base($relationship.target);
+
+	for $x in $misplaced_concept true
+
+message
+"In the company's extension taxonomy the concept {taxonomy().concept($cashOperating).label.text} includes {$misplaced_concept} as a summation-child. The concept {$misplaced_concept}  should not appear as a child of {$cashOperating} because it does not have a balance type. Increase (Decrease) items without balance attributes are used in a roll forward and should not be used in the cash flow statement as they represent the impact on the balance sheet item which is the opposite of the impact on cash.
+
+Rule Element Id:7481
+Rule version: 5.0.0"
+
+element_id 7481
+
+severity error
