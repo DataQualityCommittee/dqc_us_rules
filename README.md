@@ -57,7 +57,8 @@ In addition the following optional parameters can be passed:
 
 * **`--logFile`** : Specifies where the output of running the rules should be sent. To get an XML file the file needs to end with .xml. To get a json file it needs to end with .json. If a log file is not specified, output will be displayed in the command window.
 * **`--noCertificateCheck`** : This is used to ensure that files from the internet are not rejected if there is no SSL certificate on the machine running the DQC plugin.
-* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See the section below on managing ruleset files)
+* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)
+* **`--packages`** : This option will accept additional taxonomy packages
 
 To get additional options use the option `--help` (eg. `arelleCmdLine --plugins xule --help`)
 
