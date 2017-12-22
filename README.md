@@ -81,7 +81,7 @@ The ruleset for the 2017 ifrs taxonomy for the version 6 release would be called
 ### Results
 The DQC Arelle plugin produces validation messages using standard Arelle output. The option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.`**`xml`**` will create an xml formatted file whereas `--logFile DQC-output.json will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
 
-```
+`
 <entry code="DQC.US.0001.75" level="error">
 <message severity="error" cid="4508053008" filing_url="https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml">[DQC.US.0001.75] The concept SharesIssued with a value of 21,474,481 is dimensionally qualified with the StatementEquityComponentsAxis and the base taxonomy member CommonClassAMember. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis StatementEquityComponentsAxis.
 The properties of the fact for SharesIssued are:
@@ -92,7 +92,7 @@ Unit: shares
 Rule Element Id:75
 Rule Version: 2.0 'https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml’, 320</message>
 <ref href="('https://www.sec.gov/Archives/edgar/data/1606698/000109690617000244/0001096906-17-000244-xbrl.zip/alpine-20161231.xml#element(/1/317)', 320)"/></entry>
-```
+`
 
 In the XML example above, **the message portion starts with *[DQC.US.0001.75]* and ends with the instance filename and line number at the end of the message**. 
 
@@ -104,9 +104,9 @@ To *exclude the rule number, filename and line number from the message*, use the
 
 ### Managing the Ruleset File
 
-The ruleset file includes packages with local versions of files used by the DQC plugin. Using these resource files locally allows the plugin to be run without Internet access. These resource files are included by default in the ruleset as XBRL taxonomy packages. To ignore the packages included in the ruleset, use the option ```--xule-bypass-packages```. Using the plugin this way will generally take more time to run, as the plugin will use resources referenced in the dqc_us_rules repository as raw.githubusercontent.com. 
+The ruleset file includes packages with local versions of files used by the DQC plugin. Using these resource files locally allows the plugin to be run without Internet access. These resource files are included by default in the ruleset as XBRL taxonomy packages. To ignore the packages included in the ruleset, use the option `--xule-bypass-packages`. Using the plugin this way will generally take more time to run, as the plugin will use resources referenced in the dqc_us_rules repository as raw.githubusercontent.com. 
 
-Mnage packages used in the ruleset with the following three options, which require ```--xule-rule-set```:
+Mnage packages used in the ruleset with the following three options, which require `--xule-rule-set`:
 
 * `--xule-show-packages`
 * `--xule-add-packages`
@@ -115,45 +115,34 @@ Mnage packages used in the ruleset with the following three options, which requi
 All these options also require the --xule-rule-set option to be used.
 
 **Example**
-`arelleCmdLine --plugins xule --xule-show-packages --xule-rule-set dqc-us-2017-V5-ruleset.zip```
+`arelleCmdLine --plugins xule --xule-show-packages --xule-rule-set dqc-us-2017-V5-ruleset.zip`
 
 Will return the following:
-```
+`
 Packages in rule set:
 	dqc_15_concepts.csv and dqc_0011.csv (resources.zip)
-```
+`
 
 **Usages and switches**
-* **```--xule-add--packages```** followed by a ```|``` separated list of package files will add the packages to the rule set. If a package is already in the rule set it will overwrite it. It will attempt to activate the package in arelle to test that the package is valid.
+* **`--xule-add--packages`** followed by a `|` separated list of package files will add the packages to the rule set. If a package is already in the rule set it will overwrite it. It will attempt to activate the package in arelle to test that the package is valid.
 
-* **```--xule-remove-packages```** followed by a ```|``` separated list of package file names (this is the zip file name). If a package is not in the rule set, it will report it, but not fail. Any other packages in the list will be removed.
+* **`--xule-remove-packages`** followed by a `|` separated list of package file names (this is the zip file name). If a package is not in the rule set, it will report it, but not fail. Any other packages in the list will be removed.
 
-* **```--xule-add--packages```** and **```--xule-remove-packages```** options modify the ruleset file and can only be used on a locally stored ruleset.
+* **`--xule-add--packages`** and **`--xule-remove-packages`** options modify the ruleset file and can only be used on a locally stored ruleset.
 
 The format of the package zip file is based on the XBRL packages specification. It has a single directory in the zip file. Usually, the name of this top level directory is the same as the name of the zip file, but that is not required. Inside the top level directory, there is a directory named "META-INF". Inside the META-INF directory there are two files 'catalog.xml' and "taxonomyPackages.xml".
 
-The **catalog.xml** file contains the remapping. The ```<rewriteURI>``` element in this file defines the map. It can map to a directory or a file. Several ```<rewriteURI>``` elements can used to define multiple mappings. The one in the example is:
+The **catalog.xml** file contains the remapping. The `<rewriteURI>` element in this file defines the map. It can map to a directory or a file. Several `<rewriteURI>` elements can used to define multiple mappings. The one in the example is:
 
-```
+`
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
 	<rewriteURI rewritePrefix="../" uriStartString="https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/master/dqc_us_rules/resources/DQC_US_0015/"/>
 </catalog>
-```
+`
 
-Note that ```rewritePrefix``` is mapping to the parent directory that the catalog.xml file is in.
+Note that `rewritePrefix` is mapping to the parent directory that the catalog.xml file is in.
 
 Normally taxonomy packages are used to archive (zip) taxonomies and identity taxonomy entry points. Here the taxonomy package mechanism is used to remap csv files, which is out of scope for the taxonomy package spec. However, it does work and using taxonomy package handling built into Arelle. The XBRL spec working group is considering using taxonomy packages for other file types.
-
-### Running the DQC plugin on a Server
-
-#### Server Requirements
-
-* Python 3.5 
-* Arelle 1.6 (or greater is preferred)
-
-When running an instance through the DQC Arelle server, a ruleset needs to be defined. However different rulesest may be required depending on the instance provided. Generally, a each taxonomy will have a different rule set associated with it.  For this reason, the user needs to identify the taxonomy used by the instance and then select the appropriate rule set to use. The DQC server version checks the taxonomy version of the instance and selects the appropriate rule set to use.
-
-The server process also pre-caches the rulesets and the associated constants in the rule sets.  This means the server version can process filings significantly faster as constants such as taxonomies do not have to be loaded every time an instant document is processed.
 
 ## Rule Versioning
 
@@ -173,7 +162,7 @@ We actively accept, and encourage, pull requests for code changes. A list of the
 
 ### Development of Rules that are "Ready for Coding":
 
-When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named ```next_q#_YY``` where the ```#``` is the quarter, and the ```YY``` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged <!--and released on the global pypi index -->as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released<!-- on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/)-->.
+When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged <!--and released on the global pypi index -->as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released<!-- on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/)-->.
 ### Requirements for a Pull Request (PR):
 
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
@@ -185,7 +174,7 @@ When new rules that have been approved for coding are released by the DQC, the r
 
 ### Pull Request Review Process:
 
-  - Each pull request must have at least one ```+1` comment from another community member.
+  - Each pull request must have at least one `+1` comment from another community member.
   - For code changes, you must have a second `+1` comment from a second community member.
   - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
