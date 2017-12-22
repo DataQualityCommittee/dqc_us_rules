@@ -22,7 +22,8 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the "xule" folder from the archive to the plugin directory of Arelle in your environment. 
+* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment.
+* Copy the "aniso8601" to the root of the Arelle install in your environment.
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 ```
@@ -31,7 +32,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 ## Configuration and Use of the DQC Arelle Plugin
 
-The DQC Arelle plugin ruleset can be [downloaded (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) and saved locally or used from GitHub by pointing to the appropriate raw.githubusercontent.com url when running the plugin (see below).
+The DQC ruleset files are in the [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". The extracted files for current SEC-approved US GAAP Taxonomies - 2015, 2016, 2017 - are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules. These ruleset files as .zip can also be referenced from GitHub by pointing to the appropriate URL following this syntax: `https://github.com/DataQualityCommittee/dqc_us_rules/raw/*vMajor.Minor.FixRelease*/dqc_us_rules/dqc-us-*TaxonomyYear*-V*MajorRelease*-ruleset.zip` when running the plugin from the command line (see below).  
  
 To run the DQC plugin use the following command line syntax in Arelle:
 
@@ -142,63 +143,26 @@ Normally taxonomy packages are used to archive (zip) taxonomies and identity tax
 
 ### Running the DQC plugin on a Server
 
+#### Server Requirements
+
+* Python 3.5 
+* Arelle 1.6 (or greater is preferred)
+
 When running an instance through the DQC Arelle server, a ruleset needs to be defined. However different rulesest may be required depending on the instance provided. Generally, a each taxonomy will have a different rule set associated with it.  For this reason, the user needs to identify the taxonomy used by the instance and then select the appropriate rule set to use. The DQC server version checks the taxonomy version of the instance and selects the appropriate rule set to use.
 
 The server process also pre-caches the rulesets and the associated constants in the rule sets.  This means the server version can process filings significantly faster as constants such as taxonomies do not have to be loaded every time an instant document is processed.
 
-## Versioning
+## Rule Versioning
 
 The dqc_us_rules library follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period.
 
 The MAJOR version specified by each individual rule is the most-recent release version in which the rule was altered. For example, a rule being marked as v2.0.0 would have last been functionally modified during the 2.0.0 release of the DQC library. See [summary of rules](/docs/README.md) for current rule version detail (which is [also found in each rule's code](https://github.com/DataQualityCommittee/dqc_us_rules/search?q=_RULE_VERSION)).
 
-Similarly, the entire set of rules is versioned. MAJOR release is specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC) to denote revisions prior to the approved release. 
-
-## Requirements
-
-* Python 3.x (3.4 or greater is preferred)
-* Git 1.7+
-* C compiler toolchain (for LXML)
-* libxml2 (also for LXML)
-* Arelle
-
-## Development
-
-It is strongly recommended that one uses a python virtual environment, such as [virtualenv](http://www.virtualenv.org/en/latest/), to do development.  To make development and management of virtual environments easier, we recommend checking out [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/).
-
-The rest of this setup will assume you have installed [virtualenv](http://www.virtualenv.org/en/latest/) and [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/).
-
-### Creating a virtual environment
-
-To create a virtual environment, change your directory to the root of this project, and execute the following command:
-```    
-mkvirtualenv dqc -a $PWD -p <path_to_python3>
-```
-This will give you a virtual environment that you can then work within by inputting
-```
-workon dqc
-```
-any time you need to work in it.
-
-### Installing dependencies
-
-To install the dependencies for development of only the DQC ruleset, you will use [pip](https://pip.pypa.io/en/latest/installing.html) to install the requirements. Install the development requirements using:
-```
-pip install -r requirements-dev.txt
-```
-### Running unit tests
-
-To run the unit tests, simply run the included shell script
-```
-./run-unit-tests.sh
-```
-### Running test suite
-
-See documentation in the test suite
+Similarly, the entire set of rules is versioned. MAJOR release is specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC) to denote revisions prior to the approved release.
 
 ## Rule Index
 
-The rule definition index is [here](docs/README.md).
+The rule definition index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule.
 
 ## Proposed Changes
 
