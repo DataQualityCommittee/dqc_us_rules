@@ -12,9 +12,7 @@
 
 ### Overview
 
-The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. 
-
-The DQC Arelle plugin is a ruleset stored as a zip file. The ruleset is read by the DQC Arelle plugin and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
+The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
