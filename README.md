@@ -20,8 +20,8 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment (In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle\plugin).
-* Copy the "aniso8601" to the root of the Arelle install in your environment (In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle).
+* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin.
+* Copy the "aniso8601" to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the locationm would be at /Applications/Arelle.app/Contents/MacOS/.
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 `
