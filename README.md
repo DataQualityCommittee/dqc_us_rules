@@ -20,8 +20,8 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment.
-* Copy the "aniso8601" to the root of the Arelle install in your environment.
+* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment (In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle\plugin).
+* Copy the "aniso8601" to the root of the Arelle install in your environment (In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle).
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
 ```
@@ -57,7 +57,7 @@ In addition the following optional parameters can be passed:
 
 * **`--logFile`** : Specifies where the output of running the rules should be sent. To get an XML file the file needs to end with .xml. To get a json file it needs to end with .json. If a log file is not specified, output will be displayed in the command window.
 * **`--noCertificateCheck`** : This is used to ensure that files from the internet are not rejected if there is no SSL certificate on the machine running the DQC plugin.
-* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)
+* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)  
 * **`--packages`** : This option will accept additional taxonomy packages
 
 To get additional options use the option `--help` (eg. `arelleCmdLine --plugins xule --help`)
