@@ -6,7 +6,7 @@
 * Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
 * Python-based reference implementation of the rules, using Arelle as an XBRL processor
 * Unit tests for the reference implementation
-* Test suite
+* Test suite documentation
 
 ## Running the DQC Arelle plugin (v5 and later)
 
