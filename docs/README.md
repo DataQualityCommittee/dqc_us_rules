@@ -36,7 +36,6 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0062](DQC_US_0062/DQC_0062.md) | No Fact Value for Change in Cash | Approved | 5.0.0 |
 | [DQC_US_0065](DQC_US_0065/DQC_0065.md) | Interest Paid Net (Operating) Not on Cash Flow | Approved | 5.0.0 |
 
-
 ## Guidance
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
