@@ -1,0 +1,57 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2017
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0006.14 satisfied
+
+if exists({covered @concept = dei:DocumentFiscalPeriodFocus})
+
+	$period_focus = first(set({covered @concept = dei:DocumentFiscalPeriodFocus}));
+	$period_range = filter $focus_range_lookup where $item[1] == $period_focus;
+	$min_range = $period_range[1][2];
+	$max_range = $period_range[1][3];
+
+	exists({@ where ($fact.is-type(nonnum:textBlockItemType) or $fact.concept.name in $dei_DQC0006_items) and ($fact.period.days > $max_range or $fact.period.days < $min_range)}#fact)
+	and not(list({covered @dei:DocumentType}).length > 1)
+	and not(exists({covered @dei:DocumentType where $fact.contains('T')}))
+else
+	false
+
+message
+"The number of days, {$fact.period.days} in the date range reported for {$fact.concept.label.text}, {$fact.period} is not consistent with the Document Fiscal Period Focus with a value of {$period_focus}. This period focus expects text block items and dei elements to have at least a period duration between {$min_range} days and {$max_range} days.
+
+The properties of this {$fact.concept.name} fact are:
+Period :{$fact.period}
+Dimensions : {$fact.dimensions.join(', ','=')}
+Unit : {$fact.unit}
+Rule version: 1.0.0"
+
+severity error
+
+constant $dei_DQC0006_items = list(dei:AmendmentDescription, 
+	dei:AmendmentFlag, 
+	dei:CurrentFiscalYearEndDate,
+	dei:DocumentPeriodEndDate, 
+	dei:DocumentFiscalYearFocus,
+	dei:DocumentFiscalPeriodFocus,
+	dei:DocumentType,
+	dei:EntityRegistrantName,
+	dei:EntityCentralIndexKey,
+	dei:EntityFilerCategory)
+	
+/** constant $focus_range_lookup = data('csv', 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/master/dqc_us_rules/resources/DQC_US_0006/dqc_06_date_bounds.csv', list 'string', 'string', 'string')**/
+
+
+constant $focus_range_lookup = list(
+	list('FY',340,390),
+	list('Q1',65,115),
+	list('Q3',245,295),
+	list('Q2',155,205)
+)
