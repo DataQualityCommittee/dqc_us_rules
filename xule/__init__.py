@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22309 $
+$Change: 22328 $
 DOCSKIP
 """
 #from .XuleParser import parseRules
@@ -36,7 +36,7 @@ from arelle import ModelManager
 import optparse
 import os 
 
-__version__ = '2.0.' + '$Change: 22309 $'[9:-2]
+__version__ = '2.0.' + '$Change: 22328 $'[9:-2]
 
 def xuleMenuOpen(cntlr, menu):
     pass
