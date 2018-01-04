@@ -19,11 +19,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22309 $
+$Change: 22328 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
-from . import XuleProperties
+#from . import XuleProperties
 from . import XuleUtility
 from arelle.ModelValue import QName, dayTimeDuration, DateTime, gYear, gMonthDay, gYearMonth, InvalidValue, IsoDuration
 from arelle.ModelInstanceObject import ModelFact, ModelUnit
