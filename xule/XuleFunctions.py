@@ -455,145 +455,81 @@ def func_taxonomy(xule_context, *args):
         return xv.XuleValue(xule_context, other_taxonomy , 'taxonomy')
     else:
         raise XuleProcessingError(_("The taxonomy() function takes at most 1 argument, found {}".format(len(args))))
- 
-def func_csv_data(xule_context, *args):
-    """Read a csv file/url.
-    
-    Arguments:
-        file_url (string or url)
-        has_header (boolean) - determines if the first line of the csv file has headers
-        type list (list) - list of xule types in the order of the columns of the csv file. This is optional. If not provided, then all the data will be
-                           treated as stirngs.
-        as_dictionary (boolean) - return the row as a dictionary instead of a list. This is optional.
-    """
-    
-    file_url = args[0]
-    has_headers = args[1]
 
+def func_data(xule_context, *args):
+    
+    file_type = args[0]
+    file_url = args[1]
+    print(file_url)
     if len(args) < 2:
-        raise XuleProcessingError(_("The csv-data() function requires at least 2 arguments (file url, has headers), found {} arguments.".format(len(args))), xule_context)
-    if len(args) > 4:
-        raise XuleProcessingError(_("The csv-data() function takes no more than 3 arguments (file url, has headers, column types, as dictionary), found {} arguments.".format(len(args))), xule_context)
-
+        raise XuleProcessingError(_("The data() function requires at least 2 arguments (file type, file url), found {} arguments.".format(len(args))), xule_context)
+    if len(args) > 3:
+        raise XuleProcessingError(_("The data() function takes no more than 3 arguments (file type, file url, column types), found {} arguments.".format(len(args))), xule_context)
+    
+    if file_type.value == 'csv':
+        pass
+    else:
+        raise XuleProcessingError(_("The data() function currently only supports csv. Found '{}'.".format(file_type.value)), xule_value)
+    
     if file_url.type not in ('string', 'uri'):
-        raise XuleProcessingError(_("The file url argument (1st argument) of the csv-dta() function must be a string or uri, found '{}'.".format(file_url.value)), xule_contet)
+        raise XuleProcessingError(_("The data file name must be a string or uri, Found '{}'.".format(file_url.value)), xule_value)
     
-    if has_headers.type != 'bool':
-        raise XuleProcessingError(_("The has headers argument (2nd argument) of the csv-data() function muset be a boolean, found '{}'.".format(has_headers.type)), xule_context)
-    
-    if len(args) >= 3:    
+    if len(args) == 3:    
         column_types = args[2]
-        if column_types.type == 'none':
-            ordered_cols = None
-        elif column_types.type == 'list':
-            ordered_cols = list()
-            for col in column_types.value:
-                if col.type != 'string':
-                    raise XuleProcessingError(_("The type list argument (3rd argument) of the csv-data() function must be a list of strings, found '{}'.".format(col.type)), xule_context)
-                ordered_cols.append(col.value)
-        else:
-            raise XuleProcessingError(_("The type list argument (3rd argument) of the csv-data() fucntion must be list, found '{}'.".format(column_types.type)), xule_context)
+        if column_types.type != 'list':
+            raise XuleProcessingError(_("The thrid argument of the data() fucntion must be list, found '{}'.".format(column_types.type)), xule_context)
+        
+        ordered_cols = list()
+        for col in column_types.value:
+            if col.type != 'string':
+                raise XuleProcessingError(_("The thrid argument of the data() function must be a list of strings, found '{}'.".format(col.type)), xule_context)
+            ordered_cols.append(col.value)
     else:
         ordered_cols = None
-    
-    if len(args) == 4:
-        if args[3].type != 'bool':
-            raise XuleProcessingError(_("The as dictionary argument (4th argument) of the csv-data() function must be a boolean, found '{}'.".format(args[3].type)), xule_context)
-        if args[3].value:
-            return_row_type = 'dictionary'
-        else:
-            return_row_type = 'list'
-    else:
-        return_row_type = 'list'
-        
-    if return_row_type == 'dictionary' and not has_headers.value:
-        raise XuleProcessingError(_("When the csv-data() function is returning the rows as dictionaries (4th argument), the has headers argument (2nd argument) must be true."), xule_context)
         
     result = list()
     result_shadow = list()
-    
-    from arelle import PackageManager
-    mapped_file_url = PackageManager.mappedUrl(file_url.value)
 
-    # Using the FileSource object in arelle. This will open the file and handle taxonomy package mappings.
-    from arelle import FileSource
-    file_source = FileSource.openFileSource(file_url.value, xule_context.global_context.cntlr)
-    file = file_source.file(file_url.value, binary=True)
-    # file is  tuple of one item as a BytesIO stream. Since this is in bytes, it needs to be converted to text via a decoder.
-    # Assuming the file is in utf-8. 
-    data_source = [x.decode('utf-8') for x in file[0].readlines()]
-
-#     if mapped_file_url.startswith('http://') or mapped_file_url.startswith('https://'):
-#         
-#         if mapped_file_url.startswith('https://') and getattr(xule_context.global_context.options, 'noCertificateCheck', False):
-#             try:
-#                 import ssl
-#                 context = ssl.create_default_context()
-#                 context.check_hostname = False
-#                 context.verify_mode = ssl.CERT_NONE
-#             except ImportError:
-#                 context=None
-#         else:
-#             context = None
-#         try:
-#             data_source = urllib.request.urlopen(mapped_file_url, context=context).read().decode('utf-8').splitlines()
-#         except urllib.error.HTTPError as he:
-#             raise XuleProcessingError(_("Trying to open url '{}', got HTTP {} - {}, error".format(mapped_file_url, he.code, he.reason)), xule_context)
-#     else:
-#         try:
-#             with open(mapped_file_url, 'r', newline='') as data_file:
-#                 data_source = data_file.readlines()
-#         except FileNotFoundError:
-#             raise XuleProcessingError(_("Trying to open file '{}', but file is not found.".format(mapped_file_url)), xule_context)
- 
+    if file_url.value.startswith('http://') or file_url.value.startswith('https://'):
+        
+        if file_url.value.startswith('https://') and getattr(xule_context.global_context.options, 'noCertificateCheck', False):
+            try:
+                import ssl
+                context = ssl.create_default_context()
+                context.check_hostname = False
+                context.verify_mode = ssl.CERT_NONE
+            except ImportError:
+                context=None
+        else:
+            context = None
+        try:
+            data_source = urllib.request.urlopen(file_url.value, context=context).read().decode('utf-8').splitlines()
+        except urllib.error.HTTPError as he:
+            raise XuleProcessingError(_("Trying to open url '{}', got HTTP {} - {}, error".format(file_url.value, he.code, he.reason)), xule_context)
+    else:
+        try:
+            with open(file_url.value, 'r', newline='') as data_file:
+                data_source = data_file.readlines()
+        except FileNotFoundError:
+            raise XuleProcessingError(_("Trying to open file '{}', but file is not found.".format(file_url.value)), xule_context)
+        
     import csv
     reader = csv.reader(data_source)
-    first_line = True
-    row_num = 0
     for line in reader:
-        row_num += 1
-        if first_line and has_headers.value:
-            first_line = False
-            #skip the headers line
-            if return_row_type == 'dictionary':
-                # Need to get the names from the first row
-                column_names = [x for x in line]
-                if len(column_names) != len(set(column_names)):
-                    raise XuleProcessingError(_("There are duplicate column names in the csv file. This is not allowed when return rows as dictionaries. File: {}".format(file_url.value)), xule_context)
-                
-            continue
-        
-        if return_row_type == 'list':
-            result_line = list()
-            result_line_shadow = list()
-        else: #dictionary
-            result_line = dict()
-            result_line_shadow = dict()
-            
+        result_line = list()
+        result_line_shadow = list()
         for col_num, item in enumerate(line):
             if ordered_cols is not None and col_num >= len(ordered_cols):
-                raise XuleProcessingError(_("The nubmer of columns on row {} is greater than the number of column types provided in the third argument of the csv-data() function. File: {}".format(row_num, file_url.value)), xule_context)
+                raise XuleProcessingError(_("The nubmer of columns in the data source is greater than the number of column types provided in the third argument of the data() function"), xule_context)
             
             item_value = convert_file_data_item(item, ordered_cols[col_num] if ordered_cols is not None else None, xule_context)
 
-            if return_row_type == 'list':
-                result_line.append(item_value)
-                result_line_shadow.append(item_value.value)
-            else: #dictonary
-                if col_num >= len(column_names):
-                    raise xule_context(_("The number of columns on row {} is greater than the number of headers in the csv file. File: {}".format(row_num, 
-                                                                                                                                                  mappedUrl if mapped_file_url == file_url.value else file_url.value + ' --> ' + mapped_file_url)), xule_context)
-
-                result_line[xv.XuleValue(xule_context, column_names[col_num], 'string')] = item_value
-                result_line_shadow[column_names[col_num]] = item_value.value
-                
-        if return_row_type == 'list':
-            result.append(xv.XuleValue(xule_context, tuple(result_line), 'list', shadow_collection=tuple(result_line_shadow)))
-            result_shadow.append(result_line_shadow)
-        else: #dictionary
-            result.append(xv.XuleValue(xule_context, frozenset(result_line.items()), 'dictionary', shadow_collection=frozenset(result_line_shadow.items())))
-            result_shadow.append(frozenset(result_line_shadow.items()))
+            result_line.append(item_value)
+            result_line_shadow.append(item_value.value)
+        result.append(xv.XuleValue(xule_context, tuple(result_line), 'list', shadow_collection=tuple(result_line_shadow)))
           
+
+
     return xv.XuleValue(xule_context, tuple(result), 'list', shadow_collection=tuple(result_shadow))
                 
 def convert_file_data_item(item, type, xule_context):
