@@ -19,16 +19,32 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22309 $
+$Change: 22328 $
 DOCSKIP
 """
-from . import XuleValue
-from . import XuleProperties
-from . import XuleConstants as xc
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 import collections
 
+from . import XuleConstants as xc
+# XuleValue is a module. It is imported in the _imports() function to avoid a circular relative import error.
+XuleValue = None
+XuleProperties = None
+
+def _imports():
+    """Imports
+    
+    This function handles the imports. These imports are here to prevent circular relative import errors which happens in version priof to 3.5.
+    """
+    global XuleValue
+    if XuleValue is None:
+        from . import XuleValue
+        
+    global XuleProperties
+    if XuleProperties is None:
+        from . import XuleProperties
+
 def add_sets(xule_context, left, right):
+    _imports()
     new_set_values = list(left.value)
     new_shadow = list(left.shadow_collection)
 
@@ -40,6 +56,7 @@ def add_sets(xule_context, left, right):
     return XuleValue.XuleValue(xule_context, frozenset(new_set_values), 'set', shadow_collection=frozenset(new_shadow))
 
 def subtract_sets(xule_context, left, right):
+    _imports()
     new_set_values = set()
     new_shadow = set()
     
@@ -52,6 +69,7 @@ def subtract_sets(xule_context, left, right):
     return XuleValue.XuleValue(xule_context, frozenset(new_set_values), 'set', shadow_collection=frozenset(new_shadow))
 
 def symetric_difference(xule_context, left, right):
+    _imports()
     new_set_values = set()
     new_shadow = set()
     
@@ -70,6 +88,7 @@ def symetric_difference(xule_context, left, right):
     return XuleValue.XuleValue(xule_context, frozenset(new_set_values), 'set', shadow_collection=frozenset(new_shadow))
 
 def intersect_sets(xule_context, left, right):
+    _imports()
     new_set_values = set()
     new_shadow = set()
     
@@ -88,7 +107,7 @@ def resolve_role(role_value, role_type, dts, xule_context):
     a non prefixed qname, than the local name of the qname is used to match an arcrole that ends in 'localName'. If more than one arcrole is found then
     and error is raise. This allows short form of an arcrole i.e parent-child.
     """
-
+    _imports()
     if role_value.value.prefix is not None:
         raise XuleProcessingError(_("Invalid {}. {} should be a string, uri or short role name. Found qname with value of {}".format(role_type, role_type.capitalize(), role_value.format_value())))
     else:
@@ -133,7 +152,8 @@ def base_dimension_sets(dts):
     
     This is like the baseSets dictionary of a model. The base dimension set is a dictionary keyed by the drs role and hypercube. The drs role is the role of the initial 'all' relationship or the target role of the initial
     'all' relationship if ther eis a target role. The value of the diction is a set of the 'all' relationships.
-    """ 
+    """
+    _imports() 
     if not hasattr(dts, 'xuleBaseDimensionSets'):
         dts.xuleBaseDimensionSets = collections.defaultdict(set)
         for base_set in dts.baseSets:
@@ -161,13 +181,14 @@ def dimension_sets(dts):
     
     A dimension set is identified by a drs role and hypercube. 
     """
+    _imports()
     if not hasattr(dts, 'xuleDimensionSets'):
         dts.xuleDimensionSets = dict()
     
     return dts.xuleDimensionSets
 
 def dimension_set(dts, dimension_set_info):
-    
+    _imports()
     if dimension_set_info not in dimension_sets(dts):
         import datetime
         dimension_sets(dts)[dimension_set_info] = XuleValue.XuleDimensionRelationshipSet(dts, *dimension_set_info)
@@ -175,7 +196,7 @@ def dimension_set(dts, dimension_set_info):
     return dimension_sets(dts)[dimension_set_info]                                                         
                                                                                         
 def relationship_set(dts, relationship_set_info):
-
+    _imports()
     return (dts.relationshipSets[relationship_set_info] 
                 if relationship_set_info in dts.relationshipSets 
                 else ModelRelationshipSet(dts, 
