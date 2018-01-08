@@ -17,12 +17,20 @@ The DQC rules are run using an Arelle plugin written in python-based syntax (cal
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
 ## Deploying the DQC Arelle Plugin
-
+### Windows/Mac/Linux Application Install
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
 * Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin.
 * Copy the "aniso8601" to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
 * Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
+### Source Install
+* Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
+* Install the following modules to python:
+  * isodate
+  * aniso8601
+  * numpy
+  * \*regex  (If you are using python 3.4)
+* Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
 
 `
 [info] Activation of plug-in DQC XBRL rule processor (xule) successful, version 1.0. - xule
