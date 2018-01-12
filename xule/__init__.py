@@ -44,146 +44,142 @@ def xuleMenuOpen(cntlr, menu):
 def xuleMenuTools(cntlr, menu):
     pass
 
-def xuleCmdOptions(parser):
+def xuleCommandLineOptionExtender(parser, *args, **kwargs):
     # extend command line options to compile rules
-    parserGroup = optparse.OptionGroup(parser,
-                                       "Xule Business rule")
-    parser.add_option_group(parserGroup)
-    
-    parserGroup.add_option("--xule-compile", 
+    parser.add_option("--xule-compile", 
                       action="store", 
                       dest="xule_compile", 
                       help=_("Xule files to be compiled.  "
                              "This may be a file or directory.  When a directory is provided, all files in the directory will be processed.  "
                              "Multiple file and directory names are separated by a '|' character. "))
     
-    parserGroup.add_option("--xule-rule-set",
+    parser.add_option("--xule-rule-set",
                       action="store",
                       dest="xule_rule_set",
                       help=_("RULESET to use (this is the directory where compile rules are stored."))
     
-    parserGroup.add_option("--xule-run",
+    parser.add_option("--xule-run",
                       action="store_true",
                       dest="xule_run",
                       help=_("Indicates that the rules should be processed."))
     
-    parserGroup.add_option("--xule-add-packages",
+    parser.add_option("--xule-add-packages",
                            action="store",
                            dest="xule_add_packages",
                            help=_("Add packages to a xule rule set. Multiple package files are separated with a |."))
 
-    parserGroup.add_option("--xule-remove-packages",
+    parser.add_option("--xule-remove-packages",
                            action="store",
                            dest="xule_remove_packages",
                            help=_("Remove packages from a xule rule set. Multiple package files are separated with a |."))
     
-    parserGroup.add_option("--xule-show-packages",
+    parser.add_option("--xule-show-packages",
                      action="store_true",
                      dest="xule_show_packages",
                      help=_("Show list of packages in the rule set."))    
 
-    parserGroup.add_option("--xule-bypass-packages",
+    parser.add_option("--xule-bypass-packages",
                      action="store_true",
                      dest="xule_bypass_packages",
                      help=_("Indicates that the packages in the rule set will not be activated."))  
     
-    parserGroup.add_option("--xule-time",
+    parser.add_option("--xule-time",
                      action="store",
                      type="float",
                      dest="xule_time",
                      help=_("Output timing information. Supply the minimum threshold in seconds for displaying timing information for a rule."))
     
-    parserGroup.add_option("--xule-trace",
+    parser.add_option("--xule-trace",
                      action="store_true",
                      dest="xule_trace",
                      help=_("Output trace information."))
     
-    parserGroup.add_option("--xule-trace-count",
+    parser.add_option("--xule-trace-count",
                       action="store",
                       dest="xule_trace_count",
                       help=_("Name of the file to write a trace count."))
     
-    parserGroup.add_option("--xule-debug",
+    parser.add_option("--xule-debug",
                      action="store_true",
                      dest="xule_debug",
                      help=_("Output trace information."))    
 
-    parserGroup.add_option("--xule-debug-table",
+    parser.add_option("--xule-debug-table",
                      action="store_true",
                      dest="xule_debug_table",
                      help=_("Output trace information."))  
     
-    parserGroup.add_option("--xule-debug-table-style",
+    parser.add_option("--xule-debug-table-style",
                        action="store",
                        dest="xule_debug_table_style",
                        help=_("The table format. The valid values are tabulate table formats: plain, simple, grid, fancy_gri, pipe, orgtbl, jira, psql, rst, mediawiki, moinmoin, html, latex, latex_booktabs, textile."))  
     
-    parserGroup.add_option("--xule-crash",
+    parser.add_option("--xule-crash",
                      action="store_true",
                      dest="xule_crash",
                      help=_("Output trace information."))
     
-    parserGroup.add_option("--xule-pre-calc",
+    parser.add_option("--xule-pre-calc",
                       action="store_true",
                       dest="xule_pre_calc",
                       help=_("Pre-calc expressions"))
     
-    parserGroup.add_option("--xule-filing-list",
+    parser.add_option("--xule-filing-list",
                       action="store",
                       dest="xule_filing_list",
                       help=_("File name of file that contains a list of filings to process"))
     
-    parserGroup.add_option("--xule-server",
+    parser.add_option("--xule-server",
                      action="store",
                      dest="xule_server",
                      help=_("Launch the webserver."))
 
-    parserGroup.add_option("--xule-multi",
+    parser.add_option("--xule-multi",
                      action="store_true",
                      dest="xule_multi",
                      help=_("Turns on multithreading"))
     
-    parserGroup.add_option("--xule-cpu",
+    parser.add_option("--xule-cpu",
                      action="store",
                      dest="xule_cpu",
                      help=_("overrides number of cpus per processing to use"))
     
-    parserGroup.add_option("--xule-async",
+    parser.add_option("--xule-async",
                      action="store_true",
                      dest="xule_async",
                      help=_("Outputs onscreen output as the filing is being processed"))
 
-    parserGroup.add_option("--xule-numthreads",
+    parser.add_option("--xule-numthreads",
                      action="store",
                      dest="xule_numthreads",
                      help=_("Indicates number of concurrents threads will run while the Xule Server is active"))
     
-    parserGroup.add_option("--xule-skip",
+    parser.add_option("--xule-skip",
                       action="store",
                       dest="xule_skip",
                       help=_("List of rules to skip"))
     
-    parserGroup.add_option("--xule-no-cache",
+    parser.add_option("--xule-no-cache",
                       action="store_true",
                       dest="xule_no_cache",
                       help=_("Turns off local caching for a rule."))
     
-    parserGroup.add_option("--xule-precalc-constants",
+    parser.add_option("--xule-precalc-constants",
                       action="store_true",
                       dest="xule_precalc_constants",
                       help=_("Pre-calculate constants that do not depend on the instance."))
 
-    parserGroup.add_option("--xule-exclude-nils",
+    parser.add_option("--xule-exclude-nils",
                       action="store_true",
                       dest="xule_exclude_nils",
                       help=_("Indicates that the processor should exclude nil facts. By default, nils are included."))
     
-    parserGroup.add_option("--xule-include-dups",
+    parser.add_option("--xule-include-dups",
                       action="store_true",
                       dest="xule_include_dups",
                       help=_("Indicates that the processor should include duplicate facts. By default, duplicate facts are ignored."))    
     
-    parserGroup.add_option("--xule-version",
+    parser.add_option("--xule-version",
                       action="store_true",
                       dest="xule_version",
                       help=_("Display version number of the xule module."))
@@ -415,7 +411,7 @@ __pluginInfo__ = {
     'ModelObjectFactory.ElementSubstitutionClasses': None, 
     'CntlrWinMain.Menu.File.Open': xuleMenuOpen,
     'CntlrWinMain.Menu.Tools': xuleMenuTools,
-    'CntlrCmdLine.Options': xuleCmdOptions,
+    'CntlrCmdLine.Options': xuleCommandLineOptionExtender,
     'CntlrCmdLine.Utility.Run': xuleCmdUtilityRun,
     'CntlrCmdLine.Xbrl.Loaded': xuleCmdXbrlLoaded,
     'Validate.Finally': xuleValidate,
