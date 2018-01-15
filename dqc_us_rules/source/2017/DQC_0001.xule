@@ -129,7 +129,7 @@ $allowed_members_lea = navigate domain-member descendants include start
      returns set (target-name);
 $allowed_members_FHLB = navigate dimensions dimension-member descendants from FederalHomeLoanBankAdvancesBranchOfFHLBBankAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember);
+$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember, dei:EntityDomain);
 
 $member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target) returns set (target-name);
 
@@ -149,7 +149,7 @@ Dimensions: {$fact.dimensions.join(', ','=')}
 Unit: {$fact.unit}";
 				true
 		else 
-				$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis LegalEntityAxis. The only members allowed on this axis are extensions or products defined in the US GAAP taxonomy. There are no facts associated with this member and axis.";
+				$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis LegalEntityAxis. The only members allowed on this axis are extensions or legal entities defined in the US GAAP taxonomy. There are no facts associated with this member and axis.";
 				true
 
 message

@@ -49,16 +49,16 @@ The minimum parameters that need to be passed are the following:
 A typical command line syntax for Arelle is as follows (including optional parameters defined below:
 
 `
-arelleCmdLine --plugins xule -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
+arelleCmdLine --plugins "xule|transforms/SEC" -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
 `
 
 **Examples:**  
 `
-arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
+arelleCmdLine --plugins "xule|transforms/SEC" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
 `  
 or  
 `
-arelleCmdLine --plugins xule -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set https://github.com/DataQualityCommittee/dqc_us_rules/raw/v5.0.0/dqc_us_rules/dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
+arelleCmdLine --plugins "xule|transforms/SEC" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set https://github.com/DataQualityCommittee/dqc_us_rules/raw/v5.0.0/dqc_us_rules/dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
 `  
 
 In addition the following optional parameters can be passed:
