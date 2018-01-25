@@ -134,7 +134,7 @@ The DQC plugin reads the ruleset map in order from the top. If the namespace in 
 
 The initial copy of the ruleset map included with the plugin maps to rulesets on the DQC GitHub repository. The ruleset map can be edited to refer to local copies of the rulesets. 
 
-####Updating the ruleset map
+#### Updating the ruleset map
 
 The ruleset map can be reset with the copy in the plugin folder by using the `--xule-reset-rule-set-map` option. This will overwrite any changes made to the copy of the ruleset map file in the application data folder.
 
