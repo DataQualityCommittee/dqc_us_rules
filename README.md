@@ -39,17 +39,16 @@ The ruleset is comprised of compiled rule files representing rule submission for
 ## Configuration and Use of the DQC Arelle Plugin
 
 The DQC ruleset files are part of each [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". Copy the "dqc_us_rules" folder to your environment to run them locally, or reference them from the Internet using this format `https://github.com/DataQualityCommittee/dqc_us_rules/`***raw***`/`**vMajor.Minor.FixRelease**`/dqc_us_rules/dqc-us-`**TaxonomyYear**`-V`**MajorRelease**`-ruleset.zip` when running the plugin from the command line (see below). The extracted files for US GAAP Taxonomies from 2015, 2016 and 2017 are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules.   
- 
+
 The minimum parameters that need to be passed are the following:
-* **`--plugins xule`** : Loads the DQC plugin.
-* **`-f`** : the location of the instance file to be evaluated. This will take a zip file, XML instance or inline XBRL file.
-* **`--xule-rule-set`** : the location of the compiled ruleset
-* **`--xule-run`** : Instructs the processor to run the rules
+* **`--plugins xule`** : Loads the DQC plugin. When running with an SEC filing, the SEC transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "xule|transforms/SEC"**. The pipe character `|` separates the plugins. specifying the SEc transforms plugins will have no affect on traditional XBRL filings, so it can included for all SEC filings.
+* **`-f`** : The location of the instance file to be evaluated. This will take a zip file, XML instance or inline XBRL file.
+* **`--xule-run`**  or **`-v`**: Instructs the processor to run the rules. The **-v** option will run all Arelle validations including the DQC rules. The **--xule-run** option will only run the DQC rules
 
 A typical command line syntax for Arelle is as follows (including optional parameters defined below:
 
 `
-arelleCmdLine --plugins "xule|transforms/SEC" -f {instance file or zip file} --xule-rule-set {ruleset file} --xule-run --noCertificateCheck --logFile {log file name}
+arelleCmdLine --plugins "xule|transforms/SEC" -f {instance file or zip file} --xule-run --noCertificateCheck --logFile {log file name}
 `
 
 **Examples:**  
@@ -67,6 +66,7 @@ In addition the following optional parameters can be passed:
 * **`--noCertificateCheck`** : This is used to ensure that files from the internet are not rejected if there is no SSL certificate on the machine running the DQC plugin.
 * **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)  
 * **`--packages`** : This option will accept additional taxonomy packages
+* **`--xule-rule-set`** : The location of the compiled ruleset to use. 
 
 To get additional options use the option `--help` (eg. `arelleCmdLine --plugins xule --help`)
 
@@ -110,11 +110,40 @@ The message portion of the log file output can be controlled by using the `--log
 
 To *exclude the rule number, filename and line number from the message*, use the command prompt `--logFormat  "%(message)s"`.
 
+### Ruleset Detection
+
+When the DQC plugin is run without specifying the the ruleset (with the `--xule-rule-set` option), the plugin will attempt to determine the correct ruleset based on the facts in the instance document. The plugin will look at the namespaces of the primary items of the facts in the instance and look check the ruleset map to determine the correct ruleset. 
+
+An initial the ruleset map is included in the "xule" plugin folder. It is named rulesetMap.json. The first time the plugin autodetects a ruleset, the ruleset map in the plugin folder is copied to the application data folder. This is the version that is used to determine which ruleset to use. 
+
+It is recommended not to change the ruleset map in the plugin folder. The copy in the application data folder may be edited to change the ruleset map. The ruleset map is a simple JSON file mapping namespaces to a ruleset.
+
+**Example**
+
+`
+
+{
+
+	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
+	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
+	"http://fasb.org/us-gaap/2015-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2015-V5-ruleset.zip?raw=true",
+	"http://fasb.org/us-gaap/2014-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2014-V5-ruleset.zip?raw=true",	
+	"http://fasb.org/us-gaap/2013-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2013-V5-ruleset.zip?raw=true",
+	"http://fasb.org/us-gaap/2012-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2012-V5-ruleset.zip?raw=true",
+	"http://fasb.org/us-gaap/2011-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2011-V5-ruleset.zip?raw=true"
+}`
+
+The DQC plugin reads the ruleset map in order from the top. If the namespace in the ruleset map matches a namespace used on a primary item of a fact in the instance, then the corresponding ruleset is used.
+
+The initial copy of the ruleset map included with the plugin maps to rulesets on the DQC GitHub repository. The ruleset map can be edited to refer to local copies of the rulesets. 
+
+The ruleset map can be reset with the copy in the plugin folder by using the `--xule-reset-rule-set-map` option. This will overwrite any changes made to the copy of the ruleset map file in the application data folder.
+
 ### Managing the Ruleset File
 
 The ruleset file includes packages with local versions of files used by the DQC plugin. Using these resource files locally allows the plugin to be run without Internet access. These resource files are included by default in the ruleset as XBRL taxonomy packages. To ignore the packages included in the ruleset, use the option `--xule-bypass-packages`. Using the plugin this way will generally take more time to run, as the plugin will use resources referenced in the dqc_us_rules repository as raw.githubusercontent.com. 
 
-Mnage packages used in the ruleset with the following three options, which require `--xule-rule-set`:
+Packages can be added or removed from a ruleset. This is managed by using the following three options:
 
 * `--xule-show-packages`
 * `--xule-add-packages`
