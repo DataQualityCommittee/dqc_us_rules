@@ -134,7 +134,27 @@ The DQC plugin reads the ruleset map in order from the top. If the namespace in 
 
 The initial copy of the ruleset map included with the plugin maps to rulesets on the DQC GitHub repository. The ruleset map can be edited to refer to local copies of the rulesets. 
 
+####Updating the ruleset map
+
 The ruleset map can be reset with the copy in the plugin folder by using the `--xule-reset-rule-set-map` option. This will overwrite any changes made to the copy of the ruleset map file in the application data folder.
+
+**Example**
+
+`arelleCmdLine --plugins xule --xule-replace-rule-set-map`
+
+Alternatively, the ruleset map can be updated from a file or URL by using `--xule-replace-rule-set-map` followed by the file name or URL. Like the reset option, this will overwrite the ruleset map file in the application data folder.
+
+**Example**
+
+`arelleCmdLine --plugins xule --xule-replace-rule-set-map myNewRulesetMap.json`
+
+The ruleset map file can be merged by using `--xule-update-rule-set-map` followed by the file name or URL to merge with the ruleset map file in the application data folder. Merging provides a basic means of updating the current ruleset map (the ruleset map in the application data folder). 
+
+**Example**
+
+`arelleCmdLine --plugins xule --xule-update-rule-set-map myRulesetMapChanges.json`
+
+When merging, any namespaces in the new ruleset map that are in the current ruleset map will update the current ruleset map with the location of the ruleset for that namespace. New namespaces will be added to the end of the current ruleset map. If more specific edits are needed, the current ruleset map will need be edited manually.
 
 ### Managing the Ruleset File
 
