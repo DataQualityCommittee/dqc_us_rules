@@ -119,7 +119,8 @@ An initial the ruleset map is included in the "xule" plugin folder. It is named 
 It is recommended not to change the ruleset map in the plugin folder. The copy in the application data folder may be edited to change the ruleset map. The ruleset map is a simple JSON file mapping namespaces to a ruleset.
 
 **Example Ruleset Map**
-	{
+`
+{
 	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2015-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2015-V5-ruleset.zip?raw=true",
@@ -127,7 +128,8 @@ It is recommended not to change the ruleset map in the plugin folder. The copy i
 	"http://fasb.org/us-gaap/2013-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2013-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2012-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2012-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2011-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2011-V5-ruleset.zip?raw=true"
-	}
+}
+`
 The DQC plugin reads the ruleset map in order from the top. If the namespace in the ruleset map matches a namespace used on a primary item of a fact in the instance, then the corresponding ruleset is used.
 
 The initial copy of the ruleset map included with the plugin maps to rulesets on the DQC GitHub repository. The ruleset map can be edited to refer to local copies of the rulesets. 
