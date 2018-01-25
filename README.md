@@ -118,8 +118,7 @@ An initial the ruleset map is included in the "xule" plugin folder. It is named 
 
 It is recommended not to change the ruleset map in the plugin folder. The copy in the application data folder may be edited to change the ruleset map. The ruleset map is a simple JSON file mapping namespaces to a ruleset.
 
-**Example**
-
+**Example Ruleset Map**
 	{
 	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
