@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22343 $
+$Change: 22362 $
 DOCSKIP
 """
 from arelle.ModelRelationshipSet import ModelRelationshipSet
@@ -324,4 +324,23 @@ def reset_rule_set_map(cntlr):
         pass
     
     cntlr.addToLog(_("Rule set map reset"), "xule")
+
+def get_element_identifier(model_object):
+    if model_object is not None:
+        if model_object.id is not None:
+            return (model_object.modelDocument.uri + "#" + model_object.id, model_object.sourceline)
+        else:
+            #need to build the element scheme
+            location = get_tree_location(model_object)
+            return (model_object.modelDocument.uri + "#element(" + location + ")", model_object.sourceline)
+            
+def get_tree_location(model_object):
+    
+    parent = model_object.getparent()
+    if parent is None:
+        return "/1"
+    else:
+        prev_location = get_tree_location(parent)
+        return prev_location + "/" + str(parent.index(model_object) + 1)
+  
     
