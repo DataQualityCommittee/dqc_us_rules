@@ -22,6 +22,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 $Change: 22362 $
+
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext #XuleContext
@@ -793,6 +794,7 @@ def evaluate_assertion(assert_rule, xule_context):
                         full_rule_name += '.' + messages['rule-suffix']                    
                     
                     filing_url = xule_context.model.modelDocument.uri if xule_context.model is not None else ''
+
                     # The rule_focus is the model object that is the focus fo the rule. This can be a modelFact, modelConcept or modelDocument.
                     # It is used by the logger to provide additional location information about the thing (i.e. fact) that is the focus of the 
                     # message fom the rule.
