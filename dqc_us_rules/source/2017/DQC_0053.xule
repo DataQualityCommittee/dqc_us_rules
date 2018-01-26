@@ -21,7 +21,7 @@ $memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLoca
 $memberSet =  FILTER $memberSetQname returns $item.local-name
 
 $message_text = if (exists($fact))
-		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] with the element " + $fact.concept.name.local-name +" with a value of $" +int_to_string($fact,"") +". The  NonUs [Member] member should not be used with the Retirement Plan Sponsor Location [Axis]."
+		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] with the element " + $fact.concept.name.local-name +" with a value of $" + string($fact) +". The  NonUs [Member] member should not be used with the Retirement Plan Sponsor Location [Axis]."
 	else
 		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] . There are no facts associated with this member and axis. NonUs [Member] members should not be used with the Retirement Plan Sponsor Location [Axis].";
 		
