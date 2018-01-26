@@ -1,4 +1,4 @@
-"""XuleUtility
+"""XuleMultiProcessing
 
 Xule is a rule processor for XBRL (X)brl r(ULE). 
 
@@ -19,18 +19,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22343 $
+$Change: 22328 $
 DOCSKIP
 """
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 import collections
-import json 
-import os
-import inspect
-import shutil
-from contextlib import contextmanager
+
 from . import XuleConstants as xc
-from .XuleRunTime import XuleProcessingError
 # XuleValue is a module. It is imported in the _imports() function to avoid a circular relative import error.
 XuleValue = None
 XuleProperties = None
@@ -212,116 +207,3 @@ def relationship_set(dts, relationship_set_info):
     
 DIMENSION_SET_ROLE = 0
 DIMENSION_SET_HYPERCUBE = 1
-
-def determine_rule_set(model_xbrl, cntlr):
-    """Determine which rule set to use based on the instance.
-    
-    :param model_xbrl: Arelle model of the instance
-    :type model_xbrl: ModelXbrl
-    :param cntlr: Arelle controller
-    :type cntlr: Cntlr
-    """
-    # Open the rule set map file. This is a json file that maps namespace uris to a location for a rule set.
-    rule_set_map = get_rule_set_map(cntlr)
-    
-    if rule_set_map is not None:
-        # Get a list of namespaces that are used by the facts.
-        used_namespaces = set(x.namespaceURI for x in model_xbrl.factsByQname.keys())
-        # Go through the list of namespaces in the rule set map
-        for mapped_namespace, rule_set_location in rule_set_map.items():
-            if mapped_namespace in used_namespaces:
-                model_xbrl.log('INFO', 'xule', 'Using ruleset {}'.format(rule_set_location))
-                return rule_set_location
-    
-    # This is only reached if a rule set location was not found in the map.
-    raise XuleProcessingError(_("Cannot determine with rule set to use for the filing. Check the rule set map at '{}'.".format(rule_set_map_file_name)))
-
-def get_rule_set_map(cntlr):
-    try:
-        with get_rule_set_map_file(cntlr) as rule_set_map_file:
-            # An ordered dict is used to keep the order of the key/value pairs in the json object.
-            return json.load(rule_set_map_file, object_pairs_hook=collections.OrderedDict)
-    except ValueError:
-        raise XuleProcessingError(_("Rule set map file does not appear to be a valid JSON file. File: {}".format(rule_set_map_file_name)))
-
-@contextmanager
-def get_rule_set_map_file(cntlr, mode='r'):
-    """Get the location of the rule set map
-    
-    The rule set map will be in the application data folder for the xule plugin. An initial copy is in the
-    plugin folder for xule. If the map is not found in the application data folder, the initial copy is copied
-    to the application folder.
-    
-    :param cntlr: Arelle controler
-    :type cntlr: Cntlr
-    :returns: Rule set map file location
-    :rtype: string
-    """
-    rule_set_map_file_name = get_rule_set_map_file_name(cntlr)
-    if not os.path.isfile(rule_set_map_file_name):
-        # See if there is an initial copy in the plugin folder
-        if os.path.isabs(xc.RULE_SET_MAP):
-            initial_copy_file_name = xc.RULE_SET_MAP
-        else:
-            current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
-            initial_copy_file_name = os.path.join(current_dir, xc.RULE_SET_MAP)        
-            if not os.path.isfile(initial_copy_file_name):
-                raise XuleProcessingError("Cannot find rule set map file. This file is needed to determine which rule set to use.")
-            os.makedirs(os.path.dirname(rule_set_map_file_name), exist_ok=True)
-            shutil.copyfile(initial_copy_file_name, rule_set_map_file_name)
-    
-    # Open the rule set map file
-    try:
-        rule_set_map_file_object = open(rule_set_map_file_name, mode)
-    except:
-        raise XuleProcessingError(_("Unable to open rule set map file at {}".format(rule_set_map_file_name)))
-    
-    yield rule_set_map_file_object
-    # Clean up
-    rule_set_map_file_object.close()
-
-def get_rule_set_map_file_name(cntlr):
-    if cntlr.userAppDir is None:
-        raise XuleProcessingError(_("Arelle does not have a user application data directory. Cannot locate rule set map file"))            
-    return os.path.join(cntlr.userAppDir, 'plugin', 'xule', xc.RULE_SET_MAP)
-
-def update_rule_set_map(cntlr, new_map, overwrite=False):
-    # Open the new map
-    from arelle import FileSource
-    file_source = FileSource.openFileSource(new_map, cntlr)
-    file_object = file_source.file(new_map)[0]    
-    try:
-        new_map = json.load(file_object, object_pairs_hook=collections.OrderedDict)
-    except ValueError:
-        raise XuleProcessingError(_("New rule set map file does not appear to be a valid JSON file. File: {}".format(new_map)))
-    
-    if overwrite:
-        rule_set_map = new_map
-    else:
-        # update
-        rule_set_map = get_rule_set_map(cntlr)
-        rule_set_map.update(new_map)
-
-    #update the rule set map
-    with get_rule_set_map_file(cntlr, 'w') as rule_set_file: 
-        json.dump(rule_set_map, rule_set_file)
-    if overwrite:
-        cntlr.addToLog(_("Rule set map file replaced"), "xule")
-    else:
-        cntlr.addToLog(_("Rule set map file updated"), "xule")
-
-def reset_rule_set_map(cntlr):
-    rule_set_map_file_name = get_rule_set_map_file_name(cntlr)
-    # delete the rule set map file
-    try:
-        os.remove(rule_set_map_file_name)
-    except OSError:
-        pass
-    
-    # get the rule set map. This will copy the default file when it doesn't exist in the
-    # users appdata (which was just deleted)
-    with get_rule_set_map_file(cntlr):
-        pass
-    
-    cntlr.addToLog(_("Rule set map reset"), "xule")
-    

@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22359 $
+$Change: 22328 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext #XuleContext
@@ -34,7 +34,6 @@ from arelle.ModelValue import QName, dayTimeDuration, DateTime, gYear, gMonthDay
 from arelle.ModelInstanceObject import ModelFact
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelConcept
-from arelle.ModelObject import ModelObject
 import decimal
 import datetime
 import math
@@ -775,7 +774,9 @@ def evaluate_assertion(assert_rule, xule_context):
                     messages = dict()
                     # Process each of the results in the rule. The Results are the messages that are produced.
                     for rule_result in assert_rule.get('results', list()):
-                         messages[rule_result['resultName']] = result_message(assert_rule, rule_result, xule_value, xule_context)
+                        #message_context = xule_context.create_message_copy(xule_context.get_processing_id(assert_rule['node_id']))
+                        #messages[rule_result['resultName']] = get_message(assert_rule, xule_value, xule_context.iteration_table.current_alignment, message_context)
+                        messages[rule_result['resultName']] = result_message(assert_rule, rule_result, xule_value, xule_context)
                     
                     #get severity
                     if 'severity' not in messages:
@@ -784,7 +785,7 @@ def evaluate_assertion(assert_rule, xule_context):
                     severity = messages['severity']
                     
                     #message - this is the main message
-                    main_message = messages['message'].value if 'message' in messages else XuleString('No message supplied')
+                    main_message = messages.get('message', 'No message supplied')
                     messages.pop('message', None)
                     
                     full_rule_name = xule_context.rule_name
@@ -792,37 +793,14 @@ def evaluate_assertion(assert_rule, xule_context):
                     if 'rule-suffix' in messages:
                         full_rule_name += '.' + messages['rule-suffix']                    
                     
+                    source_location = get_element_identifier(xule_value, xule_context)
                     filing_url = xule_context.model.modelDocument.uri if xule_context.model is not None else ''
-                    # The source_location has been replaced by rule_focus. I think that sourceLocation on the arelle logger was a former way
-                    # of identifying the thing (i.e. fact) that was the focus of the message. This is now handled by rule_focus (modelObject on the logger
-                    # call).
-                    #source_location = get_element_identifier(xule_value, xule_context)
-                    
-                    # The rule_focus is the model object that is the focus fo the rule. This can be a modelFact, modelConcept or modelDocument.
-                    # It is used by the logger to provide additional location information about the thing (i.e. fact) that is the focus of the 
-                    # message fom the rule.
-                    
-                    rule_focus = messages.pop('rule-focus', None)
-                    if rule_focus is None:
-                        rule_focus = next(iter(xule_context.facts.keys()), None)
-                    
-                    # Prep the main_message for the logger. The logger wants a %-style format string and the substitutions passed as named arguments.
-                    if isinstance(main_message, XuleString):
-                        format_string_message = main_message.format_string
-                        substitutions = main_message.substitutions
-                    else:
-                        format_string_message = main_message
-                        substitutions = dict()
-                    
-                    #combine the substitutions and the messages dictionary
-                    messages.update(substitutions)
-                    
+             
                     xule_context.global_context.message_queue.log(severity.upper(),
                                                                   full_rule_name, 
-                                                                  _(format_string_message),
-                                                                  #sourceFileLine=source_location,
+                                                                  main_message,
+                                                                  sourceFileLine=source_location,
                                                                   filing_url=filing_url,
-                                                                  modelObject=rule_focus,
                                                                   **messages)        
                 else:
                     xule_context.iter_pass_count += 1
@@ -886,12 +864,9 @@ def evaluate_output_rule(output_rule, xule_context):
                     messages['severity'] = 'info'
                 severity = messages['severity']            
                 #message - this is the main message
-                main_message = messages.get('message', xule_value)
-                if main_message.type == 'string':
-                    main_message = main_message.value
-                else:
-                    main_message = main_message.format_value()
-
+                #main_message = messages.get('message', xule_value.format_value())
+                #main_message = messages.get('message', process_message("${value} ${context}", xule_value, xule_context))
+                main_message = messages.get('message', xule_value.format_value())
                 messages.pop('message', None)
                 
                 full_rule_name = xule_context.rule_name
@@ -899,36 +874,14 @@ def evaluate_output_rule(output_rule, xule_context):
                 if 'rule-suffix' in messages:
                     full_rule_name += '.' + messages['rule-suffix']
                 
+                source_location = get_element_identifier(xule_value, xule_context)
                 filing_url = xule_context.model.modelDocument.uri if xule_context.model is not None else ''
-                # The source_location has been replaced by rule_focus. I think that sourceLocation on the arelle logger was a former way
-                # of identifying the thing (i.e. fact) that was the focus of the message. This is now handled by rule_focus (modelObject on the logger
-                # call).
-                #source_location = get_element_identifier(xule_value, xule_context)
-                
-                # The rule_focus is the model object that is the focus fo the rule. This can be a modelFact, modelConcept or modelDocument.
-                # It is used by the logger to provide additional location information about the thing (i.e. fact) that is the focus of the 
-                # message fom the rule.
-                rule_focus = messages.pop('rule-focus', None)
-                if rule_focus is None:
-                    rule_focus = next(iter(xule_context.facts.keys()), None)
-
-                # Prep the main_message for the logger. The logger wants a %-style format string and the substitutions passed as named arguments.
-                if isinstance(main_message, XuleString):
-                    format_string_message = main_message.format_string
-                    substitutions = main_message.substitutions
-                else:
-                    format_string_message = main_message
-                    substitutions = dict()
-                
-                #combine the substitutions and the messages dictionary
-                messages.update(substitutions)
-                
+         
                 xule_context.global_context.message_queue.log(severity.upper(),
                                                               full_rule_name, 
-                                                              _(format_string_message),
-                                                              #sourceFileLine=source_location,
+                                                              main_message,
+                                                              sourceFileLine=source_location,
                                                               filing_url=filing_url,
-                                                              modelObject=rule_focus,
                                                               **messages)        
             else:
                 xule_context.iter_misaligned_count += 1
@@ -974,7 +927,7 @@ def evaluate_string_literal(literal, xule_context):
     
             "The value of the rule is {$rule-value}.\nThis is based on the fact value {$fact}.".
     
-    In this example the literal would be a list of:
+    I this example the literal would be a list of:
         * string of characters: "The value of the rule is "
         * an expression: $rule-value
         * string of characters: "."
@@ -985,35 +938,24 @@ def evaluate_string_literal(literal, xule_context):
     
     This evaluator will evaluate all the components of the string literal and concatenate them to a string.
     """
-    #result_string = ''
-    # The underlying value for the XuleValue that is created from this evaluator is a XuleString. A XuleString is subclassed
-    # from a python str. A XuleString stores a format string along with the subsitutions. It will create the formatted string and set that
-    # as the value of the XuleSting. This way it will act and feel like a python string but will contain the original format string and
-    # subsitutiions. Having the format string and substitutions separate is usefuly when logging messages to arelle.
-    format_string = ''
-    substitutions = []
-    sub_num = 0
+    result_string = ''
     
     for string_item in literal['stringList']:
         if string_item['exprName'] == 'baseString':
-            format_string += string_item['value']
+            result_string += string_item['value']
         elif string_item['exprName'] == 'escape':
             if string_item['value'] == 'n':
-               format_string += '\n'
+               result_string += '\n'
             elif string_item['value'] == 't':
-                format_string += '\t'
+                result_string += '\t'
             else:
-                format_string += string_item['value']
+                result_string += string_item['value']
         else:
             # This is an expression.
             expr_value = evaluate(string_item, xule_context)
-            # The result of the expression is not directly put in the format string. Instead a substitution is used
-            sub_name = 'sub{}'.format(sub_num)
-            sub_num += 1
-            # Substitutions is a list of a 3 part tuple 0=location in format string, 1=substitution name, 2=substitution value
-            substitutions.append((len(format_string), sub_name, expr_value.format_value()))
-
-    return XuleValue(xule_context, XuleString(format_string, substitutions), 'string')
+            result_string += expr_value.format_value()
+        
+    return XuleValue(xule_context, result_string, 'string')
 
 def evaluate_int_literal(literal, xule_context):
     """Evaluator for literal integer expressions
@@ -4417,7 +4359,6 @@ def format_trace_info(expr_name, sugar, common_aspects, xule_context):
 
 
 def result_message(rule_ast, result_ast, xule_value, xule_context):
-    #validate_result_name(result_ast, xule_context)
     message_context = xule_context.create_message_copy(xule_context.get_processing_id(rule_ast['node_id']))
     message_context.tags['rule-value'] = xule_value
     try:
@@ -4433,33 +4374,128 @@ def result_message(rule_ast, result_ast, xule_value, xule_context):
     finally:
         if hasattr(message_context.global_context.options, 'xule_no_cache'):
             xule_context.global_context.options.xule_no_cache = saved_no_cache   
-
-    if result_ast['resultName'] == 'rule-focus':
-        # This is a special case. rule-focus requires some kind of a ModelObject. This will be passed to the logger as the modelObject argument.
-        # Xule will allow a ModelFact or a ModelConcept
-        if message_value.type == 'concept':
-            message = message_value.value
-        elif message_value.is_fact:
-            message = message_value.fact
-        else:
-            raise XuleProcessingError(_("The rule-focus of a rule must be a concept or a fact, found {}".format(message_value.type)), xule_context)
-    elif result_ast['resultName'] == 'message':
-        if message_value.type == 'unbound':
-            message = XuleValue(xule_context, '', 'string')
-        else:
-            message = message_value
+                 
+    if message_value.type == 'unbound':
+        message_string = ""
     else:
-        if message_value.type == 'unbound':
-            message = ''
-        else:
-            message = str(message_value.value)
-            
-    return message
+        # The log formatter uses % as the format character. Need to escape any % in the message with a  double %
+        message_string = str(message_value.value).replace('%','%%')
+        
+        #message_string = process_message(message_string, xule_value, xule_context)
+        
+    return str(message_string)
+    
+# def get_message(rule, xule_value, alignment, xule_context):
+#     if 'message' in rule:
+#         message_value = evaluate(rule.message[0], xule_context)
+#         if message_value.type == 'unbound':
+#             message_string = ""
+#         else:
+#             message_string = message_value.value
+#     else:
+#         message_string = ""
+#     
+#     if message_string == "":
+#         #create a default message
+#         if rule['exprName'] == 'reportDeclaration':
+#                 message_string = "${value} ${context}"
+#         elif rule['exprName'] == 'raiseDeclaration':
+#             if len(xule_context.facts) > 0:
+#                 message_string = "${default_fact.value} ${default_fact.context}${context}"
+#                 xule_context.add_tag('default_fact', XuleValue(xule_context, next(iter(xule_context.facts)), 'fact'))
+#             else:
+#                 message_string = "${value}"
+#         elif rule['exprName'] == 'formulaDeclaration':
+#             message_string = "${left.value} != ${right.value} ${context}"
+#     
+#     return process_message(message_string, xule_value, alignment, xule_context)
 
-def validate_result_name(result, xule_context):
-    if result['resultName'] not in ('message', 'severity', 'rule-suffix', 'rule-focus'):
-        if not xule_context.rule_set.hasOutputAttribute(result['resultName']):
-            raise XuleProcessingError(_("Rule '{}' uses result name '{}' which does not have an output-attribute declaration.".format(xule_context.rule_name, result['resultName'])))
+# def process_message(message_string, xule_value, xule_context):    
+# 
+#     alignment = xule_context.iteration_table.current_alignment
+# 
+#     common_facts = [tag_value.fact for tag_value in xule_context.tags.values() if tag_value.is_fact]
+#     if not common_facts: #common_facts is empty, no facts are tagged.
+#         common_facts = xule_context.facts
+# 
+#     common_aspects = get_common_aspects(common_facts, xule_context)
+#     
+#     #Check if there is a fact tag that uses the .context. If so and the lineItem is in the common aspects, the line item should be removed from the common aspects
+#     if ('builtin','concept') in common_aspects:
+#         for tag_name, tag_value in xule_context.tags.items():
+#             if tag_value.is_fact or tag_value.type == 'empty_fact':
+#                 tag_context_pattern = '\$\s*{\s*' + tag_name + '\s*\.\s*(?i)context\s*}'
+#                 if re.search(tag_context_pattern, message_string):
+#                     del common_aspects[('builtin','concept')]
+#                     break
+#      
+#     for tag_name, tag_value in xule_context.tags.items():        
+#         replacement_value = tag_value.format_value() or ''
+#         
+#         if tag_value.is_fact: 
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*\.\s*value\s*}', replacement_value, message_string)
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*}', replacement_value, message_string)
+#             
+#             for tag_sub_part in MESSAGE_TAG_SUB_PARTS:
+#                 tag_pattern = '\$\s*{\s*' + tag_name + '\s*\.\s*(?i)' + tag_sub_part[0] + '\s*}'
+#                 if re.search(tag_pattern, message_string) is not None:
+#                     if tag_sub_part[1] == format_alignment:
+#                         message_string = re.sub(tag_pattern, format_alignment(get_uncommon_aspects(tag_value.fact, common_aspects, xule_context), xule_context), message_string)
+#                     else:
+#                         new_value = tag_sub_part[1](xule_context, tag_value)
+#                         message_string = re.sub(tag_pattern, new_value or "", message_string)
+#                         
+#         elif tag_value.type == 'empty_fact':
+#             if alignment is not None and ('builtin', 'concept') in alignment:
+#                     tag_context = format_qname(alignment[('builtin', 'concept')], xule_context)
+#             else:
+#                 tag_context = str(tag_value.value)
+#                 
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*\.\s*value\s*}', 'missing', message_string)
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*}', 'missing', message_string)
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*\.\s*context\s*}', tag_context, message_string)
+#             
+#             for tag_sub_part in MESSAGE_TAG_SUB_PARTS:
+#                 tag_pattern = '\$\s*{\s*' + tag_name + '\s*\.\s*(?i)' + tag_sub_part[0] + '\s*}'
+#                 if re.search(tag_pattern, message_string) is not None:
+#                     message_string = re.sub(tag_pattern, 'missing', message_string)
+# 
+#         else:
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*\.\s*value\s*}', replacement_value, message_string)
+#             message_string = re.sub('\$\s*{\s*' + tag_name + '\s*}', replacement_value, message_string)
+# 
+#     message_string = re.sub('\$\s*{\s*context\s*}', format_alignment(common_aspects, xule_context), message_string)
+#     message_string = re.sub('\$\s*{\s*value\s*}', xule_value.format_value() or '', message_string)
+#     '''ADD TRACE'''
+# #     if xule_context.show_trace:
+# #         message_string = re.sub('\$\s*{\s*trace\s*}', format_trace(xule_context, result, common_aspects), message_string)
+#     message_string = message_string.replace('%', '%%')
+# 
+#     return message_string
+
+# def get_common_aspects(dict_model_facts, xule_context):
+#     
+#     model_facts = list(dict_model_facts)
+#     
+#     if len(model_facts) > 0:
+#         common_aspects = get_all_aspects(model_facts[0], xule_context)
+#     else:
+#         common_aspects = {}    
+#     
+#     for model_fact in model_facts[1:]:
+#         fact_aspects = get_all_aspects(model_fact, xule_context)
+#         for aspect_info, aspect_value in fact_aspects.items():
+#             if aspect_info in common_aspects:
+#                 if aspect_value != common_aspects[aspect_info]:
+#                     del common_aspects[aspect_info]
+#         for missing_aspect in common_aspects.keys() - fact_aspects.keys():
+#             del common_aspects[missing_aspect]
+#         
+#     #remove lineItem
+#     if ('builtin', 'concept') in common_aspects and len(model_facts) > 1:
+#         del common_aspects[('builtin', 'concept')]
+#     
+#     return common_aspects
 
 def get_all_aspects(model_fact, xule_context):
     '''This function gets all the apsects of a fact'''

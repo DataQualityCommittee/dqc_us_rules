@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22349 $
+$Change: 22328 $
 DOCSKIP
 """
 #from .XuleParser import parseRules
@@ -29,20 +29,14 @@ DOCSKIP
 from .XuleProcessor import process_xule, XuleProcessingError
 #from .XuleRuleSet import XuleRuleSet, XuleRuleSetError
 from . import XuleRuleSet as xr
-from . import XuleUtility as xu
 from .XuleContext import XuleGlobalContext, XuleRuleContext
-from .XuleConstants import RULE_SET_MAP
 from optparse import OptionParser, SUPPRESS_HELP
 from arelle import FileSource
 from arelle import ModelManager
-from arelle.CntlrWebMain import Options
 import optparse
 import os 
 
-__version__ = '3.0.' + '$Change: 22349 $'[9:-2]
-
-_cntlr = None
-_options = None
+__version__ = '2.0.' + '$Change: 22328 $'[9:-2]
 
 def xuleMenuOpen(cntlr, menu):
     pass
@@ -52,12 +46,9 @@ def xuleMenuTools(cntlr, menu):
 
 def xuleCmdOptions(parser):
     # extend command line options to compile rules
-    if isinstance(parser, Options):
-        parserGroup = parser
-    else:
-        parserGroup = optparse.OptionGroup(parser,
-                                           "Xule Business rule")
-        parser.add_option_group(parserGroup)
+    parserGroup = optparse.OptionGroup(parser,
+                                       "Xule Business rule")
+    parser.add_option_group(parserGroup)
     
     parserGroup.add_option("--xule-compile", 
                       action="store", 
@@ -196,30 +187,8 @@ def xuleCmdOptions(parser):
                       action="store_true",
                       dest="xule_version",
                       help=_("Display version number of the xule module."))
-    
-    parserGroup.add_option("--xule-update-rule-set-map",
-                           action="store",
-                           dest="xule_update_rule_set_map",
-                           help=_("Update the rule set map currently used. The supplied file will be merged with the current rule set map."))
 
-    parserGroup.add_option("--xule-replace-rule-set-map",
-                           action="store",
-                           dest="xule_replace_rule_set_map",
-                           help=_("Replace the rule set map currently used."))
-    
-    parserGroup.add_option("--xule-reset-rule-set-map",
-                           action="store_true",
-                           dest=("xule_reset_rule_set_map"),
-                           help=("Reset the rule set map to the default."))
-    
-
-def xuleCmdUtilityRun(cntlr, options, **kwargs): 
-    # Save the controller and options in the module global variable
-    global _cntlr
-    _cntlr = cntlr
-    global _options
-    _options = options 
-    
+def xuleCmdUtilityRun(cntlr, options, **kwargs):  
     #check option combinations
     parser = OptionParser()
     
@@ -230,8 +199,8 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
     if getattr(options, "xule_cpu", None) is not None and not getattr(options, 'xule_multi', None):
             parser.error(_("--xule-multi is required with --xule_cpu."))
 
-#     if  getattr(options, "xule_run", None) is not None and not getattr(options, 'xule_rule_set', None):
-#             parser.error(_("--xule-rule-set is required with --xule-run."))
+    if  getattr(options, "xule_run", None) is not None and not getattr(options, 'xule_rule_set', None):
+            parser.error(_("--xule-rule-set is required with --xule-run."))
     
     if getattr(options, "xule_server", None) is not None and not getattr(options, 'xule_rule_set', None):
             parser.error(_("--xule-rule-set is required with --xule_server."))
@@ -250,16 +219,11 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
 
     from os import name
     if getattr(options, "xule_multi", False) and name == 'nt':
-        parser.error(_("--xule-multi can't be used in Windows"))    
+            parser.error(_("--xule-multi can't be used in Windows"))    
 
     if not getattr(options, "xule_multi", False) and getattr(options, "xule_cpu", None) is not None:
-        parser.error(_("--xule-cpu can only be used with --xule-multi enabled"))    
+            parser.error(_("--xule-cpu can only be used with --xule-multi enabled"))    
 
-    if len([x for x in (getattr(options, "xule_update_rule_set_map", False),
-                       getattr(options, "xule_replace_rule_set_map", False),
-                       getattr(options, "xule_reset_rule_set_map", False)) if x]) > 1:
-        parser.error(_("Cannot use --xule-update-rule-set-map or --xule-replace-rule-set-map or --xule-reset-rule-set-map the same time."))
-        
     #compile rules
     if getattr(options, "xule_compile", None):
         compile_destination = getattr(options, "xule_rule_set", "xuleRules") 
@@ -287,18 +251,6 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
         print("Packages in rule set:")
         for package_info in rule_set.get_packages_info():
             print('\t' + package_info.get('name') + ' (' + os.path.basename(package_info.get('URL')) + ')' )
-    
-    #update rule set map
-    if getattr(options, 'xule_update_rule_set_map', None):
-        xu.update_rule_set_map(cntlr, getattr(options, 'xule_update_rule_set_map'))
-    
-    #replace rule set map
-    if getattr(options, 'xule_replace_rule_set_map', None):
-        xu.update_rule_set_map(cntlr, getattr(options, 'xule_replace_rule_set_map'), overwrite=True)
-    
-    #reset rule set map
-    if getattr(options, 'xule_reset_rule_set_map', False):
-        xu.reset_rule_set_map(cntlr)
     
     if getattr(options, "xule_server", None):
         from .XuleMultiProcessing import run_constant_group, output_message_queue
@@ -393,27 +345,15 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
         except FileNotFoundError:
             print("Filing listing file '%s' is not found" % options.xule_filing_list)
 
-def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, entryPoint=None):   
+def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, entryPoint=None):
     if getattr(options, "xule_run", None):
-        runXule(cntlr, options, modelXbrl)
-        
-def runXule(cntlr, options, modelXbrl):
         try:
             if getattr(options, "xule_multi", True) and \
                 getattr(cntlr, "rule_set", None) is not None:
                 rule_set =  getattr(cntlr, "rule_set")
             else:
-                if getattr(options, 'xule_rule_set', None) is not None:
-                    rule_set_location = options.xule_rule_set
-                else:
-                    # Determine the rule set from the model.
-                    rule_set_location = xu.determine_rule_set(modelXbrl, cntlr)
-                    if rule_set_location is None:
-                        # The rule set could not be determined.
-                        raise xr.XuleRuleSetError('The rule set to used could not be determined. Check that there is a rule set map at {} and verify that there is an appropiate mapping for the filing.'.format(RULE_SET_MAP))
-                    
                 rule_set = xr.XuleRuleSet(cntlr)              
-                rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
+                rule_set.open(options.xule_rule_set, open_packages=not getattr(options, 'xule_bypass_packages', False))
         except xr.XuleRuleSetError:
             raise
 
@@ -437,14 +377,8 @@ def runXule(cntlr, options, modelXbrl):
                          cntlr, 
                          options,
                          )
-            
 def xuleValidate(val):
-    global _cntlr
-    global _options
-    if _cntlr is not None and _options is not None:
-        if not getattr(_options, "xule_run", False):
-            # Only run on validate if the --xule-run option was not supplied. If --xule-run is supplied, it has already been run
-            runXule(_cntlr, _options, val.modelXbrl)
+    pass
 
 def xuleTestStart(modelTestcaseVariation):        
     pass

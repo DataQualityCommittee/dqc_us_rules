@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22346 $
+$Change: 22328 $
 DOCSKIP
 """
 
@@ -133,11 +133,10 @@ class XuleRuleSet(object):
             self.name = self.catalog['name']
             self._open_for_add = False                
         except KeyError:
-            raise XuleRuleSetError(_("Error in the rule set. Cannot open catalog."))
+            print("Error in the rule set. Cannot open catalog.") #, file=sys.stderr)
+            raise
         except FileNotFoundError:
             raise
-        except zipfile.BadZipFile:
-            raise XuleRuleSetError(_("Cannot open rule set file. Does not appear to be  zip file. File: {}".format(rule_set_location)))
         finally:
             file_object.close()
     
@@ -345,15 +344,6 @@ class XuleRuleSet(object):
         """         
         return self.getItemByName(name, 'constant')
     
-    def hasOutputAttribute(self, name):
-        """Check if the output attribute exists in the catalog
-        
-        :param name: Name of the output attribute
-        :type name: str
-        :rtype: boolean
-        """
-        return name in self.catalog['output_attributes']
-        
     def getNamespaceUri(self, prefix):
         """Get namespace uri for a prefix from the rule set
         
