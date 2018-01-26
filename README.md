@@ -41,7 +41,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
 The DQC ruleset files are part of each [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". Copy the "dqc_us_rules" folder to your environment to run them locally, or reference them from the Internet using this format `https://github.com/DataQualityCommittee/dqc_us_rules/`***raw***`/`**vMajor.Minor.FixRelease**`/dqc_us_rules/dqc-us-`**TaxonomyYear**`-V`**MajorRelease**`-ruleset.zip` when running the plugin from the command line (see below). The extracted files for US GAAP Taxonomies from 2015, 2016 and 2017 are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules.   
 
 The minimum parameters that need to be passed are the following:
-* **`--plugins xule`** : Loads the DQC plugin. When running with an SEC filing, the SEC transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "xule|transforms/SEC"**. The pipe character `|` separates the plugins. Specifying the SEC transforms plugins will have no affect on traditional XBRL filings, so it can included for all SEC filings.
+* **`--plugins xule`** : Loads the DQC plugin. When running with an SEC filing, the SEC transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "xule|transforms/SEC"**. The pipe character `|` separates the plugins. Specifying the SEC transforms plugins will have no affect on traditional XBRL filings, so it can be included for all SEC filings.
 * **`-f`** : The location of the instance file to be evaluated. This will take a zip file, XML instance or inline XBRL file.
 * **`--xule-run`**  or **`-v`**: Instructs the processor to run the rules. The **-v** option will run all Arelle validations including the DQC rules. The **--xule-run** option will only run the DQC rules.
 
@@ -121,6 +121,8 @@ It is recommended not to change the ruleset map in the plugin folder. The copy i
 **Example Ruleset Map**
 ```
 {
+	"http://xbrl.ifrs.org/taxonomy/2017-03-09/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2017-V5-ruleset.zip?raw=true",
+	"http://xbrl.ifrs.org/taxonomy/2016-03-31/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2016-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
 	"http://fasb.org/us-gaap/2015-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2015-V5-ruleset.zip?raw=true",
@@ -156,13 +158,15 @@ The ruleset map file can be merged by using `--xule-update-rule-set-map` followe
 
 When merging, any namespaces in the new ruleset map that are in the current ruleset map will update the current ruleset map with the location of the ruleset for that namespace. New namespaces will be added to the end of the current ruleset map. If more specific edits are needed, the current ruleset map will need be edited manually.
 
-#### Updating the ruleset map for new releases of DQC rules
+#### Updating the ruleset map for future releases of DQC rules
 
-The initial ruleset map that is included with the DQC plugin refers to the DQC rulesets for the release that the DQC plugin is downloaded from. The first time the DQC plugin is installed, the ruleset map will refer to the latest release of the DQC rulesets. 
+When initially installed, the ruleset map of the DQC plugin corresponds to ruleset .zip files for the then currently-approved version of DQC rules.
 
-When a new release of DQC rules is made, the DQC plugin will not automatically pick up the new rulesets. The ruleset map will need to be updated with references to the DQC rulesets of the new release. If the current ruleset map has not been edited, the simplest way to do this is to use the `--xule-replace-rule-set-map` option followed by the URL for the new ruleset map. The URL for the new ruleset map will be indicated in the release notes for the the new release.
+With each new release, the ruleset map will need to be updated (even if the DQC plugin is reinstalled). This is because the working ruleset map is in the local machine's application data folder, which does not changed when re-installing the plugin.
 
-Future release may require re-installing the DQC plugin. This will be indicated in the release notes. If the DQC plugin is being installed on a computer for the first time, it will have the latest copy of the ruleset map. If the DQC is being re-installed on a computer that had a previous version of the DQC plugin, the ruleset map will need to be updated.
+The simplest way to update the ruleset map is to use the `--xule-replace-rule-set-map` option followed by the URL for the new ruleset map. The URL for the new ruleset map will be indicated in the release notes
+
+Future releases may include changes to the DQC rules and/or the DQC plugin. If the DQC plugin is **not** changed, it does not need to be re-installed, however, the ruleset map must be updated to for the plugin to use the new rulesets. If the release includes changes to the plugin, the plugin will need to be re-installed and the ruleset map updated. Instructions will be included in the release notes.
 
 ### Managing the Ruleset File
 
