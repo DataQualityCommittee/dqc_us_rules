@@ -25,10 +25,7 @@ for ($calcNetwork in
 	$network_role = $calcNetwork.role.uri;
 
 	$roots = set(for $root in $calcNetwork.roots 
-						if ($root.name.namespace-uri != $extension_ns)
-							$root.name.local-name
-						else
-							none);
+					$root.name.local-name);
 							
 	$root_string = $roots.join(', ');
 	
@@ -36,8 +33,8 @@ for ($calcNetwork in
 	$roots.contains('CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
 	$roots.contains('CashPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
 	$roots.contains('CashPeriodIncreaseDecrease') or
-	$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
-	$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
+    $roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
+    $roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
 	not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
 	
 	
