@@ -1,16 +1,18 @@
 language: python
 python:
   - "3.4"
+branches:
+  only: next_q1_17v5
 env:
   global:
     - TESTCASESROOT=./DQC_Testcases
     - CURRDIR=$(pwd)
   matrix:
-    - TESTCASE=DQC_0001
-    - TESTCASE=DQC_0004
+    # - TESTCASE=DQC_0001
+    # - TESTCASE=DQC_0004
     # - TESTCASE=DQC_0005
     # - TESTCASE=DQC_0006
-    # - TESTCASE=DQC_0008
+    - TESTCASE=DQC_0008
     # - TESTCASE=DQC_0009
     # - TESTCASE=DQC_0011
     # - TESTCASE=DQC_0013
@@ -39,9 +41,11 @@ env:
 install:
   - pip install -r requirements.txt
 script:
-  - OUTPUTLOGFILE=$TESTCASESROOT/$TESTCASE-log.xml
-  - OUTPUTERRFILE=$TESTCASESROOT/$TESTCASE-err.txt
-  - OUTPUTCSVFILE=$TESTCASESROOT/$TESTCASE-report.csv
+  - OUTPUTLOGFILE=./$TESTCASE-log.xml
+  - OUTPUTERRFILE=./$TESTCASE-err.txt
+  - OUTPUTCSVFILE=./$TESTCASE-report.csv
   - travis_wait 50 python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation.xml" --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE" --logFile "$OUTPUTLOGFILE" --xule-test-debug
   - python3.4 ./scan_results.py $OUTPUTCSVFILE
+after_script:
+  - cat $OUTPUTCSVFILE
 
