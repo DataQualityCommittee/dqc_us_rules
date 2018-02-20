@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22362 $
+$Change: 22389 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext #XuleContext
@@ -85,22 +85,22 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
         t = Thread(target=output_message_queue, args=(global_context,))
         t.name = "Message Queue"
         t.start()
-  
-    # Create the processing context
-    xule_context = XuleRuleContext(global_context)
+
 
     if getattr(global_context.options, "xule_time", None) is not None:
         fact_index_start = datetime.datetime.today()
     
+    
+    # Create the processing context to build the index
+    xule_context = XuleRuleContext(global_context)    
     # Build an index on the facts in the model.
     global_context.fact_index = index_model(xule_context)
+    # Clean up
+    del xule_context
     
     if getattr(global_context.options, "xule_time", None) is not None:
         fact_index_end = datetime.datetime.today()
         global_context.message_queue.print("Index build time %s." % (fact_index_end - fact_index_start))
-
-    # Create a list of rules to skip. These are determined by the --xule-skip option on the command line.
-    skip_rules = getattr(global_context.options, "xule_skip", None).split(",") if getattr(global_context.options, "xule_skip", None) is not None else None
 
     # Determine is constants should be precalced. This is determined by the --xule-precalc-constants optoin on the command line. This is useful to simulate how the processor works in the server
     # environment.
@@ -112,7 +112,7 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
         global_context.message_queue.print("Time to calculated non instance constants: %s" % (constant_time))
 
     global_context.message_queue.logging("Processing Filing...")
-    evaluate_rule_set(global_context, skip_rules)
+    evaluate_rule_set(global_context)
     
     if getattr(global_context.options, "xule_time", None) is not None:
         total_end = datetime.datetime.today()
@@ -125,8 +125,10 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
         global_context.message_queue.clear()
         t.join()  
     
-        
-def evaluate_rule_set(global_context, skip_rules):
+    #clean up
+    del global_context
+    
+def evaluate_rule_set(global_context):
     """Process the rule set.
     
     :param global_context: The global processing context
@@ -142,6 +144,12 @@ def evaluate_rule_set(global_context, skip_rules):
     if getattr(global_context.options, "xule_time", None) is not None:
         times = []
 
+    # Create a list of rules to skip. These are determined by the --xule-skip option on the command line.
+    skip_rules = getattr(global_context.options, "xule_skip", None).split(",") if getattr(global_context.options, "xule_skip", None) is not None else None
+
+    # Create a list of run only rules. This is the opposite of skip_rules. If run_only is not NOne than only those rules will be processed.
+    run_only_rules = getattr(global_context.options, "xule_run_only", None).split(",") if getattr(global_context.options, "xule_run_only", None) is not None else None
+
     #use the term "cat" for catalog information. Read through the list of rules in the catalog.
     for file_num, cat_rules in global_context.catalog['rules_by_file'].items():
         for rule_name in sorted(cat_rules.keys()):
@@ -149,6 +157,9 @@ def evaluate_rule_set(global_context, skip_rules):
         
             if skip_rules is not None and rule_name in skip_rules:
                 global_context.message_queue.print("Skipping rule: %s" % rule_name)
+                continue
+            
+            if not (run_only_rules is None or rule_name in run_only_rules):
                 continue
             
             #get the AST for the rule from the ruleset
@@ -205,6 +216,9 @@ def evaluate_rule_set(global_context, skip_rules):
                       "Exception:", xule_context.iter_except_count)
                 write_trace_count_csv(global_context.options.xule_trace_count, rule_name, global_context.expression_trace, rule, xule_context.iter_count, total_time)
                 write_trace_count_string(global_context.options.xule_trace_count, rule_name, global_context.expression_trace, rule, xule_context.iter_count, total_time)
+
+            #clean up
+            del xule_context
 
     # Display timing information
     if getattr(global_context.options, "xule_time", None) is not None:
@@ -1303,7 +1317,8 @@ def evaluate_constant_assign(const_assign, xule_context):
     if not const_info['calculated']:
         const_context = XuleRuleContext(xule_context.global_context, xule_context.rule_name + ":" + const_info['name'], xule_context.cat_file_num)
         calc_constant(const_info, const_context)        
-    
+        # Clean up
+        del const_context
     if 'is_iterable' in const_assign:
         #return the entire value set
         return const_info['value']
@@ -1328,6 +1343,8 @@ def process_precalc_constants(global_context):
             const_info = const_context.find_var(constant_name, cat_constant['node_id'])
             if not const_info['calculated']:
                 calc_constant(const_info, const_context)
+            # Clean up
+            del const_context
 
 def evaluate_if(if_expr, xule_context):
     """Evaluator for if expressions

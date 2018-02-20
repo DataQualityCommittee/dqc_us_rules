@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22349 $
+$Change: 22389 $
 DOCSKIP
 """
 #from .XuleParser import parseRules
@@ -39,7 +39,7 @@ from arelle.CntlrWebMain import Options
 import optparse
 import os 
 
-__version__ = '3.0.' + '$Change: 22349 $'[9:-2]
+__version__ = '3.0.' + '$Change: 22389 $'[9:-2]
 
 _cntlr = None
 _options = None
@@ -126,6 +126,11 @@ def xuleCmdOptions(parser):
                        action="store",
                        dest="xule_debug_table_style",
                        help=_("The table format. The valid values are tabulate table formats: plain, simple, grid, fancy_gri, pipe, orgtbl, jira, psql, rst, mediawiki, moinmoin, html, latex, latex_booktabs, textile."))  
+
+    parserGroup.add_option("--xule-test-debug",
+                     action="store_true",
+                     dest="xule_test_debug",
+                     help=_("Output testcase information."))   
     
     parserGroup.add_option("--xule-crash",
                      action="store_true",
@@ -171,6 +176,11 @@ def xuleCmdOptions(parser):
                       action="store",
                       dest="xule_skip",
                       help=_("List of rules to skip"))
+    
+    parserGroup.add_option("--xule-run-only",
+                      action="store",
+                      dest="xule_run_only",
+                      help=_("List of rules to run"))    
     
     parserGroup.add_option("--xule-no-cache",
                       action="store_true",
@@ -446,29 +456,10 @@ def xuleValidate(val):
             # Only run on validate if the --xule-run option was not supplied. If --xule-run is supplied, it has already been run
             runXule(_cntlr, _options, val.modelXbrl)
 
-def xuleTestStart(modelTestcaseVariation):        
-    pass
-
-def xuleTestXbrlLoaded(modelTestcaseVariation):
-    pass
-
-def xuleModelTestVariationReadMe(modelTestcaseVariation):
-    pass
-
-def xuleModelTestVariationExpectedResult(modelTestcaseVariation):
-    pass
-
-def xuleModelTestVariationExpectedSeverity(modelTestcaseVariation):
-    pass
-
-def xuleDialogRssWatchFileChoices(dialog, frame, row, options, cntlr, openFileImage, openDatabaseImage):
-    pass
-
-def xuleRssWatchHasWatchAction(rssWatchOptions):
-    pass
-
-def xuleRssDoWatchAction(modelXbrl, rssWatchOptions, rssItem):
-    pass
+def xuleTestXbrlLoaded(modelTestcase, modelXbrl, testVariation):
+    global _options
+    if getattr(_options, 'xule_test_debug', False):
+        print('Testcase variation: {}'.format(testVariation.id))
 
 __pluginInfo__ = {
     'name': 'DQC XBRL rule processor (xule)',
@@ -485,13 +476,13 @@ __pluginInfo__ = {
     'CntlrCmdLine.Utility.Run': xuleCmdUtilityRun,
     'CntlrCmdLine.Xbrl.Loaded': xuleCmdXbrlLoaded,
     'Validate.Finally': xuleValidate,
-    'Testcases.Start': xuleTestStart,
-    'TestcaseVariation.Xbrl.Loaded': xuleTestXbrlLoaded,
-    'ModelTestcaseVariation.ReadMeFirstUris': xuleModelTestVariationReadMe,
-    'ModelTestcaseVariation.ExpectedResult': xuleModelTestVariationExpectedResult,
-    'ModelTestcaseVariation.ExpectedSeverity': xuleModelTestVariationExpectedSeverity,
-    'DialogRssWatch.FileChoices': xuleDialogRssWatchFileChoices,
-    'DialogRssWatch.ValidateChoices': xuleRssWatchHasWatchAction,
-    'RssWatch.HasWatchAction': xuleRssWatchHasWatchAction,
-    'RssWatch.DoWatchAction': xuleRssDoWatchAction
+#     'Testcases.Start': xuleTestStart,
+     'TestcaseVariation.Xbrl.Loaded': xuleTestXbrlLoaded,
+#     'ModelTestcaseVariation.ReadMeFirstUris': xuleModelTestVariationReadMe,
+#     'ModelTestcaseVariation.ExpectedResult': xuleModelTestVariationExpectedResult,
+#     'ModelTestcaseVariation.ExpectedSeverity': xuleModelTestVariationExpectedSeverity,
+#     'DialogRssWatch.FileChoices': xuleDialogRssWatchFileChoices,
+#     'DialogRssWatch.ValidateChoices': xuleRssWatchHasWatchAction,
+#     'RssWatch.HasWatchAction': xuleRssWatchHasWatchAction,
+#     'RssWatch.DoWatchAction': xuleRssDoWatchAction
     }

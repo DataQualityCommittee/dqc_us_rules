@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22348 $
+$Change: 22389 $
 DOCSKIP
 """
 
@@ -33,6 +33,7 @@ from arelle.ModelDocument import Type
 import decimal
 import math
 import collections
+import json
 
 def property_union(xule_context, object_value, *args):
     other_set = args[0]
@@ -70,7 +71,7 @@ def property_length(xule_context, object_value, *args):
         return xv.XuleValue(xule_context, len(object_value.value), 'int')
 
 def property_to_list(xule_context, object_value, *args):
-    # The input set is sorted so that two sets that ocntain the same items will produce identical lists. Because python sets are un ordered, there
+    # The input set is sorted so that two sets that contain the same items will produce identical lists. Because python sets are un ordered, there
     # is no guarentee that the two sets will iterate in the same order.
     def set_sort(item):
         return item.value
@@ -88,6 +89,16 @@ def property_to_set(xule_context, object_value, *args):
         return xv.XuleValue(xule_context, frozenset(result), 'set', shadow_collection=frozenset(shadow))
     else: #list or set
         return XuleFunctions.agg_set(xule_context, object_value.value)
+
+def property_to_json(xule_context, object_value, *args):
+    if object_value.type == 'dictionary':
+        unfrozen = dict(object_value.shadow_collection)
+    elif object_value.type == 'set':
+        unfrozen = tuple(object_value.shadow_collection)
+    else:
+        unfrozen = object_value.shadow_collection
+    
+    return xv.XuleValue(xule_context, json.dumps(unfrozen), 'string')
 
 def property_join(xule_context, object_value, *args):
     if object_value.type in ('list', 'set'):
@@ -512,19 +523,53 @@ def property_balance(xule_context, object_value, *args):
 
 def property_base_type(xule_context, object_value, *args):
     if object_value.is_fact:
-        return xv.XuleValue(xule_context, object_value.fact.concept.baseXbrliTypeQname, 'type')
+        return xv.XuleValue(xule_context, object_value.value.modelXbrl.qnameTypes[object_value.fact.concept.baseXbrliTypeQname], 'type')
     elif object_value.type == 'concept':
-        return xv.XuleValue(xule_context, object_value.value.baseXbrliTypeQname, 'type')
+        return xv.XuleValue(xule_context, object_value.value.modelXbrl.qnameTypes[object_value.value.baseXbrliTypeQname], 'type')
     else: #none value
         return object_value
  
 def property_data_type(xule_context, object_value, *args):
     if object_value.is_fact:
-        return xv.XuleValue(xule_context, object_value.fact.concept.typeQname, 'type')
+        return xv.XuleValue(xule_context, object_value.fact.concept.type, 'type')
     elif object_value.type == 'concept':
-        return xv.XuleValue(xule_context, object_value.value.typeQname, 'type')
+        return xv.XuleValue(xule_context, object_value.value.type, 'type')
     else: #none value
         return object_value
+
+def property_enumerations(xule_context, object_value, *args):
+    if object_value.is_fact:
+        model_type = object_value.fact.concept.type
+    elif object_value.type == 'type':
+        model_type = object_value.value
+    elif object_value.type == 'concept':    
+        model_type = object_value.value.type
+    else: # None
+        return object_vlaue
+    
+    if model_type.facets is None:
+        return xv.XuleValue(xule_context, frozenset(), 'set')
+    else:
+        if 'enumeration' in model_type.facets:
+            enumerations = {xv.XuleValue(xule_context, x.value, xv.model_to_xule_type(xule_context, x.value)) for x in model_type.facets['enumeration'].values()}
+            return xv.XuleValue(xule_context, frozenset(enumerations), 'set')
+        else:
+            return xv.XuleValue(xule_context, frozenset(), 'set')
+
+def property_has_enumerations(xule_context, object_value, *args):
+    if object_value.is_fact:
+        model_type = object_value.fact.concept.type
+    elif object_value.type == 'type':
+        model_type = object_value.value
+    elif object_value.type == 'concept':    
+        model_type = object_value.value.type
+    else: # None
+        return xv.XuleValue(xule_context, False, 'bool')  
+    
+    if model_type.facets is None:
+        return xv.XuleValue(xule_context, False, 'bool')
+    else:
+        return xv.XuleValue(xule_context, 'enumeration' in model_type.facets, 'bool')  
     
 def property_is_type(xule_context, object_value, *args):
     type_name = args[0]
@@ -643,7 +688,7 @@ def property_lang(xule_context, object_value, *args):
 def property_name(xule_context, object_value, *args):
     if object_value.is_fact:
         return xv.XuleValue(xule_context, object_value.fact.concept.qname, 'qname')
-    elif object_value.type in ('concept', 'reference-part'):
+    elif object_value.type in ('concept', 'reference-part', 'type'):
         return xv.XuleValue(xule_context, object_value.value.qname, 'qname')
     else: #none value
         return object_value
@@ -955,7 +1000,7 @@ def property_index_of(xule_context, object_value, *args):
     else:
         raise XuleProcessingError(_("The argument for property 'index-of' must be castable to a 'string', found '%s'" % arg_result.type), xule_context)
      
-    return xv.XuleValue(xule_context, xv.cast_value.find(index_string) + 1, 'int')
+    return xv.XuleValue(xule_context, cast_value.find(index_string) + 1, 'int')
  
 def property_last_index_of(xule_context, object_value, *args):
     cast_value = xv.xule_cast(object_value, 'string', xule_context)
@@ -1353,7 +1398,8 @@ PROPERTIES = {
               'contains': (property_contains, 1, ('set', 'list', 'string', 'uri'), False),
               'length': (property_length, 0, ('string', 'uri', 'set', 'list', 'dictionary'), False),
               'to-list': (property_to_list, 0, ('list', 'set'), False),
-              'to-set': (property_to_set, 0, ('list', 'set', 'dictionary'), False),              
+              'to-set': (property_to_set, 0, ('list', 'set', 'dictionary'), False),   
+              'to-json': (property_to_json, 0, ('list', 'set', 'dictionary'), False),           
               'join': (property_join, -2, ('list', 'set', 'dictionary'), False),
               'sort': (property_sort, 0, ('list', 'set'), False),
               'keys': (property_keys, -1, ('dictionary',), False),
@@ -1383,7 +1429,9 @@ PROPERTIES = {
               'attribute': (property_attribute, 1, ('concept',), False),
               'balance': (property_balance, 0, ('concept',), False),              
               'base-type': (property_base_type, 0, ('concept', 'fact'), True),
-              'data-type': (property_data_type, 0, ('concept', 'fact'), True),     
+              'data-type': (property_data_type, 0, ('concept', 'fact'), True),    
+              'enumerations': (property_enumerations, 0, ('type', 'concept', 'fact'), True), 
+              'has-enumerations': (property_has_enumerations, 0, ('type', 'concept', 'fact'), True),
               'is-type': (property_is_type, 1, ('concept', 'fact'), True),          
               'is-numeric': (property_is_numeric, 0, ('concept', 'fact'), True),
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
@@ -1394,7 +1442,7 @@ PROPERTIES = {
               'label': (property_label, -2, ('concept', 'fact'), True),
               'text': (property_text, 0, ('label',), False),
               'lang': (property_lang, 0, ('label',), False),              
-              'name': (property_name, 0, ('fact', 'concept', 'reference-part'), True),
+              'name': (property_name, 0, ('fact', 'concept', 'reference-part', 'type'), True),
               'local-name': (property_local_name, 0, ('qname', 'concept', 'fact', 'reference-part'), True),
               'namespace-uri': (property_namespace_uri, 0, ('qname', 'concept', 'fact', 'reference-part'), True),              
               'period-type': (property_period_type, 0, ('concept',), False),

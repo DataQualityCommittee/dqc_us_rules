@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22362 $
+$Change: 22369 $
 DOCSKIP
 """
 from arelle.ModelRelationshipSet import ModelRelationshipSet
@@ -229,12 +229,14 @@ def determine_rule_set(model_xbrl, cntlr):
         used_namespaces = set(x.namespaceURI for x in model_xbrl.factsByQname.keys())
         # Go through the list of namespaces in the rule set map
         for mapped_namespace, rule_set_location in rule_set_map.items():
-            if mapped_namespace in used_namespaces:
+            if mapped_namespace in model_xbrl.namespaceDocs:
+            #if mapped_namespace in used_namespaces:
                 model_xbrl.log('INFO', 'xule', 'Using ruleset {}'.format(rule_set_location))
                 return rule_set_location
     
     # This is only reached if a rule set location was not found in the map.
-    raise XuleProcessingError(_("Cannot determine with rule set to use for the filing. Check the rule set map at '{}'.".format(rule_set_map_file_name)))
+    rule_set_map_file_name = get_rule_set_map_file_name(cntlr)
+    raise XuleProcessingError(_("Cannot determine witch rule set to use for the filing. Check the rule set map at '{}'.".format(rule_set_map_file_name)))
 
 def get_rule_set_map(cntlr):
     try:
@@ -242,6 +244,7 @@ def get_rule_set_map(cntlr):
             # An ordered dict is used to keep the order of the key/value pairs in the json object.
             return json.load(rule_set_map_file, object_pairs_hook=collections.OrderedDict)
     except ValueError:
+        rule_set_map_file_name = get_rule_set_map_file_name(cntlr)
         raise XuleProcessingError(_("Rule set map file does not appear to be a valid JSON file. File: {}".format(rule_set_map_file_name)))
 
 @contextmanager
