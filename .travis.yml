@@ -1,21 +1,16 @@
 language: python
 python:
-  - '3.4'
+  - "3.4"
 env:
-  global:
-  - TESTCASESROOT=./DQC_Testcases
-  - CURRDIR=$(pwd)
-  matrix:
   - TESTCASE=DQC_0004
-install:
-  - pip install -r requirements-dev.txt
-  - pip install regex
-script:
-  - OUTPUTLOGFILE=$TESTCASESROOT/$TESTCASE-log.xml
-  - OUTPUTERRFILE=$TESTCASESROOT/$TESTCASE-err.txt
-  - OUTPUTCSVFILE=$TESTCASESROOT/$TESTCASE-report.csv
-  - travis_wait 50 python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation.xml"
-  --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE"
-  --logFile "$OUTPUTLOGFILE" --xule-test-debug
+  - TESTCASE=DQC_0005
+install: 
+  - pip install -r requirements.txt
+script: 
+  - TESTCASESROOT=./DQC_Testcases
+  - OUTPUTLOGFILE=./DQC-log.xml
+  - OUTPUTERRFILE=./DQC-err.txt
+  - OUTPUTCSVFILE=./DQC-report.csv
+  - CURRDIR=$(pwd) 
+  - travis_wait 50 python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation.xml" --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE" --logFile "$OUTPUTLOGFILE" --xule-test-debug
   - python3.4 ./scan_results.py $OUTPUTCSVFILE
-
