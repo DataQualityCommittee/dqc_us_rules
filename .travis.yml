@@ -16,5 +16,4 @@ script:
   - OUTPUTCSVFILE=$TESTCASESROOT/$TESTCASE-report.csv
   - travis_wait 50 python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation.xml" --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE" --logFile "$OUTPUTLOGFILE" --xule-test-debug
   - python3.4 ./scan_results.py $OUTPUTCSVFILE
-  
-  
+
