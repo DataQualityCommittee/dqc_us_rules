@@ -12,13 +12,54 @@
   <description>Certain axes in the US GAAP taxonomy should only have certain members as shown in the US GAAP taxonomy. This rule tests whether these axes have inappropriate members \n\nCertain axes can have custom or extended (i.e., company specific) members. This rule also tests whether only these axes have custom members and, therefore, limits the use of custom or extended members to those situations where they are appropriate because the member is unique to the filer. \n\nThe rule evaluates a company&#226;&#8364;&#8482;s extension taxonomy and instance document and flags an error when there is an inappropriate axis/member combination in the extension taxonomy even though there is no fact associated with the axis/member combination in the instance document.\n</description>
   <ruleMessage>The member, ${Rule.member.label}, associated with the axis, FairValueByFairValueHierarchyLevelAxis and element ${fact1.label}, is not an appropriate Axis/Member combination. \n</ruleMessage>
   <variation id="DQC_0001.51.6812">
-    <name>Creates a pass case when the extension member InvestmentsNetAssetValueMember is used on the FairValueByFairValueHierarchyLevelAxis.</name>
+    <name>Creates a fail case when the extension member InvestmentsNetAssetValueMember is used on the FairValueByFairValueHierarchyLevelAxis.</name>
     <description>Creates a pass case when the extension member InvestmentsNetAssetValueMember is used on the FairValueByFairValueHierarchyLevelAxis.</description>
     <data>
       <schema>http://files.xbrl.us/testcases/dqc/CASE_6812/testco-20141231.xml</schema>
       <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_6812/testco-20141231.xml</instance>
     </data>
-    <results blockedMessageCodes="DQC.US.0015.2688|DQC.US.0015.682|DQC.US.0015.5496|DQC.US.0057.7494|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497" />
+    <results blockedMessageCodes="DQC.US.0015.2688|DQC.US.0015.682|DQC.US.0015.5496|DQC.US.0057.7494|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497">
+	  <error severity="error" count="3">DQC.US.0001.51</error>
+      <result>
+        <primaryElement>us-gaap:AvailableForSaleSecurities</primaryElement>
+        <factValue>1554000000</factValue>
+        <endDate>2014-12-31</endDate>
+        <dimensions>us-gaap:FairValueByFairValueHierarchyLevelAxis"=testco:InvestmentsNetAssetValueMember"; us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember</dimensions>
+        <unit>USD</unit>
+        <message>The concept {$fact.concept.name.local-name} with a value of {$fact} is dimensionally qualified with the FairValueByFairValueHierarchyLevelAxis and the unallowable member {$member.local-name}. The filer should use members from the US GAAP taxonomy that are children of the FairValueByFairValueHierarchyLevelAxis axis or the allowable extensions of : {$allowable_extensions.join(', ')}.
+
+The properties of the fact for {$fact.concept.name.local-name} are:
+Period: {$fact.period}
+Dimensions: {$fact.dimensions.join(', ','=')} 
+Unit: {$fact.unit}</message>
+      </result>		
+      <result>
+        <primaryElement>us-gaap:AvailableForSaleSecurities</primaryElement>
+        <factValue>1570000000</factValue>
+        <endDate>2013-12-31</endDate>
+        <dimensions>us-gaap:FairValueByFairValueHierarchyLevelAxis"=testco:InvestmentsNetAssetValueMember"; us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember</dimensions>
+        <unit>USD</unit>
+        <message>The concept {$fact.concept.name.local-name} with a value of {$fact} is dimensionally qualified with the FairValueByFairValueHierarchyLevelAxis and the unallowable member {$member.local-name}. The filer should use members from the US GAAP taxonomy that are children of the FairValueByFairValueHierarchyLevelAxis axis or the allowable extensions of : {$allowable_extensions.join(', ')}.
+
+The properties of the fact for {$fact.concept.name.local-name} are:
+Period: {$fact.period}
+Dimensions: {$fact.dimensions.join(', ','=')} 
+Unit: {$fact.unit}</message>
+      </result>	
+      <result>
+        <primaryElement>us-gaap:AvailableForSaleSecurities</primaryElement>
+        <factValue>1586000000</factValue>
+        <endDate>2012-12-31</endDate>
+        <dimensions>us-gaap:FairValueByFairValueHierarchyLevelAxis"=testco:InvestmentsNetAssetValueMember"; us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember</dimensions>
+        <unit>USD</unit>
+        <message>The concept {$fact.concept.name.local-name} with a value of {$fact} is dimensionally qualified with the FairValueByFairValueHierarchyLevelAxis and the unallowable member {$member.local-name}. The filer should use members from the US GAAP taxonomy that are children of the FairValueByFairValueHierarchyLevelAxis axis or the allowable extensions of : {$allowable_extensions.join(', ')}.
+
+The properties of the fact for {$fact.concept.name.local-name} are:
+Period: {$fact.period}
+Dimensions: {$fact.dimensions.join(', ','=')} 
+Unit: {$fact.unit}</message>
+      </result>		  
+	</results>
   </variation>
   <variation id="DQC_0001.51.2778">
     <name>45 line items are used with an invalid extension member on the FairValueByFairValueHierarchyLevelAxis Axis</name>
