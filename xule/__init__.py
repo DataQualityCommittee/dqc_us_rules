@@ -38,11 +38,14 @@ from arelle import ModelManager
 from arelle.CntlrWebMain import Options
 import optparse
 import os 
+import datetime
 
 __version__ = '3.0.' + '$Change: 22389 $'[9:-2]
 
 _cntlr = None
 _options = None
+_test_start = None
+_test_variation_name = None
 
 def xuleMenuOpen(cntlr, menu):
     pass
@@ -458,8 +461,23 @@ def xuleValidate(val):
 
 def xuleTestXbrlLoaded(modelTestcase, modelXbrl, testVariation):
     global _options
+    global _test_start
+    global _test_variation_name
+    
     if getattr(_options, 'xule_test_debug', False):
-        print('Testcase variation: {}'.format(testVariation.id))
+        _test_start = datetime.datetime.today()
+        _test_variation_name = testVariation.id
+        print('{}: Testcase variation {} started'.format(_test_start.isoformat(sep=' '), testVariation.id))
+
+def xuleTestValidated(modelTestcase, modelXbrl):
+    global _options
+    global _test_start
+    global _test_variation_name
+    
+    if getattr(_options, 'xule_test_debug', False):
+        if _test_start is not None:            
+            test_end = datetime.datetime.today()
+            print("{}: Test variation {} finished. in {} ".format(test_end.isoformat(sep=' '), _test_variation_name, (test_end - _test_start)))
 
 __pluginInfo__ = {
     'name': 'DQC XBRL rule processor (xule)',
@@ -478,6 +496,7 @@ __pluginInfo__ = {
     'Validate.Finally': xuleValidate,
 #     'Testcases.Start': xuleTestStart,
      'TestcaseVariation.Xbrl.Loaded': xuleTestXbrlLoaded,
+     'TestcaseVariation.Xbrl.Validated': xuleTestValidated,
 #     'ModelTestcaseVariation.ReadMeFirstUris': xuleModelTestVariationReadMe,
 #     'ModelTestcaseVariation.ExpectedResult': xuleModelTestVariationExpectedResult,
 #     'ModelTestcaseVariation.ExpectedSeverity': xuleModelTestVariationExpectedSeverity,
