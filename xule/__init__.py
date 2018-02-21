@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22389 $
+$Change: 22406 $
 DOCSKIP
 """
 #from .XuleParser import parseRules
@@ -40,7 +40,7 @@ import optparse
 import os 
 import datetime
 
-__version__ = '3.0.' + '$Change: 22389 $'[9:-2]
+__version__ = '3.0.' + '$Change: 22406 $'[9:-2]
 
 _cntlr = None
 _options = None
