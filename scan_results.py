@@ -22,7 +22,9 @@ def main():
                     if row[5] != 'pass':
                         failed_rows.append(row)
     if len(failed_rows) > 0:
-        print('Tests failed: {}'.format(failed_rows))
+        print('TESTS FAILED:')
+        for failed_row in failed_rows:
+            print('    Testcase Name: {} - {}'.format(failed_row[2], failed_row[5]))
         sys.exit(1)
     else:
         print('All included tests pass')

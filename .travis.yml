@@ -51,5 +51,6 @@ script:
   - python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation$FILENUMBER.xml" --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE" --logFile "$OUTPUTLOGFILE" --xule-test-debug
   - python3.4 ./scan_results.py $OUTPUTCSVFILE
 after_script:
-  - cat $OUTPUTCSVFILE
+  # Copy the test report to the log
+  - echo '===== START TEST RPOERT FILE (csv) =====' && cat $OUTPUTCSVFILE && echo '===== END TEST RPOERT FILE (csv) ====='
 
