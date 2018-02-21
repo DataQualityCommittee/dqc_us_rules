@@ -34,13 +34,19 @@ The spreadsheet has the following columns:
 
 7. Test_Case_Description: Describes what the test case is testing for.
 
-In addition to the Excel spreadsheet, there are a number of directories that contain the individual test cases. To open a test case the user should open the xml instance file in the folder that is not a linkbase.
+In addition to the Excel spreadsheet, there is a .zip archive of the current test cases appended with the major release number. To open an individual test case, open the xml instance file in the folder that is not a linkbase.
 
 A listing of the entry points is in included in the excel spreadsheet. To open these files the user will need to use a standard XBRL processor.
 
+## DQC_Testcases Contents
+
+### Index File
+
+Included in the DQC_Testcases directory at the root of the repository is an index file listing the location of the variation file.  The variation file can be read to determine which test cases to run with for a rule.
+
 ### Variations Files
 
-A variation file specifies the test case variations for a rule. The suite contains a separate folder for every rule.  Within this folder (DQC_XXXX)  is the variation file and the associated test case variations.  There is at least one pass case and one fail case per rule. The variation file documents the entry point (loadable XBRL instance document) of each test case variation. The variation file also includes information about the expected results.
+The DQC_Testcases folder contains a subfolder for every rule. A variation.xml in each subfolder of the DQC_Testcases folder specifies the test case variations for a rule (Note: some subfolders have multiple variation.xml files). There is at least one pass case and one fail case per rule. The variation file documents the entry point (loadable XBRL instance document) of each test case variation. The variation file also includes information about the expected results.
 
 The variation file includes the following information.
 
@@ -76,10 +82,6 @@ The variation file includes the following information.
 
     9. list of any blocked error codes for contrived testing circumstances which would raise other error codes in performing the indicated error check.
 
-### Index File
-
-Included in the directory is an index file listing the location of the variation file.  The variation file can be read to determine which test cases to run with for a rule.
-
 ### Test Cases
 
 Each test case is contained in a directory called CASE_xxx. Each file contains  a set of XBRL files that represent an individual test case. These test cases are XBRL 2.1 valid.
@@ -88,17 +90,19 @@ Each test case is contained in a directory called CASE_xxx. Each file contains  
 
 To run the test cases using Arelle (current version):
 
-* Copy the zip file onto a machine that has arelle installed.
+* Extract the DQC_Testcases_Release_All_VXX.zip file for the release onto a machine that has Arelle and the xule plugin installed per the README in the root of the release (eg. https://github.com/DataQualityCommittee/dqc_us_rules/blob/master/README.md).
 
-* Unzip the files into the directory {PATH TO TESTCASE}/DQC_Testcases
+* Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 
-* Ln -s the plugin (src subdirectory) to arelle's plugin/validate subdirectory/DQC
+`
+[info] Activation of plug-in DQC XBRL rule processor (xule) successful, version 1.0. - xule
+`
 
-* Here is a sample  bash file "runDQCTests.sh" for Mac/Linux.
+* Here is a sample bash for Mac/Linux.
 
 ```
 #!/bin/bash
-TESTCASESROOT={PATH TO TESTCASE}/DQC_Testcases"
+TESTCASESROOT={PATH TO TEST CASE}/DQC_Testcases"
 OUTPUTLOGFILE={PATH TO WHERE OUTPUT SHOULD GO}/DQC-log.txt
 OUTPUTERRFILE={PATH TO WHERE OUTPUT SHOULD GO}/DQC-err.txt
 OUTPUTCSVFILE={PATH TO WHERE OUTPUT SHOULD GO}/DQC-report.csv
@@ -108,16 +112,16 @@ PYTHONPATH=$ARELLEDIR
 
 rm $OUTPUTLOGFILE $OUTPUTERRFILE
 
-python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESINDEXFILE" --validate --plugins '{PATH TO DQC PLUGIN}|logging/dqcParameters.py' --disclosureSystem efm-pragmatic --logCodeFilter '(?!EFM)' --csvTestReport "$OUTPUTCSVFILE"  --logFile "$OUTPUTLOGFILE" 2>  "$OUTPUTERRFILE"
+python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESINDEXFILE" --validate --plugins '{PATH TO DQC XULE PLUGIN}|logging/dqcParameters.py' --csvTestReport "$OUTPUTCSVFILE"  --logFile "$OUTPUTLOGFILE" 2>  "$OUTPUTERRFILE" --xule-test-debug
 ```
 
 * Run the bash file nohup scripts/runDQCTests.sh > log/nohup.out &
 
 * On Windows, if the binary distribution is installed, to run as above, modifying for your installation locations (test-suite-index-file for where you installed the test suite, dqc-plugin-dir for where you installed the src dir of DQC distribution, and output file locations:
 
-"c:\program files\arelle\arelleCmdLine" --file "test-suite-index-file" --validate --plugins "dqc-plugin-dir|logging\dqcParameters.py" --disclosureSystem efm-pragmatic --logCodeFilter "(?!EFM)"
+"c:\program files\arelle\arelleCmdLine" --file "test-suite-index-file" --validate --plugins "xule-plugin-dir|logging\dqcParameters.py" --xule-test-debug
 
- --csvTestReport "output-csv-file"  --logFile "output-log-file" 2>  "output-err-file"
+--csvTestReport "output-csv-file"  --logFile "output-log-file" 2>  "output-err-file"
 
 Note that this could take several hours to run.  The OUTPUTLOGFILE can be inspected to show progress (such as with the linux "tail" command).  (You can shorten the run to a few minutes for testing purposes for all rules other than 0015, by temporarily commenting out rule 0015 in the test suite index file.)
 
