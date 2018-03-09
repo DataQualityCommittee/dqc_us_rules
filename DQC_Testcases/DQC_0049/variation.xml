@@ -1,0 +1,23 @@
+<!--FILENAME-->
+<!--DQC_0049-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0049</number>
+  <ruleIdentifier>DQC_0049</ruleIdentifier>
+  <description />
+  <ruleMessage>The following elements ${elementNames} are parent (root) elements defined in the calculation relationship for the cash flow statement using the group ${networkrole}. \n \nThe cash flow statement should only have one calculation parent for durational concepts representing the increase or decrease in cash during the period. The element should be moved to be represented as a calculation child to the movement in cash for the period.\n \nIf the company has adopted ASU-2016-18 then the root element used to represent the aggregate change in cash should be the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect. If the company specifically excludes the exchange rate effect from the total then the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect should be used.\n \n \nRule version: ${ruleVersion}\n</ruleMessage>
+  <variation id="DQC_0049.7483.8113">
+    <name>Creates a fail case when the cash flow statement has moew than one calculation parent for durational concepts representing the increase or decrease in cash during the period.</name>
+    <description>Creates the following pass case: The following elements CashAndCashEquivalentsPeriodIncreaseDecrease, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations are parent (root) elements defined in the calculation relationship for the cash flow statement using the group http://www.iasishealthcare.com/taxonomy/role/DisclosureSupplementalCondensedConsolidatingFinancialInformationCondensedConsolidatingStatementOfCashFlows. This does not produce an error as it is not the cash flow statement on the face of the financials.</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1294632/000119312517168807/0001193125-17-168807-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1294632/000119312517168807/0001193125-17-168807-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0048.7482|DQC.US.0065.7502" />
+  </variation>
+</testcase>

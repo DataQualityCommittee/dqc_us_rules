@@ -1,0 +1,74 @@
+<!--FILENAME-->
+<!--DQC_0061-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0061</number>
+  <ruleIdentifier>DQC_0061</ruleIdentifier>
+  <description />
+  <ruleMessage>The companies calculation relationship includes ${ParentElement} and ${ChildElement} in the calculation of ${changeInCashElement}. But ${ChildElement} is not a direct child of ${ParentElement} . ${ParentElement} is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both discontinued operations and continuing activities cannot add into the total of ${changeInCashElement}. as this implies that discontinued operations is being double counted, once in continuing activities and once as discontinued operations.\n \n \nRule version: ${ruleVersion}\n</ruleMessage>
+  <variation id="DQC_0061.7498.8128">
+    <name>Creates a fail case when CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInInvestingActivities.</name>
+    <description>Creates the following fail case: The taxonomy extension includes NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations in the calculation of CashAndCashEquivalentsPeriodIncreaseDecrease. But CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInInvestingActivities. NetCashProvidedByUsedInInvestingActivities is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both Discontinued operations and Investing activities cannot add into the total of CashAndCashEquivalentsPeriodIncreaseDecrease as this implies that discontinued operations is being double counted, once in investing activities and once as discontinued operations.</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/101594/000161577417001735/0001615774-17-001735-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/101594/000161577417001735/0001615774-17-001735-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0061.7499|DQC.US.0065.7502|DQC.US.0008.6819|DQC.US.0015.1986|DQC.US.0015.2831|DQC.US.0015.3182|DQC.US.0015.3467|DQC.US.0015.3471|DQC.US.0015.3504|DQC.US.0015.5525|DQC.US.0015.5687|DQC.US.0015.579|DQC.US.0015.7166|DQC.US.0015.7167|DQC.US.0015.7438|DQC.US.0015.7456|DQC.US.0041.73">
+      <error severity="error" count="1">DQC.US.0061.7498</error>
+      <result>
+        <primaryElement>us-gaap:CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations</primaryElement>
+        <factValue></factValue>
+        <startDate>2016-01-01</startDate>
+        <endDate>2017-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The companies calculation relationship includes ${ParentElement} and ${ChildElement} in the calculation of ${changeInCashElement}. But ${ChildElement} is not a direct child of ${ParentElement} . ${ParentElement} is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both discontinued operations and continuing activities cannot add into the total of ${changeInCashElement}. as this implies that discontinued operations is being double counted, once in continuing activities and once as discontinued operations.\n \n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0061.7499.8129">
+    <name>Creates a fail case when CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInOperatingActivities.</name>
+    <description>Creates the following fail case: The taxonomy extension includes NetCashProvidedByUsedInOperatingActivities and CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations in the calculation of CashPeriodIncreaseDecrease. But CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInOperatingActivities. NetCashProvidedByUsedInOperatingActivities is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both Discontinued operations and Operating activities cannot add into the total of CashPeriodIncreaseDecrease as this implies that discontinued operations is being double counted, once in operating activities and once as discontinued operations.\n\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1168325/000121390016012162/0001213900-16-012162-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1168325/000121390016012162/0001213900-16-012162-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.75|DQC.US.0008.6819|DQC.US.0015.2729">
+      <error severity="error" count="1">DQC.US.0061.7499</error>
+      <result>
+        <primaryElement>us-gaap:CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations</primaryElement>
+        <factValue>-618</factValue>
+        <startDate>2014-10-01</startDate>
+        <endDate>2015-10-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The companies calculation relationship includes ${ParentElement} and ${ChildElement} in the calculation of ${changeInCashElement}. But ${ChildElement} is not a direct child of ${ParentElement} . ${ParentElement} is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both discontinued operations and continuing activities cannot add into the total of ${changeInCashElement}. as this implies that discontinued operations is being double counted, once in continuing activities and once as discontinued operations.\n \n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0061.7500.8130">
+    <name>Creates a fail case when CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInFinancingActivities.</name>
+    <description>Creates the following fail case: The taxonomy extension includes NetCashProvidedByUsedInFinancingActivities and CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations in the calculation of CashAndCashEquivalentsPeriodIncreaseDecrease. But CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations is not a direct child of NetCashProvidedByUsedInFinancingActivities. NetCashProvidedByUsedInFinancingActivities is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both Discontinued operations and financing activities cannot add into the total of CashAndCashEquivalentsPeriodIncreaseDecrease as this implies that discontinued operations is being double counted, once in financing activities and once as discontinued operations.\n</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1360442/000144586616002028/0001445866-16-002028-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1360442/000144586616002028/0001445866-16-002028-xbrl.zip</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0061.7498|DQC.US.0008.6819|DQC.US.0015.2993|DQC.US.0015.4776|DQC.US.0065.7502">
+      <error severity="error" count="1">DQC.US.0061.7500</error>
+      <result>
+        <primaryElement>us-gaap:CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations</primaryElement>
+        <factValue></factValue>
+        <startDate>2015-01-01</startDate>
+        <endDate>2016-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The companies calculation relationship includes ${ParentElement} and ${ChildElement} in the calculation of ${changeInCashElement}. But ${ChildElement} is not a direct child of ${ParentElement} . ${ParentElement} is intended to represent the total of cash provided by or used in continuing and discontinued operations. Cash flows from both discontinued operations and continuing activities cannot add into the total of ${changeInCashElement}. as this implies that discontinued operations is being double counted, once in continuing activities and once as discontinued operations.\n \n \nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+</testcase>
