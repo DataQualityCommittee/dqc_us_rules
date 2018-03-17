@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22364 $
+$Change: 22441 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -478,7 +478,8 @@ class XuleRuleContext(object):
                     "other_values": {}}
 
         self.vars[node_id].append(var_info)
-        self.tags[name] = value
+        if tag is not None:
+            self.tags[tag] = value
     
     def del_arg(self, name, node_id):
         """Removes an argument from the variable stack"""
