@@ -11,15 +11,15 @@ rule-name-prefix DQC
 
 assert US.0036.1 satisfied
 
-exists({@concept = dei:DocumentPeriodEndDate where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact)
+exists({@concept = dei:DocumentPeriodEndDate where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact1)
 
 message
-"The context ending date of {$fact.period.end} used for Document Period End Date must match the value reported for the element of {$fact}. Revise either the ending context date or the value of the Document Period End Date.
+"The context ending date of {$fact1.period.end} used for Document Period End Date must match the value reported for the element of {$fact1}. Revise either the ending context date or the value of the Document Period End Date.
 
-The properties of this {$fact.concept} fact are:
-Period :{$fact.period}
-Dimensions : {$fact.dimensions.join(', ','=')}
-Unit : {$fact.unit}
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
 Rule version: 2.0.0"
 
 severity error

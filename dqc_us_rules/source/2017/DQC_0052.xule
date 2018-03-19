@@ -11,17 +11,17 @@ rule-name-prefix DQC
 
 assert US.0052.7487 satisfied
 
-$fact = {@RetirementPlanSponsorLocationAxis=DomesticPlanMember};
+$fact1 = {@RetirementPlanSponsorLocationAxis=DomesticPlanMember};
 
-exists($fact) 
+exists($fact1) 
 
 message
-"The element  {$fact.name} with a value of {$fact} has been used with the axis RetirementPlanSponsorLocationAxis and the member DomesticPlanMember. The DomesticPlanMember element is not intended to be used in the instance document, instead the specific country from the SEC's Country Taxonomy is intended to tag the information. 
+"The element  {$fact1.name} with a value of {$fact1} has been used with the axis RetirementPlanSponsorLocationAxis and the member DomesticPlanMember. The DomesticPlanMember element is not intended to be used in the instance document, instead the specific country from the SEC's Country Taxonomy is intended to tag the information. 
 
-The properties of this {$fact.name} fact are:
-Period :{$fact.period}
-Dimensions : {$fact.dimensions.join(', ','=')}
-Unit : {$fact.unit}
+The properties of this {$fact1.name} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
 
 Rule Element Id:7487
 Rule version: 5.0.0"
