@@ -15,17 +15,17 @@ RULE-NAME-PREFIX DQC
 
 assert US.0053.7489 satisfied
 
-$fact = {@RetirementPlanSponsorLocationAxis=NonUsMember};
+$fact1 = {@RetirementPlanSponsorLocationAxis=NonUsMember};
 
 $memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLocationAxis returns set (target-name);
 $memberSet =  FILTER $memberSetQname returns $item.local-name
 
-$message_text = if (exists($fact))
-		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] with the element " + $fact.concept.name.local-name +" with a value of $" + string($fact) +". The  NonUs [Member] member should not be used with the Retirement Plan Sponsor Location [Axis]."
+$message_text = if (exists($fact1))
+		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] with the element " + $fact1.concept.name.local-name +" with a value of $" + string($fact1) +". The  NonUs [Member] member should not be used with the Retirement Plan Sponsor Location [Axis]."
 	else
 		"The member, NonUs [Member] is used on the Retirement Plan Sponsor Location [Axis] . There are no facts associated with this member and axis. NonUs [Member] members should not be used with the Retirement Plan Sponsor Location [Axis].";
 		
-     if (exists($fact))
+     if (exists($fact1))
 	 	true
      else 
      	if ($memberSet.contains('NonUsMember'))
@@ -35,10 +35,10 @@ $message_text = if (exists($fact))
 message
 "{$message_text}
 
-The properties of this {$fact.name} fact are:
-Period : {$fact.period}
-Dimensions : {$fact.dimensions.join(', ','=')}
-Unit : {$fact.unit}
+The properties of this {$fact1.name} fact are:
+Period : {$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
 
 Rule Element Id:7489
 Rule version: 5.0.0"

@@ -35,20 +35,20 @@ assert US.0005.17 satisfied
 if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
 	skip
 else
-	$fact = {covered @dei:EntityCommonStockSharesOutstanding};
-	$shares_at_date = $fact.period.end;
+	$fact1 = {covered @dei:EntityCommonStockSharesOutstanding};
+	$shares_at_date = $fact1.period.end;
 	$shares_at_date < $maximum_period_end_date
 
 	
 message
-"The element Entity Common Stock Shares Outstanding with a value of {$fact} is used to report the Entity Common Stock Shares Outstanding as stated on the cover sheet of the entity's filing. However, the value reported is not as of the latest practicable date, as required. In this case, {$fact.name} with a value of {$fact} is reported as of {$shares_at_date}. This is earlier than the actual reporting date of the filing.
+"The element Entity Common Stock Shares Outstanding with a value of {$fact1} is used to report the Entity Common Stock Shares Outstanding as stated on the cover sheet of the entity's filing. However, the value reported is not as of the latest practicable date, as required. In this case, {$fact1.name} with a value of {$fact1} is reported as of {$shares_at_date}. This is earlier than the actual reporting date of the filing.
 
 Update the date context on this fact, so that the date is at least later than {$maximum_period_end_date}, which is the reporting [end] date of the filing based on the defined dates of the Document Type element.
 
-The properties of this {$fact.name} fact are:
-Period: {$fact.period}
-Dimensions: {$fact.dimensions.join(', ','=')}
-Unit: {$fact.unit}
+The properties of this {$fact1.name} fact are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')}
+Unit: {$fact1.unit}
 Rule version: 2.1.0"
 
 severity error
@@ -61,16 +61,16 @@ assert US.0005.48 satisfied
 if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
 	skip
 else
-	$fact = {@SubsequentEventTypeAxis = * as $ssa};
-	$sub_event_at_date = $fact.period.end;
+	$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
+	$sub_event_at_date = $fact1.period.end;
 	$sub_event_at_date <= $maximum_period_end_date
 	
 message
-"The date of {$sub_event_at_date} used for {$fact.concept.label.text} and the Subsequent Event Type [Axis] with a value of {$fact} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.
-The properties of this {$fact.name} fact are:
-Period: {$fact.period}
-Dimensions: {$fact.dimensions.join(', ','=')}
-Unit: {$fact.unit}
+"The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Subsequent Event Type [Axis] with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.
+The properties of this {$fact1.name} fact are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')}
+Unit: {$fact1.unit}
 Rule version: 2.1.0"
 
 severity error
@@ -82,17 +82,17 @@ assert US.0005.49 satisfied
 if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
 	skip
 else
-	$fact = {@StatementScenarioAxis = ScenarioForecastMember};
-	$sub_event_at_date = $fact.period.end;
+	$fact1 = {@StatementScenarioAxis = ScenarioForecastMember};
+	$sub_event_at_date = $fact1.period.end;
 	$sub_event_at_date <= $maximum_period_end_date
 
 message
-"The date of {$sub_event_at_date} used for {$fact.concept.label.text} and the Scenario [Axis] and us-gaap:ScenarioForecastMember with a value of {$fact} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date.
+"The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Scenario [Axis] and us-gaap:ScenarioForecastMember with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date.
 
-The properties of this {$fact.name} fact are:
-Period: {$fact.period}
-Dimensions: {$fact.dimensions.join(', ','=')}
-Unit: {$fact.unit}
+The properties of this {$fact1.name} fact are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')}
+Unit: {$fact1.unit}
 Rule version: 2.1.0"
 
 
