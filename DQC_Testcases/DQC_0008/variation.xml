@@ -11,6 +11,26 @@
   <ruleIdentifier>DQC_0008</ruleIdentifier>
   <description />
   <ruleMessage>The calculation in the extension taxonomy from ${extCalcTargetName} to ${extCalcSourceName} is the opposite of a calculation defined in the base US GAAP taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.\n\n{${extCalcSourceName}}</ruleMessage>
+  <variation id="DQC_0008.6819.8138">
+    <name>Case showing a fail where the company has reversed the calculations from that shown in the IFRS taxonomy.</name>
+    <description>The calculation in the extension taxonomy rolling up from Borrowings to LongtermBorrowings in 1090 - Disclosure - Debt - Summary of Detailed Information About Borrowings (Detail) is the opposite of a calculation defined in the base taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.\nCheck that the concept LongtermBorrowings is the correct calculation parent for this element.\n\nRule version 6.0.</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/886986/000119312518064855/0001193125-18-064855-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/886986/000119312518064855/0001193125-18-064855-xbrl.zip</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.IFRS.0008.6819</error>
+      <result>
+        <primaryElement></primaryElement>
+        <factValue></factValue>
+        <startDate />
+        <endDate />
+        <dimensions />
+        <unit></unit>
+        <message />
+      </result>
+    </results>
+  </variation>
   <variation id="DQC_0008.6819.6809">
     <name>Creates a Fail case when the calculation in the extension taxonomy from Revenues to SalesRevenueNet is the opposite of a calculation defined in the base US GAAP taxonomy.</name>
     <description>Creates a Fail case when the calculation in the extension taxonomy from Revenues to SalesRevenueNet is the opposite of a calculation defined in the base US GAAP taxonomy.</description>
@@ -57,25 +77,5 @@
       <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1453015/000145301518000005/0001453015-18-000005-xbrl.zip</instance>
     </data>
     <results />
-  </variation>
-  <variation id="DQC_0008.6819.8138">
-    <name>Case showing a fail where the company has reversed the calculations from that shown in the IFRS taxonomy.</name>
-    <description>The calculation in the extension taxonomy rolling up from Borrowings to LongtermBorrowings in 1090 - Disclosure - Debt - Summary of Detailed Information About Borrowings (Detail) is the opposite of a calculation defined in the base taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.\nCheck that the concept LongtermBorrowings is the correct calculation parent for this element.\n\nRule version 6.0.</description>
-    <data>
-      <schema>https://www.sec.gov/Archives/edgar/data/886986/000119312518064855/0001193125-18-064855-xbrl.zip</schema>
-      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/886986/000119312518064855/0001193125-18-064855-xbrl.zip</instance>
-    </data>
-    <results>
-      <error severity="error" count="1">DQC.IFRS.0008.6819</error>
-      <result>
-        <primaryElement></primaryElement>
-        <factValue></factValue>
-        <startDate />
-        <endDate />
-        <dimensions />
-        <unit></unit>
-        <message />
-      </result>
-    </results>
   </variation>
 </testcase>
