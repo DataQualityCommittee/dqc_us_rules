@@ -20,14 +20,14 @@
     </data>
     <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
   </variation>
-  <variation id="DQC_0036.1.8141">
-    <name>Case showing a pass case for a misaligned period using the IFRS taxonomy.</name>
-    <description>Case showing a pass case for a misaligned period using the IFRS taxonomy.</description>
+  <variation id="DQC_0036.1.2528">
+    <name>Context date of the element dei:DocumentPeriodEndDate is 3 days after the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context is on the element dei:DocumentPeriodEndDate is 3 days after the value of the element DocumentPeriodEndDate</description>
     <data>
-      <schema>https://www.sec.gov/Archives/edgar/data/1689662/000155837018001460/0001558370-18-001460-xbrl.zip</schema>
-      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1689662/000155837018001460/0001558370-18-001460-xbrl.zip</instance>
+      <schema>DQC_0036.1/CASE_2528/testco-20141231_2528.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2528/testco-20141231_2528.xml</instance>
     </data>
-    <results />
+    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0036.1.4">
     <name>Context date of the element DocumentPeriodEndDate is greater than the value of DocumentPeriodEndDate.</name>
@@ -48,6 +48,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0036.1.8141">
+    <name>Case showing a pass case for a misaligned period using the IFRS taxonomy.</name>
+    <description>Case showing a pass case for a misaligned period using the IFRS taxonomy.</description>
+    <data>
+      <schema>https://www.sec.gov/Archives/edgar/data/1689662/000155837018001460/0001558370-18-001460-xbrl.zip</schema>
+      <instance readMeFirst="true">https://www.sec.gov/Archives/edgar/data/1689662/000155837018001460/0001558370-18-001460-xbrl.zip</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0036.1.28">
     <name>Context date of the element DocumentPeriodEndDate is less than the value of DocumentPeriodEndDate.</name>
     <description>Creates a fail case when the period end date on the context of the element DocumentPeriodEndDate is less than the value of the element DocumentPeriodEndDate</description>
@@ -66,6 +75,15 @@
         <message>The ending date of ${fact1.period.endDate} used for ${fact1.label} must match the value reported for the element, 2014-12-31. Revise either the ending context date or the value of ${fact1.label}. \nThe properties of this dei:DocumentPeriodEndDate fact are:\nPeriod: 2014-11-30 - 2014-11-30\nDimensions: none\nUnit: none\nRule version: ${ruleVersion}</message>
       </result>
     </results>
+  </variation>
+  <variation id="DQC_0036.1.2526">
+    <name>Context date of the element dei:DocumentPeriodEndDate is the same as the value of DocumentPeriodEndDate.</name>
+    <description>Creates a pass case when the period end date on the context of dei:DocumentPeriodEndDate is the same as the value of the element DocumentPeriodEndDate</description>
+    <data>
+      <schema>DQC_0036.1/CASE_2526/testco-20141231_2526.xsd</schema>
+      <instance readMeFirst="true">DQC_0036.1/CASE_2526/testco-20141231_2526.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
   </variation>
   <variation id="DQC_0036.1.2529">
     <name>Context date of the element dei:DocumentPeriodEndDate is 4 days after the value of DocumentPeriodEndDate.</name>
@@ -86,15 +104,6 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0036.1.2528">
-    <name>Context date of the element dei:DocumentPeriodEndDate is 3 days after the value of DocumentPeriodEndDate.</name>
-    <description>Creates a pass case when the period end date on the context is on the element dei:DocumentPeriodEndDate is 3 days after the value of the element DocumentPeriodEndDate</description>
-    <data>
-      <schema>DQC_0036.1/CASE_2528/testco-20141231_2528.xsd</schema>
-      <instance readMeFirst="true">DQC_0036.1/CASE_2528/testco-20141231_2528.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
-  </variation>
   <variation id="DQC_0036.1.8140">
     <name>Case showing a misaligned document period end date context and value when using the IFRS taxonomy.</name>
     <description>The context ending date of 2016-12-31 used for Document Period End Date must match the value reported for the element of 2017-12-31. Revise either the ending context date or the value of the Document Period End Date.\n\nThe properties of this dei:DocumentPeriodEndDate fact are:\nPeriod :2016-01-01 to 2016-12-31\nDimensions : \nUnit : None\nRule Version : 6.0</description>
@@ -114,14 +123,5 @@
         <message />
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0036.1.2526">
-    <name>Context date of the element dei:DocumentPeriodEndDate is the same as the value of DocumentPeriodEndDate.</name>
-    <description>Creates a pass case when the period end date on the context of dei:DocumentPeriodEndDate is the same as the value of the element DocumentPeriodEndDate</description>
-    <data>
-      <schema>DQC_0036.1/CASE_2526/testco-20141231_2526.xsd</schema>
-      <instance readMeFirst="true">DQC_0036.1/CASE_2526/testco-20141231_2526.xml</instance>
-    </data>
-    <results blockedMessageCodes="DQC.US.0033.2|DQC.US.0001.74" />
   </variation>
 </testcase>
