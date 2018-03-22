@@ -20,12 +20,41 @@
     </data>
     <results />
   </variation>
+  <variation id="DQC_0013.2779.2981">
+    <name>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsOther is less than zero irrespective of the deciamal value and the net incom (loss) before tax is negative.</name>
+    <description>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsOther equals -0.2981 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 333333000</description>
+    <data>
+      <schema>DQC_0013.2779/CASE_2981/testco-20141231_2981.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2779/CASE_2981/testco-20141231_2981.xml</instance>
+    </data>
+    <results>
+      <error severity="error" count="1">DQC.US.0013.2779</error>
+      <result>
+        <primaryElement>us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsOther</primaryElement>
+        <factValue>-0.2981</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2014-12-31</endDate>
+        <dimensions />
+        <unit>xbrli:pure</unit>
+        <message>${fact1.label} has a value of -0.2981 which is less than zero. This element should not have a negative value when the value for the element ${preconditionfact.label} is greater than zero.\n\nThe properties of this us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsOther fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
   <variation id="DQC_0013.2780.2994">
     <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance has a positive value or a value equal to zero irrespective of the deciamal value.</name>
     <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance equals 0.2994 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 0</description>
     <data>
       <schema>DQC_0013.2780/CASE_2994/testco-20141231_2994.xsd</schema>
       <instance readMeFirst="true">DQC_0013.2780/CASE_2994/testco-20141231_2994.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0013.2780.2970">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance equals 0.297 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
+    <data>
+      <schema>DQC_0013.2780/CASE_2970/testco-20141231_2970.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2780/CASE_2970/testco-20141231_2970.xml</instance>
     </data>
     <results />
   </variation>
@@ -48,15 +77,6 @@
         <message>${fact1.label} has a value of -0.2982 which is less than zero. This element should not have a negative value when the value for the element ${preconditionfact.label} is greater than zero.\n\nThe properties of this us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:pure\nRule version: ${ruleVersion}\n</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0013.2780.2970">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance equals 0.297 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
-    <data>
-      <schema>DQC_0013.2780/CASE_2970/testco-20141231_2970.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.2780/CASE_2970/testco-20141231_2970.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0013.2781.2983">
     <name>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsOther is less than zero irrespective of the deciamal value and the net incom (loss) before tax is negative.</name>
@@ -96,15 +116,6 @@
     </data>
     <results />
   </variation>
-  <variation id="DQC_0013.2782.2972">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment equals 0.2972 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
-    <data>
-      <schema>DQC_0013.2782/CASE_2972/testco-20141231_2972.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.2782/CASE_2972/testco-20141231_2972.xml</instance>
-    </data>
-    <results />
-  </variation>
   <variation id="DQC_0013.2782.2984">
     <name>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment is less than zero irrespective of the deciamal value and the net incom (loss) before tax is negative.</name>
     <description>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment equals -0.2984 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 333333000</description>
@@ -131,6 +142,15 @@
     <data>
       <schema>DQC_0013.2782/CASE_2996/testco-20141231_2996.xsd</schema>
       <instance readMeFirst="true">DQC_0013.2782/CASE_2996/testco-20141231_2996.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0013.2782.2972">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment equals 0.2972 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
+    <data>
+      <schema>DQC_0013.2782/CASE_2972/testco-20141231_2972.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2782/CASE_2972/testco-20141231_2972.xml</instance>
     </data>
     <results />
   </variation>
@@ -172,6 +192,15 @@
     </data>
     <results />
   </variation>
+  <variation id="DQC_0013.2784.2974">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends equals 0.2974 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
+    <data>
+      <schema>DQC_0013.2784/CASE_2974/testco-20141231_2974.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2784/CASE_2974/testco-20141231_2974.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0013.2784.2998">
     <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends has a positive value or a value equal to zero irrespective of the deciamal value.</name>
     <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends equals 0.2998 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 0</description>
@@ -201,12 +230,21 @@
       </result>
     </results>
   </variation>
-  <variation id="DQC_0013.2784.2974">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsDividends equals 0.2974 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
+  <variation id="DQC_0013.2785.2999">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings equals 0.2999 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 0</description>
     <data>
-      <schema>DQC_0013.2784/CASE_2974/testco-20141231_2974.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.2784/CASE_2974/testco-20141231_2974.xml</instance>
+      <schema>DQC_0013.2785/CASE_2999/testco-20141231_2999.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2785/CASE_2999/testco-20141231_2999.xml</instance>
+    </data>
+    <results />
+  </variation>
+  <variation id="DQC_0013.2785.2975">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings equals 0.2975 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
+    <data>
+      <schema>DQC_0013.2785/CASE_2975/testco-20141231_2975.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.2785/CASE_2975/testco-20141231_2975.xml</instance>
     </data>
     <results />
   </variation>
@@ -229,24 +267,6 @@
         <message>${fact1.label} has a value of -0.2987 which is less than zero. This element should not have a negative value when the value for the element ${preconditionfact.label} is greater than zero.\n\nThe properties of this us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:pure\nRule version: ${ruleVersion}\n</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0013.2785.2975">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings equals 0.2975 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals -333333000</description>
-    <data>
-      <schema>DQC_0013.2785/CASE_2975/testco-20141231_2975.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.2785/CASE_2975/testco-20141231_2975.xml</instance>
-    </data>
-    <results />
-  </variation>
-  <variation id="DQC_0013.2785.2999">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings equals 0.2999 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 0</description>
-    <data>
-      <schema>DQC_0013.2785/CASE_2999/testco-20141231_2999.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.2785/CASE_2999/testco-20141231_2999.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0013.3001.3444">
     <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends has a positive value or a value equal to zero irrespective of the deciamal value.</name>
@@ -277,6 +297,15 @@
       </result>
     </results>
   </variation>
+  <variation id="DQC_0013.3002.3445">
+    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment has a positive value or a value equal to zero irrespective of the deciamal value.</name>
+    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment equals -0.3445 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 333333000</description>
+    <data>
+      <schema>DQC_0013.3002/CASE_3445/testco-20141231_3445.xsd</schema>
+      <instance readMeFirst="true">DQC_0013.3002/CASE_3445/testco-20141231_3445.xml</instance>
+    </data>
+    <results />
+  </variation>
   <variation id="DQC_0013.3002.3440">
     <name>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment is less than zero irrespective of the deciamal value and the net incom (loss) before tax is negative.</name>
     <description>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment equals -0.344 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments equals 433333000</description>
@@ -296,15 +325,6 @@
         <message>${fact1.label} has a value of -0.344 which is less than zero. This element should not have a negative value when the value for the element ${preconditionfact.label} is greater than zero.\n\nThe properties of this us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment fact are:\nPeriod: 2014-12-31 - 2014-12-31\nUnit: xbrli:pure\nRule version: ${ruleVersion}\n</message>
       </result>
     </results>
-  </variation>
-  <variation id="DQC_0013.3002.3445">
-    <name>Flags a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment has a positive value or a value equal to zero irrespective of the deciamal value.</name>
-    <description>Creates a pass case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment equals -0.3445 and the value of us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest equals 333333000</description>
-    <data>
-      <schema>DQC_0013.3002/CASE_3445/testco-20141231_3445.xsd</schema>
-      <instance readMeFirst="true">DQC_0013.3002/CASE_3445/testco-20141231_3445.xml</instance>
-    </data>
-    <results />
   </variation>
   <variation id="DQC_0013.3439.3441">
     <name>Creates a fail case when the value of us-gaap:EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion is less than zero irrespective of the deciamal value and the net incom (loss) before tax is negative.</name>
