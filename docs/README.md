@@ -8,9 +8,7 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 1.0.0 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 2.1.0 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 1.0.0 |
-| [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Public Exposure for IFRS filings | 6.0.0RC1 |
 | [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Approved | 4.0.0 |
-| [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Public Exposure for IFRS filings | 6.0.0RC1 |
 | [DQC_US_0009](DQC_US_0009/DQC_0009.md) | Element A must be less than or equal to element B | Approved | 1.0.0 |
 | [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Approved | 4.0.0 |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 2.0.0 |
@@ -18,11 +16,8 @@ The rules linked below are either available for public review or have been appro
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 5.0.0 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 3.4.0 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 3.2.1   |
-| [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Public Exposure for IFRS filings | 6.0.0RC1 |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 2.0.0 |
-| [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Public Exposure for IFRS filings | 6.0.0RC1 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 3.5.0 |
-| [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Public Exposure for IFRS filings | 6.0.0RC1 |
 | [DQC_US_0043](DQC_US_0043/DQC_0043.md) | Incorrect Calculation Weights in Operating Cash Flows | Approved | 5.0.0 |
 | [DQC_US_0044](DQC_US_0044/DQC_0044.md) | Accrual Items used in Investing/Financing Cash flow Reconciliation | Approved | 5.0.0 |
 | [DQC_US_0045](DQC_US_0045/DQC_0045.md) | Movement of Concepts between Calculation Trees | Approved | 5.0.0 |
