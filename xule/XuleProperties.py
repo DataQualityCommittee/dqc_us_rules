@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22389 $
+$Change: 22462 $
 DOCSKIP
 """
 
@@ -415,7 +415,7 @@ def property_dimensions(xule_context, object_value, *args):
         if member_model.isExplicit:
             member_value = xv.XuleValue(xule_context, member_model.member, 'concept')
         else: # Typed dimension
-            member_value = xv.XuleValue(xule_context, member.typedMember.xValue, xv.model_to_xule_type(xule_context, member.typedMember.xValue))
+            member_value = xv.XuleValue(xule_context, member_model.typedMember.xValue, xv.model_to_xule_type(xule_context, member_model.typedMember.xValue))
             
         result_dict[dim_value] = member_value
         result_shadow[dim_value.value] = member_value.value
@@ -507,7 +507,7 @@ def property_denominator(xule_context, object_value, *args):
 def property_attribute(xule_context, object_value, *args):
     attribute_name_value = args[0]
     if attribute_name_value.type != 'qname':
-        raise XuleProcessingError(_("The argument for the 'attribute' property must be a qname, found '{}'".format(arttribute_name_value.type)), xule_context)
+        raise XuleProcessingError(_("The argument for the 'attribute' property must be a qname, found '{}'".format(attribute_name_value.type)), xule_context)
     
     attribute_value = object_value.value.get(attribute_name_value.value.clarkNotation)
     if attribute_value is None:
