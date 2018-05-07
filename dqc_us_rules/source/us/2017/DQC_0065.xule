@@ -21,7 +21,7 @@ $supplementalElements =  FILTER $networkQname returns $item.local-name
 $supplementalElements.contains('InterestPaid')	and
 not $supplementalElements.contains('InterestPaidNet') and
 not $supplementalElements.contains('InterestPaidCapitalized') and
-exists([@InterestPaid where $fact != 0]#fact1)
+exists([nonils @InterestPaid where $fact != 0]#fact1)
 
 message
 "The Supplemental cash flow section has reported a value of {$fact1} for the element {$fact1.name} but the element InterestPaidNet is not included in the supplemental cash flow section. Interest Paid Net of the capitalized component must be reported in this section. 
