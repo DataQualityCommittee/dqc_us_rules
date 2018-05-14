@@ -11,7 +11,7 @@ rule-name-prefix DQC
 assert US.0008.6819 satisfied
 
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
-		
+
 for ($network in $extCalcRelationship1.keys)
 	for ($extCalcRelationship in $extCalcRelationship1[$network])
 		$extCalcSource = $extCalcRelationship.source;
