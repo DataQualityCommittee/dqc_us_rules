@@ -19,13 +19,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22431 $
+$Change: 22483 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
 #from . import XuleProperties
 from . import XuleUtility
-from arelle.ModelValue import QName, dayTimeDuration, DateTime, gYear, gMonthDay, gYearMonth, InvalidValue, IsoDuration
+from arelle.ModelValue import AnyURI, QName, dayTimeDuration, DateTime, gYear, gMonthDay, gYearMonth, InvalidValue, IsoDuration
 from arelle.ModelInstanceObject import ModelFact, ModelUnit
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelRelationship
@@ -619,13 +619,21 @@ class XuleString(str):
         
         # Find all the '%' signs in the string. Thees wil need to be escaped.
         percent_locations = [m.start() for m in re.finditer('%', format_string)]
-        sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
+        #sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
+        sub_locations = collections.defaultdict(list)
+        for location, sub_name, sub_value in substitutions or []:
+            sub_locations[location].append((sub_name, sub_value))
+        
         for i in sorted(percent_locations + list(sub_locations.keys()), reverse=True):
             if i in percent_locations:
                 format_string = format_string[:i] + '%' + format_string[i:]
             else:
                 # i must be in sub_locations
-                format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
+                sub_value = ''
+                for sub in sub_locations[i]:
+                    sub_value += '%({})s'.format(sub[0])
+                format_string = format_string[:i] + sub_value + format_string[i:]
+                #format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
         
         format_subs = {x[1]:x[2] for x in substitutions or []}
         
@@ -1089,7 +1097,8 @@ TYPE_SYSTEM_TO_XULE = {int: 'int',
                        IsoDuration: 'iso_duration',
                        gYear: 'model_g_year',
                        gMonthDay: 'model_g_month_day',
-                       gYearMonth: 'model_g_year_month'}
+                       gYearMonth: 'model_g_year_month',
+                       AnyURI: 'uri'}
 
 TYPE_STANDARD_CONVERSION = {'model_date_time': (model_to_xule_model_datetime, 'instant'),
                             'model_g_year': (model_to_xule_model_g_year, 'int'),
