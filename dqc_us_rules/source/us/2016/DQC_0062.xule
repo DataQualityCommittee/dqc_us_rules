@@ -18,6 +18,7 @@ $network = FILTER taxonomy().networks(parent-child) where ($item.concept-names.c
 $network.count > 0 
  AND
  count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecrease])) == 0 AND
+ count(list([COVERED @CashPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @NetCashProvidedByUsedInContinuingOperations])) == 0 AND
  count(list([COVERED @concept = qname($extension_ns,'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect')])) == 0 AND
@@ -27,7 +28,9 @@ $network.count > 0
 MESSAGE
 "The filing includes a cash flow statement but does not report a value for the change in cash using any of the following elements: 
 
-CashPeriodIncreaseDecrease,CashAndCashEquivalentsPeriodIncreaseDecrease, 
+CashPeriodIncreaseDecrease,
+CashAndCashEquivalentsPeriodIncreaseDecrease, 
+CashPeriodIncreaseDecreaseExcludingExchangeRateEffect,
 CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, 
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect (As an extension element), 
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (As an extension element), or 
