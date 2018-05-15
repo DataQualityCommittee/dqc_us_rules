@@ -13,7 +13,7 @@ assert US.0057.7494 satisfied
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 for ($networkPres in 
-	filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) or $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical'))
+	filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical'))
 
 
 	  
