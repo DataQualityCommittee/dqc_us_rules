@@ -20,6 +20,7 @@ $network.count > 0
  count(list([COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecrease])) == 0 AND
+ count(list([COVERED @CashPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
  count(list([COVERED @NetCashProvidedByUsedInContinuingOperations])) == 0 AND
  count(list([COVERED @CashPeriodIncreaseDecrease])) == 0
@@ -29,7 +30,9 @@ MESSAGE
 
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect (After adoption of ASU-2016-18)  
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (After adoption of ASU-2016-18)  
-CashPeriodIncreaseDecrease,CashAndCashEquivalentsPeriodIncreaseDecrease  (Prior to adoption of ASU-2016-18)
+CashPeriodIncreaseDecrease (Prior to adoption of ASU-2016-18)
+CashPeriodIncreaseDecreaseExcludingExchangeRateEffect (Prior to adoption of ASU-2016-18)
+CashAndCashEquivalentsPeriodIncreaseDecrease  (Prior to adoption of ASU-2016-18)
 CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (Prior to adoption of ASU-2016-18) or 
 NetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash)
 
@@ -40,10 +43,12 @@ If you have disclosed a change in cash for the period, one of the above elements
 3. The change in cash has been represented with an extension element. There is no reason the change in cash needs to be identified using an extension element.
 
 Rule Element Id:7501
-Rule version: 5.0.0"
+Rule version: {$ruleVersion}"
 
 
 SEVERITY error
+
+
 
 
 

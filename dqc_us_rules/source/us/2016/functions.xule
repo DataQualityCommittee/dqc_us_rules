@@ -89,7 +89,7 @@ else
 	false 
 
 function match_set_substring($fact, $match_member_string_component)
-any(set(for $x in $fact.dimensions.values.name.local-name.lower-case
+any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
 	for $y in $match_member_string_component
 	$y in $x))
 
