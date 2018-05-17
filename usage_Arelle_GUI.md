@@ -1,4 +1,5 @@
-# Using DQC Rules with Arelle - from the GUI [return to README](README.md#using)
+# Using DQC Rules with Arelle - from the GUI 
+[return to README](README.md#using)
 
 ## Initial setup for the DQC Rules xule plugin
 
