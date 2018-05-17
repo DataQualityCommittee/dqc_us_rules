@@ -131,8 +131,7 @@ def process_xule(rule_set, model_xbrl, cntlr, options, saved_taxonomies=None):
     #clean up
     del global_context
     
-    #clean up
-    del global_context
+    return saved_taxonomies
     
 def evaluate_rule_set(global_context):
     """Process the rule set.
