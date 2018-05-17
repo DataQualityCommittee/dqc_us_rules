@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22476 $
+$Change: 22489 $
 DOCSKIP
 """
 
@@ -340,9 +340,6 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
     if getattr(options, "xule_cpu", None) is not None and not getattr(options, 'xule_multi', None):
             parser.error(_("--xule-multi is required with --xule_cpu."))
 
-    if getattr(options, "xule_multi", False) and getattr(options, "xule_server", None) is None:
-        parser.error(_("--xule-multi can only be used with --xule-server enabled")) 
-    
     if getattr(options, "xule_server", None) is not None and not getattr(options, 'xule_rule_set', None):
             parser.error(_("--xule-rule-set is required with --xule_server."))
 
@@ -581,10 +578,10 @@ def xuleTestValidated(modelTestcase, modelXbrl):
 __pluginInfo__ = {
     'name': 'DQC XBRL rule processor (xule)',
     'version': 'Check version using Tools->DQC->Version on the GUI or --xule-version on the command line',
-    'description': 'This plug-in provides a DQC 1.- processor.',
+    'description': 'This plug-in provides a DQC processor.',
     'license': 'Apache-2',
     'author': 'XBRL US Inc.',
-    'copyright': '(c) 2017',
+    'copyright': '(c) 2017-2018',
     # classes of mount points (required)
     'ModelObjectFactory.ElementSubstitutionClasses': None,
     'CntlrWinMain.Menu.File.Open': xuleMenuOpen,
