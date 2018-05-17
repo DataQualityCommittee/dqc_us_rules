@@ -1,4 +1,5 @@
-# Using DQC Rules with Arelle - from a command prompt [return to README](README.md#using)
+# Using DQC Rules with Arelle - from a command prompt 
+[return to README](README.md#using)
 
 ### Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
 

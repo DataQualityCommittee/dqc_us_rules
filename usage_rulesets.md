@@ -1,4 +1,5 @@
-# Using DQC Rules with Arelle - Managing Rulesets [return to README](README.md#using)
+# DQC Rules with Arelle - Managing Rulesets 
+[return to README](README.md#using)
 
 ### Ruleset Detection
 

@@ -8,17 +8,15 @@
 * Unit tests for the reference implementation
 * Test suite documentation
 
-#### [Deploying the DQC Arelle Plugin](#deploying) || [Using DQC Rules with Arelle](#using) || [Change Management](#versioning) || [License and Patent](#licensing)
-
-## Running the DQC Arelle plugin (v5 and later)
-
-### Overview
+## About the DQC Arelle plugin (v5 and later)
 
 The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
-<a name="deploying"></a>## Deploying the DQC Arelle Plugin
+#### On this page: [Deploying the DQC Arelle Plugin](#deploying) || [Usage and Results - DQC Rules with Arelle](#using) || [Change Management](#versioning) || [License and Patent](#licensing)
+
+## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
 * Download the latest release of the [DQC plugin (v5.1 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
@@ -34,7 +32,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * \*regex  (If you are using python 3.4)
 * Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
 
-<a name="using"></a>## Using DQC Rules with Arelle
+## <a name="using"></a>Usage and Results - DQC Rules with Arelle
 
 *  [from the graphic user interface (GUI)](usage_Arelle_GUI.md) - **version 5.2.0 or later**
 *  [from a command prompt](usage_command_prompt.md)
@@ -64,7 +62,7 @@ The message portion of the log file output can be controlled by using the `--log
 
 To *exclude the rule number, filename and line number from the message*, use the command prompt `--logFormat  "%(message)s"`.
 
-<a name="versioning"></a>## Change Management
+## <a name="versioning"></a>Change Management
 
 The rule definition index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule.
 
@@ -112,7 +110,7 @@ When new rules that have been approved for coding are released by the DQC, the r
 
 The result will be any of a few things. For example a +10 for passing, or just a comment like "sent back for rework", or whatever else is needed to be done before another pass at QA.
 
-<a name="licensing"></a>## License and Patent
+## <a name="licensing"></a>License and Patent
 
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
