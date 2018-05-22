@@ -4,7 +4,7 @@ python:
 branches:
   only: 
   - master
-  - /next.*/
+  - /*v5/
 env:
   global:
     - TESTCASESROOT=./DQC_Testcases
@@ -57,4 +57,3 @@ after_script:
   # Copy the test report to the log
   - echo '===== START TEST RPOERT FILE (csv) =====' && cat $OUTPUTCSVFILE && echo '===== END TEST RPOERT FILE (csv) ====='
   - echo '===== START LOG FILE =====' && cat $OUTPUTLOGFILE && echo '===== END LOG FILE ====='
-  
