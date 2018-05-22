@@ -8,6 +8,7 @@ Taxonomy: US GAAP 2015
 **/
 
 
+
 function compare_baseCalc_to_extensionCalc($baseConcept, $extensionConcept)
 	$extensionNames = navigate summation-item descendants from $extensionConcept returns set (target-name) 
 	navigate summation-item descendants from $baseConcept taxonomy $us-gaap  where $relationship.target.name in $extensionNames and not ($relationship.target.name  in $cash_flow_exceptions) returns set (target-name) 
@@ -23,7 +24,7 @@ function compare_baseCalc_to_extensionCalc($baseConcept, $extensionConcept)
  **/
 
 function is_extension($test_extension)
-	$us-gaap.concept($test_extension.name)== none
+	all(filter $all_base_taxonomies returns $item.concept($test_extension.name) == none)
 
 /** 
  * is_base
@@ -35,7 +36,7 @@ function is_extension($test_extension)
 **/
 
 function is_base($test_base)
-	$us-gaap.concept($test_base.name)!= none
+	any(filter $all_base_taxonomies returns $item.concept($test_base.name) != none)
 
 /** 
  * effective_weight_is_positive
@@ -89,7 +90,7 @@ else
 	false 
 
 function match_set_substring($fact, $match_member_string_component)
-any(set(for $x in $fact.dimensions.values.name.local-name.lower-case
+any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
 	for $y in $match_member_string_component
 	$y in $x))
 
