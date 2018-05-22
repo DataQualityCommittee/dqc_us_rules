@@ -8,25 +8,20 @@
 * Unit tests for the reference implementation
 * Test suite documentation
 
-## Running the DQC Arelle plugin (v5 and later)
-
-### Overview
+## About the DQC Arelle plugin (v5 and later)
 
 The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
-## Deploying the DQC Arelle Plugin
+#### On this page: [Deploying the DQC Arelle Plugin](#deploying) || [Usage and Results - DQC Rules with Arelle](#using) || [Change Management](#versioning) || [License and Patent](#licensing)
+
+## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
-* Download the latest release of the [DQC plugin (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin.
+* Download the latest release of the [DQC plugin (v5.1 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin.
 * Copy the "aniso8601" to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
-* Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugins xule` to return:
-
-`
-[info] Activation of plug-in DQC XBRL rule processor (xule) successful, version 1.0. - xule
-`
 
 ### Source Install
 * Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
@@ -37,58 +32,14 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * \*regex  (If you are using python 3.4)
 * Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
 
-## Configuration and Use of the DQC Arelle Plugin
+## <a name="using"></a>Usage and Results - DQC Rules with Arelle
 
-The DQC ruleset files are part of each [downloaded release archive (v5 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) as .zip files in the folder "dqc_us_rules". Copy the "dqc_us_rules" folder to your environment to run them locally, or reference them from the Internet using this format `https://github.com/DataQualityCommittee/dqc_us_rules/`***raw***`/`**vMajor.Minor.FixRelease**`/dqc_us_rules/dqc-us-`**TaxonomyYear**`-V`**MajorRelease**`-ruleset.zip` when running the plugin from the command line (see below). The extracted files for US GAAP Taxonomies from 2015, 2016 and 2017 are also in the "dqc_us_rules" folder as the reference implementation for the DQC rules.   
-
-The minimum parameters that need to be passed are the following:
-* **`--plugins xule`** : Loads the DQC plugin. When running with an SEC filing, the SEC transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "xule|transforms/SEC"**. The pipe character `|` separates the plugins. Specifying the SEC transforms plugins will have no affect on traditional XBRL filings, so it can be included for all SEC filings.
-* **`-f`** : The location of the instance file to be evaluated. This will take a zip file, XML instance or inline XBRL file.
-* **`--xule-run`**  or **`-v`**: Instructs the processor to run the rules. The **-v** option will run all Arelle validations including the DQC rules. The **--xule-run** option will only run the DQC rules.
-
-A typical command line syntax for Arelle is as follows (including optional parameters defined below:
-
-`
-arelleCmdLine --plugins "xule|transforms/SEC" -f {instance file or zip file} --xule-run --noCertificateCheck --logFile {log file name}
-`
-
-**Examples:**  
-`
-arelleCmdLine --plugins "xule|transforms/SEC" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
-`  
-or  
-`
-arelleCmdLine --plugins "xule|transforms/SEC" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  --xule-rule-set https://github.com/DataQualityCommittee/dqc_us_rules/raw/v5.0.0/dqc_us_rules/dqc-us-2017-V5-ruleset.zip --xule-run --noCertificateCheck --logFile DQC-output.xml
-`  
-
-In addition the following optional parameters can be passed:
-
-* **`--logFile`** : Specifies where the output of running the rules should be sent. To get an XML file the file needs to end with .xml. To get a json file it needs to end with .json. If a log file is not specified, output will be displayed in the command window.
-* **`--noCertificateCheck`** : This is used to ensure that files from the internet are not rejected if there is no SSL certificate on the machine running the DQC plugin.
-* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)  
-* **`--packages`** : This option will accept additional taxonomy packages
-* **`--xule-rule-set`** : The location of the compiled ruleset to use. 
-
-To get additional options use the option `--help` (eg. `arelleCmdLine --plugins xule --help`)
-
-The DQC plugin options will be displayed at the bottom of the list under the title "Xule Business Rule". All DQC specific options start with `--xule`.
-
-**Every XBRL instance has a specific taxonomy that it uses.** When running the DQC plugin the correct ruleset must be run against the XBRL instance. If the XBRL instance uses the US GAAP 2017 taxonomy then the dqc_us_rules that apply to the 2017 taxonomy must be used. 
-
-There is a separate *dqc_us_rules* file for every *year* and *taxonomy* released. The format of the ruleset file is as follows:
-
-`dqc-{`*`taxonomy`*`}-{`*`year`*`}-{`*`dqc_us_rules version`*`}-ruleset.zip`
-
-For example, the ruleset for the 2017 us-gaap taxonomy for the version 5 release would be called:
-
-`dqc-us-2017-V5-ruleset.zip`
-
-The ruleset for the 2017 ifrs taxonomy for the version 6 release would be called:
-
-`dqc-ifrs-2017-V6-ruleset.zip`
+*  [from the graphic user interface (GUI)](usage_Arelle_GUI.md) - **version 5.2.0 or later**
+*  [from a command prompt](usage_command_prompt.md)
+*  [Managing Rulesets](usage_rulesets.md)
 
 ### Results
-The DQC Arelle plugin produces validation messages using standard Arelle output. The option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.`**`xml`**` will create an xml formatted file whereas `--logFile DQC-output.json will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
+The DQC Arelle plugin produces validation messages using standard Arelle output. In the GUI, results will appear in the bottom window as the filing is processed and can be exported to text for review. From a command prompt, the option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example `--logFile DQC-output.`**`xml`**` will create an xml formatted file whereas `--logFile DQC-output.json will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
 
 ```
 <entry code="DQC.US.0001.75" level="error">
@@ -111,107 +62,9 @@ The message portion of the log file output can be controlled by using the `--log
 
 To *exclude the rule number, filename and line number from the message*, use the command prompt `--logFormat  "%(message)s"`.
 
-### Ruleset Detection
+## <a name="versioning"></a>Change Management
 
-When the DQC plugin is run without specifying the the ruleset (with the `--xule-rule-set` option), the plugin will attempt to match the correct ruleset based on the facts in the instance document. The plugin will assess the namespaces of the primary items of the facts in the instance and check the ruleset map to determine the correct ruleset. 
-
-An initial the ruleset map is included in the "xule" plugin folder. It is named rulesetMap.json. The first time the plugin autodetects a ruleset, the ruleset map in the plugin folder is copied to the application data folder. This is the version that is used to determine which ruleset to use. 
-
-It is recommended not to change the ruleset map in the plugin folder. The copy in the application data folder may be edited to change the ruleset map. The ruleset map is a simple JSON file mapping namespaces to a ruleset.
-
-**Example Ruleset Map**
-```
-{
-	"http://xbrl.ifrs.org/taxonomy/2017-03-09/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2017-V5-ruleset.zip?raw=true",
-	"http://xbrl.ifrs.org/taxonomy/2016-03-31/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2016-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2015-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2015-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2014-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2014-V5-ruleset.zip?raw=true",	
-	"http://fasb.org/us-gaap/2013-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2013-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2012-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2012-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2011-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2011-V5-ruleset.zip?raw=true"
-}
-```
-The DQC plugin reads the ruleset map in order from the top. If the namespace in the ruleset map matches a namespace used on a primary item of a fact in the instance, then the corresponding ruleset is used.
-
-The initial copy of the ruleset map included with the plugin maps to rulesets on the DQC GitHub repository. The ruleset map can be edited to refer to local copies of the rulesets. 
-
-#### Updating the ruleset map
-
-The ruleset map can be reset with the copy in the plugin folder by using the `--xule-reset-rule-set-map` option. This will overwrite any changes made to the copy of the ruleset map file in the application data folder.
-
-**Example**
-
-`arelleCmdLine --plugins xule --xule-reset-rule-set-map`
-
-Alternatively, the ruleset map can be updated from a file or URL by using `--xule-replace-rule-set-map` followed by the file name or URL. Like the reset option, this will overwrite the ruleset map file in the application data folder.
-
-**Example**
-
-`arelleCmdLine --plugins xule --xule-replace-rule-set-map myNewRulesetMap.json`
-
-The ruleset map file can be merged by using `--xule-update-rule-set-map` followed by the file name or URL to merge with the ruleset map file in the application data folder. Merging provides a basic means of updating the current ruleset map (the ruleset map in the application data folder). 
-
-**Example**
-
-`arelleCmdLine --plugins xule --xule-update-rule-set-map myRulesetMapChanges.json`
-
-When merging, any namespaces in the new ruleset map that are in the current ruleset map will update the current ruleset map with the location of the ruleset for that namespace. New namespaces will be added to the end of the current ruleset map. If more specific edits are needed, the current ruleset map will need be edited manually.
-
-#### Updating the ruleset map for future releases of DQC rules
-
-When initially installed, the ruleset map of the DQC plugin corresponds to ruleset .zip files for the then currently-approved version of DQC rules.
-
-With each new release, the ruleset map will need to be updated (even if the DQC plugin is reinstalled). This is because the working ruleset map is in the local machine's application data folder, which does not changed when re-installing the plugin.
-
-The simplest way to update the ruleset map is to use the `--xule-replace-rule-set-map` option followed by the URL for the new ruleset map. The URL for the new ruleset map will be indicated in the release notes
-
-Future releases may include changes to the DQC rules and/or the DQC plugin. If the DQC plugin is **not** changed, it does not need to be re-installed, however, the ruleset map must be updated to for the plugin to use the new rulesets. If the release includes changes to the plugin, the plugin will need to be re-installed and the ruleset map updated. Instructions will be included in the release notes.
-
-### Managing the Ruleset File
-
-The ruleset file includes packages with local versions of files used by the DQC plugin. Using these resource files locally allows the plugin to be run without Internet access. These resource files are included by default in the ruleset as XBRL taxonomy packages. To ignore the packages included in the ruleset, use the option `--xule-bypass-packages`. Using the plugin this way will generally take more time to run, as the plugin will use resources referenced in the dqc_us_rules repository as raw.githubusercontent.com. 
-
-Packages can be added or removed from a ruleset. This is managed by using the following three options:
-
-* `--xule-show-packages`
-* `--xule-add-packages`
-* `--xule-remove-packages`
-
-All these options also require the --xule-rule-set option to be used.
-
-**Example**
-`arelleCmdLine --plugins xule --xule-show-packages --xule-rule-set dqc-us-2017-V5-ruleset.zip`
-
-Will return the following:
-`
-Packages in rule set:
-	dqc_15_concepts.csv and dqc_0011.csv (resources.zip)
-`
-
-**Usages and switches**
-* **`--xule-add-packages`** followed by a `|` separated list of package files will add the packages to the rule set. If a package is already in the rule set it will overwrite it. It will attempt to activate the package in arelle to test that the package is valid.
-
-* **`--xule-remove-packages`** followed by a `|` separated list of package file names (this is the zip file name). If a package is not in the rule set, it will report it, but not fail. Any other packages in the list will be removed.
-
-* **`--xule-add--packages`** and **`--xule-remove-packages`** options modify the ruleset file and can only be used on a locally stored ruleset.
-
-The format of the package zip file is based on the XBRL packages specification. It has a single directory in the zip file. Usually, the name of this top level directory is the same as the name of the zip file, but that is not required. Inside the top level directory, there is a directory named "META-INF". Inside the META-INF directory there are two files 'catalog.xml' and "taxonomyPackages.xml".
-
-The **catalog.xml** file contains the remapping. The `<rewriteURI>` element in this file defines the map. It can map to a directory or a file. Several `<rewriteURI>` elements can used to define multiple mappings. The one in the example is:
-
-`
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
-	<rewriteURI rewritePrefix="../" uriStartString="https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/master/dqc_us_rules/resources/DQC_US_0015/"/>
-</catalog>
-`
-
-Note that `rewritePrefix` is mapping to the parent directory that the catalog.xml file is in.
-
-Normally taxonomy packages are used to archive (zip) taxonomies and identity taxonomy entry points. Here the taxonomy package mechanism is used to remap csv files, which is out of scope for the taxonomy package spec. However, it does work and using taxonomy package handling built into Arelle. The XBRL spec working group is considering using taxonomy packages for other file types.
-
-## Rule Versioning
+The rule definition index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule.
 
 The dqc_us_rules library follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period.
 
@@ -219,11 +72,7 @@ The MAJOR version specified by each individual rule is the most-recent release v
 
 Similarly, the entire set of rules is versioned. MAJOR release is specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC) to denote revisions prior to the approved release.
 
-## Rule Index
-
-The rule definition index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule.
-
-## Proposed Changes
+### Proposed Changes
 
 We actively accept, and encourage, pull requests for code changes. A list of the requirements for a pull request follows, and the request will be reviewed by the technical leads of the project. If the request is accepted it will be merged into the appropriate branch. Some requests may require Committee approval which may take longer to implement. If the request is found to be missing parts or is otherwise incomplete, comments will be noted regarding the missing or incomplete parts.
 
@@ -261,7 +110,7 @@ When new rules that have been approved for coding are released by the DQC, the r
 
 The result will be any of a few things. For example a +10 for passing, or just a comment like "sent back for rework", or whatever else is needed to be done before another pass at QA.
 
-## License
+## <a name="licensing"></a>License and Patent
 
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
