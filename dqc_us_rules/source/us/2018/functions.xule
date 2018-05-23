@@ -24,7 +24,7 @@ function compare_baseCalc_to_extensionCalc($baseConcept, $extensionConcept)
  **/
 
 function is_extension($test_extension)
-	$us-gaap.concept($test_extension.name)== none
+	all(filter $all_base_taxonomies returns $item.concept($test_extension.name) == none)
 
 /** 
  * is_base
@@ -36,7 +36,7 @@ function is_extension($test_extension)
 **/
 
 function is_base($test_base)
-	$us-gaap.concept($test_base.name)!= none
+	any(filter $all_base_taxonomies returns $item.concept($test_base.name) != none)
 
 /** 
  * effective_weight_is_positive
