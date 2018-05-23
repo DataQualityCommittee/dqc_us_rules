@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22364 $
+$Change: 22481 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -393,8 +393,8 @@ class XuleRuleContext(object):
         new_context = copy.copy(self)
         new_context.iteration_table = XuleIterationTable(self)
         new_context.iteration_table.add_table(-1, processing_id)
-        new_context.facts = self.facts
-        new_context.tags = self.tags
+        new_context.facts = self.facts.copy()
+        new_context.tags = self.tags.copy()
         return new_context
 
     def add_tag(self, tag, value):
@@ -472,13 +472,11 @@ class XuleRuleContext(object):
                     "type": self._VAR_TYPE_ARG,
                     "calculated": True,
                     "value": value,
-                    '''THESE FOLLOWING ITEMS CAN PROBABLY BE REMOVED. THE number ARGUMENT CAN BE REMOVED'''
-                    "number": number,
-                    "contains_facts": False,
-                    "other_values": {}}
+                    }
 
         self.vars[node_id].append(var_info)
-        self.tags[name] = value
+        if tag is not None:
+            self.tags[tag] = value
     
     def del_arg(self, name, node_id):
         """Removes an argument from the variable stack"""
@@ -523,7 +521,7 @@ class XuleRuleContext(object):
                         ast_const = self.global_context.rule_set.getItem(cat_const)
                         var_value = self._BUILTIN_CONSTANTS[var_name](self)
                         var_info = {"name": var_name,
-                                    "tagged": True,
+                                    "tagged": var_name,
                                     "type": self._VAR_TYPE_CONSTANT,
                                     "expr": ast_const,
                                     "calculated": True,
@@ -543,7 +541,7 @@ class XuleRuleContext(object):
                     else:
                         ast_const = self.global_context.rule_set.getItem(cat_const)
                         var_info = {"name": var_name,
-                                    "tagged": True,
+                                    "tagged": var_name,
                                     "type": self._VAR_TYPE_CONSTANT,
                                     "expr": ast_const,
                                     "calculated": False,

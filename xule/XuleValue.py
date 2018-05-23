@@ -19,13 +19,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22357 $
+$Change: 22483 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
 #from . import XuleProperties
 from . import XuleUtility
-from arelle.ModelValue import QName, dayTimeDuration, DateTime, gYear, gMonthDay, gYearMonth, InvalidValue, IsoDuration
+from arelle.ModelValue import AnyURI, QName, dayTimeDuration, DateTime, gYear, gMonthDay, gYearMonth, InvalidValue, IsoDuration
 from arelle.ModelInstanceObject import ModelFact, ModelUnit
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelRelationship
@@ -191,6 +191,17 @@ class XuleValue:
     @property
     def is_fact(self):
         return self.fact is not None
+
+    @property
+    def system_value(self):
+        if self.type == 'set':
+            return {x.system_value for x in self.value}
+        elif self.type == 'list':
+            return [x.system_value for x in self.value]
+        elif self.type == 'dictionary':
+            return {n.system_value: v.system_value for n, v in self.value}
+        else:
+            return self.value
     
     def format_value(self):
             
@@ -248,10 +259,8 @@ class XuleValue:
             set_value = "set(" + ", ".join([sub_value.format_value() for sub_value in self.value]) + ")" 
             return set_value
         
-        elif self.type == 'dictionary':
-            new_dict_value = {k_value.format_value(): v_value.format_value() for k_value, v_value in self.value}
-            
-            return pprint.pformat(new_dict_value)
+        elif self.type == 'dictionary': 
+            return pprint.pformat(self.system_value)
         
         elif self.type == 'concept':
             return str(self.value.qname)
@@ -610,13 +619,21 @@ class XuleString(str):
         
         # Find all the '%' signs in the string. Thees wil need to be escaped.
         percent_locations = [m.start() for m in re.finditer('%', format_string)]
-        sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
+        #sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
+        sub_locations = collections.defaultdict(list)
+        for location, sub_name, sub_value in substitutions or []:
+            sub_locations[location].append((sub_name, sub_value))
+        
         for i in sorted(percent_locations + list(sub_locations.keys()), reverse=True):
             if i in percent_locations:
                 format_string = format_string[:i] + '%' + format_string[i:]
             else:
                 # i must be in sub_locations
-                format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
+                sub_value = ''
+                for sub in sub_locations[i]:
+                    sub_value += '%({})s'.format(sub[0])
+                format_string = format_string[:i] + sub_value + format_string[i:]
+                #format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
         
         format_subs = {x[1]:x[2] for x in substitutions or []}
         
@@ -1080,7 +1097,8 @@ TYPE_SYSTEM_TO_XULE = {int: 'int',
                        IsoDuration: 'iso_duration',
                        gYear: 'model_g_year',
                        gMonthDay: 'model_g_month_day',
-                       gYearMonth: 'model_g_year_month'}
+                       gYearMonth: 'model_g_year_month',
+                       AnyURI: 'uri'}
 
 TYPE_STANDARD_CONVERSION = {'model_date_time': (model_to_xule_model_datetime, 'instant'),
                             'model_g_year': (model_to_xule_model_g_year, 'int'),
@@ -1223,4 +1241,52 @@ def combine_period_values(left, right, xule_context):
                 return (left.value,
                         (right.value[0], right.value[1] + datetime.timedelta(days=1)))
 
+def system_collection_to_xule(col, xule_context):
+    """Convert a python dictionary or list to xule value
+    
+    :param col: native collection
+    :type col: collectin (dict or list)
+    :param xule_context: The rule context
+    :type xule_context: XuleRuleContext
+    :returns: A XuleValue of the the collection
+    :rtype: XuleValue
         
+    """
+    if isinstance(col, dict):
+        return system_dict_to_xule(col, xule_context)
+    elif isinstance(col, list):
+        return system_list_to_xule(col, xule_context)
+    else:
+        raise XuleProcessingError(_("Cannot convert native type {} into a XuleValue collection.".format(type(col))), xule_context )
+
+def system_dict_to_xule(col, xule_context):
+    result = dict()
+    shadow = dict()
+    for n, v in col.items():
+        xule_name = XuleValue(xule_context, n, 'string')
+        if isinstance(v, dict) or isinstance(v, list) or isinstance(v, set):
+            xule_value = system_collection_to_xule(v, xule_context)
+        else:
+            xule_type, compute_value = model_to_xule_type(xule_context, v)
+            xule_value = XuleValue(xule_context, compute_value, xule_type)
+        result[xule_name] = xule_value
+        shadow[n] = xule_value.shadow_collection if xule_value.type in ('set', 'list', 'dictionary') else xule_value.value
+
+    return XuleValue(xule_context, frozenset(result.items()), 'dictionary', shadow_collection=frozenset(shadow.items()))
+
+def system_list_to_xule(col, xule_context):
+    result = list()
+    shadow = list()
+    for v in col:
+        if isinstance(v, dict) or isinstance(v, list) or isinstance(v, set):
+            xule_value = system_collection_to_xule(v, xule_context)
+        else:
+            xule_type, compute_value = model_to_xule_type(xule_context, v)
+            xule_value = XuleValue(xule_context, compute_value, xule_type)
+        result.append(xule_value)
+        shadow.append(xule_value.shadow_collection if xule_value.type in ('set', 'list', 'dictionary') else xule_value.value)
+    
+    return XuleValue(xule_context, tuple(result), 'list', shadow_collection=tuple(shadow))
+
+
+    
