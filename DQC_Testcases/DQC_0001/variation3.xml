@@ -1,0 +1,1426 @@
+<!--FILENAME-->
+<!--DQC_0001-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0001-3</number>
+  <ruleIdentifier>DQC_0001</ruleIdentifier>
+  <description>Certain axes in the US GAAP taxonomy should only have certain members as shown in the US GAAP taxonomy. This rule tests whether these axes have inappropriate members \n\nCertain axes can have custom or extended (i.e., company specific) members. This rule also tests whether only these axes have custom members and, therefore, limits the use of custom or extended members to those situations where they are appropriate because the member is unique to the filer. \n\nThe rule evaluates a company&#226;&#8364;&#8482;s extension taxonomy and instance document and flags an error when there is an inappropriate axis/member combination in the extension taxonomy even though there is no fact associated with the axis/member combination in the instance document.\n</description>
+  <ruleMessage>The member, ${Rule.member.label}, associated with the axis, FairValueByFairValueHierarchyLevelAxis and element ${fact1.label}, is not an appropriate Axis/Member combination. \n</ruleMessage>
+  <variation id="DQC_0001.56.3064">
+    <name>Creates a fail when the NoncashOrPartNoncashDivestituresByUniqueNameAxis axis is used with a member that is not an extension member.</name>
+    <description>Creates 9 fail cases when the us-gaap member StockCompensationPlanMember is used on the NoncashOrPartNoncashDivestituresByUniqueNameAxis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3064/testco-20141231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3064/testco-20141231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.623|DQC.US.0015.2955|DQC.US.0065.7502">
+      <error severity="error" count="9">DQC.US.0001.56</error>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>175000000</factValue>
+        <startDate>2013-01-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 175000000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2013-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2013-01-01 - 2013-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>1314000000</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1314000000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2013-01-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2013-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2013-01-01 - 2013-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2013-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2013-01-01 - 2013-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaHomeMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>750000000</factValue>
+        <startDate>2014-01-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 750000000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = CommonStockMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2013-01-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:NoncashOrPartNoncashDivestitureAmountOfConsiderationReceived1 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: NoncashOrPartNoncashDivestituresByUniqueNameAxis = NotesReceivableMember; IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis = MotorolaMobilityHoldingsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.57.2612">
+    <name>The member RealEstateMember should not be associated with the axis ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis.</name>
+    <description>Flags 100 fail cases for individual instance values for the RealEstateMember on the axis ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_2612/testco-20111231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_2612/testco-20111231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0006.14|DQC.US.0015.2175|DQC.US.0015.2416|DQC.US.0015.2419|DQC.US.0015.2433|DQC.US.0015.623|DQC.US.0015.787|DQC.US.0015.931|DQC.US.0015.2711|DQC.US.0015.2712|DQC.US.0015.2730|DQC.US.0015.2731|DQC.US.0015.2742|DQC.US.0015.2942|DQC.US.0015.2974|DQC.US.0015.3085|DQC.US.0015.3147|DQC.US.0015.3433|DQC.US.0015.4034|DQC.US.0015.7211|DQC.US.0015.7221|DQC.US.0015.7456|DQC.US.0015.3017|DQC.US.0043.7488|DQC.US.0044.6834|DQC.US.0041.73">
+      <error severity="error" count="100">DQC.US.0001.57</error>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss</primaryElement>
+        <factValue>66549000</factValue>
+        <startDate>2010-01-01</startDate>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 66549000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss fact are:\nPeriod: 2011-01-01 - 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems</primaryElement>
+        <factValue>57746000</factValue>
+        <startDate>2009-01-01</startDate>
+        <endDate>2010-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 57746000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems fact are:\nPeriod: 2010-01-01 - 2010-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentDividendsOrDistributions</primaryElement>
+        <factValue>17600000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 17600000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentDividendsOrDistributions fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue</primaryElement>
+        <factValue>118819000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 118819000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets</primaryElement>
+        <factValue>1041544000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1041544000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets fact are:\nPeriod: 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue</primaryElement>
+        <factValue>146214000</factValue>
+        <startDate>2010-01-01</startDate>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 146214000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue fact are:\nPeriod: 2011-01-01 - 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>3388000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3388000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>7415000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 7415000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:PaymentsToAcquireInterestInJointVenture</primaryElement>
+        <factValue>2100000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2100000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:PaymentsToAcquireInterestInJointVenture fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4419000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4419000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>19647000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 19647000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss</primaryElement>
+        <factValue>34225000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 34225000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestments</primaryElement>
+        <factValue>13800000</factValue>
+        <startDate>2009-01-01</startDate>
+        <endDate>2010-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 13800000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:\nPeriod: 2010-01-01 - 2010-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>20493000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 20493000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.18</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.18 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue</primaryElement>
+        <factValue>27986000</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 27986000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue fact are:\nPeriod: 2012-04-01 - 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.33</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.33 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4429000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4429000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue</primaryElement>
+        <factValue>119265000</factValue>
+        <startDate>2009-01-01</startDate>
+        <endDate>2010-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 119265000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue fact are:\nPeriod: 2010-01-01 - 2010-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems</primaryElement>
+        <factValue>11247000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 11247000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>3375000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3375000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.05</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.05 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.36</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.36 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>84737000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 84737000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>7145000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 7145000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>1062000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1062000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses</primaryElement>
+        <factValue>-18813000</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -18813000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses fact are:\nPeriod: 2012-04-01 - 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>19893000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 19893000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital</primaryElement>
+        <factValue>319880000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 319880000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital fact are:\nPeriod: 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>-4272000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -4272000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>1</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestments</primaryElement>
+        <factValue>3300000</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3300000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:\nPeriod: 2012-04-01 - 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital</primaryElement>
+        <factValue>333621000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 333621000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital fact are:\nPeriod: 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.6</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.6 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>-109000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -109000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>18274000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 18274000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOtherThanTemporaryImpairment</primaryElement>
+        <factValue>200000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 200000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOtherThanTemporaryImpairment fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems</primaryElement>
+        <factValue>42787000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 42787000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities</primaryElement>
+        <factValue>-717985000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -717985000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities fact are:\nPeriod: 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems</primaryElement>
+        <factValue>66549000</factValue>
+        <startDate>2010-01-01</startDate>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 66549000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems fact are:\nPeriod: 2011-01-01 - 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestments</primaryElement>
+        <factValue>16000000</factValue>
+        <startDate>2010-01-01</startDate>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 16000000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:\nPeriod: 2011-01-01 - 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>5232000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 5232000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>7934000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 7934000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4430000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4430000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.36</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.36 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>87343000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 87343000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.46</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.46 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestmentsReductionInIncomeAmount</primaryElement>
+        <factValue>400000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 400000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestmentsReductionInIncomeAmount fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.75</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.75 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses</primaryElement>
+        <factValue>-75992000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -75992000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue</primaryElement>
+        <factValue>30915000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 30915000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationRevenue fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.46</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.46 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.75</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.75 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = UsAirwaysGroupIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets</primaryElement>
+        <factValue>1026124000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1026124000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets fact are:\nPeriod: 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.46</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.46 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestments</primaryElement>
+        <factValue>13100000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 13100000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4554000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4554000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss</primaryElement>
+        <factValue>57746000</factValue>
+        <startDate>2009-01-01</startDate>
+        <endDate>2010-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 57746000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss fact are:\nPeriod: 2010-01-01 - 2010-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestmentsReductionInIncomeAmount</primaryElement>
+        <factValue>400000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 400000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestmentsReductionInIncomeAmount fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>1076000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1076000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationImpairmentCharges</primaryElement>
+        <factValue>0</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationImpairmentCharges fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4383000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4383000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>77239000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 77239000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>3387000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3387000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>3358000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3358000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets</primaryElement>
+        <factValue>1151859000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1151859000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationAssets fact are:\nPeriod: 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>1</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.46</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.46 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4558000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4558000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = MedicaFranceSaMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>21399000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 21399000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>-24000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -24000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>20014000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 20014000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = CarrefourFranceSasMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.18</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.18 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems</primaryElement>
+        <factValue>9173000</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 9173000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationIncomeLossFromContinuingOperationsBeforeExtraordinaryItems fact are:\nPeriod: 2012-04-01 - 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentDividendsOrDistributions</primaryElement>
+        <factValue>5500000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 5500000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentDividendsOrDistributions fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = FederalExpressCorporationMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.33</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.33 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities</primaryElement>
+        <factValue>-706244000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -706244000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities fact are:\nPeriod: 2012-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.33</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.33 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>20191000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 20191000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = NewYorkTimesCompanyMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities</primaryElement>
+        <factValue>-818238000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -818238000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationLiabilities fact are:\nPeriod: 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss</primaryElement>
+        <factValue>9173000</factValue>
+        <startDate>2012-01-01</startDate>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 9173000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss fact are:\nPeriod: 2012-04-01 - 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital</primaryElement>
+        <factValue>323559000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 323559000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationEquityOrCapital fact are:\nPeriod: 2012-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses</primaryElement>
+        <factValue>-19668000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -19668000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>1862000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1862000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>21038000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 21038000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss</primaryElement>
+        <factValue>2685000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2685000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationNetIncomeLoss fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>1086000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1086000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses</primaryElement>
+        <factValue>-79665000</factValue>
+        <startDate>2010-01-01</startDate>
+        <endDate>2011-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -79665000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses fact are:\nPeriod: 2011-01-01 - 2011-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.34</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.34 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationImpairmentCharges</primaryElement>
+        <factValue>8600000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 8600000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationImpairmentCharges fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.34</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.34 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ChildtimeChildcareIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.33</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.33 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>4431000</factValue>
+        <endDate>2012-04-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4431000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-04-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HologicincMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>-4707000</factValue>
+        <endDate>2011-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -4707000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2011-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = AmylinPharmaceuticalsIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:IncomeLossFromEquityMethodInvestments</primaryElement>
+        <factValue>2600000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2011-04-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2600000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:\nPeriod: 2011-04-01 - 2011-04-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestments</primaryElement>
+        <factValue>19958000</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 19958000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestments fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SchuleragMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentDividendsOrDistributions</primaryElement>
+        <factValue>1400000</factValue>
+        <startDate>2011-01-01</startDate>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1400000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentDividendsOrDistributions fact are:\nPeriod: 2012-01-01 - 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = SymphonyIriGroupIncMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.6</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.6 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = ConsolidatedSystemsIncMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses</primaryElement>
+        <factValue>-61519000</factValue>
+        <startDate>2009-01-01</startDate>
+        <endDate>2010-01-01</endDate>
+        <dimensions />
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of -61519000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentSummarizedFinancialInformationExpenses fact are:\nPeriod: 2010-01-01 - 2010-01-01\nDimensions: none\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:EquityMethodInvestmentOwnershipPercentage</primaryElement>
+        <factValue>0.05</factValue>
+        <endDate>2012-01-01</endDate>
+        <dimensions>RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember</dimensions>
+        <unit>pure</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 0.05 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:EquityMethodInvestmentOwnershipPercentage fact are:\nPeriod: 2012-01-01\nDimensions: RelatedPartyTransactionsByRelatedPartyAxis = HellwegDieProfiBaumarkteGmbhCoKgMember\nUnit: pure\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.58.2593">
+    <name>The member AffiliatedEntityMember intersecting with the element DerivativeNumberOfInstrumentsHeld is a legitimate use of the counterparty name axis.</name>
+    <description>Flags a pass case where the AffiliatedEntityMember is used with the counterparty name axis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_2593/testco-20131121.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_2593/testco-20131121.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0005.48|DQC.US.0015.2216|DQC.US.0015.2220|DQC.US.0001.51|DQC.US.0001.52|DQC.US.0001.66|DQC.US.0041.73|DQC.US.0001.75|DQC.US.0015.5445|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497|DQC.US.0048.7482" />
+  </variation>
+  <variation id="DQC_0001.59.3063">
+    <name>Creates a fail when the PlanNameAxis axis is used with a member that is not an extension member.</name>
+    <description>Creates 8 fail cases when the us-gaap member StockCompensationPlanMember is used on the PlanNameAxis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3063/testco-20150331.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3063/testco-20150331.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.314|DQC.US.0015.317|DQC.US.0015.322|DQC.US.0041.73|DQC.US.0015.7147|DQC.US.0015.7137|DQC.US.0065.7502">
+      <error severity="error" count="8">DQC.US.0001.59</error>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfSharesAvailableForGrant</primaryElement>
+        <factValue></factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfSharesAvailableForGrant fact are:\nPeriod: 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfTotalSharesVestedAndUnvested</primaryElement>
+        <factValue>147108</factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 147108 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfTotalSharesVestedAndUnvested fact are:\nPeriod: 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfSharesAuthorized</primaryElement>
+        <factValue>230000</factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 230000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfSharesAuthorized fact are:\nPeriod: 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExercisePrice</primaryElement>
+        <factValue>11.74</factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember; RangeAxis = MinimumMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 11.74 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExercisePrice fact are:\nPeriod: 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember; RangeAxis = MinimumMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockIssuedDuringPeriodSharesShareBasedCompensation</primaryElement>
+        <factValue>149751</factValue>
+        <startDate>2015-01-01</startDate>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 149751 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:StockIssuedDuringPeriodSharesShareBasedCompensation fact are:\nPeriod: 2015-04-01 - 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOtherShareIncreaseDecrease</primaryElement>
+        <factValue>80249</factValue>
+        <startDate>2015-01-01</startDate>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 80249 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOtherShareIncreaseDecrease fact are:\nPeriod: 2015-04-01 - 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfTotalFullyVestedShares</primaryElement>
+        <factValue>140858</factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 140858 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardNumberOfTotalFullyVestedShares fact are:\nPeriod: 2015-04-01\nDimensions: PlanNameAxis = StockCompensationPlanMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExercisePrice</primaryElement>
+        <factValue>36.74</factValue>
+        <endDate>2015-04-01</endDate>
+        <dimensions>RangeAxis = MaximumMember; PlanNameAxis = StockCompensationPlanMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 36.74 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardFairValueAssumptionsExercisePrice fact are:\nPeriod: 2015-04-01\nDimensions: RangeAxis = MaximumMember; PlanNameAxis = StockCompensationPlanMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.60.3062">
+    <name>Creates a fail when the DefinedContributionPlanNameAxis axis is used with a member that is not an extension member.</name>
+    <description>Creates 37 fail cases when the DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember is used on the DefinedContributionPlanNameAxis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3062/testco-20141231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3062/testco-20141231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.1875|DQC.US.0015.1881|DQC.US.0015.1964|DQC.US.0015.2447|DQC.US.0015.251|DQC.US.0015.2730|DQC.US.0015.2841|DQC.US.0015.2870|DQC.US.0041.73|DQC.US.0015.3218|DQC.US.0008.6819|DQC.US.0001.62|DQC.US.0043.7488|DQC.US.0048.7482">
+      <error severity="error" count="43">DQC.US.0001.60</error>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodAggregateIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodAggregateIntrinsicValue fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercised</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercised fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue</primaryElement>
+        <factValue>82000</factValue>
+        <endDate>2014-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 82000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue fact are:\nPeriod: 2014-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber</primaryElement>
+        <factValue>340000</factValue>
+        <endDate>2013-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 340000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber fact are:\nPeriod: 2013-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossWeightedAverageRemainingContractualTerm1</primaryElement>
+        <factValue>P3Y4M28D</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P3Y4M28D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossWeightedAverageRemainingContractualTerm1 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.64</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.64 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageExercisePrice fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableIntrinsicValue1</primaryElement>
+        <factValue>82000</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 82000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableIntrinsicValue1 fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross</primaryElement>
+        <factValue>100000</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 100000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.64</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.64 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossIntrinsicValue fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:OutstandingAtBeginningOfPeriodWeightedAverageRemainingContractualTermYears2</primaryElement>
+        <factValue>P2Y7M17D</factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P2Y7M17D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:OutstandingAtBeginningOfPeriodWeightedAverageRemainingContractualTermYears2 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:OutstandingAtEndOfPeriodWeightedAverageRemainingContractualTermYears4</primaryElement>
+        <factValue>P3Y1M13D</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P3Y1M13D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:OutstandingAtEndOfPeriodWeightedAverageRemainingContractualTermYears4 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.41</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.41 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue</primaryElement>
+        <factValue>82000</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 82000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue</primaryElement>
+        <factValue>43000</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 43000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue>4.81</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 4.81 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.62</factValue>
+        <endDate>2014-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.62 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice fact are:\nPeriod: 2014-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableIntrinsicValue1</primaryElement>
+        <factValue>43000</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 43000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableIntrinsicValue1 fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber</primaryElement>
+        <factValue>365000</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 365000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercisedAggregateIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercisedAggregateIntrinsicValue fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue</primaryElement>
+        <factValue>80000</factValue>
+        <endDate>2013-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 80000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingIntrinsicValue fact are:\nPeriod: 2013-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross</primaryElement>
+        <factValue>50000</factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 50000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm1</primaryElement>
+        <factValue>P3Y1M13D</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P3Y1M13D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm1 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercisedAggregateIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercisedAggregateIntrinsicValue fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriod</primaryElement>
+        <factValue>60000</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 60000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriod fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExercisesInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue>1.72</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1.72 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExercisesInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.62</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.62 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:OutstandingAtEndOfPeriodWeightedAverageRemainingContractualTermYears4</primaryElement>
+        <factValue>P2Y5M27D</factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P2Y5M27D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:OutstandingAtEndOfPeriodWeightedAverageRemainingContractualTermYears4 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercised</primaryElement>
+        <factValue>65000</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 65000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:StockIssuedDuringPeriodSharesStockOptionsExercised fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableNumber</primaryElement>
+        <factValue>315000</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 315000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableNumber fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.62</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.62 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableWeightedAverageExercisePrice fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm1</primaryElement>
+        <factValue>P2Y5M27D</factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P2Y5M27D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:SharebasedCompensationArrangementBySharebasedPaymentAwardOptionsExercisableWeightedAverageRemainingContractualTerm1 fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.53</factValue>
+        <endDate>2013-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.53 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingWeightedAverageExercisePrice fact are:\nPeriod: 2013-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber</primaryElement>
+        <factValue>315000</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 315000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber fact are:\nPeriod: 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGrossIntrinsicValue fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableNumber</primaryElement>
+        <factValue>365000</factValue>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 365000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsExercisableNumber fact are:\nPeriod: 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodAggregateIntrinsicValue</primaryElement>
+        <factValue></factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriodAggregateIntrinsicValue fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:OutstandingAtBeginningOfPeriodWeightedAverageRemainingContractualTermYears2</primaryElement>
+        <factValue>P1Y11M16D</factValue>
+        <startDate>2013-07-01</startDate>
+        <endDate>2014-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of P1Y11M16D . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:OutstandingAtBeginningOfPeriodWeightedAverageRemainingContractualTermYears2 fact are:\nPeriod: 2014-01-01 - 2014-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue>3.81</factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3.81 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsGrantsInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExercisesInPeriodWeightedAverageExercisePrice</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>USD/shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementsByShareBasedPaymentAwardOptionsExercisesInPeriodWeightedAverageExercisePrice fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: USD/shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber</primaryElement>
+        <factValue>315000</factValue>
+        <endDate>2014-07-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 315000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingNumber fact are:\nPeriod: 2014-07-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriod</primaryElement>
+        <factValue></factValue>
+        <startDate>2014-07-01</startDate>
+        <endDate>2015-01-01</endDate>
+        <dimensions>DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember</dimensions>
+        <unit>shares</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresAndExpirationsInPeriod fact are:\nPeriod: 2015-01-01 - 2015-01-01\nDimensions: DefinedContributionPlanNameAxis = DeferredCompensationArrangementWithIndividualByTypeOfCompensationPensionAndOtherPostretirementBenefitsMember\nUnit: shares\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.61.6803">
+    <name>Creates a pass when the RangeAxis is used with a us-gaap member that is defined in the list of allowable elements in the rule.</name>
+    <description>Creates a pass case when the maximum, minimum and weightedAverage members are used on the range axis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3481/testco-20150630.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3481/testco-20150630.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0005.48|DQC.US.0006.14|DQC.US.0009.19|DQC.US.0009.23|DQC.US.0015.1615|DQC.US.0015.2717|DQC.US.0018.34|DQC.US.0041.73|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497" />
+  </variation>
+</testcase>

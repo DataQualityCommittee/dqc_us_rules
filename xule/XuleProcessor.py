@@ -1179,7 +1179,7 @@ def evaluate_block(block_expr, xule_context):
     #for var_assignment in var_assignments:
         var_info = xule_context.add_var(var_assignment['varName'],
                              var_assignment['node_id'],
-                             True, #tagged - all variables are tagged
+                             var_assignment['varName'], #tagged - all variables are tagged
                              var_assignment['body'])
         calc_var(var_info, None, xule_context)
     
@@ -1253,7 +1253,8 @@ def calc_var(var_info, const_ref, xule_context):
     
     var_value = var_value.clone()
     #if var_info['tagged']:
-    xule_context.tags[var_info['name']] = var_value
+    if var_info['tagged'] is not None:
+        xule_context.tags[var_info['tagged']] = var_value
 
     return var_value
 
@@ -1409,7 +1410,7 @@ def evaluate_for(for_expr, xule_context):
         else:
             for_loop_var.used_expressions.update(used_expressions)
         xule_context.add_arg(for_expr['forVar'],
-                              for_expr['forLoopExpr']['node_id'], 
+                              for_expr['forLoopExpr']['node_id'],
                               for_expr['forVar'], #tagged - all variables are automatically tagged
                               for_loop_var,
                               'single')
@@ -2593,7 +2594,7 @@ def evaluate_filter(filter_expr, xule_context):
     for item_value in collection_value.value:
         xule_context.add_arg('item',
                              filter_expr['expr']['node_id'],
-                             True,
+                             None,
                              item_value,
                              'single')
         
@@ -2821,7 +2822,7 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
         
         # Decide if the child will be in the results. If the child is not in the results, the navigation does not stop.
         if (
-            nav_traverse_where(nav_expr, rel, xule_context) and
+            nav_traverse_where(nav_expr, 'whereExpr', rel, xule_context) and
             (
                 dimension_arcroles is None or 
                 'dimensional' not in nav_expr or
@@ -2851,19 +2852,22 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
                 else:
                     inner_children += [keep_rel,]
             else:
-                next_children = nav_traverse(nav_expr, 
-                                             xule_context, 
-                                             direction, 
-                                             network, 
-                                             child, 
-                                             end_concepts, 
-                                             remaining_depth - 1, 
-                                             return_names, 
-                                             dimension_arcroles, 
-                                             previous_concepts, 
-                                             nav_depth + 1, 
-                                             result_order, 
-                                             arc_attribute_names)
+                if nav_traverse_where(nav_expr, 'stopExpr', rel, xule_context):
+                    next_children = list()
+                else:
+                    next_children = nav_traverse(nav_expr, 
+                                                 xule_context, 
+                                                 direction, 
+                                                 network, 
+                                                 child, 
+                                                 end_concepts, 
+                                                 remaining_depth - 1, 
+                                                 return_names, 
+                                                 dimension_arcroles, 
+                                                 previous_concepts, 
+                                                 nav_depth + 1, 
+                                                 result_order, 
+                                                 arc_attribute_names)
                                 
                 if len(next_children) == 0 and len(end_concepts) > 0: # The to concept was never found
                     # Reset the inner_child list. This will throw away all reseults that lead to this moment.
@@ -2897,58 +2901,33 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
             first_time = False 
     return children
 
-def nav_traverse_where(nav_expr, relationship, xule_context):
-    if 'whereExpr' not in nav_expr:
-        return True
+def nav_traverse_where(nav_expr, clause_name, relationship, xule_context):
+    if clause_name not in nav_expr:
+        if clause_name == 'whereExpr':
+            return True
+        else: # 'stopExpr'
+            return False
     else:
         xule_context.add_arg('relationship',
-                             nav_expr['whereExpr']['node_id'],
-                             True,
+                             nav_expr[clause_name]['node_id'],
+                             None,
                              XuleValue(xule_context, relationship, 'relationship'),
                              'single')
         
         try:
-            nav_where_results = evaluate(nav_expr['whereExpr'], xule_context)
+            nav_where_results = evaluate(nav_expr[clause_name], xule_context)
         finally:    
             #remove the args
             xule_context.del_arg('relationship',
-                                 nav_expr['whereExpr']['node_id'])
+                                 nav_expr[clause_name]['node_id'])
 
         if nav_where_results.type == 'bool':
             return nav_where_results.value
         elif nav_where_results.type in ('unbound', 'none'):
             return False
         elif filter_where_result.type not in ('unbound', 'none'):
-            raise XuleProcessingError(_("The where clause on a navigation expression must evaluate to a boolean, found '{}'.".format(nav_where_results.type)), xule_context)
+            raise XuleProcessingError(_("The {} clause on a navigation expression must evaluate to a boolean, found '{}'.".format(clause_name[:clause_name.find('Expr')], nav_where_results.type)), xule_context)
 
-        
-#         if 'is_iterable' in nav_expr['whereExpr']:
-#             raise XuleProcessingError(_("Where expression in a navigation cannot return multiple values"))
-#         
-#         xule_context.add_arg('relationship',
-#                              nav_expr['whereExpr']['node_id'],
-#                              True,
-#                              XuleValue(xule_context, relationship, 'relationship'),
-#                              'single')                          
-#         def cleanup_function():
-#             #remove the args
-#             xule_context.del_arg('relationship',
-#                                  nav_expr['whereExpr']['node_id'])
-# 
-#         nav_where_results = isolated_evaluation(xule_context,
-#                                                      nav_expr['whereExpr']['node_id'], 
-#                                                      nav_expr['whereExpr'], 
-#                                                      cleanup_function=cleanup_function
-#                                                      
-#                                                      )
-# 
-#         if None in nav_where_results.values:
-#             if nav_where_results.values[None][0].type == 'bool':
-#                 return nav_where_results.values[None][0].value
-#             elif nav_where_results.values[None][0].type == 'unbound':
-#                 return False
-#         else:
-#             return False
 
 def nav_get_role(nav_expr, role_type, dts, xule_context):
     """Get the full role from the navigation expression.
@@ -3978,7 +3957,7 @@ def evaluate_index(index_expr, xule_context):
             else:
                 key_value = index_value.value
             
-            return left_value.key_search_dictionary.get(key_value, XuleValue(xule_context, None, 'none'))
+            left_value = left_value.key_search_dictionary.get(key_value, XuleValue(xule_context, None, 'none'))
         
         else:
             raise XuleProcessingError(_("Index epxressions can only operate on a list, found '%s'" % left_value.type), 
