@@ -8,15 +8,13 @@ Taxonomy: US GAAP 2017
 
 **/
 
-RULE-NAME-PREFIX DQC
+rule-name-prefix DQC
 
-ASSERT US.0067.xxx SATISFIED
-
-$rule-suffix = xxx
-
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
+assert US.0067.1234 satisfied
 
 $RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap returns set (target-name);
+
+$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
 
 $PriorStandard = $RevenueElements + $network440000;
 
