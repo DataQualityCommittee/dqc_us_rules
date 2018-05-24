@@ -1,0 +1,180 @@
+<!--FILENAME-->
+<!--DQC_0001-->
+<!-- Copyright 2017 XBRL US Inc. All Rights Reserved. -->
+<!-- Validation File Version 2.0 --><?xml-stylesheet type="text/xsl" href="."?>
+<testcase xmlns="http://xbrl.org/2008/conformance" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <creator>
+    <name>Campbell Pryde</name>
+    <email>campbell.pryde@xbrl.us</email>
+  </creator>
+  <number>DQC_0001-0</number>
+  <ruleIdentifier>DQC_0001</ruleIdentifier>
+  <description>Certain axes in the US GAAP taxonomy should only have certain members as shown in the US GAAP taxonomy. This rule tests whether these axes have inappropriate members \n\nCertain axes can have custom or extended (i.e., company specific) members. This rule also tests whether only these axes have custom members and, therefore, limits the use of custom or extended members to those situations where they are appropriate because the member is unique to the filer. \n\nThe rule evaluates a company&#226;&#8364;&#8482;s extension taxonomy and instance document and flags an error when there is an inappropriate axis/member combination in the extension taxonomy even though there is no fact associated with the axis/member combination in the instance document.\n</description>
+  <ruleMessage>The member, ${Rule.member.label}, associated with the axis, FairValueByFairValueHierarchyLevelAxis and element ${fact1.label}, is not an appropriate Axis/Member combination. \n</ruleMessage>
+  <variation id="DQC_0001.61.6802">
+    <name>Creates a fail when the RangeAxis is used with a member that is not defined on an the same axis in the taxonomy or an approved extension.</name>
+    <description>Creates 12 fail cases when the members Year2Member through Year5Member is used with the 12 facts on the RangeAxis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_2619/testco-20140531.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_2619/testco-20140531.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0001.74|DQC.US.0005.48|DQC.US.0043.7488">
+      <error severity="error" count="12">DQC.US.0001.61</error>
+      <result>
+        <primaryElement>ext:NumberOfWellsRequiredToBeDrilledDuringTheYear</primaryElement>
+        <factValue>3</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year5Member</dimensions>
+        <unit>wells</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 3 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:NumberOfWellsRequiredToBeDrilledDuringTheYear fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year5Member\nUnit: wells\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasDeliveryCommitmentsAndContractsTerm</primaryElement>
+        <factValue>2016-04-27</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2016-04-27 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasDeliveryCommitmentsAndContractsTerm fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:NumberOfWellsRequiredToBeDrilledDuringTheYear</primaryElement>
+        <factValue>2</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member</dimensions>
+        <unit>wells</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:NumberOfWellsRequiredToBeDrilledDuringTheYear fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member\nUnit: wells\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers</primaryElement>
+        <factValue>100</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions />
+        <unit>sqkilometers</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 100 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: none\nUnit: sqkilometers\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers</primaryElement>
+        <factValue>200</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year4Member</dimensions>
+        <unit>sqkilometers</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 200 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year4Member\nUnit: sqkilometers\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasDeliveryCommitmentsAndContractsTerm</primaryElement>
+        <factValue>2015-04-27</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions />
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2015-04-27 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasDeliveryCommitmentsAndContractsTerm fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: none\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasDeliveryCommitmentsAndContractsTerm</primaryElement>
+        <factValue>2017-04-27</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year4Member</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2017-04-27 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasDeliveryCommitmentsAndContractsTerm fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year4Member\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasDeliveryCommitmentsAndContractsTerm</primaryElement>
+        <factValue>2018-04-27</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year5Member</dimensions>
+        <unit></unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2018-04-27 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasDeliveryCommitmentsAndContractsTerm fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year5Member\nUnit: \nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:NumberOfWellsRequiredToBeDrilledDuringTheYear</primaryElement>
+        <factValue>2</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year4Member</dimensions>
+        <unit>wells</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 2 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:NumberOfWellsRequiredToBeDrilledDuringTheYear fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year4Member\nUnit: wells\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasCommitmentsAndContracts2DSeismicSurveyWorkRequiredToBeCompletedKilometers</primaryElement>
+        <factValue>100</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member</dimensions>
+        <unit>kilometers</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 100 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasCommitmentsAndContracts2DSeismicSurveyWorkRequiredToBeCompletedKilometers fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member\nUnit: kilometers\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasCommitmentsAndContracts2DSeismicSurveyWorkRequiredToBeCompletedKilometers</primaryElement>
+        <factValue>250</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>RangeAxis = Year2Member</dimensions>
+        <unit>kilometers</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 250 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasCommitmentsAndContracts2DSeismicSurveyWorkRequiredToBeCompletedKilometers fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: RangeAxis = Year2Member\nUnit: kilometers\nRule version: ${ruleVersion}\n</message>
+      </result>
+      <result>
+        <primaryElement>ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers</primaryElement>
+        <factValue>200</factValue>
+        <startDate>2014-03-01</startDate>
+        <endDate>2014-06-01</endDate>
+        <dimensions>OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member</dimensions>
+        <unit>sqkilometers</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 200 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:OilAndGasCommitmentsAndContracts3DSeismicSurveyWorkRequiredToBeCompletedDuringYear2SquareKilometers fact are:\nPeriod: 2014-06-01 - 2014-06-01\nDimensions: OilAndGasDeliveryCommitmentsAndContractsAxis = LicenseAmendmentMember; RangeAxis = Year3Member\nUnit: sqkilometers\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.62.3060">
+    <name>Creates a fail case when the CurrencyAxis is used with a member that is not a member child of the CurrencyAxis or an allowable extension.</name>
+    <description>Creates a fail case when the EuropeMember is used on the CurrencyAxis instead of EUR.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3060/testco-20150404.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3060/testco-20150404.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.2248|DQC.US.0015.2416|DQC.US.0015.2419|DQC.US.0015.764|DQC.US.0014.2792|DQC.US.0014.2796|DQC.US.0015.2731|DQC.US.0015.2738|DQC.US.0001.75|DQC.US.0043.7488">
+      <error severity="error" count="1">DQC.US.0001.62</error>
+      <result>
+        <primaryElement>us-gaap:DebtInstrumentFaceAmount</primaryElement>
+        <factValue>600000000</factValue>
+        <endDate>2015-04-05</endDate>
+        <dimensions>DebtInstrumentAxis = OneTwentyFivePercentNotesDueTwentyTwentyFiveMember; CurrencyAxis = EuropeMember</dimensions>
+        <unit>EUR</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 600000000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this us-gaap:DebtInstrumentFaceAmount fact are:\nPeriod: 2015-04-05\nDimensions: DebtInstrumentAxis = OneTwentyFivePercentNotesDueTwentyTwentyFiveMember; CurrencyAxis = EuropeMember\nUnit: EUR\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+  <variation id="DQC_0001.62.3061">
+    <name>Creates a pass case when the CurrencyAxis is used with a member that is a member child of the CurrencyAxis or is an allowable extension.</name>
+    <description>Creates a pass case when the member OtherCurrencyMember is used on the CurrencyAxis</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3061/testco-20150131.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3061/testco-20150131.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.2708|DQC.US.0008.6819" />
+  </variation>
+  <variation id="DQC_0001.63.3059">
+    <name>Creates a fail case when the PositionAxis is used with a member that is not a member child of the PositionAxis or an allowable extension.</name>
+    <description>Creates 1 fail case when the member AmendedReturnsMember is used on the Position Axis.</description>
+    <data>
+      <schema>http://files.xbrl.us/testcases/dqc/CASE_3059/testco-20141231.xml</schema>
+      <instance readMeFirst="true">http://files.xbrl.us/testcases/dqc/CASE_3059/testco-20141231.xml</instance>
+    </data>
+    <results blockedMessageCodes="DQC.US.0015.623|DQC.US.0015.2926|DQC.US.0001.61|DQC.US.0060.7495|DQC.US.0060.7496|DQC.US.0060.7497">
+      <error severity="error" count="1">DQC.US.0001.63</error>
+      <result>
+        <primaryElement>ext:UnrecognizedTaxBenefits</primaryElement>
+        <factValue>1600000</factValue>
+        <endDate>2014-01-01</endDate>
+        <dimensions>PositionAxis = AmendedReturnsMember; StatementScenarioAxis = BilateralAdvancePricingAgreementMember</dimensions>
+        <unit>USD</unit>
+        <message>The member, ${Rule.member.label} is used on the axis ${Rule.axis.label} with the element ${fact1.label} with a value of 1600000 . This member should not be used with the ${Rule.axis.label].\n\nThe properties of this ext:UnrecognizedTaxBenefits fact are:\nPeriod: 2014-01-01\nDimensions: PositionAxis = AmendedReturnsMember; StatementScenarioAxis = BilateralAdvancePricingAgreementMember\nUnit: USD\nRule version: ${ruleVersion}\n</message>
+      </result>
+    </results>
+  </variation>
+</testcase>

@@ -14,7 +14,7 @@ assert US.0015 satisfied
 $fact1 =
 	{@concept in $non_neg_items.keys @unit=* where $fact < 0
 		and not match_set_substring($fact, $exclude_non_neg_string_members)
-		and (to-set($fact.dimensions.values.name) intersect $exclude_non_neg_members).length == 0
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0
 		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
 		and not_elim_adjust($fact)
 		};
