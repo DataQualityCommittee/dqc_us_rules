@@ -554,6 +554,10 @@ def xuleValidate(val):
         val.modelXbrl.info("DQC",_("Finished DQC validation"))
         val.modelXbrl.modelManager.showStatus(_("Finished DQC validation"))
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 596286a09c9aab63221edb78e0c5f8b7f4076241
 def xuleTestXbrlLoaded(modelTestcase, modelXbrl, testVariation):
     global _options
     global _test_start
