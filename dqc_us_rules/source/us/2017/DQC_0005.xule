@@ -11,9 +11,9 @@ Taxonomy: US GAAP 2017
 	value or the context end date on the fact, whichever is later.
 */
 
-constant $document_period_end_value =  set(date({covered @dei:DocumentPeriodEndDate}))
+constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
 
-constant $document_period_end_context = set({covered @dei:DocumentPeriodEndDate}.period.end)
+constant $document_period_end_context = set({covered @concept.local-name ='DocumentPeriodEndDate'}.period.end)
 
 constant $maximum_period_end_date = max($document_period_end_value + $document_period_end_context)
 
@@ -32,10 +32,10 @@ assert US.0005.17 satisfied
     Check that the form is not in the excluded form list.
 */
 
-if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
 else
-	$fact1 = {covered @dei:EntityCommonStockSharesOutstanding};
+	$fact1 = {covered @concept.local-name ='EntityCommonStockSharesOutstanding'};
 	$shares_at_date = $fact1.period.end;
 	$shares_at_date < $maximum_period_end_date
 
@@ -49,7 +49,7 @@ The properties of this {$fact1.name} fact are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}
-Rule version: 2.1.0"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -58,7 +58,7 @@ severity error
 assert US.0005.48 satisfied
 
 
-if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
 else
 	$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
@@ -71,7 +71,7 @@ The properties of this {$fact1.name} fact are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}
-Rule version: 2.1.0"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -79,7 +79,7 @@ severity error
 assert US.0005.49 satisfied
 
 
-if (any(set(exists({covered @dei:DocumentType where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
 else
 	$fact1 = {@StatementScenarioAxis = ScenarioForecastMember};
@@ -93,7 +93,7 @@ The properties of this {$fact1.name} fact are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}
-Rule version: 2.1.0"
+Rule version: {$ruleVersion}"
 
 
 severity error
