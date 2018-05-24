@@ -17,7 +17,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 6 |
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 6 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 6 |
-| [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 6.0.0   |
+| [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 6   |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved for IFRS &amp; US GAAP | 6 |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 6 |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved for IFRS &amp; US GAAP | 6 |
