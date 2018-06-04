@@ -24,6 +24,12 @@ $member_facts = set(for $path in $member_paths
 							{nonils @concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member}
 							)
 					);
+		/** Check if this is actually correct - looks like get double counting if head of path has a value will why will it not get counted multiple times. 
+		a -> B -> c
+		a -> B -> d
+		If a has a value wouldn't this be double counted.  SHOULDNT THE LIST BE A SET OR DOES THE SET EARLIER FIX THIS.
+		- TALK TO PHILLIP **/
+		
 $member_sum = sum(list(for $member_fact in $member_facts
 						if $member_fact.length > 0
 							$member_fact[1]
@@ -57,4 +63,6 @@ Rule version: {$ruleVersion}"
 
 
 SEVERITY error
+
+
 

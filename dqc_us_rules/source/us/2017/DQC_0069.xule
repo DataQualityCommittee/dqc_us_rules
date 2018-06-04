@@ -12,17 +12,23 @@ rule-name-prefix DQC
 
 assert US.0069.1236 satisfied
 
-$childMember = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount}.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
+$LessAmount = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount};
+$GreaterAmount = {@concept = DefinedBenefitPlanFairValueOfPlanAssets};
+
+$childMember = $LessAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
 
 if $childMember == none
-	skip
+	$message_related_party = "The element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount with a value of {$LessAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
+	true
 else
 	$parentMember = navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis to $childMember where $relationship.target == $childMember returns source-name;
+	
+		$message_related_party = "It is expected that the concept DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount with a value of {$LessAmount} should not use the same member element  on the DefinedBenefitPlanByPlanAssetCategoriesAxis as the  element DefinedBenefitPlanFairValueOfPlanAssets with a value of {$GreaterAmount}.  The element {$LessAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.";
 
-	{@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember}#LessAmount >= {@concept = DefinedBenefitPlanFairValueOfPlanAssets 	@DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}#GreaterAmount
+	{@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember} > {@concept = DefinedBenefitPlanFairValueOfPlanAssets 	@DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}
 
 message
-"It is expected that the concept {$LessAmount.concept} with a value of {$LessAmount} should not use the same member element  on the DefinedBenefitPlanByPlanAssetCategoriesAxis as the  element {$GreaterAmount.concept} with a value of {$GreaterAmount}.  The element {$LessAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.
+"{$message_related_party}
 
 The properties of this {$LessAmount.concept} fact are:
 Period :{$LessAmount.period}
@@ -66,7 +72,3 @@ Rule version: {$ruleVersion}"
 
 
 SEVERITY error
-
-
-
-
