@@ -1,0 +1,68 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2018
+
+**/
+
+rule-name-prefix DQC
+
+assert US.0070.7645 satisfied
+
+
+$member_paths =	navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis returns paths;
+
+if $member_paths.length == 0
+	skip
+else
+
+$member_facts = set(for $path in $member_paths 
+						list(for $member in $path
+							{nonils @concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member}
+							)
+					);
+		/** Check if this is actually correct - looks like get double counting if head of path has a value will why will it not get counted multiple times. 
+		a -> B -> c
+		a -> B -> d
+		If a has a value wouldn't this be double counted.  SHOULDNT THE LIST BE A SET OR DOES THE SET EARLIER FIX THIS.
+		- TALK TO PHILLIP **/
+		
+$member_sum = sum(list(for $member_fact in $member_facts
+						if $member_fact.length > 0
+							$member_fact[1]
+						else
+							0));
+
+$member_string = sum(set(for $member_fact in $member_facts
+						if $member_fact.length > 0
+							"\t" + $member_fact[1].dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).local-name + " --> {$member_fact[1]} \n"
+						else
+							""));
+								
+tolerance_for_decimals({@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}#FairValueOfPlanAssets, $member_sum, 2 ) and $member_sum != 0
+
+message
+"The concept DefinedBenefitPlanFairValueOfPlanAssets with a defaulted value of {$FairValueOfPlanAssets} is not equal to the dimensionally qualified with the DefinedBenefitPlanByPlanAssetCategoriesAxis which has an aggregate value of {$member_sum}. 
+Which is comprised of the following:
+{$member_string}
+
+The value of a concept broken down by its components along the DefinedBenefitPlanByPlanAssetCategoriesAxis axis should  be equal to its component pieces. Please check that either the default value of {$FairValueOfPlanAssets} is correct for DefinedBenefitPlanFairValueOfPlanAssets or that correct dimensions have been defined. In the case where the filer has reported a sub component of plan assets but not a complete breakdown then the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
+
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this {$FairValueOfPlanAssets.concept} fact are:
+Period :{$FairValueOfPlanAssets.period}
+Dimensions : {$FairValueOfPlanAssets.dimensions.join(', ','=')}
+Unit : {$FairValueOfPlanAssets.unit}
+
+Rule Element Id:7645
+Rule version: {$ruleVersion}"
+
+
+SEVERITY error
+
+
+
