@@ -10,64 +10,74 @@ Taxonomy: US GAAP 2017
 
 rule-name-prefix DQC
 
-assert US.0069.1236 satisfied
+assert US.0069.7642 satisfied
 
-$LessAmount = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount};
-$GreaterAmount = {@concept = DefinedBenefitPlanFairValueOfPlanAssets};
+$ComponentAmount = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount};
 
-$childMember = $LessAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
+
+$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
 
 if $childMember == none
-	$message_related_party = "The element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount with a value of {$LessAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
+	$message_inv_in_cat = "The element {$ComponentAmount.concept} with a value of {$ComponentAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
 	true
 else
 	$parentMember = navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis to $childMember where $relationship.target == $childMember returns source-name;
 	
-		$message_related_party = "It is expected that the concept DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount with a value of {$LessAmount} should not use the same member element  on the DefinedBenefitPlanByPlanAssetCategoriesAxis as the  element DefinedBenefitPlanFairValueOfPlanAssets with a value of {$GreaterAmount}.  The element {$LessAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.";
-
-	{@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember} > {@concept = DefinedBenefitPlanFairValueOfPlanAssets 	@DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}
+	if (DefinedBenefitPlanByPlanAssetCategoriesAxis in  $parentMember)
+		$message_inv_in_cat = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount}  and having a member of {$ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis)} should not use a member that is a direct child of the axis DefinedBenefitPlanByPlanAssetCategoriesAxis.  The element {$ComponentAmount.concept} is supposed to be used as a  component of DefinedBenefitPlanFairValueOfPlanAssets with a more specific member.  The member {$ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis)} should appear on the DefinedBenefitPlanByPlanAssetCategoriesAxis as a child of the member used to report the value for DefinedBenefitPlanFairValueOfPlanAssets.";
+		true
+	else
+		$GreaterAmount = {@concept = DefinedBenefitPlanFairValueOfPlanAssets};
+		$message_inv_in_cat = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount} should be less than the value of DefinedBenefitPlanFairValueOfPlanAssets with a value of {$GreaterAmount}.  The element {$ComponentAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.";
+	
+	{@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember} >= {@concept = DefinedBenefitPlanFairValueOfPlanAssets 	@DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}
 
 message
-"{$message_related_party}
+"{$message_inv_in_cat}
 
-The properties of this {$LessAmount.concept} fact are:
-Period :{$LessAmount.period}
-Dimensions : {$LessAmount.dimensions.join(', ','=')}
-Unit : {$LessAmount.unit}
+The properties of this {$ComponentAmount.concept} fact are:
+Period :{$ComponentAmount.period}
+Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
+Unit : {$ComponentAmount.unit}
 
-Rule Element Id:xxx
+Rule Element Id:7642
 Rule version: {$ruleVersion}"
 
 
 SEVERITY error
 
 
-assert US.0069.1237 satisfied
+assert US.0069.7643 satisfied
 
-$LessAmount = {@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets};
-$GreaterAmount = {@concept = DefinedBenefitPlanFairValueOfPlanAssets};
+$ComponentAmount = {@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets};
 
-$childMember = $LessAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
+$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
 
 if $childMember == none
-	$message_related_party = "The element DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets with a value of {$LessAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
+	$message_related_party = "The element {$ComponentAmount.concept} with a value of {$ComponentAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
 	true 
 else
+	
 	$parentMember = navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis to $childMember where $relationship.target == $childMember returns source-name;
 	
-	$message_related_party = "It is expected that the concept DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets with a value of {$LessAmount} should not use the same member element  on the DefinedBenefitPlanByPlanAssetCategoriesAxis as the  element DefinedBenefitPlanFairValueOfPlanAssets with a value of {$GreaterAmount}.  The element {$LessAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.";
+	if (DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember)
+		$message_related_party = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount}  and having a member of {$ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis)} should not use a member that is a direct child of the axis DefinedBenefitPlanByPlanAssetCategoriesAxis.  The element {$ComponentAmount.concept} is supposed to be used as a  component of DefinedBenefitPlanFairValueOfPlanAssets with a more specific member.  The member {$ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis)} should appear on the DefinedBenefitPlanByPlanAssetCategoriesAxis as a child of the member used to report the value for DefinedBenefitPlanFairValueOfPlanAssets.";
+		true
+	else
+		$GreaterAmount = {@concept = DefinedBenefitPlanFairValueOfPlanAssets};
+		$message_related_party = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount} should be less than the value of {$GreaterAmount.concept} with a value of {$GreaterAmount}.  The element {$ComponentAmount.concept} is supposed to be used as a  component of {$GreaterAmount.concept} with a more specific member.";
 
-	{@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember} > {@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}
+	{@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $childMember} >= {@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis in $parentMember}
 
 message
 "{$message_related_party}
 
-The properties of this {$LessAmount.concept} fact are:
-Period :{$LessAmount.period}
-Dimensions : {$LessAmount.dimensions.join(', ','=')}
-Unit : {$LessAmount.unit}
+The properties of this {$ComponentAmount.concept} fact are:
+Period :{$ComponentAmount.period}
+Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
+Unit : {$ComponentAmount.unit}
 
-Rule Element Id:xxx
+Rule Element Id:7643
 Rule version: {$ruleVersion}"
 
 
