@@ -54,8 +54,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Draft for Committee Review |  |
 
 ## Guidance
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.pdf" target="_blank">Legal Entities &amp; Consolidation Guidance</a> - Draft for Committee Review   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.pdf" target="_blank">Revenue Recognition Guidance</a> - Draft for Committee Review  
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Draft for Committee Review   
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Recognition Guidance</a> - Draft for Committee Review  
 ----- 
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
