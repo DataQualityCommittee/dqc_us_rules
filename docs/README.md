@@ -57,7 +57,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.pdf" target="_blank">Legal Entities &amp; Consolidation Guidance</a> - Draft for Committee Review   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.pdf" target="_blank">Revenue Recognition Guidance</a> - Draft for Committee Review  
 ----- 
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
 
