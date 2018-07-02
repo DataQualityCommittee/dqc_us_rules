@@ -18,10 +18,10 @@ rule-name-prefix DQC
 assert US.0071.7646 satisfied
 
 /** Count the number of revenue facts that are reported using the ProductOrServiceAxis **/
-$count_values =count(list({@@concept in list(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold) @ProductOrServiceAxis = *}#Revenue));
+$count_values =count(list({@@concept in list(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold) @srt:ProductOrServiceAxis = *}#Revenue));
 
 /**If there is only 1 fact and the default value is not reported then flag an error **/
-$count_values == 1 and (not exists({@ProductOrServiceAxis = none}))
+$count_values == 1 and (not exists({@srt:ProductOrServiceAxis = none}))
 
 
 message

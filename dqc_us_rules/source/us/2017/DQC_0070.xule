@@ -12,41 +12,60 @@ rule-name-prefix DQC
 
 assert US.0070.7645 satisfied
 
+/** Find all the places where the Categories Axis is Used **/
 
-$member_paths =	navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis returns paths;
+$drs_roles = navigate dimensions children from DefinedBenefitPlanByPlanAssetCategoriesAxis returns set drs-role;
 
-if $member_paths.length == 0
-	skip
-else
+/** Get a list of all the members on the axis and the role they are used in **/
 
-$member_facts = set(for $path in $member_paths 
-						list(for $member in $path
-							{nonils @concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member}
-							)
-					);
-		/** Check if this is actually correct - looks like get double counting if head of path has a value will why will it not get counted multiple times. 
-		a -> B -> c
-		a -> B -> d
-		If a has a value wouldn't this be double counted.  SHOULDNT THE LIST BE A SET OR DOES THE SET EARLIER FIX THIS.
-		- TALK TO PHILLIP **/
+$drs_members = dict(for $drs_role in $drs_roles
+					list($drs_role, navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis drs-role $drs_role));
+					
+/** Get the count of the role that has the most members and record this.  We have assumed that the role with the most members represents the complete population of members that should be aggregated.
+	Companies will report a sub group of pension members that comprise Level 3 Assets.  These cannot be aggregated and compared.  However they should be less than aggragated PLan Assets **/
+
+$drs_max_count = max(filter $drs_members.values returns $item.length);
+
+
+/** Loop through each role and evaluate that the members add to the total in the default. **/
+for  $x in $drs_members.keys
+
+	/** Get a list of the members **/
+	$member_descendants = navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis drs-role $x;
+	
+	/** This generates a list of the member values that we will sum. It excludes vcalues for members that are already included as part of a subtotal.  It does this by looking if a members ancestor has a value. If it does the amount is not included in the total. **/
+	$member_facts = list(for $member in $member_descendants
+		$ancestors_list = navigate dimensions domain-member ancestors from $member drs-role $x;
+		if list({@DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
+			skip
+		else 
+			{@DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
+	
+	/** If there are no member facts the rule ends else the subtotal is evaluated **/
+	if 	$member_facts.length == 0 
+	 skip
+	else
 		
-$member_sum = sum(list(for $member_fact in $member_facts
-						if $member_fact.length > 0
-							$member_fact[1]
-						else
-							0));
-
-$member_string = sum(set(for $member_fact in $member_facts
-						if $member_fact.length > 0
-							"\t" + $member_fact[1].dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).local-name + " --> {$member_fact[1]} \n"
-						else
-							""));
-								
-tolerance_for_decimals({@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}#FairValueOfPlanAssets, $member_sum, 2 ) and $member_sum != 0
+		/** aggregate the fact values on the axis **/
+		$member_sum = sum($member_facts);
+		
+		/** Make a string that shows the components of the components that comprise the total **/
+		$member_string = sum(list(for $member_fact in $member_facts
+			"\t" + $member_fact.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).local-name + " --> {$member_fact}" + " --> {$member_fact.dimensions.join(', ','=')} \n"));
+		
+		/** Evaluate if either the calulated total is greater than the reported total (For level 3), or if it is the total population that they are the same within a tolerence of 2 **/
+		
+		/** This uses drs_max_count which is the value of the role with the most members **/
+		
+		if $drs_members[$x].length != $drs_max_count
+			skip
+			/**{@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}#FairValueOfPlanAssets <  $member_sum and $member_sum != 0 **/
+		else						
+			tolerance_for_decimals({@concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}#FairValueOfPlanAssets, $member_sum, 2 ) and $member_sum != 0
 
 message
 "The concept DefinedBenefitPlanFairValueOfPlanAssets with a defaulted value of {$FairValueOfPlanAssets} is not equal to the dimensionally qualified with the DefinedBenefitPlanByPlanAssetCategoriesAxis which has an aggregate value of {$member_sum}. 
-Which is comprised of the following:
+Which is comprised of the following memberes in the network {$x}
 {$member_string}
 
 The value of a concept broken down by its components along the DefinedBenefitPlanByPlanAssetCategoriesAxis axis should  be equal to its component pieces. Please check that either the default value of {$FairValueOfPlanAssets} is correct for DefinedBenefitPlanFairValueOfPlanAssets or that correct dimensions have been defined. In the case where the filer has reported a sub component of plan assets but not a complete breakdown then the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
@@ -58,11 +77,15 @@ Period :{$FairValueOfPlanAssets.period}
 Dimensions : {$FairValueOfPlanAssets.dimensions.join(', ','=')}
 Unit : {$FairValueOfPlanAssets.unit}
 
+{$drs_members[$x].length}
+{$drs_max_count}
+
 Rule Element Id:7645
 Rule version: {$ruleVersion}"
 
 
 SEVERITY error
+
 
 
 
