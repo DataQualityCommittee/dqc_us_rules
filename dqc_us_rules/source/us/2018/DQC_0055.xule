@@ -17,7 +17,7 @@ $listmembers = navigate parent-child descendants from RetirementPlanSponsorLocat
 for ($network in $listmembers.keys)
 	$nrole = $network.role.uri;
 	if not ($listmembers[$network].contains(DomesticPlanMember) or  $listmembers[$network].contains(ForeignPlanMember))
-		if ($listmembers.length > 1)
+		if ($listmembers[$network].length > 1)
 			true
 		else 
 			false
@@ -26,6 +26,10 @@ for ($network in $listmembers.keys)
 
 message
 "Neither the  Domestic Plan [Member] NOR Foreign Plan [Member] has been used on the Retirement Plan Sponsor Location [Axis] in the presentation linkbase  {$nrole}. The FASB requires that either one or both of these members is present on the Retirement Plan Sponsor Location [Axis]. Please review the axis and add one of these members or assess the need to use the Retirement Plan Sponsor Location [Axis].
+
++The axis RetirementPlanSponsorLocationAxis has the following members listed under it:
++{$listmembers[$network].join(', 
++')}
 
 
 Rule Element Id:7493
