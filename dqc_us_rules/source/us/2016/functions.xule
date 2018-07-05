@@ -48,8 +48,9 @@ function is_base($test_base)
 **/
 
 function effective_weight_is_positive($topConcept,$bottomConcept)
-	$effectiveWeight = taxonomy().effective-weight($topConcept, $bottomConcept);
-	$effectiveWeight > 0
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
+	for ($network in $effectiveWeight)
+		$network[1] > 0
 
 /** 
  * effective_weight_is_negative
@@ -62,8 +63,9 @@ function effective_weight_is_positive($topConcept,$bottomConcept)
 **/
 
 function effective_weight_is_negative($topConcept,$bottomConcept)
-	$effectiveWeight = taxonomy().effective-weight($topConcept, $bottomConcept);	
-	$effectiveWeight < 0
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
+	for ($network in $effectiveWeight)
+		$network[1] < 0
 
 /** 
  * tolerance_for_decimals
