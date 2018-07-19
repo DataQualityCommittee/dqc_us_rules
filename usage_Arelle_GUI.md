@@ -10,7 +10,7 @@
 	* **Choose the __init__.py file** and verify the DQC XBRL rule processor (xule) is listed in the Plug-in Manager, then click "Close". 
 	* When the dialogue box appears requesting a program restart, choose "Yes".
 * Choose the "Tools" menu and "Validate" to confirm there is a check mark for "DQC Rules". If not, select this item from the menu and confirm the selection is now checked.
-* Choose the "Tools" menu and "DQC" >> "Version..." to confirm 3.0.22485 or higher appears.
+* Choose the "Tools" menu and "DQC" >> "Version..." to confirm __3.0.22495__ or higher appears.
 
 ## Checking a filing with DQC Rules
 
