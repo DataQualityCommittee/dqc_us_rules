@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22485 $
+$Change: 22518 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext #XuleContext
@@ -113,7 +113,7 @@ def process_xule(rule_set, model_xbrl, cntlr, options, saved_taxonomies=None):
         constant_time = constant_end - constant_start
         global_context.message_queue.print("Time to calculated non instance constants: %s" % (constant_time))
 
-    global_context.message_queue.logging("Processing Filing...")
+    #global_context.message_queue.logging("Processing Filing...")
     evaluate_rule_set(global_context)
     
     if getattr(global_context.options, "xule_time", None) is not None:
@@ -2023,6 +2023,7 @@ def evaluate_factset_detail(factset, xule_context):
     all_aspect_filters = list(nested_factset_filters.items()) + list(other_filters.items()) + list(non_align_aspects.items()) 
 
     #If the the factset is dependent, then we only need to find facts that also match the current alignment. Create filters based on the current alignment.
+    dependent_filters = list()
     if not factset.get('covered') and factset['is_dependent']:
         if xule_context.dependent_alignment is None:
             #The table may acquire the dependent alignment after evaluating the aspect filters
@@ -2030,16 +2031,16 @@ def evaluate_factset_detail(factset, xule_context):
         try:
             if xule_context.dependent_alignment is not None:
                 unfrozen_alignment = {k: v for k, v in xule_context.dependent_alignment}
-                align_aspects |= set(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
+                dependent_filters = list(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
         except IndexError:
             pass
-    all_aspect_filters += list(align_aspects.items())
+    all_aspect_filters += list(align_aspects.items()) + dependent_filters
     
     '''Match facts based on the aspects in the first part of the factset and any additional filters.
        This is done by intersecting the sets of the fact_index. The fact index is a dictionary of dictionaries.
        The outer dictionary is keyed by aspect and the inner by member. So fact_index[aspect][member] contains a 
        set of facts that have that aspect and member.'''       
-    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, align_aspects, xule_context)   
+    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, xule_context)   
     
     
     pre_count1 = len(pre_matched_facts)
@@ -2094,7 +2095,7 @@ def evaluate_factset_detail(factset, xule_context):
 #             else:
                 unfrozen_alignment = {k: v for k, v in xac.alignment}
                 additional_aspect_filters = list(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
-                pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, align_aspects, xule_context, starting_facts=pre_matched_facts)
+                pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, xule_context, starting_facts=pre_matched_facts)
                 #try again
                 try:
                     results, default_where_used_expressions = process_filtered_facts(factset, pre_matched_facts, not factset.get('covered'), non_align_aspects, nested_factset_filters, aspect_vars, used_expressions, xule_context)
@@ -2128,7 +2129,7 @@ def evaluate_factset_detail(factset, xule_context):
         
     return results
 
-def factset_pre_match(factset, filters, non_aligned_filters, aligned_filters, xule_context, starting_facts=None):
+def factset_pre_match(factset, filters, non_aligned_filters, xule_context, starting_facts=None):
     """Match facts based on the factset  
        
     Match facts based on the aspects in the first part of the factset and any additional filters.
@@ -2516,7 +2517,7 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
             finally:
                 #remove $item
-                xule_context.del_arg('item', #(factset['node_id'], 0),
+                xule_context.del_arg('fact', #(factset['node_id'], 0),
                                  factset['whereExpr']['node_id'],)
                 #remove aspect variables
                 for var_name, aspect_var_tuple in aspect_vars.items():
@@ -2686,7 +2687,7 @@ def evaluate_navigate(nav_expr, xule_context):
             if nav_expr.get('dimensional'):
                 drs_role = nav_get_role(nav_expr, 'drsRole', dts, xule_context)
                 table_concepts = nav_get_element(nav_expr, 'table', dts, xule_context)
-                if arcrole is not  None:
+                if arcrole is not None:
                     dimension_arcroles = xc.DIMENSION_PSEDDO_ARCROLES.get(arcrole, ('all', {arcrole,}))
                 relationship_sets = [XuleUtility.dimension_set(dts, x) for x in XuleUtility.base_dimension_sets(dts) if ((drs_role is None or x[XuleUtility.DIMENSION_SET_ROLE] == drs_role) and
                                                                                                                          (table_concepts is None or x[XuleUtility.DIMENSION_SET_HYPERCUBE] in table_concepts))]
@@ -2843,8 +2844,7 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
         
         
         if child not in previous_concepts:
-            previous_concepts.add(child)
-            
+
             if child in end_concepts:
                 # This is the end of the traversal because the child is a 'to' concept.
                 if paths:
@@ -2864,7 +2864,7 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
                                                  remaining_depth - 1, 
                                                  return_names, 
                                                  dimension_arcroles, 
-                                                 previous_concepts, 
+                                                 previous_concepts | {child,}, 
                                                  nav_depth + 1, 
                                                  result_order, 
                                                  arc_attribute_names)
@@ -4314,7 +4314,7 @@ def remove_from_alignment(alignment, remove_aspects, xule_context):
 def alignment_to_aspect_info(alignment, xule_context):
     aspect_dict = {}
     for align_key, align_value in alignment.items():
-        aspect_info = (align_key[0], align_key[1], None, '=')
+        aspect_info = (align_key[0], align_key[1], None, '=', None)
 
         if align_key[0] == 'builtin':
             if align_key[1] == 'concept':
