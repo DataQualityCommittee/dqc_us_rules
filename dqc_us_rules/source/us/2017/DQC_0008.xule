@@ -11,7 +11,7 @@ rule-name-prefix DQC
 assert US.0008.6819 satisfied
 
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
-		
+
 for ($network in $extCalcRelationship1.keys)
 	for ($extCalcRelationship in $extCalcRelationship1[$network])
 		$extCalcSource = $extCalcRelationship.source;
@@ -29,7 +29,7 @@ message
 "The calculation in the extension taxonomy from {$extCalcTargetName} to {$extCalcSourceName} in {$extCalcNetwork} is the opposite of a calculation defined in the base US GAAP taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.
 {$extCalcSourceName}
 
-Rule version 4.0.0"
+Rule version: {$ruleVersion}"
 
 severity 
 error
