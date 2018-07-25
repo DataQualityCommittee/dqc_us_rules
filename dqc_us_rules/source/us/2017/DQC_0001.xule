@@ -279,7 +279,8 @@ Rule version: {$ruleVersion}"
 
 severity error
 
-
+/** Rule Removed as Axis was deprecated **/
+/**
 assert US.0001.60 satisfied
 
 $base_members = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis where is_base($relationship.target) returns set (target-name);
@@ -307,7 +308,7 @@ Rule Element Id:60
 Rule version: {$ruleVersion}"
 
 severity error
-
+**/
 
 assert US.0001.61 satisfied
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
@@ -516,11 +517,11 @@ $member_extension = navigate dimensions dimension-member descendants from Hedgin
 
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'NotDesignatedAsHedgingInstrumentEconomicHedgesMember'), qname($extension_ns,'NotDesignatedAsHedgingInstrumentTradingMember'));
+/**  REMOVED AS ADDED TO THE TAXONOMY $allowable_extensions = set(qname($extension_ns,'NotDesignatedAsHedgingInstrumentEconomicHedgesMember'), qname($extension_ns,'NotDesignatedAsHedgingInstrumentTradingMember')); **/
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_USGAAP;
+$allowed_members = $member_USGAAP;
 
 $unallowed_members = $member_extension - $allowed_members;
 
@@ -537,7 +538,7 @@ Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis HedgingDesignationAxis. The HedgingDesignationAxis should only be used with the members defined in the US GAAP taxonomy or the followng extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis HedgingDesignationAxis. The HedgingDesignationAxis should only be used with the members defined in the US GAAP taxonomy. There are no facts associated with this member and axis.";
 		true
 
 
@@ -635,11 +636,16 @@ severity error
 
 assert US.0001.71 satisfied
 
-$not_allowed_base_member_tree = navigate dimensions dimension-member descendants from DefinedBenefitPlansDisclosuresDefinedBenefitPlansAxis taxonomy $us-gaap returns set (target-name);
+$not_allowed_base_member_tree_1 = navigate dimensions dimension-member descendants from RetirementPlanTypeAxis taxonomy $us-gaap returns set (target-name);
+$not_allowed_base_member_tree_2 = navigate dimensions dimension-member descendants from RetirementPlanSponsorLocationAxis taxonomy $us-gaap returns set (target-name);
+$not_allowed_base_member_tree_3 = navigate dimensions dimension-member descendants from RetirementPlanFundingStatusAxis taxonomy $us-gaap returns set (target-name);
+$not_allowed_base_member_tree_4 = navigate dimensions dimension-member descendants from RetirementPlanNameAxis taxonomy $us-gaap returns set (target-name);
+
+$not_allowed_base_member_trees = $not_allowed_base_member_tree_1 + $not_allowed_base_member_tree_2 + $not_allowed_base_member_tree_3 + $not_allowed_base_member_tree_4;
 
 $base_members = navigate dimensions dimension-member descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis returns set (target-name);
 
-$unallowed_base_members = $base_members intersect $not_allowed_base_member_tree;
+$unallowed_base_members = $base_members intersect $not_allowed_base_member_trees;
 
 for ($member in $unallowed_base_members)
 	$fact1 = {covered @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member};
@@ -660,6 +666,7 @@ message
 
 Rule Element Id:71
 Rule version: {$ruleVersion}"
+
 
 assert US.0001.72 satisfied
 
