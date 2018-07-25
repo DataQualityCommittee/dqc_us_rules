@@ -49,8 +49,9 @@ function is_base($test_base)
 **/
 
 function effective_weight_is_positive($topConcept,$bottomConcept)
-	$effectiveWeight = taxonomy().effective-weight($topConcept, $bottomConcept);
-	$effectiveWeight > 0
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
+	for ($network in $effectiveWeight)
+		$network[1] > 0
 
 /** 
  * effective_weight_is_negative
@@ -63,8 +64,9 @@ function effective_weight_is_positive($topConcept,$bottomConcept)
 **/
 
 function effective_weight_is_negative($topConcept,$bottomConcept)
-	$effectiveWeight = taxonomy().effective-weight($topConcept, $bottomConcept);	
-	$effectiveWeight < 0
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
+	for ($network in $effectiveWeight)
+		$network[1] < 0
 
 /** 
  * tolerance_for_decimals
@@ -78,10 +80,17 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 **/
 
 function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
-$tolerance1 = if ($left.decimals < $right.decimals) 
-					$left.decimals
+
+$left_decimal = if $left.decimals == none
+					inf else $left.decimals;
+					
+$right_decimal = if $right.decimals == none
+					inf else $right.decimals;
+					
+$tolerance1 = if ($left_decimal < $right_decimal) 
+					$left_decimal
 				else 	
-					$right.decimals;
+					$right_decimal;
 $tolerance2 = if ($tolerance1 == inf) 
 					0
 				else 	
@@ -92,10 +101,19 @@ if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2)
 else 
 	false 
 
+/** 
+ * match_set_substring
+ * 
+ * This functiondetermines if the name of the dimension member of a fact includes the sub-string passed in the second parameter.
+ *
+**/
+	
 function match_set_substring($fact, $match_member_string_component)
 any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
 	for $y in $match_member_string_component
 	$y in $x))
+	
+	
 
 function not_elim_adjust($fact)
 
