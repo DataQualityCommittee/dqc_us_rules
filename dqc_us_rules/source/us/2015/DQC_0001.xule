@@ -556,11 +556,16 @@ assert US.0001.69 satisfied
 
 $allowed_members_product = navigate dimensions dimension-member descendants from ProductOrServiceAxis taxonomy $us-gaap returns set (target-name);
 $allowed_members_reinsurance = navigate dimensions dimension-member descendants from ReinsurancePremiumsForInsuranceCompaniesByProductSegmentAxis taxonomy $us-gaap returns set (target-name);
-$allowed_members_aircraft = navigate dimensions dimension-member descendants from AircraftTypeAxis taxonomy $us-gaap returns set (target-name);
+$allowed_members_aircraft = navigate domain-member descendants include start
+     from (navigate dimension-domain children
+           from AircraftTypeAxis
+           taxonomy $us-gaap returns set)
+     taxonomy $us-gaap
+     returns set (target-name);
 $allowed_members_malpractice_insurance = navigate dimensions dimension-member descendants from ScheduleOfMalpracticeInsuranceTypeAndTierIdentifierAxis taxonomy $us-gaap returns set (target-name);
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember);
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, RealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember);
 
 
 $member_extension = navigate dimensions dimension-member descendants from ProductOrServiceAxis where is_base($relationship.target) returns set (target-name);
