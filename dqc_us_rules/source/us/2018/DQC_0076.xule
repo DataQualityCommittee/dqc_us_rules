@@ -13,11 +13,11 @@ rule-name-prefix DQC
 
 assert US.0076.7653 satisfied
 
-exists({@concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = *}#obligation)
+exists({@concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = *}#obligation)
  
 and 
 (
-	not exists({@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1 @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = *})
+	  not exists({@concept = RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1 @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = *  }#period_id)
 )
 
 
@@ -36,4 +36,3 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 rule-focus $obligation
-
