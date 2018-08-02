@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22484 $
+$Change: 22521 $
 DOCSKIP
 """
 
@@ -393,7 +393,7 @@ def property_dimension(xule_context, object_value, *args):
     else:
         raise XuleProcessingError(_("The argument for property 'dimension' must be a qname, found '%s'." % dim_name.type),xule_context)
      
-    member_model = model_fact.context.qnameDims.get(dim_name.value)
+    member_model = model_fact.context.qnameDims.get(dim_qname)
     if member_model is None:
         return xv.XuleValue(xule_context, None, 'none')
     else:
@@ -1113,10 +1113,11 @@ def get_concept(dts, concept_qname):
             return None
  
 def property_decimals(xule_context, object_value, *args):
-    if object_value.fact.decimals is not None:
+    if object_value.is_fact and object_value.fact.decimals is not None:
         return xv.XuleValue(xule_context, float(object_value.fact.decimals), 'float')
     else:
         return xv.XuleValue(xule_context, None, 'none')
+    
 
 def get_networks(xule_context, dts_value, arcrole=None, role=None, link=None, arc=None):
     #final_result_set = XuleResultSet()
@@ -1301,6 +1302,9 @@ def property_number(xule_context, object_value, *args):
             raise XuleProcessingError(_("Cannot convert '%s' to a number" % object_value.value), xule_context)
     else:
         raise XuleProcessingError(_("Property 'number' requires a string or numeric argument, found '%s'" % object_value.type), xule_context)
+
+def property_is_fact(xule_context, object_value, *args):
+    return xv.XuleValue(xule_context, object_value.is_fact, 'bool')
         
 def property_type(xule_context, object_value, *args):
     if object_value.is_fact:
@@ -1359,14 +1363,14 @@ def property_effective_weight(xule_context, object_value, *args):
     elif args[0].type == 'qname':
         top = get_concept(dts, args[0].value)
     else:
-        raise XuleProcessingError(_("The arguments for the 'effective-weight' property must be a 'concpet' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+        raise XuleProcessingError(_("The start concept argument for the 'effective-weight' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
     
     if args[1].type == 'concept':
         bottom = args[1].value
     elif args[1].type == 'qname':
         bottom = get_concept(dts, args[1].value)
     else:
-        raise XuleProcessingError(_("The arguments for the 'effective-weight' property must be a 'concpet' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+        raise XuleProcessingError(_("The end concept argument for the 'effective-weight' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
     
     if top is None or bottom is None:
         # The top or bottom is not in the taxonomy
@@ -1378,10 +1382,70 @@ def property_effective_weight(xule_context, object_value, *args):
             paths += [x for x in traverse_for_weight(network.value[1], top, bottom)]
     
     weights = {numpy.prod(x) for x in paths}
-    if len(weights) ==1:
+    if len(weights) == 1:
         return xv.XuleValue(xule_context, next(iter(weights)), 'float')
     else:
         return xv.XuleValue(xule_context, float(0), 'float')
+
+def property_effective_weight_network(xule_context, object_value, *args):
+    dts = object_value.value
+    if args[0].type == 'concept':
+        top = args[0].value
+    elif args[0].type == 'qname':
+        top = get_concept(dts, args[0].value)
+    else:
+        raise XuleProcessingError(_("The start concept argument for the 'effective-weight-network' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+    
+    if args[1].type == 'concept':
+        bottom = args[1].value
+    elif args[1].type == 'qname':
+        bottom = get_concept(dts, args[1].value)
+    else:
+        raise XuleProcessingError(_("The end concept argument for the 'effective-weight-network' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+    
+    # Optional network argument
+    if len(args) > 2:
+        if args[2].type == 'network':
+            networks = (args[2],) # one item tuple
+        elif args[2].type == 'role':
+            role = args[2].value.roleURI
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type in ('uri', 'string'):
+            role = args[2].value
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type == 'qname':
+            role = XuleUtility.resolve_role(args[2], 'role', object_value.value, xule_context)
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type in ('set', 'list'):
+            networks = args[2].value
+        else:
+            raise XuleProcessingError(_("The optional network argument for the 'effective-weight-network' property must be one of 'network, role, uri, role uri string, short role name or set/list of networks', found '{}'".format(args[2].type)), xule_context)
+        
+        bad_networks = tuple("\tArc role: {}, Role: {}".format(x.value[NETWORK_INFO][NETWORK_ARCROLE], x.value[NETWORK_INFO][NETWORK_ROLE]) 
+                             for x in networks if x.value[NETWORK_INFO][NETWORK_ARCROLE] != CORE_ARCROLES['summation-item'])
+        
+        if len(bad_networks) > 0:
+            raise XuleProcessingError(_("Network passed to 'effective-weight-network' is not a summation-item network. "
+                                        "The 'effective-weight-network' property can only be used on summation-item networks. "
+                                        "The invalid networks are:\n{}".format("\n".join(bad_networks))))
+
+    else:
+        networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'])
+    
+    if top is None or bottom is None:
+        # The top or bottom is not in the taxonomy
+        return xv.XuleValue(xule_context, None, 'none')
+    
+    return_set = set()
+
+    for network in networks:
+        if len(network.value[1].fromModelObject(top)) > 0 and len(network.value[1].toModelObject(bottom)) > 0:
+            path =  [x for x in traverse_for_weight(network.value[1], top, bottom)]
+            effective_weight_value = xv.XuleValue(xule_context, numpy.prod(path), 'float')
+            
+            return_set.add(xv.XuleValue(xule_context, (effective_weight_value, network), 'list'))
+            
+    return xv.XuleValue(xule_context, frozenset(return_set), 'set')
 
 def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, previous_weights=None):
     """Find all the weights between two concepts in a network.
@@ -1438,7 +1502,7 @@ PROPERTIES = {
               'sort': (property_sort, 0, ('list', 'set'), False),
               'keys': (property_keys, -1, ('dictionary',), False),
               'values': (property_values, 0, ('dictionary', ), False),
-              'decimals': (property_decimals, 0, ('fact',), True),
+              'decimals': (property_decimals, 0, (), True),
               'networks':(property_networks, -2, ('taxonomy',), False),
               'role': (property_role, 0, ('network', 'label', 'reference', 'relationship'), False),
               'role-uri': (property_role_uri, 0, ('network', 'label', 'reference', 'relationship'), False),
@@ -1473,6 +1537,7 @@ PROPERTIES = {
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
               'is-abstract': (property_is_abstract, 0, ('concept', 'fact'), True),
               'is-nil': (property_is_nil, 0, ('fact'), True),
+              'is-fact': (property_is_fact, 0, (), True),
               'scale': (property_scale, 0, ('fact',), True),
               'format': (property_format, 0, ('fact',), True),
               'label': (property_label, -2, ('concept', 'fact'), True),
@@ -1526,6 +1591,7 @@ PROPERTIES = {
               'entry-point': (property_entry_point, 0, ('taxonomy',), False),
               'entry-point-namespace': (property_entry_point_namespace, 0, ('taxonomy',), False),
               'effective-weight': (property_effective_weight, 2, ('taxonomy',), False),
+              'effective-weight-network': (property_effective_weight_network, -3, ('taxonomy',), False),
               'all': (property_all, 0, ('set', 'list'), False),
               'any': (property_any, 0, ('set', 'list'), False),
               'first': (property_first, 0, ('set', 'list'), False),
