@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22481 $
+$Change: 22533 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -190,7 +190,7 @@ class XuleGlobalContext(object):
         self.model = model_xbrl
         self.rules_model = None
         self.rule_set = rule_set
-        self.fact_index = None
+        #self.fact_index = None
         self.include_nils = getattr(self.options, "xule_include_nils", False)
         self._constants = {}
         self.preconditions = {}
@@ -290,6 +290,18 @@ class XuleGlobalContext(object):
     @constant_store.setter
     def constant_store(self, value):
         self._constants = value
+
+    @property
+    def fact_index(self):
+        if self.model is None:
+            None
+        else:
+            return getattr(self.model, 'xuleFactIndex', dict())
+
+    @fact_index.setter
+    def fact_index(self, value):
+        if self.model is not None:
+            self.model.xuleFactIndex = value
 
 class XuleRuleContext(object):
     """Rule Context

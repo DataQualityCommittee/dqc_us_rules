@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22484 $
+$Change: 22531 $
 DOCSKIP
 """
 
@@ -220,11 +220,9 @@ def property_role(xule_context, object_value, *args):
     else: # label or reference
         role_uri = object_value.value.role
         #return xv.XuleValue(xule_context, object_value.value.role, 'uri')
-     
-    if role_uri in xule_context.model.roleTypes:
-        return xv.XuleValue(xule_context, xule_context.model.roleTypes[role_uri][0], 'role')
-    else:
-        return xv.XuleValue(xule_context, xv.XuleRole(role_uri), 'role')
+
+    model_role = XuleUtility.role_uri_to_model_role(xule_context.model, role_uri)
+    return xv.XuleValue(xule_context, model_role, 'role')
 
 def property_role_uri(xule_context, object_value, *args):
     if object_value.type == 'network':
@@ -248,11 +246,8 @@ def property_role_description(xule_context, object_value, *args):
         role_uri = object_value.value.role
         #return xv.XuleValue(xule_context, object_value.value.role, 'uri')
 
-    if role_uri in xule_context.model.roleTypes:
-        model_role = xule_context.model.roleTypes[role_uri][0]
-    else:
-        model_role = xv.XuleRole(role_uri)
-    
+    model_role = XuleUtility.role_uri_to_model_role(xule_context.model, role_uri)
+
     return xv.XuleValue(xule_context, model_role.definition, 'string')
     
 def property_arcrole(xule_context, object_value, *args):
@@ -260,11 +255,9 @@ def property_arcrole(xule_context, object_value, *args):
         arcrole_uri = object_value.value[NETWORK_INFO][NETWORK_ARCROLE]
     else: # relationship
         arcrole_uri = object_value.value.arcrole
-    
-    if arcrole_uri in xule_context.model.arcroleTypes:
-        return xv.XuleValue(xule_context, xule_context.model.arcroleTypes[arcrole_uri][0], 'role')
-    else:
-        return xv.XuleValue(xule_context, XuleArcrole(arcrole_uri), 'role')
+
+    model_arcrole = XuleUtility.arcrole_uri_to_model_role(xule_context.model, arcrole_uri)
+    return xv.XuleValue(xule_context, model_arcrole, 'role')
 
 def property_arcrole_uri(xule_context, object_value, *args):
     if object_value.type == 'network':
@@ -278,12 +271,8 @@ def property_arcrole_description(xule_context, object_value, *args):
         arcrole_uri = object_value.value[NETWORK_INFO][NETWORK_ARCROLE]
     else: # relationship
         arcrole_uri = object_value.value.arcrole
-            
-    if arcrole_uri in xule_context.model.arcroleTypes:
-        model_arcrole = xule_context.model.arcroleTypes[arcrole_uri][0]
-    else:
-        model_arcrole = XuleArcrole(arcrole_uri)
-    
+
+    model_arcrole = XuleUtility.arcrole_uri_to_model_role(xule_context.model, arcrole_uri)
     return xv.XuleValue(xule_context, model_arcrole.definition, 'string')
 
 def property_concept(xule_context, object_value, *args):
@@ -314,6 +303,10 @@ def property_concept(xule_context, object_value, *args):
             return xv.XuleValue(xule_context, concept_value, 'concept')
         else:
             return xv.XuleValue(xule_context, None, 'none')
+    elif object_value.type == 'dimension':
+        if len(args) > 0:
+            raise XuleProcessingError(_("Property 'concept' on a dimension cannot have any arguments, found {}.".format(str(len(args)))), xule_context)
+        return xv.XuleValue(xule_context, object_value.value.dimension_concept, 'concept')
     else: # None value
         return object_value
 
@@ -393,7 +386,7 @@ def property_dimension(xule_context, object_value, *args):
     else:
         raise XuleProcessingError(_("The argument for property 'dimension' must be a qname, found '%s'." % dim_name.type),xule_context)
      
-    member_model = model_fact.context.qnameDims.get(dim_name.value)
+    member_model = model_fact.context.qnameDims.get(dim_qname)
     if member_model is None:
         return xv.XuleValue(xule_context, None, 'none')
     else:
@@ -404,23 +397,29 @@ def property_dimension(xule_context, object_value, *args):
             return xv.XuleValue(xule_context, member_model.typedMember.xValue, xv.model_to_xule_type(xule_context, member_model.typedMember.xValue))
 
 def property_dimensions(xule_context, object_value, *args):
-    if not object_value.is_fact:
-        return object_value
-    
-    result_dict = dict()
-    result_shadow = dict()
-    
-    for dim_qname, member_model in object_value.fact.context.qnameDims.items():
-        dim_value = xv.XuleValue(xule_context, get_concept(xule_context.model, dim_qname), 'concept')
-        if member_model.isExplicit:
-            member_value = xv.XuleValue(xule_context, member_model.member, 'concept')
-        else: # Typed dimension
-            member_value = xv.XuleValue(xule_context, member_model.typedMember.xValue, xv.model_to_xule_type(xule_context, member_model.typedMember.xValue))
-            
-        result_dict[dim_value] = member_value
-        result_shadow[dim_value.value] = member_value.value
-    
-    return xv.XuleValue(xule_context, frozenset(result_dict.items()), 'dictionary', shadow_collection=frozenset(result_shadow.items()))
+    if object_value.type == 'cube':
+        dims_shadow = object_value.value.dimensions
+        dims = {xv.XuleValue(xule_context, x, 'dimension') for x in dims_shadow}
+
+        return xv.XuleValue(xule_context, frozenset(dims), 'set', shadow_collection=frozenset(dims_shadow))
+    else:
+        if not object_value.is_fact:
+            return object_value
+
+        result_dict = dict()
+        result_shadow = dict()
+
+        for dim_qname, member_model in object_value.fact.context.qnameDims.items():
+            dim_value = xv.XuleValue(xule_context, get_concept(xule_context.model, dim_qname), 'concept')
+            if member_model.isExplicit:
+                member_value = xv.XuleValue(xule_context, member_model.member, 'concept')
+            else: # Typed dimension
+                member_value = xv.XuleValue(xule_context, member_model.typedMember.xValue, xv.model_to_xule_type(xule_context, member_model.typedMember.xValue))
+
+            result_dict[dim_value] = member_value
+            result_shadow[dim_value.value] = member_value.value
+
+        return xv.XuleValue(xule_context, frozenset(result_dict.items()), 'dictionary', shadow_collection=frozenset(result_shadow.items()))
 
 def property_dimensions_explicit(xule_context, object_value, *args):
     if not object_value.is_fact:
@@ -855,6 +854,71 @@ def property_concept_names(xule_context, object_value, *args):
  
     return xv.XuleValue(xule_context, frozenset(concepts), 'set')
 
+def property_cube(xule_context, object_value, *args):
+    """This returns the tables in a taxonomy
+
+    It will have 2 arguments:
+        args[0] - The concept or qname of the hypercube
+        args[1] - The drs-role
+    """
+    if args[0].type == 'qname':
+        cube_concept = get_concept(object_value.value, args[0].value)
+    elif args[0].type == 'concept':
+        cube_concept = args[0].value
+    else:
+        raise XuleProcessingError(_("The first argument of property 'cube' must be a qname or a concept, found '{}'.".format(args[0].type)), xule_context)
+
+    if args[1].type in ('string', 'uri'):
+        drs_role = args[1].value
+    elif args[1].type == 'qname':
+        drs_role = XuleUtility.resolve_role(args[1], 'role', xule_context.model, xule_context)
+    else:
+        raise XuleProcessingError(_("The second argument of property 'cube' must be a role uri or a short role, found '{}'.".format(args[1].type)), xule_context)
+
+    cube = xv.XuleDimensionCube(object_value.value, drs_role, cube_concept)
+
+    if cube is None:
+        return xv.XuleValue(xule_context, None, 'none')
+    else:
+        return xv.XuleValue(xule_context, cube, 'cube')
+
+def property_cubes(xule_context, object_value, *args):
+    """This returns all the cubes in a taxonomy.
+    """
+    cubes = set()
+    cubes_shadow = set()
+    for cube_base in xv.XuleDimensionCube.base_dimension_sets(xule_context.model):
+        cube = xv.XuleDimensionCube(xule_context.model, *cube_base)
+        cubes.add(xv.XuleValue(xule_context, cube, 'cube'))
+        cubes_shadow.add(cube)
+
+    return xv.XuleValue(xule_context, frozenset(cubes), 'set', shadow_collection=frozenset(cubes_shadow))
+
+def property_drs_role(xule_context, object_value, *args):
+    return xv.XuleValue(xule_context,  object_value.value.drs_role, 'role')
+
+def property_cube_concept(xule_context, object_value, *args):
+    return xv.XuleValue(xule_context, object_value.value.hypercube, 'concept')
+
+def property_primary_concepts(xule_context, object_value, *args):
+    prim_shadow = object_value.value.primaries
+    prim = {xv.XuleValue(xule_context, x, 'concept') for x in prim_shadow}
+
+    return xv.XuleValue(xule_context, frozenset(prim), 'set', shadow_collection=frozenset(prim_shadow))
+
+def property_facts(xule_context, object_value, *args):
+    facts_shadow = object_value.value.facts
+    facts = {xv.XuleValue(xule_context, x, 'fact', alignment=None) for x in facts_shadow}
+
+    return xv.XuleValue(xule_context, frozenset(facts), 'set', shadow_collection=frozenset(facts_shadow))
+
+def property_default(xule_context, object_value, *args):
+    default = object_value.value.default
+    if default is None:
+        return xv.XuleValue(xule_context, None, 'none')
+    else:
+        return xv.XuleValue(xule_context, default, 'concept')
+
 def property_relationships(xule_context, object_value, *args):        
     relationships = set()
      
@@ -1113,10 +1177,11 @@ def get_concept(dts, concept_qname):
             return None
  
 def property_decimals(xule_context, object_value, *args):
-    if object_value.fact.decimals is not None:
+    if object_value.is_fact and object_value.fact.decimals is not None:
         return xv.XuleValue(xule_context, float(object_value.fact.decimals), 'float')
     else:
         return xv.XuleValue(xule_context, None, 'none')
+    
 
 def get_networks(xule_context, dts_value, arcrole=None, role=None, link=None, arc=None):
     #final_result_set = XuleResultSet()
@@ -1301,6 +1366,9 @@ def property_number(xule_context, object_value, *args):
             raise XuleProcessingError(_("Cannot convert '%s' to a number" % object_value.value), xule_context)
     else:
         raise XuleProcessingError(_("Property 'number' requires a string or numeric argument, found '%s'" % object_value.type), xule_context)
+
+def property_is_fact(xule_context, object_value, *args):
+    return xv.XuleValue(xule_context, object_value.is_fact, 'bool')
         
 def property_type(xule_context, object_value, *args):
     if object_value.is_fact:
@@ -1315,7 +1383,7 @@ def property_string(xule_context, object_value, *args):
     '''SHOULD THE META DATA BE INCLUDED???? THIS SHOULD BE HANDLED BY THE PROPERTY EVALUATOR.'''
     return xv.XuleValue(xule_context, object_value.format_value(), 'string')
  
-def property_facts(xule_context, object_value, *args):
+def property_context_facts(xule_context, object_value, *args):
     return xv.XuleValue(xule_context, "\n".join([str(f.qname) + " " + str(f.xValue) for f in xule_context.facts]), 'string')
  
 def property_from_model(xule_context, object_value, *args):
@@ -1359,14 +1427,14 @@ def property_effective_weight(xule_context, object_value, *args):
     elif args[0].type == 'qname':
         top = get_concept(dts, args[0].value)
     else:
-        raise XuleProcessingError(_("The arguments for the 'effective-weight' property must be a 'concpet' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+        raise XuleProcessingError(_("The start concept argument for the 'effective-weight' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
     
     if args[1].type == 'concept':
         bottom = args[1].value
     elif args[1].type == 'qname':
         bottom = get_concept(dts, args[1].value)
     else:
-        raise XuleProcessingError(_("The arguments for the 'effective-weight' property must be a 'concpet' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+        raise XuleProcessingError(_("The end concept argument for the 'effective-weight' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
     
     if top is None or bottom is None:
         # The top or bottom is not in the taxonomy
@@ -1378,10 +1446,70 @@ def property_effective_weight(xule_context, object_value, *args):
             paths += [x for x in traverse_for_weight(network.value[1], top, bottom)]
     
     weights = {numpy.prod(x) for x in paths}
-    if len(weights) ==1:
+    if len(weights) == 1:
         return xv.XuleValue(xule_context, next(iter(weights)), 'float')
     else:
         return xv.XuleValue(xule_context, float(0), 'float')
+
+def property_effective_weight_network(xule_context, object_value, *args):
+    dts = object_value.value
+    if args[0].type == 'concept':
+        top = args[0].value
+    elif args[0].type == 'qname':
+        top = get_concept(dts, args[0].value)
+    else:
+        raise XuleProcessingError(_("The start concept argument for the 'effective-weight-network' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+    
+    if args[1].type == 'concept':
+        bottom = args[1].value
+    elif args[1].type == 'qname':
+        bottom = get_concept(dts, args[1].value)
+    else:
+        raise XuleProcessingError(_("The end concept argument for the 'effective-weight-network' property must be a 'concept' or 'qname', found '{}'.".format(args[0].type)), xule_context)
+    
+    # Optional network argument
+    if len(args) > 2:
+        if args[2].type == 'network':
+            networks = (args[2],) # one item tuple
+        elif args[2].type == 'role':
+            role = args[2].value.roleURI
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type in ('uri', 'string'):
+            role = args[2].value
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type == 'qname':
+            role = XuleUtility.resolve_role(args[2], 'role', object_value.value, xule_context)
+            networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'], role)
+        elif args[2].type in ('set', 'list'):
+            networks = args[2].value
+        else:
+            raise XuleProcessingError(_("The optional network argument for the 'effective-weight-network' property must be one of 'network, role, uri, role uri string, short role name or set/list of networks', found '{}'".format(args[2].type)), xule_context)
+        
+        bad_networks = tuple("\tArc role: {}, Role: {}".format(x.value[NETWORK_INFO][NETWORK_ARCROLE], x.value[NETWORK_INFO][NETWORK_ROLE]) 
+                             for x in networks if x.value[NETWORK_INFO][NETWORK_ARCROLE] != CORE_ARCROLES['summation-item'])
+        
+        if len(bad_networks) > 0:
+            raise XuleProcessingError(_("Network passed to 'effective-weight-network' is not a summation-item network. "
+                                        "The 'effective-weight-network' property can only be used on summation-item networks. "
+                                        "The invalid networks are:\n{}".format("\n".join(bad_networks))))
+
+    else:
+        networks = get_networks(xule_context, object_value, CORE_ARCROLES['summation-item'])
+    
+    if top is None or bottom is None:
+        # The top or bottom is not in the taxonomy
+        return xv.XuleValue(xule_context, None, 'none')
+    
+    return_set = set()
+
+    for network in networks:
+        if len(network.value[1].fromModelObject(top)) > 0 and len(network.value[1].toModelObject(bottom)) > 0:
+            path =  [x for x in traverse_for_weight(network.value[1], top, bottom)]
+            effective_weight_value = xv.XuleValue(xule_context, numpy.prod(path), 'float')
+            
+            return_set.add(xv.XuleValue(xule_context, (effective_weight_value, network), 'list'))
+            
+    return xv.XuleValue(xule_context, frozenset(return_set), 'set')
 
 def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, previous_weights=None):
     """Find all the weights between two concepts in a network.
@@ -1438,7 +1566,7 @@ PROPERTIES = {
               'sort': (property_sort, 0, ('list', 'set'), False),
               'keys': (property_keys, -1, ('dictionary',), False),
               'values': (property_values, 0, ('dictionary', ), False),
-              'decimals': (property_decimals, 0, ('fact',), True),
+              'decimals': (property_decimals, 0, (), True),
               'networks':(property_networks, -2, ('taxonomy',), False),
               'role': (property_role, 0, ('network', 'label', 'reference', 'relationship'), False),
               'role-uri': (property_role_uri, 0, ('network', 'label', 'reference', 'relationship'), False),
@@ -1446,14 +1574,14 @@ PROPERTIES = {
               'arcrole':(property_arcrole, 0, ('network', 'relationship'), False),
               'arcrole-uri':(property_arcrole_uri, 0, ('network', 'relationship'), False),
               'arcrole-description':(property_arcrole_description, 0, ('network', 'relationship'), False),
-              'concept': (property_concept, -1, ('fact', 'taxonomy'), True),
+              'concept': (property_concept, -1, ('fact', 'taxonomy', 'dimension'), True),
               'period': (property_period, 0, ('fact',), True),
               'unit': (property_unit, 0, ('fact',), True),
               'entity': (property_entity, 0, ('fact',), True),
               'id': (property_id, 0, ('entity','unit','fact'), True),
               'scheme': (property_scheme, 0, ('entity',), False),
               'dimension': (property_dimension, 1, ('fact',), True),
-              'dimensions': (property_dimensions, 0, ('fact',), True),
+              'dimensions': (property_dimensions, 0, ('fact', 'cube'), True),
               'dimensions-explicit': (property_dimensions_explicit, 0, ('fact',), True),
               'dimensions-typed': (property_dimensions_typed, 0, ('fact',), True),                            
               'aspects': (property_aspects, 0, ('fact',), True),
@@ -1473,6 +1601,7 @@ PROPERTIES = {
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
               'is-abstract': (property_is_abstract, 0, ('concept', 'fact'), True),
               'is-nil': (property_is_nil, 0, ('fact'), True),
+              'is-fact': (property_is_fact, 0, (), True),
               'scale': (property_scale, 0, ('fact',), True),
               'format': (property_format, 0, ('fact',), True),
               'label': (property_label, -2, ('concept', 'fact'), True),
@@ -1526,6 +1655,7 @@ PROPERTIES = {
               'entry-point': (property_entry_point, 0, ('taxonomy',), False),
               'entry-point-namespace': (property_entry_point_namespace, 0, ('taxonomy',), False),
               'effective-weight': (property_effective_weight, 2, ('taxonomy',), False),
+              'effective-weight-network': (property_effective_weight_network, -3, ('taxonomy',), False),
               'all': (property_all, 0, ('set', 'list'), False),
               'any': (property_any, 0, ('set', 'list'), False),
               'first': (property_first, 0, ('set', 'list'), False),
@@ -1537,12 +1667,19 @@ PROPERTIES = {
               'stdev': (property_stats, 0, ('set', 'list'), False, numpy.std),
               'avg': (property_stats, 0, ('set', 'list'), False, numpy.mean),
               'prod': (property_stats, 0, ('set', 'list'), False, numpy.prod),
-              
+              'cube': (property_cube, 2, ('taxonomy',), False),
+              'cubes': (property_cubes, 0, ('taxonomy',), False),
+              'drs-role': (property_drs_role, 0, ('cube',), False),
+              'cube-concept': (property_cube_concept, 0, ('cube',), False),
+              'primary-concepts': (property_primary_concepts, 0, ('cube',), False),
+              'facts': (property_facts, 0, ('cube',), False),
+              'default': (property_default, 0, ('dimension',), False),
+
               # Debugging properties
               '_type': (property_type, 0, (), False),
               '_alignment': (property_alignment, 0, (), False),
               '_compute-type': (property_compute_type, 0, (), False),
-              '_facts': (property_facts, 0, (), False),
+              '_facts': (property_context_facts, 0, (), False),
               '_from-model': (property_from_model, 0, (), False),
               '_hash': (property_hash, 0, (), True),
               
