@@ -52,7 +52,7 @@ message
 
 
 Rule Element Id:51
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -85,7 +85,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:52
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -113,7 +113,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:53
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -157,7 +157,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:69
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -188,7 +188,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:56
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -218,7 +218,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:57
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -248,7 +248,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:58
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -276,7 +276,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:59
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -305,7 +305,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:60
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -339,7 +339,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:61
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -388,7 +388,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:62
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -431,7 +431,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:63
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -463,7 +463,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:64
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -505,7 +505,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:65
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -548,7 +548,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:66
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -571,11 +571,13 @@ $allowed_members_ppe = navigate dimensions dimension-member descendants from Pro
 
 $allowed_members_oil_reserves = navigate dimensions dimension-member descendants from ReserveQuantitiesByTypeOfReserveAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember);
+$allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
+
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember);
 
 $member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target) returns set (target-name);
 
-$allowed_members = $allowed_members_product + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_ppe + $allowed_members_oil_reserves;
+$allowed_members = $allowed_members_product + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_ppe + $allowed_members_oil_reserves + $allowed_members_PublicUtilitiesInventoryAxis;
 
 $unallowed_base_members = $member_extension - $allowed_members;
 
@@ -598,7 +600,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:69
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -642,7 +644,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:70
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -673,7 +675,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:71
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 assert US.0001.72 satisfied
 
@@ -699,7 +701,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:72
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -732,7 +734,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:74
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -766,7 +768,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:75
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 
@@ -801,7 +803,7 @@ message
 "{$message_for_fact}
 
 Rule Element Id:76
-Rule version: 3.3.1"
+Rule version: {$ruleVersion}"
 
 severity error
 

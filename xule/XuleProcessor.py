@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22441 $
+$Change: 22521 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext #XuleContext
@@ -47,7 +47,7 @@ from . import XuleFunctions
 from . import XuleProperties
 import os
 
-def process_xule(rule_set, model_xbrl, cntlr, options):
+def process_xule(rule_set, model_xbrl, cntlr, options, saved_taxonomies=None):
     """Run xule rules against a filing.
     
     :param rule_set: An opened rule set
@@ -64,7 +64,9 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
     processing of the rules.
     """
 
-    global_context = XuleGlobalContext(rule_set, model_xbrl, cntlr, options)   
+    global_context = XuleGlobalContext(rule_set, model_xbrl, cntlr, options)
+    if saved_taxonomies is not None and len(saved_taxonomies) > 0:
+        global_context.other_taxonomies = saved_taxonomies   
     
     # Set up trace files
     if getattr(global_context.options, "xule_trace_count", False):
@@ -111,7 +113,7 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
         constant_time = constant_end - constant_start
         global_context.message_queue.print("Time to calculated non instance constants: %s" % (constant_time))
 
-    global_context.message_queue.logging("Processing Filing...")
+    #global_context.message_queue.logging("Processing Filing...")
     evaluate_rule_set(global_context)
     
     if getattr(global_context.options, "xule_time", None) is not None:
@@ -124,9 +126,12 @@ def process_xule(rule_set, model_xbrl, cntlr, options):
         global_context.message_queue.stop()
         global_context.message_queue.clear()
         t.join()  
-    
+    # Save any taxonomies that were opened
+    saved_taxonomies = global_context.other_taxonomies
     #clean up
     del global_context
+    
+    return saved_taxonomies
     
 def evaluate_rule_set(global_context):
     """Process the rule set.
@@ -182,23 +187,25 @@ def evaluate_rule_set(global_context):
                 xule_context.iteration_table.add_table(rule['node_id'], xule_context.get_processing_id(rule['node_id']))
                 
                 # Evaluate the rule. 
+                if global_context.model is not None: 
+                    global_context.model.modelManager.showStatus("Processing rule {}".format(rule_name))
                 evaluate(rule, xule_context)
                  
             except (XuleProcessingError, XuleBuildTableError) as e:
-                if getattr(global_context.options, "xule_crash", False):
-                    raise
-                else:
-                    xule_context.global_context.message_queue.error("xule:error", str(e))
+                 if getattr(global_context.options, "xule_crash", False):
+                     raise
+                 else:
+                     xule_context.global_context.message_queue.error("xule:error", str(e))
  
             except XuleIterationStop:
                 pass
              
             except Exception as e:
-                if getattr(global_context.options, "xule_crash", False):
-                #if global_context.crash_on_error:
-                    raise
-                else:
-                    xule_context.global_context.message_queue.error("xule:error","rule %s: %s" % (rule_name, str(e)))
+                 if getattr(global_context.options, "xule_crash", False):
+                 #if global_context.crash_on_error:
+                     raise
+                 else:
+                     xule_context.global_context.message_queue.error("xule:error","rule %s: %s" % (rule_name, str(e)))
             
             
             if getattr(global_context.options, "xule_time", None) is not None:
@@ -386,7 +393,7 @@ _FACT_INDEX_PROPERTIES = {
                           ('property', 'concept', 'is-numeric'): lambda f: f.concept.isNumeric, 
                           ('property', 'concept', 'substitution'):lambda f: f.concept.substitutionGroupQname,
                           ('property', 'concept', 'namespace-uri'): lambda f: f.concept.qname.namespaceURI,
-                          ('property', 'concept', 'local-part'): lambda f: f.concept.qname.localName,
+                          ('property', 'concept', 'local-name'): lambda f: f.concept.qname.localName,
                           ('property', 'concept', 'is-abstract'): lambda f: f.concept.isAbstract,
                           ('property', 'concept', 'id'): lambda f: f.id,
                           ('property', 'period', 'start'): index_property_start,
@@ -1404,7 +1411,7 @@ def evaluate_for(for_expr, xule_context):
             for_loop_var.used_expressions.update(used_expressions)
         xule_context.add_arg(for_expr['forVar'],
                               for_expr['forLoopExpr']['node_id'],
-                              for_loop_var, #tagged - all variables are automatically tagged
+                              for_expr['forVar'], #tagged - all variables are automatically tagged
                               for_loop_var,
                               'single')
 
@@ -2016,6 +2023,7 @@ def evaluate_factset_detail(factset, xule_context):
     all_aspect_filters = list(nested_factset_filters.items()) + list(other_filters.items()) + list(non_align_aspects.items()) 
 
     #If the the factset is dependent, then we only need to find facts that also match the current alignment. Create filters based on the current alignment.
+    dependent_filters = list()
     if not factset.get('covered') and factset['is_dependent']:
         if xule_context.dependent_alignment is None:
             #The table may acquire the dependent alignment after evaluating the aspect filters
@@ -2023,16 +2031,16 @@ def evaluate_factset_detail(factset, xule_context):
         try:
             if xule_context.dependent_alignment is not None:
                 unfrozen_alignment = {k: v for k, v in xule_context.dependent_alignment}
-                align_aspects |= set(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
+                dependent_filters = list(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
         except IndexError:
             pass
-    all_aspect_filters += list(align_aspects.items())
+    all_aspect_filters += list(align_aspects.items()) + dependent_filters
     
     '''Match facts based on the aspects in the first part of the factset and any additional filters.
        This is done by intersecting the sets of the fact_index. The fact index is a dictionary of dictionaries.
        The outer dictionary is keyed by aspect and the inner by member. So fact_index[aspect][member] contains a 
        set of facts that have that aspect and member.'''       
-    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, align_aspects, xule_context)   
+    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, xule_context)   
     
     
     pre_count1 = len(pre_matched_facts)
@@ -2087,7 +2095,7 @@ def evaluate_factset_detail(factset, xule_context):
 #             else:
                 unfrozen_alignment = {k: v for k, v in xac.alignment}
                 additional_aspect_filters = list(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
-                pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, align_aspects, xule_context, starting_facts=pre_matched_facts)
+                pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, xule_context, starting_facts=pre_matched_facts)
                 #try again
                 try:
                     results, default_where_used_expressions = process_filtered_facts(factset, pre_matched_facts, not factset.get('covered'), non_align_aspects, nested_factset_filters, aspect_vars, used_expressions, xule_context)
@@ -2121,7 +2129,7 @@ def evaluate_factset_detail(factset, xule_context):
         
     return results
 
-def factset_pre_match(factset, filters, non_aligned_filters, aligned_filters, xule_context, starting_facts=None):
+def factset_pre_match(factset, filters, non_aligned_filters, xule_context, starting_facts=None):
     """Match facts based on the factset  
        
     Match facts based on the aspects in the first part of the factset and any additional filters.
@@ -2267,13 +2275,13 @@ def factset_pre_match(factset, filters, non_aligned_filters, aligned_filters, xu
     return pre_matched_facts
 
 def calc_fact_alignment(factset, fact, non_aligned_filters, frozen, xule_context):
-    if fact in xule_context.fact_alignments[factset['node_id']]:
-        return xule_context.fact_alignments[factset['node_id']][fact][0 if frozen else 1]
-    else:
-        unfrozen_alignment = get_alignment(fact, non_aligned_filters, xule_context)
+    if fact not in xule_context.fact_alignments[factset['node_id']]:
+        unfrozen_alignment = get_alignment(fact, non_aligned_filters, xule_context, not factset.get('coveredDims', False))
         fact_alignment = frozenset(unfrozen_alignment.items())
         xule_context.fact_alignments[factset['node_id']][fact] = (fact_alignment, unfrozen_alignment)    
         return fact_alignment if frozen else unfrozen_alignment
+    
+    return xule_context.fact_alignments[factset['node_id']][fact][0 if frozen else 1]
     
 def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non_align_aspects, nested_filters, aspect_vars, pre_matched_used_expressoins_ids, xule_context):
     """Apply the where portion of the factset"""
@@ -2509,7 +2517,7 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
             finally:
                 #remove $item
-                xule_context.del_arg('item', #(factset['node_id'], 0),
+                xule_context.del_arg('fact', #(factset['node_id'], 0),
                                  factset['whereExpr']['node_id'],)
                 #remove aspect variables
                 for var_name, aspect_var_tuple in aspect_vars.items():
@@ -2679,7 +2687,7 @@ def evaluate_navigate(nav_expr, xule_context):
             if nav_expr.get('dimensional'):
                 drs_role = nav_get_role(nav_expr, 'drsRole', dts, xule_context)
                 table_concepts = nav_get_element(nav_expr, 'table', dts, xule_context)
-                if arcrole is not  None:
+                if arcrole is not None:
                     dimension_arcroles = xc.DIMENSION_PSEDDO_ARCROLES.get(arcrole, ('all', {arcrole,}))
                 relationship_sets = [XuleUtility.dimension_set(dts, x) for x in XuleUtility.base_dimension_sets(dts) if ((drs_role is None or x[XuleUtility.DIMENSION_SET_ROLE] == drs_role) and
                                                                                                                          (table_concepts is None or x[XuleUtility.DIMENSION_SET_HYPERCUBE] in table_concepts))]
@@ -2836,8 +2844,7 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
         
         
         if child not in previous_concepts:
-            previous_concepts.add(child)
-            
+
             if child in end_concepts:
                 # This is the end of the traversal because the child is a 'to' concept.
                 if paths:
@@ -2857,7 +2864,7 @@ def nav_traverse(nav_expr, xule_context, direction, network, parent, end_concept
                                                  remaining_depth - 1, 
                                                  return_names, 
                                                  dimension_arcroles, 
-                                                 previous_concepts, 
+                                                 previous_concepts | {child,}, 
                                                  nav_depth + 1, 
                                                  result_order, 
                                                  arc_attribute_names)
@@ -3962,7 +3969,21 @@ def evaluate_tag_ref(tag_ref, xule_context):
     if tag_ref['varName'] in xule_context.tags:
         return xule_context.tags[tag_ref['varName']]
     else:
-        return XuleValue(xule_context, None, 'none')
+        # The reference may be to a constant
+        cat_const =  xule_context.global_context.catalog['constants'].get(tag_ref['varName'])
+        if cat_const is not None:            
+            ast_const = xule_context.global_context.rule_set.getItem(cat_const)
+            # If the constant is iterable and it was never used in the rule body, it cannot be calculated for the message. 
+            # There would be no way to determing which value to use.
+            if ast_const['number'] == 'single':
+                const_info = xule_context.find_var(tag_ref['varName'], ast_const['node_id'])
+                if const_info['type'] == xule_context._VAR_TYPE_CONSTANT:
+                    if not const_info.get('calculated'):
+                        var_value = evaluate(ast_const, xule_context)
+                        
+                    return const_info['value'].values[None][0]
+    # If here the tag could not be found
+    return XuleValue(xule_context, None, 'none')
                  
 #aspect info indexes
 TYPE = 0
@@ -4293,7 +4314,7 @@ def remove_from_alignment(alignment, remove_aspects, xule_context):
 def alignment_to_aspect_info(alignment, xule_context):
     aspect_dict = {}
     for align_key, align_value in alignment.items():
-        aspect_info = (align_key[0], align_key[1], None, '=')
+        aspect_info = (align_key[0], align_key[1], None, '=', None)
 
         if align_key[0] == 'builtin':
             if align_key[1] == 'concept':
@@ -4407,19 +4428,23 @@ def result_message(rule_ast, result_ast, xule_value, xule_context):
     #validate_result_name(result_ast, xule_context)
     message_context = xule_context.create_message_copy(xule_context.get_processing_id(rule_ast['node_id']))
     message_context.tags['rule-value'] = xule_value
+
     try:
         # Caching does not work for expressions with tagRefs. The The results portion of a rule will have a tagRef for each varRef. This conversion is
         # done during the post parse step. So it is neccessary to turn local caching off when evaluating the result expression. There is a command line option
         # for doing this. This code will turn this command line option on.
-        saved_no_cache = getattr(message_context.global_context.options, 'xule_no_cache')
+        saved_no_cache = getattr(message_context.global_context.options, 'xule_no_cache', False)
+#         if hasattr(message_context.global_context.options, 'xule_no_cache'):
+#             xule_context.global_context.options.xule_no_cache = True
         xule_context.global_context.options.xule_no_cache = True
         
         message_value = evaluate(result_ast['resultExpr'], message_context)
     except XuleIterationStop as xis:
         raise XuleProcessingError(_("Cannot produce message. An expression in the message has a skip value."), xule_context)
     finally:
-        if hasattr(message_context.global_context.options, 'xule_no_cache'):
-            xule_context.global_context.options.xule_no_cache = saved_no_cache   
+#         if hasattr(message_context.global_context.options, 'xule_no_cache'):
+#             
+        xule_context.global_context.options.xule_no_cache = saved_no_cache   
 
     if result_ast['resultName'] == 'rule-focus':
         # This is a special case. rule-focus requires some kind of a ModelObject. This will be passed to the logger as the modelObject argument.
@@ -4452,7 +4477,7 @@ def get_all_aspects(model_fact, xule_context):
     '''This function gets all the apsects of a fact'''
     return get_alignment(model_fact, {}, xule_context)
 
-def get_alignment(model_fact, non_align_aspects, xule_context):
+def get_alignment(model_fact, non_align_aspects, xule_context, include_dimensions=True):
     '''The alingment contains the aspect/member pairs that are in the fact but not in the non_align_aspects.
        The alignment is done in two steps. First check each of the builtin aspects. Then check the dimesnions.'''
     
@@ -4486,11 +4511,11 @@ def get_alignment(model_fact, non_align_aspects, xule_context):
         alignment[('builtin', 'entity')] = model_to_xule_entity(model_fact.context, xule_context)
           
     #dimensional apsects
-    non_align_dimensions = {aspect_info[ASPECT] for aspect_info in non_align_aspects if aspect_info[TYPE] == 'explicit_dimension'}
-    for fact_dimension_qname, dimension_value in model_fact.context.qnameDims.items():
-        if fact_dimension_qname not in non_align_dimensions:
-            
-            alignment[('explicit_dimension', fact_dimension_qname)] = dimension_value.memberQname if dimension_value.isExplicit else dimension_value.typedMember.xValue
+    if include_dimensions:
+        non_align_dimensions = {aspect_info[ASPECT] for aspect_info in non_align_aspects if aspect_info[TYPE] == 'explicit_dimension'}
+        for fact_dimension_qname, dimension_value in model_fact.context.qnameDims.items():
+            if fact_dimension_qname not in non_align_dimensions:
+                alignment[('explicit_dimension', fact_dimension_qname)] = dimension_value.memberQname if dimension_value.isExplicit else dimension_value.typedMember.xValue
         
     return alignment          
 
