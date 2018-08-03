@@ -798,3 +798,60 @@ Rule version: {$ruleVersion}"
 
 severity error
 
+assert US.0001.77 satisfied
+
+$base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target) returns set (target-name);
+$allowed_base_member = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis taxonomy $us-gaap returns set (target-name);
+$unallowed_base_members = $base_members - $allowed_base_member;
+
+for ($member in $unallowed_base_members)
+	$fact1 = {covered @PreferredUnitsByNameAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the PreferredUnitsByNameAxis and the base taxonomy member {$member.local-name}. Only extension members should be used with the axis PreferredUnitsByNameAxis.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis PreferredUnitsByNameAxis. The only members allowed on this axis are extension members defined by the filer. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:77
+Rule version: {$ruleVersion}"
+
+severity error
+
+/** Rules 78 and 79 apply to the 2017 and 2018 taxonomies and are not included here **/
+
+assert US.0001.80 satisfied
+
+$base_members = navigate dimensions dimension-member descendants from MajorCustomersAxis where is_base($relationship.target) returns set (target-name);
+$allowed_base_member = navigate dimensions dimension-member descendants from MajorCustomersAxis taxonomy $us-gaap returns set (target-name);
+$unallowed_base_members = $base_members - $allowed_base_member;
+
+for ($member in $unallowed_base_members)
+	$fact1 = {covered @MajorCustomersAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the MajorCustomersAxis and the base taxonomy member {$member.local-name}. Only extension members should be used with the axis MajorCustomersAxis.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis MajorCustomersAxis. The only members allowed on this axis are extension members defined by the filer. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:80
+Rule version: {$ruleVersion}"
+
+severity error
