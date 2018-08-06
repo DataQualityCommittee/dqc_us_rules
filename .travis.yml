@@ -9,54 +9,13 @@ branches:
   - /v.*/
 env:
   global:
-    - TESTCASESROOT=./DQC_Testcases
+    - INPUT=./tests/input
+    - EXPECTED=./test/output
     - CURRDIR=$(pwd)
-    - FILENUMBER=''
   matrix:
-    - TESTCASE=DQC_0001 FILENUMBER=0
-    - TESTCASE=DQC_0001 FILENUMBER=1
-    - TESTCASE=DQC_0001 FILENUMBER=2
-    - TESTCASE=DQC_0001 FILENUMBER=3	
-    - TESTCASE=DQC_0004
-    - TESTCASE=DQC_0005
-    - TESTCASE=DQC_0006
-    - TESTCASE=DQC_0008
-    - TESTCASE=DQC_0009
-    - TESTCASE=DQC_0011
-    - TESTCASE=DQC_0013 FILENUMBER=1
-    - TESTCASE=DQC_0013 FILENUMBER=2
-    - TESTCASE=DQC_0014 FILENUMBER=1
-    - TESTCASE=DQC_0014 FILENUMBER=2	
-#    - TESTCASE=DQC_0015
-    - TESTCASE=DQC_0018
-    - TESTCASE=DQC_0033
-    - TESTCASE=DQC_0036
-    - TESTCASE=DQC_0041
-    - TESTCASE=DQC_0043
-    - TESTCASE=DQC_0044
-    - TESTCASE=DQC_0045
-    - TESTCASE=DQC_0046
-    - TESTCASE=DQC_0047
-    - TESTCASE=DQC_0048
-    - TESTCASE=DQC_0049
-    - TESTCASE=DQC_0051
-    - TESTCASE=DQC_0052
-    - TESTCASE=DQC_0054
-    - TESTCASE=DQC_0055
-    - TESTCASE=DQC_0057
-    - TESTCASE=DQC_0060
-    - TESTCASE=DQC_0061
-    - TESTCASE=DQC_0062
-    - TESTCASE=DQC_0065	
+    - INFILES=[{"file":"$INPUT/Testco-2018-NonNeg.xbrl", "xule_run_only":"DQC.US.0015"}] EXFILES=$EXPECTED/DQC.US.0015_testco-2018.xml
 install:
   - pip install -r requirements.txt
 script:
-  - OUTPUTLOGFILE=./$TESTCASE-log.xml
-  - OUTPUTERRFILE=./$TESTCASE-err.txt
-  - OUTPUTCSVFILE=./$TESTCASE-report.csv
-  - python3.4 -m arelle.CntlrCmdLine --file "$TESTCASESROOT/$TESTCASE/variation$FILENUMBER.xml" --validate --plugins "$CURRDIR/xule|logging/dqcParameters.py" --csvTestReport "$OUTPUTCSVFILE" --logFile "$OUTPUTLOGFILE" --xule-test-debug
-  - python3.4 ./scan_results.py $OUTPUTCSVFILE
-after_script:
-  # Copy the test report to the log
-  - echo '===== START TEST RPOERT FILE (csv) =====' && cat $OUTPUTCSVFILE && echo '===== END TEST RPOERT FILE (csv) ====='
-  - echo '===== START LOG FILE =====' && cat $OUTPUTLOGFILE && echo '===== END LOG FILE ====='
+  - echo $INFILES
+  - echo $EXFILES
