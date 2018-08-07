@@ -13,7 +13,7 @@ env:
     - EXPECTED=./test/output
     - CURDIR=$(pwd)
   matrix:
-    - INFILES='[{"file":"$INPUT/Testco-2018-NonNeg.xbrl","xule_run_only":"DQC.US.0015"}]' EXFILES=$EXPECTED/DQC.US.0015_testco-2018.xml
+    - INFILES=[{"file":"$INPUT/Testco-2018-NonNeg.xbrl","xule_run_only":"DQC.US.0015"}] EXFILES=$EXPECTED/DQC.US.0015_testco-2018.xml
 install:
   - pip install -r requirements.txt
 script:
