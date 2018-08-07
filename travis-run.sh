@@ -1,2 +1,3 @@
 #!/bin/bash
-python3.5 -m arelle.CntlrCmdLine --plugin validate/DQC -v --xule-filing-list $INFILES --logFile log.xml
+echo $INFILES > infiles.json
+python3.5 -m arelle.CntlrCmdLine --plugin validate/DQC -v --xule-filing-list infiles.json --logFile log.xml
