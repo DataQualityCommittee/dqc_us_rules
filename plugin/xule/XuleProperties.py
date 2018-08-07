@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22531 $
+$Change: 22541 $
 DOCSKIP
 """
 
@@ -1128,7 +1128,8 @@ def property_year(xule_context, object_value, *args):
 
 def property_uri(xule_context, object_value, *args):
     if object_value.type == 'role':
-        return xv.XuleValue(xule_context, object_value.value.roleURI or object_value.value.arcroleURI, 'uri')
+        uri_value = getattr(object_value.value, 'roleURI', None) or getattr(object_value.value, 'arcroleURI', None)
+        return xv.XuleValue(xule_context, uri_value, 'uri')
     if object_value.type == 'taxonomy':
         return xv.XuleValue(xule_context, object_value.value.fileSource.url, 'uri')
  

@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22529 $
+$Change: 22540 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -3415,6 +3415,7 @@ def nav_decorate_component_preferred_label_role(rel, direction, component_name, 
 def nav_decorate_component_preferred_label(rel, direction, component_name, xule_context):
     if rel['relationship'].preferredLabel is not None:
         label = get_label(xule_context, rel['relationship'].toModelObject, rel['relationship'].preferredLabel, None)
+        #label = xp.property_label(xule_context, rel['relationship'].toModelObject, rel['relationship'].preferredLabel, None)
         if label is None:
             return (None, 'none', component_name)
         else:
@@ -3454,7 +3455,7 @@ def nav_decorate_component_role_description(rel, direction, component_name, xule
 
 def nav_decorate_component_arcrole(rel, direction, component_name, xule_context):
     arcrole = get_arcrole(rel['relationship'], xule_context)
-    return (arcrole, 'arcrole', component_name)
+    return (arcrole, 'role', component_name)
 
 
 def get_arcrole(relationship, xule_context):
