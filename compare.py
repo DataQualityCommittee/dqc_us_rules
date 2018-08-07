@@ -91,7 +91,7 @@ def compare(test_messages, expected_messages):
     :param expected_messages: Dictionary of messages
     :return:
     """
-
+    print("compare", len(test_messages), len(expected_messages))
     report = []
     headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count']
     all_keys = test_messages.keys() | expected_messages.keys()
@@ -127,7 +127,6 @@ def split_string(s, size):
 
 if __name__ == '__main__':
     args = options()
-    print(args)
     test_messages = combine_results(args.test_files)
     expected_messages = combine_results(args.expected_results)
     report = compare(test_messages, expected_messages)
