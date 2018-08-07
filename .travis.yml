@@ -13,10 +13,10 @@ env:
     - EXPECTED=./test/output
     - CURDIR=$(pwd)
   matrix:
-    - INFILES='[{"file":"$INPUT/Testco-2018-NonNeg.xbrl","xule_run_only":"DQC.US.0015"}]' EXFILES=$EXPECTED/DQC.US.0015_testco-2018.xml
+    - INFILES=[{\"file\":\"$INPUT/Testco-2018-NonNeg.xbrl\",\"xule_run_only\":\"DQC.US.0015\"}] EXFILES=$EXPECTED/DQC.US.0015_testco-2018.xml
 install:
   - pip install -r requirements.txt
 script:
   - cp -r $CURDIR/plugin/xule /home/travis/virtualenv/python3.5.5/src/arelle/arelle/plugin/
   - cp $CURDIR/plugin/validate/DQC.py /home/travis/virtualenv/python3.5.5/src/arelle/arelle/plugin/validate/
-  - python3.5 -m arelle.CntlrCmdLine --plugin validate/DQC -v --xule-filing-list '$INFILES'
+  - python3.5 -m arelle.CntlrCmdLine --plugin validate/DQC -v --xule-filing-list $INFILES
