@@ -9,7 +9,7 @@ branches:
   - /v.*/
 env:
   global:
-    - EXPECTED=./test/output
+    - EXPECTED=./tests/output
     - CURDIR=$(pwd)
   matrix:
     - INFILES=[{"file":"http://www.sec.gov/Archives/edgar/data/1002517/000100251717000040/nuan-20170930.xml", "xule_run_only":"DQC.US.0009.47"},{"file":"http://www.sec.gov/Archives/edgar/data/1004411/000165495418007170/glla-20180331.xml", "xule_run_only":"DQC.US.0001.70"},{"file":"http://www.sec.gov/Archives/edgar/data/1011659/000162828018002667/ub-20171231.xml", "xule_run_only":"DQC.US.0069.7643"},{"file":"http://www.sec.gov/Archives/edgar/data/1014111/000101411118000002/imn-20171231.xml", "xule_run_only":"DQC.US.0055.7493"},{"file":"http://www.sec.gov/Archives/edgar/data/1014111/000101411118000002/imn-20171231.xml", "xule_run_only":"DQC.US.0011"}] EXFILES=$EXPECTED/DQC.US.0009.47_nuan-2017.xml,$EXPECTED/DQC.US.0001.70_glla-2017.xml,$EXPECTED/DQC.US.0069.7643_ub-2017.xml,$EXPECTED/DQC.US.0055.7493_imn-2017.xml,$EXPECTED/DQC.US.0011_imn-2017.xml
@@ -17,7 +17,7 @@ env:
 install:
   - pip install -r requirements.txt
 script:
-  - bash travis_wait ./travis-run.sh
+  - travis_wait bash ./travis-run.sh
 after_script:
   - echo '===== START LOG FILE =====' && cat log.xml && echo '===== END LOG FILE ====='
   - echo '===== START REPORT FILE =====' && report.txt && echo '===== END REPORT FILE ====='
