@@ -12,8 +12,8 @@ Taxonomy: US GAAP 2018
 /** THIS RULE IDENTIFIES WHERE A COMPANY HAS BROKEN DOWN REVENUE BY ONE ITEM ONLY and NOT USED THE EXTENSIBLE LIST VALUE. **/
 /** https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml **/
 
-
 rule-name-prefix DQC
+
 
 assert US.0071.7646 satisfied
 
@@ -24,8 +24,8 @@ for $x in $all_cubes
 	if $x.dimensions().concept().name.contains(srt:ProductOrServiceAxis)
 		if count($x.primary-concepts.name.to-set.intersect($valid_line_items)) > 0
 			if count(navigate dimensions descendants from srt:ProductsAndServicesDomain drs-role $x.drs-role cube $x.cube-concept()) == 1
-				$count_values =count(list({@@concept in list(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold) @srt:ProductOrServiceAxis = *}#Revenue));
-				/**If there is only 1 fact and the default value is not reported then flag an error **/
+				$count_values =count(list({@@concept in list(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold) @cube = $x @srt:ProductOrServiceAxis = *}#Revenue));
+				
 				$count_values == 1 and (not exists({@srt:ProductOrServiceAxis = none}))
 			else
 				skip
@@ -51,5 +51,5 @@ Rule Element Id:7646
 Rule version: {$ruleVersion}
 "
 
-
 SEVERITY error
+
