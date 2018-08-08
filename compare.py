@@ -13,6 +13,7 @@ The return of this script is 0 for all messages match and 1 if messages do not m
 import argparse
 import collections
 import os
+import re
 import sys
 import tabulate
 import xml.etree.ElementTree as ET
@@ -51,7 +52,12 @@ def combine_results(file_names):
     return messages
 
 def message_key(entry):
-    return (entry.get('code'), entry.get('level'), getattr(entry.find('message'),'text',None), tuplize(entry.find('ref')))
+    """Create the key that will be used for the comparison"""
+
+    message = re.sub('Rule version:.*$','',getattr(entry.find('message'), 'text',''), flags=re.I|re.S) # Remove Rule Version
+    message = re.sub('\s','',message) # Remove all spaces
+
+    return (entry.get('code'), entry.get('level'), message, tuplize(entry.find('ref')))
 
 def tuplize(node):
     """Convert an XML element to a tuple structure
@@ -91,11 +97,10 @@ def compare(test_messages, expected_messages):
     :param expected_messages: Dictionary of messages
     :return:
     """
-    print("compare", len(test_messages), len(expected_messages))
     report = []
-    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count']
+    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count', 'key message']
     all_keys = test_messages.keys() | expected_messages.keys()
-    for key in all_keys:
+    for key in sorted(all_keys):
         test_count = len(test_messages.get(key,tuple()))
         expected_count = len(expected_messages.get(key, tuple()))
         if test_count != expected_count:
@@ -107,7 +112,8 @@ def compare(test_messages, expected_messages):
                            os.path.split(test_messages[key][0][1] if key in test_messages else '')[1], # file name
                            test_count,
                            os.path.split(expected_messages[key][0][1] if key in expected_messages else '')[1], # file name
-                           expected_count
+                           expected_count,
+                           split_string(key[2], 30)
                           ])
     if len(report) > 0:
         return [headers, *report]
@@ -131,13 +137,13 @@ if __name__ == '__main__':
     expected_messages = combine_results(args.expected_results)
     report = compare(test_messages, expected_messages)
 
-    if report is None:
-        sys.exit(0)
-    else:
-        report_table = tabulate.tabulate(report, headers='firstrow', tablefmt='grid')
-        if args.compare_file is None:
-            print(report_table)
+    with open(args.compare_file, 'w') as o:
+        if report is None:
+            sys.exit(0)
         else:
-            with open(args.compare_file, 'w') as o:
+            report_table = tabulate.tabulate(report, headers='firstrow', tablefmt='grid')
+            if args.compare_file is None:
+                print(report_table)
+            else:
                 o.write(report_table)
-        sys.exit(1)
+            sys.exit(1)
