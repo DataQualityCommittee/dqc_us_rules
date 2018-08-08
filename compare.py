@@ -56,6 +56,8 @@ def message_key(entry):
 
     message = re.sub('Rule version:.*$','',getattr(entry.find('message'), 'text',''), flags=re.I|re.S) # Remove Rule Version
     message = re.sub('\s','',message) # Remove all spaces
+    # Sort the characters of the message. This will resolve issues when parts of the message come out in different orders
+    message = "".join(sorted(message))
 
     return (entry.get('code'), entry.get('level'), message, tuplize(entry.find('ref')))
 
