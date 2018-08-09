@@ -12,7 +12,12 @@ rule-name-prefix DQC
 
 assert US.0067.7644 satisfied
 
-$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap returns set (target-name); 
+$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
+or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementContingentRevenue'
+or $relationship.target.name.local-name == 'PercentageRent'
+or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementSubleaseRevenue'
+)
+returns set (target-name); 
 
 $network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
 
