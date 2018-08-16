@@ -86,7 +86,7 @@ def open_files(file_names):
     """
     xml_docs = []
     for file_name in file_names.split(','):
-		print("Opening file:", file_name.strip())
+        print("Opening file:", file_name.strip())
         with open(file_name.strip(), 'r') as f:
             xml_doc = ET.fromstring(f.read())
             xml_docs.append((xml_doc, file_name.strip()))
