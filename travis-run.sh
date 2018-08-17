@@ -1,5 +1,8 @@
 #!/bin/bash
 set -x
+$ARELLE_DIR=$(which arellecmdline)
+echo "Arelle Dir"
+echo $ARELLE_DIR
 echo $INFILES > infiles.json
 sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|dqc_us_rules/|" $CURDIR/plugin/xule/rulesetMap.json
 sed -i "s|\?raw=true||" $CURDIR/plugin/xule/rulesetMap.json
