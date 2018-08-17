@@ -12,6 +12,9 @@ The return of this script is 0 for all messages match and 1 if messages do not m
 
 import argparse
 import collections
+import copy
+import csv
+import html
 import os
 import re
 import sys
@@ -29,7 +32,9 @@ def options():
     parser.add_argument('--expected-results', dest='expected_results', required=True,
                         help="List of expected result files. File names are separated by a comma.")
     parser.add_argument('--compare-file', dest='compare_file',
-                        help='File name of compare results.')
+                        help='File name of text version of compare results.')
+    parser.add_argument('--html-file', dest='html_file',
+                        help='File name of html version of compare results')
 
     args = parser.parse_args()
 
@@ -111,12 +116,12 @@ def compare(test_messages, expected_messages):
             base_message = (test_messages[key] if key in test_messages else expected_messages[key])[0]
             report.append([key[0],
                            base_message[0].get('level'),
-                           split_string(base_message[0].find('message').text,30),
+                           base_message[0].find('message').text,
                            os.path.split(test_messages[key][0][1] if key in test_messages else '')[1], # file name
                            test_count,
                            os.path.split(expected_messages[key][0][1] if key in expected_messages else '')[1], # file name
                            expected_count,
-                           split_string(key[2], 30)
+                           key[2]
                           ])
     if len(report) > 0:
         return [headers, *report]
@@ -134,19 +139,69 @@ def split_string(s, size):
 
     return '\n'.join(splits)
 
+def write_table_report(report, args):
+    """Write report as a tabulate text file"""
+    if report is not None:
+        # Fix long strings in the table. Tabulate does not wrap text in a cell. So the long text is pre split with newlines
+        # using split_string()
+        tab_report = []
+        for row in report:
+            tab_row = copy.copy(row)
+            tab_row[2] = split_string(tab_row[2], 30)
+            tab_row[7] = split_string(tab_row[7], 30)
+            tab_report.append(tab_row)
+
+        report_table = tabulate.tabulate(tab_report, headers='firstrow', tablefmt='grid')
+        if args.compare_file is None:
+            print(report_table)
+        else:
+            with open(args.compare_file, 'w') as o:
+                o.write(report_table)    
+
+def write_html_report(report, args):
+    """Write report as an html file"""
+    # Only write the report if the html_file argument was used
+    if report is not None:
+        if args.html_file is not None:
+            html_start = """<html><head><style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+            </style></head><body><table>"""
+            html_end = '</table></body></html>'
+
+            table = ''
+            # First row has headers
+            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in report[0]]) + '</tr>'
+            for row in report[1:]:
+                table += '<tr>'
+                for i in range(len(row)):
+                    if i == 7:
+                        val = html.escape(split_string(row[i], 30))
+                    else:
+                        val = html.escape(str(row[i]))
+                    table += "<td valign='top'>" +  val + "</td>" 
+                table += '</tr>'
+
+
+            with open(args.html_file.strip(), 'w') as h:
+                h.write(html_start + table + html_end)
+
 if __name__ == '__main__':
     args = options()
     test_messages = combine_results(args.test_files)
     expected_messages = combine_results(args.expected_results)
     report = compare(test_messages, expected_messages)
+    if report is None:
+        print('No differences')
+    write_table_report(report, args)
+    write_html_report(report, args)
+    if report is None:
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
-    with open(args.compare_file, 'w') as o:
-        if report is None:
-            sys.exit(0)
-        else:
-            report_table = tabulate.tabulate(report, headers='firstrow', tablefmt='grid')
-            if args.compare_file is None:
-                print(report_table)
-            else:
-                o.write(report_table)
-            sys.exit(1)
