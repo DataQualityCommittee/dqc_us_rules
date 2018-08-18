@@ -64,7 +64,7 @@ def message_key(entry):
     # Sort the characters of the message. This will resolve issues when parts of the message come out in different orders
     message = "".join(sorted(message))
 
-    return (entry.get('code'), entry.get('level'), message, tuplize(entry.find('ref')))
+    return (entry.get('code'), entry.get('level'), message) #, tuplize(entry.find('ref')))
 
 def tuplize(node):
     """Convert an XML element to a tuple structure
