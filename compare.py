@@ -12,7 +12,11 @@ The return of this script is 0 for all messages match and 1 if messages do not m
 
 import argparse
 import collections
+import copy
+import csv
+import html
 import os
+import re
 import sys
 import tabulate
 import xml.etree.ElementTree as ET
@@ -28,7 +32,9 @@ def options():
     parser.add_argument('--expected-results', dest='expected_results', required=True,
                         help="List of expected result files. File names are separated by a comma.")
     parser.add_argument('--compare-file', dest='compare_file',
-                        help='File name of compare results.')
+                        help='File name of text version of compare results.')
+    parser.add_argument('--html-file', dest='html_file',
+                        help='File name of html version of compare results')
 
     args = parser.parse_args()
 
@@ -51,7 +57,14 @@ def combine_results(file_names):
     return messages
 
 def message_key(entry):
-    return (entry.get('code'), entry.get('level'), getattr(entry.find('message'),'text',None), tuplize(entry.find('ref')))
+    """Create the key that will be used for the comparison"""
+
+    message = re.sub('Rule version:.*$','',getattr(entry.find('message'), 'text',''), flags=re.I|re.S) # Remove Rule Version
+    message = re.sub('\s','',message) # Remove all spaces
+    # Sort the characters of the message. This will resolve issues when parts of the message come out in different orders
+    message = "".join(sorted(message))
+
+    return (entry.get('code'), entry.get('level'), message) #, tuplize(entry.find('ref')))
 
 def tuplize(node):
     """Convert an XML element to a tuple structure
@@ -78,6 +91,7 @@ def open_files(file_names):
     """
     xml_docs = []
     for file_name in file_names.split(','):
+        print("Opening file:", file_name.strip())
         with open(file_name.strip(), 'r') as f:
             xml_doc = ET.fromstring(f.read())
             xml_docs.append((xml_doc, file_name.strip()))
@@ -91,11 +105,10 @@ def compare(test_messages, expected_messages):
     :param expected_messages: Dictionary of messages
     :return:
     """
-
     report = []
-    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count']
+    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count', 'key message']
     all_keys = test_messages.keys() | expected_messages.keys()
-    for key in all_keys:
+    for key in sorted(all_keys):
         test_count = len(test_messages.get(key,tuple()))
         expected_count = len(expected_messages.get(key, tuple()))
         if test_count != expected_count:
@@ -103,11 +116,12 @@ def compare(test_messages, expected_messages):
             base_message = (test_messages[key] if key in test_messages else expected_messages[key])[0]
             report.append([key[0],
                            base_message[0].get('level'),
-                           split_string(base_message[0].find('message').text,30),
+                           base_message[0].find('message').text,
                            os.path.split(test_messages[key][0][1] if key in test_messages else '')[1], # file name
                            test_count,
                            os.path.split(expected_messages[key][0][1] if key in expected_messages else '')[1], # file name
-                           expected_count
+                           expected_count,
+                           key[2]
                           ])
     if len(report) > 0:
         return [headers, *report]
@@ -125,20 +139,69 @@ def split_string(s, size):
 
     return '\n'.join(splits)
 
-if __name__ == '__main__':
-    args = options()
-    print(args)
-    test_messages = combine_results(args.test_files)
-    expected_messages = combine_results(args.expected_results)
-    report = compare(test_messages, expected_messages)
+def write_table_report(report, args):
+    """Write report as a tabulate text file"""
+    if report is not None:
+        # Fix long strings in the table. Tabulate does not wrap text in a cell. So the long text is pre split with newlines
+        # using split_string()
+        tab_report = []
+        for row in report:
+            tab_row = copy.copy(row)
+            tab_row[2] = split_string(tab_row[2], 30)
+            tab_row[7] = split_string(tab_row[7], 30)
+            tab_report.append(tab_row)
 
-    if report is None:
-        sys.exit(0)
-    else:
-        report_table = tabulate.tabulate(report, headers='firstrow', tablefmt='grid')
+        report_table = tabulate.tabulate(tab_report, headers='firstrow', tablefmt='grid')
         if args.compare_file is None:
             print(report_table)
         else:
             with open(args.compare_file, 'w') as o:
-                o.write(report_table)
+                o.write(report_table)    
+
+def write_html_report(report, args):
+    """Write report as an html file"""
+    # Only write the report if the html_file argument was used
+    if report is not None:
+        if args.html_file is not None:
+            html_start = """<html><head><style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid black;
+    }
+            </style></head><body><table>"""
+            html_end = '</table></body></html>'
+
+            table = ''
+            # First row has headers
+            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in report[0]]) + '</tr>'
+            for row in report[1:]:
+                table += '<tr>'
+                for i in range(len(row)):
+                    if i == 7:
+                        val = html.escape(split_string(row[i], 30))
+                    else:
+                        val = html.escape(str(row[i]))
+                    table += "<td valign='top'>" +  val + "</td>" 
+                table += '</tr>'
+
+
+            with open(args.html_file.strip(), 'w') as h:
+                h.write(html_start + table + html_end)
+
+if __name__ == '__main__':
+    args = options()
+    test_messages = combine_results(args.test_files)
+    expected_messages = combine_results(args.expected_results)
+    report = compare(test_messages, expected_messages)
+    if report is None:
+        print('No differences')
+    write_table_report(report, args)
+    write_html_report(report, args)
+    if report is None:
+        sys.exit(0)
+    else:
         sys.exit(1)
+

@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22537 $
+$Change: 22542 $
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -744,11 +744,15 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
                                 modelXbrl = modelManager.load(filing_filesource)
                                 # Update options
                                 new_options = copy.copy(options)
+                                delattr(new_options, 'xule_filing_list')
                                 for k, v in file_info.items():
                                     if k != 'file' and k.strip().lower().startswith('xule'): # Only change xule options
                                         setattr(new_options, k.strip().lower(), v)
-
-                                xuleCmdXbrlLoaded(cntlr, new_options, modelXbrl)
+                                if getattr(new_options, 'xule_run'):
+                                    xuleCmdXbrlLoaded(cntlr, new_options, modelXbrl)
+                                elif getattr(new_options, 'validate'):
+                                    for xule_validator in _xule_validators:
+                                        runXule(_cntlr, new_options, modelXbrl, xule_validator['map_name'])
                                 modelXbrl.close()
         else:
             if options.entrypointFile is None:
