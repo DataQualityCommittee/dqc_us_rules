@@ -28,7 +28,7 @@ $network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap
 returns set (target-name);
 
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
-$facts_in_606_standard = set({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*});
+$facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != * });
 
 any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
 
@@ -36,6 +36,7 @@ any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxi
 message
 "The filing has reported a value of \"{$revRec}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
 {$facts_in_606_standard.name.local-name.join(',\n')}
+
 
 Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
 
