@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22560 $
+$Change: 22557 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -2530,60 +2530,7 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
                         else:
                             continue  # try the next fact from the pre match
 
-        if factset.get('nilDefault', False) and model_fact.isNil:
-            # Handle nil value where the value should be defaulted.
-            if (model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'monetaryItemType') or
-                model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'decimalItemType') or
-                model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'sharesItemType') or
-                model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'pureItemType')):
-                xule_type = 'decimal'
-                system_value = decimal.Decimal(0)
-            elif (model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'floatItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'doubleItemType')):
-                xule_type = 'float'
-                system_value = 0.0
-            elif (model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'integerItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'nonPositiveIntegerItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'longItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'intItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'shortItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'nonNegativeIntegerItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'unsignedLongItemType') or
-
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'unsignedIntItemType') or
-                  model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                                 'unsignedShortItemType')):
-                xule_type = 'int'
-                system_value = 0
-            elif (model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'stringItemType') or
-                model_fact.concept.baseXbrliTypeQname == qname('http://www.xbrl.org/2003/instance',
-                                                               'normalizedStringItemType')):
-                xule_type = 'string'
-                system_value = ''
-            else:
-                # There is no default value for the type of the fact
-                system_value = model_fact
-                xule_type = 'fact'
-        else:
-            system_value = model_fact
-            xule_type = 'fact'
-
-        fact_value = XuleValue(xule_context, system_value, xule_type,
+        fact_value = XuleValue(xule_context, model_fact, 'fact',
                                alignment=None if alignment is None else frozenset(alignment.items()))
         if not current_no_alignment:
             fact_value.aligned_result_only = True
@@ -3878,27 +3825,25 @@ def property_as_function(xule_context, function_ref):
 
 
 def regular_function(xule_context, function_ref, function_info):
-    if function_info[FUNCTION_ARG_NUM] is not None:
-        # if the number of argument is none, then the function can have any number of arguments
-        if function_info[FUNCTION_ARG_NUM] >= 0:
-            if function_info[FUNCTION_TYPE] == 'regular' and len(function_ref['functionArgs']) != function_info[
-                FUNCTION_ARG_NUM]:
-                raise XuleProcessingError(
-                    _("The '%s' function must have only %i argument, found %i." % (function_ref['functionName'],
-                                                                                   function_info[FUNCTION_ARG_NUM],
-                                                                                   len(function_ref['functionArgs']))),
-                    xule_context)
-        else:
-            # The function can have no more than the specified number of arguments.
-            if function_info[FUNCTION_TYPE] == 'regular' and len(function_ref['functionArgs']) > (
-                    function_info[FUNCTION_ARG_NUM] * -1):
-                raise XuleProcessingError(
-                    _("The '%s' function must have no more than %i arguments, found %i." % (function_ref['functionName'],
-                                                                                            function_info[
-                                                                                                FUNCTION_ARG_NUM] * -1,
-                                                                                            len(function_ref[
-                                                                                                    'functionArgs']))),
-                    xule_context)
+    if function_info[FUNCTION_ARG_NUM] >= 0:
+        if function_info[FUNCTION_TYPE] == 'regular' and len(function_ref['functionArgs']) != function_info[
+            FUNCTION_ARG_NUM]:
+            raise XuleProcessingError(
+                _("The '%s' function must have only %i argument, found %i." % (function_ref['functionName'],
+                                                                               function_info[FUNCTION_ARG_NUM],
+                                                                               len(function_ref['functionArgs']))),
+                xule_context)
+    else:
+        # The fucntion may have a variable number of arguments.
+        if function_info[FUNCTION_TYPE] == 'regular' and len(function_ref['functionArgs']) > (
+                function_info[FUNCTION_ARG_NUM] * -1):
+            raise XuleProcessingError(
+                _("The '%s' function must have no more than %i arguments, found %i." % (function_ref['functionName'],
+                                                                                        function_info[
+                                                                                            FUNCTION_ARG_NUM] * -1,
+                                                                                        len(function_ref[
+                                                                                                'functionArgs']))),
+                xule_context)
 
     function_args = []
     for function_arg in function_ref['functionArgs']:
