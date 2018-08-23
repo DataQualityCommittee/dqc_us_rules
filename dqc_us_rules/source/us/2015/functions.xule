@@ -85,6 +85,16 @@ $tolerance1 = if ($left.decimals < $right.decimals)
 					$right.decimals;
 $tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
 
+$left = if $left == none
+			0
+		else
+			$left;
+
+$right = if $right == none
+			0
+		else
+			$right;
+
 if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
 	true
 else 
