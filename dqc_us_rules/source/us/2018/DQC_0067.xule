@@ -23,7 +23,7 @@ $network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap
 returns set (target-name);
 
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
-$facts_in_606_standard = set({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*});
+$facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != *});
 
 any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
 

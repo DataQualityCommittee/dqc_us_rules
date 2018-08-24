@@ -11,7 +11,10 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
-$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
+for ($x in $effective_tax_rates)
+	$rule_suffix_id = $x[1];
+	
+		$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
 						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
@@ -25,13 +28,9 @@ $IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBefo
 								{@IncomeLossFromEquityMethodInvestments}}
 							else
 								skip}};
-
-for ($x in $effective_tax_rates)
-	$rule_suffix_id = $x[1];
-	
-	$IncomeBeforeTax > 0
-	and
-	exists({@concept = $x[2] @unit=* where $fact < 0 
+	 	$IncomeBeforeTax > 0
+		and
+		exists({@concept = $x[2] @unit=* where $fact < 0 
 		and not match_set_substring($fact, $exclude_non_neg_string_members) 
 		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 
 		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
@@ -51,6 +50,7 @@ rule-suffix
 $rule_suffix_id
 
 severity error
+
 
 constant $effective_tax_rates = list(
 			list(2774,EffectiveIncomeTaxRateReconciliationTaxCredits),
@@ -74,4 +74,19 @@ constant $effective_tax_rates = list(
 			list(3440,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
 			list(3441,EffectiveIncomeTaxRateReconciliationRepatriationForeignEarningsJobsCreationActOf2004)
 			)
+ 
+/**
+output US.0013c
 
+$IncomeBeforeTax1 = {{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit = *}}
+for ($x in $effective_tax_rates)
+	$rule_suffix_id = $x[1];
+	
+	$IncomeBeforeTax1 > 0
+	and
+	exists({@concept = $x[2] @unit=* where $fact < 0 }#fact1)
+	
+rule-suffix
+$rule_suffix_id
+	
+**/
