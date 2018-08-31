@@ -31,6 +31,15 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * numpy
 * Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
 
+When running Arelle with the DQC plugin from source, use Python 3.5 or later. The plugin is not compatible with earlier versions of Python.
+
+### Updating the ruleset map file
+After the installation, the ruleset map file needs to be updated for the latest version. The latest ruleset map is "plugin/xule/rulesetMap.json" in the GitHub distribution. Use the following command to update the ruleset map:
+
+`
+arelleCmdLine --plugin validate/DQC --DQC-replace-rule-set-map *{location of rulesetMap.json file from the GitHub distribution}*
+`
+
 ## <a name="using"></a>Usage and Results - DQC Rules with Arelle
 
 *  [from the graphic user interface (GUI)](usage_Arelle_GUI.md) - **version 5.2.0 or later**
