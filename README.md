@@ -18,13 +18,13 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 ## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
-1. Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
+1. Download the latest version of [Arelle](http://arelle.org/pub/) to your environment and install. 
 2. Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
 3. Extract the archive and copy the "xule" folder (located in the "plugin" folder) and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. If there is already a "xule" folder in the "plugin" folder, overwrite the files with the ones from this distrubtion. Also copy the "DQC.py" file (located in the "plugin/validate" folder) to the validate plugin directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
 4. Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
 
 ### Source Install
-* Download the latest version of [Arelle](https://github.com/Arelle/Arelle) fro GitHub to your environment and install. 
+* Download the latest version of [Arelle](https://github.com/Arelle/Arelle/releases) fro GitHub to your environment and install. 
 * Install the following modules to python:
   * isodate
   * aniso8601
