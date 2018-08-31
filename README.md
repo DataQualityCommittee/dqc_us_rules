@@ -18,10 +18,10 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 ## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
-* Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
-* Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the archive and copy the "xule" folder (located in the "plugin" folder) and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. If there is already a "xule" folder in the "plugin" folder, overwrite the files with the ones from this distrubtion. Also copy the "DQC.py" file (located in the "plugin/validate" folder) to the validate plugin directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
-* Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
+1. Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
+2. Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+3. Extract the archive and copy the "xule" folder (located in the "plugin" folder) and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. If there is already a "xule" folder in the "plugin" folder, overwrite the files with the ones from this distrubtion. Also copy the "DQC.py" file (located in the "plugin/validate" folder) to the validate plugin directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
+4. Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
 
 ### Source Install
 * Download the latest version of [Arelle](https://github.com/Arelle/Arelle) fro GitHub to your environment and install. 
@@ -29,7 +29,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * isodate
   * aniso8601
   * numpy
-* Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
+* Do steps 2-3 from above to add the DQC plugin to the source copy of arelle. The Arelle location is where you have saved the Arelle source code. The Arelle plugin foler is at "Arelle-master/arelle/plugin" in the source distribution. For set 2, add the xule plugin to this folder. For step 3, add the "DQC.py" file to the "validate" folder.
 
 When running Arelle with the DQC plugin from source, use Python 3.5 or later. The plugin is not compatible with earlier versions of Python.
 
@@ -102,21 +102,6 @@ When new rules that have been approved for coding are released by the DQC, the r
   - For code changes, you must have a second `+1` comment from a second community member.
   - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
-
-### Quality Assurance (QA) of a Pull Request:
-  - Verify that the code passes flake8 on both the code and tests.
-  - Verify that the code passes unit tests.
-  - Verify that tests were added or updated to reflect the changes made. If tests were not added, check for a reasoning in the pull request to justify the absence.
-  - This template contains all the steps, and can be used as a step-by-step guide.
-
-#### QA Steps:
-- Manual testing: <Enter Manual testing notes here.>
-- Flake8 on dqc_us_rules: <Paste output of flake8 on the dqc_us_rules directory here.>
-- Flake8 on tests: <Paste output of flake8 on the tests directory here.>
-- Nosetest result: <Paste output of nose tests here.>
-#### Result: <Put result here.>
-
-The result will be any of a few things. For example a +10 for passing, or just a comment like "sent back for rework", or whatever else is needed to be done before another pass at QA.
 
 ## <a name="licensing"></a>License and Patent
 
