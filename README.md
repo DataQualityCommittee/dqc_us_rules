@@ -20,7 +20,8 @@ The ruleset is comprised of compiled rule files representing rule submission for
 ### Windows/Mac/Linux Application Install
 1. Download the latest version of [Arelle](http://arelle.org/pub/) to your environment and install. 
 2. Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-3. Extract the archive and copy the "xule" folder (located in the "plugin" folder) and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. If there is already a "xule" folder in the "plugin" folder, overwrite the files with the ones from this distrubtion. Also copy the "DQC.py" file (located in the "plugin/validate" folder) to the validate plugin directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
+3. Extract the DQC archive and copy the ```plugin/xule``` folder and files to the plugin directory of Arelle in your environment (if prompted, overwrite files in the existing xule subfolder). In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. 
+**Also copy the DQC.py file** (located in the ```plugin/validate``` folder of the DQC release) to the ```plugin/validate``` directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
 4. Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
 
 ### Source Install
@@ -29,9 +30,9 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * isodate
   * aniso8601
   * numpy
-* Do steps 2 and 3 from above to add the DQC plugin to the source copy of arelle. The Arelle location is where you have saved the Arelle source code. The Arelle plugin foler is at "Arelle-master/arelle/plugin" in the source distribution. For set 2, add the xule plugin to this folder. For step 3, add the "DQC.py" file to the "validate" folder.
+* Follow steps 2 and 3 from the **Windows/Mac/Linux Application Install** section above to add the DQC plugin to the source copy of Arelle. The Arelle location is where the Arelle source code from GitHub was extracted on the local machine or server. The Arelle plugin foler is at ```arelle/plugin``` in the source distribution. For *step 2*, add the xule folder and files to the Arelle plugin folder. For *step 3*, add the **DQC.py** file from the DQC release's ```plugin/validate``` subfolder to the ```arelle/plugin/validate``` folder.
 
-When running Arelle with the DQC plugin from source, use Python 3.5 or later. The plugin is not compatible with earlier versions of Python.
+The DQC plugin requires **Python 3.5** or later and is not compatible with earlier versions of Python.
 
 ### Updating the ruleset map file
 After the installation, the ruleset map file needs to be updated for the latest version. The latest ruleset map is "plugin/xule/rulesetMap.json" in the GitHub distribution. Use the following command to update the ruleset map:
