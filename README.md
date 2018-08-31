@@ -29,7 +29,7 @@ The ruleset is comprised of compiled rule files representing rule submission for
   * isodate
   * aniso8601
   * numpy
-* Do steps 2-3 from above to add the DQC plugin to the source copy of arelle. The Arelle location is where you have saved the Arelle source code. The Arelle plugin foler is at "Arelle-master/arelle/plugin" in the source distribution. For set 2, add the xule plugin to this folder. For step 3, add the "DQC.py" file to the "validate" folder.
+* Do steps 2 and 3 from above to add the DQC plugin to the source copy of arelle. The Arelle location is where you have saved the Arelle source code. The Arelle plugin foler is at "Arelle-master/arelle/plugin" in the source distribution. For set 2, add the xule plugin to this folder. For step 3, add the "DQC.py" file to the "validate" folder.
 
 When running Arelle with the DQC plugin from source, use Python 3.5 or later. The plugin is not compatible with earlier versions of Python.
 
