@@ -4,13 +4,13 @@
 ## Initial setup for the DQC Rules xule plugin
 
 * Open the Arelle program.
-* Choose the "Help" menu and select "Manage plug-ins" to verify the DQC XBRL rule processor (xule) is listed.
-* ***If DQC XBRL rule processor (xule) is not listed:***
-	* Use the "Browse" button to locate the xule plugin folder in Arelle's install directory, which is located on a path similar to C:\Program FIles\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. 
-	* **Choose the __init__.py file** and verify the DQC XBRL rule processor (xule) is listed in the Plug-in Manager, then click "Close". 
+* Choose the "Help" menu and select "Manage plug-ins" to verify the "DQC Rules Validator" is listed.
+* ***If DQC Rules Validator is not listed:***
+    * Use the "Select" button to bring up teh "Select Plug-in Module" dialog. 
+    * Select the the "DQC.py" file (under "Validate"). Next to the file, the name will appear as "DQC Rules Validator". Click on "Ok". 
+    * The "Select Plug-in Module" will close. On the "Plug-in Manager" dialog click on "Close".
 	* When the dialogue box appears requesting a program restart, choose "Yes".
-* Choose the "Tools" menu and "Validate" to confirm there is a check mark for "DQC Rules". If not, select this item from the menu and confirm the selection is now checked.
-* Choose the "Tools" menu and "DQC" >> "Version..." to confirm __3.0.22495__ or higher appears.
+* Choose the "Tools" menu and "Validation" and confirm there is a check mark for "DQC Rules". If not, select this item from the menu.
 
 ## Checking a filing with DQC Rules
 
