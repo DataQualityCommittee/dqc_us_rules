@@ -10,7 +10,7 @@
 
 ## About the DQC Arelle plugin (v5 and later)
 
-The DQC rules are run using an Arelle plugin written in python-based syntax (called xule) that requires the [Arelle XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
+The DQC rules are run using an Arelle plugin written in an XBRL rule syntax called Xule. Xule is processed in a plugin for the [Arelle Open Source XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
@@ -18,19 +18,28 @@ The ruleset is comprised of compiled rule files representing rule submission for
 
 ## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
-* Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
-* Download the latest release of the [DQC plugin (v5.1 or later)](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
-* Extract the archive and copy the "xule" folder and its contents from the archive to the plugin directory of Arelle in your environment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin.
-* Copy the "aniso8601" to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
+1. Download the latest version of [Arelle](http://arelle.org/pub/) to your environment and install. 
+2. Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+3. Extract the DQC archive and copy the ```plugin/xule``` folder and files to the plugin directory of Arelle in your environment (if prompted, overwrite files in the existing xule subfolder). In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. 
+**Also copy the DQC.py file** (located in the ```plugin/validate``` folder of the DQC release) to the ```plugin/validate``` directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
+4. Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
 
 ### Source Install
-* Download the latest version of [Arelle](http://arelle.org/download/) to your environment and install. 
+* Download the latest version of [Arelle](https://github.com/Arelle/Arelle/releases) fro GitHub to your environment and install. 
 * Install the following modules to python:
   * isodate
   * aniso8601
   * numpy
-  * \*regex  (If you are using python 3.4)
-* Extract the xule.zip file.  Copy the xule folder to the Arelle plugin folder.  The default directory under linux is [arelle_root]/arelle/plugins.
+* Follow steps 2 and 3 from the **Windows/Mac/Linux Application Install** section above to add the DQC plugin to the source copy of Arelle. The Arelle location is where the Arelle source code from GitHub was extracted on the local machine or server. The Arelle plugin foler is at ```arelle/plugin``` in the source distribution. For *step 2*, add the xule folder and files to the ```arelle/plugin``` folder. For *step 3*, add the **DQC.py** file from the DQC release's ```plugin/validate``` subfolder to the ```arelle/plugin/validate``` folder.
+
+The DQC plugin requires **Python 3.5** or later and is not compatible with earlier versions of Python.
+
+### Updating the ruleset map file
+After the installation, the ruleset map file needs to be updated for the latest version. The latest ruleset map is "plugin/xule/rulesetMap.json" in the GitHub distribution. Use the following command to update the ruleset map:
+
+`
+arelleCmdLine --plugin validate/DQC --DQC-replace-rule-set-map *{location of rulesetMap.json file from the GitHub distribution}*
+`
 
 ## <a name="using"></a>Usage and Results - DQC Rules with Arelle
 
@@ -94,21 +103,6 @@ When new rules that have been approved for coding are released by the DQC, the r
   - For code changes, you must have a second `+1` comment from a second community member.
   - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
-
-### Quality Assurance (QA) of a Pull Request:
-  - Verify that the code passes flake8 on both the code and tests.
-  - Verify that the code passes unit tests.
-  - Verify that tests were added or updated to reflect the changes made. If tests were not added, check for a reasoning in the pull request to justify the absence.
-  - This template contains all the steps, and can be used as a step-by-step guide.
-
-#### QA Steps:
-- Manual testing: <Enter Manual testing notes here.>
-- Flake8 on dqc_us_rules: <Paste output of flake8 on the dqc_us_rules directory here.>
-- Flake8 on tests: <Paste output of flake8 on the tests directory here.>
-- Nosetest result: <Paste output of nose tests here.>
-#### Result: <Put result here.>
-
-The result will be any of a few things. For example a +10 for passing, or just a comment like "sent back for rework", or whatever else is needed to be done before another pass at QA.
 
 ## <a name="licensing"></a>License and Patent
 
