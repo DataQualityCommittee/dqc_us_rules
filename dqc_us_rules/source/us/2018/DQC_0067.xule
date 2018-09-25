@@ -19,7 +19,7 @@ $network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap
 $PriorStandard = $RevenueElements + $network440000; 
 
 
-$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes' or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock')
+$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes' or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock' or $relationship.target.name.local-name == 'GrossTranactionVolume' )
 returns set (target-name);
 
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
