@@ -4,7 +4,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
-| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 6 |
+| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Revised for Committee Approval | 7 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 6 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 6 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 6 |
@@ -14,8 +14,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0009](DQC_US_0009/DQC_0009.md) | Element A must be less than or equal to element B | Approved | 6 |
 | [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Element Adjustment for Public Comment |  |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 6 |
-| [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Additional Elements for Public Comment |  |
-| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 6 |
+| [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Revised for Committee Approval | 7 |
+| [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Revised for Committee Approval | 7 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 6 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 6 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved for IFRS &amp; US GAAP | 6 |
@@ -40,22 +40,22 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0061](DQC_US_0061/DQC_0061.md) | Cash Flow Continuing Operations Elements not Used | Approved | 6 |
 | [DQC_US_0062](DQC_US_0062/DQC_0062.md) | No Fact Value for Change in Cash | Approved | 6 |
 | [DQC_US_0065](DQC_US_0065/DQC_0065.md) | Interest Paid Net (Operating) Not on Cash Flow | Approved | 6 |
-| [DQC_US_0067](DQC_US_0067/DQC_0067.md) | Mutually Exclusive Elements | Draft for Public Comment |  |
-| [DQC_US_0068](DQC_US_0068/DQC_0068.md) | Geographical Axis Used with Pension Line Items | Draft for Public Comment |  |
-| [DQC_US_0069](DQC_US_0069/DQC_0069.md) | Plan Asset Categories Component Members | Draft for Public Comment |  |
-| [DQC_US_0070](DQC_US_0070/DQC_0070.md) | Plan Asset Dimensional Aggregation | Draft for Public Comment |  |
-| [DQC_US_0071](DQC_US_0071/DQC_0071.md) | Revenue/Cost Single Member | Draft for Public Comment |  |
-| [DQC_US_0072](DQC_US_0072/DQC_0072.md) | Plan Asset Categories Percentage | Draft for Public Comment |  |
-| [DQC_US_0073](DQC_US_0073/DQC_0073.md) | Plan Asset Categories Permissible Line Items | Draft for Public Comment |  |
-| [DQC_US_0074](DQC_US_0074/DQC_0074.md) | Nil Values on Typed Axis | Draft for Public Comment |  |
-| [DQC_US_0075](DQC_US_0075/DQC_0075.md) | Revenue Tax Policy | Draft for Public Comment |  |
-| [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Draft for Public Comment |  |
-| [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Draft for Public Comment |  |
-| [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Draft for Public Comment |  |
+| [DQC_US_0067](DQC_US_0067/DQC_0067.md) | Mutually Exclusive Elements | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0068](DQC_US_0068/DQC_0068.md) | Geographical Axis Used with Pension Line Items | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0069](DQC_US_0069/DQC_0069.md) | Plan Asset Categories Component Members | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0070](DQC_US_0070/DQC_0070.md) | Plan Asset Dimensional Aggregation | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0071](DQC_US_0071/DQC_0071.md) | Revenue/Cost Single Member | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0072](DQC_US_0072/DQC_0072.md) | Plan Asset Categories Percentage | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0073](DQC_US_0073/DQC_0073.md) | Plan Asset Categories Permissible Line Items | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0074](DQC_US_0074/DQC_0074.md) | Nil Values on Typed Axis | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0075](DQC_US_0075/DQC_0075.md) | Revenue Tax Policy | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Revised Draft for Committee Approval | 7 |
+| [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Revised Draft for Committee Approval | 7 |
 
 ## Guidance
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Draft for Public Comment   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Recognition Guidance</a> - Draft for Public Comment  
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Revised Draft for Committee Approval   
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Recognition Guidance</a> - Revised Draft for Committee Approval  
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
