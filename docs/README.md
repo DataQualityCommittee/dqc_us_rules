@@ -12,7 +12,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Approved | 6 |
 | [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Approved for IFRS &amp; US GAAP | 6 |
 | [DQC_US_0009](DQC_US_0009/DQC_0009.md) | Element A must be less than or equal to element B | Approved | 6 |
-| [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Element Adjustment for Public Comment |  |
+| [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Revised for Committee Approval | 7 |
 | [DQC_US_0013](DQC_US_0013/DQC_0013.md) | Negative values with dependence | Approved | 6 |
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Revised for Committee Approval | 7 |
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Revised for Committee Approval | 7 |
