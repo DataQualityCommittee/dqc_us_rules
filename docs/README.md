@@ -48,14 +48,14 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0072](DQC_US_0072/DQC_0072.md) | Plan Asset Categories Percentage | Revised Draft for Committee Approval | 7 |
 | [DQC_US_0073](DQC_US_0073/DQC_0073.md) | Plan Asset Categories Permissible Line Items | Revised Draft for Committee Approval | 7 |
 | [DQC_US_0074](DQC_US_0074/DQC_0074.md) | Nil Values on Typed Axis | Revised Draft for Committee Approval | 7 |
-| [DQC_US_0075](DQC_US_0075/DQC_0075.md) | Revenue Tax Policy | Revised Draft for Committee Approval | 7 |
+| DQC_US_0075 | Revenue Tax Policy | Removed from Public Review |  |
 | [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Revised Draft for Committee Approval | 7 |
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Revised Draft for Committee Approval | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Revised Draft for Committee Approval | 7 |
 
 ## Guidance
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Revised Draft for Committee Approval   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Recognition Guidance</a> - Revised Draft for Committee Approval  
+### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Guidance</a> - Revised Draft for Committee Approval  
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
