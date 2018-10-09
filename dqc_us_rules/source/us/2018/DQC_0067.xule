@@ -14,12 +14,12 @@ assert US.0067.7644 satisfied
 
 $RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap returns set (target-name); 
 
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
+$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' or $relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' or $relationship.target.name.local-name == 'DeferredRevenue' or $relationship.target.name.local-name == 'DeferredRevenueCurrent' or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent' or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock') returns set (target-name);
 
 $PriorStandard = $RevenueElements + $network440000; 
 
 
-$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes' or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock' or $relationship.target.name.local-name == 'GrossTranactionVolume' )
+$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
 returns set (target-name);
 
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
