@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.02 secs at 2018-10-16T10:05:10 - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml"/></entry>
+<entry code="info" level="info">
+ <message>[info] Using ruleset /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2017-V7-ruleset.zip - dfbg-20180331.xml </message>
+ <ref href="dfbg-20180331.xml"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of package dqc_15_concepts.csv and dqc_0011.csv successful. - /var/folders/18/_kbcbv855dxf82x5yvny6h0c0000gn/T/tmpkkza4nt9/packages/resources.zip </message>
+ <ref href="/var/folders/18/_kbcbv855dxf82x5yvny6h0c0000gn/T/tmpkkza4nt9/packages/resources.zip"/></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 using the ProductOrServiceAxis in the role 41301 - Disclosure - Segment Reporting (Details) on the table us-gaap:ScheduleOfSegmentReportingInformationBySegmentTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2017-01-01 to 2017-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16392</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/959)" sourceLine="16392">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2017_To_3_31_2017_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="40,103,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 using the ProductOrServiceAxis in the role 00200 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS AND COMPREHENSIVE INCOME (LOSS) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2017-01-01 to 2017-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16392</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/959)" sourceLine="16392">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2017_To_3_31_2017_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="40,103,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 40,103,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2017-01-01 to 2017-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16392</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/959)" sourceLine="16392">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2017_To_3_31_2017_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="40,103,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 22,489,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 22,489,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis=us-gaap:CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member, us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member, us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11459</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/488)" sourceLine="11459">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_InitialApplicationPeriodCumulativeEffectTransitionAxis_us-gaap_CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis" value="us-gaap:CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="22,489,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 using the ProductOrServiceAxis in the role 41301 - Disclosure - Segment Reporting (Details) on the table us-gaap:ScheduleOfSegmentReportingInformationBySegmentTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16396</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/963)" sourceLine="16396">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="38,818,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 using the ProductOrServiceAxis in the role 00200 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS AND COMPREHENSIVE INCOME (LOSS) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16396</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/963)" sourceLine="16396">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="38,818,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16396</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/963)" sourceLine="16396">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="38,818,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 using the ProductOrServiceAxis in the role 00200 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS AND COMPREHENSIVE INCOME (LOSS) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11457</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/486)" sourceLine="11457">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="22,563,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11457</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/486)" sourceLine="11457">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="22,563,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 21,499,000 using the ProductOrServiceAxis in the role 00200 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS AND COMPREHENSIVE INCOME (LOSS) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 21,499,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2017-01-01 to 2017-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11456</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/485)" sourceLine="11456">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2017_To_3_31_2017_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="21,499,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 21,499,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 21,499,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2017-01-01 to 2017-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11456</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/485)" sourceLine="11456">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2017_To_3_31_2017_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="21,499,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,818,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member, us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16397</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/964)" sourceLine="16397">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="38,818,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of -18,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of -18,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member, us-gaap:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis=us-gaap:DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16399</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/966)" sourceLine="16399">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_InitialApplicationPeriodCumulativeEffectTransitionAxis_us-gaap_DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis" value="us-gaap:DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-18,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,800,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax with a value of 38,800,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis=us-gaap:CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member, us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member, us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 16398</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/965)" sourceLine="16398">
+  <property name="label" value="Revenue from Contract with Customer, Including Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerIncludingAssessedTax"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_InitialApplicationPeriodCumulativeEffectTransitionAxis_us-gaap_CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis" value="us-gaap:CalculatedUnderRevenueGuidanceInEffectBeforeTopic606Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="38,800,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of -74,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of -74,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member, us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis=us-gaap:DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member, us-gaap:ProductOrServiceAxis=us-gaap:ProductMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11460</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/489)" sourceLine="11460">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_InitialApplicationPeriodCumulativeEffectTransitionAxis_us-gaap_DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:InitialApplicationPeriodCumulativeEffectTransitionAxis" value="us-gaap:DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-74,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml" cid="4338798264" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 using the ProductOrServiceAxis in the role 40201 - Disclosure - Summary of Significant Accounting Policies - (Details) on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 22,563,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2018-01-01 to 2018-03-31
+Dimensions : us-gaap:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:AdjustmentsForNewAccountingPronouncementsAxis=us-gaap:AccountingStandardsUpdate201409Member
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 7.0.0
+ - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml 11458</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml#element(/1/487)" sourceLine="11458">
+  <property name="label" value="Cost of Goods Sold."/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="Duration_1_1_2018_To_3_31_2018_us-gaap_AdjustmentsForNewAccountingPronouncementsAxis_us-gaap_AccountingStandardsUpdate201409Member_us-gaap_ProductOrServiceAxis_us-gaap_ProductMember">
+   <property name="entity" value="0000844143">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-03-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:AdjustmentsForNewAccountingPronouncementsAxis" value="us-gaap:AccountingStandardsUpdate201409Member"/>
+    <property name="us-gaap:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="22,563,000"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 3.28 secs - https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/844143/000155837018004825/dfbg-20180331.xml"/></entry>
+</log>

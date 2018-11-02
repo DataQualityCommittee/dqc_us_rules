@@ -79,11 +79,31 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 **/
 
 function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
-$tolerance1 = if ($left.decimals < $right.decimals) 
-					$left.decimals
+
+$left_decimal = if $left.decimals == none
+					inf else $left.decimals;
+					
+$right_decimal = if $right.decimals == none
+					inf else $right.decimals;
+					
+$tolerance1 = if ($left_decimal < $right_decimal) 
+					$left_decimal
 				else 	
-					$right.decimals;
-$tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+					$right_decimal;
+$tolerance2 = if ($tolerance1 == inf) 
+					0
+				else 	
+					(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+					
+$left = if $left == none
+			0
+		else
+			$left;
+
+$right = if $right == none
+			0
+		else
+			$right;
 
 $left = if $left == none
 			0
