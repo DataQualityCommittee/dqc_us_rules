@@ -16,21 +16,22 @@ $RevenueElements = navigate summation-item DESCENDANTS include start from SalesR
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementContingentRevenue'
 or $relationship.target.name.local-name == 'PercentageRent'
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementSubleaseRevenue'
+or $relationship.target.name.local-name == 'RevenueFromRelatedParties'
 )
 returns set (target-name); 
 
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
+$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' or $relationship.target.name.local-name == 'DeferredRevenue' or $relationship.target.name.local-name == 'DeferredRevenueCurrent' or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent') returns set (target-name);
 
 $PriorStandard = $RevenueElements + $network440000; 
 
 
-$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes' or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock')
+$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
 returns set (target-name);
 
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
 $facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != * });
 
-any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
+any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
 
 
 message

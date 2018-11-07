@@ -15,7 +15,7 @@ rule-name-prefix DQC
 
 assert US.0078.7655 satisfied
 
-$ComponentAmount = {@concept in list(ManagingMemberOrGeneralPartnerOwnershipInterest, MinorityInterestOwnershipPercentageByParent)}#own_int;
+$ComponentAmount = {@concept in list(ManagingMemberOrGeneralPartnerOwnershipInterest, MinorityInterestOwnershipPercentageByParent, SubsidiaryOfLimitedLiabilityCompanyOrLimitedPartnershipOwnershipInterest, LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest, MinorityInterestOwnershipPercentageByNoncontrollingOwners)};
 
 
 $Member = $ComponentAmount.dimension(srt:OwnershipAxis);
@@ -24,12 +24,12 @@ $Member == none
 
 
 message
-"The filer has reported a value for the element {$own_int.concept} with a value of {$own_int} without using the axis OwnershipAxis. This axis must be used when reporting a value for {$own_int.concept}. Please refer to the FASB implementation guide on Dimensional Modeling for Disclosures of Consolidated and Nonconsolidated Entities on the FASB website.
+"The filer has reported a value for the element {$ComponentAmount.concept.name} with a value of {$ComponentAmount} without using the axis OwnershipAxis. This axis must be used when reporting a value for {$ComponentAmount.concept.name}. Please refer to the FASB implementation guide on Dimensional Modeling for Disclosures of Consolidated and Nonconsolidated Entities on the FASB website.
 
-The properties of this {$own_int.concept} fact are:
-Period :{$own_int.period}
-Dimensions : {$own_int.dimensions.join(', ','=')}
-Unit : {$own_int.unit}
+The properties of this {$ComponentAmount.concept.name} fact are:
+Period :{$ComponentAmount.period}
+Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
+Unit : {$ComponentAmount.unit}
 
 Rule Element Id:7655
 Rule version: {$ruleVersion}"
@@ -37,5 +37,5 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-rule-focus $own_int
+rule-focus $ComponentAmount
 
