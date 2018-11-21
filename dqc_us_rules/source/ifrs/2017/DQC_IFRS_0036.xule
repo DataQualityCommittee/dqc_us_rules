@@ -12,7 +12,7 @@ rule-name-prefix DQC
 
 assert IFRS.0036.1 satisfied
 
-exists({@concept = dei:DocumentPeriodEndDate where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact1)
+exists({@concept.local-name ='DocumentPeriodEndDate' where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact1)
 
 message
 "The context ending date of {$fact1.period.end} used for Document Period End Date must match the value reported for the element of {$fact1}. Revise either the ending context date or the value of the Document Period End Date.
