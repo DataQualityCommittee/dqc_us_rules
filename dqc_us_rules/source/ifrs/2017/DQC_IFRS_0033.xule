@@ -12,14 +12,15 @@ rule-name-prefix DQC
 
 assert IFRS.0033.2 satisfied
 
-$exceptions_to_dei = set(dei:EntityCommonStockSharesOutstanding, dei:EntityPublicFloat, dei:DocumentPeriodEndDate, dei:EntityNumberOfEmployees, dei:EntityListingDepositoryReceiptRatio);
-$document_period = first(list({covered @concept = dei:DocumentPeriodEndDate}));
+$exceptions_to_dei = set('EntityCommonStockSharesOutstanding', 'EntityPublicFloat', 'DocumentPeriodEndDate', 'EntityNumberOfEmployees', 'EntityListingDepositoryReceiptRatio');
+$document_period = first(list({covered @concept.local-name ='DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end;
 
 /** The  first part of the expession checks if the document period end date is within three days if not the rule does not execute as rule DQC.US.0036 will have executed**/
 not($document_period > ($document_period_end_date + (time-span("P4D"))) or $document_period < ($document_period_end_date - (time-span("P4D"))))
 and 
-exists({@concept.namespace-uri = 'http://xbrl.sec.gov/dei/2014-01-31' @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
+exists({@concept.namespace-uri in set('http://xbrl.sec.gov/dei/2014-01-31','http://xbrl.sec.gov/dei/2018-01-31') @period  where $fact.concept.name.local-name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
+
 
 
 message
@@ -32,4 +33,3 @@ Unit : {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
-
