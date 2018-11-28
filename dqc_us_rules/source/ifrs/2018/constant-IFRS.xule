@@ -8,20 +8,17 @@ Taxonomy: IFRS 2018
 
 **/
 
+constant $extension_concepts = filter taxonomy().concepts where is_extension($item, $all_ifrs_base_taxonomies)
 
-constant $extension_ns = first(filter taxonomy().concepts where is_extension($item)).name.namespace-uri
-
-
+constant $extension_ns = first(filter taxonomy().concepts where is_extension($item, $all_ifrs_base_taxonomies)).name.namespace-uri
 
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 										
-/** Constants Used for Nonneg Rules
-
-										 **/
+/** Constants Used for Nonneg Rules  **/
 										
 										
-constant $ruleVersion = '7.0.0'
+constant $ruleVersion = '8.0.0'
 										
 constant $exclude_non_neg_string_members = set(
 				'adjust',
@@ -29,17 +26,39 @@ constant $exclude_non_neg_string_members = set(
 				'eliminat',
 				'netting',
 				'reconcili',
-				'reclass'
+				'reclass',
+				'Change',
+				'IncreaseDecrease'
 				)
 
 constant $exclude_non_neg_members = set()
 
-constant $exclude_non_neg_axis = set()
+constant $exclude_non_neg_axis = set(SegmentsAxis, 
+				ComponentsOfEquityAxis)
 
 constant  $exclude_non_neg_axis_members = list(
+				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(SegmentConsolidationItemsAxis,
-						set(EliminationOfIntersegmentAmountsMember)),
+						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
-						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember))
+						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
+				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
+						set(IncreaseDecreaseDueToChangesInAccountingPolicyAndCorrectionsOfPriorPeriodErrorsMember, FinancialEffectOfChangesInAccountingPolicyMember, 						IncreaseDecreaseDueToChangesInAccountingPolicyRequiredByIFRSsMember, IncreaseDecreaseDueToVoluntaryChangesInAccountingPolicyMember, 						FinancialEffectOfCorrectionsOfAccountingErrorsMember)),
+				list(FinancialEffectOfTransitionFromPreviousGAAPToIFRSsAxis,
+						set(EffectOfTransitionToIFRSsMember)),
+				list(RedesignationAxis,
+						set(RedesignatedAmountMember)),
+				list(FairValueAsDeemedCostAxis,
+						set(AggregateAdjustmentToCarryingValueReportedUnderPreviousGAAPMember)),
+				list(DepartureFromRequirementOfIFRSAxis,
+						set(IncreaseDecreaseDueToDepartureFromRequirementOfIFRSMember)),
+				list(ComponentsOfEquityAxis,
+						set(TreasurySharesMember)),
+				list(TypesOfRisksAxis,
+						set(RiskDiversificationEffectMember)),
+				list(AmountsArisingFromInsuranceContractsAxis,
+						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
+				list(NetDefinedBenefitLiabilityAssetAxis,
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
 				)
 

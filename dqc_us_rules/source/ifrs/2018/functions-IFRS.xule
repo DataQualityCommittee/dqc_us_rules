@@ -15,11 +15,12 @@ Original Release: Version 7
  * This function Checks if the concept is an extension taxonomy element  .
  * 
  * @param concept - $test_extension - Passes concept to check if it is an extension concept.
+ * @param taxonomy - $base_taxonomy - Passes a base taxonomy to check if the concept is not present.
  * @return boolean - Returns true if the concept is an extension concept.
  **/
 
-function is_extension($test_extension)
-	$ifrs-gaap.concept($test_extension.name)== none
+function is_extension($test_extension,$base_taxonomy)
+	$base_taxonomy.concept($test_extension.name)== none
 
 /** 
  * is_base
@@ -27,11 +28,12 @@ function is_extension($test_extension)
  * This function Checks if the concept is a base taxonomy element  .
  * 
  * @param concept - $test_base - Passes concept to check if it is a base concept.
+ * @param taxonomy - $base_taxonomy - Passes a base taxonomy to check if the concept is present.	
  * @return boolean - Returns true if the concept is a base concept.
 **/
 
-function is_base($test_base)
-	$ifrs-gaap.concept($test_base.name)!= none
+function is_base($test_base, $base_taxonomy)
+	$base_taxonomy.concept($test_base.name)!= none
 
 /** 
  * effective_weight_is_positive
@@ -63,6 +65,28 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
 	for ($network in $effectiveWeight)
 		$network[1] < 0
+		
+		
+/**
+ * get_member_dims
+ *
+ * This function returns a dictionary of all the dimensions and roles  associated with a given member.
+ *
+ * @param concept - $member - Passes a member to the function to determine the role and dimension.
+ * @return dictionary - Returns a dictionary of the dimension, member and the role
+**/
+		
+function get_member_dims($member)		
+$domain_member_role = filter taxonomy().networks(domain-member) returns $item.role;
+$list_dict = list(for ($network in $domain_member_role)
+        $dim_items = navigate dimensions dimension-member ancestors from  $member role $network returns target;
+        $dimension_list = filter $dim_items where $item in taxonomy().dimensions.concept returns $item.name;
+        if $dimension_list.length == 0
+	 	skip
+	    else
+	       dict(list('dimension', $dimension_list[1]),list('member',$member),list('role',$network.uri)));
+$list_dict
+
 
 /** 
  * tolerance_for_decimals
