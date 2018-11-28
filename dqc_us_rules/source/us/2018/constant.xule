@@ -27,7 +27,7 @@ constant $Accrual_Items =
 				StatementOfPartnersCapitalAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
 
 
-constant $ruleVersion = '7.0.0'
+constant $ruleVersion = '8.0.0'
 
 constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions, 
 				InterestPaidCapitalized,
@@ -39,6 +39,8 @@ constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions,
 				IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet,
 				IncreaseDecreaseInRestrictedCash, IncreaseDecreaseOfRestrictedInvestments
 				)
+				
+constant $extension_concepts = filter taxonomy().concepts where is_extension($item)
 
 constant $extension_ns = first(filter taxonomy().concepts where is_extension($item)).name.namespace-uri
 
