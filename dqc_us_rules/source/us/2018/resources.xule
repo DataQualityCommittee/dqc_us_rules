@@ -21,5 +21,8 @@ constant $dim_items = csv-data('https://raw.githubusercontent.com/DataQualityCom
 
 /** DQC.US.0079 **/
 
-constant $extension_items = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0079/dqc_0079.csv', true, list('string', 'qname'))
+constant $extension_items = dict(
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0079/dqc_0079.csv', true, list('string', 'qname'))
+		list($pair[1], $pair[2])
+		)
 
