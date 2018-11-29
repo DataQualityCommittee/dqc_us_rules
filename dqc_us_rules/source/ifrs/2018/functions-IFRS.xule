@@ -15,12 +15,12 @@ Original Release: Version 7
  * This function Checks if the concept is an extension taxonomy element  .
  * 
  * @param concept - $test_extension - Passes concept to check if it is an extension concept.
- * @param taxonomy - $base_taxonomy - Passes a base taxonomy to check if the concept is not present.
+ * @param set - $base_taxonomies - Set of taxonomies that comprise the base taxonomies.
  * @return boolean - Returns true if the concept is an extension concept.
  **/
 
-function is_extension($test_extension,$base_taxonomy)
-	$base_taxonomy.concept($test_extension.name)== none
+function is_extension($test_extension, $base_taxonomies)
+		all(filter $base_taxonomies returns $item.concept($test_extension.name) == none)
 
 /** 
  * is_base
@@ -28,12 +28,11 @@ function is_extension($test_extension,$base_taxonomy)
  * This function Checks if the concept is a base taxonomy element  .
  * 
  * @param concept - $test_base - Passes concept to check if it is a base concept.
- * @param taxonomy - $base_taxonomy - Passes a base taxonomy to check if the concept is present.	
  * @return boolean - Returns true if the concept is a base concept.
 **/
 
-function is_base($test_base, $base_taxonomy)
-	$base_taxonomy.concept($test_base.name)!= none
+function is_base($test_base)
+	any(filter $all_ifrs_base_taxonomies returns $item.concept($test_base.name) != none)
 
 /** 
  * effective_weight_is_positive
