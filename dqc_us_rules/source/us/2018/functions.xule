@@ -22,10 +22,10 @@ function compare_baseCalc_to_extensionCalc($baseConcept, $extensionConcept)
  * @param concept - $test_extension - Passes concept to check if it is an extension concept.
  * @return boolean - Returns true if the concept is an extension concept.
  **/
-
-function is_extension($test_extension)
-	all(filter $all_base_taxonomies returns $item.concept($test_extension.name) == none)
-
+	
+function is_extension($test_extension, $base_taxonomies)
+		all(filter $base_taxonomies returns $item.concept($test_extension.name) == none)
+	
 /** 
  * is_base
  * 
