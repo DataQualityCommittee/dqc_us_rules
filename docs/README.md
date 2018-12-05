@@ -52,6 +52,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Approved | 7 |
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
+| [DQC_US_0079](DQC_US_0079/DQC_0079.md) | Extension Members | Public Review for IFRS &amp; US GAAP | v8RC |
+| [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Public Review for IFRS only | v8RC |
 
 ## Guidance
 ### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Revised Draft for Committee Approval   
