@@ -114,6 +114,16 @@ $tolerance2 = if ($tolerance1 == inf)
 					0
 				else 	
 					(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+					
+$left = if $left == none
+			0
+		else
+			$left;
+
+$right = if $right == none
+			0
+		else
+			$right;
 
 if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
 	true
