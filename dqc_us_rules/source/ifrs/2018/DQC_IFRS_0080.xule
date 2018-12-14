@@ -9,7 +9,7 @@ Taxonomy: US GAAP 2018
 
 rule-name-prefix DQC
 
-assert US.0080 satisfied
+assert IFRS.0080 satisfied
 
 $fact1 =
 	{@concept in $non_neg_ifrs_items.keys @unit=* where $fact < 0 and ($fact.dimensions.length == 0 or 
@@ -33,6 +33,8 @@ Rule version: {$ruleVersion}"
 
 rule-suffix
 $rule_suffix_id
+
+rule-focus $fact1
 
 severity error
 
