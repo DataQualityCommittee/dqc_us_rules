@@ -22,7 +22,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+<<<<<<< HEAD
 $Change: 22546 $
+=======
+$Change: 22654 $
+>>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -416,6 +420,16 @@ class XuleRuleContext(object):
         new_context.iteration_table.add_table(-1, processing_id)
         new_context.facts = self.facts.copy()
         new_context.tags = self.tags.copy()
+
+        # Convert tagged 'unbound' values to 'none' values. This can happen if there is a factset that does not bind
+        # but still a message is produced. i.e. output x @a#a + @b#b message '{$a} + {$b}'. In this case if @b does not
+        # bind the value of $b will be 'unbound'. When this is processed in the message, it will cause a stop iteration.
+        for tag_name, tag_value in new_context.tags.items():
+            if tag_value.type == 'unbound':
+                new_tag_value = tag_value.clone()
+                # Change the unbound to a none
+                new_tag_value.type = 'none'
+                new_context.tags[tag_name] = new_tag_value
         return new_context
 
     def add_tag(self, tag, value):
@@ -504,7 +518,7 @@ class XuleRuleContext(object):
         self.vars[node_id].pop()
         if len(self.vars[node_id]) == 0:
             del self.vars[node_id]
-        
+
     def find_var(self, var_name, node_id, constant_only=False):
         """Finds a variable in the variable stack
         
@@ -663,32 +677,7 @@ class XuleRuleContext(object):
         
         concepts = set(XuleValue(self, x, 'concept') for x in self.model.qnameConcepts.values() if (x.isItem or x.isTuple) and x.qname.namespaceURI == extension_ns)
         
-        return XuleValueSet(XuleValue(self, frozenset(concepts), 'set'))    
-    
-    def _const_base_namespaces(self):
-        extension_ns_value_set = self._const_extension_ns()
-        if len(extension_ns_value_set.values) > 0:
-            extension_ns = extension_ns_value_set.values[None][0].value
-        else:
-            raise XuleProcessingError(_("Cannot determine extension namespace."), self)
-        
-        rules_dts = self.get_rules_dts()
-        base_namespaces = set(XuleValue(self, namespace_uri, 'uri') for namespace_uri in set(concept.qname.namespaceURI for concept in rules_dts.qnameConcepts.values() if (concept.isItem or concept.isTuple) and concept.qname.namespaceURI != extension_ns))
-        #base_namespaces = set(XuleValue(self, namespace_uri, 'uri') for namespace_uri in self.model.namespaceDocs.keys() if namespace_uri != extension_ns)
-        
-        return XuleValueSet(XuleValue(self, frozenset(base_namespaces), 'set'))
-
-    def _const_base_concept_local_name(self):
-        extension_ns_value_set = self._const_extension_ns()
-        if len(extension_ns_value_set.values) > 0:
-            extension_ns = extension_ns_value_set.values[None][0].value
-        else:
-            raise XuleProcessingError(_("Cannot determine extension namespace."), self)
-        
-        rules_dts = self.get_rules_dts()
-        base_local_names = list(XuleValue(self, local_part, 'string') for local_part in set(concept.qname.localName for concept in rules_dts.qnameConcepts.values() if (concept.isItem or concept.isTuple) and concept.qname.namespaceURI != extension_ns))
-        
-        return XuleValueSet(XuleValue(self, tuple(base_local_names), 'list'))
+        return XuleValueSet(XuleValue(self, frozenset(concepts), 'set'))
 
     def _const_ext_concept_local_name(self):
         extension_ns_value_set = self._const_extension_ns()
@@ -703,8 +692,6 @@ class XuleRuleContext(object):
 
     _BUILTIN_CONSTANTS = {'extension_ns': _const_extension_ns,
                           'ext_concepts': _const_ext_concepts,
-                          'BASE_NAMESPACES': _const_base_namespaces,
-                          'BASE_CONCEPT_LOCAL_NAMES': _const_base_concept_local_name,
                           'EXT_CONCEPT_LOCAL_NAMES': _const_ext_concept_local_name}    
 
     #properties from the global_context   

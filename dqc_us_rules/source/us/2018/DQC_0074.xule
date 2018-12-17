@@ -14,7 +14,7 @@ rule-name-prefix DQC
 
 assert US.0074.7649 satisfied
 
-exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
+exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
 
 
 message
