@@ -21,11 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22542 $
-=======
 $Change: 22666 $
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -73,7 +69,7 @@ _test_start = None
 _test_variation_name = None
 _latest_map_name = None
 _xule_validators = []
-_xule_rule_set_map_name = 'rulesetMap.json'
+_xule_rule_set_map_name = 'xuleRulesetMap.json'
 
 class EmptyOptions:
     pass

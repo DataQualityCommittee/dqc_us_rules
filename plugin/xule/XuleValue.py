@@ -19,11 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22532 $
-=======
 $Change: 22663 $
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError

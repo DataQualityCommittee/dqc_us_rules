@@ -21,11 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22557 $
-=======
 $Change: 22665 $
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -444,11 +440,7 @@ def index_table_properties(xule_context):
         cube = XuleDimensionCube(xule_context.model, *cube_base, include_facts=True)
         xule_context.global_context.fact_index[('builtin', 'cube')][cube] |= cube.facts
         xule_context.global_context.fact_index[('property', 'cube', 'name')][cube.hypercube.qname] |= cube.facts
-<<<<<<< HEAD
-        xule_context.global_context.fact_index[('property', 'cube', 'drs-role')][cube.drs_role] |= cube.facts
-=======
         xule_context.global_context.fact_index[('property', 'cube', 'drs-role')][cube.drs_role.roleURI] |= cube.facts
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 
 def get_decimalized_value(fact_a, fact_b, xule_context):
     """Adjust 2 fact values based on accuracy.
@@ -3503,12 +3495,7 @@ def nav_decorate_component_preferred_label_role(rel, direction, component_name, 
 
 def nav_decorate_component_preferred_label(rel, direction, component_name, xule_context):
     if rel['relationship'].preferredLabel is not None:
-<<<<<<< HEAD
-        label = get_label(xule_context, rel['relationship'].toModelObject, rel['relationship'].preferredLabel, None)
-        #label = xp.property_label(xule_context, rel['relationship'].toModelObject, rel['relationship'].preferredLabel, None)
-=======
         label = XuleProperties.get_label(xule_context, rel['relationship'].toModelObject, rel['relationship'].preferredLabel, None)
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
         if label is None:
             return (None, 'none', component_name)
         else:

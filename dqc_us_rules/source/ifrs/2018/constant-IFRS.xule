@@ -9,26 +9,12 @@ Taxonomy: IFRS 2018
 **/
 
 
-<<<<<<< HEAD
-constant $extension_ns = first(filter taxonomy().concepts where is_extension($item)).name.namespace-uri
-
-=======
 
 constant $ruleVersion = '8.0.0'
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 
 
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
-<<<<<<< HEAD
-										
-/** Constants Used for Nonneg Rules
-
-										 **/
-										
-										
-constant $ruleVersion = '7.0.0'
-=======
 
 /** Constants Used for Extensions  **/
 										
@@ -43,7 +29,6 @@ constant $extension_qname = $filing_qname - $base_qname
 constant $extension_ns = first($extension_qname).namespace-uri
 
 /** Constants Used for Nonneg Rules  **/
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 										
 constant $exclude_non_neg_string_members = set(
 				'adjust',
@@ -51,26 +36,13 @@ constant $exclude_non_neg_string_members = set(
 				'eliminat',
 				'netting',
 				'reconcili',
-<<<<<<< HEAD
-				'reclass'
-=======
 				'reclass',
 				'Change',
 				'IncreaseDecrease'
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 				)
 
 constant $exclude_non_neg_members = set()
 
-<<<<<<< HEAD
-constant $exclude_non_neg_axis = set()
-
-constant  $exclude_non_neg_axis_members = list(
-				list(SegmentConsolidationItemsAxis,
-						set(EliminationOfIntersegmentAmountsMember)),
-				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
-						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember))
-=======
 constant $exclude_non_neg_axis = set(SegmentsAxis, 
 				ComponentsOfEquityAxis)
 
@@ -98,6 +70,4 @@ constant  $exclude_non_neg_axis_members = list(
 						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
 				list(NetDefinedBenefitLiabilityAssetAxis,
 						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 				)
-
