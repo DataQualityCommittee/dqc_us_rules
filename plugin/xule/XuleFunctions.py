@@ -19,17 +19,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22443 $
+$Change: 22659 $
 DOCSKIP
 """
-from . import XuleValue as xv
-from .XuleRunTime import XuleProcessingError
+
+from aniso8601 import parse_duration
 from arelle.ModelValue import qname, QName
 import collections
-from aniso8601 import parse_duration
 import decimal
 import json
-#from json.decoder import JSONDecodeError
+
+from .XuleRunTime import XuleProcessingError
+from . import XuleValue as xv
+from . import XuleRollForward as xrf
 
 
 def func_exists(xule_context, *args):   
@@ -142,7 +144,7 @@ def func_mod(xule_context, *args):
     if denominator.type not in ('int', 'float', 'decimal'):
         raise XuleProcessingError(_("The denominator for the 'mod' function must be numeric, found '%s'" % denominator.type), xule_context)
     
-    combined_type, numerator_compute_value, denominator_compute_value = combine_xule_types(numerator, denominator, xule_context)
+    combined_type, numerator_compute_value, denominator_compute_value = xv.combine_xule_types(numerator, denominator, xule_context)
     return xv.XuleValue(xule_context, numerator_compute_value % denominator_compute_value, combined_type)
 
 def func_extension_concept(xule_context, *args):   
@@ -167,7 +169,7 @@ def agg_sum_concurrent(xule_context, current_agg_value, current_value, value_ali
     if current_agg_value is None:
         return current_value.clone()
     else:
-        combined_types = combine_xule_types(current_agg_value, current_value, xule_context)
+        combined_types = xv.combine_xule_types(current_agg_value, current_value, xule_context)
         if combined_types[0] == 'set':
             current_agg_value.value = current_agg_value.value | current_value.value 
         else:
@@ -208,7 +210,7 @@ def agg_sum(xule_context, values):
     facts = collections.OrderedDict() if agg_value.facts is None else agg_value.facts
     
     for current_value in values[1:]:
-        combined_types = combine_xule_types(agg_value, current_value, xule_context)
+        combined_types = xv.combine_xule_types(agg_value, current_value, xule_context)
         if combined_types[0] == 'set':
             agg_value = xv.XuleValue(xule_context, combined_types[1] | combined_types[2], combined_types[0], alignment=agg_value.alignment)
         else:
@@ -427,8 +429,12 @@ def agg_dict(xule_context, values):
 
 def func_taxonomy(xule_context, *args):
     if len(args) == 0:
-        setattr(xule_context.model, 'taxonomy_name', 'instance')
-        return xv.XuleValue(xule_context, xule_context.model, 'taxonomy')
+        if xule_context.model is None:
+            # There is no instance doucment
+            return xv.XuleValue(xule_context, None, 'none')
+        else:
+            setattr(xule_context.model, 'taxonomy_name', 'instance')
+            return xv.XuleValue(xule_context, xule_context.model, 'taxonomy')
     elif len(args) == 1:
         taxonomy_url = args[0]
         if taxonomy_url.type not in ('string', 'uri'):
@@ -628,7 +634,7 @@ def func_json_data(xule_context, *args):
     file_url = args[0]
 
     if file_url.type not in ('string', 'uri'):
-        raise XuleProcessingError(_("The file url argument of the json-dta() function must be a string or uri, found '{}'.".format(file_url.value)), xule_contet)
+        raise XuleProcessingError(_("The file url argument of the json-dta() function must be a string or uri, found '{}'.".format(file_url.value)), xule_context)
 
     from arelle import PackageManager
     mapped_file_url = PackageManager.mappedUrl(file_url.value)
@@ -649,6 +655,16 @@ def func_json_data(xule_context, *args):
     x = xv.system_collection_to_xule(json_source, xule_context)
     return xv.system_collection_to_xule(json_source, xule_context)
 
+def func_first_value(xule_context, *args):
+    """Return the first non None value.
+
+    This function can take any number of arguments. It will return the first argument that is not None
+    """
+    for arg in args:
+        if arg.value is not None:
+            return arg.clone()
+    # If here, either there were no arguments, or they were all none
+    return xv.XuleValue(xule_context, None, 'none')
 
 #the position of the function information
 FUNCTION_TYPE = 0
@@ -688,17 +704,18 @@ def built_in_functions():
              'uri': ('regular', func_uri, 1, False, 'single'),
              'time-span': ('regular', func_time_span, 1, False, 'single'),
              'schema-type': ('regular', func_schema_type, 1, False, 'single'),
-             'num_to_string': ('regular', func_num_to_string, 1, False, 'single'),
+             'num-to-string': ('regular', func_num_to_string, 1, False, 'single'),
              'mod': ('regular', func_mod, 2, False, 'single'),
-             'extension_concepts': ('regular', func_extension_concept, 0, False, 'single'),             
+             'extension-concepts': ('regular', func_extension_concept, 0, False, 'single'),
              'taxonomy': ('regular', func_taxonomy, -1, False, 'single'),
              'csv-data': ('regular', func_csv_data, -4, False, 'single'),
              'json-data': ('regular', func_json_data, 1, False, 'single'),
+             'first-value': ('regular', func_first_value, None, True, 'single')
              }    
     
     
     try:
-        funcs.update(rf.BUILTIN_FUNCTIONS)
+        funcs.update(xrf.BUILTIN_FUNCTIONS)
     except NameError:
         pass
     
