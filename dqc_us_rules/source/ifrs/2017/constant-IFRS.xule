@@ -8,20 +8,24 @@ Taxonomy: IFRS 2017
 
 **/
 
-
-constant $extension_ns = first(filter taxonomy().concepts where is_extension($item)).name.namespace-uri
-
+constant $ruleVersion = '8.0.0'
 
 
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 										
-/** Constants Used for Nonneg Rules
+/** Constants Used for Nonneg Rules **/
 
-										 **/
-										
-										
-constant $ruleVersion = '7.0.0'
+
+constant $extension_concepts = filter taxonomy().concepts where is_extension($item, $all_ifrs_base_taxonomies)
+
+constant $base_qname = sum(filter $all_ifrs_base_taxonomies.concepts returns $item.name)
+
+constant $filing_qname = filter taxonomy().concepts returns $item.name
+
+constant $extension_qname = $filing_qname - $base_qname
+
+constant $extension_ns = first($extension_qname).namespace-uri
 										
 constant $exclude_non_neg_string_members = set(
 				'adjust',

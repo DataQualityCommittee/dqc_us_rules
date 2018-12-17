@@ -9,12 +9,18 @@ Taxonomy: IFRS 2018
 **/
 
 
+<<<<<<< HEAD
 constant $extension_ns = first(filter taxonomy().concepts where is_extension($item)).name.namespace-uri
 
+=======
+
+constant $ruleVersion = '8.0.0'
+>>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 
 
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
+<<<<<<< HEAD
 										
 /** Constants Used for Nonneg Rules
 
@@ -22,6 +28,22 @@ constant $calcRelationships = set(for ($rel in navigate summation-item descendan
 										
 										
 constant $ruleVersion = '7.0.0'
+=======
+
+/** Constants Used for Extensions  **/
+										
+constant $extension_concepts = filter taxonomy().concepts where is_extension($item, $all_ifrs_base_taxonomies)
+
+constant $base_qname = sum(filter $all_ifrs_base_taxonomies.concepts returns $item.name)
+
+constant $filing_qname = filter taxonomy().concepts returns $item.name
+
+constant $extension_qname = $filing_qname - $base_qname
+
+constant $extension_ns = first($extension_qname).namespace-uri
+
+/** Constants Used for Nonneg Rules  **/
+>>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 										
 constant $exclude_non_neg_string_members = set(
 				'adjust',
@@ -29,11 +51,18 @@ constant $exclude_non_neg_string_members = set(
 				'eliminat',
 				'netting',
 				'reconcili',
+<<<<<<< HEAD
 				'reclass'
+=======
+				'reclass',
+				'Change',
+				'IncreaseDecrease'
+>>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 				)
 
 constant $exclude_non_neg_members = set()
 
+<<<<<<< HEAD
 constant $exclude_non_neg_axis = set()
 
 constant  $exclude_non_neg_axis_members = list(
@@ -41,5 +70,34 @@ constant  $exclude_non_neg_axis_members = list(
 						set(EliminationOfIntersegmentAmountsMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
 						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember))
+=======
+constant $exclude_non_neg_axis = set(SegmentsAxis, 
+				ComponentsOfEquityAxis)
+
+constant  $exclude_non_neg_axis_members = list(
+				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
+				list(SegmentConsolidationItemsAxis,
+						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
+				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
+						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
+				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
+						set(IncreaseDecreaseDueToChangesInAccountingPolicyAndCorrectionsOfPriorPeriodErrorsMember, FinancialEffectOfChangesInAccountingPolicyMember, 						IncreaseDecreaseDueToChangesInAccountingPolicyRequiredByIFRSsMember, IncreaseDecreaseDueToVoluntaryChangesInAccountingPolicyMember, 						FinancialEffectOfCorrectionsOfAccountingErrorsMember)),
+				list(FinancialEffectOfTransitionFromPreviousGAAPToIFRSsAxis,
+						set(EffectOfTransitionToIFRSsMember)),
+				list(RedesignationAxis,
+						set(RedesignatedAmountMember)),
+				list(FairValueAsDeemedCostAxis,
+						set(AggregateAdjustmentToCarryingValueReportedUnderPreviousGAAPMember)),
+				list(DepartureFromRequirementOfIFRSAxis,
+						set(IncreaseDecreaseDueToDepartureFromRequirementOfIFRSMember)),
+				list(ComponentsOfEquityAxis,
+						set(TreasurySharesMember)),
+				list(TypesOfRisksAxis,
+						set(RiskDiversificationEffectMember)),
+				list(AmountsArisingFromInsuranceContractsAxis,
+						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
+				list(NetDefinedBenefitLiabilityAssetAxis,
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
+>>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 				)
 
