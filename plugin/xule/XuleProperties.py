@@ -19,11 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22541 $
-=======
 $Change: 22630 $
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
 DOCSKIP
 """
 
@@ -1665,11 +1661,7 @@ PROPERTIES = {
               'id': (property_id, 0, ('entity','unit','fact'), True),
               'scheme': (property_scheme, 0, ('entity',), False),
               'dimension': (property_dimension, 1, ('fact',), True),
-<<<<<<< HEAD
-              'dimensions': (property_dimensions, 0, ('fact', 'cube'), True),
-=======
               'dimensions': (property_dimensions, 0, ('fact', 'cube', 'taxonomy'), True),
->>>>>>> 1a6b150d66ce77fa856e26fcd8df2658b724ec5a
               'dimensions-explicit': (property_dimensions_explicit, 0, ('fact',), True),
               'dimensions-typed': (property_dimensions_typed, 0, ('fact',), True),                            
               'aspects': (property_aspects, 0, ('fact',), True),
