@@ -69,7 +69,7 @@ _test_start = None
 _test_variation_name = None
 _latest_map_name = None
 _xule_validators = []
-_xule_rule_set_map_name = 'xuleRulesetMap.json'
+_xule_rule_set_map_name = 'rulesetMap.json'
 
 class EmptyOptions:
     pass
