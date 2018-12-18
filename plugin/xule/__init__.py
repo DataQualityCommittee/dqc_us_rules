@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22542 $
+$Change: 22666 $
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -69,7 +69,7 @@ _test_start = None
 _test_variation_name = None
 _latest_map_name = None
 _xule_validators = []
-_xule_rule_set_map_name = 'rulesetMap.json'
+_xule_rule_set_map_name = 'xuleRulesetMap.json'
 
 class EmptyOptions:
     pass
@@ -763,7 +763,7 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
     if isXuleDirect():
         xuleRegisterValidators('Xule', _xule_rule_set_map_name)
     
-def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, entryPoint=None):   
+def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, *args, **kwargs):
     if getattr(options, "xule_run", None):
         runXule(cntlr, options, modelXbrl)
         
