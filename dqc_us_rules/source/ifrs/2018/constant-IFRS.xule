@@ -18,8 +18,6 @@ constant $calcRelationships = set(for ($rel in navigate summation-item descendan
 
 /** Constants Used for Extensions  **/
 										
-constant $extension_concepts = filter taxonomy().concepts where is_extension($item, $all_ifrs_base_taxonomies)
-
 constant $base_qname = sum(filter $all_ifrs_base_taxonomies.concepts returns $item.name)
 
 constant $filing_qname = filter taxonomy().concepts returns $item.name
