@@ -12,7 +12,7 @@ Release Version 8
 
 /** The following constant builds up a list of non-negative items that should be checked against the US - GAAP taxonomy 1. US-GAAP items, dei items and SRT items**/
 constant $non_neg_items = dict(
-		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2018_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
+		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2019_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
 				list($pair[2], $pair[1])
 )
 
