@@ -12,7 +12,10 @@ rule-name-prefix DQC
 
 assert US.0067.7644 satisfied
 
-$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
+/** Defines list of Revenue elements that are used for 440 revenue recognition, but not the new revenue recognition standard with exceptions. **/
+
+$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' 
+or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementContingentRevenue'
 or $relationship.target.name.local-name == 'PercentageRent'
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementSubleaseRevenue'
@@ -20,16 +23,32 @@ or $relationship.target.name.local-name == 'RevenueFromRelatedParties'
 )
 returns set (target-name); 
 
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' or $relationship.target.name.local-name == 'DeferredRevenue' or $relationship.target.name.local-name == 'DeferredRevenueCurrent' or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent') returns set (target-name);
+/** Identifies all elements that relate to deferred Revenue that can no longer be used, but excludes certain elements that can. **/
+
+$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' 
+or $relationship.target.name.local-name == 'DeferredRevenue' 
+or $relationship.target.name.local-name == 'DeferredRevenueCurrent' 
+or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent'
+or $relationship.target.name.local-name == 'DeferredRevenueAdditions'
+or $relationship.target.name.local-name == 'DeferredRevenueRevenueRecognized1'
+or $relationship.target.name.local-name == 'DeferredRevenueRefundPayments1'
+or $relationship.target.name.local-name == 'DeferredRevenuePeriodIncreaseDecrease'
+or $relationship.target.name.local-name == 'DeferredRevenueByArrangementDisclosureTextBlock') returns set (target-name);
+
+/** Complete list of elements that can no longer be used if the company has adopted 606 **/
 
 $PriorStandard = $RevenueElements + $network440000; 
 
+/** Defines a list of 606 elements. Use of any of these elements implies that the company has adopted the 606 Revenue Recognition Standard **/
 
 $network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
 returns set (target-name);
 
-/**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
+/** Identifies a list of all the facts used that apply to 606. The existence of these facts determines if they have adopted the 606 revenue standard **/
+
 $facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != * });
+
+/** Identifies if 606 elements have been used and 440 elements have also been used in the same filing. The two standards should be mutually exclusive. **/
 
 any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
 
