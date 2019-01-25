@@ -21,7 +21,12 @@ or $relationship.target.name.local-name == 'DeferredRevenueCurrent'
 or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent' 
 or $relationship.target.name.local-name == 'IncreaseDecreaseInDeferredRevenue' 
 or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' 
-or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock') returns set (target-name);
+or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock'
+or $relationship.target.name.local-name == 'DeferredRevenueAdditions'
+or $relationship.target.name.local-name == 'DeferredRevenueRevenueRecognized1'
+or $relationship.target.name.local-name == 'DeferredRevenueRefundPayments1'
+or $relationship.target.name.local-name == 'DeferredRevenuePeriodIncreaseDecrease'
+or $relationship.target.name.local-name == 'DeferredRevenueByArrangementDisclosureTextBlock') returns set (target-name);
 
 $PriorStandard = $RevenueElements + $network440000; 
 
