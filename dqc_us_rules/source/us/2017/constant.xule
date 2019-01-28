@@ -39,8 +39,6 @@ constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions,
 				IncreaseDecreaseInRestrictedCash, IncreaseDecreaseOfRestrictedInvestments
 				)
 
-constant $extension_concepts = filter taxonomy().concepts where is_extension($item, $all_base_taxonomies)
-
 constant $base_qname = sum(filter $all_base_taxonomies.concepts returns $item.name)
 
 constant $filing_qname = filter taxonomy().concepts returns $item.name
