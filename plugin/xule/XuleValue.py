@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22532 $
+$Change: 22698 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -38,6 +38,7 @@ import collections
 import copy
 import pprint
 import re
+import textwrap
 
 class XuleValueSet:
     def __init__(self, values=None):
@@ -69,7 +70,7 @@ class XuleValueSet:
         return new_value_set
         
 class XuleValue:
-    def __init__(self, xule_context, orig_value, orig_type, alignment=None, from_model=False, shadow_collection=None, tag=None):
+    def __init__(self, xule_context, orig_value, orig_type, alignment=None, from_model=False, shadow_collection=None, tag=None, orig_fact=None):
         #convert all python strings to XuleString.
         if isinstance(orig_value, str):
             orig_value = XuleString(orig_value)
@@ -79,7 +80,7 @@ class XuleValue:
         #self.xule_context = xule_context
         self.value = xule_value
         self.type = xule_type
-        self.fact = fact
+        self.fact = orig_fact or fact
         self.from_model = from_model
         self.alignment = alignment
         self.facts = None
@@ -314,6 +315,10 @@ class XuleValue:
             for part in self.value:
                 reference_string += '\t' + str(part.qname) + ': ' + part.textValue + '\n'
             return reference_string
+        elif self.type == 'role':
+            role_string = getattr(self.value, 'roleURI', None) or getattr(self.value, 'arcroleURI', None)
+            role_string += ' - ' + self.value.definition
+            return role_string
         else:
             return str(self.value)
 
@@ -424,31 +429,49 @@ class XulePeriodComp:
         else:
             return self.__eq__(other) or self.__gt__(other)
 
-class XuleArcrole:
+class XuleRoleBase:
+    def __init__(self, uri, role_type):
+        self._uri = uri
+        self._role_type = role_type
+
+    def __eq__(self, other):
+        if other is None:
+            return False
+        else:
+            return self.isArcrole == other.isArcrole and self._uri == other.arcroleURI if other.isArcrole else other.roleURI
+
+    def __hash__(self):
+        return hash(self._uri)
+
+    @property
+    def isArcrole(self):
+        return self._role_type == 'arcrole'
+
+class XuleArcrole(XuleRoleBase):
     def __init__(self, arcrole_uri):
-        self._arcrole_uri = arcrole_uri
+        super().__init__(arcrole_uri, 'arcrole')
         
     def __str__(self):
-        return self._arcrole_uri
+        return self._uri
     
     @property
     def arcroleURI(self):
-        return self._arcrole_uri
+        return self._uri
     
     @property
     def definition(self):
-        return self._STANDARD_ARCROLE_DEFINITIONS.get(self._arcrole_uri)
+        return self._STANDARD_ARCROLE_DEFINITIONS.get(self._uri)
     
     @property
     def usedOns(self):
-        if self._arcrole_uri in self._STANDARD_ARCROLE_USEDONS:
-            return {self._STANDARD_ARCROLE_USEDONS[self._arcrole_ur],}
+        if self._uri in self._STANDARD_ARCROLE_USEDONS:
+            return {self._STANDARD_ARCROLE_USEDONS[self._uri],}
         else:
             return set()
     
     @property
     def cyclesAllowed(self):
-        return self._STANDARD_ARCROLE_CYCLES_ALLOWED.get(self._arcrole_uri)
+        return self._STANDARD_ARCROLE_CYCLES_ALLOWED.get(self._uri)
     
     _STANDARD_ARCROLE_DEFINITIONS = {
             'http://www.xbrl.org/2003/arcrole/fact-footnote': 'Footnote relationship',
@@ -483,29 +506,29 @@ class XuleArcrole:
             'http://www.xbrl.org/2003/arcrole/similar-tuples': 'any',
             'http://www.xbrl.org/2003/arcrole/requires-element': 'any'}
 
-class XuleRole:
+class XuleRole(XuleRoleBase):
     def __init__(self, role_uri):
-        self._role_uri = role_uri
+        super().__init__(role_uri, 'role')
     
     def __str__(self):
-        return self._role_uri
+        return self._uri
     
     @property
     def roleURI(self):
-        return self._role_uri
+        return self._uri
     
     @property
     def arcroleURI(self):
-        return self._role_uri
+        return self._uri
     
     @property
     def definition(self):
-        return self._STANDARD_ROLE_DEFINITIONS.get(self._role_uri)
+        return self._STANDARD_ROLE_DEFINITIONS.get(self._uri)
     
     @property
     def usedOns(self):
-        if self._role_uri in self._STANDARD_ROLE_USEDON:
-            return {self._STANDARD_ROLE_USEDON[self._role_uri],}
+        if self._uri in self._STANDARD_ROLE_USEDON:
+            return {self._STANDARD_ROLE_USEDON[self._uri],}
         else:
             return set()
 
@@ -974,7 +997,7 @@ class XuleDimensionCube:
                     self._to_relationships[has_rel.toModelObject].append(has_rel)
 
                     #identify concepts
-                    self._concept_types[has_rel.fromModelObject][DIMENSION_TYPE] = 'hypdercube'
+                    self._concept_types[has_rel.fromModelObject][DIMENSION_TYPE] = 'hypercube'
                     self._concept_types[has_rel.toModelObject][DIMENSION_TYPE] = 'primary-member'
                     self._concept_types[has_rel.toModelObject][DIMENSION_SUB_TYPE] = 'primary'
                     self._concept_types[has_rel.toModelObject][HYPERCUBE_CLOSED] = (self._concept_types[has_rel.toModelObject][HYPERCUBE_CLOSED] or True) and bool(has_rel.arcElement.get('{http://xbrl.org/2005/xbrldt}closed', False))
@@ -1068,7 +1091,6 @@ class XuleDimensionCube:
         if self.has_facts:
             return # The facts are already here
 
-        self.has_facts = True
         if not hasattr(self._dts, 'xuleFactIndex'):
             # This dts has not been indexed. For now will treat as if there are no facts. But probably should
             # consider building the fact index for the DTS
@@ -1077,6 +1099,8 @@ class XuleDimensionCube:
         # get all facts for the concepts in the cube
         self._facts_all = self._find_facts(self._primaries_all)
         self._facts_not_all = self._find_facts(self._primaries_not_all)
+
+        self.has_facts = True
 
     def _find_facts(self, primaries):
 
@@ -1142,14 +1166,10 @@ class XuleDimensionCube:
             output += '\n'
         # Dimensions
         for dim in self._dimensions:
-            output += '\t' + str(dim.qname) + ' (DIMENSION) \n'
-            for mem in self._dimension_members[dim]:
-                output += '\t\t' + str(mem.qname)
-                if mem in self._dimension_domains[dim]:
-                    output += ' (DOMAIN)'
-                if mem is self._dimension_default[dim]:
-                    output += ' (DEFAULT)'
-                output += '\n'
+            # Add a tab to each of the lines
+            output += textwrap.indent(XuleDimensionDimension(self, dim).dimension_str, '\t')
+
+
         """
         # Facts
         if self.has_facts:
@@ -1179,34 +1199,40 @@ class XuleDimensionCube:
         self._establish_dimension_defaults(self._dts)
         return self._dts.xuleDimensionDefaults.get(dim_concept)
 
-    @property
     def dimension_members(self, dim_concept):
         return self._dimension_members.get(dim_concept, set())
 
-    @property
     def dimension_domains(self, dim_concept):
         return self._dimension_domains.get(dim_concept, set())
 
     @property
     def facts(self):
-        if not hasattr(self, '_facts'):
-            facts = getattr(self, '_facts_all', set())
-            if len(facts) > 0: # This only needs to be done if there are facts to eliminate
-                # Need to eliminate facts in negative cubes within the same drs
-                for base_dimension in self.base_dimension_sets(self._dts):
-                    if base_dimension[0] == self.drs_role.roleURI: # This cube is in the same drs
-                        facts -= getattr(XuleDimensionCube(self._dts, *base_dimension, include_facts=True), '_facts_not_all', set())
-            self._facts = facts
+        if getattr(self, 'has_facts', False): # This prevents differences when debugging. See note below
+            if not hasattr(self, '_facts'):
+                facts = getattr(self, '_facts_all', set())
+                if len(facts) > 0: # This only needs to be done if there are facts to eliminate
+                    # Need to eliminate facts in negative cubes within the same drs
+                    for base_dimension in self.base_dimension_sets(self._dts):
+                        if base_dimension[0] == self.drs_role.roleURI: # This cube is in the same drs
+                            facts -= getattr(XuleDimensionCube(self._dts, *base_dimension, include_facts=True), '_facts_not_all', set())
+                self._facts = facts
 
-        return self._facts
+            return self._facts
+        else:
+            # The check on self having has_facts strickly speaking is not needed. However, when debugging and
+            # breaking at a point before the facts are gather and assigned to self._facts, the debugger
+            # runs this property. When this happens, this will return None and not try to gather the facts from
+            # self._facts_all and self._facts_not_all which may not have been populated yet. This prevents differences
+            # when running in the debugger and breaking vs just running.
+            return None
 
     def fromModelObject(self, concept):
         return self._from_relationships.get(concept, [])
-    
+
     @property
-    def fromModelObjects(sef):
+    def fromModelObjects(self):
         return set(x for x in self._from_relationships.values())
-    
+
     def toModelObject(self, concept):
         return self._to_relationships.get(concept, [])
     
@@ -1247,6 +1273,35 @@ class XuleDimensionDimension:
     @property
     def dimension_type(self):
         return self.cube.dimensionType(self.dimension_concept)
+
+    @property
+    def dimension_str(self):
+        """converts dimensions into a string"""
+        output = str(self.dimension_concept.qname) + ' (DIMENSION) \n'
+        output += self.member_str
+        return output
+
+    @property
+    def member_str(self):
+        output = ''
+        for mem in self.members:
+            output += str(mem.qname)
+            if mem in self.domains:
+                output += ' (DOMAIN)'
+            if mem is self.default:
+                output += ' (DEFAULT)'
+            output += '\n'
+        return output
+
+    def __str__(self):
+        dim_string = 'Dimension: {dim_name}\n' \
+                     'Cube: {cube_name}\n' \
+                     'DRS Role: {drs_role}'.format(dim_name=self.dimension_concept.qname,
+                                                   cube_name=self.cube.hypercube.qname,
+                                                   drs_role=self.cube.drs_role.roleURI)
+        dim_string += '\nMembers:\n'
+        dim_string += textwrap.indent(self.member_str, '\t')
+        return dim_string
 
 def model_to_xule_unit(model_unit, xule_context):
     return XuleUnit(model_unit)
@@ -1584,5 +1639,12 @@ def system_list_to_xule(col, xule_context):
     
     return XuleValue(xule_context, tuple(result), 'list', shadow_collection=tuple(shadow))
 
+DEFAULT_VALUES_BY_TYPE = {'int': 0,
+                          'float': 0.0,
+                          'decimal': decimal.Decimal(0),
+                          'list': tuple(),
+                          'set': frozenset(set()),
+                          'string': ''}
 
-    
+def default_value_by_type(system_type):
+    return DEFAULT_VALUES_BY_TYPE.get(system_type, None)
