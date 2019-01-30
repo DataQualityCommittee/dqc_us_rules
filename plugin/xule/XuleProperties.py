@@ -1827,9 +1827,4 @@ ORDERED_REFERENCE_ROLE = ['http://www.xbrl.org/2003/role/reference',
                         'http://www.xbrl.org/2003/role/presentationRef',
                         'http://www.xbrl.org/2003/role/measurementRef',
                         'http://www.xbrl.org/2003/role/commentaryRef',
-<<<<<<< HEAD
                         'http://www.xbrl.org/2003/role/exampleRef']
-=======
-                        'http://www.xbrl.org/2003/role/exampleRef']
-
->>>>>>> 5822a10fe... updated xule for v7.1
