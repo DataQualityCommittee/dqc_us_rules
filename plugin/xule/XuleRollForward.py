@@ -3,7 +3,11 @@ Xule is rule processor for XBRL (X)brl r(ULE).
 
 Copyright (c) 2014 XBRL US Inc. All rights reserved
 
+<<<<<<< HEAD
 $Change: 22614 $
+=======
+$Change: 22653 $
+>>>>>>> 2c0982c2f3... updated xule
 '''
 import collections
 import re
@@ -702,3 +706,7 @@ BUILTIN_FUNCTIONS = built_in_functions()
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2c0982c2f3... updated xule

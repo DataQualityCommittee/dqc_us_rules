@@ -21,7 +21,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+<<<<<<< HEAD
 $Change: 22666 $
+=======
+$Change: 22712 $
+>>>>>>> 2c0982c2f3... updated xule
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -69,7 +73,7 @@ _test_start = None
 _test_variation_name = None
 _latest_map_name = None
 _xule_validators = []
-_xule_rule_set_map_name = 'rulesetMap.json'
+_xule_rule_set_map_name = 'xuleRulesetMap.json'
 
 class EmptyOptions:
     pass
@@ -568,8 +572,10 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
     global _cntlr
     _cntlr = cntlr
     global _options
-    _options = options 
-    
+    _options = options
+
+    cntlr.addToLog("Xule version: %s" % __version__, 'info')
+
     # check option combinations
     parser = OptionParser()
     
@@ -920,3 +926,4 @@ __pluginInfo__ = {
     'Xule.RulesetMap.Replace': replaceValidatorRulesetMap,
     'Xule.RulesetMap.Display': displayValidatorRulesetMap    
     }
+
