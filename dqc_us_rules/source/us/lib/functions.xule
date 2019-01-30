@@ -94,7 +94,8 @@ $list_dict = list(for ($network in $domain_member_role)
         if $dimension_list.length == 0
 	 	skip
 	    else
-	       dict(list('dimension', $dimension_list[1]),list('member',$member),list('role',$network.uri)));
+			for $x in range($dimension_list.length)
+				dict(list('dimension', $dimension_list[$x]),list('member',$member),list('role',$network.uri)));
 $list_dict
 
 /** 
