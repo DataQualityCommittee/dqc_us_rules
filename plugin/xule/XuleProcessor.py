@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22712 $
+$Change: 22719 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -2465,7 +2465,7 @@ def calc_fact_alignment(factset, fact, non_aligned_filters, align_aspects_filter
                                            non_aligned_filters,
                                            align_aspects_filters,
                                            xule_context,
-                                           not factset.get('coveredDims', False),
+                                           factset.get('coveredDims', False),
                                            factset.get('covered', False))
 
         if len(unfrozen_alignment) == 0 and factset.get('covered', False):
@@ -4804,7 +4804,7 @@ def get_all_aspects(model_fact, xule_context):
     return get_alignment(model_fact, {}, {}, xule_context)
 
 
-def get_alignment(model_fact, non_align_aspects, align_aspects, xule_context, include_dimensions=True, covered=False):
+def get_alignment(model_fact, non_align_aspects, align_aspects, xule_context, covered_dims=False, covered=False):
     '''The alignment contains the aspect/member pairs that are in the fact but not in the non_align_aspects.
        The alignment is done in two steps. First check each of the builtin aspects. Then check the dimesnions.'''
 
@@ -4848,22 +4848,22 @@ def get_alignment(model_fact, non_align_aspects, align_aspects, xule_context, in
             alignment[('builtin', 'entity')] = model_to_xule_entity(model_fact.context, xule_context)
 
     # dimensional apsects
-    if include_dimensions:
+    if covered_dims or covered:
+        # Non algined dimensions don't matter.
+        non_align_dimesnions = set()
+    else:
         non_align_dimensions = {aspect_info[ASPECT] for aspect_info in non_align_aspects if
                                 aspect_info[TYPE] == 'explicit_dimension'}
-    else:
-        # Don't need the non_align_dimensions, do don't bother creating it.
-        non_align_dimensions = None
 
     align_dimensions = {aspect_info[ASPECT] for aspect_info in align_aspects if
                                 aspect_info[TYPE] == 'explicit_dimension'}
 
     # Only need to run through the dimensions if they are included or if they are not included there are
     # aligned dimensions
-    if include_dimensions or len(align_dimensions) > 0:
+    if (not covered_dims and not covered) or len(align_dimensions) > 0:
         for fact_dimension_qname, dimension_value in model_fact.context.qnameDims.items():
-            if (include_dimensions and fact_dimension_qname not in non_align_dimensions) or fact_dimension_qname in align_dimensions:
-                alignment[('explicit_dimension',
+            if (not covered_dims and not covered and fact_dimension_qname not in non_align_dimensions) or fact_dimension_qname in align_dimensions:
+                alignment[('explicit_dimension', # This will included typed dimensions as well as explicit.
                            fact_dimension_qname)] = dimension_value.memberQname if dimension_value.isExplicit else dimension_value.typedMember.xValue
 
     return alignment
@@ -5272,4 +5272,3 @@ def trace_count_next_time(rule_part, traces):
                         total_child_times += child_info[0]
                         total_child_nodes += child_info[1]
     return (total_child_times, total_child_nodes)
-
