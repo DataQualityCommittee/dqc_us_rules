@@ -5271,9 +5271,4 @@ def trace_count_next_time(rule_part, traces):
                         child_info = trace_count_next_time(child, traces)
                         total_child_times += child_info[0]
                         total_child_nodes += child_info[1]
-<<<<<<< HEAD
-
     return (total_child_times, total_child_nodes)
-=======
-    return (total_child_times, total_child_nodes)
->>>>>>> a04d8ac11... update xule for 7.1
