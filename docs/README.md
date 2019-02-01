@@ -53,12 +53,13 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
 
-## Guidance
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md" target="_blank">Dimensional Modeling Guidance - Legal Entities &amp; Consolidation</a> - Revised Draft for Committee Approval   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md" target="_blank">Revenue Guidance</a> - approved 10/10/2018  
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf" target="_blank">Guiding Principles for Element Selection</a> - approved 10/4/2017   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md" target="_blank">Statement of Cash Flows Guidance</a> - approved 10/4/2017   
-### <a href="https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md" target="_blank">Guidance on Tagging Axis and Members Using the US GAAP Taxonomy</a> - approved 9/29/16, updated 11/29/16
+## Guidance  
+### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
+
+### [Dimensional Modeling Guidance - Legal Entities &amp; Consolidation](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md) - approved 11/20/2018   
+### [Guidance on Statement of Cash Flows](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md) - approved 10/4/2017     
+### [Guidance on Tagging Axis and Members Using the US GAAP Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md) - approved 9/29/16, updated 11/29/16
+### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018 
 
 © Copyright 2015 - 2018 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
