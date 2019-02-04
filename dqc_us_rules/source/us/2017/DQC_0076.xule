@@ -15,15 +15,15 @@ rule-name-prefix DQC
 
 assert US.0076.7653 satisfied
 
-exists({@concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = * @period = *}#obligation)
+exists({covered-dims @concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = * @period = * }#obligation)
  
 and not
 (
 	/** This is for the 2018 taxonomy and companies who have extended for it in the 2017 taxonomy **/
-	 exists({@concept.local-name = "RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1" @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = *}) 
+	 exists({covered-dims @concept.local-name = "RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1" @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = * }) 
 	or 
 	/** This is for those who have used the 2017 taxonomy element The period is out of alignment as this was a duration element in the 2017 taxonomy.**/
-	 exists({@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = *})
+	 exists({covered-dims @RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = *})
 )
 
 
