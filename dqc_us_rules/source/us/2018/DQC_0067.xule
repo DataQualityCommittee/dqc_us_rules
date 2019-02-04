@@ -37,7 +37,7 @@ returns set (target-name);
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
 $facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != *});
 
-any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
+any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis != *  @period=* @unit}))) and exists({covered nonils @concept in ($PriorStandard) @@StatementScenarioAxis != * @period=*}#revRec)
 
 
 message
