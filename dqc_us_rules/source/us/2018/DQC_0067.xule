@@ -37,17 +37,7 @@ returns set (target-name);
 /**$facts_in_prior_standard = list({@concept in ($PriorStandard) @StatementScenarioAxis != * @period=*});**/
 $facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != *});
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
-=======
-/** Identifies if 606 elements have been used and 440 elements have also been used in the same filing. The two standards should be mutually exclusive. **/
-
-any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis != *}))) and exists({covered nonils @concept in ($PriorStandard) @@StatementScenarioAxis != * }#revRec)
->>>>>>> 213c85499... Updated Version 7 for a bug in rule 67
-=======
 any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis != *  @period=* @unit}))) and exists({covered nonils @concept in ($PriorStandard) @@StatementScenarioAxis != * @period=*}#revRec)
->>>>>>> 79254daf8ed2708077bfe267d6b75087d0b3db4c
 
 
 message
