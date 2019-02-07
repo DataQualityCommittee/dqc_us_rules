@@ -13,13 +13,13 @@ Release Version 6
 /** This contant was updated to seperate US GAAP concepts from dei concepts so that they can also be used by IFRS rather than repeating them in 2 places. **/
 
 constant $non_neg_items = dict(
-		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v7/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2017_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v7/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
+		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2017_concepts.csv', false, list('string', 'qname')) + 			csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
 				list($pair[2], $pair[1])
 )
 
 
 /** DQC.US.0011 **/
-constant $dim_items = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v7/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
+constant $dim_items = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
 
 /** DQC.US.0079 **/
 
