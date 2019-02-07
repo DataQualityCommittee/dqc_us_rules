@@ -81,9 +81,10 @@ $list_dict = list(for ($network in $domain_member_role)
         $dim_items = navigate dimensions dimension-member ancestors from  $member role $network returns target;
         $dimension_list = filter $dim_items where $item in taxonomy().dimensions.concept returns $item.name;
         if $dimension_list.length == 0
-	 	skip
+	 		skip
 	    else
-	       dict(list('dimension', $dimension_list[1]),list('member',$member),list('role',$network.uri)));
+			for $x in range($dimension_list.length)
+				dict(list('dimension', $dimension_list[$x]),list('member',$member),list('role',$network.uri)));
 $list_dict
 
 

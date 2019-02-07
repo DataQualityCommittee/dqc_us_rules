@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22630 $
+$Change: 22712 $
 DOCSKIP
 """
 
@@ -58,7 +58,7 @@ def property_contains(xule_context, object_value, *args):
         if search_item.type in ('string', 'uri'):
             return xv.XuleValue(xule_context, search_item.value in object_value.value, 'bool')
     else:
-        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operator on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
+        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operate on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
 
 def property_length(xule_context, object_value, *args):
     if object_value.type in ('string', 'uri'):
@@ -657,8 +657,8 @@ def property_enumerations(xule_context, object_value, *args):
         model_type = object_value.value
     elif object_value.type == 'concept':    
         model_type = object_value.value.type
-    else: # None
-        return object_vlaue
+    else: # None - this should not happen as the property only allows fact, type or concept.
+        return object_value
     
     if model_type.facets is None:
         return xv.XuleValue(xule_context, frozenset(), 'set')
@@ -1609,8 +1609,8 @@ def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, p
     
     for child_rel in network.fromModelObject(parent):
         if child_rel.toModelObject in previous_concepts:
-            # In a cyle - skip this child.
-            Continue
+            # In a cycle - skip this child.
+            continue
         if child_rel.toModelObject is stop_concept:
             results.append(previous_weights + [child_rel.weight,])
         else:
@@ -1680,7 +1680,7 @@ PROPERTIES = {
               'is-numeric': (property_is_numeric, 0, ('concept', 'fact'), True),
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
               'is-abstract': (property_is_abstract, 0, ('concept', 'fact'), True),
-              'is-nil': (property_is_nil, 0, ('fact'), True),
+              'is-nil': (property_is_nil, 0, ('fact',), True),
               'is-fact': (property_is_fact, 0, (), True),
               'scale': (property_scale, 0, ('fact',), True),
               'format': (property_format, 0, ('fact',), True),
