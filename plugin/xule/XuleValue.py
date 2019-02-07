@@ -19,11 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22663 $
-=======
 $Change: 22698 $
->>>>>>> 2c0982c2f3... updated xule
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -1651,8 +1647,4 @@ DEFAULT_VALUES_BY_TYPE = {'int': 0,
                           'string': ''}
 
 def default_value_by_type(system_type):
-<<<<<<< HEAD
     return DEFAULT_VALUES_BY_TYPE.get(system_type, None)
-=======
-    return DEFAULT_VALUES_BY_TYPE.get(system_type, None)
->>>>>>> 2c0982c2f3... updated xule

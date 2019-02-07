@@ -19,11 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-<<<<<<< HEAD
-$Change: 22630 $
-=======
 $Change: 22712 $
->>>>>>> 2c0982c2f3... updated xule
 DOCSKIP
 """
 
@@ -62,11 +58,7 @@ def property_contains(xule_context, object_value, *args):
         if search_item.type in ('string', 'uri'):
             return xv.XuleValue(xule_context, search_item.value in object_value.value, 'bool')
     else:
-<<<<<<< HEAD
-        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operator on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
-=======
         raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operate on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
->>>>>>> 2c0982c2f3... updated xule
 
 def property_length(xule_context, object_value, *args):
     if object_value.type in ('string', 'uri'):
@@ -1836,4 +1828,3 @@ ORDERED_REFERENCE_ROLE = ['http://www.xbrl.org/2003/role/reference',
                         'http://www.xbrl.org/2003/role/measurementRef',
                         'http://www.xbrl.org/2003/role/commentaryRef',
                         'http://www.xbrl.org/2003/role/exampleRef']
-

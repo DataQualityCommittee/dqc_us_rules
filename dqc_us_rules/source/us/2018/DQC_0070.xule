@@ -42,10 +42,10 @@ for  $x in $drs_members.keys
 	/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 	$member_facts = list(for $member in $member_descendants
 		$ancestors_list = navigate dimensions domain-member ancestors from $member drs-role $x;
-		if list({nonils @DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
+		if list({nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
 			skip
 		else 
-			{nonils @DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
+			{nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
 	
 	/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 	if 	$member_facts.length == 0 
@@ -72,7 +72,7 @@ The value of a concept broken down by its components along the DefinedBenefitPla
 
 2. The  default value of {$FairValueOfPlanAssets} is incorrectly totaled for DefinedBenefitPlanFairValueOfPlanAssets 
 
-2. Not all dimension members or additional dimensions have been defined on the category axis DefinedBenefitPlanByPlanAssetCategoriesAxis. 
+3. Not all dimension members or additional dimensions have been defined on the category axis DefinedBenefitPlanByPlanAssetCategoriesAxis. 
 
 4. The filer has reported a sub component of plan assets that does not represent a complete breakdown of the total. In these cases the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
 
