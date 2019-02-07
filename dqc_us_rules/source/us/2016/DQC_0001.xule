@@ -94,7 +94,7 @@ severity error
 
 assert US.0001.53 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from OtherOwnershipInterestsByNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from OtherOwnershipInterestsByNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(OtherOwnershipInterestsNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -134,7 +134,7 @@ $allowed_members_FHLB = navigate dimensions dimension-member descendants from Fe
 
 $allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember, dei:EntityDomain);
 
-$member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target) returns set (target-name);
+$member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_lea + $allowed_members_FHLB + $allowed_base_member;
 
@@ -168,7 +168,7 @@ severity error
 
 assert US.0001.56 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from NoncashOrPartNoncashDivestituresByUniqueNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from NoncashOrPartNoncashDivestituresByUniqueNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(NoncashOrPartNoncashDivestitureNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -197,7 +197,7 @@ severity error
 
 assert US.0001.57 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(EquityMethodInvesteeNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -226,7 +226,7 @@ severity error
 
 assert US.0001.58 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from CounterpartyNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from CounterpartyNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(RepurchaseAgreementCounterpartyNameDomain, AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, GuarantorSubsidiariesMember, SubsidiaryIssuerMember, DirectorMember, ChiefExecutiveOfficerMember, ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -254,7 +254,7 @@ severity error
 
 assert US.0001.59 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from PlanNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from PlanNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from PlanNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -283,7 +283,7 @@ severity error
 
 assert US.0001.60 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -568,7 +568,7 @@ $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-me
 $allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, RealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
 
 
-$member_extension = navigate dimensions dimension-member descendants from ProductOrServiceAxis where is_base($relationship.target) returns set (target-name);
+$member_extension = navigate dimensions dimension-member descendants from ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_product + $allowed_members_reinsurance + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_PublicUtilitiesInventoryAxis;
 
@@ -671,7 +671,7 @@ Rule version: {$ruleVersion}"
 
 assert US.0001.72 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from AwardDateAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from AwardDateAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from AwardDateAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -738,7 +738,7 @@ $allowed_base_member_predefined = set(WarrantsNotSettleableInCashMember, Conting
 
 $allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined);
 
-$base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -773,7 +773,7 @@ $allowed_base_member = navigate domain-member descendants include start
            taxonomy $us-gaap returns set)
      taxonomy $us-gaap
      returns set (target-name);
-$base_members = navigate dimensions dimension-member descendants from StatementScenarioAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from StatementScenarioAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -800,7 +800,7 @@ severity error
 
 assert US.0001.77 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -830,7 +830,7 @@ severity error
 
 assert US.0001.80 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from MajorCustomersAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from MajorCustomersAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from MajorCustomersAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 

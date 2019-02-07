@@ -8,11 +8,6 @@ Taxonomy: IFRS 2018
 
 **/
 
-
-
-constant $ruleVersion = '8.0.0'
-
-
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 
