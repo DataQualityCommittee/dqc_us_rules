@@ -631,7 +631,7 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @srt:ConsolidationItemsAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the HedgingDesignationAxis and the unallowable member {$member.local-name}. 
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the ConsolidationItemsAxis and the unallowable member {$member.local-name}. 
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
