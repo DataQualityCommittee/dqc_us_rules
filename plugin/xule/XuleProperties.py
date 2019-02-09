@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22541 $
+$Change: 22712 $
 DOCSKIP
 """
 
@@ -58,7 +58,7 @@ def property_contains(xule_context, object_value, *args):
         if search_item.type in ('string', 'uri'):
             return xv.XuleValue(xule_context, search_item.value in object_value.value, 'bool')
     else:
-        raise XuleProcessingError(_("Property 'contains' cannot operator on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
+        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operate on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
 
 def property_length(xule_context, object_value, *args):
     if object_value.type in ('string', 'uri'):
@@ -75,8 +75,11 @@ def property_to_list(xule_context, object_value, *args):
     # is no guarentee that the two sets will iterate in the same order.
     def set_sort(item):
         return item.value
-     
-    return xv.XuleValue(xule_context, tuple(sorted(object_value.value, key=set_sort)), 'list')
+
+    try:
+        return xv.XuleValue(xule_context, tuple(sorted(object_value.value, key=set_sort)), 'list')
+    except TypeError:
+        return xv.XuleValue(xule_context, tuple(object_value.value), 'list')
  
 def property_to_set(xule_context, object_value, *args):
     if object_value.type == 'dictionary':
@@ -89,6 +92,69 @@ def property_to_set(xule_context, object_value, *args):
         return xv.XuleValue(xule_context, frozenset(result), 'set', shadow_collection=frozenset(shadow))
     else: #list or set
         return XuleFunctions.agg_set(xule_context, object_value.value)
+
+def property_to_dict(xule_context, object_value, *args):
+    return XuleFunctions.agg_dict(xule_context, object_value.value)
+
+def property_index(xule_context, object_value, *args):
+    index_value = args[0]
+    if object_value.type == 'list':
+        if index_value.type == 'int':
+            index_number = index_value.value
+        elif index_value.type == 'float':
+            if index_value.value.is_integer():
+                index_number = int(index_value.value)
+            else:
+                raise XuleProcessingError(
+                    _("Index of a list must be a whole number, found %s" % str(index_value.value)),
+                    xule_context)
+        elif index_value.type == 'decimal':
+            if index_value.value == int(index_value.value):
+                index_number = int(index_value.value)
+            else:
+                raise XuleProcessingError(
+                    _("Index of a list must be a whole number, found %s" % str(index_value.value)),
+                    xule_context)
+        else:
+            raise XuleProcessingError(_("Index of a list must be a number, found %s" % index_value.type),
+                                      xule_context)
+
+        # Check if the index number is the value range for the list
+        if index_number < 1 or index_number > len(object_value.value):
+            raise XuleProcessingError(_("Index value of %i is out of range for the list with length of %i" % (
+                index_number, len(object_value.value))),
+                                      xule_context)
+        return_value = object_value.value[index_number - 1]
+
+    elif object_value.type == 'dictionary':
+        if index_value.type in ('set', 'list'):
+            key_value = index_value.shadow_collection
+        else:
+            key_value = index_value.value
+
+        return_value = object_value.key_search_dictionary.get(key_value, xv.XuleValue(xule_context, None, 'none'))
+
+    else:
+        raise XuleProcessingError(_("The 'index' property or index expression '[]' can only operate on a list or dictionary, found '%s'" % object_value.type),
+                                  xule_context)
+
+    return return_value
+
+def property_is_subset(xule_context, object_value, *args):
+    super_values = args[0]
+
+    if super_values.type != 'set':
+        raise XuleProcessingError(_("The subset value must be a 'set',, found '{}'".format(super_values.type)), xule_context)
+
+    return xv.XuleValue(xule_context, object_value.shadow_collection <= super_values.shadow_collection, 'bool')
+
+def property_is_superset(xule_context, object_value, *args):
+    sub_values = args[0]
+
+    if sub_values.type != 'set':
+        raise XuleProcessingError(_("The subset value must be a 'set', found '{}'".format(sub_values.type)), xule_context)
+
+    return xv.XuleValue(xule_context, object_value.shadow_collection >= sub_values.shadow_collection, 'bool')
 
 def property_to_json(xule_context, object_value, *args):
     if object_value.type == 'dictionary':
@@ -178,6 +244,10 @@ def property_values(xule_context, object_value, *args):
 #     vals = list(v for k, v in object_value.value)
 #     vals_shadow = list(v for k, v in object_value.shadow_collection)
     return xv.XuleValue(xule_context, tuple(vals), 'list', shadow_collection=tuple(vals_shadow))
+
+def property_has_key(xule_context, object_value, *args):
+    key = args[0].value
+    return xv.XuleValue(xule_context, key in dict(object_value.shadow_collection), 'bool')
 
 def property_networks(xule_context, object_value, *args):
     
@@ -397,12 +467,22 @@ def property_dimension(xule_context, object_value, *args):
             return xv.XuleValue(xule_context, member_model.typedMember.xValue, xv.model_to_xule_type(xule_context, member_model.typedMember.xValue))
 
 def property_dimensions(xule_context, object_value, *args):
+    if object_value.type == 'taxonomy':
+        # Get the cubes of the taxonomy
+        cubes = [xv.XuleDimensionCube(object_value.value, *cube_base)
+                 for cube_base in xv.XuleDimensionCube.base_dimension_sets(object_value.value)]
+        # For each cube get the dimensions
+        dims_shadow = set()
+        for cube in cubes:
+            dims_shadow |=  cube.dimensions
+        dims = [xv.XuleValue(xule_context, x, 'dimension') for x in dims_shadow]
+        return xv.XuleValue(xule_context, frozenset(dims), 'set', shadow_collection=frozenset(dims_shadow))
     if object_value.type == 'cube':
         dims_shadow = object_value.value.dimensions
         dims = {xv.XuleValue(xule_context, x, 'dimension') for x in dims_shadow}
 
         return xv.XuleValue(xule_context, frozenset(dims), 'set', shadow_collection=frozenset(dims_shadow))
-    else:
+    else: #fact
         if not object_value.is_fact:
             return object_value
 
@@ -577,8 +657,8 @@ def property_enumerations(xule_context, object_value, *args):
         model_type = object_value.value
     elif object_value.type == 'concept':    
         model_type = object_value.value.type
-    else: # None
-        return object_vlaue
+    else: # None - this should not happen as the property only allows fact, type or concept.
+        return object_value
     
     if model_type.facets is None:
         return xv.XuleValue(xule_context, frozenset(), 'set')
@@ -846,7 +926,7 @@ def property_concepts(xule_context, object_value, *args):
 def property_concept_names(xule_context, object_value, *args):
      
     if object_value.type == 'taxonomy':
-        concepts = set(xv.XuleValue(xule_context, x.qname, 'qanme') for x in object_value.value.qnameConcepts.values() if x.isItem or x.isTuple)
+        concepts = set(xv.XuleValue(xule_context, x.qname, 'qname') for x in object_value.value.qnameConcepts.values() if x.isItem or x.isTuple)
     elif object_value.type == 'network':
         concepts = set(xv.XuleValue(xule_context, x.qname, 'qname') for x in (object_value.value[1].fromModelObjects().keys()) | frozenset(object_value.value[1].toModelObjects().keys()))
     else:
@@ -887,8 +967,8 @@ def property_cubes(xule_context, object_value, *args):
     """
     cubes = set()
     cubes_shadow = set()
-    for cube_base in xv.XuleDimensionCube.base_dimension_sets(xule_context.model):
-        cube = xv.XuleDimensionCube(xule_context.model, *cube_base)
+    for cube_base in xv.XuleDimensionCube.base_dimension_sets(object_value.value):
+        cube = xv.XuleDimensionCube(object_value.value, *cube_base)
         cubes.add(xv.XuleValue(xule_context, cube, 'cube'))
         cubes_shadow.add(cube)
 
@@ -1109,7 +1189,7 @@ def property_last_index_of(xule_context, object_value, *args):
     else:
         raise XuleProcessingError(_("The argument for property 'last-index-of' must be castable to a 'string', found '%s'" % arg_result.type), xule_context)
      
-    return xv.XuleValue(xule_context, xv.cast_value.rfind(index_string) + 1, 'int')
+    return xv.XuleValue(xule_context, cast_value.rfind(index_string) + 1, 'int')
  
 def property_lower_case(xule_context, object_value, *args):
     return xv.XuleValue(xule_context, xv.xule_cast(object_value, 'string', xule_context).lower(), 'string')
@@ -1441,12 +1521,11 @@ def property_effective_weight(xule_context, object_value, *args):
         # The top or bottom is not in the taxonomy
         return xv.XuleValue(xule_context, None, 'none')
     
-    paths = []
+    weights = set()
     for network in get_networks(xule_context, object_value, CORE_ARCROLES['summation-item']):
         if len(network.value[1].fromModelObject(top)) > 0 and len(network.value[1].toModelObject(bottom)) > 0:
-            paths += [x for x in traverse_for_weight(network.value[1], top, bottom)]
-    
-    weights = {numpy.prod(x) for x in paths}
+            weights.add( numpy.sum([numpy.prod(x) for x in traverse_for_weight(network.value[1], top, bottom)]))
+
     if len(weights) == 1:
         return xv.XuleValue(xule_context, next(iter(weights)), 'float')
     else:
@@ -1505,15 +1584,19 @@ def property_effective_weight_network(xule_context, object_value, *args):
 
     for network in networks:
         if len(network.value[1].fromModelObject(top)) > 0 and len(network.value[1].toModelObject(bottom)) > 0:
-            path =  [x for x in traverse_for_weight(network.value[1], top, bottom)]
-            effective_weight_value = xv.XuleValue(xule_context, numpy.prod(path), 'float')
-            
+            # For each path, multiple the weights. Then add the products together to get the effective weight.
+            effective_weight = numpy.sum([numpy.prod(x) for x in traverse_for_weight(network.value[1], top, bottom)])
+            effective_weight_value = xv.XuleValue(xule_context, effective_weight, 'float')
+
             return_set.add(xv.XuleValue(xule_context, (effective_weight_value, network), 'list'))
             
     return xv.XuleValue(xule_context, frozenset(return_set), 'set')
 
 def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, previous_weights=None):
     """Find all the weights between two concepts in a network.
+
+    Returns a list of lists. Each inner list represents a path within the network. The items of the list are the weights
+    for the path.
     """
     if parent is stop_concept:
         # should only get here is if the initial call the parent is the stop concept. In this case, the effective weight is 1
@@ -1526,8 +1609,8 @@ def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, p
     
     for child_rel in network.fromModelObject(parent):
         if child_rel.toModelObject in previous_concepts:
-            # In a cyle - skip this child.
-            Continue
+            # In a cycle - skip this child.
+            continue
         if child_rel.toModelObject is stop_concept:
             results.append(previous_weights + [child_rel.weight,])
         else:
@@ -1536,16 +1619,7 @@ def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, p
                 for x in next_result:
                     results.append(x)
     
-    return results 
-        
-            
-        
-    
-            
-
-
-
-
+    return results
 
 #Property tuple
 PROP_FUNCTION = 0
@@ -1561,12 +1635,17 @@ PROPERTIES = {
               'contains': (property_contains, 1, ('set', 'list', 'string', 'uri'), False),
               'length': (property_length, 0, ('string', 'uri', 'set', 'list', 'dictionary'), False),
               'to-list': (property_to_list, 0, ('list', 'set'), False),
-              'to-set': (property_to_set, 0, ('list', 'set', 'dictionary'), False),   
+              'to-set': (property_to_set, 0, ('list', 'set', 'dictionary'), False),
+              'to-dict': (property_to_dict, 0, ('list', 'set'), False),
+              'index': (property_index, 1, ('list', 'dictionary'), False),
+              'is-subset': (property_is_subset, 1, ('set',), False),
+              'is-superset': (property_is_superset, 1, ('set',), False),
               'to-json': (property_to_json, 0, ('list', 'set', 'dictionary'), False),           
               'join': (property_join, -2, ('list', 'set', 'dictionary'), False),
               'sort': (property_sort, 0, ('list', 'set'), False),
               'keys': (property_keys, -1, ('dictionary',), False),
               'values': (property_values, 0, ('dictionary', ), False),
+              'has-key': (property_has_key, 1, ('dictionary',), False),
               'decimals': (property_decimals, 0, (), True),
               'networks':(property_networks, -2, ('taxonomy',), False),
               'role': (property_role, 0, ('network', 'label', 'reference', 'relationship'), False),
@@ -1582,7 +1661,7 @@ PROPERTIES = {
               'id': (property_id, 0, ('entity','unit','fact'), True),
               'scheme': (property_scheme, 0, ('entity',), False),
               'dimension': (property_dimension, 1, ('fact',), True),
-              'dimensions': (property_dimensions, 0, ('fact', 'cube'), True),
+              'dimensions': (property_dimensions, 0, ('fact', 'cube', 'taxonomy'), True),
               'dimensions-explicit': (property_dimensions_explicit, 0, ('fact',), True),
               'dimensions-typed': (property_dimensions_typed, 0, ('fact',), True),                            
               'aspects': (property_aspects, 0, ('fact',), True),
@@ -1601,7 +1680,7 @@ PROPERTIES = {
               'is-numeric': (property_is_numeric, 0, ('concept', 'fact'), True),
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
               'is-abstract': (property_is_abstract, 0, ('concept', 'fact'), True),
-              'is-nil': (property_is_nil, 0, ('fact'), True),
+              'is-nil': (property_is_nil, 0, ('fact',), True),
               'is-fact': (property_is_fact, 0, (), True),
               'scale': (property_scale, 0, ('fact',), True),
               'format': (property_format, 0, ('fact',), True),
@@ -1749,3 +1828,4 @@ ORDERED_REFERENCE_ROLE = ['http://www.xbrl.org/2003/role/reference',
                         'http://www.xbrl.org/2003/role/measurementRef',
                         'http://www.xbrl.org/2003/role/commentaryRef',
                         'http://www.xbrl.org/2003/role/exampleRef']
+
