@@ -13,11 +13,11 @@ rule-name-prefix DQC
 
 assert US.0076.7653 satisfied
 
-exists({@concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = *}#obligation)
+exists({covered-dims @concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = * @period = *}#obligation)
  
 and 
 (
-	  not exists({@concept = RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1 @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = *  }#period_id)
+	  not exists({covered-dims @concept = RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1 @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @period = *}#period_id)
 )
 
 
