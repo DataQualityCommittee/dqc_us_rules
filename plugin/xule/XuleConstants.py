@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22551 $
+$Change: 22512 $
 DOCSKIP
 """
 # Dimension navigation psuedo arc roles
@@ -32,4 +32,3 @@ DIMENSION_PSEUD0_ARCROLE_PART = 1
 
 # Rule set mapping 
 NAMESPACE_MAP = 'namespaceMap.json'
-

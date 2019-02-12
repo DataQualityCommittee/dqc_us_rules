@@ -3,7 +3,7 @@ Xule is rule processor for XBRL (X)brl r(ULE).
 
 Copyright (c) 2014 XBRL US Inc. All rights reserved
 
-$Change: 22653 $
+$Change: 22614 $
 '''
 import collections
 import re
@@ -698,7 +698,6 @@ def built_in_functions():
     return funcs
 
 BUILTIN_FUNCTIONS = built_in_functions()
-
 
 
 

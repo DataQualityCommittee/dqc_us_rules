@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22712 $
+$Change: 22708 $
 DOCSKIP
 """
 
@@ -1828,4 +1828,3 @@ ORDERED_REFERENCE_ROLE = ['http://www.xbrl.org/2003/role/reference',
                         'http://www.xbrl.org/2003/role/measurementRef',
                         'http://www.xbrl.org/2003/role/commentaryRef',
                         'http://www.xbrl.org/2003/role/exampleRef']
-
