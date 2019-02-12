@@ -7,7 +7,7 @@ The XuleRuleSet module contains the XuleRuleSet class. This class is used to man
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2018 XBRL US, Inc.
+Copyright (c) 2017 - 2019 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22550 $
+$Change: 22730 $
 DOCSKIP
 """
 
@@ -361,7 +361,8 @@ class XuleRuleSet(object):
         #This case there is a file, but it didn't have any namespace declarations
         if prefix not in self.catalog['namespaces']:
             if prefix == '*':
-                raise XuleRuleSetError("There is no default namespace declaration.")
+                return None
+                #raise XuleRuleSetError("There is no default namespace declaration.")
             else:
                 raise XuleRuleSetError("Prefix %s does not have a namespace declaration." % prefix)
         
