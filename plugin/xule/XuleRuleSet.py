@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22695 $
+$Change: 22550 $
 DOCSKIP
 """
 
@@ -361,8 +361,7 @@ class XuleRuleSet(object):
         #This case there is a file, but it didn't have any namespace declarations
         if prefix not in self.catalog['namespaces']:
             if prefix == '*':
-                return None
-                #raise XuleRuleSetError("There is no default namespace declaration.")
+                raise XuleRuleSetError("There is no default namespace declaration.")
             else:
                 raise XuleRuleSetError("Prefix %s does not have a namespace declaration." % prefix)
         
