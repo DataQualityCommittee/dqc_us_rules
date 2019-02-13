@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22727 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.56 secs at 2019-02-13T14:27:44 - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of package dqc_15_concepts.csv, dqc_0011.csv, dqc_0079.csv and dqc_0080.csv successful. - /var/folders/18/_kbcbv855dxf82x5yvny6h0c0000gn/T/tmpc3lvbuxp/packages/resources.zip </message>
+ <ref href="/var/folders/18/_kbcbv855dxf82x5yvny6h0c0000gn/T/tmpc3lvbuxp/packages/resources.zip"/></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml" cid="4557529216" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of -4,643,000 using the ProductOrServiceAxis in the role 100680 - Disclosure - Amounts Reclassified out of AOCI (Detail) on the table us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of -4,643,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2017-07-01 to 2017-09-30
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember, us-gaap:DerivativeInstrumentRiskAxis=us-gaap:ForeignExchangeForwardMember, srt:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis=us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 8.0.0
+ - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml 27376</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml#F_000889" sourceLine="27376">
+  <property name="label" value="Revenue From Contract With Customer Excluding Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="C_0001048477_srtProductOrServiceAxis_us-gaapProductMember_us-gaapDerivativeInstrumentRiskAxis_us-gaapForeignExchangeForwardMember_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember_us-gaapStatementEquityComponentsAxis_us-gaapAccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember_20170701_20170930">
+   <property name="entity" value="0001048477">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-07-01"/>
+   <property name="endDate" value="2017-09-30"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:ForeignExchangeForwardMember"/>
+    <property name="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis" value="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_iso4217USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-4,643,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml" cid="4557529216" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 5,025,000 using the ProductOrServiceAxis in the role 100680 - Disclosure - Amounts Reclassified out of AOCI (Detail) on the table us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 5,025,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2018-07-01 to 2018-09-30
+Dimensions : srt:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis=us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember, us-gaap:DerivativeInstrumentRiskAxis=us-gaap:ForeignExchangeForwardMember, us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 8.0.0
+ - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml 27375</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml#F_000888" sourceLine="27375">
+  <property name="label" value="Revenue From Contract With Customer Excluding Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="C_0001048477_srtProductOrServiceAxis_us-gaapProductMember_us-gaapDerivativeInstrumentRiskAxis_us-gaapForeignExchangeForwardMember_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember_us-gaapStatementEquityComponentsAxis_us-gaapAccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember_20180701_20180930">
+   <property name="entity" value="0001048477">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-07-01"/>
+   <property name="endDate" value="2018-09-30"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:ForeignExchangeForwardMember"/>
+    <property name="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis" value="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_iso4217USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,025,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml" cid="4557529216" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of -6,683,000 using the ProductOrServiceAxis in the role 100680 - Disclosure - Amounts Reclassified out of AOCI (Detail) on the table us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of -6,683,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2018-01-01 to 2018-09-30
+Dimensions : us-gaap:DerivativeInstrumentRiskAxis=us-gaap:ForeignExchangeForwardMember, us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember, srt:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis=us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 8.0.0
+ - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml 27377</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml#F_000890" sourceLine="27377">
+  <property name="label" value="Revenue From Contract With Customer Excluding Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="C_0001048477_srtProductOrServiceAxis_us-gaapProductMember_us-gaapDerivativeInstrumentRiskAxis_us-gaapForeignExchangeForwardMember_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember_us-gaapStatementEquityComponentsAxis_us-gaapAccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember_20180101_20180930">
+   <property name="entity" value="0001048477">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:ForeignExchangeForwardMember"/>
+    <property name="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis" value="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_iso4217USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-6,683,000"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml" cid="4557529216" severity="error">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 18,000 using the ProductOrServiceAxis in the role 100680 - Disclosure - Amounts Reclassified out of AOCI (Detail) on the table us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeTable. However, the only member used to disaggregate the total for us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax was the member us-gaap:ProductMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ProductMember and the member us-gaap:ProductMember should be removed from the value as it represents the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax.
+ 
+2. Tag the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 18,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax is reported.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2017-01-01 to 2017-09-30
+Dimensions : srt:ProductOrServiceAxis=us-gaap:ProductMember, us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis=us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember, us-gaap:DerivativeInstrumentRiskAxis=us-gaap:ForeignExchangeForwardMember, us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 8.0.0
+ - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml 27378</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml#F_000891" sourceLine="27378">
+  <property name="label" value="Revenue From Contract With Customer Excluding Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="C_0001048477_srtProductOrServiceAxis_us-gaapProductMember_us-gaapDerivativeInstrumentRiskAxis_us-gaapForeignExchangeForwardMember_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis_us-gaapReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember_us-gaapStatementEquityComponentsAxis_us-gaapAccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember_20170101_20170930">
+   <property name="entity" value="0001048477">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ProductMember"/>
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:ForeignExchangeForwardMember"/>
+    <property name="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis" value="us-gaap:ReclassificationOutOfAccumulatedOtherComprehensiveIncomeMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedGainLossCashFlowHedgeIncludingNoncontrollingInterestMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_iso4217USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="18,000"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 3.70 secs - https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1048477/000156459018025196/bmrn-20180930.xml"/></entry>
+</log>
