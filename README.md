@@ -10,7 +10,7 @@
 
 ## About the DQC Arelle plugin (v5 and later)
 
-The DQC rules are run using an Arelle plugin written in an XBRL rule syntax called Xule. Xule is processed in a plugin for the [Arelle Open Source XBRL processor](http://arelle.org/download/) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
+The DQC rules are run using an Arelle plugin written in an XBRL rule syntax called Xule. Xule is processed in a plugin for the [Arelle Open Source XBRL processor](http://arelle.org/pub) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human readable syntax. Both the compiled rule files and the human readable rule submission forms are included in the distribution.
 
@@ -73,13 +73,9 @@ To *exclude the rule number, filename and line number from the message*, use the
 
 ## <a name="versioning"></a>Change Management
 
-The rule definition index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule.
+The rule submission form index is [here](docs/README.md) with links to the human-readable versions and status of each Data Quality Committee rule. This index lists the most-recent release version in which the rule was substantively modified. 
 
-The dqc_us_rules library follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period.
-
-The MAJOR version specified by each individual rule is the most-recent release version in which the rule was altered. For example, a rule being marked as v2.0.0 would have last been functionally modified during the 2.0.0 release of the DQC library. See [summary of rules](/docs/README.md) for current rule version detail (which is [also a variable in each rule's code referenced to the corresponding taxonomy's constant.xule or constant-IFRS.xule](https://github.com/DataQualityCommittee/dqc_us_rules/search?q=constant $ruleVersion)).
-
-Similarly, the entire set of rules is versioned. MAJOR release is specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC) to denote revisions prior to the approved release.
+The dqc_us_rules reference implementation library (and compiled ruleset.zip files) follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC), and become the [latest-approved version (x.0.0)](https://github.com/DataQualityCommittee/dqc_us_rules/releases/) when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period. Each release is inclusive of all prior approved rules, and error messages include this detail [as referenced to the corresponding taxonomy's constant.xule or constant-IFRS.xule](https://github.com/DataQualityCommittee/dqc_us_rules/search?o=desc&q=constant+%24ruleVersion&s=indexed)).
 
 ### Proposed Changes
 
@@ -87,21 +83,22 @@ We actively accept, and encourage, pull requests for code changes. A list of the
 
 ### Development of Rules that are "Ready for Coding":
 
-When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch named `next_q#_YY` where the `#` is the quarter, and the `YY` is replaced by the current year. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged <!--and released on the global pypi index -->as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released<!-- on the [global pypi index](https://pypi.python.org/simple/dqc-us-rules/)-->.
+When new rules that have been approved for coding are released by the DQC, the rules will be developed on a branch corresponding to the expected release version. All new coding for the proposed rules will target this branch on the root DataQualityCommittee fork. Periodically, this branch will be tagged and incremented as a release candidate (RC). Once final approval for the rules is complete, the RC versions of the library will be removed from the index, the next branch wil be merged into master, and a new major version of the library will be released.
+
 ### Requirements for a Pull Request (PR):
 
   - Branch off master, develop on your independent fork, PR back to master or other appropriate branch on the root fork.
   - Your code should pass [flake8](https://flake8.readthedocs.org/en/latest/).
   - Unit test coverage is required or an explanation for why the change is already covered or not coverable.
-  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/python/style.rst) are required.
+  - Good [Docstrings](https://github.com/Workiva/styleguide/blob/master/python/style.md) are required.
   - Good [commit messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) are required.
-  - The pull request must go through the review process described below.
+  - External pull requests must go through the review process described below.
 
 ### Pull Request Review Process:
 
-  - Each pull request must have at least one `+1` comment from another community member.
-  - For code changes, you must have a second `+1` comment from a second community member.
-  - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from any other community member, including one of the reviewers.
+  - Each pull request must have at least one `+1` comment from DQC member or XBRL US staff.
+  - For code changes, you must have a second `+1` comment from a second  DQC member or XBRL US staff.
+  - The request will need to go through the Quality Assurance process defined below and receive a `+10` comment. This can be from another DQC member or XBRL US staff, including one of the reviewers.
   - At this point, the request can be submitted to one of the project maintainers to be merged.
 
 ## <a name="licensing"></a>License and Patent

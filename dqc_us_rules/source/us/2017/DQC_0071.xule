@@ -20,10 +20,10 @@ assert US.0071.7646 satisfied
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
 $all_cubes = taxonomy().cubes;
 
-for $x in $all_cubes 
-	if $x.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
-		skip
-	else
+for $x in $all_cubes
+ 	if $x.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
+ 		skip
+ 	else
 		if $x.dimensions().concept().name.contains(ProductOrServiceAxis)
 			if count($x.primary-concepts.name.to-set.intersect($valid_line_items)) > 0
 				if count(navigate dimensions descendants from ProductsAndServicesDomain drs-role $x.drs-role cube $x.cube-concept()) == 1
