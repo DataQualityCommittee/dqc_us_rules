@@ -7,7 +7,7 @@ This is the package init file.
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2018 XBRL US, Inc.
+Copyright (c) 2017 - 2019 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22712 $
+$Change: 22730 $
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -69,7 +69,7 @@ _test_start = None
 _test_variation_name = None
 _latest_map_name = None
 _xule_validators = []
-_xule_rule_set_map_name = 'rulesetMap.json'
+_xule_rule_set_map_name = 'xuleRulesetMap.json'
 
 class EmptyOptions:
     pass
@@ -783,8 +783,7 @@ def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
                     modelXbrl.log('INFO', 'info', 'Using ruleset {}'.format(rule_set_location))
                     if rule_set_location is None:
                         # The rule set could not be determined.
-                        modelXbrl.log('ERROR', 'xule', "Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(xu.get_rule_set_map_file_name(cntlr, rule_set_map)))
-                        raise xr.XuleRuleSetError('The rule set to used could not be determined. Check that there is a rule set map at {} and verify that there is an appropiate mapping for the filing.'.format(xu.get_rule_set_map_file_name(cntlr, rule_set_map)))
+                        modelXbrl.log('ERROR', 'xule', "Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(xu.get_rule_set_map_file_name(cntlr, rule_set_map))) 
                     
                 rule_set = xr.XuleRuleSet(cntlr)              
                 rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
@@ -922,4 +921,3 @@ __pluginInfo__ = {
     'Xule.RulesetMap.Replace': replaceValidatorRulesetMap,
     'Xule.RulesetMap.Display': displayValidatorRulesetMap    
     }
-
