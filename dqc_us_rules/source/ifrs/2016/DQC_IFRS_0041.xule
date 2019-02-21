@@ -29,7 +29,7 @@ $filing_details_defaults = navigate dimension-default descendants include start 
 for ($x in $default_in_filing_not_in_taxonomy)
 	$default_details_list = filter $filing_details_defaults where $item['source-name'] == $x[1];
 	$default_details = $default_details_list[1]
-	if (not is_extension($default_details['source']))
+	if (not is_extension($default_details['source'],$all_ifrs_base_taxonomies))
 		$dim_name = $default_details['source-name'];
 		$dim_role = $default_details['role'].description;
 		$dim_concept = $default_details['source'].name.local-name;

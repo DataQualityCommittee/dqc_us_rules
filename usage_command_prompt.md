@@ -28,7 +28,7 @@ In addition the following optional parameters can be passed:
 
 * **`--logFile`** : Specifies where the output of running the rules should be sent. To get an XML file the file needs to end with .xml. To get a json file it needs to end with .json. If a log file is not specified, output will be displayed in the command window.
 * **`--noCertificateCheck`** : This is used to ensure that files from the internet are not rejected if there is no SSL certificate on the machine running the DQC plugin.
-* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See [*Managing Rulesets*](usage_rulesets.md))  
+* **`--xule-bypass-packages`** : This option will ignore packages included in the ruleset. (See *Managing the Ruleset File* below)  
 * **`--packages`** : This option will accept additional taxonomy packages
 * **`--xule-rule-set`** : The location of the compiled ruleset to use. 
 
@@ -38,6 +38,6 @@ The DQC plugin options will be displayed at the bottom of the list under the tit
 
 ### [return to README](README.md#using)
  
-© Copyright 2015 - 2018 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2019 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
