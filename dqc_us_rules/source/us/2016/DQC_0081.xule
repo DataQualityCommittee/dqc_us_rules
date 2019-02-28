@@ -1,0 +1,105 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2016
+
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0081.7657 satisfied
+
+/** Get all the calculations defined in the Instance document. **/
+
+
+$extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
+
+		
+for ($network in $extCalcRelationship1.keys)
+	for ($extCalcRelationship in $extCalcRelationship1[$network])
+		$extCalcNetwork = $network.role.description;
+		$extCalcSourceName = $extCalcRelationship.source.name;
+		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
+		$sibling_items = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
+		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
+		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
+		$inappropriate_child = {@concept.local-name in $inconsistencies};
+		$inconsistencies.length > 0 and exists({$inappropriate_child})
+	 
+message
+"{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy, but are represented as siblings in the us-gaap taxonomies
+
+{$inconsistencies.join(', ')}
+
+Rule Element Id:7657
+Rule version: {$ruleVersion}
+"
+
+RULE-FOCUS $inappropriate_child
+
+SEVERITY error
+
+
+assert US.0081.7658 satisfied
+
+/** Get all the calculations defined in the Instance document. **/
+
+$fact_values = list([covered]);
+$value-concepts = (filter $fact_values returns $item.concept.name).to-set - set(NetIncomeLoss);
+for ($value-con in $value-concepts)
+	$extCalcRelationship1 = navigate summation-item siblings from $value-con returns by network set (relationship);
+
+		
+	for ($network in $extCalcRelationship1.keys)
+		for ($extCalcRelationship in $extCalcRelationship1[$network])
+			$extCalcNetwork = $network.role.description;
+			$extCalcSourceName = $extCalcRelationship.source.name;
+			$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
+			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
+			$child_items_names = filter $child_items.to-set returns $item.local-name;
+			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
+			$inappropriate_sibling = {@concept.local-name in $inconsistencies};
+			$inconsistencies.length > 0 and exists({$inappropriate_sibling})
+	 
+message
+"{$inconsistencies.join(', ')} is a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but are represnetded as children in the us-gaap taxonomies
+
+{$inconsistencies.join(', ')}
+
+Rule Element Id:7658
+Rule version: {$ruleVersion}
+"
+RULE-FOCUS $inappropriate_sibling
+
+SEVERITY error
+
+status $status
+
+
+output sibs
+
+$fact_values = list([covered]);
+$value-concepts = (filter $fact_values returns $item.concept.name).to-set;
+for ($value-con in $value-concepts)
+	$extCalcRelationship1 = navigate summation-item siblings from $value-con returns by network set (relationship);
+
+	for ($network in $extCalcRelationship1.keys)
+		for ($extCalcRelationship in $extCalcRelationship1[$network])
+			$extCalcSourceName = $extCalcRelationship.source.name;
+			$extCalcNetwork = $network.role.description;
+			$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
+			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
+			$child_items_names = filter $child_items.to-set returns $item.local-name;
+			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
+			$output_string = "Target: " + $inconsistencies.join(', ')  + " US-GAAP Source: " + $extCalcSourceName.local-name + " Sibling Source: " + $value-con.local-name + " Sibling Target :  " + $extCalcTargetName.join(', ') + " Network " + $extCalcNetwork + " ";
+			$output_string
+		
+
+		
+output desc
+
+navigate summation-item descendants from NetIncomeLoss taxonomy $us-gaap returns (target-name)

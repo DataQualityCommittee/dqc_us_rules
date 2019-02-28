@@ -1,0 +1,72 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2018
+
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0081.7657 satisfied
+
+/** Get all the calculations defined in the Instance document. **/
+
+
+$extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
+
+		
+for ($network in $extCalcRelationship1.keys)
+	for ($extCalcRelationship in $extCalcRelationship1[$network])
+		$extCalcNetwork = $network.role.description;
+		$extCalcSourceName = $extCalcRelationship.source.name;
+		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
+		$sibling_items = set(navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name));
+		$inconsistencies = $extCalcTargetName.intersect($sibling_items);
+		$inconsistencies.length > 0 and exists({@concept=$extCalcSourceName}) and exists({@concept in $inconsistencies})
+	 
+message
+"{$inconsistencies} are children of {$extCalcSourceName} in the extension taxonomy, but are represnetded as siblings in the us-gaap taxonomies
+
+{$inconsistencies.join(', ')}
+
+Rule Element Id:7657
+Rule version: {$ruleVersion}
+"
+
+SEVERITY error
+
+status $status
+
+assert US.0081.7658 satisfied
+
+/** Get all the calculations defined in the Instance document. **/
+
+
+$extCalcRelationship1 = navigate summation-item siblings returns by network set (relationship);
+
+		
+for ($network in $extCalcRelationship1.keys)
+	for ($extCalcRelationship in $extCalcRelationship1[$network])
+		$extCalcNetwork = $network.role.description;
+		$extCalcSourceName = $extCalcRelationship.source.name;
+		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
+		$child_items = set(navigate summation-item descendants from $extCalcSourceName taxonomy $us-gaap returns (target-name));
+		$inconsistencies = $extCalcTargetName.intersect($child_items);
+		$inconsistencies.length > 0 and exists({@concept=$extCalcSourceName}) and exists({@concept in $inconsistencies})
+	 
+message
+"{$inconsistencies} are siblings of {$extCalcSourceName} in the extension taxonomy, but are represnetded as children in the us-gaap taxonomies
+
+{$inconsistencies.join(', ')}
+
+Rule Element Id:7657
+Rule version: {$ruleVersion}
+"
+
+SEVERITY error
+
+status $status
