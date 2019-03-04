@@ -23,15 +23,28 @@ for ($network in $extCalcRelationship1.keys)
 	for ($extCalcRelationship in $extCalcRelationship1[$network])
 		$extCalcNetwork = $network.role.description;
 		$extCalcSourceName = $extCalcRelationship.source.name;
+		$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
+		$extCalcTargetNameLocalLower = $extCalcRelationship.target.name.local-name.lower-case;
 		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
 		$sibling_items = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
 		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
 		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
 		$inappropriate_child = {@concept.local-name in $inconsistencies};
-		$inconsistencies.length > 0 and exists({$inappropriate_child})
+		
+		/** Evaluate the expression **/
+		
+		$inconsistencies.length > 0 and exists({$inappropriate_child}) and 
+		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
+				 				$parent_subString in $extCalcSourceNameLocalLower)) and
+		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
+				 				$child_subString in $extCalcTargetNameLocalLower))
 	 
 message
-"{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy, but are represented as siblings in the us-gaap taxonomies
+"{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy, but are represented as siblings in the us-gaap taxonomies.
+
+{$extCalcSourceNameLocalLower}
+
+{$non-classified_string_elements.join(', ')}
 
 {$inconsistencies.join(', ')}
 
@@ -58,17 +71,31 @@ for ($value-con in $value-concepts)
 		for ($extCalcRelationship in $extCalcRelationship1[$network])
 			$extCalcNetwork = $network.role.description;
 			$extCalcSourceName = $extCalcRelationship.source.name;
+			$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
+			$extCalcTargetNameLocalLower = $extCalcRelationship.target.name.local-name.lower-case;
 			$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
 			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
 			$child_items_names = filter $child_items.to-set returns $item.local-name;
 			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
 			$inappropriate_sibling = {@concept.local-name in $inconsistencies};
-			$inconsistencies.length > 0 and exists({$inappropriate_sibling})
+			
+			/** Evaluate the expression **/
+			
+			$inconsistencies.length > 0 and exists({$inappropriate_sibling}) and 
+			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
+				 				$parent_subString in $extCalcSourceNameLocalLower)) and
+			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
+					 				$child_subString in $extCalcTargetNameLocalLower))
+				 				
 	 
 message
 "{$inconsistencies.join(', ')} is a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but are represnetded as children in the us-gaap taxonomies
 
 {$inconsistencies.join(', ')}
+
+
+{$extCalcTargetNameLocalLower}
+{$child_elements_promotable_to_sibling_of_parent_element_string}
 
 Rule Element Id:7658
 Rule version: {$ruleVersion}
@@ -78,28 +105,3 @@ RULE-FOCUS $inappropriate_sibling
 SEVERITY error
 
 status $status
-
-
-output sibs
-
-$fact_values = list([covered]);
-$value-concepts = (filter $fact_values returns $item.concept.name).to-set;
-for ($value-con in $value-concepts)
-	$extCalcRelationship1 = navigate summation-item siblings from $value-con returns by network set (relationship);
-
-	for ($network in $extCalcRelationship1.keys)
-		for ($extCalcRelationship in $extCalcRelationship1[$network])
-			$extCalcSourceName = $extCalcRelationship.source.name;
-			$extCalcNetwork = $network.role.description;
-			$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
-			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
-			$child_items_names = filter $child_items.to-set returns $item.local-name;
-			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
-			$output_string = "Target: " + $inconsistencies.join(', ')  + " US-GAAP Source: " + $extCalcSourceName.local-name + " Sibling Source: " + $value-con.local-name + " Sibling Target :  " + $extCalcTargetName.join(', ') + " Network " + $extCalcNetwork + " ";
-			$output_string
-		
-
-		
-output desc
-
-navigate summation-item descendants from NetIncomeLoss taxonomy $us-gaap returns (target-name)

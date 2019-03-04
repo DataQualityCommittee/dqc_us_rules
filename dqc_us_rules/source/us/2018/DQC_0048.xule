@@ -18,26 +18,32 @@ $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept
 
 /* This uses  navigation. It finds the root relationships and returns the networks. Since it  returns a set, the dups will be eliminated. */
 
-for ($calcNetwork in 
-	filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
-							
-	$network_role = $calcNetwork.role.uri;
+if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
+	$root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
+	$network_role = $networkPresRole.join(', ');
+	true
+else
 
-	$roots = set(for $root in $calcNetwork.roots 
-						if ($root.name.namespace-uri != $extension_ns)
-							$root.name.local-name
-						else
-							none);
+	for ($calcNetwork in 
+		filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 							
-	$root_string = $roots.join(', ');
+		$network_role = $calcNetwork.role.uri;
+
+		$roots = set(for $root in $calcNetwork.roots 
+							if ($root.name.namespace-uri != $extension_ns)
+								$root.name.local-name
+							else
+								none);
+							
+ 		$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
 	
-	not ($roots.contains('CashAndCashEquivalentsPeriodIncreaseDecrease') or
-	$roots.contains('CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
-	$roots.contains('CashPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
-	$roots.contains('CashPeriodIncreaseDecrease') or
-	$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
-	$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
-	not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
+		not ($roots.contains('CashAndCashEquivalentsPeriodIncreaseDecrease') or
+		$roots.contains('CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+		$roots.contains('CashPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+		$roots.contains('CashPeriodIncreaseDecrease') or
+		$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
+		$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
+		not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
 	
 	
 
@@ -56,7 +62,7 @@ CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecre
 
 NetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash).
 
-The calculation linkbase in the filing has the following root elements defined: {$root_string}.
+{$root_string}.
 
 If you have used an extension element that reflects the changes made for ASU-2016-18 then create either of the following extension elements with the following names:
 
