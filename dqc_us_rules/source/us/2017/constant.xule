@@ -25,6 +25,7 @@ constant $Accrual_Items =
 				StatementOfStockholdersEquityAbstract,
 				StatementOfPartnersCapitalAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
 
+
 constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions, 
 				InterestPaidCapitalized,
 				ProceedsFromFederalHomeLoanBankAdvances,
@@ -74,6 +75,19 @@ constant $exclude_non_neg_string_members = set(
 				'reconcili',
 				'reclass'
 				)
+				
+constant $parent_elements_with_all_children_promotable_to_sibling_string = set(
+				'other',
+				'sellinggeneralandadministrative'
+				)
+				
+constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
+				'other',
+				'EmployeeRelatedLiabilitiesCurrentAndNoncurrent'
+				)
+
+constant $siblings_demotable_to_child = set(
+				list(AccruedLiabilitiesCurrentAndNoncurrent, EmployeeRelatedLiabilitiesCurrentAndNoncurrent))
 
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,

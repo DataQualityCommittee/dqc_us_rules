@@ -31,13 +31,15 @@ for ($network in $extCalcRelationship1.keys)
 		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
 		$inappropriate_child = {@concept.local-name in $inconsistencies};
 		
+		
 		/** Evaluate the expression **/
 		
 		$inconsistencies.length > 0 and exists({$inappropriate_child}) and 
 		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
 				 				$parent_subString in $extCalcSourceNameLocalLower)) and
 		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
-				 				$child_subString in $extCalcTargetNameLocalLower))
+				 				$child_subString in $extCalcTargetNameLocalLower)) 
+
 	 
 message
 "{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy, but are represented as siblings in the us-gaap taxonomies.
@@ -78,6 +80,8 @@ for ($value-con in $value-concepts)
 			$child_items_names = filter $child_items.to-set returns $item.local-name;
 			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
 			$inappropriate_sibling = {@concept.local-name in $inconsistencies};
+			$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
+			$parent_child_allowed = list($value-con, $extCalcRelationship.target.name);
 			
 			/** Evaluate the expression **/
 			
@@ -85,7 +89,9 @@ for ($value-con in $value-concepts)
 			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
 				 				$parent_subString in $extCalcSourceNameLocalLower)) and
 			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
-					 				$child_subString in $extCalcTargetNameLocalLower))
+					 				$child_subString in $extCalcTargetNameLocalLower)) and
+		    not $parent_child_allowed in $siblings_demotable_to_child
+		
 				 				
 	 
 message
