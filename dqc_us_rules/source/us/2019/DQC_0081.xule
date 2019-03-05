@@ -30,6 +30,8 @@ for ($network in $extCalcRelationship1.keys)
 		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
 		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
 		$inappropriate_child = {@concept.local-name in $inconsistencies};
+		$parent_child_allowed = list($extCalcSourceName, $extCalcRelationship.target.name);
+		
 		
 		/** Evaluate the expression **/
 		
@@ -37,16 +39,11 @@ for ($network in $extCalcRelationship1.keys)
 		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
 				 				$parent_subString in $extCalcSourceNameLocalLower)) and
 		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
-				 				$child_subString in $extCalcTargetNameLocalLower))
+				 				$child_subString in $extCalcTargetNameLocalLower)) and
+		 not $parent_child_allowed in $siblings_demotable_to_child
 	 
 message
-"{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy, but are represented as siblings in the us-gaap taxonomies.
-
-{$extCalcSourceNameLocalLower}
-
-{$non-classified_string_elements.join(', ')}
-
-{$inconsistencies.join(', ')}
+"The line item concept {$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy role {$extCalcNetwork}, but are represented as siblings in the us-gaap taxonomies.
 
 Rule Element Id:7657
 Rule version: {$ruleVersion}
@@ -62,7 +59,9 @@ assert US.0081.7658 satisfied
 /** Get all the calculations defined in the Instance document. **/
 
 $fact_values = list([covered]);
-$value-concepts = (filter $fact_values returns $item.concept.name).to-set - set(NetIncomeLoss);
+
+/** Exludes NetIncomeLoss, ProfitLoss as these are are used in the CF for addbacks **/
+$value-concepts = (filter $fact_values returns $item.concept.name).to-set - $income_items;
 for ($value-con in $value-concepts)
 	$extCalcRelationship1 = navigate summation-item siblings from $value-con returns by network set (relationship);
 
@@ -85,20 +84,15 @@ for ($value-con in $value-concepts)
 			
 			$inconsistencies.length > 0 and exists({$inappropriate_sibling}) and 
 			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
-				 				$parent_subString in $extCalcSourceNameLocalLower)) and
+				 				$parent_subString in $value-con.local-name.lower-case)) and
 			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
 					 				$child_subString in $extCalcTargetNameLocalLower)) and
 		    not $parent_child_allowed in $siblings_demotable_to_child
 				 				
 	 
 message
-"{$inconsistencies.join(', ')} is a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but are represnetded as children in the us-gaap taxonomies
+"The line item concept {$inconsistencies.join(', ')} is a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but are represented as children in the us-gaap taxonomies
 
-{$inconsistencies.join(', ')}
-
-
-{$extCalcTargetNameLocalLower}
-{$child_elements_promotable_to_sibling_of_parent_element_string}
 
 Rule Element Id:7658
 Rule version: {$ruleVersion}
