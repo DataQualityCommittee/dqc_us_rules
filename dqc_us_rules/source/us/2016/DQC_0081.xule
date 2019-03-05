@@ -29,7 +29,7 @@ for ($network in $extCalcRelationship1.keys)
 		$sibling_items = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
 		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
 		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
-		$inappropriate_child = {@concept.local-name in $inconsistencies};
+		$inappropriate_child = {nonils @concept.local-name in $inconsistencies where $fact != 0};
 		$parent_child_allowed = list($extCalcSourceName, $extCalcRelationship.target.name);
 		
 		
@@ -41,10 +41,9 @@ for ($network in $extCalcRelationship1.keys)
 		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
 				 				$child_subString in $extCalcTargetNameLocalLower)) and
 		 not $parent_child_allowed in $siblings_demotable_to_child
-
 	 
 message
-"{$inconsistencies.join(', ')} is a child of {$extCalcSourceName} in the extension taxonomy role {$extCalcNetwork}, but are represented as siblings in the us-gaap taxonomies.
+"The line item concept {$inappropriate_child.concept.name} with a value of {$inappropriate_child} is represented as a child of {$extCalcSourceName} in the companies extension taxonomy role {$extCalcNetwork}. These two elements, however are represented as siblings in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for the parent element {$extCalcSourceName} and the child element {$inappropriate_child.concept.name}.
 
 Rule Element Id:7657
 Rule version: {$ruleVersion}
@@ -59,7 +58,7 @@ assert US.0081.7658 satisfied
 
 /** Get all the calculations defined in the Instance document. **/
 
-$fact_values = list([covered]);
+$fact_values = list([nonils covered]);
 
 /** Exludes NetIncomeLoss, ProfitLoss as these are are used in the CF for addbacks **/
 $value-concepts = (filter $fact_values returns $item.concept.name).to-set - $income_items;
@@ -77,7 +76,7 @@ for ($value-con in $value-concepts)
 			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
 			$child_items_names = filter $child_items.to-set returns $item.local-name;
 			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
-			$inappropriate_sibling = {@concept.local-name in $inconsistencies};
+			$inappropriate_sibling = {nonils @concept.local-name in $inconsistencies where $fact != 0};
 			$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
 			$parent_child_allowed = list($value-con, $extCalcRelationship.target.name);
 			
@@ -89,11 +88,11 @@ for ($value-con in $value-concepts)
 			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
 					 				$child_subString in $extCalcTargetNameLocalLower)) and
 		    not $parent_child_allowed in $siblings_demotable_to_child
-		
 				 				
 	 
 message
-"{$inconsistencies.join(', ')} is a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but are represented as children in the us-gaap taxonomies
+"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but these two elements are represented as children in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
 
 Rule Element Id:7658
 Rule version: {$ruleVersion}
