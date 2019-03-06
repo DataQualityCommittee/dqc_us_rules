@@ -17,10 +17,9 @@ assert US.0081.7657 satisfied
 
 
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
-
 		
 for ($network in $extCalcRelationship1.keys)
-	for ($extCalcRelationship in $extCalcRelationship1[$network])
+	for ($extCalcRelationship in (filter $extCalcRelationship1[$network] where $item.role.description.contains('- Statement ')))
 		$extCalcNetwork = $network.role.description;
 		$extCalcSourceName = $extCalcRelationship.source.name;
 		$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
@@ -29,14 +28,14 @@ for ($network in $extCalcRelationship1.keys)
 		$sibling_items = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
 		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
 		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
-		$inappropriate_child = {nonils @concept.local-name in $inconsistencies where $fact != 0};
+		$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 		$parent_child_allowed = list($extCalcSourceName, $extCalcRelationship.target.name);
 		
 		
 		/** Evaluate the expression **/
 		
 		$inconsistencies.length > 0 and exists({$inappropriate_child}) and 
-		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
+		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
 				 				$parent_subString in $extCalcSourceNameLocalLower)) and
 		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
 				 				$child_subString in $extCalcTargetNameLocalLower)) and
@@ -67,7 +66,7 @@ for ($value-con in $value-concepts)
 
 		
 	for ($network in $extCalcRelationship1.keys)
-		for ($extCalcRelationship in $extCalcRelationship1[$network])
+		for ($extCalcRelationship in (filter $extCalcRelationship1[$network] where $item.role.description.contains('- Statement ')))
 			$extCalcNetwork = $network.role.description;
 			$extCalcSourceName = $extCalcRelationship.source.name;
 			$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
@@ -76,14 +75,14 @@ for ($value-con in $value-concepts)
 			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
 			$child_items_names = filter $child_items.to-set returns $item.local-name;
 			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
-			$inappropriate_sibling = {nonils @concept.local-name in $inconsistencies where $fact != 0};
+			$inappropriate_sibling = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 			$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
 			$parent_child_allowed = list($value-con, $extCalcRelationship.target.name);
 			
 			/** Evaluate the expression **/
 			
 			$inconsistencies.length > 0 and exists({$inappropriate_sibling}) and 
-			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_string)
+			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
 				 				$parent_subString in $value-con.local-name.lower-case)) and
 			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
 					 				$child_subString in $extCalcTargetNameLocalLower)) and

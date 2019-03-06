@@ -76,14 +76,20 @@ constant $exclude_non_neg_string_members = set(
 				)
 				
 				
-/** Catch all concepts **/
-constant $parent_elements_with_all_children_promotable_to_sibling_string = set(
+/** Catch all concepts 
+	This constant defines strings that when contained in an element mean that a child of that parent element can be promoted to a sibling or a 	sibling of the parent element can be demoted to a child	of that element.	
+				**/
+				
+constant $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string = set(
 				'other',
 				'generalandadministrative',
 				'depreciationdepletionandamortization',
 				'accountspayableandaccruedliabilitiescurrent',
+				'accountspayableandaccruedliabilitiesnoncurrent',
 				'increasedecreaseinaccountspayableandaccruedliabilities',
-				'operatingincomeloss'
+				'operatingincomeloss',
+				'interestincomeoperating',
+				'operatingcostsandexpenses'
 				)
 				
 constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
@@ -93,7 +99,11 @@ constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
 				)
 
 constant $siblings_demotable_to_child = set(
-				list(AccruedLiabilitiesCurrent, EmployeeRelatedLiabilitiesCurrent))
+				list(AccruedLiabilitiesCurrent, EmployeeRelatedLiabilitiesCurrent),
+				list(NonoperatingIncomeExpense, IncomeLossFromEquityMethodInvestments),
+				list(NonoperatingIncomeExpense, InterestAndDebtExpense),
+				list(OperatingIncomeLoss, IncomeLossFromEquityMethodInvestments)
+				)
 
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,
