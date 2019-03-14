@@ -86,10 +86,15 @@ constant $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_
 				'depreciationdepletionandamortization',
 				'accountspayableandaccruedliabilitiescurrent',
 				'accountspayableandaccruedliabilitiesnoncurrent',
+				'accruedliabilitiescurrentandnoncurrent',
+				'accruedliabilitiescurrent',
+				'increasedecreaseinaccruedliabilities',
 				'increasedecreaseinaccountspayableandaccruedliabilities',
 				'operatingincomeloss',
+				'nonoperatingincomeexpense',
 				'interestincomeoperating',
-				'operatingcostsandexpenses'
+				'operatingcostsandexpenses',
+				'feesandcommissions'
 				)
 				
 constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
@@ -104,8 +109,34 @@ constant $siblings_demotable_to_child = set(
 				list(NonoperatingIncomeExpense, InterestAndDebtExpense),
 				list(OperatingIncomeLoss, IncomeLossFromEquityMethodInvestments),
 				list(Investments, RealEstateInvestments),
-				list(Investments, DerivativeAssets)
+				list(Investments, DerivativeAssets),
+				list(GainLossOnInvestments, GainLossOnDerivativeInstrumentsNetPretax),
+				list(GainLossOnInvestments, GainLossOnSaleOfDerivatives),
+				list(GainLossOnInvestments, UnrealizedGainLossOnDerivativesAndCommodityContracts),
+				list(GainLossOnInvestments, ForeignCurrencyTransactionGainLossUnrealized),
+				list(PropertyPlantAndEquipmentNet, OilAndGasPropertySuccessfulEffortMethodNet),
+				list(PropertyPlantAndEquipmentNet, OilAndGasPropertyFullCostMethodNet),
+				list(RealEstateRevenueNet, OperatingLeasesIncomeStatementLeaseRevenue),
+				list(OperatingExpenses, DeferredPolicyAcquisitionCostAmortizationExpense),
+				list(OperatingExpenses, PolicyholderBenefitsAndClaimsIncurredNet),
+				list(OperatingExpenses, LiabilityForFuturePolicyBenefitsPeriodExpense),
+				list(OperatingExpenses, AmortizationOfValueOfBusinessAcquiredVOBA)
 				)
+				
+constant $child_elements_promotable_to_sibling = set(
+				list(OperatingExpenses, RestructuringCharges),
+				list(OperatingExpenses, GainLossOnDispositionOfAssets1),
+				list(OperatingExpenses, GainsLossesOnExtinguishmentOfDebt),
+				list(OperatingExpenses, LitigationSettlementExpense),
+				list(OperatingExpenses, GainLossOnDispositionOfAssets),
+				list(OperatingExpenses, GainsLossesOnSalesOfAssets),
+				list(OperatingExpenses, GainLossOnSaleOfOilAndGasProperty),
+				list(OperatingExpenses, GainLossOnSaleOfPropertyPlantEquipment),
+				list(OperatingExpenses, GainLossOnSaleOfBusiness),
+				list(OperatingExpenses, GainLossRelatedToLitigationSettlement),
+				list(OperatingExpenses, GainLossOnSaleOfProperty),
+				list(OperatingExpenses, GainLossOnDispositionOfIntangibleAssets)
+				)	
 								
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,

@@ -11,7 +11,7 @@ Taxonomy: US GAAP 2018
 
 rule-name-prefix DQC
 
-assert US.0081.7657 satisfied
+assert US.0081.9277 satisfied
 
 /** Get all the calculations defined in the Instance document. **/
 
@@ -25,26 +25,34 @@ for ($network in $extCalcRelationship1.keys)
 		$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
 		$extCalcTargetNameLocalLower = $extCalcRelationship.target.name.local-name.lower-case;
 		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
-		$sibling_items = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
-		$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
-		$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
-		$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 		$parent_child_allowed = list($extCalcSourceName, $extCalcRelationship.target.name);
+		if  ($parent_child_allowed in $siblings_demotable_to_child)
+			skip
+		else		
+			$a1 = (navigate summation-item ancestors from $extCalcRelationship.target.name taxonomy $us-gaap returns (target-name)).to-set;
+			$allowable_sibling = set(for ($x in $siblings_demotable_to_child)
+											$x[2]);
+			if ($a1.intersect($allowable_sibling).length > 0)
+				skip
+			else
+				$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
+				$sibling_items = navigate summation-item descendants include start from ($s1) taxonomy $us-gaap returns (target-name);
+				$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
+				$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
+				$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
+			
+				/** Evaluate the expression **/
 		
-		
-		/** Evaluate the expression **/
-		
-		$inconsistencies.length > 0 and exists({$inappropriate_child}) and 
-		not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
-				 				$parent_subString in $extCalcSourceNameLocalLower)) and
-		not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
-				 				$child_subString in $extCalcTargetNameLocalLower)) and
-		 not $parent_child_allowed in $siblings_demotable_to_child
+				$inconsistencies.length > 0 and exists({$inappropriate_child}) and 
+				not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
+						 				$parent_subString in $extCalcSourceNameLocalLower)) and
+				not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
+						 				$child_subString in $extCalcTargetNameLocalLower)) 
 	 
 message
-"The line item concept {$inappropriate_child.concept.name} with a value of {$inappropriate_child} is represented as a child of {$extCalcSourceName} in the companies extension taxonomy role {$extCalcNetwork}. These two elements, however are represented as siblings in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for the parent element {$extCalcSourceName} and the child element {$inappropriate_child.concept.name}.
+"The line item concept {$inappropriate_child.concept.name} with a value of {$inappropriate_child} is represented as a child of {$extCalcSourceName} in the companies extension taxonomy role {$extCalcNetwork}. The element {$inappropriate_child.concept.name} however, is represented either as a sibling or child of a sibling relative to {$extCalcSourceName}  in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for the parent element {$extCalcSourceName} and the child element {$inappropriate_child.concept.name}.
 
-Rule Element Id:7657
+Rule Element Id:9277
 Rule version: {$ruleVersion}
 "
 
@@ -52,8 +60,12 @@ RULE-FOCUS $inappropriate_child
 
 SEVERITY error
 
+status $status
 
-assert US.0081.7658 satisfied
+effectiveDate '2019-06-30'
+
+
+assert US.0081.9278 satisfied
 
 /** Get all the calculations defined in the Instance document. **/
 
@@ -72,28 +84,31 @@ for ($value-con in $value-concepts)
 			$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
 			$extCalcTargetNameLocalLower = $extCalcRelationship.target.name.local-name.lower-case;
 			$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
-			$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
-			$child_items_names = filter $child_items.to-set returns $item.local-name;
-			$inconsistencies = $extCalcTargetName.intersect($child_items_names);
-			$inappropriate_sibling = [nonils @concept.local-name in $inconsistencies where $fact != 0];
-			$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
-			$parent_child_allowed = list($value-con, $extCalcRelationship.target.name);
+			$parent_sibling_allowed = list($value-con, $extCalcRelationship.target.name);
+			if  ($parent_sibling_allowed in $child_elements_promotable_to_sibling)
+				skip
+			else
+				$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
+				$child_items_names = filter $child_items.to-set returns $item.local-name;
+				$inconsistencies = $extCalcTargetName.intersect($child_items_names);
+				$inappropriate_sibling = [nonils @concept.local-name in $inconsistencies where $fact != 0];
+				$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
 			
-			/** Evaluate the expression **/
 			
-			$inconsistencies.length > 0 and exists({$inappropriate_sibling}) and 
-			not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
-				 				$parent_subString in $value-con.local-name.lower-case)) and
-			not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
-					 				$child_subString in $extCalcTargetNameLocalLower)) and
-		    not $parent_child_allowed in $siblings_demotable_to_child
+				/** Evaluate the expression **/
+			
+				$inconsistencies.length > 0 and exists({$inappropriate_sibling}) and 
+				not any(set(for ($parent_subString in $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string)
+					 				$parent_subString in $value-con.local-name.lower-case)) and
+				not any(set(for ($child_subString in $child_elements_promotable_to_sibling_of_parent_element_string)
+						 				$child_subString in $extCalcTargetNameLocalLower))
 				 				
 	 
 message
-"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but these two elements are represented as children in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} is represented as a sibling of {$value-con} with a value of {$fact_values} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
 
 
-Rule Element Id:7658
+Rule Element Id:9278
 Rule version: {$ruleVersion}
 "
 RULE-FOCUS $inappropriate_sibling
@@ -101,3 +116,5 @@ RULE-FOCUS $inappropriate_sibling
 SEVERITY error
 
 status $status
+
+effectiveDate '2019-06-30'
