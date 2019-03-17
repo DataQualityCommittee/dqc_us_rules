@@ -78,7 +78,7 @@ for ($value-con in $value-concepts)
 
 		
 	for ($network in $extCalcRelationship1.keys)
-		for ($extCalcRelationship in (filter $extCalcRelationship1[$network] where $item.role.description.contains('- Statement ')))
+		for ($extCalcRelationship in (filter $extCalcRelationship1[$network] where $item.role.description.contains('- Statement ')).to-set)
 			$extCalcNetwork = $network.role.description;
 			$extCalcSourceName = $extCalcRelationship.source.name;
 			$extCalcSourceNameLocalLower = $extCalcRelationship.source.name.local-name.lower-case;
@@ -89,7 +89,7 @@ for ($value-con in $value-concepts)
 				skip
 			else
 				$child_items = navigate summation-item descendants from $value-con taxonomy $us-gaap returns (target-name);
-				$child_items_names = filter $child_items.to-set returns $item.local-name;
+				$child_items_names = (filter $child_items.to-set returns $item.local-name);
 				$inconsistencies = $extCalcTargetName.intersect($child_items_names);
 				$inappropriate_sibling = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 				$extCalcTargetNameNoSet = $extCalcRelationship.target.name.local-name;
@@ -105,8 +105,13 @@ for ($value-con in $value-concepts)
 				 				
 	 
 message
-"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} and a calculation parent of {$extCalcSourceName} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
 
+The properties of this {$inappropriate_sibling.concept.name} fact are:
+
+Period :{$inappropriate_sibling.period}
+Dimensions : {$inappropriate_sibling.dimensions.join(', ','=')}
+Unit : {$inappropriate_sibling.unit}\n
 
 Rule Element Id:9278
 Rule version: {$ruleVersion}

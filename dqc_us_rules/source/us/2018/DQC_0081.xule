@@ -105,8 +105,13 @@ for ($value-con in $value-concepts)
 				 				
 	 
 message
-"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+"The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} and a calculation parent of {$extCalcSourceName} is represented as a sibling of {$value-con} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
 
+The properties of this {$inappropriate_sibling.concept.name} fact are:
+
+Period :{$inappropriate_sibling.period}
+Dimensions : {$inappropriate_sibling.dimensions.join(', ','=')}
+Unit : {$inappropriate_sibling.unit}\n
 
 Rule Element Id:9278
 Rule version: {$ruleVersion}
