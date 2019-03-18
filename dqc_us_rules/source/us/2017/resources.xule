@@ -8,6 +8,12 @@ Taxonomy: US GAAP 2017
 Release Version 6
 **/
 
+/** Effective Dates **/
+constant $effective_dates = dict(
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v8/dqc_us_rules/resources/Effectibve_Dates/effective_dates.csv', false, list('string','string'))
+		list($pair[1], $pair[2])
+		)
+
 /** DQC.US.0015 **/
 
 /** This contant was updated to seperate US GAAP concepts from dei concepts so that they can also be used by IFRS rather than repeating them in 2 places. **/
