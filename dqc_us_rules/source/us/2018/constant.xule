@@ -81,8 +81,6 @@ constant $exclude_non_neg_string_members = set(
 				**/
 				
 constant $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string = set(
-				'other',
-				'generalandadministrative',
 				'depreciationdepletionandamortization',
 				'accountspayableandaccruedliabilitiescurrent',
 				'accountspayableandaccruedliabilitiesnoncurrent',
@@ -94,14 +92,18 @@ constant $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_
 				'nonoperatingincomeexpense',
 				'interestincomeoperating',
 				'operatingcostsandexpenses',
-				'feesandcommissions',
 				'marketablesecurities'
 				)
 				
-constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
-				'other',
-				'employeerelatedliabilitiescurrentandnoncurrent',
-				'increasedecreaseinemployeerelatedliabilities'
+constant $parent_elements_with_children_promotable_to_sibling = set(
+				list(GeneralAndAdministrativeExpense, list(OtherGeneralAndAdministrativeExpense)),
+				list(SellingGeneralAndAdministrativeExpense, list(OtherSellingAndMarketingExpense)),
+				list(feesandcommissions,list())
+				)
+				
+constant $child_elements_promotable_to_sibling_of_parent_element = set(
+				EmployeeRelatedLiabilitiesCurrentAndNoncurrent,
+				IncreaseDecreaseInEmployeeRelatedLiabilities
 				)
 
 constant $siblings_demotable_to_child = set(
@@ -121,7 +123,28 @@ constant $siblings_demotable_to_child = set(
 				list(OperatingExpenses, DeferredPolicyAcquisitionCostAmortizationExpense),
 				list(OperatingExpenses, PolicyholderBenefitsAndClaimsIncurredNet),
 				list(OperatingExpenses, LiabilityForFuturePolicyBenefitsPeriodExpense),
-				list(OperatingExpenses, AmortizationOfValueOfBusinessAcquiredVOBA)
+				list(OperatingExpenses, AmortizationOfValueOfBusinessAcquiredVOBA),
+				list(CostOfRevenue, BusinessDevelopment),
+				list(CostOfGoodsSold, CostOfPurchasedPower),
+				list(LiabilitiesCurrent, DeferredGainOnSaleOfProperty),
+				list(AssetsNoncurrent, DeferredOfferingCosts),
+				list(AssetsCurrent, DeferredSalesCommission),
+				list(AccountsNotesAndLoansReceivableNetCurrent, DueFromJointVenturesCurrent),
+				list(RealizedInvestmentGainsLosses, EquityMethodInvestmentRealizedGainLossOnDisposal),
+				list(RealEstateInvestments, EquityMethodInvestments),
+				list(NoninterestExpense, EquitySecuritiesFvNiRealizedGainLoss),
+				list(AssetsCurrent, EstimatedInsuranceRecoveries),
+				list(OperatingExpenses, ExplorationExpenseMining),
+				list(Investments, FederalHomeLoanBankStock),
+				list(Investments, FederalReserveBankStock),
+				list(CostOfGoodsSold, FoodAndBeverageCostOfSales),
+				list(OperatingExpenses, GainLossOnSaleOfDerivatives),
+				list(RealizedInvestmentGainsLosses, GainLossOnSaleOfSecuritiesNet),
+				list(OperatingExpenses, GainLossOnSaleOfSecuritiesNet),
+				list(FinancialServicesRevenue, GainLossOnSalesOfLoansNet),
+				list(RealizedInvestmentGainsLosses, GainOnSaleOfInvestments),
+				list(ProfitLoss, GainsLossesOnSalesOfInvestmentRealEstate),
+				list(GrantsReceivableNoncurrent, LongTermInvestmentsAndReceivablesNet)
 				)
 				
 constant $child_elements_promotable_to_sibling = set(
