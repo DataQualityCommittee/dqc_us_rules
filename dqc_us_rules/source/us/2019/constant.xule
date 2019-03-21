@@ -80,28 +80,36 @@ constant $exclude_non_neg_string_members = set(
 	This constant defines strings that when contained in an element mean that a child of that parent element can be promoted to a sibling or a 	sibling of the parent element can be demoted to a child	of that element.	
 				**/
 				
-constant $parent_elements_with_all_children_promotable_to_sibling_and_viceversa_string = set(
-				'other',
-				'generalandadministrative',
-				'depreciationdepletionandamortization',
-				'accountspayableandaccruedliabilitiescurrent',
-				'accountspayableandaccruedliabilitiesnoncurrent',
-				'accruedliabilitiescurrentandnoncurrent',
-				'accruedliabilitiescurrent',
-				'increasedecreaseinaccruedliabilities',
-				'increasedecreaseinaccountspayableandaccruedliabilities',
-				'operatingincomeloss',
-				'nonoperatingincomeexpense',
-				'interestincomeoperating',
-				'operatingcostsandexpenses',
-				'feesandcommissions',
-				'marketablesecurities'
+constant $elements_excluded_from_rule = set(
+				OperatingIncomeLoss,
+				InterestIncomeOperating,
+				OperatingCostsAndExpenses,
+				NontradeReceivablesCurrent
+				)
+/* The second list is an exception to the rule 
+For example any children of GeneralAndAdministrativeExpense can be promoted to be a sibling except OtherGeneralAndAdministrativeExpense	
+				**/ 
+constant $parent_elements_with_children_promotable_to_sibling = set(
+				list(GeneralAndAdministrativeExpense, list(OtherGeneralAndAdministrativeExpense)),
+				list(SellingGeneralAndAdministrativeExpense, list(OtherSellingAndMarketingExpense)),
+				list(AccruedLiabilitiesCurrentAndNoncurrent, list(OtherAccruedLiabilitiesCurrentAndNoncurrent)),
+				list(AccruedLiabilitiesCurrent, list(OtherAccruedLiabilitiesCurrent)),
+				list(AccountsPayableAndAccruedLiabilitiesCurrent, list(AccountsPayableCurrent, AccruedLiabilitiesCurrent, AccountsPayableOtherCurrent, OtherAccruedLiabilitiesCurrent)),
+				list(AccountsPayableCurrent, list(AccountsPayableOtherCurrent)),
+				list(AccruedLiabilitiesCurrent, list(OtherAccruedLiabilitiesCurrent)),
+				list(AccountsPayableAndAccruedLiabilitiesNoncurrent, list(OtherAccruedLiabilitiesNoncurrent)),
+				list(IncreaseDecreaseInAccruedLiabilities, list(IncreaseDecreaseInOtherAccruedLiabilities)),
+				list(increasedecreaseinaccountspayableandaccruedliabilities, list(IncreaseDecreaseInAccountsPayable, IncreaseDecreaseInAccruedLiabilities, IncreaseDecreaseInOtherAccruedLiabilities)),
+				list(feesandcommissions,list(FeesAndCommissionsOther))
 				)
 				
-constant $child_elements_promotable_to_sibling_of_parent_element_string = set(
-				'other',
-				'employeerelatedliabilitiescurrentandnoncurrent',
-				'increasedecreaseinemployeerelatedliabilities'
+constant $sibling_elements_with_siblings_demotable_to_descendant = set(
+				list(NonoperatingIncomeExpense, list(OperatingIncomeLoss))
+				)
+				
+constant $child_elements_promotable_to_sibling_of_parent_element = set(
+				EmployeeRelatedLiabilitiesCurrentAndNoncurrent,
+				IncreaseDecreaseInEmployeeRelatedLiabilities
 				)
 
 constant $siblings_demotable_to_child = set(
@@ -139,10 +147,19 @@ constant $siblings_demotable_to_child = set(
 				list(OperatingExpenses, GainLossOnSaleOfDerivatives),
 				list(RealizedInvestmentGainsLosses, GainLossOnSaleOfSecuritiesNet),
 				list(OperatingExpenses, GainLossOnSaleOfSecuritiesNet),
-				list(FinancialServicesRevenueGainLossOnSalesOfLoansNet),
+				list(FinancialServicesRevenue, GainLossOnSalesOfLoansNet),
 				list(RealizedInvestmentGainsLosses, GainOnSaleOfInvestments),
 				list(ProfitLoss, GainsLossesOnSalesOfInvestmentRealEstate),
-				list(GrantsReceivableNoncurrent, LongTermInvestmentsAndReceivablesNet)
+				list(GrantsReceivableNoncurrent, LongTermInvestmentsAndReceivablesNet),
+				list(MarketableSecurities, AvailableForSaleSecuritiesDebtSecurities),
+				list(MarketableSecurities, AvailableForSaleSecuritiesDebtSecuritiesCurrent),
+				list(MarketableSecurities, AvailableForSaleSecuritiesDebtSecuritiesNoncurrent),
+				list(MarketableSecurities, HeldToMaturitySecurities),
+				list(MarketableSecurities, HeldToMaturitySecuritiesCurrent),
+				list(MarketableSecurities, HeldToMaturitySecuritiesNoncurrent),
+				list(MarketableSecurities, SecuritiesBorrowed),
+				list(MarketableSecurities, DerivativeAssets),
+				list(MarketableSecurities, EquitySecuritiesFvNi)
 				)
 				
 constant $child_elements_promotable_to_sibling = set(
@@ -157,7 +174,10 @@ constant $child_elements_promotable_to_sibling = set(
 				list(OperatingExpenses, GainLossOnSaleOfBusiness),
 				list(OperatingExpenses, GainLossRelatedToLitigationSettlement),
 				list(OperatingExpenses, GainLossOnSaleOfProperty),
-				list(OperatingExpenses, GainLossOnDispositionOfIntangibleAssets)
+				list(OperatingExpenses, GainLossOnDispositionOfIntangibleAssets),
+				list(DepreciationDepletionAndAmortization, AccretionAmortizationOfDiscountsAndPremiumsInvestments),
+				list(DepreciationDepletionAndAmortization, AmortizationOfFinancingCosts),
+				list(Revenues, InterestExpenseDebt)
 				)	
 								
 constant $exclude_non_neg_members = set(
