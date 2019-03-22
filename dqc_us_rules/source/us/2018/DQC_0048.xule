@@ -16,34 +16,38 @@ assert US.0048.7482 satisfied
 
 $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 
-/* This uses  navigation. It finds the root relationships and returns the networks. Since it  returns a set, the dups will be eliminated. */
-
-if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-	$root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
-	$network_role = $networkPresRole.join(', ');
-	true
+if ($networkPresRole.length == 0)
+	skip
 else
 
-	for ($calcNetwork in 
-		filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
-							
-		$network_role = $calcNetwork.role.uri;
+	/* This uses  navigation. It finds the root relationships and returns the networks. Since it  returns a set, the dups will be eliminated. */
 
-		$roots = set(for $root in $calcNetwork.roots 
-							if ($root.name.namespace-uri != $extension_ns)
-								$root.name.local-name
-							else
-								none);
+	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
+		$root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
+		$network_role = $networkPresRole.join(', ');
+		true
+	else
+
+		for ($calcNetwork in 
+			filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 							
- 		$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
+			$network_role = $calcNetwork.role.uri;
+
+			$roots = set(for $root in $calcNetwork.roots 
+								if ($root.name.namespace-uri != $extension_ns)
+									$root.name.local-name
+								else
+									none);
+							
+	 		$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
 	
-		not ($roots.contains('CashAndCashEquivalentsPeriodIncreaseDecrease') or
-		$roots.contains('CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
-		$roots.contains('CashPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
-		$roots.contains('CashPeriodIncreaseDecrease') or
-		$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
-		$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
-		not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
+			not ($roots.contains('CashAndCashEquivalentsPeriodIncreaseDecrease') or
+			$roots.contains('CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+			$roots.contains('CashPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+			$roots.contains('CashPeriodIncreaseDecrease') or
+			$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
+			$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')) and
+			not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
 	
 	
 

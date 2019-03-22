@@ -1,0 +1,1244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22727 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.50 secs at 2019-03-22T11:53:34 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml"/></entry>
+<entry code="DQC.US.0044.7503" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0044.7503] The concept us-gaap:GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee with a value of -1,001,000 is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) investing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the investing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of investing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInInvestingActivitiesContinuingOperations or NetCashProvidedByUsedInInvestingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee fact are:
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+Entity : ('http://www.sec.gov/CIK', '0001072627')
+
+Rule Element Id:7503
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4099</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-646D3D731872344D69A7F921D1200EED" sourceLine="4099">
+  <property name="label" value="Gain (Loss) on Disposition of Stock in Subsidiary or Equity Method Investee"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee"/>
+  <property name="QName" value="us-gaap:GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-1,001,000"/>
+ </ref></entry>
+<entry code="DQC.US.0078.7655" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0078.7655] The filer has reported a value for the element us-gaap:LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest with a value of 0.159 without using the axis OwnershipAxis. This axis must be used when reporting a value for us-gaap:LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest. Please refer to the FASB implementation guide on Dimensional Modeling for Disclosures of Consolidated and Nonconsolidated Entities on the FASB website.
+
+The properties of this us-gaap:LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest fact are:
+Period :2018-01-01 to 2018-06-30
+Dimensions : 
+Unit : pure
+
+Rule Element Id:7655
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4344</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-A1B8CE3D4C8D5822B3F8DA2F0AFAA9CD" sourceLine="4344">
+  <property name="label" value="Limited Liability Company or Limited Partnership, Members or Limited Partners, Ownership Interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest"/>
+  <property name="QName" value="us-gaap:LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest"/>
+  <property name="contextRef" value="FD2018Q2YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-06-30"/>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.159"/>
+ </ref></entry>
+<entry code="DQC.US.0077.7654" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0077.7654] The filer has reported a value for the element us-gaap:RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod with a value of P10Y0M0D without using the axis RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis. This axis must be used when reporting a value for us-gaap:RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod. Please refer to the FASB implementation guide on Revenue from Contracts with Customers on the FASB website.
+
+The properties of this us-gaap:RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod fact are:
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : None
+
+Rule Element Id:7654
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4684</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-F7691C857AC45EA99850AE129D82F1BD" sourceLine="4684">
+  <property name="label" value="Revenue, Remaining Performance Obligation, Expected Timing of Satisfaction, Period"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod"/>
+  <property name="QName" value="us-gaap:RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P10Y0M0D"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;7,655,000&quot; for the element us-gaap:MaintenanceRevenue. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerTextBlock,
+RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod
+
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:MaintenanceRevenue fact are:
+Period :2018-01-01 to 2018-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4364</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-43CC409B68C25F239A3A7047A63F4705" sourceLine="4364">
+  <property name="label" value="Maintenance Revenue"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="MaintenanceRevenue"/>
+  <property name="QName" value="us-gaap:MaintenanceRevenue"/>
+  <property name="contextRef" value="FD2018Q2YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-06-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="7,655,000"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;2,603,000&quot; for the element us-gaap:MaintenanceRevenue. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerTextBlock,
+RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod
+
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:MaintenanceRevenue fact are:
+Period :2017-04-01 to 2017-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4361</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-D79F994856B45C16B54FE87E50BD2FED" sourceLine="4361">
+  <property name="label" value="Maintenance Revenue"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="MaintenanceRevenue"/>
+  <property name="QName" value="us-gaap:MaintenanceRevenue"/>
+  <property name="contextRef" value="FD2017Q2QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-04-01"/>
+   <property name="endDate" value="2017-06-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,603,000"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;2,720,000&quot; for the element us-gaap:MaintenanceRevenue. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerTextBlock,
+RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod
+
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:MaintenanceRevenue fact are:
+Period :2018-04-01 to 2018-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4363</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-0F3943C544F35405890D6E5D453E14D3" sourceLine="4363">
+  <property name="label" value="Maintenance Revenue"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="MaintenanceRevenue"/>
+  <property name="QName" value="us-gaap:MaintenanceRevenue"/>
+  <property name="contextRef" value="FD2018Q2QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-04-01"/>
+   <property name="endDate" value="2018-06-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,720,000"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" cid="4346134768" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;6,175,000&quot; for the element us-gaap:MaintenanceRevenue. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerTextBlock,
+RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod
+
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:MaintenanceRevenue fact are:
+Period :2017-01-01 to 2017-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4362</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-8922D8C4F06D583DA56F38CD00AA8B68" sourceLine="4362">
+  <property name="label" value="Maintenance Revenue"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="MaintenanceRevenue"/>
+  <property name="QName" value="us-gaap:MaintenanceRevenue"/>
+  <property name="contextRef" value="FD2017Q2YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-06-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="6,175,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9277] The line item concept us-gaap:PreferredStockDividendsIncomeStatementImpact with a value of 213,000 is represented as a child of us-gaap:NetIncomeLoss with a value of -11,185,000 in the companies extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations. The element us-gaap:PreferredStockDividendsIncomeStatementImpact however, is not represented as a component of us-gaap:NetIncomeLoss in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:PreferredStockDividendsIncomeStatementImpact as a sibling element (or child of that sibling) relative to us-gaap:NetIncomeLoss. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:NetIncomeLoss and the child element us-gaap:PreferredStockDividendsIncomeStatementImpact.
+
+The properties of this us-gaap:PreferredStockDividendsIncomeStatementImpact fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4594</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-08A677325A4B57529D3AFD7F32BC355C" sourceLine="4594">
+  <property name="label" value="Preferred Stock Dividends, Income Statement Impact"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="QName" value="us-gaap:PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="213,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9277] The line item concept us-gaap:PreferredStockDividendsIncomeStatementImpact with a value of 132,000 is represented as a child of us-gaap:NetIncomeLoss with a value of -4,321,000 in the companies extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations. The element us-gaap:PreferredStockDividendsIncomeStatementImpact however, is not represented as a component of us-gaap:NetIncomeLoss in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:PreferredStockDividendsIncomeStatementImpact as a sibling element (or child of that sibling) relative to us-gaap:NetIncomeLoss. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:NetIncomeLoss and the child element us-gaap:PreferredStockDividendsIncomeStatementImpact.
+
+The properties of this us-gaap:PreferredStockDividendsIncomeStatementImpact fact are:
+
+Period :2018-07-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4595</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-91C12D3AD3A15A65A3D27523AD41B942" sourceLine="4595">
+  <property name="label" value="Preferred Stock Dividends, Income Statement Impact"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="QName" value="us-gaap:PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="contextRef" value="FD2018Q3QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-07-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="132,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9277] The line item concept us-gaap:PreferredStockDividendsIncomeStatementImpact with a value of 391,000 is represented as a child of us-gaap:NetIncomeLoss with a value of -15,257,000 in the companies extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations. The element us-gaap:PreferredStockDividendsIncomeStatementImpact however, is not represented as a component of us-gaap:NetIncomeLoss in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:PreferredStockDividendsIncomeStatementImpact as a sibling element (or child of that sibling) relative to us-gaap:NetIncomeLoss. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:NetIncomeLoss and the child element us-gaap:PreferredStockDividendsIncomeStatementImpact.
+
+The properties of this us-gaap:PreferredStockDividendsIncomeStatementImpact fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4596</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-522FAD846ADC5FEBBF1BF54FFF23B337" sourceLine="4596">
+  <property name="label" value="Preferred Stock Dividends, Income Statement Impact"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="QName" value="us-gaap:PreferredStockDividendsIncomeStatementImpact"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="391,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9277] The line item concept us-gaap:OtherPreferredStockDividendsAndAdjustments with a value of -115,000 is represented as a child of us-gaap:NetIncomeLoss with a value of -1,526,000 in the companies extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations. The element us-gaap:OtherPreferredStockDividendsAndAdjustments however, is not represented as a component of us-gaap:NetIncomeLoss in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:OtherPreferredStockDividendsAndAdjustments as a sibling element (or child of that sibling) relative to us-gaap:NetIncomeLoss. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:NetIncomeLoss and the child element us-gaap:OtherPreferredStockDividendsAndAdjustments.
+
+The properties of this us-gaap:OtherPreferredStockDividendsAndAdjustments fact are:
+
+Period :2017-07-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4569</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-A2F9D943FB515C39ADDCA45ADFCADE7A" sourceLine="4569">
+  <property name="label" value="Other Preferred Stock Dividends and Adjustments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="OtherPreferredStockDividendsAndAdjustments"/>
+  <property name="QName" value="us-gaap:OtherPreferredStockDividendsAndAdjustments"/>
+  <property name="contextRef" value="FD2017Q3QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-07-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-115,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:CostMethodInvestments with a value of 6,230,000 and a calculation parent of us-gaap:Investments is represented as a sibling of us-gaap:InvestmentsInAffiliatesSubsidiariesAssociatesAndJointVentures in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:CostMethodInvestments is represented as a descendent of us-gaap:InvestmentsInAffiliatesSubsidiariesAssociatesAndJointVentures in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:CostMethodInvestments fact are:
+
+Period :2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 3827</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-7D3CDE41E3E65D5B80F8AD3B59E5DBBE" sourceLine="3827">
+  <property name="label" value="Cost Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostMethodInvestments"/>
+  <property name="QName" value="us-gaap:CostMethodInvestments"/>
+  <property name="contextRef" value="FI2018Q3">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="6,230,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:EquityMethodInvestments with a value of 2,827,000 and a calculation parent of us-gaap:Assets is represented as a sibling of us-gaap:Investments in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:EquityMethodInvestments is represented as a descendent of us-gaap:Investments in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:EquityMethodInvestments fact are:
+
+Period :2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4004</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-16B011AE09205D8B8590B1975835A449" sourceLine="4004">
+  <property name="label" value="Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="EquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:EquityMethodInvestments"/>
+  <property name="contextRef" value="FI2018Q3">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,827,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:AccruedInvestmentIncomeReceivable with a value of 194,000 and a calculation parent of us-gaap:Assets is represented as a sibling of us-gaap:AccountsReceivableNet in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:AccruedInvestmentIncomeReceivable is represented as a descendent of us-gaap:AccountsReceivableNet in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:AccruedInvestmentIncomeReceivable fact are:
+
+Period :2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 3517</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-C83E2C46EADC5264BC821C26277530BA" sourceLine="3517">
+  <property name="label" value="Accrued Investment Income Receivable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="AccruedInvestmentIncomeReceivable"/>
+  <property name="QName" value="us-gaap:AccruedInvestmentIncomeReceivable"/>
+  <property name="contextRef" value="FI2018Q3">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="194,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:GainLossOnSaleOfEquityInvestments with a value of 337,000 and a calculation parent of us-gaap:Revenues is represented as a sibling of us-gaap:GainLossOnInvestments in the extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations, but us-gaap:GainLossOnSaleOfEquityInvestments is represented as a descendent of us-gaap:GainLossOnInvestments in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:GainLossOnSaleOfEquityInvestments fact are:
+
+Period :2018-07-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4090</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E5B7746B5D335D5BA987EAA59A34B694" sourceLine="4090">
+  <property name="label" value="Gain (Loss) on Sale of Equity Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="GainLossOnSaleOfEquityInvestments"/>
+  <property name="QName" value="us-gaap:GainLossOnSaleOfEquityInvestments"/>
+  <property name="contextRef" value="FD2018Q3QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-07-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="337,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncomeLossFromEquityMethodInvestments with a value of -339,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncomeLossFromEquityMethodInvestments is represented as a descendent of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:
+
+Period :2018-07-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4155</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-0016DEF7330053F6AB3B2AFD581FC37E" sourceLine="4155">
+  <property name="label" value="Income (Loss) from Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncomeLossFromEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:IncomeLossFromEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2018Q3QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-07-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-339,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates with a value of 1,129,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates is represented as a descendent of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4612</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-8082F5B2FBA450A18677EBF8C2C665BA" sourceLine="4612">
+  <property name="label" value="Proceeds from Divestiture of Interest in Subsidiaries and Affiliates"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates"/>
+  <property name="QName" value="us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,129,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquireEquityMethodInvestments with a value of 1,489,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:PaymentsToAcquireEquityMethodInvestments is represented as a descendent of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:PaymentsToAcquireEquityMethodInvestments fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4586</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-63353A0EC5AF58589C162E1634BE80CE" sourceLine="4586">
+  <property name="label" value="Payments to Acquire Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PaymentsToAcquireEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquireEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,489,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity with a value of 857,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsToAcquireAvailableForSaleSecurities in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity is represented as a descendent of us-gaap:PaymentsToAcquireAvailableForSaleSecurities in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4583</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-8DE8A32D920B5C80A7414FEA015062E0" sourceLine="4583">
+  <property name="label" value="Payments to Acquire Available-for-sale Securities, Equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PaymentsToAcquireAvailableForSaleSecuritiesEquity"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="857,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncreaseDecreaseInOtherReceivables with a value of 1,341,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncreaseDecreaseInReceivables in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncreaseDecreaseInOtherReceivables is represented as a descendent of us-gaap:IncreaseDecreaseInReceivables in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncreaseDecreaseInOtherReceivables fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4214</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-3740D7950AD25ABBB6EC0A4C942FD24A" sourceLine="4214">
+  <property name="label" value="Increase (Decrease) in Other Receivables"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncreaseDecreaseInOtherReceivables"/>
+  <property name="QName" value="us-gaap:IncreaseDecreaseInOtherReceivables"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,341,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesEquity with a value of 4,966,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:ProceedsFromSaleAndMaturityOfAvailableForSaleSecurities in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesEquity is represented as a descendent of us-gaap:ProceedsFromSaleAndMaturityOfAvailableForSaleSecurities in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesEquity fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4621</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-B1C2A9A0670E5EF1AA6DC031670A2490" sourceLine="4621">
+  <property name="label" value="Proceeds from Sale of Available-for-sale Securities, Equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="ProceedsFromSaleOfAvailableForSaleSecuritiesEquity"/>
+  <property name="QName" value="us-gaap:ProceedsFromSaleOfAvailableForSaleSecuritiesEquity"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,966,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfSeniorDebt with a value of 2,201,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations is represented as a sibling of us-gaap:RepaymentsOfLongTermDebt in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:RepaymentsOfSeniorDebt is represented as a descendent of us-gaap:RepaymentsOfLongTermDebt in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfSeniorDebt fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4675</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-25F7F345BDF95A3A8F2977F6D897E15B" sourceLine="4675">
+  <property name="label" value="Repayments of Senior Debt"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RepaymentsOfSeniorDebt"/>
+  <property name="QName" value="us-gaap:RepaymentsOfSeniorDebt"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,201,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfSeniorDebt with a value of 2,201,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:RepaymentsOfLongTermDebt in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:RepaymentsOfSeniorDebt is represented as a descendent of us-gaap:RepaymentsOfLongTermDebt in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfSeniorDebt fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4675</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-25F7F345BDF95A3A8F2977F6D897E15B" sourceLine="4675">
+  <property name="label" value="Repayments of Senior Debt"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RepaymentsOfSeniorDebt"/>
+  <property name="QName" value="us-gaap:RepaymentsOfSeniorDebt"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,201,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:GainLossOnSaleOfEquityInvestments with a value of 951,000 and a calculation parent of us-gaap:Revenues is represented as a sibling of us-gaap:GainLossOnInvestments in the extension taxonomy role 1002000 - Statement - Consolidated Statement of Operations, but us-gaap:GainLossOnSaleOfEquityInvestments is represented as a descendent of us-gaap:GainLossOnInvestments in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:GainLossOnSaleOfEquityInvestments fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4092</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E05E9125AF5C59508C90F5E9F2A03F0A" sourceLine="4092">
+  <property name="label" value="Gain (Loss) on Sale of Equity Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="GainLossOnSaleOfEquityInvestments"/>
+  <property name="QName" value="us-gaap:GainLossOnSaleOfEquityInvestments"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="951,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncomeLossFromEquityMethodInvestments with a value of -623,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncomeLossFromEquityMethodInvestments is represented as a descendent of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:
+
+Period :2018-01-01 to 2018-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4156</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E5DC3015EA6A56F1B98A0AE13BE75B80" sourceLine="4156">
+  <property name="label" value="Income (Loss) from Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncomeLossFromEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:IncomeLossFromEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2018Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-623,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncomeLossFromEquityMethodInvestments with a value of -897,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncomeLossFromEquityMethodInvestments is represented as a descendent of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:
+
+Period :2017-07-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4153</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-7551A9E6C009506F8F144DE40A72E356" sourceLine="4153">
+  <property name="label" value="Income (Loss) from Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncomeLossFromEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:IncomeLossFromEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2017Q3QTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-07-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-897,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:CostMethodInvestments with a value of 4,922,000 and a calculation parent of us-gaap:Investments is represented as a sibling of us-gaap:InvestmentsInAffiliatesSubsidiariesAssociatesAndJointVentures in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:CostMethodInvestments is represented as a descendent of us-gaap:InvestmentsInAffiliatesSubsidiariesAssociatesAndJointVentures in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:CostMethodInvestments fact are:
+
+Period :2017-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 3825</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-8DC5A2A5D7235322A573EADF9CC79B91" sourceLine="3825">
+  <property name="label" value="Cost Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="CostMethodInvestments"/>
+  <property name="QName" value="us-gaap:CostMethodInvestments"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,922,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:EquityMethodInvestments with a value of 5,230,000 and a calculation parent of us-gaap:Assets is represented as a sibling of us-gaap:Investments in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:EquityMethodInvestments is represented as a descendent of us-gaap:Investments in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:EquityMethodInvestments fact are:
+
+Period :2017-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4002</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-CBF4548E16A75605BCAE879271793C06" sourceLine="4002">
+  <property name="label" value="Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="EquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:EquityMethodInvestments"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,230,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:AccruedInvestmentIncomeReceivable with a value of 331,000 and a calculation parent of us-gaap:Assets is represented as a sibling of us-gaap:AccountsReceivableNet in the extension taxonomy role 1001000 - Statement - Consolidated Balance Sheet, but us-gaap:AccruedInvestmentIncomeReceivable is represented as a descendent of us-gaap:AccountsReceivableNet in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:AccruedInvestmentIncomeReceivable fact are:
+
+Period :2017-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 3515</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-51915D47C11F51F687BC8C514F2AE81A" sourceLine="3515">
+  <property name="label" value="Accrued Investment Income Receivable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="AccruedInvestmentIncomeReceivable"/>
+  <property name="QName" value="us-gaap:AccruedInvestmentIncomeReceivable"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="331,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates with a value of 860,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates is represented as a descendent of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4611</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-81A68E3BF3975203A8FB9858D102EAF6" sourceLine="4611">
+  <property name="label" value="Proceeds from Divestiture of Interest in Subsidiaries and Affiliates"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates"/>
+  <property name="QName" value="us-gaap:ProceedsFromDivestitureOfInterestInSubsidiariesAndAffiliates"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="860,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquireEquityMethodInvestments with a value of 1,650,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:PaymentsToAcquireEquityMethodInvestments is represented as a descendent of us-gaap:PaymentsForProceedsFromBusinessesAndInterestInAffiliates in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:PaymentsToAcquireEquityMethodInvestments fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4585</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-526882F4742F5D68B39F7CD261E8D321" sourceLine="4585">
+  <property name="label" value="Payments to Acquire Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PaymentsToAcquireEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquireEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,650,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity with a value of 4,654,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations is represented as a sibling of us-gaap:PaymentsToAcquireAvailableForSaleSecurities in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity is represented as a descendent of us-gaap:PaymentsToAcquireAvailableForSaleSecurities in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4582</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-F9914CE87F475D01A64ECEBD240EDE34" sourceLine="4582">
+  <property name="label" value="Payments to Acquire Available-for-sale Securities, Equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="PaymentsToAcquireAvailableForSaleSecuritiesEquity"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquireAvailableForSaleSecuritiesEquity"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,654,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncreaseDecreaseInOtherReceivables with a value of 2,663,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncreaseDecreaseInReceivables in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncreaseDecreaseInOtherReceivables is represented as a descendent of us-gaap:IncreaseDecreaseInReceivables in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncreaseDecreaseInOtherReceivables fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4213</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-C63AF46866DF58ED890640B0AB0ED823" sourceLine="4213">
+  <property name="label" value="Increase (Decrease) in Other Receivables"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncreaseDecreaseInOtherReceivables"/>
+  <property name="QName" value="us-gaap:IncreaseDecreaseInOtherReceivables"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,663,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfSeniorDebt with a value of 1,951,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations is represented as a sibling of us-gaap:RepaymentsOfLongTermDebt in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:RepaymentsOfSeniorDebt is represented as a descendent of us-gaap:RepaymentsOfLongTermDebt in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfSeniorDebt fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4674</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E9FAD7486AF750789DC29C79F9501124" sourceLine="4674">
+  <property name="label" value="Repayments of Senior Debt"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RepaymentsOfSeniorDebt"/>
+  <property name="QName" value="us-gaap:RepaymentsOfSeniorDebt"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,951,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfSeniorDebt with a value of 1,951,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:RepaymentsOfLongTermDebt in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:RepaymentsOfSeniorDebt is represented as a descendent of us-gaap:RepaymentsOfLongTermDebt in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfSeniorDebt fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4674</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E9FAD7486AF750789DC29C79F9501124" sourceLine="4674">
+  <property name="label" value="Repayments of Senior Debt"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="RepaymentsOfSeniorDebt"/>
+  <property name="QName" value="us-gaap:RepaymentsOfSeniorDebt"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,951,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncomeLossFromEquityMethodInvestments with a value of 1,343,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncomeLossFromEquityMethodInvestments is represented as a descendent of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:
+
+Period :2017-01-01 to 2017-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4154</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-4AC209A8E0575E6DA50186D8F5E83516" sourceLine="4154">
+  <property name="label" value="Income (Loss) from Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncomeLossFromEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:IncomeLossFromEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2017Q3YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,343,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml" status="PROPOSED" cid="4346134768" severity="error" effectiveDate="6/30/19">[DQC.US.0081.9278] The line item concept us-gaap:IncomeLossFromEquityMethodInvestments with a value of 1,343,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations is represented as a sibling of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the extension taxonomy role 1004000 - Statement - Consolidated Statement of Cash Flows, but us-gaap:IncomeLossFromEquityMethodInvestments is represented as a descendent of us-gaap:IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:IncomeLossFromEquityMethodInvestments fact are:
+
+Period :2017-01-01 to 2017-06-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml 4152</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml#Fact-E357898E6DC554E1909885A61CBF49C0" sourceLine="4152">
+  <property name="label" value="Income (Loss) from Equity Method Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2017-01-31"/>
+  <property name="name" value="IncomeLossFromEquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:IncomeLossFromEquityMethodInvestments"/>
+  <property name="contextRef" value="FD2017Q2YTD">
+   <property name="entity" value="0001072627">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-06-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,343,000"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 110.16 secs - https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1072627/000107262718000155/kfs-20180930.xml"/></entry>
+</log>
