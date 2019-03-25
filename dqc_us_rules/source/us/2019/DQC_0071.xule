@@ -17,6 +17,7 @@ rule-name-prefix DQC
 
 assert US.0071.7646 satisfied
 
+$rule_id = '7646';
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
 $all_cubes = taxonomy().cubes;
 
@@ -50,9 +51,12 @@ Period :{$Revenue.period}
 Dimensions : {$Revenue.dimensions.join(', ','=')}
 Unit : {$Revenue.unit}
 
-Rule Element Id:7646
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
 

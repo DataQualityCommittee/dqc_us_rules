@@ -84,7 +84,8 @@ constant $elements_excluded_from_rule = set(
 				OperatingIncomeLoss,
 				InterestIncomeOperating,
 				OperatingCostsAndExpenses,
-				NontradeReceivablesCurrent
+				NontradeReceivablesCurrent,
+				OtherOperatingIncomeExpenseNet	
 				)
 /* The second list is an exception to the rule 
 For example any children of GeneralAndAdministrativeExpense can be promoted to be a sibling except OtherGeneralAndAdministrativeExpense	
@@ -99,17 +100,36 @@ constant $parent_elements_with_children_promotable_to_sibling = set(
 				list(AccruedLiabilitiesCurrent, list(OtherAccruedLiabilitiesCurrent)),
 				list(AccountsPayableAndAccruedLiabilitiesNoncurrent, list(OtherAccruedLiabilitiesNoncurrent)),
 				list(IncreaseDecreaseInAccruedLiabilities, list(IncreaseDecreaseInOtherAccruedLiabilities)),
-				list(increasedecreaseinaccountspayableandaccruedliabilities, list(IncreaseDecreaseInAccountsPayable, IncreaseDecreaseInAccruedLiabilities, IncreaseDecreaseInOtherAccruedLiabilities)),
+				list(IncreaseDecreaseInAccountsPayableAndAccruedLiabilities, list(IncreaseDecreaseInAccountsPayable, IncreaseDecreaseInAccruedLiabilities, IncreaseDecreaseInOtherAccruedLiabilities)),
+				list(AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent, list(AccountsPayableCurrentAndNoncurrent, AccruedLiabilitiesCurrentAndNoncurrent)),
 				list(feesandcommissions,list(FeesAndCommissionsOther))
 				)
 				
 constant $sibling_elements_with_siblings_demotable_to_descendant = set(
-				list(NonoperatingIncomeExpense, list(OperatingIncomeLoss))
+				list(NonoperatingIncomeExpense, list(OperatingIncomeLoss)),
+				list(OtherNonoperatingIncomeExpense, list()),
+				list(CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations, list(NetCashProvidedByUsedInInvestingActivitiesContinuingOperations,CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations, CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations)),
+				list(OtherAssets,list()),
+				list(OtherLiabilities,list()),
+				list(OtherLaborRelatedExpenses, list()),
+				list(OtherNoncashIncomeExpense, list()),
+				list(GeneralAndAdministrativeExpense,list()),
+				list(SellingGeneralAndAdministrativeExpense,list()),
+				list(OtherLiabilitiesNoncurrent, list()),
+				list(OtherLiabilitiesCurrent, list()),
+				list(OtherCostAndExpenseOperating, list()),
+				list(OtherAssetsNoncurrent, list()),
+				list(OtherAssetsCurrent, list()),
+				list(RegulatedEntityOtherAssetsNoncurrent, list()),
+				list(OtherExpenses, list()),
+				list(NoninterestExpense, list()),
+				list(OtherGeneralExpense, list(SellingGeneralAndAdministrativeExpense))
 				)
 				
 constant $child_elements_promotable_to_sibling_of_parent_element = set(
 				EmployeeRelatedLiabilitiesCurrentAndNoncurrent,
-				IncreaseDecreaseInEmployeeRelatedLiabilities
+				IncreaseDecreaseInEmployeeRelatedLiabilities,
+				AllocatedShareBasedCompensationExpense
 				)
 
 constant $siblings_demotable_to_child = set(
@@ -159,7 +179,15 @@ constant $siblings_demotable_to_child = set(
 				list(MarketableSecurities, HeldToMaturitySecuritiesNoncurrent),
 				list(MarketableSecurities, SecuritiesBorrowed),
 				list(MarketableSecurities, DerivativeAssets),
-				list(MarketableSecurities, EquitySecuritiesFvNi)
+				list(MarketableSecurities, EquitySecuritiesFvNi),
+				list(OperatingExpenses, OtherExpenses),
+				list(OperatingExpenses, AssetManagementCosts),
+				list(AssetsCurrent, CustomerFunds),
+				list(NoninterestExpense, GainLossOnSaleOfPropertyPlantEquipment),
+				list(NoninterestExpense, GainsLossesOnSalesOfAssets),
+				list(OperatingExpenses, GainsLossesOnSalesOfAssets),
+				list(OperatingExpenses, FloorBrokerageExchangeAndClearanceFees),
+				list(NoninterestExpense, FloorBrokerageExchangeAndClearanceFees)
 				)
 				
 constant $child_elements_promotable_to_sibling = set(
@@ -177,6 +205,7 @@ constant $child_elements_promotable_to_sibling = set(
 				list(OperatingExpenses, GainLossOnDispositionOfIntangibleAssets),
 				list(DepreciationDepletionAndAmortization, AccretionAmortizationOfDiscountsAndPremiumsInvestments),
 				list(DepreciationDepletionAndAmortization, AmortizationOfFinancingCosts),
+				list(DepreciationDepletionAndAmortization, AmortizationOfDebtDiscountPremium),
 				list(Revenues, InterestExpenseDebt)
 				)	
 								

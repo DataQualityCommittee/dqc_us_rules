@@ -24,7 +24,11 @@ for ($network in $extCalcRelationship1.keys)
 		$extCalcSourceName = $extCalcRelationship.source.name;
 		$extCalcTargetName = set($extCalcRelationship.target.name.local-name);
 		$parent_child_allowed = list($extCalcSourceName, $extCalcRelationship.target.name);
-		if  ($parent_child_allowed in $siblings_demotable_to_child)
+		if  ($parent_child_allowed in $siblings_demotable_to_child or
+			$extCalcSourceName == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities or 
+			$extCalcSourceName in $elements_excluded_from_rule or
+			$extCalcRelationship.target.name in $child_elements_promotable_to_sibling_of_parent_element
+			)
 			skip
 		else		
 			$a1 = (navigate summation-item ancestors from $extCalcRelationship.target.name taxonomy $us-gaap returns (target-name)).to-set;
@@ -43,9 +47,6 @@ for ($network in $extCalcRelationship1.keys)
 					$source_value = [nonils @concept = $extCalcSourceName];
 					/** Evaluate the expression **/
 					exists({$inappropriate_child}) and 
-					not $extCalcSourceName == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities and
-					not $extCalcSourceName in $elements_excluded_from_rule and
-					not $extCalcRelationship.target.name in $child_elements_promotable_to_sibling_of_parent_element and
 					not any(set(for ($parent in $sibling_elements_with_siblings_demotable_to_descendant)
 										$extCalcSourceName == $parent[1] and $extCalcRelationship.target.name not in $parent[2]))
 					
