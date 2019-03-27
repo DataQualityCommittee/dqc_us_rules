@@ -10,6 +10,8 @@ rule-name-prefix DQC
 
 assert US.0008.6819 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
 
 for ($network in $extCalcRelationship1.keys)
@@ -31,6 +33,7 @@ message
 
 Rule version: {$ruleVersion}"
 
-severity 
-error
+severity error
+
+effectiveDate $effective_dates[$rule_id]
 
