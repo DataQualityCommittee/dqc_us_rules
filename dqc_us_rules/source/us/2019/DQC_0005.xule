@@ -82,12 +82,12 @@ assert US.0005.49 satisfied
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
 else
-	$fact1 = {@StatementScenarioAxis = ScenarioForecastMember};
+	$fact1 = {@srt:StatementScenarioAxis = srt:ScenarioForecastMember};
 	$sub_event_at_date = $fact1.period.end;
 	$sub_event_at_date <= $maximum_period_end_date
 
 message
-"The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Scenario [Axis] and us-gaap:ScenarioForecastMember with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date.
+"The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Scenario [Axis] and srt:ScenarioForecastMember with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date.
 
 The properties of this {$fact1.name} fact are:
 Period: {$fact1.period}

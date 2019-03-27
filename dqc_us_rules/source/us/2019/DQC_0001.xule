@@ -638,7 +638,7 @@ $allowed_members_oil_reserves = navigate dimensions dimension-member descendants
 
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
 
 $member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
@@ -868,28 +868,28 @@ assert US.0001.76 satisfied
 
 $rule_id = '76';
 
-/** Use nested navigation as the StatementScenarioAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
+/** Use nested navigation as the srt:StatementScenarioAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 $allowed_base_member = navigate domain-member descendants include start
      from (navigate dimension-domain children
-           from StatementScenarioAxis
+           from srt:StatementScenarioAxis
            taxonomy $us-gaap returns set)
      taxonomy $us-gaap
      returns set (target-name);
 	 
-$base_members = navigate dimensions dimension-member descendants from StatementScenarioAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from srt:StatementScenarioAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
-	$fact1 = {covered @StatementScenarioAxis = $member};
+	$fact1 = {covered @srt:StatementScenarioAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementScenarioAxis and the base taxonomy member {$member.local-name}. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis StatementScenarioAxis.
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the srt:StatementScenarioAxis and the base taxonomy member {$member.local-name}. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis srt:StatementScenarioAxis.
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis StatementScenarioAxis. The only members allowed on this axis are extension members defined by the filer and the elements defined as children of this axis in the US GAAP taxonomy. There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis srt:StatementScenarioAxis. The only members allowed on this axis are extension members defined by the filer and the elements defined as children of this axis in the US GAAP taxonomy. There are no facts associated with this member and axis.";
 		true
 
 

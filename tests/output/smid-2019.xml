@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22738 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 10.48 secs at 2019-03-27T10:57:06 - https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 1.52 secs - https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml"/></entry>
+</log>
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22738 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.62 secs at 2019-03-27T10:58:08 - https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml"/></entry>
+<entry code="xule:error" level="error">
+ <message cid="4337831608">[xule:error] Rule: DQC.US.0005.49 - Error while processing factset aspect. Concept {http://fasb.org/us-gaap/2019-01-31}StatementScenarioAxis not found. - smid-20181231.xml </message>
+ <ref href="smid-20181231.xml"/></entry>
+<entry code="DQC.US.0015.647" level="error">
+ <message rule-suffix="647" severity="error" cid="4337831608" effectiveDate="1/1/16" filing_url="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml">[DQC.US.0015.647] us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment has a value of -5,000 which is less than zero. This element should not have a negative value. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment fact are:
+Period :2017-12-31
+Dimensions : 
+Unit : USD
+Rule version: 9.0.0RC1 - https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml 1695</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml#element(/1/567)" sourceLine="1695">
+  <property name="label" value="Deferred Tax Liabilities, Property, Plant and Equipment"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="DeferredTaxLiabilitiesPropertyPlantAndEquipment"/>
+  <property name="QName" value="us-gaap:DeferredTaxLiabilitiesPropertyPlantAndEquipment"/>
+  <property name="contextRef" value="FI2016Q4">
+   <property name="entity" value="0000924719">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-5,000"/>
+ </ref></entry>
+<entry code="xule:error" level="error">
+ <message cid="4337831608">[xule:error] Rule: DQC.US.0067.7644 - Error while processing factset aspect. Concept {http://fasb.org/us-gaap/2019-01-31}StatementScenarioAxis not found. - smid-20181231.xml </message>
+ <ref href="smid-20181231.xml"/></entry>
+<entry code="DQC.US.0047.7481" level="error">
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml" severity="error" cid="4337831608" effectiveDate="6/1/18">[DQC.US.0047.7481] In the company's extension taxonomy the concept Net Cash Provided by (Used in) Operating Activities includes us-gaap:AllowanceForDoubtfulAccountsReceivablePeriodIncreaseDecrease as a summation-child. The concept us-gaap:AllowanceForDoubtfulAccountsReceivablePeriodIncreaseDecrease  should not appear as a child of NetCashProvidedByUsedInOperatingActivities because it does not have a balance type. Increase (Decrease) items without balance attributes are used in a roll forward and should not be used in the cash flow statement as they represent the impact on the balance sheet item which is the opposite of the impact on cash.
+
+Rule Element Id:7481
+Rule version: 9.0.0RC1 - </message></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 206.23 secs - https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/924719/000165495419003343/smid-20181231.xml"/></entry>
+</log>
