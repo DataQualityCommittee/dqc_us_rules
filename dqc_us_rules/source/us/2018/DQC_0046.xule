@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert US.0046.6839 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 EffectOfExchangeRateOnCashAndCashEquivalents 
 in 
 navigate summation-item descendants 
@@ -22,15 +24,17 @@ message
 
 However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalents as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease,  instead of NetCashProvidedByUsedInContinuingOperations.
 
-Rule Element Id:6839
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 
 assert US.0046.6840 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations 
 in 
@@ -43,13 +47,15 @@ message
 However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease,  instead of NetCashProvidedByUsedInContinuingOperations.
 
 
-Rule Element Id:6840
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0046.6841 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents 
 in 
@@ -62,14 +68,16 @@ message
 However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOperations includes EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease,  instead of NetCashProvidedByUsedInContinuingOperations.
 
 
-Rule Element Id:6841
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0046.6842 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalents 
 in 
@@ -81,13 +89,15 @@ message
 
 However, in the companies extension taxonomy CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect includes EffectOfExchangeRateOnCashAndCashEquivalents as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease,  instead of CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect.
 
-Rule Element Id:6842
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0046.7480 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations 
 in 
@@ -100,13 +110,15 @@ message
 However, in the companies extension taxonomy NetCashProvidedByUsedInDiscontinuedOperations includes EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations as a summation-child. Consider using either CashAndCashEquivalentsPeriodIncreaseDecrease or CashPeriodIncreaseDecrease,  instead of NetCashProvidedByUsedInDiscontinuedOperations.
 
 
-Rule Element Id:7480
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0046.9279 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 NetIncomeLoss
 in
@@ -116,11 +128,11 @@ message
 "The element NetIncomeLoss (Net Income Loss) should not be included as a total of {$OCI_Totals}. The OCI element represents Other Comprehensive Income and should be aggregated with NetIncome Loss to derive the value of Comprehensive Income. Please remove Net Income Loss from the calculation, or change  the total to be a Comprehensive Income element such as ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest. (Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest)
 
 
-Rule Element Id:8000
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 

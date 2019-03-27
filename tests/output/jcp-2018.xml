@@ -1,0 +1,1566 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22738 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.51 secs at 2019-03-25T23:19:09 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml"/></entry>
+<entry code="DQC.US.0015.2734" level="error">
+ <message rule-suffix="2734" cid="4415614648" effectiveDate="11/29/16" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0015.2734] us-gaap:OtherCostAndExpenseOperating has a value of -5,000,000 which is less than zero. This element should not have a negative value. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this us-gaap:OtherCostAndExpenseOperating fact are:
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6447</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-943B044ECC34A938169E1554705A1B94" sourceLine="6447">
+  <property name="label" value="Other Cost and Expense, Operating"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="OtherCostAndExpenseOperating"/>
+  <property name="QName" value="us-gaap:OtherCostAndExpenseOperating"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-5,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1 with a value of 0 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1 fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateNoteSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6120</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-368F89FAAD0D144E4ED11554707995D0" sourceLine="6120">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset, Gain (Loss) Included in Earnings"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1"/>
+  <property name="contextRef" value="FD2017Q4YTD_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateNoteSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateNoteSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1 with a value of -7,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1 fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateDebtSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6119</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-AB8BD8CAD1EFEF1C643515547079BDFF" sourceLine="6119">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset, Gain (Loss) Included in Earnings"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetGainLossIncludedInEarnings1"/>
+  <property name="contextRef" value="FD2017Q4YTD_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateDebtSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateDebtSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-7,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 4,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2019-02-02
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateDebtSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6125</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-3FCC2E83C91233F786F015547105678B" sourceLine="6125">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2018Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateDebtSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateDebtSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 6,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2019-02-02
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateNoteSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6126</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-B3B97C3DE442086E992915547105409C" sourceLine="6126">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2018Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateNoteSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateNoteSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="6,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 10,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2018-02-03
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateDebtSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6123</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-CEEFCBDBB8EE0EA0D4F015547088AFDC" sourceLine="6123">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2017Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateDebtSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-02-03"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateDebtSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 4,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2018-02-03
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateNoteSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6124</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-6502CF7BFDDD100C2C9F155470886D5B" sourceLine="6124">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2017Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateNoteSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-02-03"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateNoteSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 0 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2017-01-28
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateNoteSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6122</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-5AFCBE0FB4E83D7D5C06155470885D88" sourceLine="6122">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2016Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateNoteSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-01-28"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateNoteSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0073.7648" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0073.7648] The concept us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue with a value of 7,000,000 is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
+- DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod, 
+ - DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld, 
+ - DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanAssetsExpectedToBeReturnedToEmployerAmount, 
+ - DefinedBenefitPlanChangeInFairValueOfPlanAssetsLevel3ReconciliationPeriodIncreaseDecrease, 
+ - DefinedBenefitPlanFairValueOfPlanAssets, 
+ - DefinedBenefitPlanInvestmentPoliciesAndStrategiesNarrativeDescription, 
+ - DefinedBenefitPlanNarrativeDescriptionOfBasisUsedToDetermineOverallExpectedLongTermRateOfReturnOnAssetsAssumption, 
+ - DefinedBenefitPlanNumberOfSharesOfEquitySecuritiesIssuedByEmployerAndRelatedPartiesIncludedInPlanAssets, 
+ - DefinedBenefitPlanPlanAssetsAtFairValueValuationTechniquesAndInputsChanges, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTransactionTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsEmployerRelatedPartyTypeExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsFairValueByHierarchyAndNavExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, 
+ - DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement, 
+ - DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase, 
+ - DefinedBenefitPlanPlanAssetsMeasurementInputExtensibleList, 
+ - DefinedBenefitPlanPlanAssetsTargetAllocationPercentage, 
+ - DefinedBenefitPlanPlanAssetsValuationTechniqueExtensibleList, 
+ - DefinedBenefitPlanAssumptionsUsedCalculatingNetPeriodicBenefitCostExpectedLongTermReturnOnAssets, 
+ - DefinedBenefitPlanPurchasesSalesAndSettlements, 
+ - DefinedBenefitPlanTargetAllocationPercentage, 
+ - DefinedBenefitPlanTransfersBetweenMeasurementLevels, 
+ - DefinedBenefitPlanPlanAssetsForeignCurrencyTranslationGainLoss, 
+ - DefinedBenefitPlanWeightedAverageAssetAllocations
+
+
+The properties of this us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue fact are:
+Period :2017-01-28
+Dimensions : us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateDebtSecuritiesMember
+Unit : USD
+
+Rule Element Id:7648
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6121</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-C4C64668328C88B3CDF015547088D856" sourceLine="6121">
+  <property name="label" value="Fair Value, Measurement with Unobservable Inputs Reconciliation, Recurring Basis, Asset Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="QName" value="us-gaap:FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue"/>
+  <property name="contextRef" value="FI2016Q4_us-gaap_DefinedBenefitPlanByPlanAssetCategoriesAxis_us-gaap_CorporateDebtSecuritiesMember">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2017-01-28"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis" value="us-gaap:CorporateDebtSecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="7,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0070.7645" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0070.7645] The concept DefinedBenefitPlanFairValueOfPlanAssets with a defaulted value of 0 is not equal to the aggregated value of the dimensionally qualified components on the axis DefinedBenefitPlanByPlanAssetCategoriesAxis which has an aggregate value of 10,000,000 based on the data in the filing. 
+The aggregated value is calculated by adding the members in the network 2423409 - Disclosure - Retirement Benefit Plans (Investments at Fair Value) (Details) with the uri http://www.jcpenney.com/role/RetirementBenefitPlansInvestmentsAtFairValueDetails. The values of the calculation components are as follows:
+	CashAndCashEquivalentsMember --> 0 --> us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CashAndCashEquivalentsMember 
+	EquitySecuritiesMember --> 0 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:EquitySecuritiesMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+	RealEstateTotalMember --> 0 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=jcp:RealEstateTotalMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+	DebtSecuritiesMember --> 10,000,000 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:DebtSecuritiesMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+
+
+The value of a concept broken down by its components along the DefinedBenefitPlanByPlanAssetCategoriesAxis axis should  be equal to its component pieces. An error could occur for one of the following reasons:
+
+1. The values of the plan assets by category have been further disaggregated by additional dimensions such as geography. Plan Asset categories should not be dimensionally disaggregated and members should be defined for each security class reported. i.e. Equity Securities in the US should be represented as a single member.
+
+2. The  default value of 0 is incorrectly totaled for DefinedBenefitPlanFairValueOfPlanAssets 
+
+3. Not all dimension members or additional dimensions have been defined on the category axis DefinedBenefitPlanByPlanAssetCategoriesAxis. 
+
+4. The filer has reported a sub component of plan assets that does not represent a complete breakdown of the total. In these cases the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
+
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this us-gaap:DefinedBenefitPlanFairValueOfPlanAssets fact are:
+Period :2019-02-02
+Dimensions : us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member
+Unit : USD
+
+Rule Element Id:7645
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6005</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-0B81B1EAD323B5D5668115547079955D" sourceLine="6005">
+  <property name="label" value="Defined Benefit Plan, Plan Assets, Amount"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="QName" value="us-gaap:DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="contextRef" value="FI2018Q4_us-gaap_FairValueByFairValueHierarchyLevelAxis_us-gaap_FairValueInputsLevel3Member">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:FairValueByFairValueHierarchyLevelAxis" value="us-gaap:FairValueInputsLevel3Member"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0070.7645" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0070.7645] The concept DefinedBenefitPlanFairValueOfPlanAssets with a defaulted value of 0 is not equal to the aggregated value of the dimensionally qualified components on the axis DefinedBenefitPlanByPlanAssetCategoriesAxis which has an aggregate value of 522,000,000 based on the data in the filing. 
+The aggregated value is calculated by adding the members in the network 2423409 - Disclosure - Retirement Benefit Plans (Investments at Fair Value) (Details) with the uri http://www.jcpenney.com/role/RetirementBenefitPlansInvestmentsAtFairValueDetails. The values of the calculation components are as follows:
+	CashAndCashEquivalentsMember --> 9,000,000 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CashAndCashEquivalentsMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel1Member 
+	EquitySecuritiesMember --> 472,000,000 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:EquitySecuritiesMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel1Member 
+	RealEstateTotalMember --> 41,000,000 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=jcp:RealEstateTotalMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel1Member 
+	DebtSecuritiesMember --> 0 --> us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel1Member, us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:DebtSecuritiesMember 
+
+
+The value of a concept broken down by its components along the DefinedBenefitPlanByPlanAssetCategoriesAxis axis should  be equal to its component pieces. An error could occur for one of the following reasons:
+
+1. The values of the plan assets by category have been further disaggregated by additional dimensions such as geography. Plan Asset categories should not be dimensionally disaggregated and members should be defined for each security class reported. i.e. Equity Securities in the US should be represented as a single member.
+
+2. The  default value of 0 is incorrectly totaled for DefinedBenefitPlanFairValueOfPlanAssets 
+
+3. Not all dimension members or additional dimensions have been defined on the category axis DefinedBenefitPlanByPlanAssetCategoriesAxis. 
+
+4. The filer has reported a sub component of plan assets that does not represent a complete breakdown of the total. In these cases the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
+
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this us-gaap:DefinedBenefitPlanFairValueOfPlanAssets fact are:
+Period :2019-02-02
+Dimensions : us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel1Member
+Unit : USD
+
+Rule Element Id:7645
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6004</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-FD12D4EAF4DD333E464E15547088AFAB" sourceLine="6004">
+  <property name="label" value="Defined Benefit Plan, Plan Assets, Amount"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="QName" value="us-gaap:DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="contextRef" value="FI2018Q4_us-gaap_FairValueByFairValueHierarchyLevelAxis_us-gaap_FairValueInputsLevel1Member">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:FairValueByFairValueHierarchyLevelAxis" value="us-gaap:FairValueInputsLevel1Member"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0065.7502" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0065.7502] The Supplemental cash flow section has reported a value of 302,000,000 for the element us-gaap:InterestPaid but the element InterestPaidNet is not included in the supplemental cash flow section. Interest Paid Net of the capitalized component must be reported in this section. 
+The element us-gaap:InterestPaid includes capitalized interest. If this element has no capitalized interest component then use the element InterestPaidNet instead.
+
+The properties of this us-gaap:InterestPaid fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7502
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6235</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-475A28ECB29F290B79FC155470A80F49" sourceLine="6235">
+  <property name="label" value="Interest Paid, Including Capitalized Interest, Operating and Investing Activities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="InterestPaid"/>
+  <property name="QName" value="us-gaap:InterestPaid"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="302,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0065.7502" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0065.7502] The Supplemental cash flow section has reported a value of 344,000,000 for the element us-gaap:InterestPaid but the element InterestPaidNet is not included in the supplemental cash flow section. Interest Paid Net of the capitalized component must be reported in this section. 
+The element us-gaap:InterestPaid includes capitalized interest. If this element has no capitalized interest component then use the element InterestPaidNet instead.
+
+The properties of this us-gaap:InterestPaid fact are:
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7502
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6234</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-4CAC86B08FBC2077E876155470A8E292" sourceLine="6234">
+  <property name="label" value="Interest Paid, Including Capitalized Interest, Operating and Investing Activities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="InterestPaid"/>
+  <property name="QName" value="us-gaap:InterestPaid"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="344,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0065.7502" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0065.7502] The Supplemental cash flow section has reported a value of 293,000,000 for the element us-gaap:InterestPaid but the element InterestPaidNet is not included in the supplemental cash flow section. Interest Paid Net of the capitalized component must be reported in this section. 
+The element us-gaap:InterestPaid includes capitalized interest. If this element has no capitalized interest component then use the element InterestPaidNet instead.
+
+The properties of this us-gaap:InterestPaid fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7502
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6236</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-64CABA42CB4CCFAC3CFB155470A87328" sourceLine="6236">
+  <property name="label" value="Interest Paid, Including Capitalized Interest, Operating and Investing Activities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="InterestPaid"/>
+  <property name="QName" value="us-gaap:InterestPaid"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="293,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7495" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7495] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  has been reported with a value of -654,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInFinancingActivities and CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -654,000,000 represents the value of NetCashProvidedByUsedInFinancingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7495
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6306</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-B13D5AD77B4E735523361554703A7045" sourceLine="6306">
+  <property name="label" value="Net Cash Provided by (Used in) Financing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-654,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7495" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7495] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  has been reported with a value of -31,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInFinancingActivities and CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -31,000,000 represents the value of NetCashProvidedByUsedInFinancingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations fact are:
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7495
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6305</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-B0EE1E2A756A7717B8001554703A3D13" sourceLine="6305">
+  <property name="label" value="Net Cash Provided by (Used in) Financing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-31,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7495" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7495] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  has been reported with a value of -240,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInFinancingActivities and CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -240,000,000 represents the value of NetCashProvidedByUsedInFinancingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7495
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6307</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-FB2B9F6482060D2B0A931554703AED2C" sourceLine="6307">
+  <property name="label" value="Net Cash Provided by (Used in) Financing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-240,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7496" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7496] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  has been reported with a value of -229,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -229,000,000 represents the value of NetCashProvidedByUsedInInvestingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7496
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6309</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-549B5A7673F202A987C51554704A3DCC" sourceLine="6309">
+  <property name="label" value="Net Cash Provided by (Used in) Investing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-229,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7496" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7496] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  has been reported with a value of -316,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -316,000,000 represents the value of NetCashProvidedByUsedInInvestingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations fact are:
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7496
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6308</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-BFF12A6A4F461235CE5A1554703AF4F8" sourceLine="6308">
+  <property name="label" value="Net Cash Provided by (Used in) Investing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-316,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7496" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7496] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  has been reported with a value of -244,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -244,000,000 represents the value of NetCashProvidedByUsedInInvestingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7496
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6310</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-5A5F8BD53BC9961C7CD81554703AF26B" sourceLine="6310">
+  <property name="label" value="Net Cash Provided by (Used in) Investing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-244,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7497" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7497] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  has been reported with a value of 454,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInOperatingActivities and CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of 454,000,000 represents the value of NetCashProvidedByUsedInOperatingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations fact are:
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7497
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6312</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-9042AAC60197FD6F1AE91554703AC3A0" sourceLine="6312">
+  <property name="label" value="Net Cash Provided by (Used in) Operating Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="454,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7497" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7497] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  has been reported with a value of 334,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInOperatingActivities and CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of 334,000,000 represents the value of NetCashProvidedByUsedInOperatingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations fact are:
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7497
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6311</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-E322D478A59CFB2DCEC11554704A8C08" sourceLine="6311">
+  <property name="label" value="Net Cash Provided by (Used in) Operating Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="334,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0060.7497" level="error">
+ <message cid="4415614648" effectiveDate="6/1/18" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0060.7497] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  has been reported with a value of 359,000,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInOperatingActivities and CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of 359,000,000 represents the value of NetCashProvidedByUsedInOperatingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7497
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6313</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-F0CFB41FDD65540096E61554703AC02D" sourceLine="6313">
+  <property name="label" value="Net Cash Provided by (Used in) Operating Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="359,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;&lt;div style=&quot;font-family:Times New Roman;font-size:10pt;&quot;>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;font-style:italic;font-weight:bold;&quot;>Vendor Allowances&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>We receive vendor support in the form of cash payments or allowances for a variety of reimbursements such as cooperative advertising, markdowns, vendor shipping and packaging compliance, defective merchandise and the purchase of vendor specific fixtures. We have agreements in place with each vendor setting forth the specific conditions for each allowance or payment. Depending on the arrangement, we either recognize the allowance as a reduction of current costs or defer the payment over the period the related merchandise is sold. If the payment is a reimbursement for costs incurred, it is generally offset against those related costs; otherwise, it is treated as a reduction to the cost of merchandise.&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;text-indent:48px;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>&amp;#160;&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>Markdown reimbursements related to merchandise that has been sold are negotiated and documented by our buying teams and are credited directly to cost of goods sold in the period received. Vendor allowances received prior to merchandise being sold are deferred and recognized as a reduction of inventory and credited to cost of goods sold based on an inventory turnover rate.&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;text-indent:48px;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>&amp;#160;&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>Vendor compliance credits reimburse us for incremental merchandise handling expenses incurred due to a vendor&amp;#8217;s failure to comply with our established shipping or merchandise preparation requirements. Vendor compliance credits are recorded as a reduction of merchandise handling costs.&lt;/font>&lt;/div>&lt;/div>&quot; for the element us-gaap:CostOfSalesVendorAllowancesPolicy. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerExcludingAssessedTax
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:CostOfSalesVendorAllowancesPolicy fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : None
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6853</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-AFE15A43178C66347813155470E6C8B1" sourceLine="6853">
+  <property name="label" value="Cost of Sales, Vendor Allowances, Policy [Policy Text Block]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CostOfSalesVendorAllowancesPolicy"/>
+  <property name="QName" value="us-gaap:CostOfSalesVendorAllowancesPolicy"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="&lt;div style=&quot;font-family:Times New Roman;font-size:10pt;&quot;>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;font-style:italic;font-weight:bold;&quot;>Vendor Allowances&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>We receive vendor support in the form of cash payments or allowances for a variety of reimbursements such as cooperative advertising, markdowns, vendor shipping and packaging compliance, defective merchandise and the purchase of vendor specific fixtures. We have agreements in place with each vendor setting forth the specific conditions for each allowance or payment. Depending on the arrangement, we either recognize the allowance as a reduction of current costs or defer the payment over the period the related merchandise is sold. If the payment is a reimbursement for costs incurred, it is generally offset against those related costs; otherwise, it is treated as a reduction to the cost of merchandise.&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;text-indent:48px;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>&amp;#160;&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>Markdown reimbursements related to merchandise that has been sold are negotiated and documented by our buying teams and are credited directly to cost of goods sold in the period received. Vendor allowances received prior to merchandise being sold are deferred and recognized as a reduction of inventory and credited to cost of goods sold based on an inventory turnover rate.&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;text-indent:48px;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>&amp;#160;&lt;/font>&lt;/div>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>Vendor compliance credits reimburse us for incremental merchandise handling expenses incurred due to a vendor&amp;#8217;s failure to comply with our established shipping or merchandise preparation requirements. Vendor compliance credits are recorded as a reduction of merchandise handling costs.&lt;/font>&lt;/div>&lt;/div>"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;73,000,000&quot; for the element us-gaap:CustomerLoyaltyProgramLiabilityCurrent. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerExcludingAssessedTax
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:CustomerLoyaltyProgramLiabilityCurrent fact are:
+Period :2018-02-03
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 5704</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-1C8AC75F0798192A7B54155470B71C88" sourceLine="5704">
+  <property name="label" value="Customer Loyalty Program Liability, Current"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CustomerLoyaltyProgramLiabilityCurrent"/>
+  <property name="QName" value="us-gaap:CustomerLoyaltyProgramLiabilityCurrent"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="73,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;&lt;div style=&quot;font-family:Times New Roman;font-size:10pt;&quot;>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>For cooperative advertising programs offered by national brands that require proof of advertising to be provided to the vendor to support the reimbursement of the incurred cost, we offset the allowances against the related advertising expense.&amp;#160;&amp;#160;Programs that do not require proof of advertising are monitored to ensure that the allowance provided by each vendor is a reimbursement of costs incurred to advertise for that particular vendor&amp;#8217;s label.&lt;/font>&lt;/div>&lt;/div>&quot; for the element us-gaap:CooperativeAdvertisingPolicy. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerExcludingAssessedTax
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:CooperativeAdvertisingPolicy fact are:
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : None
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6851</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-5B0763A3E17FF0E4C3DC155470D611E9" sourceLine="6851">
+  <property name="label" value="Cooperative Advertising Policy [Policy Text Block]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CooperativeAdvertisingPolicy"/>
+  <property name="QName" value="us-gaap:CooperativeAdvertisingPolicy"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="&lt;div style=&quot;font-family:Times New Roman;font-size:10pt;&quot;>&lt;div style=&quot;line-height:120%;font-size:10pt;&quot;>&lt;font style=&quot;font-family:inherit;font-size:10pt;&quot;>For cooperative advertising programs offered by national brands that require proof of advertising to be provided to the vendor to support the reimbursement of the incurred cost, we offset the allowances against the related advertising expense.&amp;#160;&amp;#160;Programs that do not require proof of advertising are monitored to ensure that the allowance provided by each vendor is a reimbursement of costs incurred to advertise for that particular vendor&amp;#8217;s label.&lt;/font>&lt;/div>&lt;/div>"/>
+ </ref></entry>
+<entry code="DQC.US.0067.7644" level="error">
+ <message cid="4415614648" effectiveDate="1/1/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error">[DQC.US.0067.7644] The filing has reported a value of &quot;60,000,000&quot; for the element us-gaap:CustomerLoyaltyProgramLiabilityCurrent. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+ContractWithCustomerLiability,
+DisaggregationOfRevenueTableTextBlock,
+RevenueFromContractWithCustomerExcludingAssessedTax
+
+Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
+
+The properties of this us-gaap:CustomerLoyaltyProgramLiabilityCurrent fact are:
+Period :2019-02-02
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7644
+Rule version: 9.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 5705</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-1F61B99516BA4FC03EE7155470B7D246" sourceLine="5705">
+  <property name="label" value="Customer Loyalty Program Liability, Current"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CustomerLoyaltyProgramLiabilityCurrent"/>
+  <property name="QName" value="us-gaap:CustomerLoyaltyProgramLiabilityCurrent"/>
+  <property name="contextRef" value="FI2018Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="60,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:OtherOperatingIncomeExpenseNet with a value of 146,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,661,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:OtherOperatingIncomeExpenseNet however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:OtherOperatingIncomeExpenseNet as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:OtherOperatingIncomeExpenseNet.
+
+The properties of this us-gaap:OtherOperatingIncomeExpenseNet fact are:
+
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6453</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-9E00526D0E60F7EEE39E155470C7AD7C" sourceLine="6453">
+  <property name="label" value="Other Operating Income (Expense), Net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="OtherOperatingIncomeExpenseNet"/>
+  <property name="QName" value="us-gaap:OtherOperatingIncomeExpenseNet"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="146,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:CostOfGoodsAndServicesSold with a value of 8,208,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,661,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:CostOfGoodsAndServicesSold however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:CostOfGoodsAndServicesSold as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:CostOfGoodsAndServicesSold.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 5689</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-C3BDF92B3ED3690D7DED155470C71992" sourceLine="5689">
+  <property name="label" value="Cost of Goods and Services Sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="8,208,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:OtherOperatingIncomeExpenseNet with a value of 19,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,025,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:OtherOperatingIncomeExpenseNet however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:OtherOperatingIncomeExpenseNet as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:OtherOperatingIncomeExpenseNet.
+
+The properties of this us-gaap:OtherOperatingIncomeExpenseNet fact are:
+
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6454</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-6579387622C219510754155470C77E8F" sourceLine="6454">
+  <property name="label" value="Other Operating Income (Expense), Net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="OtherOperatingIncomeExpenseNet"/>
+  <property name="QName" value="us-gaap:OtherOperatingIncomeExpenseNet"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="19,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:CostOfGoodsAndServicesSold with a value of 7,870,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,025,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:CostOfGoodsAndServicesSold however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:CostOfGoodsAndServicesSold as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:CostOfGoodsAndServicesSold.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 5697</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-08CE03123A7CCEDD213F155470C7E83A" sourceLine="5697">
+  <property name="label" value="Cost of Goods and Services Sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="7,870,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:OtherOperatingIncomeExpenseNet with a value of 111,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,594,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:OtherOperatingIncomeExpenseNet however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:OtherOperatingIncomeExpenseNet as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:OtherOperatingIncomeExpenseNet.
+
+The properties of this us-gaap:OtherOperatingIncomeExpenseNet fact are:
+
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6452</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-75D598F0A342B7844556155470C7AC77" sourceLine="6452">
+  <property name="label" value="Other Operating Income (Expense), Net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="OtherOperatingIncomeExpenseNet"/>
+  <property name="QName" value="us-gaap:OtherOperatingIncomeExpenseNet"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="111,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9277] The line item concept us-gaap:CostOfGoodsAndServicesSold with a value of 8,097,000,000 is represented as a child of us-gaap:OperatingExpenses with a value of 12,594,000,000 in the companies extension taxonomy role 1001000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS. The element us-gaap:CostOfGoodsAndServicesSold however, is not represented as a component of us-gaap:OperatingExpenses in the US-GAAP taxonomies. The US-GAAP taxonomies include us-gaap:CostOfGoodsAndServicesSold as a sibling element (or child of that sibling) relative to us-gaap:OperatingExpenses. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:OperatingExpenses and the child element us-gaap:CostOfGoodsAndServicesSold.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 5681</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-4E2F90937EC16BAA2FCB155470C78982" sourceLine="5681">
+  <property name="label" value="Cost of Goods and Services Sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="8,097,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfLinesOfCredit with a value of 804,000,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations is represented as a sibling of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the extension taxonomy role 1006000 - Statement - CONSOLIDATED STATEMENTS OF CASH FLOWS, but us-gaap:RepaymentsOfLinesOfCredit is represented as a descendent of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfLinesOfCredit fact are:
+
+Period :2017-01-29 to 2018-02-03
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6528</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-182BE3670DABD659B48C1554704A38C4" sourceLine="6528">
+  <property name="label" value="Repayments of Lines of Credit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RepaymentsOfLinesOfCredit"/>
+  <property name="QName" value="us-gaap:RepaymentsOfLinesOfCredit"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-29"/>
+   <property name="endDate" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="804,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfLinesOfCredit with a value of 667,000,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations is represented as a sibling of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the extension taxonomy role 1006000 - Statement - CONSOLIDATED STATEMENTS OF CASH FLOWS, but us-gaap:RepaymentsOfLinesOfCredit is represented as a descendent of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfLinesOfCredit fact are:
+
+Period :2016-01-31 to 2017-01-28
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6527</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-36EC17213165EBFB547C1554703A24D2" sourceLine="6527">
+  <property name="label" value="Repayments of Lines of Credit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RepaymentsOfLinesOfCredit"/>
+  <property name="QName" value="us-gaap:RepaymentsOfLinesOfCredit"/>
+  <property name="contextRef" value="FD2016Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2016-01-31"/>
+   <property name="endDate" value="2017-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="667,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:RepaymentsOfLinesOfCredit with a value of 3,895,000,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivitiesContinuingOperations is represented as a sibling of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the extension taxonomy role 1006000 - Statement - CONSOLIDATED STATEMENTS OF CASH FLOWS, but us-gaap:RepaymentsOfLinesOfCredit is represented as a descendent of us-gaap:ProceedsFromRepaymentsOfLinesOfCredit in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:RepaymentsOfLinesOfCredit fact are:
+
+Period :2018-02-04 to 2019-02-02
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6529</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-C9F7301AFD6FACFE74881554703A8125" sourceLine="6529">
+  <property name="label" value="Repayments of Lines of Credit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="RepaymentsOfLinesOfCredit"/>
+  <property name="QName" value="us-gaap:RepaymentsOfLinesOfCredit"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-02-04"/>
+   <property name="endDate" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,895,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:LongTermDebtNoncurrent with a value of 3,780,000,000 and a calculation parent of us-gaap:Liabilities is represented as a sibling of us-gaap:LongTermDebtAndCapitalLeaseObligations in the extension taxonomy role 1004000 - Statement - CONSOLIDATED BALANCE SHEETS, but us-gaap:LongTermDebtNoncurrent is represented as a descendent of us-gaap:LongTermDebtAndCapitalLeaseObligations in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:LongTermDebtNoncurrent fact are:
+
+Period :2018-02-03
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6299</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-18BFEBAA2C42AB3F1B771554704AC23A" sourceLine="6299">
+  <property name="label" value="Long-term Debt, Excluding Current Maturities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="LongTermDebtNoncurrent"/>
+  <property name="QName" value="us-gaap:LongTermDebtNoncurrent"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,780,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:LongTermDebtCurrent with a value of 232,000,000 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent in the extension taxonomy role 1004000 - Statement - CONSOLIDATED BALANCE SHEETS, but us-gaap:LongTermDebtCurrent is represented as a descendent of us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:LongTermDebtCurrent fact are:
+
+Period :2018-02-03
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6291</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-CA6D5A211BD6243D35F21554704A0769" sourceLine="6291">
+  <property name="label" value="Long-term Debt, Current Maturities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="LongTermDebtCurrent"/>
+  <property name="QName" value="us-gaap:LongTermDebtCurrent"/>
+  <property name="contextRef" value="FI2017Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-02-03"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="232,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:LongTermDebtNoncurrent with a value of 3,716,000,000 and a calculation parent of us-gaap:Liabilities is represented as a sibling of us-gaap:LongTermDebtAndCapitalLeaseObligations in the extension taxonomy role 1004000 - Statement - CONSOLIDATED BALANCE SHEETS, but us-gaap:LongTermDebtNoncurrent is represented as a descendent of us-gaap:LongTermDebtAndCapitalLeaseObligations in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:LongTermDebtNoncurrent fact are:
+
+Period :2019-02-02
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6300</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-92D10A065A7D26E1C51C1554704ADA40" sourceLine="6300">
+  <property name="label" value="Long-term Debt, Excluding Current Maturities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="LongTermDebtNoncurrent"/>
+  <property name="QName" value="us-gaap:LongTermDebtNoncurrent"/>
+  <property name="contextRef" value="FI2018Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,716,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4415614648" effectiveDate="6/30/19" filing_url="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml" severity="error" status="PROPOSED">[DQC.US.0081.9278] The line item concept us-gaap:LongTermDebtCurrent with a value of 92,000,000 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent in the extension taxonomy role 1004000 - Statement - CONSOLIDATED BALANCE SHEETS, but us-gaap:LongTermDebtCurrent is represented as a descendent of us-gaap:LongTermDebtAndCapitalLeaseObligationsCurrent in the us-gaap taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+The properties of this us-gaap:LongTermDebtCurrent fact are:
+
+Period :2019-02-02
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 9.0.0RC1
+ - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml 6292</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml#Fact-B78119DDB9D1DFAC24451554704A2557" sourceLine="6292">
+  <property name="label" value="Long-term Debt, Current Maturities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
+  <property name="name" value="LongTermDebtCurrent"/>
+  <property name="QName" value="us-gaap:LongTermDebtCurrent"/>
+  <property name="contextRef" value="FI2018Q4">
+   <property name="entity" value="0001166126">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-02-02"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="92,000,000"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 58.79 secs - http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166126/000116612619000012/jcp-20190202.xml"/></entry>
+</log>

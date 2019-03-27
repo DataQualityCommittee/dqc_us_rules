@@ -85,7 +85,8 @@ constant $elements_excluded_from_rule = set(
 				InterestIncomeOperating,
 				OperatingCostsAndExpenses,
 				NontradeReceivablesCurrent,
-				OtherOperatingIncomeExpenseNet	
+				OtherOperatingIncomeExpenseNet,
+				GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee
 				)
 /* The second list is an exception to the rule 
 For example any children of GeneralAndAdministrativeExpense can be promoted to be a sibling except OtherGeneralAndAdministrativeExpense	
@@ -123,7 +124,12 @@ constant $sibling_elements_with_siblings_demotable_to_descendant = set(
 				list(RegulatedEntityOtherAssetsNoncurrent, list()),
 				list(OtherExpenses, list()),
 				list(NoninterestExpense, list()),
-				list(OtherGeneralExpense, list(SellingGeneralAndAdministrativeExpense))
+				list(OtherGeneralExpense, list(SellingGeneralAndAdministrativeExpense)),
+				list(NonoperatingGainsLosses,list()), /** The definition includes interest but there are sibling interest elements in the taxonomy **/
+				list(InterestExpense,list(Revenues, InvestmentIncomeInterest)), /** Included as part of revenue calc and excluded as well in calc of RevenuesNetOfInterestExpense = Revenues - 	InterestExpense **/
+				list(Investments, list()),
+				list(GainLossOnInvestments,list()),
+				list(OtherRestrictedAssets, list())
 				)
 				
 constant $child_elements_promotable_to_sibling_of_parent_element = set(
@@ -157,6 +163,8 @@ constant $siblings_demotable_to_child = set(
 				list(AssetsCurrent, DeferredSalesCommission),
 				list(AccountsNotesAndLoansReceivableNetCurrent, DueFromJointVenturesCurrent),
 				list(RealizedInvestmentGainsLosses, EquityMethodInvestmentRealizedGainLossOnDisposal),
+				list(RealizedInvestmentGainsLosses, GainLossOnSecuritizationOfFinancialAssets),
+				list(RealizedInvestmentGainsLosses, DebtAndEquitySecuritiesRealizedGainLoss),
 				list(RealEstateInvestments, EquityMethodInvestments),
 				list(NoninterestExpense, EquitySecuritiesFvNiRealizedGainLoss),
 				list(AssetsCurrent, EstimatedInsuranceRecoveries),
@@ -180,6 +188,12 @@ constant $siblings_demotable_to_child = set(
 				list(MarketableSecurities, SecuritiesBorrowed),
 				list(MarketableSecurities, DerivativeAssets),
 				list(MarketableSecurities, EquitySecuritiesFvNi),
+				list(MarketableSecurities, TradingSecurities),
+				list(MarketableSecurities, TradingSecuritiesDebt),
+				list(MarketableSecurities, AvailableForSaleSecuritiesDebtMaturitiesWithoutSingleMaturityDateFairValue),
+				list(MarketableSecurities, AvailableForSaleSecuritiesDebtMaturitiesSingleMaturityDate),
+				list(MarketableSecurities, HeldToMaturitySecuritiesDebtMaturitiesSingleMaturityDateAmortizedCostBasis),
+				list(MarketableSecurities, HeldToMaturitySecuritiesDebtMaturitiesWithoutSingleMaturityDateNetCarryingAmount),
 				list(OperatingExpenses, OtherExpenses),
 				list(OperatingExpenses, AssetManagementCosts),
 				list(AssetsCurrent, CustomerFunds),
@@ -187,7 +201,10 @@ constant $siblings_demotable_to_child = set(
 				list(NoninterestExpense, GainsLossesOnSalesOfAssets),
 				list(OperatingExpenses, GainsLossesOnSalesOfAssets),
 				list(OperatingExpenses, FloorBrokerageExchangeAndClearanceFees),
-				list(NoninterestExpense, FloorBrokerageExchangeAndClearanceFees)
+				list(NoninterestExpense, FloorBrokerageExchangeAndClearanceFees),
+				list(LaborAndRelatedExpense, SalariesAndWages),
+				list(CostOfRevenue, AmortizationOfMortgageServicingRightsMSRs),
+				list(RestructuringSettlementAndImpairmentProvisions, DefinedBenefitPlanRecognizedNetGainLossDueToSettlements1)
 				)
 				
 constant $child_elements_promotable_to_sibling = set(
@@ -206,8 +223,9 @@ constant $child_elements_promotable_to_sibling = set(
 				list(DepreciationDepletionAndAmortization, AccretionAmortizationOfDiscountsAndPremiumsInvestments),
 				list(DepreciationDepletionAndAmortization, AmortizationOfFinancingCosts),
 				list(DepreciationDepletionAndAmortization, AmortizationOfDebtDiscountPremium),
+				list(DepreciationDepletionAndAmortization, AmortizationOfFinancingCostsAndDiscounts),
 				list(Revenues, InterestExpenseDebt)
-				)					
+				)
 
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,

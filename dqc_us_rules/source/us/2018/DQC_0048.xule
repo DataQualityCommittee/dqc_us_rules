@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0048.7482 satisfied
 
+$rule_id = '7482';
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
@@ -73,8 +74,9 @@ If you have used an extension element that reflects the changes made for ASU-201
 1. CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect
 2. CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect
 
-Rule Element Id: 7482
+Rule Element Id: {$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error 
+severity error
+effectiveDate $effective_dates[$rule_id]

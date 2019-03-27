@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0067.7644 satisfied
 
+$rule_id = '7644';
 /** Defines list of Revenue elements that are used for 440 revenue recognition, but not the new revenue recognition standard with exceptions. **/
 
 $RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
@@ -66,11 +67,13 @@ Period :{$revRec.period}
 Dimensions : {$revRec.dimensions.join(', ','=')}
 Unit : {$revRec.unit}
 
-Rule Element Id:7644
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 SEVERITY error
 
 rule-focus $revRec
+
+effectiveDate $effective_dates[$rule_id]
 

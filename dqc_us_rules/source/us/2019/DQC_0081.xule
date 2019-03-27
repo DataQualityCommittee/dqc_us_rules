@@ -27,31 +27,33 @@ for ($network in $extCalcRelationship1.keys)
 		if  ($parent_child_allowed in $siblings_demotable_to_child or
 			$extCalcSourceName == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities or 
 			$extCalcSourceName in $elements_excluded_from_rule or
-			$extCalcRelationship.target.name in $child_elements_promotable_to_sibling_of_parent_element
+			$extCalcRelationship.target.name in $child_elements_promotable_to_sibling_of_parent_element or
+			$extCalcRelationship.target.name in $cash_flow_exceptions
 			)
 			skip
-		else		
+		/**else		
 			$a1 = (navigate summation-item ancestors from $extCalcRelationship.target.name taxonomy $us-gaap returns (target-name)).to-set;
 			$allowable_sibling = set(for ($x in $siblings_demotable_to_child)
 											$x[2]);
 			if ($a1.intersect($allowable_sibling).length > 0)
-				skip
+				skip **/
+		else
+			$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
+			/** This makes a list of the descendants of the siblings but excludes the cash flow adjustment items as they are add backs and should be children. It also excludes any descendants that deduct from the sibling. For example it may take one item out of a category and add to another.**/
+			$sibling_items = navigate summation-item descendants include start from ($s1) stop when ($relationship.source.name == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities) taxonomy $us-gaap returns (target-name);
+			$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
+			$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
+			if ($inconsistencies.length > 0)
+				$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
+				$source_value = [nonils @concept = $extCalcSourceName];
+				/** Evaluate the expression **/
+				exists($inappropriate_child) and 
+				exists($source_value) and
+				not any(set(for ($parent in $sibling_elements_with_siblings_demotable_to_descendant)
+									$extCalcSourceName == $parent[1] and $extCalcRelationship.target.name not in $parent[2]))
+			
 			else
-				$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $us-gaap returns (target-name);
-				/** This makes a list of the descendants of the siblings but excludes the cash flow adjustment items as they are add backs and should be children **/
-				$sibling_items = navigate summation-item descendants include start from ($s1) stop when $relationship.source.name == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities taxonomy $us-gaap returns (target-name);
-				$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
-				$inconsistencies = $extCalcTargetName.intersect($sibling_items_names);
-				if ($inconsistencies.length > 0)
-					$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
-					$source_value = [nonils @concept = $extCalcSourceName];
-					/** Evaluate the expression **/
-					exists({$inappropriate_child}) and 
-					not any(set(for ($parent in $sibling_elements_with_siblings_demotable_to_descendant)
-										$extCalcSourceName == $parent[1] and $extCalcRelationship.target.name not in $parent[2]))
-					
-				else
-					false
+				false
 						
 						
 	 
