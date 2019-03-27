@@ -7,7 +7,7 @@ The XuleProcessor module is the main module for processing a rule set against an
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2018 XBRL US, Inc.
+Copyright (c) 2017 - 2019 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22665 $
+$Change: 22739 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -1423,7 +1423,9 @@ def evaluate_constant_assign(const_assign, xule_context):
         raise XuleProcessingError(_("Constant '%s' not found" % const_assign['constantName']), xule_context)
 
     if not const_info['calculated']:
-        const_context = XuleRuleContext(xule_context.global_context, xule_context.rule_name + ":" + const_info['name'],
+        #const_context = XuleRuleContext(xule_context.global_context, xule_context.rule_name + ":" + const_info['name'],
+        #                                xule_context.cat_file_num)
+        const_context = XuleRuleContext(xule_context.global_context, None,
                                         xule_context.cat_file_num)
         calc_constant(const_info, const_context)
         # Clean up
@@ -1814,30 +1816,26 @@ def evaluate_add(add_expr, xule_context):
         if left.type == 'time-period' and right.type != 'time-period':
             raise XuleProcessingError(_("Incompatabile operands {} {} {}.".format(left.type, operator, right.type)),
                                       xule_context)
-
         do_calc = True
 
-        if left_bar and right_bar:  # <+>
-            if left.type in ('unbound', 'none') or right.type in ('unbound', 'none'):
-                raise XuleIterationStop(XuleValue(xule_context, None, 'unbound'))
-        elif left_bar and not right_bar:  # <+
-            if left.type in ('unbound', 'none'):
-                raise XuleIterationStop(XuleValue(xule_context, None, 'unbound'))
-            if right.type in ('unbound', 'none'):
-                # the left value is the interim value
-                do_calc = False
-        elif not left_bar and right_bar:  # +>
-            if right.type in ('unbound', 'none'):
-                raise XuleIterationStop(XuleValue(xule_context, None, 'unbound'))
-            if left.type in ('unbound', 'none'):
-                left = right
-                do_calc = False
-        else:  # no bars
-            if left.type in ('unbound', 'none'):
-                left = right
-                do_calc = False
-            elif right.type in ('unbound', 'none'):
-                do_calc = False  # the value is already in the left
+        if left_bar and left.type in ('unbound', 'none'):
+            raise XuleIterationStop(XuleValue(xule_context, None, 'unbound'))
+        if right_bar and right.type in ('unbound', 'none'):
+            raise XuleIterationStop(XuleValue(xule_context, None, 'unbound'))
+
+        if left.type in ('unbound', 'none'):
+            # This is a special case for numbers. The left is none/unbound and the right is number. The new value will
+            # be the negative of the right.
+            if right.type in ('int', 'float', 'decimal') and '-' in operator:
+                right = XuleValue(xule_context, right.value * -1, right.type)
+            left = right
+            do_calc = False
+        if right.type in ('unbound', 'none'):
+            do_calc = False
+
+        # this ensures that if there is no value in the entire expression, the final value will be skipped.
+        if left.type == 'none':
+            left.type = 'unbound'
 
         if do_calc:
             combined_type, left_compute_value, right_compute_value = combine_xule_types(left, right, xule_context)
@@ -1862,7 +1860,6 @@ def evaluate_add(add_expr, xule_context):
                     _("Unknown operator '%s' found in addition/subtraction operation." % operator), xule_context)
 
     return left
-
 
 def evaluate_comp(comp_expr, xule_context):
     """Evaluator for comparison expressions
@@ -2210,7 +2207,7 @@ def evaluate_factset_detail(factset, xule_context):
        This is done by intersecting the sets of the fact_index. The fact index is a dictionary of dictionaries.
        The outer dictionary is keyed by aspect and the inner by member. So fact_index[aspect][member] contains a 
        set of facts that have that aspect and member.'''
-    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, xule_context)
+    pre_matched_facts = factset_pre_match(factset, all_aspect_filters, non_align_aspects, align_aspects, xule_context)
 
     pre_count1 = len(pre_matched_facts)
     f_pre_end = datetime.datetime.today()
@@ -2241,9 +2238,12 @@ def evaluate_factset_detail(factset, xule_context):
     recalc_none = False
 
     try:
-        results, default_where_used_expressions = process_filtered_facts(factset, pre_matched_facts,
+        results, default_where_used_expressions = process_filtered_facts(factset,
+                                                                         pre_matched_facts,
                                                                          factset.get('covered', False),
-                                                                         non_align_aspects, nested_factset_filters,
+                                                                         non_align_aspects,
+                                                                         align_aspects,
+                                                                         nested_factset_filters,
                                                                          aspect_vars, used_expressions, xule_context)
     except XuleReEvaluate as xac:
         recalc = True
@@ -2268,13 +2268,14 @@ def evaluate_factset_detail(factset, xule_context):
             #             else:
             unfrozen_alignment = {k: v for k, v in xac.alignment}
             additional_aspect_filters = list(alignment_to_aspect_info(unfrozen_alignment, xule_context).items())
-            pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, xule_context,
-                                                  starting_facts=pre_matched_facts)
+            pre_matched_facts = factset_pre_match(factset, additional_aspect_filters, non_align_aspects, align_aspects,
+                                                  xule_context, starting_facts=pre_matched_facts)
             # try again
             try:
                 results, default_where_used_expressions = process_filtered_facts(factset, pre_matched_facts,
                                                                                  not factset.get('covered'),
                                                                                  non_align_aspects,
+                                                                                 align_aspects,
                                                                                  nested_factset_filters, aspect_vars,
                                                                                  used_expressions, xule_context)
             except XuleReEvaluate as xac:
@@ -2310,7 +2311,7 @@ def evaluate_factset_detail(factset, xule_context):
     return results
 
 
-def factset_pre_match(factset, filters, non_aligned_filters, xule_context, starting_facts=None):
+def factset_pre_match(factset, filters, non_aligned_filters, align_aspects, xule_context, starting_facts=None):
     """Match facts based on the factset  
        
     Match facts based on the aspects in the first part of the factset and any additional filters.
@@ -2438,15 +2439,7 @@ def factset_pre_match(factset, filters, non_aligned_filters, xule_context, start
         if xule_context.dependent_alignment is not None and factset.get('is_dependent', False):
             match_aligned_facts = set()
             for fact in pre_matched_facts:
-                #             print("dep", xule_context.dependent_alignment)
-                #             print("fact", frozenset(get_alignment(fact, non_aligned_filters, xule_context)))
-                #             print("matches?", frozenset(get_alignment(fact, non_aligned_filters, xule_context).items()) == xule_context.dependent_alignment)
-                fact_alignment = calc_fact_alignment(factset, fact, non_aligned_filters, True, xule_context)
-                #                 if fact in xule_context.fact_alignments[factset['node_id']]:
-                #                     fact_alignment = xule_context.fact_alignments[factset['node_id']][fact]
-                #                 else:
-                #                     fact_alignment = frozenset(get_alignment(fact, non_aligned_filters, xule_context).items())
-                #                     xule_context.fact_alignments[factset['node_id']][fact] = fact_alignment
+                fact_alignment = calc_fact_alignment(factset, fact, non_aligned_filters, align_aspects, True, xule_context)
 
                 if fact_alignment == xule_context.dependent_alignment:
                     match_aligned_facts.add(fact)
@@ -2468,19 +2461,28 @@ def factset_pre_match(factset, filters, non_aligned_filters, xule_context, start
     return pre_matched_facts
 
 
-def calc_fact_alignment(factset, fact, non_aligned_filters, frozen, xule_context):
+def calc_fact_alignment(factset, fact, non_aligned_filters, align_aspects_filters, frozen, xule_context):
     if fact not in xule_context.fact_alignments[factset['node_id']]:
-        unfrozen_alignment = get_alignment(fact, non_aligned_filters, xule_context,
-                                           not factset.get('coveredDims', False))
-        fact_alignment = frozenset(unfrozen_alignment.items())
+        unfrozen_alignment = get_alignment(fact,
+                                           non_aligned_filters,
+                                           align_aspects_filters,
+                                           xule_context,
+                                           factset.get('coveredDims', False),
+                                           factset.get('covered', False))
+
+        if len(unfrozen_alignment) == 0 and factset.get('covered', False):
+            unfrozen_alignment = None
+            fact_alignment = None
+        else:
+            fact_alignment = frozenset(unfrozen_alignment.items())
         xule_context.fact_alignments[factset['node_id']][fact] = (fact_alignment, unfrozen_alignment)
         return fact_alignment if frozen else unfrozen_alignment
 
     return xule_context.fact_alignments[factset['node_id']][fact][0 if frozen else 1]
 
 
-def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non_align_aspects, nested_filters,
-                           aspect_vars, pre_matched_used_expressoins_ids, xule_context):
+def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non_align_aspects, align_aspects,
+                           nested_filters, aspect_vars, pre_matched_used_expressoins_ids, xule_context):
     """Apply the where portion of the factset"""
     results = XuleValueSet()
     default_used_expressions = set()
@@ -2500,44 +2502,40 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
         '''The alignment is all the aspects that were not specified in the first part of the factset (non_align_aspects).'''
         # set up potential fact result
-        if current_no_alignment:
-            alignment = None
-        else:
-            # alignment = get_alignment(model_fact, non_align_aspects, xule_context)
-            alignment = calc_fact_alignment(factset, model_fact, non_align_aspects, False, xule_context)
-            #         if len(alignment) == 0:
-            #             alignment = None
-            '''If we are in a innner factset, the alignment needs to be adjusted. Each aspect in the outer factset should be in the alignment even if
-               if it is in the factset aspects (which would normally take that aspect out of the alignment).'''
-            for nested_aspect_info in nested_filters:
-                alignment_info = (nested_aspect_info[TYPE], nested_aspect_info[ASPECT])
-                if alignment_info not in alignment:
-                    if alignment_info == ('builtin', 'concept'):
-                        alignment_value = model_fact.qname
-                        # alignment_value = model_fact.elementQname
-                    elif alignment_info == ('builtin', 'unit'):
-                        if model_fact.isNumeric:
-                            alignment_value = model_to_xule_unit(model_fact.unit, xule_context)
-                    elif alignment_info == ('builtin', 'period'):
-                        alignment_value = model_to_xule_period(model_fact.context, xule_context)
-                    elif alignment_info == ('builtin', 'entity'):
-                        alignment_value = model_to_xule_entity(model_fact.context, xule_context)
-                    elif alignment_info[TYPE] == 'explicit_dimension':
-                        model_dimension = model_fact.context.qnameDims.get(alignment_info[ASPECT])
-                        if model_dimension is None:
-                            alignment_value = None
-                        else:
-                            if model_dimension.isExplicit:
-                                alignment_value = model_dimension.memberQname
-                            else:
-                                alignment_value = model_dimension.typedMember.xValue
-                    # NEED TO CHECK WHAT THE VALUE SHOULD BE
+        alignment = calc_fact_alignment(factset, model_fact, non_align_aspects, align_aspects, False, xule_context)
+        '''If we are in a innner factset, the alignment needs to be adjusted. Each aspect in the outer factset should be in the alignment even if
+           if it is in the factset aspects (which would normally take that aspect out of the alignment).'''
+        for nested_aspect_info in nested_filters:
+            alignment_info = (nested_aspect_info[TYPE], nested_aspect_info[ASPECT])
+            if alignment is None or alignment_info not in alignment:
+                if alignment_info == ('builtin', 'concept'):
+                    alignment_value = model_fact.qname
+                    # alignment_value = model_fact.elementQname
+                elif alignment_info == ('builtin', 'unit'):
+                    if model_fact.isNumeric:
+                        alignment_value = model_to_xule_unit(model_fact.unit, xule_context)
+                elif alignment_info == ('builtin', 'period'):
+                    alignment_value = model_to_xule_period(model_fact.context, xule_context)
+                elif alignment_info == ('builtin', 'entity'):
+                    alignment_value = model_to_xule_entity(model_fact.context, xule_context)
+                elif alignment_info[TYPE] == 'explicit_dimension':
+                    model_dimension = model_fact.context.qnameDims.get(alignment_info[ASPECT])
+                    if model_dimension is None:
+                        alignment_value = None
                     else:
-                        raise XuleProcessingError(_(
-                            "Pushing nested factset filter alignment, found unknown alignment '%s : %s'" % alignment_info),
-                                                  xule_context)
-
-                    alignment[alignment_info] = alignment_value
+                        if model_dimension.isExplicit:
+                            alignment_value = model_dimension.memberQname
+                        else:
+                            alignment_value = model_dimension.typedMember.xValue
+                # NEED TO CHECK WHAT THE VALUE SHOULD BE
+                else:
+                    raise XuleProcessingError(_(
+                        "Pushing nested factset filter alignment, found unknown alignment '%s : %s'" % alignment_info),
+                                              xule_context)
+                if alignment is None:
+                    # There was no alignment, but now an aspect is being added to the alignment
+                    alignment = {} #dict
+                alignment[alignment_info] = alignment_value
 
         '''Check closed factset'''
         if factset['factsetType'] == 'closed':
@@ -2547,11 +2545,12 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
         if alignment is not None:
             # if not current_no_alignment and xule_context.iteration_table.is_dependent:
-            if not current_no_alignment and factset['is_dependent']:
+            # if not current_no_alignment and factset['is_dependent']:
+            if factset['is_dependent']:
                 if xule_context.dependent_alignment is not None:
                     if frozenset(alignment.items()) != xule_context.dependent_alignment:
                         # If this is in a 'with' clause, the first factset to be added to the with/agg table may be empty, The current alignment will be
-                        # from a higher table which will not inlucde the with filter aspects.
+                        # from a higher table which will not include the with filter aspects.
                         if len(
                                 nested_filters) > 0 and xule_context.iteration_table.current_table.current_alignment is None:
                             remove_aspects = [(nested_filter[0], nested_filter[1]) for nested_filter in nested_filters]
@@ -2617,7 +2616,8 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
         fact_value = XuleValue(xule_context, system_value, xule_type,
                                alignment=None if alignment is None else frozenset(alignment.items()))
-        if not current_no_alignment:
+        #if not current_no_alignment:
+        if alignment is not None:
             fact_value.aligned_result_only = True
 
         '''Where clause'''
@@ -2740,7 +2740,8 @@ def process_filtered_facts(factset, pre_matched_facts, current_no_alignment, non
 
                     if alignment is not None:
                         # if not current_no_alignment and xule_context.iteration_table.is_dependent:
-                        if not current_no_alignment and factset['is_dependent']:
+                        # if not current_no_alignment and factset['is_dependent']:
+                        if factset['is_dependent']:
                             if xule_context.dependent_alignment is not None:
                                 if frozenset(alignment.items()) != xule_context.dependent_alignment:
                                     # If this is in a 'with' clause, the first factset to be added to the with/agg table may be empty, The current alignment will be
@@ -4056,73 +4057,59 @@ def isolated_evaluation(xule_context, node_id, expr, setup_function=None, cleanu
 
     return return_values
 
-
 def evaluate_aggregate_function(function_ref, function_info, xule_context):
-    #     if function_ref.functionName.lower() in ('count', 'sum', 'all'):
-    #         return evaluate_aggregate_function_concurrent(function_ref, function_info, xule_context)
+    '''Aggregation functions
 
-    values_by_alignment = collections.defaultdict(list)
-    facts_by_alignment = collections.defaultdict(collections.OrderedDict)
-    aligned_result_only = False
-    save_aligned_result_only = xule_context.aligned_result_only
-    used_expressions = set()
-    save_used_expressions = xule_context.used_expressions
+    Aggregation functions perform 2 types of aggregation. The first is to collapse iterations generated from evaluating
+    the arguments of the aggregation fucntion. This is essentially the opposite of a for loop. The second is to combine
+    the values generated from each argument.
+    '''
+
+    # Evaluate each argument
+    values_by_argument = list()
     for function_arg in function_ref['functionArgs']:
-        # pre_aggregation_table_list_size = len(xule_context.iteration_table)
-        aggregation_table = xule_context.iteration_table.add_table(function_ref['node_id'],
-                                                                   xule_context.get_processing_id(
-                                                                       function_ref['node_id']), is_aggregation=True)
-        try:
-            while True:
-                xule_context.aligned_result_only = False
-                xule_context.used_expressions = set()
-                arg = XuleValue(xule_context, None, 'unbound')
-                try:
-                    arg = evaluate(function_arg, xule_context)
-                except XuleIterationStop:
-                    pass
+        values_by_argument.append(isolated_evaluation(xule_context, function_ref['node_id'], function_arg))
 
-                if arg.tags is None:
-                    arg.tags = xule_context.iteration_table.tags
-                else:
-                    arg.tags.update(xule_context.iteration_table.tags)
-                if arg.facts is None:
-                    arg.facts = xule_context.iteration_table.facts
-                else:
-                    arg.facts.update(xule_context.iteration_table.facts)
+    # Combine the value sets created from each argument
+    # Get all alignments
+    all_alignments = set()
+    for arg_value_set in values_by_argument:
+        for alignment in arg_value_set:
+            all_alignments.add(alignment)
 
-                if arg.type == 'unbound':
-                    values_by_alignment[None].append(arg)
-                else:
-                    values_by_alignment[xule_context.iteration_table.current_table.current_alignment].append(arg)
+    # Go through each alignment and pull the values from each of the arguments
+    values_by_alignment = collections.defaultdict(list)
+    # The aligned_result_only and used_expressions need to be aggregated
+    aligned_result_only_by_alignment = collections.defaultdict(lambda: False)
+    used_expressions_by_alignment = collections.defaultdict(set)
 
-                aligned_result_only = aligned_result_only or xule_context.aligned_result_only
-                used_expressions.update(set(xule_context.used_expressions))
+    for alignment in all_alignments:
+        values_by_alignment[alignment] = list()
+        for arg_value_set in values_by_argument:
+            if alignment in arg_value_set:
+                arg_alignment = alignment
+            else:
+                # This will match none aligned values to aligned values (i.e. 1 and @Assets)
+                arg_alignment = None
 
-                xule_context.iteration_table.next(function_ref['node_id'])
-                if aggregation_table.is_empty:
-                    break
+            for arg_value in arg_value_set.values[arg_alignment]:
+                if arg_value.type != 'unbound':
+                    values_by_alignment[alignment].append(arg_value)
+                aligned_result_only_by_alignment[alignment] = aligned_result_only_by_alignment[alignment] or arg_value.aligned_result_only
+                used_expressions_by_alignment[alignment].update((arg_value.used_expressions))
 
-        finally:
-            xule_context.aligned_result_only = save_aligned_result_only
-            xule_context.used_expressions = save_used_expressions
-
-            # ensure the aggregation table is removed in the event of an exception.
-            xule_context.iteration_table.del_table(aggregation_table.table_id)
-
+    # Go through each alignment and apply the aggregation function
     agg_values = XuleValueSet()
-
     # add default value if there are no None aligned results and the aggregation has a default value.
     if None not in values_by_alignment and function_info[FUNCTION_DEFAULT_VALUE] is not None:
         agg_values.append(
             XuleValue(xule_context, function_info[FUNCTION_DEFAULT_VALUE], function_info[FUNCTION_DEFAULT_TYPE]))
 
     for alignment in values_by_alignment:
-        values = [x for x in values_by_alignment[alignment] if x.type != 'unbound']
-
-        if len(values) > 0:
-            agg_value = function_info[FUNCTION_EVALUATOR](xule_context, values)
+        if len(values_by_alignment[alignment]) > 0:
+            agg_value = function_info[FUNCTION_EVALUATOR](xule_context, values_by_alignment[alignment])
         else:
+            # Add the default value if there is one
             if function_info[FUNCTION_DEFAULT_VALUE] is not None:
                 agg_value = XuleValue(xule_context, function_info[FUNCTION_DEFAULT_VALUE],
                                       function_info[FUNCTION_DEFAULT_TYPE])
@@ -4131,89 +4118,10 @@ def evaluate_aggregate_function(function_ref, function_info, xule_context):
 
         if agg_value is not None:
             agg_value.alignment = alignment
-            agg_value.aligned_result_only = aligned_result_only
+            agg_value.aligned_result_only = aligned_result_only_by_alignment[alignment]
             # print("agg", function_ref['exprName'], function_ref['node_id'], len(xule_context.used_expressions), len(used_expressions))
-            agg_value.used_expressions = used_expressions
+            agg_value.used_expressions = used_expressions_by_alignment[alignment]
             agg_values.append(agg_value)
-
-    return agg_values
-
-
-def evaluate_aggregate_function_concurrent(function_ref, function_info, xule_context):
-    values_by_alignment = collections.defaultdict(list)
-    agg_result_by_alignment = collections.defaultdict(lambda: None)
-    facts_by_alignment = collections.defaultdict(collections.OrderedDict)
-    tags_by_alignment = collections.defaultdict(dict)
-    aligned_result_only = False
-    save_aligned_result_only = xule_context.aligned_result_only
-    used_expressions = set()
-    save_used_expressions = xule_context.used_expressions
-
-    if function_ref.functionName.lower() == 'count':
-        concurrent_function = XuleFunctions.agg_count_concurrent
-    elif function_ref.functionName.lower() == 'sum':
-        concurrent_function = XuleFunctions.agg_sum_concurrent
-    elif function_ref.functionName.lower() == 'all':
-        concurrent_function = XuleFunctions.agg_all_concurrent
-
-    for i in range(len(function_ref.functionArgs)):
-        # pre_aggregation_table_list_size = len(xule_context.iteration_table)
-        aggregation_table = xule_context.iteration_table.add_table(function_ref['node_id'],
-                                                                   xule_context.get_processing_id(
-                                                                       function_ref['node_id']), is_aggregation=True)
-        try:
-            while True:
-                xule_context.aligned_result_only = False
-                xule_context.used_expressions = set()
-                try:
-                    arg = evaluate(function_ref.functionArgs[i][0], xule_context)
-                except XuleIterationStop as xis:
-                    arg = xis.stop_value
-
-                arg_alignment = xule_context.iteration_table.current_table.current_alignment
-                tags_by_alignment[arg_alignment].update(xule_context.iteration_table.tags)
-                #                 if arg.tags is not None:
-                #                     tags_by_alignment[arg_alignment].update(arg.tags)
-
-                facts_by_alignment[arg_alignment].update(xule_context.iteration_table.facts)
-                #                 if arg.facts is not None:
-                #                     facts_by_alignment[arg_alignment].update(arg.facts)
-
-                if arg.type != 'unbound':
-                    agg_result_by_alignment[arg_alignment] = concurrent_function(xule_context,
-                                                                                 agg_result_by_alignment[arg_alignment],
-                                                                                 arg,
-                                                                                 arg_alignment)
-
-                aligned_result_only = aligned_result_only or xule_context.aligned_result_only
-                used_expressions.update(set(xule_context.used_expressions))
-
-                xule_context.iteration_table.next(function_ref['node_id'])
-                if aggregation_table.is_empty:
-                    break
-
-        finally:
-            xule_context.aligned_result_only = save_aligned_result_only
-            xule_context.used_expressions = save_used_expressions
-
-            # ensure the aggregation table is removed in the event of an exception.
-            xule_context.iteration_table.del_table(aggregation_table.table_id)
-
-    agg_values = XuleValueSet()
-
-    # add default value if there are no None aligned results and the aggregation has a default value.
-    if None not in agg_result_by_alignment and function_info[FUNCTION_DEFAULT_VALUE] is not None:
-        agg_values.append(
-            XuleValue(xule_context, function_info[FUNCTION_DEFAULT_VALUE], function_info[FUNCTION_DEFAULT_TYPE]))
-
-    for alignment, agg_value in agg_result_by_alignment.items():
-        # agg_value.alignment = alignment
-        agg_value.aligned_result_only = aligned_result_only
-        # print("agg", function_ref['exprName'], function_ref['node_id'], len(xule_context.used_expressions), len(used_expressions))
-        agg_value.used_expressions = used_expressions
-        agg_value.tags = tags_by_alignment[alignment]
-        agg_value.facts = facts_by_alignment[alignment]
-        agg_values.append(agg_value)
 
     return agg_values
 
@@ -4477,7 +4385,7 @@ def process_factset_aspects(factset, xule_context):
 
     '''COULD CHECK FOR DUPLICATE ASPECTS IN THE FACTSET'''
     for aspect_filter in factset.get('aspectFilters', list()):
-        # Set the dictionary to use based on if the aspect is covered (single @ - non aligned) vs. uncoverted (double @ - aligned)
+        # Set the dictionary to use based on if the aspect is covered (single @ - non aligned) vs. uncoverted (double @@ - aligned)
         aspect_dictionary = non_align_aspects if aspect_filter['coverType'] == 'covered' else align_aspects
         aspect_var_name = aspect_filter.get('alias')
 
@@ -4486,7 +4394,7 @@ def process_factset_aspects(factset, xule_context):
 
         if aspect_name.type == 'aspect_name':
             # This is a built in aspect - one of concept, period, entity, unit or table
-            add_aspect_var(aspect_vars, 'builtin', aspect_filter['aspectName'], aspect_var_name,
+            add_aspect_var(aspect_vars, 'builtin', aspect_name.value, aspect_var_name,
                            aspect_filter['node_id'], xule_context)
             if aspect_name.value == 'concept' and alternate_notation:
                 raise XuleProcessingError(_(
@@ -4867,6 +4775,18 @@ def result_message(rule_ast, result_ast, xule_value, xule_context):
             message = message_value.value
         elif message_value.is_fact:
             message = message_value.fact
+        elif message_value.type in ('list','set'):
+            # The rule focus is a list/set of concepts or facts. The list/set cannot be nested
+            message = []
+            for rule_focus_item in message_value.value:
+                if rule_focus_item.type == 'concept':
+                    message.append(rule_focus_item.value)
+                elif rule_focus_item.is_fact:
+                    message.append(rule_focus_item.fact)
+                else:
+                    raise XuleProcessingError(
+                        _("The rule-focus of a rule must be a concept or a fact, found {}".format(rule_focus_item.type)),
+                        xule_context)
         else:
             raise XuleProcessingError(
                 _("The rule-focus of a rule must be a concept or a fact, found {}".format(message_value.type)),
@@ -4895,11 +4815,11 @@ def validate_result_name(result, xule_context):
 
 def get_all_aspects(model_fact, xule_context):
     '''This function gets all the apsects of a fact'''
-    return get_alignment(model_fact, {}, xule_context)
+    return get_alignment(model_fact, {}, {}, xule_context)
 
 
-def get_alignment(model_fact, non_align_aspects, xule_context, include_dimensions=True):
-    '''The alingment contains the aspect/member pairs that are in the fact but not in the non_align_aspects.
+def get_alignment(model_fact, non_align_aspects, align_aspects, xule_context, covered_dims=False, covered=False):
+    '''The alignment contains the aspect/member pairs that are in the fact but not in the non_align_aspects.
        The alignment is done in two steps. First check each of the builtin aspects. Then check the dimesnions.'''
 
     '''non_align_aspect - dictionary
@@ -4911,37 +4831,56 @@ def get_alignment(model_fact, non_align_aspects, xule_context, include_dimension
 
     alignment = {}
     # builtin alignment
-    non_align_builtins = {aspect_info[ASPECT] for aspect_info in non_align_aspects if aspect_info[TYPE] == 'builtin'}
+    if covered:
+        # Don't need the non_align_builtins, so don't bother creating them.
+        non_align_builtins = None
+    else:
+        non_align_builtins = {aspect_info[ASPECT] for aspect_info in non_align_aspects if aspect_info[TYPE] == 'builtin'}
 
-    # lineItem
-    if 'concept' not in non_align_builtins:
-        alignment[('builtin', 'concept')] = model_fact.qname
-        # alignment[('builtin', 'concept')] = model_fact.elementQname
+    align_builtins = {aspect_info[ASPECT] for aspect_info in align_aspects if aspect_info[TYPE] == 'builtin'}
 
-    # unit
-    if model_fact.isNumeric:
-        if 'unit' not in non_align_builtins:
-            alignment[('builtin', 'unit')] = model_to_xule_unit(model_fact.unit, xule_context)
+    # Only need to go through the builtins if they are not covered or they are covered and there are
+    # aligned builtins
+    if not covered or len(align_builtins) > 0:
 
-    # period
-    if 'period' not in non_align_builtins:
-        alignment[('builtin', 'period')] = model_to_xule_period(model_fact.context, xule_context)
+        # lineItem
+        if (not covered and 'concept' not in non_align_builtins) or 'concept' in align_builtins:
+            alignment[('builtin', 'concept')] = model_fact.qname
+            # alignment[('builtin', 'concept')] = model_fact.elementQname
 
-    # entity
-    if 'entity' not in non_align_aspects:
-        alignment[('builtin', 'entity')] = model_to_xule_entity(model_fact.context, xule_context)
+        # unit
+        if model_fact.isNumeric:
+            if (not covered and 'unit' not in non_align_builtins) or 'unit' in align_builtins:
+                alignment[('builtin', 'unit')] = model_to_xule_unit(model_fact.unit, xule_context)
+
+        # period
+        if (not covered and 'period' not in non_align_builtins) or 'period' in align_builtins:
+            alignment[('builtin', 'period')] = model_to_xule_period(model_fact.context, xule_context)
+
+        # entity
+        if (not covered and 'entity' not in non_align_builtins) or 'entity' in align_builtins:
+            alignment[('builtin', 'entity')] = model_to_xule_entity(model_fact.context, xule_context)
 
     # dimensional apsects
-    if include_dimensions:
+    if covered_dims or covered:
+        # Non algined dimensions don't matter.
+        non_align_dimesnions = set()
+    else:
         non_align_dimensions = {aspect_info[ASPECT] for aspect_info in non_align_aspects if
                                 aspect_info[TYPE] == 'explicit_dimension'}
+
+    align_dimensions = {aspect_info[ASPECT] for aspect_info in align_aspects if
+                                aspect_info[TYPE] == 'explicit_dimension'}
+
+    # Only need to run through the dimensions if they are included or if they are not included there are
+    # aligned dimensions
+    if (not covered_dims and not covered) or len(align_dimensions) > 0:
         for fact_dimension_qname, dimension_value in model_fact.context.qnameDims.items():
-            if fact_dimension_qname not in non_align_dimensions:
-                alignment[('explicit_dimension',
+            if (not covered_dims and not covered and fact_dimension_qname not in non_align_dimensions) or fact_dimension_qname in align_dimensions:
+                alignment[('explicit_dimension', # This will included typed dimensions as well as explicit.
                            fact_dimension_qname)] = dimension_value.memberQname if dimension_value.isExplicit else dimension_value.typedMember.xValue
 
     return alignment
-
 
 def get_uncommon_aspects(model_fact, common_aspects, xule_context):
     uncommon_aspects = {}

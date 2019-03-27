@@ -5,7 +5,7 @@ Xule is a rule processor for XBRL (X)brl r(ULE).
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2018 XBRL US, Inc.
+Copyright (c) 2017 - 2019 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22630 $
+$Change: 22738 $
 DOCSKIP
 """
 
@@ -58,7 +58,7 @@ def property_contains(xule_context, object_value, *args):
         if search_item.type in ('string', 'uri'):
             return xv.XuleValue(xule_context, search_item.value in object_value.value, 'bool')
     else:
-        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operator on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
+        raise XuleProcessingError(_("Property 'contains' or 'in' expression cannot operate on a '%s' and '%s'" % (object_value.type, search_item.type)), xule_context)
 
 def property_length(xule_context, object_value, *args):
     if object_value.type in ('string', 'uri'):
@@ -657,8 +657,8 @@ def property_enumerations(xule_context, object_value, *args):
         model_type = object_value.value
     elif object_value.type == 'concept':    
         model_type = object_value.value.type
-    else: # None
-        return object_vlaue
+    else: # None - this should not happen as the property only allows fact, type or concept.
+        return object_value
     
     if model_type.facets is None:
         return xv.XuleValue(xule_context, frozenset(), 'set')
@@ -1197,6 +1197,18 @@ def property_lower_case(xule_context, object_value, *args):
 def property_upper_case(xule_context, object_value, *args):
     return xv.XuleValue(xule_context, xv.xule_cast(object_value, 'string', xule_context).upper(), 'string')
 
+def property_split(xule_context, object_value, *args):
+    if args[0].type != 'string':
+        raise XuleProcessingError(_("The separator argument for property 'string' must be a 'string', found '%s'" % args[0].type), xule_context)
+
+    if args[0].value == '':
+        # just return the entire string in a list. This is different from python which will raise an error
+        return xv.XuleValue(xule_context,(xv.XuleValue(xule_context, object_value.value, 'string'), ), 'list', shadow_collection=(object_value.value, ))
+
+    shadow = tuple(object_value.value.split(args[0].value))
+
+    return xv.XuleValue(xule_context, tuple(xv.XuleValue(xule_context, x, 'string') for x in shadow), 'list', shadow_collection=shadow)
+
 def property_day(xule_context, object_value, *args):
     return xv.XuleValue(xule_context, object_value.value.day, 'int')
 
@@ -1609,8 +1621,8 @@ def traverse_for_weight(network, parent, stop_concept, previous_concepts=None, p
     
     for child_rel in network.fromModelObject(parent):
         if child_rel.toModelObject in previous_concepts:
-            # In a cyle - skip this child.
-            Continue
+            # In a cycle - skip this child.
+            continue
         if child_rel.toModelObject is stop_concept:
             results.append(previous_weights + [child_rel.weight,])
         else:
@@ -1680,7 +1692,7 @@ PROPERTIES = {
               'is-numeric': (property_is_numeric, 0, ('concept', 'fact'), True),
               'is-monetary': (property_is_monetary, 0, ('concept', 'fact'), True),
               'is-abstract': (property_is_abstract, 0, ('concept', 'fact'), True),
-              'is-nil': (property_is_nil, 0, ('fact'), True),
+              'is-nil': (property_is_nil, 0, ('fact',), True),
               'is-fact': (property_is_fact, 0, (), True),
               'scale': (property_scale, 0, ('fact',), True),
               'format': (property_format, 0, ('fact',), True),
@@ -1726,7 +1738,8 @@ PROPERTIES = {
               'index-of': (property_index_of, 1, ('string', 'uri'), False),
               'last-index-of': (property_last_index_of, 1, ('string', 'uri'), False),
               'lower-case': (property_lower_case, 0, ('string', 'uri'), False),
-              'upper-case': (property_upper_case, 0, ('string', 'uri'), False),              
+              'upper-case': (property_upper_case, 0, ('string', 'uri'), False),
+              'split': (property_split, 1, ('string', 'uri'), False),
               'day': (property_day, 0, ('instant',), False),
               'month': (property_month, 0, ('instant',), False),
               'year': (property_year, 0, ('instant',), False),
