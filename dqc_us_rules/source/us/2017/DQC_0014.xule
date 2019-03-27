@@ -11,6 +11,8 @@ rule-name-prefix DQC
 
 assert US.0014 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 for ($x in $non_dimensional_non_negs)
 	$rule_suffix_id = $x[1];
 
@@ -26,6 +28,8 @@ Rule version: {$ruleVersion}"
 
 rule-suffix
 $rule_suffix_id
+
+effectiveDate $effective_dates[$rule_suffix_id]
 
 severity error
 
