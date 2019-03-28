@@ -10,6 +10,8 @@ rule-name-prefix DQC
 
 assert US.0004.16 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $Assets = {@Assets};
 $LiabilitiesAndStockholdersEquity = {@LiabilitiesAndStockholdersEquity};
 $decimal_tolerance_factor = 2;
@@ -28,7 +30,8 @@ Decimals of Liabilities and Equity : {$LiabilitiesAndStockholdersEquity.decimals
 Rule version: {$ruleVersion}"
 
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
