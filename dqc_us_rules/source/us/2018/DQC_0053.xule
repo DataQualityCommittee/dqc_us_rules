@@ -15,6 +15,8 @@ RULE-NAME-PREFIX DQC
 
 assert US.0053.7489 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $fact1 = {@RetirementPlanSponsorLocationAxis=NonUsMember};
 
 $memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLocationAxis returns set (target-name);
@@ -45,3 +47,4 @@ Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]
