@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert US.0060.7495 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 count(list([@NetCashProvidedByUsedInFinancingActivities])) == 0 and 
   
 count(list([@NetCashProvidedByUsedInFinancingActivitiesContinuingOperations]#fact1))!= 0 and
@@ -31,8 +33,11 @@ Unit : {$fact1.unit}
 Rule Element Id:7495
 Rule version: {$ruleVersion}"
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0060.7496 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 count(list([@NetCashProvidedByUsedInInvestingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInInvestingActivitiesContinuingOperations]#fact1))!= 0 and
@@ -52,9 +57,12 @@ Unit : {$fact1.unit}
 Rule Element Id:7496
 Rule version: {$ruleVersion}"
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0060.7497 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  

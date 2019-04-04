@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert US.0046.6839 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 EffectOfExchangeRateOnCashAndCashEquivalents 
 in 
 navigate summation-item descendants 
@@ -25,12 +27,15 @@ However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOp
 Rule Element Id:6839
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
 
 assert US.0046.6840 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalentsContinuingOperations 
 in 
@@ -46,10 +51,13 @@ However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOp
 Rule Element Id:6840
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0046.6841 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents 
 in 
@@ -65,11 +73,14 @@ However, in the companies extension taxonomy NetCashProvidedByUsedInContinuingOp
 Rule Element Id:6841
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
 assert US.0046.6842 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalents 
 in 
@@ -84,10 +95,13 @@ However, in the companies extension taxonomy CashAndCashEquivalentsPeriodIncreas
 Rule Element Id:6842
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0046.7480 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 EffectOfExchangeRateOnCashAndCashEquivalentsDiscontinuedOperations 
 in 
@@ -103,11 +117,14 @@ However, in the companies extension taxonomy NetCashProvidedByUsedInDiscontinued
 Rule Element Id:7480
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
 assert US.0046.8000 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 NetIncomeLoss
 in
@@ -121,5 +138,5 @@ Rule Element Id:8000
 Rule version: {$ruleVersion}"
 
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
