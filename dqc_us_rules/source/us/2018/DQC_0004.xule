@@ -155,7 +155,7 @@ $CalcEquity = first-value({@StockholdersEquityIncludingPortionAttributableToNonc
 $CalcLiabilities = first-value({@Liabilities}, {@LiabilitiesCurrent} <+> {@LiabilitiesNoncurrent});
 
 /** Components for temp Equity **/
-
+/** TOO COMPLICATED 
 $TempAttParent = sum(axis_members(TemporaryEquityCarryingAmountAttributableToParent, StatementClassOfStockAxis));
 
 $RedeemNCI = sum(axis_members(RedeemableNoncontrollingInterestEquityCarryingAmount, StatementClassOfStockAxis));
@@ -165,21 +165,25 @@ $TempSubComp = first-value({@TemporaryEquityCarryingAmountAttributableToParent},
 $TempIncNCI = sum(axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis));
 
 $CalcTempEquity = first-value({@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}, $TempSubComp, $TempIncNCI);
+**/
 
-$CalcLSE = $CalcEquity <+> $CalcLiabilities + $CalcTempEquity;
+$CalcTempEquity = {@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests};
+
+$CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
 
 $decimal_tolerance_factor = 2;
 
+/**
 $addMessage =  (if exists($TempIncNCI) and not exists({@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}) and not exists($TempSubComp)
 	"Temporary equity was calculated by adding the value of TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests across the dimension StatementClassOfStockAxis, with the values of {axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis).join(',')} "
 else
 	'');
-
+**/
 tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
 
 message
 
-"{$LSE.concept.label.text} with a value of {$LSE} is not equal to the combined total of Stockholders Equity, Liabilities and Temporary Equity (If Applicable) ( {$CalcEquity} + {$CalcLiabilities} + {$CalcTempEquity}) with a value of {$CalcLSE}. "+ $addMessage + "
+"{$LSE.concept.label.text} with a value of {$LSE} is not equal to the combined total of Stockholders Equity, Liabilities and Temporary Equity  ( {$CalcEquity} + {$CalcLiabilities} + {$CalcTempEquity}) with a value of {$CalcLSE}. 
 
 These values should be equal.
 The properties of this {$LSE.concept} fact are:
@@ -227,6 +231,8 @@ Decimals of {$a2.concept.label.text} : {$a2.decimals}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+effectiveDate $effective_dates[$rule_id]
 /**
 
 ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest = ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest + ComprehensiveIncomeNetOfTax

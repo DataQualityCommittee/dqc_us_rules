@@ -50,7 +50,7 @@ tolerance_for_decimals($Assets, $CalcAssets, $decimal_tolerance_factor)
 
 message
 
-"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca}) + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
 The properties of this {$Assets.concept} fact are:
 Period :{$Assets.period}
 Dimensions :  {$Assets.dimensions.join(', ','=')}
@@ -227,6 +227,8 @@ Decimals of {$a2.concept.label.text} : {$a2.decimals}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+effectiveDate $effective_dates[$rule_id]
 /**
 
 ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest = ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest + ComprehensiveIncomeNetOfTax

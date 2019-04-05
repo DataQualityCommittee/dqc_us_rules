@@ -56,7 +56,7 @@ any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis !=
 
 
 message
-"The filing has reported a value of \"{$revRec}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+"The filing has reported a value of \"{$revRec.string.substring(1,300)}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
 {$facts_in_606_standard.sort.join(',\n')}
 
 
@@ -74,6 +74,5 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 rule-focus $revRec
-
 effectiveDate $effective_dates[$rule_id]
 
