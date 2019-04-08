@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0055.7493 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $listmembers = navigate parent-child descendants from RetirementPlanSponsorLocationAxis returns by network set (target-name)
 
 for ($network in $listmembers.keys)
@@ -36,3 +37,4 @@ Rule Element Id:7493
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]

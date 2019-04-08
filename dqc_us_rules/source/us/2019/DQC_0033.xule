@@ -11,6 +11,8 @@ rule-name-prefix DQC
 
 assert US.0033.2 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $exceptions_to_dei = set(dei:EntityCommonStockSharesOutstanding, dei:EntityPublicFloat, dei:DocumentPeriodEndDate, dei:EntityNumberOfEmployees, dei:EntityListingDepositoryReceiptRatio);
 $document_period = first(list({covered @concept = dei:DocumentPeriodEndDate}));
 $document_period_end_date = $document_period.period.end;
@@ -31,6 +33,8 @@ Unit : {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1
 

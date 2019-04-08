@@ -11,7 +11,8 @@ Release Version 6.0
 rule-name-prefix DQC
 
 assert US.0049.7483 satisfied
- 
+
+$rule_id = '7483';
 $must_be_present_concepts = set('CashAndCashEquivalentsPeriodIncreaseDecrease','CashPeriodIncreaseDecrease','CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')
 
 $nonallowed_root_elements = filter (navigate summation-item descendants from CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect taxonomy $us-gaap returns set (target-name)) returns $item.local-name
@@ -40,9 +41,11 @@ for ($calcNetwork in
 message
 "The following elements {$root_string} are parent (root) elements defined in the calculation relationship for the cash flow statement using the group {$calcNetwork.role.uri}. The cash flow statement should only have one calculation parent for durational concepts representing the increase or decrease in cash during the period. If the company has adopted ASU-2016-18 then the root element used to represent the aggregate change in cash should be the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect.  If the company specifically excludes the exchange rate effect from the total then the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect should be used.
 
-Rule Element Id:7483
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error
+
+effectiveDate $effective_dates[$rule_id]
 

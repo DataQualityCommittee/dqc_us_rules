@@ -14,6 +14,7 @@ rule-name-prefix DQC
 
 assert US.0074.7649 satisfied
 
+$rule_id = '7649';
 exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
 
 
@@ -25,8 +26,10 @@ Period :{$fact_with_nil_member.period}
 Dimensions : {$fact_with_nil_member.dimensions.join(', ','=')}
 Unit : {$fact_with_nil_member.unit}
 
-Rule Element Id:7649
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

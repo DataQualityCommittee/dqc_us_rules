@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0009.15 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@CommonStockSharesOutstanding};
 $greater_fact = {@CommonStockSharesAuthorized};
 
@@ -29,9 +30,12 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0009.19 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@PreferredStockSharesOutstanding};
 $greater_fact = {@PreferredStockSharesIssued};
 
@@ -49,9 +53,12 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0009.21 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@CommonStockSharesIssued};
 $greater_fact = {@CommonStockSharesAuthorized};
 
@@ -69,8 +76,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.22 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@PreferredStockSharesIssued};
 $greater_fact = {@PreferredStockSharesAuthorized};
 
@@ -88,9 +98,12 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0009.23 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@PreferredStockSharesOutstanding};
 $greater_fact = {@PreferredStockSharesAuthorized};
 
@@ -107,8 +120,11 @@ Dimensions: {$less_fact.dimensions.join(', ','=')}
 Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.24 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@CommonStockSharesOutstanding};
 $greater_fact = {@CommonStockSharesIssued};
 
@@ -126,9 +142,12 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0009.47 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries};
 $greater_fact = {@UndistributedEarningsOfForeignSubsidiaries};
 
@@ -146,8 +165,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.39 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
 
@@ -165,8 +187,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.40 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
 
@@ -184,8 +209,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.41 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets};
 $greater_fact = {@DefinedBenefitPlanFairValueOfPlanAssets};
 
@@ -203,8 +231,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.42 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
 
@@ -222,8 +253,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.45 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear};
 $greater_fact = {@DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear};
 
@@ -241,8 +275,11 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0009.46 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $less_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
 
@@ -260,6 +297,7 @@ Unit: {$less_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 

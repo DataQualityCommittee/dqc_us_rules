@@ -10,6 +10,7 @@ rule-name-prefix DQC
 
 assert US.0051.7484 satisfied
 
+$rule_id = '7484';
  for ($taxConcept in $tax_items)
 					
 		$paths_dict = navigate summation-item descendants from IncomeLossIncludingPortionAttributableToNoncontrollingInterest to $taxConcept returns by network paths weight
@@ -24,15 +25,17 @@ message
 
 Element Checked : IncomeLossIncludingPortionAttributableToNoncontrollingInterest
 
-Rule Element Id:7484
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0051.7485 satisfied
-				
+
+$rule_id = '7485';				
  for ($taxConcept in $tax_items)
 
 	$paths_dict = navigate summation-item descendants from IncomeLossAttributableToParent to $taxConcept returns by network paths weight
@@ -47,15 +50,16 @@ message
 
 Element Checked : IncomeLossAttributableToParent
 
-Rule Element Id:7485
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0051.7486 satisfied
 
+$rule_id = '7486';
  for ($taxConcept in $tax_items)
 
 	$paths_dict = navigate summation-item descendants from IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest to $taxConcept returns by network paths weight
@@ -73,6 +77,6 @@ Element Checked : IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordina
 Rule Element Id:7486
 Rule version: {$ruleVersion}"
 
-
 severity error
+effectiveDate $effective_dates[$rule_id]
 

@@ -12,7 +12,7 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0065.7502 SATISFIED
 
-$rule-suffix = 7502
+$rule_id = '7502'
 
 $networkQname = navigate parent-child DESCENDANTS FROM SupplementalCashFlowInformationAbstract returns set (target-name)
 	 
@@ -32,9 +32,11 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:7502
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
 
