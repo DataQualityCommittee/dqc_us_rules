@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0067.7644 satisfied
 
+$rule_id = '7644';
 /** Defines list of Revenue elements that are used for 440 revenue recognition, but not the new revenue recognition standard with exceptions. **/
 
 $RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
@@ -55,7 +56,7 @@ any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis !=
 
 
 message
-"The filing has reported a value of \"{$revRec}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
+"The filing has reported a value of \"{$revRec.string.substring(1,300)}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
 {$facts_in_606_standard.sort.join(',\n')}
 
 
@@ -66,11 +67,12 @@ Period :{$revRec.period}
 Dimensions : {$revRec.dimensions.join(', ','=')}
 Unit : {$revRec.unit}
 
-Rule Element Id:7644
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 SEVERITY error
 
 rule-focus $revRec
+effectiveDate $effective_dates[$rule_id]
 

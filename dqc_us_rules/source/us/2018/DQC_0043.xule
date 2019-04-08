@@ -43,7 +43,10 @@ constant $income_items = set(ProfitLoss,
 					IncomeLossFromSubsidiariesNetOfTax
 					)
 
-assert US.0043.6833 satisfied 
+assert US.0043.6833 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations})))) and not (any(set(exists({covered @NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations;
 	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $income_items  where $relationship.target.name not in $income_items returns set (target)	
@@ -89,8 +92,12 @@ Rule Element Id:6833
 Rule version: {$ruleVersion}"
 
 severity  error
+effectiveDate $effective_dates[$rule_id]
 
-assert US.0043.7488 satisfied 
+assert US.0043.7488 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivities;
 	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $income_items  where $relationship.target.name not in $income_items returns set (target)	
@@ -135,6 +142,8 @@ Rule Element Id:7488
 Rule version: {$ruleVersion}"
 
 severity  error
+
+effectiveDate $effective_dates[$rule_id]
 
 
 
