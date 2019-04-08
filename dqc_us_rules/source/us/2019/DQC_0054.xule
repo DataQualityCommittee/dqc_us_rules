@@ -11,6 +11,9 @@ Taxonomy: US GAAP 2019
 rule-name-prefix DQC
 
 assert US.0054.7490 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
   
 srt:StatementGeographicalAxis in NAVIGATE hypercube-dimension DESCENDANTS FROM ScheduleOfDefinedBenefitPlansDisclosuresTable returns set (target-name)
   
@@ -22,9 +25,13 @@ Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0054.7491 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
   
 srt:StatementGeographicalAxis in  NAVIGATE hypercube-dimension DESCENDANTS FROM DefinedContributionPlanTable returns set (target-name)
 
@@ -36,9 +43,13 @@ Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0054.7492 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
   
 srt:StatementGeographicalAxis in  NAVIGATE hypercube-dimension DESCENDANTS FROM DefinedBenefitPlansAndOtherPostretirementBenefitPlansDisclosuresTable returns set (target-name)
 
@@ -52,3 +63,4 @@ Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]
