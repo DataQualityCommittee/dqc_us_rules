@@ -12,6 +12,8 @@ RULE-NAME-PREFIX DQC
 
 assert US.0067.7644 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap returns set (target-name); 
 
 $network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
@@ -36,10 +38,10 @@ returns set (target-name);
 
 /** Identifies a list of all the facts used that apply to 606. The existence of these facts determines if they have adopted the 606 revenue standard **/
 
-$facts_in_606_standard_dups = list({covered @concept in ($network606000) @StatementScenarioAxis != *});
+$facts_in_606_standard_dups = list({covered @concept in ($network606000) @srt:StatementScenarioAxis != *});
 $facts_in_606_standard = (filter $facts_in_606_standard_dups returns $item.name.local-name).to-set;
 
-any(list(exists({covered-dims @concept in ($network606000) @StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @StatementScenarioAxis != * @period=*}#revRec)
+any(list(exists({covered-dims @concept in ($network606000) @srt:StatementScenarioAxis != * @period=*}))) and exists({covered-dims nonils @concept in ($PriorStandard) @srt:StatementScenarioAxis != * @period=*}#revRec)
 
 
 message
@@ -57,6 +59,7 @@ Rule Element Id:7644
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $revRec
