@@ -11,6 +11,8 @@ rule-name-prefix DQC
 
 assert US.0015 satisfied
 
+
+
 $fact1 =
 	{@concept in $non_neg_items.keys @unit=* where $fact < 0 and ($fact.dimensions.length == 0 or 
 		(not match_set_substring($fact, $exclude_non_neg_string_members)
@@ -33,6 +35,8 @@ Rule version: {$ruleVersion}"
 
 rule-suffix
 $rule_suffix_id
+
+effectiveDate $effective_dates[$rule_suffix_id]
 
 severity error
 

@@ -15,6 +15,8 @@ rule-name-prefix DQC
 
 assert US.0078.7655 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $ComponentAmount = {@concept in list(ManagingMemberOrGeneralPartnerOwnershipInterest, MinorityInterestOwnershipPercentageByParent, SubsidiaryOfLimitedLiabilityCompanyOrLimitedPartnershipOwnershipInterest, LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest, MinorityInterestOwnershipPercentageByNoncontrollingOwners)};
 
 
@@ -35,7 +37,8 @@ Rule Element Id:7655
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $ComponentAmount
 
