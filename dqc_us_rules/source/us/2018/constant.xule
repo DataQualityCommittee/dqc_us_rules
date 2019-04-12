@@ -80,17 +80,19 @@ constant $exclude_non_neg_string_members = set(
 	This constant defines strings that when contained in an element mean that a child of that parent element can be promoted to a sibling or a 	sibling of the parent element can be demoted to a child	of that element.	
 				**/
 				
-constant $elements_excluded_from_rule = set(
+/**constant $elements_excluded_from_rule = set(
 				OperatingIncomeLoss,
 				InterestIncomeOperating,
 				OperatingCostsAndExpenses,
 				NontradeReceivablesCurrent,
 				OtherOperatingIncomeExpenseNet,
 				GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee
-				)
+				)**/
 /* The second list is an exception to the rule 
 For example any children of GeneralAndAdministrativeExpense can be promoted to be a sibling except OtherGeneralAndAdministrativeExpense	
 				**/ 
+				
+/**
 constant $parent_elements_with_children_promotable_to_sibling = set(
 				list(AccountsPayableAndAccruedLiabilitiesCurrent, list(AccountsPayableCurrent, AccruedLiabilitiesCurrent, AccountsPayableOtherCurrent, OtherAccruedLiabilitiesCurrent)),
 				list(AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent, list(AccountsPayableCurrentAndNoncurrent, AccruedLiabilitiesCurrentAndNoncurrent)),
@@ -104,15 +106,18 @@ constant $parent_elements_with_children_promotable_to_sibling = set(
 				list(IncreaseDecreaseInAccruedLiabilities, list(IncreaseDecreaseInOtherAccruedLiabilities)),
 				list(SellingGeneralAndAdministrativeExpense, list(OtherSellingAndMarketingExpense))
 				)
-				
+	**/	
+/**		
 constant $sibling_elements_with_siblings_demotable_to_descendant = set(
 				list(CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations, list(NetCashProvidedByUsedInInvestingActivitiesContinuingOperations,CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations, CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations)),
 				list(GainLossOnInvestments,list()),
 				list(GeneralAndAdministrativeExpense,list()),
 				list(InterestExpense,list(Revenues, InvestmentIncomeInterest)), /** Included as part of revenue calc and excluded as well in calc of RevenuesNetOfInterestExpense = Revenues - 	InterestExpense **/
+				/**
 				list(Investments, list()),
 				list(NoninterestExpense, list()),
 				list(NonoperatingGainsLosses,list()), /** The definition includes interest but there are sibling interest elements in the taxonomy **/
+				/**
 				list(NonoperatingIncomeExpense, list(OperatingIncomeLoss)),
 				list(OtherCostAndExpenseOperating, list()),
 				list(OtherExpenses, list()),
@@ -123,8 +128,8 @@ constant $sibling_elements_with_siblings_demotable_to_descendant = set(
 				list(OtherRestrictedAssets, list()),
 				list(RegulatedEntityOtherAssetsNoncurrent, list()),
 				list(SellingGeneralAndAdministrativeExpense,list())
-				)
-				
+				) **/
+/**				
 constant $child_elements_promotable_to_sibling_of_parent_element = set(
 				EmployeeRelatedLiabilitiesCurrentAndNoncurrent,
 				IncreaseDecreaseInEmployeeRelatedLiabilities,
@@ -211,6 +216,8 @@ constant $siblings_demotable_to_child = set(
 				list(AccruedLiabilitiesCurrent, EmployeeRelatedLiabilitiesCurrent)
 				)
 				
+				**/
+/**				
 constant $child_elements_promotable_to_sibling = set(
 				list(DepreciationDepletionAndAmortization, AccretionAmortizationOfDiscountsAndPremiumsInvestments),
 				list(DepreciationDepletionAndAmortization, AmortizationOfDebtDiscountPremium),
@@ -230,7 +237,7 @@ constant $child_elements_promotable_to_sibling = set(
 				list(OperatingExpenses, RestructuringCharges),
 				list(Revenues, InterestExpenseDebt)
 				)	
-								
+**/								
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,
 				FairValueConcentrationOfRiskMarketRiskManagementEffectsOnIncomeOrNetAssetsMember,
