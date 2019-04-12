@@ -135,7 +135,7 @@ for ($value-con in $value-concepts)
 					exists($inappropriate_sibling) and 
 					exists($source_value) and
 					not any(set(for ($parent in $parent_elements_with_children_promotable_to_sibling)
-										$value-con == $parent[1] and $extCalcRelationship.target.name not in $parent[2])) and
+										$value-con.local-name == $parent[1] and $extCalcRelationship.target.name.local-name not in $parent[2])) and
 					
 					/** This takes any descendants of siblings demotable to child and allows them also be demoted. **/
 					all(set(for ($pair in $child_elements_promotable_to_sibling)
@@ -165,4 +165,7 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
+
+output exclusions
+$parent_elements_with_children_promotable_to_sibling
 
