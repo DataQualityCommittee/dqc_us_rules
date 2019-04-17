@@ -33,7 +33,7 @@ for ($networkPres in
 	$elementNames = $must_be_present_elements.join(', ');
 
 	$balances = set(for ($concept_item in $networkPres.concepts)
-					if($concept_item.period-type == instant)		
+					if ($concept_item.period-type == instant)		
 						$concept_item.name.local-name	       	
 					else 
 						skip);
