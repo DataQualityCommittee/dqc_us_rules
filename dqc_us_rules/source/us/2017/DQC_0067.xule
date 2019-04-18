@@ -12,10 +12,11 @@ rule-name-prefix DQC
 
 assert US.0067.7644 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Defines list of Revenue elements that are used for 440 revenue recognition, but not the new revenue recognition standard with exceptions. **/
 
-$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' 
-or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
+$RevenueElements = navigate summation-item DESCENDANTS include start from SalesRevenueNet taxonomy $us-gaap where not($relationship.target.name.local-name == 'OperatingLeasesIncomeStatementLeaseRevenue' or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementMinimumLeaseRevenue' 
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementContingentRevenue'
 or $relationship.target.name.local-name == 'PercentageRent'
 or $relationship.target.name.local-name == 'OperatingLeasesIncomeStatementSubleaseRevenue'
@@ -41,21 +42,23 @@ $PriorStandard = $RevenueElements + $network440000;
 
 /** Defines a list of 606 elements. Use of any of these elements implies that the company has adopted the 606 Revenue Recognition Standard **/
 
+
 $network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
 returns set (target-name);
 
 /** Identifies a list of all the facts used that apply to 606. The existence of these facts determines if they have adopted the 606 revenue standard **/
 
-$facts_in_606_standard = set({covered @concept in ($network606000) @StatementScenarioAxis != * });
+$facts_in_606_standard_dups = list({covered @concept in ($network606000) @StatementScenarioAxis != *});
+$facts_in_606_standard = (filter $facts_in_606_standard_dups returns $item.name.local-name).to-set;
 
 /** Identifies if 606 elements have been used and 440 elements have also been used in the same filing. The two standards should be mutually exclusive. **/
 
-any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis != * @period=* @unit}))) and exists({covered nonils @concept in ($PriorStandard) @@StatementScenarioAxis != * }#revRec)
+any(list(exists({covered @concept in ($network606000) @@StatementScenarioAxis != * @period=* @unit}))) and exists({covered nonils @concept in ($PriorStandard) @@StatementScenarioAxis != * @period=*}#revRec)
 
 
 message
 "The filing has reported a value of \"{$revRec}\" for the element {$revRec.name}. This is a revenue recognition element that is not a component of FASB 606 and does not appear in disclosure group 606000. However the following elements have also been tagged in the filing that indicate that the FASB 606  revenue recognition standard has been adopted:
-{$facts_in_606_standard.name.local-name.join(',\n')}
+{$facts_in_606_standard.sort.join(',\n')}
 
 
 Either the new revenue recognition elements must be used or the old revenue recognition elements should be used but they should not be combined in the same filing.  
@@ -69,7 +72,8 @@ Rule Element Id:7644
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $revRec
 

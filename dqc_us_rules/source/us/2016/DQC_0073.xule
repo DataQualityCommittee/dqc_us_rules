@@ -16,6 +16,8 @@ rule-name-prefix DQC
 
 assert US.0073.7648 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $allowable_line_items = list(
 DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod,
 DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld,
@@ -41,7 +43,7 @@ DefinedBenefitPlanWeightedAverageAssetAllocations);
 
 
 
-exists({@concept not in $allowable_line_items @DefinedBenefitPlanByPlanAssetCategoriesAxis = * where is_base($fact.concept)}#bad_fact)
+exists({@concept not in $allowable_line_items @DefinedBenefitPlanByPlanAssetCategoriesAxis = * where is_base($fact.concept, $all_base_taxonomies)}#bad_fact)
 
 message
 "The concept {$bad_fact.concept} with a value of {$bad_fact} is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:
@@ -57,5 +59,6 @@ Unit : {$bad_fact.unit}
 Rule Element Id:7648
 Rule version: {$ruleVersion}"
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 

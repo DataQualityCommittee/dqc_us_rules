@@ -11,6 +11,8 @@ rule-name-prefix DQC
 
 assert US.0041.73 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Get the dimension defaults used in  the filing **/
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
@@ -28,7 +30,7 @@ $filing_details_defaults = navigate dimension-default descendants include start 
 for ($x in $default_in_filing_not_in_taxonomy)
 	$default_details_list = filter $filing_details_defaults where $item['source-name'] == $x[1];
 	$default_details = $default_details_list[1]
-	if (not is_extension($default_details['source']))
+	if (not is_extension($default_details['source'],$all_base_taxonomies))
 		$dim_name = $default_details['source-name'];
 		$dim_role = $default_details['role'].description;
 		$dim_base_names = navigate dimension-default descendants from $default_details['source-name'] taxonomy $us-gaap returns (target-name);
@@ -46,5 +48,6 @@ message
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 

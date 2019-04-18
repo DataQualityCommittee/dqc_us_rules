@@ -12,13 +12,15 @@ rule-name-prefix DQC
 
 assert US.0047.7481 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations,NetCashProvidedByUsedInOperatingActivities))
 
 	$misplaced_concept = navigate summation-item descendants from ($cashOperating) 
 	where $relationship.target.balance == none 
     and $relationship.target.name  != NetCashProvidedByUsedInOperatingActivitiesContinuingOperations
 	/** DOes not flag an error if the element is an extension element **/
-	and is_base($relationship.target);
+	and is_base($relationship.target, $all_base_taxonomies);
 
 	for $x in $misplaced_concept.to-set
 		true

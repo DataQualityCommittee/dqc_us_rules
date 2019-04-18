@@ -17,13 +17,15 @@ rule-name-prefix DQC
 
 assert US.0071.7646 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
 $all_cubes = taxonomy().cubes;
 
 for $x in $all_cubes
 	if $x.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
 		skip
-	else 
+	else
 		if $x.dimensions().concept().name.contains(srt:ProductOrServiceAxis)
 			if count($x.primary-concepts.name.to-set.intersect($valid_line_items)) > 0
 				if count(navigate dimensions descendants from srt:ProductsAndServicesDomain drs-role $x.drs-role cube $x.cube-concept()) == 1
@@ -54,5 +56,6 @@ Rule Element Id:7646
 Rule version: {$ruleVersion}
 "
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 

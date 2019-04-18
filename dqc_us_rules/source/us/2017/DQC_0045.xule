@@ -12,9 +12,11 @@ rule-name-prefix DQC
 
 assert US.0045.6835 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /* This rule identifies elements in the investing section of the cash flow calculation that are operating items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
 
-$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations);
+$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations, $us-gaap, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations, $cash_flow_exceptions);
 
 for $baseName in $misplaced_concept true
 
@@ -24,14 +26,17 @@ message
 Rule Element Id:6835
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0045.6836 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /* This rule identifies elements in the investing section of the cash flow calculation that are financing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
 
-$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInFinancingActivitiesContinuingOperations, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations);
+$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInFinancingActivitiesContinuingOperations, $us-gaap, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations, $cash_flow_exceptions);
 
 for $baseName in $misplaced_concept true
 
@@ -41,15 +46,18 @@ message
 Rule Element Id:6836
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
 assert US.0045.6837 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /* This rule identifies elements in the financing section of the cash flow calculation that are investing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
 
-$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInInvestingActivitiesContinuingOperations, NetCashProvidedByUsedInFinancingActivitiesContinuingOperations);
+$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInInvestingActivitiesContinuingOperations, $us-gaap, NetCashProvidedByUsedInFinancingActivitiesContinuingOperations, $cash_flow_exceptions);
 
 for $baseName in $misplaced_concept true
 
@@ -59,14 +67,17 @@ message
 Rule Element Id:6837
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0045.6838 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /* This rule identifies elements in the financing section of the cash flow calculation that are investing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
 
-$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations, NetCashProvidedByUsedInFinancingActivitiesContinuingOperations);
+$misplaced_concept = compare_baseCalc_to_extensionCalc(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations, $us-gaap, NetCashProvidedByUsedInFinancingActivitiesContinuingOperations, $cash_flow_exceptions);
 
 for $baseName in $misplaced_concept true
 
@@ -77,8 +88,9 @@ message
 Rule Element Id:6838
 Rule version: {$ruleVersion}"
 
-severity
-error
+severity error
+effectiveDate $effective_dates[$rule_id]
+
 
 
 

@@ -10,6 +10,9 @@ Release Version 6
 rule-name-prefix DQC
 
 assert US.0001.51 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_extension = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis returns set (target-name);
@@ -19,7 +22,7 @@ $member_extension = navigate dimensions dimension-member descendants from FairVa
 /** In 2018 InvestmentsNetAssetValueMember has to be removed **/
 
 $allowable_extensions = set(qname($extension_ns,'FairValueInputsLevel1AndLevel2Member'), 
-						qname($extension_ns,'FairValueInputsLevel2AndLevel3Member'), 
+						qname($extension_ns,'FairValueInputsLevel2AndLevel3Member'),
 						qname($extension_ns,'FairValueInputsLevel1AndLevel3Member'));
 						/** qname($extension_ns,'FairValueMeasuredAtNetAssetValuePerShareMember'));  ADDED TO THE TAXONOMY**/  
 
@@ -55,9 +58,13 @@ Rule Element Id:51
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.52 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = navigate dimensions dimension-member descendants from ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis taxonomy $us-gaap returns set (target-name);
@@ -88,10 +95,13 @@ Rule Element Id:52
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.53 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from OtherOwnershipInterestsByNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from OtherOwnershipInterestsByNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(OtherOwnershipInterestsNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -116,9 +126,13 @@ Rule Element Id:53
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.54 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 /** Use nested navigation as the LegalEntityAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
@@ -132,7 +146,7 @@ $allowed_members_FHLB = navigate dimensions dimension-member descendants from sr
 
 $allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember, dei:EntityDomain);
 
-$member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target) returns set (target-name);
+$member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_lea + $allowed_members_FHLB + $allowed_base_member;
 
@@ -160,13 +174,16 @@ Rule Element Id:69
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 
 
 assert US.0001.56 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from NoncashOrPartNoncashDivestituresByUniqueNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from NoncashOrPartNoncashDivestituresByUniqueNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(NoncashOrPartNoncashDivestitureNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -191,12 +208,16 @@ Rule Element Id:56
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.57 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** UPDATED FOR SRT **/
 
-$base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(srt:EquityMethodInvesteeNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -221,12 +242,15 @@ Rule Element Id:57
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.58 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** UPDATED FOR SRT **/
-$base_members = navigate dimensions dimension-member descendants from srt:CounterpartyNameAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from srt:CounterpartyNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, DirectorMember, ChiefExecutiveOfficerMember, ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -251,10 +275,13 @@ Rule Element Id:58
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.59 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from PlanNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from PlanNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from PlanNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -279,13 +306,16 @@ Rule Element Id:59
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 /** RULE REMOVED AS AXIS HAS BEEN DEPRECATED **/
 
 /**
 assert US.0001.60 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from DefinedContributionPlanNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -310,9 +340,13 @@ Rule Element Id:60
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 **/
 
 assert US.0001.61 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 /** UPDATED FOR SRT **/
 
@@ -344,9 +378,12 @@ Rule Element Id:61
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.62 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Use nested navigation as the Currency Axis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 /** UPDATED FOR SRT **/
@@ -393,9 +430,13 @@ Rule Element Id:62
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.63 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = navigate dimensions dimension-member descendants from PositionAxis taxonomy $us-gaap returns set (target-name);
@@ -436,8 +477,12 @@ Rule Element Id:63
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.64 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = navigate dimensions dimension-member descendants from FairValueByMeasurementFrequencyAxis taxonomy $us-gaap returns set (target-name);
@@ -468,8 +513,12 @@ Rule Element Id:64
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.65 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = navigate dimensions dimension-member descendants from FairValueByMeasurementBasisAxis taxonomy $us-gaap returns set (target-name);
@@ -510,9 +559,13 @@ Rule Element Id:65
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.66 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = navigate dimensions dimension-member descendants from HedgingDesignationAxis taxonomy $us-gaap returns set (target-name);
@@ -553,8 +606,12 @@ Rule Element Id:66
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.69 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 /** UPDATED FOR SRT **/
 
@@ -577,7 +634,7 @@ $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-me
 
 $allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
 
-$member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target) returns set (target-name);
+$member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_product + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_ppe + $allowed_members_oil_reserves + $allowed_members_PublicUtilitiesInventoryAxis;
 
@@ -605,9 +662,13 @@ Rule Element Id:69
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.70 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
@@ -631,7 +692,7 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @srt:ConsolidationItemsAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the HedgingDesignationAxis and the unallowable member {$member.local-name}. 
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the ConsolidationItemsAxis and the unallowable member {$member.local-name}. 
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
@@ -649,8 +710,11 @@ Rule Element Id:70
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.71 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $not_allowed_base_member_tree_1 = navigate dimensions dimension-member descendants from RetirementPlanTypeAxis taxonomy $us-gaap returns set (target-name);
 $not_allowed_base_member_tree_2 = navigate dimensions dimension-member descendants from RetirementPlanSponsorLocationAxis taxonomy $us-gaap returns set (target-name);
@@ -683,10 +747,14 @@ message
 Rule Element Id:71
 Rule version: {$ruleVersion}"
 
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.72 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from AwardDateAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from AwardDateAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from AwardDateAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -711,9 +779,13 @@ Rule Element Id:72
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.74 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = navigate dimensions dimension-member descendants from SubsequentEventTypeAxis taxonomy $us-gaap returns set (target-name);
@@ -744,8 +816,11 @@ Rule Element Id:74
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.75 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $allowed_base_member_tree = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis taxonomy $us-gaap returns set (target-name);
 
@@ -755,7 +830,7 @@ $allowed_base_member_2017-12_transition = set(AccumulatedNetGainLossFromCashFlow
 
 $allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined + $allowed_base_member_2017-12_transition);
 
-$base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -780,8 +855,11 @@ Rule Element Id:75
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.76 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Use nested navigation as the StatementScenarioAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 $allowed_base_member = navigate domain-member descendants include start
@@ -791,7 +869,7 @@ $allowed_base_member = navigate domain-member descendants include start
      taxonomy $us-gaap
      returns set (target-name);
 	 
-$base_members = navigate dimensions dimension-member descendants from StatementScenarioAxis where is_base($relationship.target) returns set (target-name);
+$base_members = navigate dimensions dimension-member descendants from StatementScenarioAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -815,10 +893,13 @@ Rule Element Id:76
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.77 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -843,11 +924,14 @@ Rule Element Id:77
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0001.78 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from RetirementPlanNameAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from RetirementPlanNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from RetirementPlanNameAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -872,10 +956,13 @@ Rule Element Id:78
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.79 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from srt:OwnershipAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from srt:OwnershipAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from srt:OwnershipAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -900,10 +987,13 @@ Rule Element Id:79
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0001.80 satisfied
 
-$base_members = navigate dimensions dimension-member descendants from srt:MajorCustomersAxis where is_base($relationship.target) returns set (target-name);
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from srt:MajorCustomersAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 $allowed_base_member = navigate dimensions dimension-member descendants from srt:MajorCustomersAxis taxonomy $us-gaap returns set (target-name);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
@@ -928,6 +1018,7 @@ Rule Element Id:80
 Rule version: {$ruleVersion}"
 
 severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 

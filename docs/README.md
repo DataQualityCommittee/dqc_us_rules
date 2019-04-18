@@ -1,6 +1,6 @@
 # Data Quality Committee Rules &amp; Guidance
 
-The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules will increment with each major release. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).
+The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are revised. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
@@ -52,6 +52,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Approved | 7 |
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
+| [DQC_US_0079](DQC_US_0079/DQC_0079.md) | Extension Members | Approved for IFRS &amp; US GAAP | 8 |
+| [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Approved for IFRS only | 8 |
 
 ## Guidance  
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
@@ -59,8 +61,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 ### [Dimensional Modeling Guidance - Legal Entities &amp; Consolidation](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md) - approved 11/20/2018   
 ### [Guidance on Statement of Cash Flows](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md) - approved 10/4/2017     
 ### [Guidance on Tagging Axis and Members Using the US GAAP Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md) - approved 9/29/16, updated 11/29/16
-### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018 
+### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2018 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2019 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
