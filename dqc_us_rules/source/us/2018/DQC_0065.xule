@@ -12,7 +12,11 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0065.7502 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+=======
+$rule_id = '7502'
+>>>>>>> campbellpryde-xule.dqc/v9
 
 $networkQname = navigate parent-child DESCENDANTS FROM SupplementalCashFlowInformationAbstract returns set (target-name)
 	 
@@ -40,4 +44,6 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
+
+effectiveDate $effective_dates[$rule_id]
 

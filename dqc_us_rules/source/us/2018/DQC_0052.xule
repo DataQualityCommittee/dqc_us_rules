@@ -12,7 +12,10 @@ rule-name-prefix DQC
 assert US.0052.7487 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+<<<<<<< HEAD
 
+=======
+>>>>>>> campbellpryde-xule.dqc/v9
 $fact1 = {@RetirementPlanSponsorLocationAxis=DomesticPlanMember};
 
 exists($fact1) 
@@ -30,3 +33,4 @@ Rule version: {$ruleVersion}"
 
 
 severity error
+effectiveDate $effective_dates[$rule_id]

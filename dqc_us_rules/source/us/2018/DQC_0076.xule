@@ -13,8 +13,12 @@ rule-name-prefix DQC
 
 assert US.0076.7653 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7653';
+>>>>>>> campbellpryde-xule.dqc/v9
 exists({covered-dims @concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = * @period = *}#obligation)
  
 and 
@@ -31,7 +35,7 @@ Period :{$obligation.period}
 Dimensions : {$obligation.dimensions.join(', ','=')}
 Unit : {$obligation.unit}
 
-Rule Element Id:7653
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
@@ -39,3 +43,5 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $obligation
+
+effectiveDate $effective_dates[$rule_id]

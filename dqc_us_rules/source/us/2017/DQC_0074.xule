@@ -14,8 +14,12 @@ rule-name-prefix DQC
 
 assert US.0074.7649 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7649';
+>>>>>>> campbellpryde-xule.dqc/v9
 exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
 
 
@@ -27,9 +31,15 @@ Period :{$fact_with_nil_member.period}
 Dimensions : {$fact_with_nil_member.dimensions.join(', ','=')}
 Unit : {$fact_with_nil_member.unit}
 
-Rule Element Id:7649
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
+<<<<<<< HEAD
 severity error
 effectiveDate $effective_dates[$rule_id]
+=======
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+>>>>>>> campbellpryde-xule.dqc/v9

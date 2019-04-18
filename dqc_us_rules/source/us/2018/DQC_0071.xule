@@ -17,10 +17,14 @@ rule-name-prefix DQC
 
 assert US.0071.7646 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7646';
+>>>>>>> campbellpryde-xule.dqc/v9
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
-$all_cubes = taxonomy().cubes;
+$all_cubes = filter taxonomy().cubes where $item.drs-role.description.contains('- Statement ');
 
 for $x in $all_cubes
 	if $x.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
@@ -52,10 +56,13 @@ Period :{$Revenue.period}
 Dimensions : {$Revenue.dimensions.join(', ','=')}
 Unit : {$Revenue.unit}
 
-Rule Element Id:7646
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 severity error
 effectiveDate $effective_dates[$rule_id]
+
+effectiveDate $effective_dates[$rule_id]
+
 

@@ -12,8 +12,12 @@ rule-name-prefix DQC
 
 assert US.0069.7642 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7642';
+>>>>>>> campbellpryde-xule.dqc/v9
 $ComponentAmount = {@concept.local-name = 'DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount'};
 
 
@@ -42,18 +46,24 @@ Period :{$ComponentAmount.period}
 Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
 Unit : {$ComponentAmount.unit}
 
-Rule Element Id:7642
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error
 effectiveDate $effective_dates[$rule_id]
 
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0069.7643 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7643';
+>>>>>>> campbellpryde-xule.dqc/v9
 $ComponentAmount = {@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets};
 
 $childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
@@ -82,9 +92,14 @@ Period :{$ComponentAmount.period}
 Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
 Unit : {$ComponentAmount.unit}
 
-Rule Element Id:7643
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
+<<<<<<< HEAD
 severity error
+=======
+SEVERITY error
+
+>>>>>>> campbellpryde-xule.dqc/v9
 effectiveDate $effective_dates[$rule_id]

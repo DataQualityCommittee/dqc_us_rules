@@ -10,8 +10,12 @@ rule-name-prefix DQC
 
 assert US.0061.7498 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7498';
+>>>>>>> campbellpryde-xule.dqc/v9
 $descendants_of_investingCash = navigate summation-item descendants from NetCashProvidedByUsedInInvestingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_investingCash.keys)
@@ -33,10 +37,16 @@ Rule version: {$ruleVersion}"
 severity error
 effectiveDate $effective_dates[$rule_id]
 
+effectiveDate $effective_dates[$rule_id]
+
 assert US.0061.7499 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7499';
+>>>>>>> campbellpryde-xule.dqc/v9
 $descendants_of_operating_Cash = navigate summation-item descendants from NetCashProvidedByUsedInOperatingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_operating_Cash.keys)
@@ -58,11 +68,17 @@ Rule version: {$ruleVersion}"
 severity error
 effectiveDate $effective_dates[$rule_id]
 
+effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0061.7500 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+=======
+$rule_id = '7500';
+>>>>>>> campbellpryde-xule.dqc/v9
 $descendants_of_financing_Cash = navigate summation-item descendants from NetCashProvidedByUsedInFinancingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_financing_Cash.keys)
@@ -82,4 +98,9 @@ Rule Element Id: {$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+<<<<<<< HEAD
 effectiveDate $effective_dates[$rule_id]
+=======
+
+effectiveDate $effective_dates[$rule_id]
+>>>>>>> campbellpryde-xule.dqc/v9

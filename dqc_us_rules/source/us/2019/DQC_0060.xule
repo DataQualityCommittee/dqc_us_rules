@@ -12,7 +12,11 @@ rule-name-prefix DQC
 
 assert US.0060.7495 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+=======
+$rule_id = '7495';
+>>>>>>> campbellpryde-xule.dqc/v9
 
 count(list([@NetCashProvidedByUsedInFinancingActivities])) == 0 and 
   
@@ -30,14 +34,21 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:7495
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
 severity error
+effectiveDate $effective_dates[$rule_id]
+
 effectiveDate $effective_dates[$rule_id]
 
 assert US.0060.7496 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+=======
+$rule_id = '7496';
+>>>>>>> campbellpryde-xule.dqc/v9
 
 count(list([@NetCashProvidedByUsedInInvestingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInInvestingActivitiesContinuingOperations]#fact1))!= 0 and
@@ -54,15 +65,22 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:7496
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
 severity error
+effectiveDate $effective_dates[$rule_id]
+
 effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0060.7497 satisfied
 
+<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+=======
+$rule_id = '7497';
+>>>>>>> campbellpryde-xule.dqc/v9
 
 count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
@@ -78,6 +96,9 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:7497
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
 severity error
+
+effectiveDate $effective_dates[$rule_id]

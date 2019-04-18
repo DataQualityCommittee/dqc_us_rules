@@ -16,7 +16,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
-						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
 						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
 						{@IncomeLossFromEquityMethodInvestments}}
 						else
@@ -55,6 +55,8 @@ $rule_suffix_id
 effectiveDate $effective_dates[$rule_suffix_id]
 
 severity error
+
+effectiveDate $effective_dates[$rule_suffix_id]
 
 constant $effective_tax_rates = list(
 			list(2774,EffectiveIncomeTaxRateReconciliationTaxCredits),
