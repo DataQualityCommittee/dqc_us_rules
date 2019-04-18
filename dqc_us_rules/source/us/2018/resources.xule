@@ -68,7 +68,7 @@ constant $extension_items = dict(
 		*	also means that any descendants of DerivativeAssets can also legitimately appear as a descendant of Investments in the companies filing.
 		**/
 
-		constant $siblings_demotable_to_child = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v9/dqc_us_rules/resources/DQC_US_0081/siblings_demotable_to_child.csv', true, list('qname','qname'))
+		constant $siblings_demotable_to_child = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v9/dqc_us_rules/resources/DQC_US_0081/siblings_demotable_to_child.csv', true, list('qname','qname')).to-set
 
 		/**
 		*	Child elements promotable to sibling
@@ -79,7 +79,7 @@ constant $extension_items = dict(
 		*	element can also be defined as a sibling of the parent element in the companys filing.
 		**/
 		
-		constant $child_elements_promotable_to_sibling = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v9/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling.csv', true, list('qname','qname'))
+		constant $child_elements_promotable_to_sibling = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v9/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling.csv', true, list('qname','qname')).to-set
 		
 		/**
 		*	Parent elements with children promotable to sibling
