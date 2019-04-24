@@ -281,11 +281,15 @@ assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect};
+$base = first-value({@CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {@CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
+
 $agg = {@NetCashProvidedByUsedInOperatingActivities}#a1 <+> {@NetCashProvidedByUsedInInvestingActivities}#a2 <+> {@NetCashProvidedByUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+if $base == none
+	skip
+else
+	tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
 
 message
 
