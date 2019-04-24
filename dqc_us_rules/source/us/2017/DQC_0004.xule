@@ -179,7 +179,10 @@ $addMessage =  (if exists($TempIncNCI) and not exists({@TemporaryEquityCarryingA
 else
 	'');
 **/
-tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
+if ($CalcEquity == none or $CalcLiabilities == none)
+	skip
+else
+	tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
 
 message
 
