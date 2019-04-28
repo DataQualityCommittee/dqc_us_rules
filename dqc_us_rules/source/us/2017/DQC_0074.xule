@@ -14,7 +14,7 @@ rule-name-prefix DQC
 
 assert US.0074.7649 satisfied
 
-$rule_id = '7649';
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
 
 
