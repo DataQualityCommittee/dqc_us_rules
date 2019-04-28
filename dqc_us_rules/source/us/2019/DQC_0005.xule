@@ -48,7 +48,6 @@ Unit: {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$rule_id]
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -57,10 +56,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0005.48 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-<<<<<<< HEAD
-=======
 
->>>>>>> campbellpryde-xule.dqc/v9
 
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
@@ -78,7 +74,6 @@ Unit: {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$rule_id]
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -86,19 +81,12 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0005.49 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-<<<<<<< HEAD
-=======
 
->>>>>>> campbellpryde-xule.dqc/v9
 
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 	skip
 else
-<<<<<<< HEAD
-	$fact1 = {@srt:StatementScenarioAxis = ScenarioForecastMember};
-=======
 	$fact1 = {@srt:StatementScenarioAxis = srt:ScenarioForecastMember};
->>>>>>> campbellpryde-xule.dqc/v9
 	$sub_event_at_date = $fact1.period.end;
 	$sub_event_at_date <= $maximum_period_end_date
 
@@ -113,7 +101,6 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-effectiveDate $effective_dates[$rule_id]
 
 effectiveDate $effective_dates[$rule_id]
 

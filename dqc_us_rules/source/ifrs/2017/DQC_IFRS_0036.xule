@@ -12,8 +12,6 @@ rule-name-prefix DQC
 
 assert IFRS.0036.1 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 exists({@concept.local-name ='DocumentPeriodEndDate' where $fact > ($fact.period.end + (time-span("P4D"))) or $fact < ($fact.period.end - (time-span("P4D")))}#fact1)
 
 message
@@ -26,5 +24,4 @@ Unit : {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$rule_id]
 

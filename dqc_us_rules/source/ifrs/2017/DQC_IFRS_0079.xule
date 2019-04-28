@@ -13,8 +13,6 @@ rule-name-prefix DQC
 
 assert IFRS.0079.7657 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $acceptable_dimensions = set(SegmentsAxis);
 
  for ($duplicate_concept in $extension_qname)
@@ -40,7 +38,6 @@ Rule Element Id:7657
 Rule version: {$ruleVersion}
 "
 
-severity error
-effectiveDate $effective_dates[$rule_id]
+SEVERITY error
 
 

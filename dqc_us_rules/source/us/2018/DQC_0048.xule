@@ -12,12 +12,7 @@ rule-name-prefix DQC
 
 assert US.0048.7482 satisfied
 
-<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-=======
-$rule_id = '7482';
->>>>>>> campbellpryde-xule.dqc/v9
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
@@ -25,7 +20,6 @@ $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept
 if ($networkPresRole.length == 0)
 	skip
 else
-<<<<<<< HEAD
 
 	/* This uses  navigation. It finds the root relationships and returns the networks. Since it  returns a set, the dups will be eliminated. */
 
@@ -35,17 +29,6 @@ else
 		true
 	else
 
-=======
-
-	/* This uses  navigation. It finds the root relationships and returns the networks. Since it  returns a set, the dups will be eliminated. */
-
-	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-		$root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
-		$network_role = $networkPresRole.join(', ');
-		true
-	else
-
->>>>>>> campbellpryde-xule.dqc/v9
 		for ($calcNetwork in 
 			filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 							
@@ -92,8 +75,6 @@ If you have used an extension element that reflects the changes made for ASU-201
 2. CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect
 
 Rule Element Id: {$rule_id}
-<<<<<<< HEAD
-=======
 Rule version: {$ruleVersion}"
 
 
@@ -103,7 +84,7 @@ effectiveDate $effective_dates[$rule_id]
 
 assert US.0048.9294 satisfied
 
-$rule_id = '9294';
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 $networkPresRole = filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
@@ -153,13 +134,9 @@ NetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvi
 {$root_string}.
 
 Rule Element Id: {$rule_id}
->>>>>>> campbellpryde-xule.dqc/v9
 Rule version: {$ruleVersion}"
 
 
 severity error
 effectiveDate $effective_dates[$rule_id]
-<<<<<<< HEAD
-=======
 
->>>>>>> campbellpryde-xule.dqc/v9

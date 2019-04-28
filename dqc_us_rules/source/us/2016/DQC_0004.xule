@@ -11,10 +11,6 @@ rule-name-prefix DQC
 assert US.0004.16 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-<<<<<<< HEAD
-
-=======
->>>>>>> campbellpryde-xule.dqc/v9
 $Assets = {@Assets};
 $LiabilitiesAndStockholdersEquity = {@LiabilitiesAndStockholdersEquity};
 $decimal_tolerance_factor = 2;
@@ -103,10 +99,6 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-<<<<<<< HEAD
-effectiveDate $effective_dates[$rule_id]
-
-=======
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -519,7 +511,6 @@ $drs_members = dict(for $drs_role in $drs_roles.sort
 
 /** Go through the first role and evaluate that the members add to the total in the default. **/
 for  $x in first(list($drs_members.keys))
->>>>>>> campbellpryde-xule.dqc/v9
 
 	/** Get a list of the members **/
 	$member_descendants = $drs_members[$x].to-set;

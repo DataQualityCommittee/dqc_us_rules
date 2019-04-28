@@ -16,12 +16,7 @@ rule-name-prefix DQC
 
 assert US.0073.7648 satisfied
 
-<<<<<<< HEAD
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-=======
-$rule_id = '7648';
->>>>>>> campbellpryde-xule.dqc/v9
 $allowable_line_items = list(
 DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod,
 DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld,
@@ -71,7 +66,6 @@ Unit : {$bad_fact.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error
-effectiveDate $effective_dates[$rule_id]
+SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
