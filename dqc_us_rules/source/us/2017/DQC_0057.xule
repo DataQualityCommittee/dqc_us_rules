@@ -10,7 +10,7 @@ rule-name-prefix DQC
 
 assert US.0057.7494 satisfied
 
-$rule_id = '7494';
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 for ($networkPres in 
@@ -33,7 +33,7 @@ for ($networkPres in
 	$elementNames = $must_be_present_elements.join(', ');
 
 	$balances = set(for ($concept_item in $networkPres.concepts)
-					if($concept_item.period-type == instant)		
+					if ($concept_item.period-type == instant)		
 						$concept_item.name.local-name	       	
 					else 
 						skip);
