@@ -62,7 +62,7 @@ for ($network in $extCalcRelationship1.keys)
 				
 				/** Read list of elements that can have any siblings demoted to a child except the exceptions. Any source elements of the inconsistencies in this list will not be reported -- This is typically "Other elments".  These 2 checks are run at the end so they are only checked for a limited set of relationships.**/
 				not any(set(for ($parent in $sibling_elements_with_siblings_demotable_to_descendant)
-									$extCalcSourceName == $parent[1] and $extCalcRelationship.target.name not in $parent[2])) and
+									$extCalcSourceName.local-name == $parent[1] and $extCalcRelationship.target.name.local-name not in $parent[2])) and
 
 				/** This takes any descendants of siblings demotable to child and allows them also be demoted. **/
 				all(set(for ($pair in $siblings_demotable_to_child)
@@ -165,7 +165,4 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
-
-output exclusions
-$parent_elements_with_children_promotable_to_sibling
 

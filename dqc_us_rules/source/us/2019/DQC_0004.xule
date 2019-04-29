@@ -110,8 +110,8 @@ assert US.0004.9282 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest};
-$CalcSE = {@StockholdersEquity}#se <+> {@MinorityInterest}#mi;
+$SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
+$CalcSE = {@StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {@MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($SEINCI, $CalcSE, $decimal_tolerance_factor)
