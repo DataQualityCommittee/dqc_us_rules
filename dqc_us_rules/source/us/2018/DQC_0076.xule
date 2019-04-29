@@ -13,7 +13,7 @@ rule-name-prefix DQC
 
 assert US.0076.7653 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = '7653';
 exists({covered-dims @concept in list(RevenueRemainingPerformanceObligationPercentage, RevenueRemainingPerformanceObligation) @@RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis = * @unit = * @period = *}#obligation)
  
 and 

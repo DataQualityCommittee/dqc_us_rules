@@ -179,10 +179,7 @@ $addMessage =  (if exists($TempIncNCI) and not exists({@TemporaryEquityCarryingA
 else
 	'');
 **/
-if ($CalcEquity == none or $CalcLiabilities == none)
-	skip
-else
-	tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
+tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
 
 message
 
@@ -283,15 +280,11 @@ assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = first-value({@CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {@CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
-
+$base = {@CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect};
 $agg = {@NetCashProvidedByUsedInOperatingActivities}#a1 <+> {@NetCashProvidedByUsedInInvestingActivities}#a2 <+> {@NetCashProvidedByUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
 
-if $base == none
-	skip
-else
-	tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
 
 message
 

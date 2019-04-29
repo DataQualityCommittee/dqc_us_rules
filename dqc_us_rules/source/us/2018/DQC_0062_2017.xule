@@ -12,7 +12,7 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0062.7501 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = '7501';
 $network = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical');
 
 

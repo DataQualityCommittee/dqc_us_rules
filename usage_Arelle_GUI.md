@@ -14,14 +14,13 @@
 
 ## Checking version and rule set map
 
+## Checking a filing with DQC Rules
 * Arelle caches the default rulesetMap.json file when the program restarts after the DQC plugin is installed. There are several functions available to manage this file, as noted below.
 * Choose the "Tools" menu and mouse-over the DQC option to see four options:
     * "Version ..." displays the current xule version installed to Arelle's plugin/xule subfolder (recommended as 3.0.22730 or higher).
     * "Display DQC rule set map ..." shows the current rule sets targeted. By default, the GitHub URLs should correspond to the **current release version** (ie. `https://github.com/DataQualityCommittee/dqc_us_rules/dqc_us_rules/blob/` **v8** `/dqc_us_rules/`... would indicate Version 8 ruleset.zip files).
     * "Check DQC rule set map ..." verifies the cached rulesetMap.json file references the most-current approved ruleset.zip files.
     * "Update DQC rule set map ..." provides an interface for either appending or overwriting the cached rulesetMap.json file.
-
-## Checking a filing with DQC Rules
 
 * Choose the "File" menu and either "Open file" or "Open Web" to select an XBRL .zip file from local computer or SEC EDGAR system.
 * Select the .xml file (instance document) from the view of the contents of the .zip.

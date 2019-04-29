@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22780 $
+$Change: 22737 $
 DOCSKIP
 """
 
@@ -503,7 +503,7 @@ def func_csv_data(xule_context, *args):
                 
         if return_row_type == 'list':
             result.append(xv.XuleValue(xule_context, tuple(result_line), 'list', shadow_collection=tuple(result_line_shadow)))
-            result_shadow.append(tuple(result_line_shadow))
+            result_shadow.append(result_line_shadow)
         else: #dictionary
             result.append(xv.XuleValue(xule_context, frozenset(result_line.items()), 'dictionary', shadow_collection=frozenset(result_line_shadow.items())))
             result_shadow.append(frozenset(result_line_shadow.items()))

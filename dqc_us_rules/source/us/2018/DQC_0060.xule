@@ -12,7 +12,7 @@ rule-name-prefix DQC
 
 assert US.0060.7495 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = '7495';
 
 count(list([@NetCashProvidedByUsedInFinancingActivities])) == 0 and 
   
@@ -38,7 +38,7 @@ effectiveDate $effective_dates[$rule_id]
 
 assert US.0060.7496 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = '7496';
 
 count(list([@NetCashProvidedByUsedInInvestingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInInvestingActivitiesContinuingOperations]#fact1))!= 0 and
@@ -64,7 +64,7 @@ effectiveDate $effective_dates[$rule_id]
 
 assert US.0060.7497 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = '7497';
 
 count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
 count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
