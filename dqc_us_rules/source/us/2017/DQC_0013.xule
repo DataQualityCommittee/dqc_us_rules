@@ -17,11 +17,11 @@ for ($x in $effective_tax_rates)
 		$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
-						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
 						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
 						{@IncomeLossFromEquityMethodInvestments}}
 						else
-							if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
+							if	(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
 	  							exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}))
 								{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic} +
 								{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}  +

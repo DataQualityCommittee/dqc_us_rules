@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22739 $
+$Change: 22730 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -1423,9 +1423,7 @@ def evaluate_constant_assign(const_assign, xule_context):
         raise XuleProcessingError(_("Constant '%s' not found" % const_assign['constantName']), xule_context)
 
     if not const_info['calculated']:
-        #const_context = XuleRuleContext(xule_context.global_context, xule_context.rule_name + ":" + const_info['name'],
-        #                                xule_context.cat_file_num)
-        const_context = XuleRuleContext(xule_context.global_context, None,
+        const_context = XuleRuleContext(xule_context.global_context, xule_context.rule_name + ":" + const_info['name'],
                                         xule_context.cat_file_num)
         calc_constant(const_info, const_context)
         # Clean up
@@ -4775,18 +4773,6 @@ def result_message(rule_ast, result_ast, xule_value, xule_context):
             message = message_value.value
         elif message_value.is_fact:
             message = message_value.fact
-        elif message_value.type in ('list','set'):
-            # The rule focus is a list/set of concepts or facts. The list/set cannot be nested
-            message = []
-            for rule_focus_item in message_value.value:
-                if rule_focus_item.type == 'concept':
-                    message.append(rule_focus_item.value)
-                elif rule_focus_item.is_fact:
-                    message.append(rule_focus_item.fact)
-                else:
-                    raise XuleProcessingError(
-                        _("The rule-focus of a rule must be a concept or a fact, found {}".format(rule_focus_item.type)),
-                        xule_context)
         else:
             raise XuleProcessingError(
                 _("The rule-focus of a rule must be a concept or a fact, found {}".format(message_value.type)),
