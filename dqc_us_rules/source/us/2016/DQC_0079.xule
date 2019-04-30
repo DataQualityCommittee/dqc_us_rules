@@ -13,7 +13,7 @@ rule-name-prefix DQC
 
 assert US.0079.7657 satisfied
 
-$rule_id = '7657';
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $acceptable_dimensions = set(StatementBusinessSegmentsAxis, IncomeTaxAuthorityNameAxis);
 
  for ($duplicate_concept in $extension_qname)
