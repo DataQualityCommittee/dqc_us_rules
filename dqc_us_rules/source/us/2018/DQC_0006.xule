@@ -12,7 +12,6 @@ rule-name-prefix DQC
 assert US.0006.14 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 
 	$period_focus = first(set({covered @concept.local-name ='DocumentFiscalPeriodFocus'}));
@@ -24,6 +23,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		exists({@ where ($fact.is-type(nonnum:textBlockItemType) or $fact.concept.name in $dei_DQC0006_items) and ($fact.period.days > $max_range or $fact.period.days < $min_range)}#fact1)
 		and not(list({covered @concept.local-name ='DocumentType'}).length > 1)
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact.contains('T')}))
+		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))
 		and not(exists({covered @concept = qname($extension_ns,'TransitionReport')}))
 	else
 		false

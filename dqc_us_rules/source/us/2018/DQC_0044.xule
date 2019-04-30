@@ -13,7 +13,6 @@ rule-name-prefix DQC
 assert US.0044.6834 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $Accrual_items_in_cashflows = 
 NAVIGATE summation-item DESCENDANTS 
 FROM list(NetCashProvidedByUsedInFinancingActivities, NetCashProvidedByUsedInFinancingActivitiesContinuingOperations)  where $relationship.target.name in $Accrual_Items 
@@ -45,11 +44,9 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
-
 assert US.0044.7503 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $Accrual_items_in_cashflows = 
 NAVIGATE summation-item DESCENDANTS 
 FROM list(NetCashProvidedByUsedInInvestingActivities, NetCashProvidedByUsedInInvestingActivitiesContinuingOperations)  where $relationship.target.name in $Accrual_Items
@@ -76,4 +73,3 @@ Rule version: {$ruleVersion}"
 
 severity error
 effectiveDate $effective_dates[$rule_id]
-

@@ -13,7 +13,6 @@ rule-name-prefix DQC
 assert US.0069.7642 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $ComponentAmount = {@concept.local-name = 'DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount'};
 
 
@@ -42,18 +41,18 @@ Period :{$ComponentAmount.period}
 Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
 Unit : {$ComponentAmount.unit}
 
-Rule Element Id:7642
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0069.7643 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $ComponentAmount = {@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets};
 
 $childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
@@ -82,9 +81,10 @@ Period :{$ComponentAmount.period}
 Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
 Unit : {$ComponentAmount.unit}
 
-Rule Element Id:7643
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]

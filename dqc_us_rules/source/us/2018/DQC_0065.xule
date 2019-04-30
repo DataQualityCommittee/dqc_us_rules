@@ -10,7 +10,7 @@ Taxonomy: US GAAP 2018
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0065.7502 satisfied
+ASSERT US.0065.7502 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -36,8 +36,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
-
-
 

@@ -11,19 +11,17 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 for ($x in $effective_tax_rates)
 	$rule_suffix_id = $x[1];
 	
 		$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
-						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
 						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
 						{@IncomeLossFromEquityMethodInvestments}}
 						else
-							if	(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
+							if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
 	  							exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}))
 								{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic} +
 								{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}  +
@@ -51,9 +49,9 @@ Rule version: {$ruleVersion}"
 rule-suffix
 $rule_suffix_id
 
-effectiveDate $effective_dates[$rule_suffix_id]
-
 severity error
+
+effectiveDate $effective_dates[$rule_suffix_id]
 
 
 constant $effective_tax_rates = list(
@@ -92,7 +90,5 @@ for ($x in $effective_tax_rates)
 	
 rule-suffix
 $rule_suffix_id
-
-effectiveDate $effective_dates[$rule_suffix_id]
 	
 **/

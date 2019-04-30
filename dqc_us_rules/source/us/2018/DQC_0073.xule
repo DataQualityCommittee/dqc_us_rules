@@ -17,7 +17,6 @@ rule-name-prefix DQC
 assert US.0073.7648 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $allowable_line_items = list(
 DefinedBenefitPlanActualReturnOnPlanAssetsSoldDuringPeriod,
 DefinedBenefitPlanActualReturnOnPlanAssetsStillHeld,
@@ -63,9 +62,9 @@ Period :{$bad_fact.period}
 Dimensions : {$bad_fact.dimensions.join(', ','=')}
 Unit : {$bad_fact.unit}
 
-Rule Element Id:7648
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error
-effectiveDate $effective_dates[$rule_id]
+SEVERITY error
 
+effectiveDate $effective_dates[$rule_id]

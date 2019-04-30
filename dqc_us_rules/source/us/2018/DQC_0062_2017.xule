@@ -10,10 +10,9 @@ Taxonomy: US GAAP 2018
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0062.7501 satisfied
+ASSERT US.0062.7501 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $network = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical');
 
 
@@ -44,11 +43,12 @@ If you have disclosed a change in cash for the period, one of the above elements
 2. The change in cash flow is dimensionally qualified with an inappropriate dimension. The instance should have a value reported with no dimensions. The rule will identify where the successor member has been used or an extension member. The value for change in cash should not have a dimension.
 3. The change in cash has been represented with an extension element. There is no reason the change in cash needs to be identified using an extension element.
 
-Rule Element Id:7501
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
 
 
