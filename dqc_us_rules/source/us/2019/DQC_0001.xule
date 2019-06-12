@@ -139,15 +139,19 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Use nested navigation as the LegalEntityAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 $allowed_members_lea = navigate domain-member descendants include start
      from (navigate dimension-domain children
-           from dei:LegalEntityAxis
+           from qname($dei_namespace,'LegalEntityAxis')
            taxonomy $us-gaap returns set)
      taxonomy $us-gaap
      returns set (target-name);
 $allowed_members_FHLB = navigate dimensions dimension-member descendants from srt:FederalHomeLoanBankAdvancesBranchOfFHLBBankAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember, dei:EntityDomain);
+$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember
+						, qname($dei_namespace, 'EntityDomain')
+						);
 
-$member_extension = navigate dimensions dimension-member descendants from dei:LegalEntityAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+$member_extension = navigate dimensions dimension-member descendants 
+					from qname($dei_namespace, 'LegalEntityAxis') 
+					where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_lea + $allowed_members_FHLB + $allowed_base_member;
 
@@ -156,7 +160,7 @@ $unallowed_base_members = $member_extension - $allowed_members;
 /** Evaluate if facts exists with the unallowable members **/
 
 	for ($member in $unallowed_base_members)
-		$fact1 = {covered @dei:LegalEntityAxis = $member};
+		$fact1 = {covered where $fact.dimension(qname($dei_namespace, 'LegalEntityAxis')) == taxonomy().concept($member)};
 		if exists($fact1)
 			$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the LegalEntityAxis and the unallowable member {$member.local-name}. Only extension members should be used with the axis LegalEntityAxis other than the members predefined in the US-GAAP taxonomy. 
 The properties of the fact for {$fact1.concept.name.local-name} are:
@@ -171,7 +175,7 @@ Unit: {$fact1.unit}";
 message
 "{$message_for_fact}
 
-Rule Element Id:69
+Rule Element Id:54
 Rule version: {$ruleVersion}"
 
 SEVERITY error
@@ -402,9 +406,9 @@ $member_USGAAP = navigate domain-member descendants include start
 
 $member_extension = navigate dimensions dimension-member descendants from srt:CurrencyAxis returns set (target-name);
 
-/** Define allowable extensions with the qname function **/
+/** Define allowable extensions with the qname function. XBT is used for bitcoin. **/
 
-$allowable_extensions = set(qname($extension_ns,'SICAD1Member'), qname($extension_ns,'SICAD2Member'), qname($extension_ns,'OtherCurrencyMember'), qname($extension_ns,'NonUSDollarMember'),qname($extension_ns,'CENCOEXMember'),qname($extension_ns,'SICADMember'),qname($extension_ns,'SIMADIMember'),qname($extension_ns,'DIPROMember'),qname($extension_ns,'DICOMMember'));
+$allowable_extensions = set(qname($extension_ns,'SICAD1Member'), qname($extension_ns,'SICAD2Member'), qname($extension_ns,'OtherCurrencyMember'), qname($extension_ns,'NonUSDollarMember'),qname($extension_ns,'CENCOEXMember'),qname($extension_ns,'SICADMember'),qname($extension_ns,'SIMADIMember'),qname($extension_ns,'DIPROMember'),qname($extension_ns,'DICOMMember'),qname($extension_ns,'XBT'));
 
 /** Union the sets**/
 
