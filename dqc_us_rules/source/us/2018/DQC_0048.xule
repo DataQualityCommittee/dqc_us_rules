@@ -105,8 +105,8 @@ else
 			filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 							
 			$network_role = $calcNetwork.role.uri;
-			$fiscal_year_focus = {covered @dei:DocumentFiscalYearFocus};
-			$fiscal_year_end_date = {covered @dei:CurrentFiscalYearEndDate};
+			$fiscal_year_focus = {covered @concept.local-name = 'DocumentFiscalYearFocus'};
+			$fiscal_year_end_date = {covered @concept.local-name = 'CurrentFiscalYearEndDate'};
 			$year_end_date = date($fiscal_year_focus <+> $fiscal_year_end_date.string.substring(2));
 
 			$roots = set(for $root in $calcNetwork.roots 
