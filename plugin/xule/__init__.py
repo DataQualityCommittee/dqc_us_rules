@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22775 $
+$Change: 22812 $
 DOCSKIP
 """
 from .XuleProcessor import process_xule
@@ -671,7 +671,7 @@ def xuleCmdUtilityRun(cntlr, options, **kwargs):
         from threading import Thread
 
         try:
-            rule_set = xr.XuleRuleSet()
+            rule_set = xr.XuleRuleSet(cntlr)
             rule_set.open(options.xule_rule_set, False)
         except xr.XuleRuleSetError:
             raise
