@@ -1,6 +1,6 @@
 # Data Quality Committee Rules &amp; Guidance
 
-The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are revised. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).
+The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are revised. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
@@ -69,4 +69,4 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 © Copyright 2015 - 2019 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
-See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
+See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
