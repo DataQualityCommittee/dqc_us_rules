@@ -48,7 +48,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0072](DQC_US_0072/DQC_0072.md) | Plan Asset Categories Percentage | Approved | 7 |
 | [DQC_US_0073](DQC_US_0073/DQC_0073.md) | Plan Asset Categories Permissible Line Items | Approved | 7 |
 | [DQC_US_0074](DQC_US_0074/DQC_0074.md) | Nil Values on Typed Axis | Approved | 7 |
-| DQC_US_0075 | Revenue Tax Policy | Removed from Approved |  |
+| DQC_US_0075 | Revenue Tax Policy | Removed from Public Review |  |
 | [DQC_US_0076](DQC_US_0076/DQC_0076.md) | Performance Obligations With No Durations | Approved | 7 |
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
