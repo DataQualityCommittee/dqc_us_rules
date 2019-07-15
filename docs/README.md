@@ -54,7 +54,10 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
 | [DQC_US_0079](DQC_US_0079/DQC_0079.md) | Extension Members | Approved for IFRS &amp; US GAAP | 8 |
 | [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Public Review for IFRS only | 9 |
-| [DQC_US_0081](DQC_US_0081/DQC_0081.md) | Sibling Child Relationships | Public Review | 9 |
+| [DQC_US_0081](DQC_US_0081/DQC_0081.md) | Sibling Child Relationships | Public Review | 9 
+| [DQC_US_0082](DQC_US_0082/DQC_0082.md) | Disaggregation by Variable Interest Elements (VIE) | Draft for DQC consideration | 10 |
+| [DQC_US_0083](DQC_US_0083/DQC_0083.md) | Consolidated Variable Interest Entities (VIE) | Draft for DQC consideration | 10 |
+| [DQC_US_0084](DQC_US_0084/DQC_0084.md) | Durational Aggregation | Draft for DQC consideration | 10 |
 
 ## Guidance  
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
