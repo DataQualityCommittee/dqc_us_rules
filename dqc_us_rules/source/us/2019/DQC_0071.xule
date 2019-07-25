@@ -18,7 +18,6 @@ rule-name-prefix DQC
 assert US.0071.7646 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
 $all_cubes = filter taxonomy().cubes where $item.drs-role.description.contains('- Statement ');
 
@@ -56,6 +55,8 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
+
 

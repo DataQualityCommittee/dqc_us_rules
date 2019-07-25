@@ -13,7 +13,6 @@ rule-name-prefix DQC
 assert US.0068.7641 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $network730000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/CompensationRelatedCostsRetirementBenefits' taxonomy $us-gaap where $relationship.target.is-abstract == false returns set (target-name);
 
 exists({@concept in ($network730000) @srt:StatementGeographicalAxis = *}#RetirementPlanItem)
@@ -26,10 +25,11 @@ Period :{$RetirementPlanItem.period}
 Dimensions : {$RetirementPlanItem.dimensions.join(', ','=')}
 Unit : {$RetirementPlanItem.unit}
 
-Rule Element Id:7641
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
 

@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2017
@@ -18,7 +18,6 @@ rule-name-prefix DQC
 assert US.0071.7646 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $valid_line_items = set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueFromContractWithCustomerExcludingAssessedTax, CostOfGoodsAndServicesSold);
 $all_cubes = filter taxonomy().cubes where $item.drs-role.description.contains('- Statement ');
 
@@ -57,7 +56,9 @@ Rule version: {$ruleVersion}
 "
 
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
+
 
 
