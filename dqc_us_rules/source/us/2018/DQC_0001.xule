@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2018
@@ -132,7 +132,6 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.54 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 /** Use nested navigation as the LegalEntityAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
@@ -147,8 +146,10 @@ $allowed_members_FHLB = navigate dimensions dimension-member descendants from sr
 $allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember
 						, qname($dei_namespace, 'EntityDomain')
 						);
-						
-$member_extension = navigate dimensions dimension-member descendants from qname($dei_namespace,'LegalEntityAxis') where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+
+$member_extension = navigate dimensions dimension-member descendants 
+					from qname($dei_namespace, 'LegalEntityAxis') 
+					where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 $allowed_members = $allowed_members_lea + $allowed_members_FHLB + $allowed_base_member;
 
@@ -175,7 +176,8 @@ message
 Rule Element Id:54
 Rule version: {$ruleVersion}"
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -253,7 +255,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** UPDATED FOR SRT **/
 $base_members = navigate dimensions dimension-member descendants from srt:CounterpartyNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
-$allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, DirectorMember, ChiefExecutiveOfficerMember, ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember);
+$allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, DirectorMember, ChiefExecutiveOfficerMember, ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember, IndividuallyImmaterialCounterpartiesMember);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -749,8 +751,10 @@ message
 Rule Element Id:71
 Rule version: {$ruleVersion}"
 
-severity error
+SEVERITY error
+
 effectiveDate $effective_dates[$rule_id]
+
 
 assert US.0001.72 satisfied
 
