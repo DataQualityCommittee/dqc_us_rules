@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert US.0055.7493 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $listmembers = navigate parent-child descendants from RetirementPlanSponsorLocationAxis returns by network set (target-name)
 
 for ($network in $listmembers.keys)

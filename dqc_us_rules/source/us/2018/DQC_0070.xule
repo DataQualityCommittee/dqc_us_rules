@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert US.0070.7645 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Find valid cubes where the Categories Axis is Used to define a breakdown of plan assets and return the drs-role
 	Criteria:
 		- Exclude cubes where the range axis is used as this indicates a target allocation table
@@ -86,7 +88,8 @@ Unit : {$FairValueOfPlanAssets.unit}
 Rule Element Id:7645
 Rule version: {$ruleVersion}"
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $FairValueOfPlanAssets 
 

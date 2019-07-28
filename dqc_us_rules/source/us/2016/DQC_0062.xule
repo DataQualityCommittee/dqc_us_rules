@@ -10,7 +10,9 @@ Taxonomy: US GAAP 2016
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0062.7501 SATISFIED
+ASSERT US.0062.7501 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $network = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical');
 
@@ -46,7 +48,8 @@ Rule Element Id:7501
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 
 

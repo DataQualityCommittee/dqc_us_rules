@@ -13,6 +13,8 @@ rule-name-prefix DQC
 
 assert US.0077.7654 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $ComponentAmount = {@concept = RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionPeriod1}#sat_period;
 
 
@@ -33,7 +35,8 @@ Rule Element Id:7654
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
+severity error
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $sat_period
 
