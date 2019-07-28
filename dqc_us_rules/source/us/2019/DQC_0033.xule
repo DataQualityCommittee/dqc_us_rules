@@ -13,8 +13,12 @@ assert US.0033.2 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$exceptions_to_dei = set(dei:EntityCommonStockSharesOutstanding, dei:EntityPublicFloat, dei:DocumentPeriodEndDate, dei:EntityNumberOfEmployees, dei:EntityListingDepositoryReceiptRatio);
-$document_period = first(list({covered @concept = dei:DocumentPeriodEndDate}));
+$exceptions_to_dei = set(qname($dei_namespace,'EntityCommonStockSharesOutstanding')
+						, qname($dei_namespace,'EntityPublicFloat')
+						, qname($dei_namespace,'DocumentPeriodEndDate')
+						, qname($dei_namespace,'EntityNumberOfEmployees')
+						, qname($dei_namespace,'EntityListingDepositoryReceiptRatio'));
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end;
 
 /** The  first part of the expession checks if the document period end date is within three days if not the rule does not execute as rule DQC.US.0036 will have executed**/
@@ -33,6 +37,7 @@ Unit : {$fact1.unit}
 Rule version: {$ruleVersion}"
 
 severity error
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1

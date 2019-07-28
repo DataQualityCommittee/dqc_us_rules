@@ -10,8 +10,6 @@ rule-name-prefix DQC
 
 assert US.0011 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 for ($x in $dim_items)
 	$rule_suffix_id = $x[1];
 	$line_item = [@concept = $x[2]];
@@ -42,7 +40,6 @@ Rule version: {$ruleVersion}
 "
 
 severity error
-
 
 rule-suffix
 $rule_suffix_id

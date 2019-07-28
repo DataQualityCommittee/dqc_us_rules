@@ -11,12 +11,10 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
-						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
 						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
 						{@IncomeLossFromEquityMethodInvestments}}
 						else
@@ -52,30 +50,29 @@ Rule version: {$ruleVersion}"
 rule-suffix
 $rule_suffix_id
 
-effectiveDate $effective_dates[$rule_suffix_id]
-
 severity error
 
-constant $effective_tax_rates = list(
-			list(2774,EffectiveIncomeTaxRateReconciliationTaxCredits),
-			list(2776,EffectiveIncomeTaxRateReconciliationDeductionsQualifiedProductionActivities),
-			list(2777,EffectiveIncomeTaxRateReconciliationNondeductibleExpense),
-			list(2778,EffectiveIncomeTaxRateReconciliationTaxCreditsResearch),
-			list(2779,EffectiveIncomeTaxRateReconciliationDeductionsOther),
-			list(2780,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance),
-			list(2781,EffectiveIncomeTaxRateReconciliationTaxCreditsOther),
-			list(2782,EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment),
-			list(2783,EffectiveIncomeTaxRateReconciliationTaxCreditsForeign),
-			list(2784,EffectiveIncomeTaxRateReconciliationDeductionsDividends),
-			list(2785,EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings),
-			list(2871,EffectiveIncomeTaxRateReconciliationTaxHolidays),
-			list(2872,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseResearchAndDevelopment),
-			list(2873,EffectiveIncomeTaxRateReconciliationDeductions),
-			list(2874,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseImpairmentLosses),
-			list(3001,EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends),
-			list(3002,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment),
-			list(3439,EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion),
-			list(3440,EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
-			list(3441,EffectiveIncomeTaxRateReconciliationRepatriationForeignEarningsJobsCreationActOf2004)
-			)
+effectiveDate $effective_dates[$rule_suffix_id]
 
+constant $effective_tax_rates = list(
+			list('2774',EffectiveIncomeTaxRateReconciliationTaxCredits),
+			list('2776',EffectiveIncomeTaxRateReconciliationDeductionsQualifiedProductionActivities),
+			list('2777',EffectiveIncomeTaxRateReconciliationNondeductibleExpense),
+			list('2778',EffectiveIncomeTaxRateReconciliationTaxCreditsResearch),
+			list('2779',EffectiveIncomeTaxRateReconciliationDeductionsOther),
+			list('2780',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance),
+			list('2781',EffectiveIncomeTaxRateReconciliationTaxCreditsOther),
+			list('2782',EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment),
+			list('2783',EffectiveIncomeTaxRateReconciliationTaxCreditsForeign),
+			list('2784',EffectiveIncomeTaxRateReconciliationDeductionsDividends),
+			list('2785',EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings),
+			list('2871',EffectiveIncomeTaxRateReconciliationTaxHolidays),
+			list('2872',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseResearchAndDevelopment),
+			list('2873',EffectiveIncomeTaxRateReconciliationDeductions),
+			list('2874',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseImpairmentLosses),
+			list('3001',EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends),
+			list('3002',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment),
+			list('3439',EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion),
+			list('3440',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
+			list('3441',EffectiveIncomeTaxRateReconciliationRepatriationForeignEarningsJobsCreationActOf2004)
+			)

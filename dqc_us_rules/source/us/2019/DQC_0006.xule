@@ -24,6 +24,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		exists({@ where ($fact.is-type(nonnum:textBlockItemType) or $fact.concept.name in $dei_DQC0006_items) and ($fact.period.days > $max_range or $fact.period.days < $min_range)}#fact1)
 		and not(list({covered @concept.local-name ='DocumentType'}).length > 1)
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact.contains('T')}))
+		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))
 		and not(exists({covered @concept = qname($extension_ns,'TransitionReport')}))
 	else
 		false
@@ -44,18 +45,19 @@ Rule version: {$ruleVersion}"
 rule-focus $fact1
 
 severity error
+
 effectiveDate $effective_dates[$rule_id]
 
-constant $dei_DQC0006_items = list(dei:AmendmentDescription, 
-	dei:AmendmentFlag, 
-	dei:CurrentFiscalYearEndDate,
-	dei:DocumentPeriodEndDate, 
-	dei:DocumentFiscalYearFocus,
-	dei:DocumentFiscalPeriodFocus,
-	dei:DocumentType,
-	dei:EntityRegistrantName,
-	dei:EntityCentralIndexKey,
-	dei:EntityFilerCategory)
+constant $dei_DQC0006_items = list(qname($dei_namespace,'AmendmentDescription'), 
+	qname($dei_namespace,'AmendmentFlag'), 
+	qname($dei_namespace,'CurrentFiscalYearEndDate'),
+	qname($dei_namespace,'DocumentPeriodEndDate'), 
+	qname($dei_namespace,'DocumentFiscalYearFocus'),
+	qname($dei_namespace,'DocumentFiscalPeriodFocus'),
+	qname($dei_namespace,'DocumentType'),
+	qname($dei_namespace,'EntityRegistrantName'),
+	qname($dei_namespace,'EntityCentralIndexKey'),
+	qname($dei_namespace,'EntityFilerCategory'))
 	
 
 constant $focus_range_lookup = list(

@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2018
@@ -30,4 +30,8 @@ constant $dei = taxonomy('https://xbrl.sec.gov/dei/2018/dei-2018-01-31.xsd')
 
 constant $all_ifrs_base_taxonomies = list($ifrs-gaap, $exchange, $state_province, $naics, $sic, $dei, $srt, $country, $currency )
 
-constant $dei_namespace = 'http://xbrl.sec.gov/dei/2018-01-31'
+/** DEI HANDLING **/
+
+constant $dei_namespace_list = (filter taxonomy().concepts where $item.name.local-name in list('DocumentPeriodEndDate','DocumentType') and $item.name.namespace-uri.lower-case.contains('dei')).to-list
+
+constant $dei_namespace = $dei_namespace_list[1].name.namespace-uri
