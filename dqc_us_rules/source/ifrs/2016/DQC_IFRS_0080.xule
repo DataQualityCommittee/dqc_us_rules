@@ -11,6 +11,7 @@ rule-name-prefix DQC
 
 assert IFRS.0080 satisfied
 
+
 $fact1 =
 	{@concept in $non_neg_ifrs_items.keys @unit=* where $fact < 0 and ($fact.dimensions.length == 0 or 
 		(not match_set_substring($fact, $exclude_non_neg_string_members)
@@ -38,5 +39,7 @@ rule-focus $fact1
 
 severity error
 
-status $status
+effectiveDate $effective_dates[$rule_suffix_id]
+
+
 
