@@ -1,6 +1,6 @@
 /*
 DQC Rules
- (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 
@@ -16,6 +16,7 @@ RULE-NAME-PREFIX DQC
 assert US.0053.7489 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $fact1 = {@RetirementPlanSponsorLocationAxis=NonUsMember};
 
 $memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLocationAxis returns set (target-name);

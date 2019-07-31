@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2016
@@ -10,6 +10,8 @@ Taxonomy: US GAAP 2016
 rule-name-prefix DQC
 
 assert US.0014 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 for ($x in $non_dimensional_non_negs)
 	$rule_suffix_id = $x[1];
@@ -27,9 +29,9 @@ Rule version: {$ruleVersion}"
 rule-suffix
 $rule_suffix_id
 
-severity error
-
 effectiveDate $effective_dates[$rule_suffix_id]
+
+severity error
 
 constant $non_dimensional_non_negs = list(
 				list('2786',DerivativeFairValueOfDerivativeLiability),
@@ -64,9 +66,6 @@ constant $non_dimensional_non_negs = list(
 				list('3008',CostOfServices),
 				list('3009',ConversionOfStockSharesIssued1),
 				list('3096',FairValueMeasurementWithUnobservableInputsReconciliationLiabilityTransfersOutOfLevel3),
-<<<<<<< HEAD
 				list('7651',RevenueFromContractWithCustomerIncludingAssessedTax),
 				list('7652',RevenueFromContractWithCustomerExcludingAssessedTax)
-=======
->>>>>>> 33f5b565f4075eb12d2dda23b6d9a7ca7f9ec14b
 				)

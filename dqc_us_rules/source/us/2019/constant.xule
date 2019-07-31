@@ -8,12 +8,6 @@ Taxonomy: US GAAP 2019
 
 **/
 
-/**
-	Define report types  exluded from identified rules
-**/
-
-constant $report_type_exclusions = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A')
-
 constant $Accrual_Items =
 				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
 				NetIncomeLoss, 
@@ -40,10 +34,7 @@ constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions,
 				PaymentsForDepositsWithOtherInstitutions,
 				ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase,
 				IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet,
-				IncreaseDecreaseInRestrictedCash, IncreaseDecreaseOfRestrictedInvestments,
-				PaymentsForProceedsFromOtherDeposits,
-				ProceedsFromOtherDeposits,
-				PaymentsForOtherDeposits
+				IncreaseDecreaseInRestrictedCash, IncreaseDecreaseOfRestrictedInvestments
 				)
 				
 constant $base_qname = sum(filter $all_base_taxonomies.concepts returns $item.name)
@@ -84,7 +75,7 @@ constant $exclude_non_neg_string_members = set(
 				'reconcili',
 				'reclass'
 				)
-								
+
 constant $exclude_non_neg_members = set(
 				CorporateNonSegmentMember,
 				FairValueConcentrationOfRiskMarketRiskManagementEffectsOnIncomeOrNetAssetsMember,
@@ -122,6 +113,3 @@ constant $member_USGAAP_fair_value = navigate dimensions dimension-member descen
 
 
 constant $OCI_Totals = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
-
-
-

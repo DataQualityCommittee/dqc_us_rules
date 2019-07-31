@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2016
@@ -10,7 +10,7 @@ Taxonomy: US GAAP 2016
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0065.7502 SATISFIED
+ASSERT US.0065.7502 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -32,11 +32,11 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:{$rule_id}
+Rule Element Id:7502
 Rule version: {$ruleVersion}"
 
 
-SEVERITY error
-
+severity error
 effectiveDate $effective_dates[$rule_id]
+
 

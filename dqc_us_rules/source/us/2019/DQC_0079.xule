@@ -14,6 +14,7 @@ rule-name-prefix DQC
 assert US.0079.7657 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $acceptable_dimensions = set(StatementBusinessSegmentsAxis, IncomeTaxAuthorityNameAxis);
 
  for ($duplicate_concept in $extension_qname)
@@ -35,11 +36,10 @@ $acceptable_dimensions = set(StatementBusinessSegmentsAxis, IncomeTaxAuthorityNa
 message
 "{$duplicate_concept} is an extension member on the axis {$dim_names_set.join(', ')} that was reported in the extension taxonomy, but duplicates a concept that exists in the SEC Non-GAAP taxonomies. Consider replacing {$duplicate_concept} with the existing taxonomy concept {$replacement.local-name} with the taxonomy namespace {$replacement.namespace-uri}.
 
-Rule Element Id:{$rule_id}
+Rule Element Id:7657
 Rule version: {$ruleVersion}
 "
 
-SEVERITY error
-
+severity error
 effectiveDate $effective_dates[$rule_id]
 
