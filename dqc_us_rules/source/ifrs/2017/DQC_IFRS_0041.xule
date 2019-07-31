@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert IFRS.0041.73 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 /** Get the dimension defaults used in  the filing **/
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
