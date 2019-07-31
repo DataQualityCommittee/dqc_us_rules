@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2018, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2019, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2017
@@ -11,19 +11,17 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 for ($x in $effective_tax_rates)
 	$rule_suffix_id = $x[1];
 	
 		$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else
-						if(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
 						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
 						{@IncomeLossFromEquityMethodInvestments}}
 						else
-							if	(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
+							if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
 	  							exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}))
 								{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic} +
 								{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}  +
@@ -51,9 +49,9 @@ Rule version: {$ruleVersion}"
 rule-suffix
 $rule_suffix_id
 
-effectiveDate $effective_dates[$rule_suffix_id]
-
 severity error
+
+effectiveDate $effective_dates[$rule_suffix_id]
 
 
 constant $effective_tax_rates = list(
@@ -77,4 +75,24 @@ constant $effective_tax_rates = list(
 			list('3439',EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion),
 			list('3440',EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
 			list('3441',EffectiveIncomeTaxRateReconciliationRepatriationForeignEarningsJobsCreationActOf2004)
+<<<<<<< HEAD
 			)
+=======
+			)
+ 
+/**
+output US.0013c
+
+$IncomeBeforeTax1 = {{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit = *}}
+for ($x in $effective_tax_rates)
+	$rule_suffix_id = $x[1];
+	
+	$IncomeBeforeTax1 > 0
+	and
+	exists({@concept = $x[2] @unit=* where $fact < 0 }#fact1)
+	
+rule-suffix
+$rule_suffix_id
+	
+**/
+>>>>>>> 33f5b565f4075eb12d2dda23b6d9a7ca7f9ec14b
