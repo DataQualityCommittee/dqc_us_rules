@@ -12,6 +12,8 @@ rule-name-prefix DQC
 
 assert IFRS.0006.14 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 
 	$period_focus = first(set({covered @concept.local-name ='DocumentFiscalPeriodFocus'}));
@@ -43,6 +45,8 @@ Rule version: {$ruleVersion}"
 rule-focus $fact1
 
 severity error
+
+effectiveDate $effective_dates[$rule_id]
 
 constant $dei_DQC0006_items = list(dei:AmendmentDescription, 
 	dei:AmendmentFlag, 
