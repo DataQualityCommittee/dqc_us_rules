@@ -4,7 +4,8 @@
 
 * Final rules that the XBRL US Data Quality Committee approved for public release
 * Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
-* Python-based reference implementation of the rules, using Arelle as an XBRL processor
+* Python-based reference implementation of the rules in Xule-syntax, using Arelle as an XBRL processor
+* Archived files in .zip format for approved and public exposure rules that can be installed and invoked as an Arelle plugin 
 * Unit tests for the reference implementation
 * Test suite documentation
 
