@@ -12,6 +12,7 @@ rule-name-prefix DQC
 
 assert US.0072.7647 satisfied
 
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $ComponentAmount = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage};
 
@@ -42,3 +43,5 @@ Rule Element Id:7647
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
