@@ -638,11 +638,11 @@ $allowed_members_malpractice_insurance = navigate dimensions dimension-member de
 
 $allowed_members_ppe = navigate dimensions dimension-member descendants from PropertyPlantAndEquipmentByTypeAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_members_oil_reserves = navigate dimensions dimension-member descendants from ReserveQuantitiesByTypeOfReserveAxis taxonomy $us-gaap returns set (target-name);
+$allowed_members_oil_reserves = navigate dimensions dimension-member descendants from srt:ReserveQuantitiesByTypeOfReserveAxis taxonomy $us-gaap returns set (target-name);
 
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, srt:NaturalGasLiquidsReservesMember, srt:NaturalGasReservesMember, srtOilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, srt:SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember);
 
 $member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
