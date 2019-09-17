@@ -52,7 +52,9 @@ constant $filing_qname = filter taxonomy().concepts returns $item.name
 
 constant $extension_qname = $filing_qname - $base_qname
 
-constant $extension_ns = first($extension_qname).namespace-uri
+//constant $extension_ns = first($extension_qname).namespace-uri
+
+constant $extension_ns = taxonomy().entry-point-namespace
 
 
 constant $tax_items = set(IncomeTaxExpenseBenefit,
