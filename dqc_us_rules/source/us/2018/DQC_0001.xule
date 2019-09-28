@@ -1027,28 +1027,35 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
+assert US.0001.9366 satisfied
 
-/*** VERSION 7 Release
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-DQC.0001
-ConsolidatedEntitiesAxis. with child members and VIE members.  Note that tghis is not set up as a valid dimension ion the US GAAP Taxonomy need to generate list.
-1.VariableInterestEntityPrimaryBeneficiaryMember
-2.VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember
+$base_members = navigate dimensions dimension-member descendants from BusinessAcquisitionAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+$allowed_base_member = navigate dimensions dimension-member descendants from BusinessAcquisitionAxis taxonomy $us-gaap returns set (target-name);
+$unallowed_base_members = $base_members - $allowed_base_member;
 
-GUIDANCE: Use when have a consolidated schedule or have a brerakdown of the VIE on the balance sheet.
-
-FOLLOW UP WITH FASB WHAT WE DO WITH THE VIE ELEMENTS THAT ARE CONSOLIDATED
-
-**/
-
-/** The line items related to percentageOwnership must use the ownership axis  
-
-BusinessAcquisitionPercentageOfVotingInterestsAcquired - MAKE RULE THAT THIS SHOULD ONLY BE USED WITH THE BusinessAcquisitionAxis. THis has the ownership axis in the table but should exclude.
-MinorityInterestOwnershipPercentageByParent
-identify all the rest
-Adreess the fact that this axis cannot be used for equity method investments
-
-NOTE TAHT THE ELEMENT EquityMethodInvestmentOwnershipPercentage cannopt be used with the ownership axis, must use the ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis.
+for ($member in $unallowed_base_members)
+	$fact1 = {covered @BusinessAcquisitionAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the BusinessAcquisitionAxis and the base taxonomy member {$member.local-name}. Only extension members should be used with the axis BusinessAcquisitionAxis and the members {$allowed_base_member.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis BusinessAcquisitionAxis. The only members allowed on this axis are extension members defined by the filer and the members {$allowed_base_member.join(', ')}. There are no facts associated with this member and axis.";
+		true
 
 
-**/
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
