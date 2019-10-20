@@ -1,6 +1,6 @@
 # Data Quality Committee Rules &amp; Guidance
 
-The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are revised. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
+The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are _functionally revised_. Rules for which the _scope of coverage_ changes (ie. DQC_0015, Negative Values) will not be incremented. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
@@ -58,6 +58,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0082](DQC_US_0082/DQC_0082.md) | Disaggregation by Variable Interest Elements (VIE) | Approved | 10 |
 | [DQC_US_0083](DQC_US_0083/DQC_0083.md) | Consolidated Variable Interest Entities (VIE) | Approved | 10 |
 | [DQC_US_0084](DQC_US_0084/DQC_0084.md) | Durational Aggregation | Approved | 10 |
+| [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Public Exposure | 11 |
+| [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Public Exposure | 11 |
 
 ## Guidance  
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
