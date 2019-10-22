@@ -22,13 +22,18 @@ $FS_Networks = filter $all_networks where $item.role.description.contains('- Sta
 $FS_Concepts = sum(set(for ($network in $FS_Networks)
 						$network.concepts));
 
-/** Get all the monetary item types that could be consolidated **/						
-$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
+/** Eliminate empty sets **/
+						
+if $FS_Concepts == none
+		skip
+else
+	/** Get all the monetary item types that could be consolidated **/						
+	$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
 
-/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
-$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember};
+	/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
+	$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember};
 
-exists($fact1)
+	exists($fact1)
 
 message
 "The filer has used the element {$fact1.concept.name.local-name} with the axis VariableInterestEntitiesByClassificationOfEntityAxis and the member VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember to report a value of {$fact1} in the filing. The filer should use the axis ConsolidatedEntitiesAxis and the member VariableInterestEntityPrimaryBeneficiaryMember to indicate the portion of the financial statement category that is applicable to consolidated VIE's.
@@ -60,15 +65,21 @@ $FS_Networks = filter $all_networks where $item.role.description.contains('- Sta
 /** Get all concepts in FS Networks **/
 $FS_Concepts = sum(set(for ($network in $FS_Networks)
 						$network.concepts));
+						
+/** Eliminate empty sets **/
+						
+if $FS_Concepts == none
+		skip
+else
 
-/** Get monetary items used in the financial statements **/	
+	/** Get monetary items used in the financial statements **/	
 
-$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
+	$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
 
-/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
-$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryMember};
+	/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
+	$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryMember};
 
-exists($fact1)
+	exists($fact1)
 
 message
 "The filer has used the element {$fact1.concept.name.local-name} with the axis VariableInterestEntitiesByClassificationOfEntityAxis and the member VariableInterestEntityPrimaryBeneficiaryMember to report a value of {$fact1} in the filing. The filer should use the axis ConsolidatedEntitiesAxis and the member VariableInterestEntityPrimaryBeneficiaryMember to indicate the portion of the financial statement category that is applicable to consolidated VIE's.
