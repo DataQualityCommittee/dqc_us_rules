@@ -15,7 +15,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $decimal_tolerance_factor = 2
 
-$fact1 = {@period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
+$fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average')
 	  	 	    and not $non_additive_duration_concepts.contains($fact.concept.name)};
 				
