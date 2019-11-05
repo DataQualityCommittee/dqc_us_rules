@@ -17,13 +17,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if set('10-K','10-KT','20-F').contains([@dei:DocumentType]) 
 
-/** Identifies that the concept LesseeOperatingLeaseLiabilityPaymentsDue is the sum of components OperatingLeaseLiability and LesseeOperatingLeaseLiabilityUndiscountedExcessAmount if either one is used**/
+/** Identifies that the concept LesseeOperatingLeaseLiabilityPaymentsDue is the sum of components OperatingLeaseLiability and LesseeOperatingLeaseLiabilityUndiscountedExcessAmount if either one is used. **/
 
 	$sum1 = {@LesseeOperatingLeaseLiabilityPaymentsDue};
 
 	$addend = {@OperatingLeaseLiability} + {@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount};
-
-	$tolerance_for_decimals($sum1,$addend,2 )
+	
+	tolerance_for_decimals($sum1, $addend, 2)
 
 else
 	false
@@ -50,14 +50,14 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Rule only applies to an annual filing **/
 
 if set('10-K','10-KT','20-F').contains([@dei:DocumentType]) 
-
-/** Identifies that the concept FinanceLeaseLiabilityPaymentsDue is the sum of components FinanceLeaseLiability and FinanceLeaseLiabilityUndiscountedExcessAmount if either one is used**/
+	
+/** Identifies that the concept FinanceLeaseLiabilityPaymentsDue is the sum of components FinanceLeaseLiability and FinanceLeaseLiabilityUndiscountedExcessAmount if either one is used **/
 
 	$sum1 = {@FinanceLeaseLiabilityPaymentsDue};
 
 	$addend = {@FinanceLeaseLiability} + {@FinanceLeaseLiabilityUndiscountedExcessAmount};
 
-	$tolerance_for_decimals($sum1,$addend,2 )
+	tolerance_for_decimals($sum1,$addend,2 )
 
 else
 	false
@@ -76,3 +76,8 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
+
+
+output aa
+
+navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis taxonomy $us-gaap returns set (target-name)
