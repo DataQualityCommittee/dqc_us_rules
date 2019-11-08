@@ -19,12 +19,12 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if set('10-K','10-KT','20-F').contains([@dei:DocumentType]) 
 	
-	/** Identify if operating Lease expense exists **/
+	/** Identify if operating Lease expense exists in the default**/
 
-	if exists({@concept = OperatingLeaseExpense}#leaseExpense)
+	if exists([@concept = OperatingLeaseExpense]#leaseExpense)
 	
-	/** If exists check if OperatingLeaseCost is missing **/
-		missing(@concept = OperatingLeaseCost)
+	/** If exists check if OperatingLeaseCost is missing in the default **/
+		missing([@concept = OperatingLeaseCost])
 	else
 		false
 else
@@ -35,7 +35,6 @@ message
 "The element {$leaseExpense.concept.name} with a value of {$leaseExpense} has been reported in the filing but the element OperatingLeaseCost is missing from the filing. Please check that the value for OperatingLeaseCost has not been tagged with another element or is missing from the filing.
  
 Period :{$leaseExpense.period}
-Dimensions : {$leaseExpense.dimensions.join(', ','=')}
 Unit : {$leaseExpense.unit}
 Decimals: {$leaseExpense.decimals}
 

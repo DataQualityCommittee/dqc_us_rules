@@ -642,7 +642,6 @@ $allowed_members_oil_reserves = navigate dimensions dimension-member descendants
 
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-/** Added RegionalCarrierMember, MainlineMember as these are not in a valid dimension in the US GAAP Taxonomy**/
 $allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, srt:NaturalGasLiquidsReservesMember, srt:NaturalGasReservesMember, srt:OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, srt:SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember, RegionalCarrierMember, MainlineMember);
 
 $member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
@@ -1041,12 +1040,6 @@ SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
 
-
-
-severity error
-
-effectiveDate $effective_dates[$rule_id]
-
 assert US.0001.9366 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -1072,7 +1065,7 @@ Unit: {$fact1.unit}";
 message
 "{$message_for_fact}
 
-Rule Element Id:{$rule_id}
+Rule Element Id:9366
 Rule version: {$ruleVersion}"
 
 SEVERITY error
