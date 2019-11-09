@@ -49,7 +49,10 @@ if exists({@concept = OperatingLeaseLiability}#leaseLiability) and  set('10-K','
 				if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) > 1
 					false
 				else
-					true
+					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) == 1
+						{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiability}
+					else
+						true
 				
 
 else
@@ -61,7 +64,7 @@ message
 
 "The element {$leaseLiability.concept.name} with a value of {$leaseLiability} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
 1. The element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should be used to identify the account where the Operating Lease liability is included; or
-2. The Balance Sheet location axis should be used with account two or more account members to identify into which financial statement captions the Operating Lease liability has been apportioned.
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Operating Lease liability has been apportioned.
  
 Period :{$leaseLiability.period}
 Dimensions : {$leaseLiability.dimensions.join(', ','=')}
@@ -116,7 +119,10 @@ if exists({@concept = OperatingLeaseLiabilityCurrent}#leaseLiability) and  set('
 				if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *})) > 1
 					false
 				else
-					true
+					if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *})) == 1
+						{@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiabilityCurrent}
+					else
+						true
 				
 
 else
@@ -128,7 +134,7 @@ message
 
 "The element {$leaseLiability.concept.name} with a value of {$leaseLiability} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
 1. The element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should be used to identify the account where the Operating Lease liability Current is included; or
-2. The Balance Sheet location axis should be used with account two or more account members to identify into which financial statement captions the Operating Lease liability Current has been apportioned.
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Operating Lease liability Current has been apportioned.
  
 Period :{$leaseLiability.period}
 Dimensions : {$leaseLiability.dimensions.join(', ','=')}
@@ -183,7 +189,11 @@ if exists({@concept = OperatingLeaseLiabilityNoncurrent}#leaseLiability) and  se
 				if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *})) > 1
 					false
 				else
-					true
+					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
+					if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *})) == 1
+						{@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiabilityNoncurrent}
+					else
+						true
 				
 
 else
@@ -195,7 +205,7 @@ message
 
 "The element {$leaseLiability.concept.name} with a value of {$leaseLiability} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
 1. The element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should be used to identify the account where the Operating Lease liability Noncurrent is included; or
-2. The Balance Sheet location axis should be used with account two or more account members to identify into which financial statement captions the Operating Lease liability Noncurrent has been apportioned.
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Operating Lease liability Noncurrent has been apportioned.
  
 Period :{$leaseLiability.period}
 Dimensions : {$leaseLiability.dimensions.join(', ','=')}
