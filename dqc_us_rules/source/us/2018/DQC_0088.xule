@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Only applies to report a 10-K, 10-KT or 20-F **/
 
-if set('10-K','10-KT','20-F').contains([@dei:DocumentType]) 
+if set('10-K','10-KT','20-F').contains([covered @dei:DocumentType]) 
 	
 	/** Identify if operating Lease expense exists in the default**/
 
