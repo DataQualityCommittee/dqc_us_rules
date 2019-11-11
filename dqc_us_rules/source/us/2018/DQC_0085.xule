@@ -178,7 +178,7 @@ if exists($fact1)
 
 	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsLiabilitiesNet  **/
 
-	if (set(Liabilities,LiabilitiesAndStockholdersEquity) intersect $all_ancestors.to-set).length > 0
+	if (set(Assets) intersect $all_ancestors.to-set).length > 0
 		true
 	else
 		false
@@ -187,7 +187,7 @@ else
 	
 message
 
-"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Liabilities or  LiabilitiesAndStockholdersEquity in the financial statements. This element is a footnote element and should not appear in the financial statements.
+"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets in the financial statements. This element is a footnote element and should not appear in the financial statements.
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
