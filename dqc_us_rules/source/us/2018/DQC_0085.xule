@@ -28,10 +28,10 @@ else
 	$FS_Concepts = sum(set(for ($network in $FS_Networks)
 							$network.concepts));
 
-	/** For each of these concepts identify if either of the elements  DeferredTaxAssetsLiabilitiesNet and DeferredTaxAssetsNet 
-	have been used.  Do this by comparing the set of target elemnts from the statement to the set of set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet)**/
+	/** For each of these concepts identify if either of the elements  DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet or DeferredTaxLiabilities
+	has been used.  Do this by comparing the set of target elements from the statement to the set of set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities)**/
 
-	$incorrect_concepts = $FS_Concepts intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet);
+	$incorrect_concepts = $FS_Concepts intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities);
 
 	/** Output an error for every item in the intersection of the two sets **/
 
@@ -206,7 +206,7 @@ assert US.0085.9367 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Identify if the element DeferredTaxAssetsLiabilitiesNet is used in the filing **/
+/** Identify if the element DeferredTaxLiabilities is used in the filing **/
 
 $fact1 = {@concept = DeferredTaxLiabilities}
 
@@ -214,7 +214,7 @@ if exists($fact1)
 	
 	$all_ancestors = navigate summation-item ancestors from DeferredTaxLiabilities returns (target-name);
 
-	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsLiabilitiesNet  **/
+	/** Determine if Liabilities or LiabilitiesAndStockholdersEquity appears in the list of ancestors of DeferredTaxLiabilities  **/
 
 	if (set(Liabilities,LiabilitiesAndStockholdersEquity) intersect $all_ancestors.to-set).length > 0
 		true
