@@ -1027,6 +1027,32 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
+
+/*** VERSION 7 Release
+
+DQC.0001
+ConsolidatedEntitiesAxis. with child members and VIE members.  Note that tghis is not set up as a valid dimension ion the US GAAP Taxonomy need to generate list.
+1.VariableInterestEntityPrimaryBeneficiaryMember
+2.VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember
+
+GUIDANCE: Use when have a consolidated schedule or have a brerakdown of the VIE on the balance sheet.
+
+FOLLOW UP WITH FASB WHAT WE DO WITH THE VIE ELEMENTS THAT ARE CONSOLIDATED
+
+**/
+
+/** The line items related to percentageOwnership must use the ownership axis  
+
+BusinessAcquisitionPercentageOfVotingInterestsAcquired - MAKE RULE THAT THIS SHOULD ONLY BE USED WITH THE BusinessAcquisitionAxis. THis has the ownership axis in the table but should exclude.
+MinorityInterestOwnershipPercentageByParent
+identify all the rest
+Adreess the fact that this axis cannot be used for equity method investments
+
+NOTE TAHT THE ELEMENT EquityMethodInvestmentOwnershipPercentage cannopt be used with the ownership axis, must use the ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis.
+
+
+**/
+
 assert US.0001.9366 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -1058,4 +1084,3 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
-

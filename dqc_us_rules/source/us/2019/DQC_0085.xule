@@ -25,13 +25,15 @@ else
 	$FS_Networks = filter $all_networks where $item.role.description.contains('- Statement ');
 
 	/** Get all concepts in FS Networks **/
-	$FS_Concepts = sum(set(for ($network in $FS_Networks)
+	$FS_Concepts_concept = sum(set(for ($network in $FS_Networks)
 							$network.concepts));
+							
+	$FS_Concepts_qname = filter $FS_Concepts_concept returns $item.name;
 
-	/** For each of these concepts identify if either of the elements  DeferredTaxAssetsLiabilitiesNet and DeferredTaxAssetsNet 
-	have been used.  Do this by comparing the set of target elemnts from the statement to the set of set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet)**/
+	/** For each of these concepts identify if either of the elements  DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet or DeferredTaxLiabilities
+	has been used.  Do this by comparing the set of target elements from the statement to the set of set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities)**/
 
-	$incorrect_concepts = $FS_Concepts intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet);
+	$incorrect_concepts = $FS_Concepts_qname intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities);
 
 	/** Output an error for every item in the intersection of the two sets **/
 
@@ -140,7 +142,7 @@ if exists($fact1)
 
 	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsNet  **/
 
-	if (Assets in all_ancestors)
+	if (Assets in $all_ancestors)
 		true
 	else
 		false
@@ -178,7 +180,7 @@ if exists($fact1)
 
 	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsLiabilitiesNet  **/
 
-	if (set(Liabilities,LiabilitiesAndStockholdersEquity) intersect $all_ancestors.to-set).length > 0
+	if (set(Assets) intersect $all_ancestors.to-set).length > 0
 		true
 	else
 		false
@@ -187,7 +189,7 @@ else
 	
 message
 
-"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Liabilities or  LiabilitiesAndStockholdersEquity in the financial statements. This element is a footnote element and should not appear in the financial statements.
+"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets  in the financial statements. This element is a footnote element and should not appear in the financial statements.
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -206,7 +208,7 @@ assert US.0085.9367 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Identify if the element DeferredTaxAssetsLiabilitiesNet is used in the filing **/
+/** Identify if the element DeferredTaxLiabilities is used in the filing **/
 
 $fact1 = {@concept = DeferredTaxLiabilities}
 
@@ -214,7 +216,7 @@ if exists($fact1)
 	
 	$all_ancestors = navigate summation-item ancestors from DeferredTaxLiabilities returns (target-name);
 
-	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsLiabilitiesNet  **/
+	/** Determine if Liabilities or LiabilitiesAndStockholdersEquity appears in the list of ancestors of DeferredTaxLiabilities  **/
 
 	if (set(Liabilities,LiabilitiesAndStockholdersEquity) intersect $all_ancestors.to-set).length > 0
 		true
@@ -239,3 +241,5 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
+
+
