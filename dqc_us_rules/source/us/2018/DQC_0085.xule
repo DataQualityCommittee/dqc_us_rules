@@ -25,13 +25,15 @@ else
 	$FS_Networks = filter $all_networks where $item.role.description.contains('- Statement ');
 
 	/** Get all concepts in FS Networks **/
-	$FS_Concepts = sum(set(for ($network in $FS_Networks)
+	$FS_Concepts_concept = sum(set(for ($network in $FS_Networks)
 							$network.concepts));
+							
+	$FS_Concepts_qname = filter $FS_Concepts_concept returns $item.name;
 
 	/** For each of these concepts identify if either of the elements  DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet or DeferredTaxLiabilities
 	has been used.  Do this by comparing the set of target elements from the statement to the set of set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities)**/
 
-	$incorrect_concepts = $FS_Concepts intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities);
+	$incorrect_concepts = $FS_Concepts_qname intersect set(DeferredTaxAssetsLiabilitiesNet, DeferredTaxAssetsNet, DeferredTaxLiabilities);
 
 	/** Output an error for every item in the intersection of the two sets **/
 
@@ -140,7 +142,7 @@ if exists($fact1)
 
 	/** Determine if Assets appears in the list of ancestors of DeferredTaxAssetsNet  **/
 
-	if (Assets in all_ancestors)
+	if (Assets in $all_ancestors)
 		true
 	else
 		false

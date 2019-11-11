@@ -34,10 +34,12 @@ if exists({@concept = OperatingLeaseLiability}#leaseLiability) and  set('10-K','
 		/** Get all concepts in FS Networks **/
 		$FS_Concepts = sum(set(for ($network in $FS_Networks)
 								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
 
 		/** Identify if OperatingLeaseLiability is contained in the financial statements**/
 
-		if $FS_Concepts.contains(OperatingLeaseLiability)
+		if $FS_Concepts_qname.contains(OperatingLeaseLiability)
 			false
 		else
 		
@@ -104,10 +106,12 @@ if exists({@concept = OperatingLeaseLiabilityCurrent}#leaseLiability) and  set('
 		/** Get all concepts in FS Networks **/
 		$FS_Concepts = sum(set(for ($network in $FS_Networks)
 								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
 
 		/** Identify if OperatingLeaseLiability is contained in the financial statements**/
 
-		if $FS_Concepts.contains(OperatingLeaseLiabilityCurrent)
+		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent)
 			false
 		else
 		
@@ -174,10 +178,12 @@ if exists({@concept = OperatingLeaseLiabilityNoncurrent}#leaseLiability) and  se
 		/** Get all concepts in FS Networks **/
 		$FS_Concepts = sum(set(for ($network in $FS_Networks)
 								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
 
 		/** Identify if OperatingLeaseLiability is contained in the financial statements**/
 
-		if $FS_Concepts.contains(OperatingLeaseLiabilityNoncurrent)
+		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityNoncurrent)
 			false
 		else
 		
