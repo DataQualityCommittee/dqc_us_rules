@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists({@concept = OperatingLeaseLiability}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @dei:DocumentType]) 
+if exists({@concept = OperatingLeaseLiability}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -89,7 +89,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists({@concept = OperatingLeaseLiabilityCurrent}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @dei:DocumentType]) 
+if exists({@concept = OperatingLeaseLiabilityCurrent}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -161,7 +161,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists({@concept = OperatingLeaseLiabilityNoncurrent}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @dei:DocumentType]) 
+if exists({@concept = OperatingLeaseLiabilityNoncurrent}#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 

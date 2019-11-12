@@ -17,14 +17,14 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Only applies to report a 10-K, 10-KT or 20-F **/
 
-if set('10-K','10-KT','20-F').contains([covered @dei:DocumentType]) 
+if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify if operating Lease expense exists in the default**/
 
 	if exists([@concept = OperatingLeaseExpense]#leaseExpense)
 	
 	/** If exists check if OperatingLeaseCost is missing in the default **/
-		missing([@concept = OperatingLeaseCost])
+		missing([@concept = OperatingLeaseCost]) and ([covered @concept.local-name = 'EntityEmergingGrowthCompany'] != true)
 	else
 		false
 else
