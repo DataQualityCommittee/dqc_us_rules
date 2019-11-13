@@ -24,7 +24,7 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 	if exists([@concept = OperatingLeaseExpense]#leaseExpense)
 	
 	/** If exists check if OperatingLeaseCost is missing in the default **/
-		missing([@concept = OperatingLeaseCost]) and ([covered @concept.local-name = 'EntityEmergingGrowthCompany'] != true)
+		missing([@concept = OperatingLeaseCost])
 	else
 		false
 else
