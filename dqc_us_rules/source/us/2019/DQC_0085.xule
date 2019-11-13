@@ -61,7 +61,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify if the element DeferredIncomeTaxAssetsNet is used in the filing **/
 
-$BS_Tax_Asset = {@concept = DeferredIncomeTaxAssetsNet}
+$BS_Tax_Asset = [@concept = DeferredIncomeTaxAssetsNet]
 
 if exists($BS_Tax_Asset) /** and missing({covered @concept = DeferredTaxAssetsNet}) **/
 	
@@ -78,7 +78,7 @@ else
 	skip
 	
 message
-"The element {$BS_Tax_Asset.concept.name} with a value {$BS_Tax_Asset} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxAssetsNet (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxAssetsNet needs to be included in a calculation with Assets as an ancestor.
+"The element {$BS_Tax_Asset.concept.name} with a value {$BS_Tax_Asset} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxAssetsNet (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxAssetsNet needs to be either included with the Balance Sheet Location Axis or be included in a calculation with Assets as an ancestor.
 
 Period :{$BS_Tax_Asset.period}
 Dimensions : {$BS_Tax_Asset.dimensions.join(', ','=')}
@@ -100,7 +100,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify if the element DeferredIncomeTaxLiabilitiesNet is used in the filing **/
 
-$BS_Tax_Liability = {@concept = DeferredIncomeTaxLiabilitiesNet}
+$BS_Tax_Liability = [@concept = DeferredIncomeTaxLiabilitiesNet]
 
 if exists($BS_Tax_Liability) /** and missing({covered @concept = DeferredTaxAssetsLiabilitiesNet}) **/
 	
@@ -116,7 +116,8 @@ else
 	skip
 	
 message
-"The element {$BS_Tax_Liability.concept.name} with a value {$BS_Tax_Liability} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxAssetsNet (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxLiabilitiesNet needs to be included in a calculation with Liabilities as an ancestor.
+"The element {$BS_Tax_Liability.concept.name} with a value {$BS_Tax_Liability} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxAssetsNet (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxAssetsNet needs to either be included with the Balance Sheet Location Axis or be included in a calculation with Liabilities as an ancestor.
+
 
 Period :{$BS_Tax_Liability.period}
 Dimensions : {$BS_Tax_Liability.dimensions.join(', ','=')}
@@ -154,7 +155,7 @@ else
 	
 message
 
-"The element DeferredTaxAssetsNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets in the financial statements. This element is a footnote element and should not appear in the financial statements.
+"The element DeferredTaxAssetsNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets in the financial statements. This element is a footnote element and should not appear in the face financial statements.
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -192,7 +193,7 @@ else
 	
 message
 
-"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets  in the financial statements. This element is a footnote element and should not appear in the financial statements.
+"The element DeferredTaxAssetsLiabilitiesNet has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Assets  in the financial statements. This element is a footnote element and should not appear in the face financial statements.
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -230,7 +231,7 @@ else
 	
 message
 
-"The element DeferredTaxLiabilities has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Liabilities or  LiabilitiesAndStockholdersEquity  in the financial statements. This element is a footnote element and should not appear in the financial statements.
+"The element DeferredTaxLiabilities has been reported with a value of {$fact1}, this element is also included as a calculation descendant of Liabilities or  LiabilitiesAndStockholdersEquity  in the financial statements. This element is a footnote element and should not appear in the face financial statements.
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
