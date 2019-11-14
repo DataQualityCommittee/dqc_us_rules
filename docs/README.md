@@ -60,6 +60,10 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0084](DQC_US_0084/DQC_0084.md) | Durational Aggregation | Approved | 10 |
 | [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Public Exposure | 11 |
 | [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Public Exposure | 11 |
+| [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Public Exposure | 11 |
+| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Public Exposure | 11 |
+| [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Public Exposure | 11 |
+| [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Public Exposure | 11 |
 
 ## Guidance  
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
