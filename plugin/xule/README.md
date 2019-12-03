@@ -1,4 +1,4 @@
-#Deployment and Usage
+# Deployment and Usage
 
 #### On this page: [Deploying the DQC Arelle Plugin](#deploying) || [Usage and Results - DQC Rules with Arelle](#using) || [License and Patent](#licensing)
 
