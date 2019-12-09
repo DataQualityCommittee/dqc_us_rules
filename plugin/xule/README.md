@@ -1,4 +1,4 @@
-#Deployment and Usage
+# Deployment and Usage
 
 #### On this page: [Deploying the DQC Arelle Plugin](#deploying) || [Usage and Results - DQC Rules with Arelle](#using) || [License and Patent](#licensing)
 
@@ -24,14 +24,14 @@ The DQC plugin requires **Python 3.5** or later and is **not compatible with ear
 After the installation, the ruleset map file needs to be updated for the latest version. The latest ruleset map is "plugin/xule/rulesetMap.json" in the GitHub distribution. Use the following command to update the ruleset map:
 
 `
-arelleCmdLine --plugin validate/DQC --DQC-replace-rule-set-map *{location of rulesetMap.json file from the GitHub distribution}*
+arelleCmdLine --plugin validate/DQC --dqc-replace-rule-set-map *{location of rulesetMap.json file from the GitHub distribution}*
 `
 
 ## <a name="using"></a>Usage and Results - DQC Rules with Arelle
 
 *  [from the graphic user interface (GUI)](usage_Arelle_GUI.md) - **version 5.2.0 or later**
 *  [from a command prompt](usage_command_prompt.md)
-*  [Managing Rulesets](usage_rulesets.md)
+	*  [managing rulesets](usage_rulesets.md)
 
 ### Results
 The DQC Arelle plugin produces validation messages using standard Arelle output. In the GUI, results will appear in the bottom window as the filing is processed and can be exported to text for review. From a command prompt, the option `--logFile` specifies the output location of the file. The format of the output is specified by the extension of the file. For example ```--logFile DQC-output.```**xml** will create an xml formatted file whereas ```--logFile DQC-output.```**json** will create a json formatted file. **Output to a file is appended** to an existing file - the existing file is not overwritten. An example of an XML output is shown below:
