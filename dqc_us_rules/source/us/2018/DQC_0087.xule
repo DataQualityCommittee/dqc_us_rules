@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -44,7 +44,7 @@ if exists([@concept = OperatingLeaseLiability]#leaseLiability) and  set('10-K','
 		else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList})
+			if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/ 
@@ -89,7 +89,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiabilityCurrent]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiabilityCurrent @unit=*]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -116,7 +116,7 @@ if exists([@concept = OperatingLeaseLiabilityCurrent]#leaseLiability) and  set('
 		else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList})
+			if exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit})
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
@@ -161,7 +161,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiabilityNoncurrent]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiabilityNoncurrent @unit=*]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -188,7 +188,7 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent]#leaseLiability) and  se
 		else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList})
+			if exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit})
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
