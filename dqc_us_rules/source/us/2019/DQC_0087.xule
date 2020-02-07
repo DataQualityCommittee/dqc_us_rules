@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -41,7 +41,7 @@ if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set(
 
 		if $FS_Concepts_qname.contains(OperatingLeaseLiability)
 			false
-			/** Rule will not run if the company is using current and non current operating leases as these will be in the balance sheet **/.
+			/** Rule will not run if the company is using current and non current operating leases as these will be in the balance sheet **/
 		else
 			if ($FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent) or $FS_Concepts_qname.contains(OperatingLeaseLiabilityNonCurrent))
 		 		false
