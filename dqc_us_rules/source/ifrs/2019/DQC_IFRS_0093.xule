@@ -17,7 +17,7 @@ $decimal_tolerance_factor = 2
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average')
-	  	 	    and not $non_additive_duration_concepts.contains($fact.concept.name)};
+	  	 	    and not $non_additive_IFRS_duration_concepts.contains($fact.concept.name)};
 				
 
 $sub-periods =  
@@ -59,7 +59,7 @@ else
 			($fact1 - $sum-periods).abs > $tolerance;
 	if $it-does-not-sum
 		$period-message = (filter $sub-periods returns "\t" + $item.period.string +"\t" + $item.string +"\t Decimals: " + $item.decimals.string).join("\n");
-		if (is_base($fact1.concept, $all_base_taxonomies))
+		if (is_base($fact1.concept, $all_ifrs_base_taxonomies))
 			true
 		else
 			false
