@@ -33,6 +33,16 @@ constant $exclude_non_neg_string_members = set(
 				'change',
 				'increasedecrease'
 				)
+				
+constant $exclude_non_pos_string_members = set(
+				'adjust',
+				'consolidat',
+				'netting',
+				'reconcili',
+				'reclass',
+				'change',
+				'increasedecrease'
+				)
 
 constant $exclude_non_neg_members = set()
 
@@ -45,6 +55,54 @@ constant  $exclude_non_neg_axis_members = list(
 						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
 						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
+				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
+						set(IncreaseDecreaseDueToChangesInAccountingPolicyAndCorrectionsOfPriorPeriodErrorsMember, FinancialEffectOfChangesInAccountingPolicyMember, 						IncreaseDecreaseDueToChangesInAccountingPolicyRequiredByIFRSsMember, IncreaseDecreaseDueToVoluntaryChangesInAccountingPolicyMember, 						FinancialEffectOfCorrectionsOfAccountingErrorsMember)),
+				list(FinancialEffectOfTransitionFromPreviousGAAPToIFRSsAxis,
+						set(EffectOfTransitionToIFRSsMember)),
+				list(RedesignationAxis,
+						set(RedesignatedAmountMember)),
+				list(FairValueAsDeemedCostAxis,
+						set(AggregateAdjustmentToCarryingValueReportedUnderPreviousGAAPMember)),
+				list(DepartureFromRequirementOfIFRSAxis,
+						set(IncreaseDecreaseDueToDepartureFromRequirementOfIFRSMember)),
+				list(ComponentsOfEquityAxis,
+						set(TreasurySharesMember)),
+				list(TypesOfRisksAxis,
+						set(RiskDiversificationEffectMember)),
+				list(AmountsArisingFromInsuranceContractsAxis,
+						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
+				list(NetDefinedBenefitLiabilityAssetAxis,
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
+				)
+				
+constant  $exclude_non_pos_axis_members = list(
+				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
+				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
+						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
+				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
+						set(IncreaseDecreaseDueToChangesInAccountingPolicyAndCorrectionsOfPriorPeriodErrorsMember, FinancialEffectOfChangesInAccountingPolicyMember, 						IncreaseDecreaseDueToChangesInAccountingPolicyRequiredByIFRSsMember, IncreaseDecreaseDueToVoluntaryChangesInAccountingPolicyMember, 						FinancialEffectOfCorrectionsOfAccountingErrorsMember)),
+				list(FinancialEffectOfTransitionFromPreviousGAAPToIFRSsAxis,
+						set(EffectOfTransitionToIFRSsMember)),
+				list(RedesignationAxis,
+						set(RedesignatedAmountMember)),
+				list(FairValueAsDeemedCostAxis,
+						set(AggregateAdjustmentToCarryingValueReportedUnderPreviousGAAPMember)),
+				list(DepartureFromRequirementOfIFRSAxis,
+						set(IncreaseDecreaseDueToDepartureFromRequirementOfIFRSMember)),
+				list(ComponentsOfEquityAxis,
+						set(TreasurySharesMember)),
+				list(TypesOfRisksAxis,
+						set(RiskDiversificationEffectMember)),
+				list(AmountsArisingFromInsuranceContractsAxis,
+						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
+				list(NetDefinedBenefitLiabilityAssetAxis,
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
+				)
+
+constant  $exclude_non_pos_asset_axis_members = list(
+				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
+				list(SegmentConsolidationItemsAxis,
+						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
 						set(IncreaseDecreaseDueToChangesInAccountingPolicyAndCorrectionsOfPriorPeriodErrorsMember, FinancialEffectOfChangesInAccountingPolicyMember, 						IncreaseDecreaseDueToChangesInAccountingPolicyRequiredByIFRSsMember, IncreaseDecreaseDueToVoluntaryChangesInAccountingPolicyMember, 						FinancialEffectOfCorrectionsOfAccountingErrorsMember)),
 				list(FinancialEffectOfTransitionFromPreviousGAAPToIFRSsAxis,
