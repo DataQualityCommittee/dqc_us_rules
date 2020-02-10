@@ -13,15 +13,15 @@ assert US.0087.9369 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** If operating lease liability amount is reported but is not included in the Financial statement calculation then the extensible list element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+/** If operating lease liability amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
-	$all_networks = taxonomy().networks(summation-item);
+	$all_networks = taxonomy().networks(parent-child);
 
 	/** eleminate reports with no calculations such as an 8-K with no financial data**/
 	if $all_networks == none
@@ -41,20 +41,24 @@ if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set(
 
 		if $FS_Concepts_qname.contains(OperatingLeaseLiability)
 			false
+			/** Rule will not run if the company is using current and non current operating leases as these will be in the balance sheet **/
 		else
+			if ($FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent) or $FS_Concepts_qname.contains(OperatingLeaseLiabilityNonCurrent))
+		 		false
+			else
 		
-			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
-			 	false
-			else 
-				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/ 
-				if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) > 1
-					false
-				else
-					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) == 1
-						{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiability}
+				/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
+				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
+				 	false
+				else 
+					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/ 
+					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) > 1
+						false
 					else
-						true
+						if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) == 1
+							{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiability}
+						else
+							true
 				
 
 else
@@ -93,7 +97,7 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @unit=*]#leaseLiability) an
 	
 	/** Identify all calculation networks in the company extension **/
 
-	$all_networks = taxonomy().networks(summation-item);
+	$all_networks = taxonomy().networks(parent-child);
 
 	/** eleminate reports with no calculations such as an 8-K with no financial data**/
 	if $all_networks == none
@@ -114,6 +118,10 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @unit=*]#leaseLiability) an
 		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent)
 			false
 		else
+			/** If the operating Lease Liability is on the BAlanace Sheet then dont flag an error**/
+			if ($FS_Concepts_qname.contains(OperatingLeaseLiability))
+		 		false
+			else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
 			if exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit})
@@ -165,7 +173,7 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent @unit=*]#leaseLiability 
 	
 	/** Identify all calculation networks in the company extension **/
 
-	$all_networks = taxonomy().networks(summation-item);
+	$all_networks = taxonomy().networks(parent-child);
 
 	/** eleminate reports with no calculations such as an 8-K with no financial data**/
 	if $all_networks == none
@@ -186,6 +194,10 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent @unit=*]#leaseLiability 
 		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityNoncurrent)
 			false
 		else
+			/** If the operating Lease Liability is on the BAlanace Sheet then dont flag an error**/
+			if ($FS_Concepts_qname.contains(OperatingLeaseLiability))
+		 		false
+			else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
 			if exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit})
