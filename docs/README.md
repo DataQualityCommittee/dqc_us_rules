@@ -4,7 +4,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
-| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Public Exposure | 11 |
+| [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 11 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 9 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 6 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 9 |
@@ -58,12 +58,12 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0082](DQC_US_0082/DQC_0082.md) | Disaggregation by Variable Interest Elements (VIE) | Approved | 10 |
 | [DQC_US_0083](DQC_US_0083/DQC_0083.md) | Consolidated Variable Interest Entities (VIE) | Approved | 10 |
 | [DQC_US_0084](DQC_US_0084/DQC_0084.md) | Durational Aggregation | Approved | 10 |
-| [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Public Exposure | 11 |
-| [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Public Exposure | 11 |
-| [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Public Exposure | 11 |
-| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Public Exposure | 11 |
-| [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Public Exposure | 11 |
-| [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Public Exposure | 11 |
+| [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Approved | 11 |
+| [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Approved | 11 |
+| [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Approved | 11 |
+| DQC_US_0088 | Operating Lease Cost And Expense | Removed from Public Review |  |
+| [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
+| [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
 
 ## Guidance  
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
@@ -73,6 +73,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 ### [Guidance on Tagging Axis and Members Using the US GAAP Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md) - approved 9/29/16, updated 11/29/16
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2019 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2020 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
