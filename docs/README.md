@@ -53,7 +53,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
 | [DQC_US_0079](DQC_US_0079/DQC_0079.md) | Extension Members | Approved for IFRS &amp; US GAAP | 8 |
-| [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Public Exposure for IFRS only | 11 |
+| [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Approved for IFRS only | 11 |
 | [DQC_US_0081](DQC_US_0081/DQC_0081.md) | Sibling Child Relationships | Approved | 9 |
 | [DQC_US_0082](DQC_US_0082/DQC_0082.md) | Disaggregation by Variable Interest Elements (VIE) | Approved | 10 |
 | [DQC_US_0083](DQC_US_0083/DQC_0083.md) | Consolidated Variable Interest Entities (VIE) | Approved | 10 |
