@@ -47,8 +47,8 @@ if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and set('
 		 		false
 			else
 		
-				/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
+				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
+				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit})
 				 	false
 				else 
 					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/ 
