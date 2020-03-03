@@ -775,9 +775,7 @@ def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, *args, **kwargs):
         runXule(cntlr, options, modelXbrl)
 
 def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
-    rule_set = None
-    if getattr(options, "xule_multi", True) and \
-        getattr(cntlr, "rule_set", None) is not None:
+    if getattr(options, "xule_multi", True) and getattr(cntlr, "rule_set", None) is not None:
         rule_set = getattr(cntlr, "rule_set")
     else:
         if getattr(options, 'xule_rule_set', None) is not None:
@@ -785,7 +783,7 @@ def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
         else:
             # Determine the rule set from the model.
             rule_set_location = xu.determine_rule_set(modelXbrl, cntlr, rule_set_map)
-            modelXbrl.log('INFO', 'info', 'Using ruleset {}'.format(rule_set_location))
+
             if rule_set_location is None:
                 # The rule set could not be determined.
                 modelXbrl.log(
@@ -795,9 +793,10 @@ def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
                         xu.get_rule_set_map_file_name(cntlr, rule_set_map)
                     )
                 )
-        if rule_set_location is not None:
-            rule_set = xr.XuleRuleSet(cntlr)
-            rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
+                return
+        modelXbrl.log('INFO', 'info', 'Using ruleset {}'.format(rule_set_location))
+        rule_set = xr.XuleRuleSet(cntlr)
+        rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
 
     if rule_set is None:
         return
