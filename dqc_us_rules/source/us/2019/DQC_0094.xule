@@ -27,7 +27,7 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covere
 	for $schedule in $maturity_schedule_elements
 		$remaining = {covered @concept = $schedule[2]};
 		$year_one = $schedule[3];
-		$remainder_end_date = remaining.period.end;
+		$remainder_end_date = $remaining.period.end;
 		$remainder_end_date == $document_period_end_date
 	
 

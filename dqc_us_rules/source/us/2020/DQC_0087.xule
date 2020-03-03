@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -43,15 +43,15 @@ if exists([@concept = OperatingLeaseLiability @unit=*]#leaseLiability) and  set(
 			false
 			/** Rule will not run if the company is using current and non current operating leases as these will be in the balance sheet **/
 		else
-			if ($FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent) or $FS_Concepts_qname.contains(OperatingLeaseLiabilityNonCurrent))
+			if ($FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent) or $FS_Concepts_qname.contains(OperatingLeaseLiabilityNoncurrent))
 		 		false
 			else
 		
-				/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
+				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
+				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit})
 				 	false
 				else 
-					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/ 
+					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/
 					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) > 1
 						false
 					else
@@ -124,7 +124,7 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @unit=*]#leaseLiability) an
 			else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit})
+			if exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
@@ -200,7 +200,7 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent @unit=*]#leaseLiability 
 			else
 		
 			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-			if exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit})
+			if exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
@@ -235,3 +235,4 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
+effectiveDate $effective_dates[$rule_id]
