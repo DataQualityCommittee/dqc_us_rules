@@ -14,10 +14,7 @@ assert US.0095.9528 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-if (exists({covered @concept=StockIssuedDuringPeriodSharesStockSplits}) or exists({covered @concept=StockIssuedDuringPeriodSharesStockSplits}))
-		false
-else
-		$EntityCommonStockSharesOutstanding = {@concept = EntityCommonStockSharesOutstanding @period = * where $fact > 0};
+		$EntityCommonStockSharesOutstanding = {@concept.local-name = 'EntityCommonStockSharesOutstanding' @period = * where $fact > 0};
 		$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0};
 
 		$factor = $EntityCommonStockSharesOutstanding / $CommonStockSharesOutstanding;
@@ -33,7 +30,7 @@ else
 
 message
 
-"The element {$EntityCommonStockSharesOutstanding.concept.name} with a value of {$EntityCommonStockSharesOutstanding} is different than the value reported for the concept {$CommonStockSharesOutstanding.concept.name} with a value of {$CommonStockSharesOutstanding} by a factor of greater than 100 times. If the difference is the result of a stock split then tag either the element StockIssuedDuringPeriodSharesStockSplits or the element StockIssuedDuringPeriodSharesStockSplits.
+"The element {$EntityCommonStockSharesOutstanding.concept.name} with a value of {$EntityCommonStockSharesOutstanding} is different than the value reported for the concept {$CommonStockSharesOutstanding.concept.name} with a value of {$CommonStockSharesOutstanding} by a factor of greater than 100 times. 
 
 Period :{$EntityCommonStockSharesOutstanding.period}
 Unit : {$EntityCommonStockSharesOutstanding.unit}
