@@ -16,8 +16,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $fact1 =
 	{@concept in $non_neg_ifrs_items.keys @unit=* @SegmentConsolidationItemsAxis = EliminationOfIntersegmentAmountsMember where $fact > 0  and ($fact.dimensions.length < 2 or 
 		(not match_set_substring($fact, $exclude_non_pos_string_members)
-		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_axis_members).length == 0
-		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_axis_members.to-set).length == 0
+		and (to-set($fact.dimensions.keys.name) intersect $exclude_non_neg_axis.to-set).length == 0
 		and not_elim_adjust($fact, $exclude_non_pos_axis_members)))
 		};
 
@@ -47,8 +47,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $fact1 =
 	{@concept in $non_pos_asset_ifrs_items.keys @unit=* @CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis in list(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember) where $fact > 0  and ($fact.dimensions.length < 2 or 
 		(not match_set_substring($fact, $exclude_non_neg_string_members)
-		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_asset_axis_members).length == 0
-		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_asset_axis_members.to-set).length == 0
+		and (to-set($fact.dimensions.keys.name) intersect $exclude_non_neg_axis.to-set).length == 0
 		and not_elim_adjust($fact, $exclude_non_pos_asset_axis_members)))
 		};
 
