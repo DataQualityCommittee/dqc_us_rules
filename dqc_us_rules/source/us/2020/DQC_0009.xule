@@ -270,8 +270,8 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.45 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$less_fact = {@DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear};
-$greater_fact = {@DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear};
+$less_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsRemainderOfFiscalYear};
+$greater_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsCurrentFiscalYear};  
 
 tolerance_for_decimals_greater($less_fact,$greater_fact,0)
 
