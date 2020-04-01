@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $all_networks = taxonomy().networks(parent-child);
 
-if $all_networks == none
+if $all_networks == none or set('8-K').contains([covered @concept.local-name ='DocumentType'])
 	false
 else
 
@@ -116,7 +116,7 @@ else
 	skip
 	
 message
-"The element {$BS_Tax_Liability.concept.name} with a value {$BS_Tax_Liability} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxLiabilities (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxLiabilitiesNet needs to either be included with the Balance Sheet Location Axis or be included in a calculation with Liabilities as an ancestor.
+"The element {$BS_Tax_Liability.concept.name} with a value {$BS_Tax_Liability} does not appear in a calculation defined in the filing.  This concept is a balance sheet item and should appear on the balance sheet or as a component of a balance sheet item in the footnotes.  If this value is the amount with jurisdictional netting and it is reported in the footnotes then the value of DeferredTaxAssetsNet (the amount without jurisdictional netting) should also be reported. To resolve the error the element DeferredIncomeTaxLiabilitiesNet needs to either be included with the Balance Sheet Location Axis or be included in a calculation with Liabilities as an ancestor.
 
 
 Period :{$BS_Tax_Liability.period}
