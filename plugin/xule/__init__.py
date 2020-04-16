@@ -775,7 +775,7 @@ def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, *args, **kwargs):
         runXule(cntlr, options, modelXbrl)
 
 def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
-    if getattr(options, "xule_multi", True) and getattr(cntlr, "rule_set", None) is not None:
+    if getattr(options, "xule_multi", False) and getattr(cntlr, "rule_set", None) is not None:
         rule_set = getattr(cntlr, "rule_set")
     else:
         if getattr(options, 'xule_rule_set', None) is not None:
