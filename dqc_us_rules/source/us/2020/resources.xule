@@ -103,4 +103,12 @@ constant $extension_items = dict(
 
 		constant $sibling_elements_with_siblings_demotable_to_descendant = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v12/dqc_us_rules/resources/DQC_US_0081/sibling_elements_with_siblings_demotable_to_descendant.json').to-set
 
-
+		/**
+		*	Maturity Schedule elements
+		*
+		*	This is a list three components.  The first component is the amount for the remainder of the fiscal Year
+		*	element. The second element is the amount representing the next 12 months.  The Third element is the amount expected in the second year.
+		*	
+		**/
+		
+		constant $maturity_schedule_elements = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v12/dqc_us_rules/resources/DQC_US_0094/dqc_0094.csv', false, list('int','qname','qname','qname')).to-set
