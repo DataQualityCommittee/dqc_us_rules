@@ -51,34 +51,4 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-
-assert US.0094.9527 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-/** Loop through Maturity Elements **/
-	for $schedule in $maturity_schedule_elements
-		$remaining = $schedule[2];
-		$year_one = $schedule[3];
-		$year_two = $schedule[4];
-		
-		exists({@concept = $remaining}#remain) and exists({@concept = $year_two}#year2) and missing({@concept = $year_one}#year1)
-		
-message
-
-"The element {$remain.concept.name} with a value of {$remain} is used in the filing as is the element {$year2.concept.name} with a value of {$year2}. However no value is provided for the element {$year_one}. If there is no value for year one but there is a value for the remainder of the year and there is a value for year two, then year one should either have a value of 0, or Year one should have the value for Year 2 of {$year2}.
-
-Period :{$remain.period}
-Unit : {$remain.unit}
-Dimensions:{$remain.dimensions.join(', ','=')}
-Decimals: {$remain.decimals}
-
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-SEVERITY error
-
-status $status
-
-effectiveDate $effective_dates[$rule_id]
 		
