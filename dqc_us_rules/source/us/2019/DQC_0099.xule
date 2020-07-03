@@ -21,6 +21,8 @@ $calcConceptItems = sum(set(for $network in $calcNetworks
 
 $CF_Exclusions = set(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsDisposalGroupIncludingDiscontinuedOperations,
+                        CashAndCashEquivalentsAtCarryingValue,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
                         InterestPaidNet,
@@ -35,7 +37,7 @@ for $presNetwork in $presNetworks
         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
         $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         
-                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
                                         
                                         $presNumericItems - ($calcConceptItems + $CF_Exclusions + $supplementalCashItems)
                                     else
@@ -49,7 +51,7 @@ The following elements are in the presentation linkbase of {$presNetwork.role.de
 ")}
 All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing.
 
-If the item is an additional disclosure in the cashflow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract or CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract.
+If the item is an additional disclosure in the cashflow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract or NoncashInvestingAndFinancingItemsAbstract.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
