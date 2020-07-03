@@ -49,9 +49,9 @@ assert US.0096.9529 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-exists({@IncomeStatementLocationAxis=* where ($fact.concept.data-type != srt-types:extensibleListItemType and $fact.concept.data-type != xbrli:monetaryItemType)}#fact1)
+exists({@IncomeStatementLocationAxis=* where not ($fact.concept.data-type == srt-types:extensibleListItemType or $fact.concept.data-type == xbrli:monetaryItemType)}#fact1)
 message
-	"Value \"{$fact1}\" for {$fact1.concept.name} has been broken down using the axis IncomeStatementLocationAxis. The IncomeStatementLocationAxis is used to show where a value appears in an income statement. As such the element qualified by this axis should only ever have a monetary or extensible list item type. {$fact1.concept.name} has a {$fact.concept.data-type} data-type.  Consider using a different element.  
+	"Value \"{$fact1}\" for {$fact1.concept.name} has been broken down using the axis IncomeStatementLocationAxis. The IncomeStatementLocationAxis is used to show where a value appears in an income statement. As such the element qualified by this axis should only ever have a monetary or extensible list item type.   Consider using a different element.  
 
 The properties of this {$fact1.concept.name} fact are:
 Period :{$fact1.period}

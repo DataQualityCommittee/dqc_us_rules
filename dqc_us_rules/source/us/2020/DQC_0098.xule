@@ -14,7 +14,7 @@ assert US.0098.9531 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized};
+$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period = *};
 $openingDate = $value_recognized.period.start;
 
 $openingBalanceOfValueRecognized = {@concept = ContractWithCustomerLiability @period = $openingDate};
@@ -43,7 +43,7 @@ assert US.0098.9532 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized};
+$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period=*};
 $openingDate = $value_recognized.period.start;
 
 $openingBalanceOfCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityCurrent @period = $openingDate};
