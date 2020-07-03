@@ -12,19 +12,32 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0099.9533 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and not $item.role.uri.lower-case.contains('parenthetical') and not $item.role.uri.lower-case.contains("equity");
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and not $item.role.uri.lower-case.contains('parenthetical') and not $item.role.uri.lower-case.contains("equity")  and not $item.role.uri.lower-case.contains("deficit")  and not $item.role.uri.lower-case.contains("stockholders")  and not $item.role.uri.lower-case.contains("capital")  and not $item.role.uri.lower-case.contains("investments");
 
 $calcNetworks = taxonomy().networks(summation-item);
 
 $calcConceptItems = sum(set(for $network in $calcNetworks
                     $network.concept-names))
 
+$CF_Exclusions = set(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
+                        CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
+                        EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        InterestPaidNet,
+                        IncomeTaxesPaidNet,
+                        IncomeTaxesPaid,
+                        CapitalExpendituresIncurredButNotYetPaid,
+                        RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability,
+                        NoncashOrPartNoncashAcquisitionValueOfLiabilitiesAssumed1);
 
 for $presNetwork in $presNetworks
-	    $presConceptItems = $presNetwork.concept-names;
+	$presConceptItems = $presNetwork.concept-names;
         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
         $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
-                                        $presNumericItems - ($calcConceptItems + set(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents, CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations))
+                                        
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        
+                                        $presNumericItems - ($calcConceptItems + $CF_Exclusions + $supplementalCashItems)
                                     else
                                         $presNumericItems - ($calcConceptItems + set(CommitmentsAndContingencies))
         $presConceptNoCalculation.length > 0
@@ -35,6 +48,8 @@ The following elements are in the presentation linkbase of {$presNetwork.role.de
 {$presConceptNoCalculation.join(", 
 ")}
 All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing.
+
+If the item is an additional disclosure in the cashflow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract or CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
