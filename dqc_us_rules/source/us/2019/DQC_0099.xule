@@ -68,7 +68,7 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0099.9533 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investments')) and (not $item.role.uri.lower-case.contains(' changes '))
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investments')) and (not $item.role.uri.lower-case.contains('changes'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -78,6 +78,7 @@ $calcRelationshipItems = sum(set(for $network in $calcNetworks
 
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        EffectOfExchangeRateOnCash,
                         InterestPaidNet,
                         IncomeTaxesPaidNet,
                         IncomeTaxesPaid,
@@ -95,7 +96,7 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems)
                                 else 
@@ -118,7 +119,7 @@ The following elements are in the presentation linkbase of {$presNetwork.role.de
 ")}
 All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing.
 
-If the item is an additional disclosure in the cashflow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extensions abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract.
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
