@@ -72,12 +72,10 @@ $calcRelationshipItems = sum(set(for $network in $calcNetworks
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
                         EffectOfExchangeRateOnCash,
-                        InterestPaidNet,
-                        IncomeTaxesPaidNet,
-                        IncomeTaxesPaid,
-                        CapitalExpendituresIncurredButNotYetPaid,
-                        RightOfUseAssetObtainedInExchangeForOperatingLeaseLiability,
-                        NoncashOrPartNoncashAcquisitionValueOfLiabilitiesAssumed1);
+                        EffectOfExchangeRateOnCashAndCashEquivalents)
+
+$Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name);
+                        
 
 for $presNetwork in $presNetworks
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
@@ -89,9 +87,10 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, OtherNoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
-                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems)
+                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
                                 else 
                                         $presConceptItems = $presNetwork.concept-names;
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
