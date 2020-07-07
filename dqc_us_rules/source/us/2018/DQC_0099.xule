@@ -109,6 +109,13 @@ for $presNetwork in $presNetworks
                                         $calcItems = sum($calcspresentSet);
                                         $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
                                         $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense) + $IS_Supplemental_Disclosures)
+
+    $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+                                "
+                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract."
+                            else
+                                "";
+
     $presConceptNoCalculation.length > 0
         
 
@@ -117,9 +124,10 @@ MESSAGE
 The following elements are in the presentation linkbase of {$presNetwork.role.description} but are not included in any calculation relationship in the filing.
 {$presConceptNoCalculation.join(", 
 ")}
-All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing.
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
 
-If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract.
+This rule will produce an error irrespective of a fact value being entered for the item(s)listed above.
+{$cash_flow_message}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
