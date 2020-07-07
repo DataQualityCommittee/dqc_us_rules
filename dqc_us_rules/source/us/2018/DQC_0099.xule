@@ -107,7 +107,8 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax ))
+                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense) + $IS_Supplemental_Disclosures)
     $presConceptNoCalculation.length > 0
         
 
