@@ -24,7 +24,7 @@ for ($x in $dim_items)
 					$item.concepts.contains(taxonomy().concept($x[4])) and 
 					$item.concepts.contains(taxonomy().concept($member))  
 					returns $item.role.uri
-	tolerance_for_decimals_sign_flip($line_item, $dim_equivalent, 0, $weight)
+	tolerance_for_decimals_sign_flip($line_item, $dim_equivalent, 2, $weight)
 
 message
 "It is expected that {$line_item.name.local-name} with a value of {$line_item} reported in the network role {$network_location_Line_item.join(', ')} should be equal to the dimensionally qualified concept, {$dim_equivalent.name.local-name} with the dimension {$dim_equivalent.dimensions.join(', ',' = ')} and a reported value of {$dim_equivalent} multiplied by {$weight}. This value appears in the network role {$network_location_dim_equivalent.join(', ')}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
