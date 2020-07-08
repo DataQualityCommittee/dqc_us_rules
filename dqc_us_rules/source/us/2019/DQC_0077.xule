@@ -18,9 +18,12 @@ $ComponentAmount = {@concept = RevenueRemainingPerformanceObligationExpectedTimi
 
 
 $Member = $ComponentAmount.dimension(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis);
+$rangeMember = $ComponentAmount.dimension(srt:RangeAxis);
 
-$Member == none
-
+if $rangeMember != none
+   false
+else
+    $Member == none
 
 message
 "The filer has reported a value for the element {$sat_period.concept} with a value of {$sat_period} without using the axis RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis. This axis must be used when reporting a value for {$sat_period.concept}. Please refer to the FASB implementation guide on Revenue from Contracts with Customers on the FASB website.
