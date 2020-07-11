@@ -52,9 +52,9 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax + AllocatedShareBasedCompensationExpense) + $IS_Supplemental_Disclosures)
+                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax + AllocatedShareBasedCompensationExpense + NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
     
-    $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+        $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                 "
                                 If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract."
                             else
