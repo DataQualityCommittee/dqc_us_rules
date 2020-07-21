@@ -64,11 +64,14 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | DQC_US_0088 | Operating Lease Cost And Expense | Removed from Public Review |  |
 | [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
 | [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
-| [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Public Review | 12 |
-| [DQC_US_0092](DQC_US_0092/DQC_0092.md) | IFRS Non Positive Items | Public Review for IFRS | 12 |
-| [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Public Review | 12 |
-| [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Public Review | 12 |
-| [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Public Review | 12 |
+| [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Public Review Ended | 12 |
+| [DQC_US_0092](DQC_US_0092/DQC_0092.md) | IFRS Non Positive Items | Public Review for IFRS Ended | 12 |
+| [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Public Review for IFRS Ended | 12 |
+| [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Public Review Ended | 12 |
+| [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Public Review Ended | 12 |
+| [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | DQC Review for Public Review | 13 |
+| [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | DQC Review for Public Review | 13 |
+| [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | DQC Review for Public Review | 13 |
 
 ## Guidance 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
