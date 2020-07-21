@@ -118,7 +118,7 @@ function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
 						inf else $left.decimals;
 						
 	$right_decimal = if $right.decimals == none
-						inf else $right.decimals;
+						$left_decimal else $right.decimals;
 						
 	$tolerance1 = if ($left_decimal < $right_decimal) 
 						$left_decimal
@@ -143,6 +143,55 @@ function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
 		true
 	else 
 		false 
+
+
+/** 
+ * tolerance_for_decimals_comp
+ * 
+ * This function works out the tolerance between 2 values with different decimals with a tolerance factor and takes the minimum decimals from all facts for those cases where calc are used
+ * and decimals are droppped.
+ * 
+ * @param factset - $left - Passes a factset value to compare to a second parameter called $right
+ * @param factset - $right - Passes a factset value to compare to the first parameter called $left
+ * @param decimal - $min_decimals - Passes a decimal that represents the lowest decimal value in the facts.  This is used if any of the decimals are none.
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+
+function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tolerance_factor)
+
+	$left_decimal = if $left.decimals == none
+						$min_decimals else $left.decimals;
+						
+	$right_decimal = if $right.decimals == none
+						$min_decimals else $right.decimals;
+						
+	$tolerance1 = if ($left_decimal < $right_decimal) 
+						$left_decimal
+					else 	
+						$right_decimal;
+	$tolerance2 = if ($tolerance1 == inf) 
+						0
+					else 	
+						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+						
+	$left = if $left == none
+				0
+			else
+				$left;
+
+	$right = if $right == none
+				0
+			else
+				$right;
+
+	if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
+		true
+	else 
+		false 
+
+
+		
 
 /** 
  * match_set_substring

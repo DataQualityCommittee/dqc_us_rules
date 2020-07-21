@@ -51,7 +51,7 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax + AllocatedShareBasedCompensationExpense + NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
+                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
 
     $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                 "
