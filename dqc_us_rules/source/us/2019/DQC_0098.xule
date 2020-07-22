@@ -13,19 +13,21 @@ assert US.0098.9531 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period=*};
-$openingDate = $value_recognized.period.start;
+$valueRecognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period = *};
+$openingDate = $valueRecognized.period.start;
+
+
 $openingBalanceOfValueRecognized = {@concept = ContractWithCustomerLiability @period = $openingDate};
 
-$value_recognized > $openingBalanceOfValueRecognized
+tolerance_for_decimals_greater($valueRecognized, $openingBalanceOfValueRecognized, 0)
 
 message
-"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$value_recognized} is greater than the opening balance of ContractWithCustomerLiability with an opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
+"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$valueRecognized} is greater than the opening balance of ContractWithCustomerLiability with an opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
 
-The properties of this {$value_recognized.concept.name} fact are:
-Period :{$value_recognized.period}
-Dimensions : {$value_recognized.dimensions.join(', ','=')}
-Unit : {$value_recognized.unit}\n
+The properties of this {$valueRecognized.concept.name} fact are:
+Period :{$valueRecognized.period}
+Dimensions : {$valueRecognized.dimensions.join(', ','=')}
+Unit : {$valueRecognized.unit}\n
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -36,28 +38,32 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $value_recognized
+rule-focus $valueRecognized
 
 
 assert US.0098.9532 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$value_recognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period=*};
-$openingDate = $value_recognized.period.start;
+$valueRecognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period=*};
+$openingDate = $valueRecognized.period.start;
+
+
 $openingBalanceOfCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityCurrent @period = $openingDate};
 $openingBalanceOfNonCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate};
 $openingBalanceOfValueRecognized = $openingBalanceOfNonCurrentValueRecognized + $openingBalanceOfCurrentValueRecognized
 
-$value_recognized > $openingBalanceOfValueRecognized
+$minDecimals = min(list($valueRecognized.decimals,{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate}.decimals,{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate}))
+
+tolerance_for_decimals_greater_than($valueRecognized, $openingBalanceOfValueRecognized, $minDecimals, 0)
 
 message
-"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$value_recognized} is greater than the opening balances of ContractWithCustomerLiabilityCurrent and ContractWithCustomerLiabilityNoncurrent combined which have an aggregate opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
+"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$valueRecognized} is greater than the opening balances of ContractWithCustomerLiabilityCurrent and ContractWithCustomerLiabilityNoncurrent combined which have an aggregate opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
 
-The properties of this {$value_recognized.concept.name} fact are:
-Period :{$value_recognized.period}
-Dimensions : {$value_recognized.dimensions.join(', ','=')}
-Unit : {$value_recognized.unit}\n
+The properties of this {$valueRecognized.concept.name} fact are:
+Period :{$valueRecognized.period}
+Dimensions : {$valueRecognized.dimensions.join(', ','=')}
+Unit : {$valueRecognized.unit}\n
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -68,4 +74,4 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $value_recognized
+rule-focus $valueRecognized
