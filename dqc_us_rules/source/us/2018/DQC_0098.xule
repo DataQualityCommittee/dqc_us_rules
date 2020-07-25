@@ -52,7 +52,13 @@ $openingBalanceOfCurrentValueRecognized = {@concept = ContractWithCustomerLiabil
 $openingBalanceOfNonCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate};
 $openingBalanceOfValueRecognized = $openingBalanceOfNonCurrentValueRecognized + $openingBalanceOfCurrentValueRecognized
 
-$minDecimals = min(list($valueRecognized.decimals,{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate}.decimals,{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate}))
+$fact_values = list($valueRecognized,{@concept = ContractWithCustomerLiabilityCurrent @period = $openingDate},{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate});
+
+$minDecimals = min(list(for $x in $fact_values
+				if $x == none 
+					skip
+				else
+					$x.decimals));
 
 tolerance_for_decimals_greater_than($valueRecognized, $openingBalanceOfValueRecognized, $minDecimals, 0)
 

@@ -6,6 +6,7 @@ DQC Rules
 Taxonomy: US GAAP 2019
 **/
 
+
 rule-name-prefix DQC
 
 assert US.0004.16 satisfied
@@ -44,13 +45,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Assets = {@Assets};
 $CalcAssets = {@AssetsCurrent}#ca <+> {@AssetsNoncurrent}#nca;
-$Decimals = min(list({@AssetsCurrent}.decimals,{@Assets}.decimals,{@AssetsNoncurrent}.decimals));
+$Decimals = list({@AssetsCurrent},{@Assets},{@AssetsNoncurrent});
 
-$minDecimals = list(for $x in $Decimals
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -89,12 +90,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Liabilities = {@Liabilities};
 $CalcLiabilities = {@LiabilitiesCurrent}#cl <+> {@LiabilitiesNoncurrent}#ncl;
-$Decimals = list({@Liabilities}.decimals,{@LiabilitiesCurrent}.decimals,{@LiabilitiesNoncurrent}.decimals);
-$minDecimals = list(for $x in $Decimals
+$Decimals = list({@Liabilities},{@LiabilitiesCurrent},{@LiabilitiesNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -134,13 +136,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
 $CalcSE = {@StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {@MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
-$Decimals = list({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none}.decimals,{@StockholdersEquity @@srt:ConsolidationItemsAxis = none}.decimals,{@MinorityInterest @@srt:ConsolidationItemsAxis = none}.decimals);
+$Decimals = list({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{@StockholdersEquity @@srt:ConsolidationItemsAxis = none},{@MinorityInterest @@srt:ConsolidationItemsAxis = none});
 
-$minDecimals = list(for $x in $Decimals
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -204,13 +206,13 @@ $CalcTempEquity = {@TemporaryEquityCarryingAmountIncludingPortionAttributableToN
 
 $CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
 
-$Decimals = list({@LiabilitiesAndStockholdersEquity}.decimals,{@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest}.decimals,{@StockholdersEquity}.decimals, {@MinorityInterest}.decimals, {@Liabilities}.decimals, {@LiabilitiesCurrent}.decimals, {@LiabilitiesNoncurrent}.decimals)
+$Decimals = list({@LiabilitiesAndStockholdersEquity},{@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{@StockholdersEquity}, {@MinorityInterest}, {@Liabilities}, {@LiabilitiesCurrent}, {@LiabilitiesNoncurrent})
 
-$minDecimals = list(for $x in $Decimals
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -256,13 +258,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncomeLossNetOfTax}#a2;
-$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest}.decimals,{@ProfitLoss}.decimals,{@OtherComprehensiveIncomeLossNetOfTax}.decimals);
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ProfitLoss},{@OtherComprehensiveIncomeLossNetOfTax});
 
-$minDecimals = list(for $x in $Decimals
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -303,13 +305,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}#a1 <+> {@ComprehensiveIncomeNetOfTax}#a2;
-$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest}.decimals,{@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}.decimals,{@ComprehensiveIncomeNetOfTax}.decimals);
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTax});
 
-$minDecimals = list(for $x in $Decimals
+$minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					$x);
+					$x.decimals));
 
 $decimal_tolerance_factor = 2;
 
@@ -592,5 +594,4 @@ for  $x in first(list($drs_members.keys))
 	 skip
 	else
 		$member_facts.sort
-
 
