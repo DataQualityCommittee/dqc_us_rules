@@ -160,11 +160,17 @@ function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
 
 function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tolerance_factor)
 
+	/** This eliminates crazy values for decimals **/
+	$min_decimals_adj = if $min_decimals > 5
+							5
+						else
+							$min_decimals
+
 	$left_decimal = if $left.decimals == none
-						$min_decimals else $left.decimals;
+						$min_decimals_adj else $left.decimals;
 						
 	$right_decimal = if $right.decimals == none
-						$min_decimals else $right.decimals;
+						$min_decimals_adj else $right.decimals;
 						
 	$tolerance1 = if ($left_decimal < $right_decimal) 
 						$left_decimal
