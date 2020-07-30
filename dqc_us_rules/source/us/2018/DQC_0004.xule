@@ -6,6 +6,7 @@ DQC Rules
 Taxonomy: US GAAP 2018
 **/
 
+
 rule-name-prefix DQC
 
 assert US.0004.16 satisfied
@@ -44,13 +45,25 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Assets = {@Assets};
 $CalcAssets = {@AssetsCurrent}#ca <+> {@AssetsNoncurrent}#nca;
+$Decimals = list({@AssetsCurrent},{@Assets},{@AssetsNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($Assets, $CalcAssets, $decimal_tolerance_factor)
+if $CalcAssets == none
+	skip
+else
+	tolerance_for_decimals_comp($Assets, $CalcAssets, $minDecimals, $decimal_tolerance_factor)
+
 
 message
 
-"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca}) + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
 The properties of this {$Assets.concept} fact are:
 Period :{$Assets.period}
 Dimensions :  {$Assets.dimensions.join(', ','=')}
@@ -77,13 +90,24 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Liabilities = {@Liabilities};
 $CalcLiabilities = {@LiabilitiesCurrent}#cl <+> {@LiabilitiesNoncurrent}#ncl;
+$Decimals = list({@Liabilities},{@LiabilitiesCurrent},{@LiabilitiesNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($Liabilities, $CalcLiabilities, $decimal_tolerance_factor)
+if $CalcLiabilities == none
+	skip
+else	
+	tolerance_for_decimals_comp($Liabilities, $CalcLiabilities, $minDecimals, $decimal_tolerance_factor)
 
 message
 
-"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Non Current Liabilities( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. 
+"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. 
 
 These values should be equal.
 The properties of this {$Liabilities.concept} fact are:
@@ -112,9 +136,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
 $CalcSE = {@StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {@MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
+$Decimals = list({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{@StockholdersEquity @@srt:ConsolidationItemsAxis = none},{@MinorityInterest @@srt:ConsolidationItemsAxis = none});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($SEINCI, $CalcSE, $decimal_tolerance_factor)
+if $CalcSE == none
+	skip
+else		
+	tolerance_for_decimals_comp($SEINCI, $CalcSE, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -171,6 +206,14 @@ $CalcTempEquity = {@TemporaryEquityCarryingAmountIncludingPortionAttributableToN
 
 $CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
 
+$Decimals = list({@LiabilitiesAndStockholdersEquity},{@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{@StockholdersEquity}, {@MinorityInterest}, {@Liabilities}, {@LiabilitiesCurrent}, {@LiabilitiesNoncurrent})
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
 /**
@@ -179,11 +222,12 @@ $addMessage =  (if exists($TempIncNCI) and not exists({@TemporaryEquityCarryingA
 else
 	'');
 **/
-if ($CalcEquity == none or $CalcLiabilities == none)
+
+if ($CalcEquity == none or $CalcLiabilities == none or $CalcLSE == none or $LSE == none)
 	skip
 else
-	tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
-
+	tolerance_for_decimals_comp($LSE, $CalcLSE, $minDecimals, $decimal_tolerance_factor)
+	
 message
 
 "{$LSE.concept.label.text} with a value of {$LSE} is not equal to the combined total of Stockholders Equity, Liabilities and Temporary Equity  ( {$CalcEquity} + {$CalcLiabilities} + {$CalcTempEquity}) with a value of {$CalcLSE}. 
@@ -214,9 +258,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncomeLossNetOfTax}#a2;
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ProfitLoss},{@OtherComprehensiveIncomeLossNetOfTax});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+if ($agg == none)
+	skip
+else	
+	tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -235,7 +290,9 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+
 effectiveDate $effective_dates[$rule_id]
+
 /**
 
 ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest = ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest + ComprehensiveIncomeNetOfTax
@@ -248,9 +305,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}#a1 <+> {@ComprehensiveIncomeNetOfTax}#a2;
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTax});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+if ($agg == none)
+	skip
+else
+	tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -452,7 +520,7 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 /**
-NetCashProvidedByUsedInDiscontinuedOperations = CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations + CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations + CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations
+NetCashProvidedByUsedInContinuingOperations = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations + NetCashProvidedByUsedInInvestingActivitiesContinuingOperations + NetCashProvidedByUsedInFinancingActivitiesContinuingOperations
 **/
 
 assert US.0004.9291 satisfied

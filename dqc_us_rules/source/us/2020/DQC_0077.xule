@@ -18,8 +18,12 @@ $ComponentAmount = {@concept = RevenueRemainingPerformanceObligationExpectedTimi
 
 
 $Member = $ComponentAmount.dimension(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis);
+$rangeMember = $ComponentAmount.dimension(srt:RangeAxis);
 
-$Member == none
+if $rangeMember != none
+   false
+else
+    $Member == none
 
 
 message

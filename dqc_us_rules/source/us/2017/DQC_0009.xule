@@ -328,24 +328,5 @@ effectiveDate $effective_dates[$rule_id]
 
 
 
-function tolerance_for_decimals_greater($left, $right, $decimal_tolerance_factor)
-$lowest_decimal = if ($left.decimals < $right.decimals) 
-					$left.decimals
-				else 	
-					$right.decimals;
-$tolerance2 = if ($lowest_decimal == inf) 
-					0
-				else 	
-					(10.power(-1 * $lowest_decimal)) * $decimal_tolerance_factor;
-
-if (($left - $right) > 0 )
-	if (abs(round($left,$lowest_decimal) - round($right,$lowest_decimal)) > $tolerance2)
-		true
-	else
-		false
-else 
-	false 
-
-
 
 
