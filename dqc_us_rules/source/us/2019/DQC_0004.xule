@@ -6,6 +6,7 @@ DQC Rules
 Taxonomy: US GAAP 2019
 **/
 
+
 rule-name-prefix DQC
 
 assert US.0004.16 satisfied
@@ -44,9 +45,21 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Assets = {@Assets};
 $CalcAssets = {@AssetsCurrent}#ca <+> {@AssetsNoncurrent}#nca;
+$Decimals = list({@AssetsCurrent},{@Assets},{@AssetsNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($Assets, $CalcAssets, $decimal_tolerance_factor)
+if $CalcAssets == none
+	skip
+else
+	tolerance_for_decimals_comp($Assets, $CalcAssets, $minDecimals, $decimal_tolerance_factor)
+
 
 message
 
@@ -77,9 +90,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Liabilities = {@Liabilities};
 $CalcLiabilities = {@LiabilitiesCurrent}#cl <+> {@LiabilitiesNoncurrent}#ncl;
+$Decimals = list({@Liabilities},{@LiabilitiesCurrent},{@LiabilitiesNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($Liabilities, $CalcLiabilities, $decimal_tolerance_factor)
+if $CalcLiabilities == none
+	skip
+else	
+	tolerance_for_decimals_comp($Liabilities, $CalcLiabilities, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -112,9 +136,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
 $CalcSE = {@StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {@MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
+$Decimals = list({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{@StockholdersEquity @@srt:ConsolidationItemsAxis = none},{@MinorityInterest @@srt:ConsolidationItemsAxis = none});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($SEINCI, $CalcSE, $decimal_tolerance_factor)
+if $CalcSE == none
+	skip
+else		
+	tolerance_for_decimals_comp($SEINCI, $CalcSE, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -171,6 +206,14 @@ $CalcTempEquity = {@TemporaryEquityCarryingAmountIncludingPortionAttributableToN
 
 $CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
 
+$Decimals = list({@LiabilitiesAndStockholdersEquity},{@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{@StockholdersEquity}, {@MinorityInterest}, {@Liabilities}, {@LiabilitiesCurrent}, {@LiabilitiesNoncurrent})
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
 /**
@@ -180,11 +223,11 @@ else
 	'');
 **/
 
-if ($CalcEquity == none or $CalcLiabilities == none)
+if ($CalcEquity == none or $CalcLiabilities == none or $CalcLSE == none or $LSE == none)
 	skip
 else
-	tolerance_for_decimals($LSE, $CalcLSE, $decimal_tolerance_factor)
-
+	tolerance_for_decimals_comp($LSE, $CalcLSE, $minDecimals, $decimal_tolerance_factor)
+	
 message
 
 "{$LSE.concept.label.text} with a value of {$LSE} is not equal to the combined total of Stockholders Equity, Liabilities and Temporary Equity  ( {$CalcEquity} + {$CalcLiabilities} + {$CalcTempEquity}) with a value of {$CalcLSE}. 
@@ -215,9 +258,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncomeLossNetOfTax}#a2;
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ProfitLoss},{@OtherComprehensiveIncomeLossNetOfTax});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+if ($agg == none)
+	skip
+else	
+	tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -251,9 +305,20 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}#a1 <+> {@ComprehensiveIncomeNetOfTax}#a2;
+$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTax});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
 $decimal_tolerance_factor = 2;
 
-tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+if ($agg == none)
+	skip
+else
+	tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
 
 message
 
@@ -529,5 +594,3 @@ for  $x in first(list($drs_members.keys))
 	 skip
 	else
 		$member_facts.sort
-
-

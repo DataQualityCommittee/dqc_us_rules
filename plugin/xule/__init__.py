@@ -775,52 +775,49 @@ def xuleCmdXbrlLoaded(cntlr, options, modelXbrl, *args, **kwargs):
         runXule(cntlr, options, modelXbrl)
 
 def runXule(cntlr, options, modelXbrl, rule_set_map=_xule_rule_set_map_name):
-        try:
-            if getattr(options, "xule_multi", True) and \
-                getattr(cntlr, "rule_set", None) is not None:
-                rule_set = getattr(cntlr, "rule_set")
-            else:
-                if getattr(options, 'xule_rule_set', None) is not None:
-                    rule_set_location = options.xule_rule_set
-                else:
-                    # Determine the rule set from the model.
-                    rule_set_location = xu.determine_rule_set(modelXbrl, cntlr, rule_set_map)
-                    modelXbrl.log('INFO', 'info', 'Using ruleset {}'.format(rule_set_location))
-                    if rule_set_location is None:
-                        # The rule set could not be determined.
-                        modelXbrl.log('ERROR', 'xule', "Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(xu.get_rule_set_map_file_name(cntlr, rule_set_map)))
-
-                rule_set = xr.XuleRuleSet(cntlr)
-                rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
-        except xr.XuleRuleSetError:
-            raise
-
-        if getattr(options, "xule_multi", False):
-            xm.start_process(rule_set,
-                         modelXbrl,
-                         cntlr,
-                         options
-                         )
+    if getattr(options, "xule_multi", False) and getattr(cntlr, "rule_set", None) is not None:
+        rule_set = getattr(cntlr, "rule_set")
+    else:
+        if getattr(options, 'xule_rule_set', None) is not None:
+            rule_set_location = options.xule_rule_set
         else:
-            if modelXbrl is None:
-                # check if there are any rules that need a model
-                for rule in rule_set.catalog['rules'].values():
-                    if rule['dependencies']['instance'] == True and rule['dependencies']['rules-taxonomy'] != False:
-                        raise xr.XuleRuleSetError('Need instance to process rules')
+            # Determine the rule set from the model.
+            rule_set_location = xu.determine_rule_set(modelXbrl, cntlr, rule_set_map)
 
-            global _saved_taxonomies
-            used_taxonomies = process_xule(rule_set,
-                                           modelXbrl,
-                                           cntlr,
-                                           options,
-                                           _saved_taxonomies
-                                           )
-            # Save one loaded taxonomy
-            new_taxonomy_keys = used_taxonomies.keys() - _saved_taxonomies.keys()
-            if len(new_taxonomy_keys) > 0:
-                for tax_key in list(new_taxonomy_keys)[:2]: # This take at most 2 taxonomies.
-                    tax_key = next(iter(new_taxonomy_keys)) # randomly get one key
-                    _saved_taxonomies[tax_key] = used_taxonomies[tax_key]
+            if rule_set_location is None:
+                # The rule set could not be determined.
+                modelXbrl.log(
+                    'INFO',
+                    'xule',
+                    "Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(
+                        xu.get_rule_set_map_file_name(cntlr, rule_set_map)
+                    )
+                )
+                return
+        modelXbrl.log('INFO', 'info', 'Using ruleset {}'.format(rule_set_location))
+        rule_set = xr.XuleRuleSet(cntlr)
+        rule_set.open(rule_set_location, open_packages=not getattr(options, 'xule_bypass_packages', False))
+
+    if rule_set is None:
+        return
+
+    if getattr(options, "xule_multi", False):
+        xm.start_process(rule_set, modelXbrl, cntlr, options)
+    else:
+        if modelXbrl is None:
+            # check if there are any rules that need a model
+            for rule in rule_set.catalog['rules'].values():
+                if rule['dependencies']['instance'] == True and rule['dependencies']['rules-taxonomy'] != False:
+                    raise xr.XuleRuleSetError('Need instance to process rules')
+
+        global _saved_taxonomies
+        used_taxonomies = process_xule(rule_set, modelXbrl, cntlr, options, _saved_taxonomies)
+        # Save one loaded taxonomy
+        new_taxonomy_keys = used_taxonomies.keys() - _saved_taxonomies.keys()
+        if len(new_taxonomy_keys) > 0:
+            for tax_key in list(new_taxonomy_keys)[:2]: # This take at most 2 taxonomies.
+                tax_key = next(iter(new_taxonomy_keys)) # randomly get one key
+                _saved_taxonomies[tax_key] = used_taxonomies[tax_key]
 
 def xuleValidate(val):
     global _cntlr

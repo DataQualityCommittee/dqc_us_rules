@@ -282,8 +282,8 @@ assert US.0009.45 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$less_fact = {@DefinedBenefitPlansEstimatedFutureEmployerContributionsInCurrentFiscalYear};
-$greater_fact = {@DefinedBenefitPlanExpectedContributionsInCurrentFiscalYear};
+$less_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsRemainderOfFiscalYear};
+$greater_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsCurrentFiscalYear}; 
 
 tolerance_for_decimals_greater($less_fact,$greater_fact,0)
 
@@ -326,25 +326,6 @@ severity error
 
 effectiveDate $effective_dates[$rule_id]
 
-
-
-function tolerance_for_decimals_greater($left, $right, $decimal_tolerance_factor)
-$lowest_decimal = if ($left.decimals < $right.decimals) 
-					$left.decimals
-				else 	
-					$right.decimals;
-$tolerance2 = if ($lowest_decimal == inf) 
-					0
-				else 	
-					(10.power(-1 * $lowest_decimal)) * $decimal_tolerance_factor;
-
-if (($left - $right) > 0 )
-	if (abs(round($left,$lowest_decimal) - round($right,$lowest_decimal)) > $tolerance2)
-		true
-	else
-		false
-else 
-	false 
 
 
 
