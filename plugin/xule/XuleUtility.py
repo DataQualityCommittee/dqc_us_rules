@@ -266,18 +266,10 @@ def determine_rule_set(model_xbrl, cntlr, rule_set_map_name):
     rule_set_map = get_rule_set_map(cntlr, rule_set_map_name)
     
     if rule_set_map is not None:
-        # Get a list of namespaces that are used by the facts.
-        used_namespaces = set(x.namespaceURI for x in model_xbrl.factsByQname.keys())
         # Go through the list of namespaces in the rule set map
         for mapped_namespace, rule_set_location in rule_set_map.items():
             if mapped_namespace in model_xbrl.namespaceDocs:
-            #if mapped_namespace in used_namespaces:
                 return rule_set_location
-    
-#     # This is only reached if a rule set location was not found in the map.
-#     rule_set_map_file_name = get_rule_set_map_file_name(cntlr, xc.RULE_SET_MAP)
-#     model_xbrl.log('ERROR', 'xule', "Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(rule_set_map_file_name))
-#     #raise XuleProcessingError(_("Cannot determine which rule set to use for the filing. Check the rule set map at '{}'.".format(rule_set_map_file_name)))
 
 def get_rule_set_map(cntlr, map_name):
     try:

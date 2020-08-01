@@ -19,20 +19,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22775 $
+$Change: 22812 $
 DOCSKIP
 """
 
-from .XuleRunTime import XuleProcessingError, XuleIterationStop, XuleException, XuleBuildTableError, XuleReEvaluate
+from .XuleRunTime import XuleProcessingError
 from . import XuleValue as xv
 from . import XuleUtility 
 from . import XuleFunctions
-from arelle.ModelRelationshipSet import ModelRelationshipSet
-import numpy
 from arelle.ModelDocument import Type
+from arelle.ModelRelationshipSet import ModelRelationshipSet
+from arelle.ModelValue import QName
+import collections
 import decimal
 import math
-import collections
+import numpy
+
 import json
 
 def property_union(xule_context, object_value, *args):
@@ -1209,6 +1211,29 @@ def property_split(xule_context, object_value, *args):
 
     return xv.XuleValue(xule_context, tuple(xv.XuleValue(xule_context, x, 'string') for x in shadow), 'list', shadow_collection=shadow)
 
+def property_to_qname(xule_context, object_value, *args):
+    '''Create a qname from a single string with an optional namespace prefix.
+
+    QNames created with this property use the prefix defined in the rule set.'''
+    if object_value.value.count(':') > 1:
+        raise XuleProcessingError(
+            _("The local part of the 'to-qname' property can contain only 1 ':' to designate the namespace prefix. "
+              "Found {} colons in {}".format(object_value.value.count(':'), object_value.value)), xule_context)
+    elif ':' in object_value.value:
+        # the name contains a colon
+        prefix, local_name = object_value.value.split(':')
+    else:
+        prefix = None
+        local_name = object_value.value
+
+    namespace_uri = xule_context.global_context.catalog['namespaces'].get(prefix if prefix is not None else '*', dict()).get('uri')
+    if namespace_uri is None:
+        raise XuleProcessingError(_("In the 'to-qname' property, could not resolve the namespace prefix '{}' "
+                                    "to a namespace uri in '{}'".format(prefix, object_value.value)), xule_context)
+
+    return xv.XuleValue(xule_context, QName(prefix, namespace_uri, local_name), 'qname')
+
+
 def property_day(xule_context, object_value, *args):
     return xv.XuleValue(xule_context, object_value.value.day, 'int')
 
@@ -1237,22 +1262,60 @@ def property_dts_document_locations(xule_context, object_value, *args):
         locations.add(xv.XuleValue(xule_context, doc_url, 'uri'))
     return xv.XuleValue(xule_context, frozenset(locations), 'set') 
 
+def cleanDocumentUri(doc):
+    if doc.filepathdir.endswith('.zip'):
+        pathParts = doc.filepathdir.split('/')
+        pathParts.pop()
+        pathParts.append(doc.basename)
+        return '/'.join(pathParts)
+    else:
+        return doc.uri
+
 def property_entry_point(xule_context, object_value, *args):
     dts = object_value.value
     
-    return xv.XuleValue(xule_context, get_taxonomy_entry_point_doc(dts).uri, 'uri')
+    dtstype, documentlist = get_taxonomy_entry_point_doc(dts)
+    uri_list = {}
+    uri = None
+
+    if dtstype in (Type.INSTANCE, Type.INLINEXBRL, Type.INLINEXBRLDOCUMENTSET):
+        for item in documentlist:
+            uri_list[item.uri] = item
+    else:
+        uri_list[documentlist.uri] = 1
+    
+    for u in sorted(uri_list):
+        uri = cleanDocumentUri(uri_list[u])
+        break    
+    
+    return xv.XuleValue(xule_context, uri, 'uri')
 
 def get_taxonomy_entry_point_doc(dts):
-    
-    if dts.modelDocument.type in (Type.INSTANCE, Type.INLINEXBRL):
+    if dts.modelDocument.type in (Type.INSTANCE, Type.INLINEXBRL, Type.INLINEXBRLDOCUMENTSET):
         # This will take the first document
-        return list(dts.modelDocument.referencesDocument.keys())[0]
+        return dts.modelDocument.type, dts.modelDocument.referencesDocument
     else:
-        return dts.modelDocument
+        return dts.modelDocument.type, dts.modelDocument
 
 def property_entry_point_namespace(xule_context, object_value, *args):
     dts = object_value.value
-    namespace = get_taxonomy_entry_point_doc(dts).targetNamespace
+    dtstype, documentlist = get_taxonomy_entry_point_doc(dts)
+    namespaces = {}
+    namespace = None
+
+    if dtstype in (Type.INSTANCE, Type.INLINEXBRL):
+        for item in documentlist:
+            namespaces[item.uri] = item.targetNamespace
+    elif dtstype == Type.INLINEXBRLDOCUMENTSET:
+        for topitem in documentlist:
+            for item in topitem.referencesDocument:
+                namespaces[item.uri] = item.targetNamespace
+    else:
+        namespaces[documentlist.uri] = documentlist.targetNamespace
+    
+    for uri in sorted(namespaces.keys()):
+        namespace = namespaces[uri]
+        break
     
     if namespace is None:
         return xv.XuleValue(xule_context, None, 'none')
@@ -1740,6 +1803,7 @@ PROPERTIES = {
               'lower-case': (property_lower_case, 0, ('string', 'uri'), False),
               'upper-case': (property_upper_case, 0, ('string', 'uri'), False),
               'split': (property_split, 1, ('string', 'uri'), False),
+              'to-qname': (property_to_qname, 0, ('string'), False),
               'day': (property_day, 0, ('instant',), False),
               'month': (property_month, 0, ('instant',), False),
               'year': (property_year, 0, ('instant',), False),
