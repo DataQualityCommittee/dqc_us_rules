@@ -16,8 +16,11 @@ $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.descri
 
 $calcNetworks = taxonomy().networks(summation-item);
 
-$calcRelationshipItems = sum(set(for $network in $calcNetworks
-                    $network.relationships))
+$calcRelationshipItems = if $calcNetworks == set()
+                        set()
+                    else
+                        sum(set(for $network in $calcNetworks
+                                $network.relationships))   
 
 
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
@@ -81,4 +84,18 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
+
+output D99
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investment')) and (not $item.role.uri.lower-case.contains('changes')) and (not $item.role.uri.lower-case.contains('shareholder'))
+
+$calcNetworks = taxonomy().networks(summation-item);
+
+$calcRelationshipItems = if $calcNetworks == set()
+                        set(1,2,3)
+                    else
+                        sum(set(for $network in $calcNetworks
+                                $network.relationships))  
+ $calcRelationshipItems
 

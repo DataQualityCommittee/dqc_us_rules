@@ -16,9 +16,11 @@ $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.descri
 
 $calcNetworks = taxonomy().networks(summation-item);
 
-$calcRelationshipItems = sum(set(for $network in $calcNetworks
-                    $network.relationships))
-
+$calcRelationshipItems = if $calcNetworks == set()
+                        set()
+                    else
+                        sum(set(for $network in $calcNetworks
+                                $network.relationships))                        
 
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
