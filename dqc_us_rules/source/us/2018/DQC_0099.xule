@@ -40,7 +40,7 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, OtherNoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, OtherNoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
                                 else 
@@ -56,8 +56,8 @@ for $presNetwork in $presNetworks
                                         $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
 
     $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
-                                "
-                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract or NonCashOperatingAndInvestingActivitiesAbstract."
+                                 "
+                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
                             else
                                 "";
 
