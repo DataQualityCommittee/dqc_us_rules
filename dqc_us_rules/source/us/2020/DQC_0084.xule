@@ -43,11 +43,7 @@ if not exists($sub-periods)
 	false
 else
 	$sum-periods = sum(list(for ($x in $sub-periods) $x));
-	$all-decimals = set(for $y in $sub-periods 
-							if $y == none
-								skip
-							else
-								$y.decimals);
+	$all-decimals = set(for ($y in $sub-periods) $y.decimals);
 	$min-decimals_sub = min(filter $all-decimals where $item.decimals != INF );
 	$sum-decimals = $fact1.decimals;
 	$min-decimals = min(list($sum-decimals,$min-decimals_sub));
