@@ -1,0 +1,100 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2019
+
+**/
+
+rule-name-prefix DQC
+
+assert IFRS.0045.9535 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/* This rule identifies elements in the investing section of the cash flow calculation that are operating items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
+
+$misplaced_concept = compare_baseCalc_to_extensionCalc(CashFlowsFromUsedInOperatingActivities, $ifrs-gaap , CashFlowsFromUsedInInvestingActivities, $cash_flow_exceptions);
+
+for $baseName in $misplaced_concept true
+
+message
+"The concept {$baseName} appears in the investing cash flows of the company's cash flow statement. {$baseName} is an operating item and it is expected that this item would only appear in the cash flow generated from operating activities.  Please review the calculations defined for the cash flow statement to determine that the correct element has been used for this item. 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity
+error
+
+effectiveDate $effective_dates[$rule_id]
+
+assert IFRS.0045.9536 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/* This rule identifies elements in the investing section of the cash flow calculation that are financing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
+
+$misplaced_concept = compare_baseCalc_to_extensionCalc(CashFlowsFromUsedInFinancingActivities, $ifrs-gaap , CashFlowsFromUsedInInvestingActivities, $cash_flow_exceptions);
+
+for $baseName in $misplaced_concept true
+
+message
+"The concept {$baseName} appears in the investing cashflows of the companies cash flow statement. {$baseName} is a financing item and it is expected that this item would only appear in the cash flow generated from financing activities. Please review the calculations defined for the cash flow statement to determine that the correct element has been used for this item. \n 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity
+error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+assert US.0045.9537 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/* This rule identifies elements in the financing section of the cash flow calculation that are investing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
+
+$misplaced_concept = compare_baseCalc_to_extensionCalc(CashFlowsFromUsedInInvestingActivities, $ifrs-gaap, CashFlowsFromUsedInFinancingActivities, $cash_flow_exceptions);
+
+for $baseName in $misplaced_concept true
+
+message
+"The concept {$baseName} appears in the financing cashflows of the companies cash flow statement. {$baseName} is an investing item and it is expected that this item would only appear in the cash flow generated from investing activities. Please review the calculations defined for the cash flow statement to determine that the correct element has been used for this item. \n 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity
+error
+
+effectiveDate $effective_dates[$rule_id]
+
+assert US.0045.9538 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/* This rule identifies elements in the financing section of the cash flow calculation that are investing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
+
+$misplaced_concept = compare_baseCalc_to_extensionCalc(CashFlowsFromUsedInOperatingActivities, $ifrs-gaap, CashFlowsFromUsedInFinancingActivities, $cash_flow_exceptions);
+
+for $baseName in $misplaced_concept true
+
+message
+"The concept {$baseName} appears in the financing cashflows of the companies cash flow statement. {$baseName} is an operating item and it is expected that this item would only appear in the cash flow from operating activities. Please review the calculations defined for the cash flow statement to determine that the correct element has been used for this item. 
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity
+error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+
