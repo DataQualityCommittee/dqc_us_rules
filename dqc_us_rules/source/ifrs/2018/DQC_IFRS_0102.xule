@@ -3,13 +3,13 @@ DQC Rules
  (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2019
+Taxonomy: IFRS 2018
 **/
 
 
 rule-name-prefix DQC
 
-assert IFRS.0004.9539 satisfied
+assert IFRS.0102.9539 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $Assets = {@Assets};
@@ -39,7 +39,7 @@ effectiveDate $effective_dates[$rule_id]
 Assets = AssetsCurrent + AssetsNoncurrent
 **/
 
-assert IFRS.0004.9540 satisfied
+assert IFRS.0102.9540 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -84,7 +84,7 @@ effectiveDate $effective_dates[$rule_id]
 Liabilities = LiabilitiesCurrent + LiabilitiesNoncurrent
 **/
 
-assert IFRS.0004.9541 satisfied
+assert IFRS.0102.9541 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -130,13 +130,13 @@ effectiveDate $effective_dates[$rule_id]
 StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest = StockholdersEquity + MinorityInterest
 **/
 
-assert IFRS.0004.9542 satisfied
+assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@Equity @@srt:ConsolidationItemsAxis = none};
-$CalcSE = {@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none}#se <+> {@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none}#mi;
-$Decimals = list({@Equity @@srt:ConsolidationItemsAxis = none},{@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none},{@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none});
+$SEINCI = [@Equity];
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi;
+$Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -178,7 +178,7 @@ ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest 
 
 **/
 
-assert IFRS.0004.9543 satisfied
+assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -226,7 +226,7 @@ effectiveDate $effective_dates[$rule_id]
 CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect = NetCashProvidedByUsedInOperatingActivities + NetCashProvidedByUsedInInvestingActivities + NetCashProvidedByUsedInFinancingActivities
 **/
 
-assert IFRS.0004.9544 satisfied
+assert IFRS.0102.9544 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -265,7 +265,7 @@ NetCashProvidedByUsedInFinancingActivities = NetCashProvidedByUsedInFinancingAct
 
 **/
 
-assert IFRS.0004.9545 satisfied
+assert IFRS.0102.9545 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -299,7 +299,7 @@ effectiveDate $effective_dates[$rule_id]
 NetCashProvidedByUsedInInvestingActivities = NetCashProvidedByUsedInInvestingActivitiesContinuingOperations + CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations
 **/
 
-assert IFRS.0004.9546 satisfied
+assert IFRS.0102.9546 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -335,7 +335,7 @@ CashFlowsFromUsedInOperatingActivities = CashFlowsFromUsedInOperatingActivitiesC
 
 **/
 
-assert IFRS.0004.9547 satisfied
+assert IFRS.0102.9547 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -369,7 +369,7 @@ effectiveDate $effective_dates[$rule_id]
 IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations = CashFlowsFromUsedInOperatingActivitiesDiscontinuedOperations + CashFlowsFromUsedInInvestingActivitiesDiscontinuedOperations + CashFlowsFromUsedInFinancingActivitiesDiscontinuedOperations
 **/
 
-assert IFRS.0004.9548 satisfied
+assert IFRS.0102.9548 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
