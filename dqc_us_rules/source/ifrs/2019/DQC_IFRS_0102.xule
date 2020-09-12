@@ -134,9 +134,9 @@ assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@Equity @@srt:ConsolidationItemsAxis = none};
-$CalcSE = {@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none}#se <+> {@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none}#mi;
-$Decimals = list({@Equity @@srt:ConsolidationItemsAxis = none},{@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none},{@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none});
+$SEINCI = {@Equity};
+$CalcSE = {@EquityAttributableToOwnersOfParent}#se <+> {@NoncontrollingInterests}#mi;
+$Decimals = list({@Equity},{@EquityAttributableToOwnersOfParent},{@NoncontrollingInterests});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
