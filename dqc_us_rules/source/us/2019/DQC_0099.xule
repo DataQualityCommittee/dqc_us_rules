@@ -12,7 +12,19 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0099.9533 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investment')) and (not $item.role.uri.lower-case.contains('changes')) and (not $item.role.uri.lower-case.contains('shareholder'))
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('Convertible')) 
+and (not $item.role.uri.lower-case.contains('Preferred'))  
+and (not $item.role.uri.lower-case.contains('Temporary Equity')) 
+and (not $item.role.uri.lower-case.contains('Redeemable'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
