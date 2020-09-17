@@ -41,7 +41,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
-$member_IFRSGAAP = navigate dimensions dimension-member descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis taxonomy $ifrs-gaap returns set (target-name);
+$member_IFRSGAAP = navigate parent-child descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis taxonomy $ifrs-gaap returns set (target-name);
 
 $member_extension = navigate dimensions dimension-member descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis returns set (target-name);
 

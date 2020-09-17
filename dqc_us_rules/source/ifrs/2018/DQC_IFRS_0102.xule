@@ -12,8 +12,8 @@ rule-name-prefix DQC
 assert IFRS.0102.9539 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$Assets = {@Assets};
-$LiabilitiesAndStockholdersEquity = {@EquityAndLiabilities};
+$Assets = {@Assets @MaturityAxis=none @PastDueStatusAxis=none};
+$LiabilitiesAndStockholdersEquity = {@EquityAndLiabilities @MaturityAxis=none @PastDueStatusAxis=none};
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($Assets, $LiabilitiesAndStockholdersEquity, $decimal_tolerance_factor)
@@ -43,9 +43,9 @@ assert IFRS.0102.9540 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Assets = {@Assets};
-$CalcAssets = {@CurrentAssets}#ca <+> {@NoncurrentAssets}#nca;
-$Decimals = list({@CurrentAssets},{@Assets},{@NoncurrentAssets});
+$Assets = {@Assets @MaturityAxis=none @PastDueStatusAxis=none};
+$CalcAssets = {@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#ca <+> {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#nca;
+$Decimals = list({@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none},{@Assets @MaturityAxis=none @PastDueStatusAxis=none},{@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -88,9 +88,9 @@ assert IFRS.0102.9541 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Liabilities = {@Liabilities};
-$CalcLiabilities = {@CurrentLiabilities}#cl <+> {@NoncurrentLiabilities}#ncl;
-$Decimals = list({@Liabilities},{@CurrentLiabilities},{@NoncurrentLiabilities});
+$Liabilities = {@Liabilities @MaturityAxis=none @PastDueStatusAxis=none};
+$CalcLiabilities = {@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#cl <+> {@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#ncl;
+$Decimals = list({@Liabilities @MaturityAxis=none @PastDueStatusAxis=none},{@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none},{@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
