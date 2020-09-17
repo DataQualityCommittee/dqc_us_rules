@@ -147,18 +147,19 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
-$member_IFRSGAAP = navigate dimensions dimension-member descendants from ConsolidatedAndSeparateFinancialStatementsAxis taxonomy $ifrs-gaap returns set (target-name);
+$member_IFRSGAAP = navigate parent-child descendants from ConsolidatedAndSeparateFinancialStatementsAxis taxonomy $ifrs-gaap returns set (target-name);
 
 $member_extension = navigate dimensions dimension-member descendants from ConsolidatedAndSeparateFinancialStatementsAxis returns set (target-name);
 
 /** Define allowable extensions with the qname function **/
 
 $allowable_extensions = set();
+$allowable_IFRS_Members = set(SeparateMember);
 
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP 
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $allowable_IFRS_Members;
 $unallowed_members = $member_extension - $allowed_members;
 
 /** Evaluate if facts exists with the unallowable members **/
@@ -211,9 +212,14 @@ $ChildExtensions2 = navigate dimensions domain-member descendants from Unallocat
 
 $ChildExtensions3 = navigate dimensions domain-member descendants from MaterialReconcilingItemsMember returns set (target-name);
 
+/** The following extensions are allowed **/
+$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'),
+qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'GeographyEliminationsMember'), qname($extension_ns,'OtherNonSegmentMember'));
+
+
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3;
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3 + $allowable_extensions;
 
 $unallowed_members = $member_extension - $allowed_members;
 
