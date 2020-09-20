@@ -94,7 +94,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
-$member_IFRSGAAP = navigate dimensions dimension-member descendants from ContinuingAndDiscontinuedOperationsAxis taxonomy $ifrs-gaap returns set (target-name);
+$member_IFRSGAAP = navigate parent-child descendants from ContinuingAndDiscontinuedOperationsAxis taxonomy $ifrs-gaap returns set (target-name);
 
 $member_extension = navigate dimensions dimension-member descendants from ContinuingAndDiscontinuedOperationsAxis returns set (target-name);
 
@@ -257,7 +257,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $member_IFRS = navigate dimensions dimension-member descendants from SegmentsAxis taxonomy $ifrs-gaap returns set (target-name);
 
-$baseMembers = navigate dimensions dimension-member descendants from SegmentsAxis where not is_base($relationship.target, $all_ifrs_base_taxonomies) returns set (target-name);
+$baseMembers = navigate dimensions dimension-member descendants from SegmentsAxis where is_base($relationship.target, $all_ifrs_base_taxonomies) returns set (target-name);
 
 /** Difference the sets**/
 
