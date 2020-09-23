@@ -135,7 +135,7 @@ assert IFRS.0102.9542 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $SEINCI = [@Equity];
-$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + [@concept=qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')]
 $Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
@@ -182,9 +182,9 @@ assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@ComprehensiveIncome @srt:ConsolidationItemsAxis=none};
-$agg = {@ProfitLoss @srt:ConsolidationItemsAxis=none}#a1 <+> {@OtherComprehensiveIncome @srt:ConsolidationItemsAxis=none}#a2;
-$Decimals = list({@ComprehensiveIncome @srt:ConsolidationItemsAxis=none},{@ProfitLoss @srt:ConsolidationItemsAxis=none},{@OtherComprehensiveIncome @srt:ConsolidationItemsAxis=none});
+$base = {@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')};
+$agg = {@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a1 <+> {@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a2;
+$Decimals = list({@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 

@@ -25,7 +25,9 @@ $document_period_end_date = $document_period.period.end;
 not($document_period > ($document_period_end_date + (time-span("P4D"))) or $document_period < ($document_period_end_date - (time-span("P4D"))))
 and 
 exists({@concept.namespace-uri = $dei_namespace @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
-
+and 
+/** The rule will not run if it is an 8-K that has the amendment flag flagged as true**/
+not (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in set('8-K')}))) and (exists({covered @concept.local-name ='AmendmentFlag' where $fact == true})))
 
 message
 "The ending date of {$fact1.period.end} used for {$fact1.concept.label.text} must be the same as the Document Period End Date,  {$document_period_end_date}. Revise either the date of the {$fact1.concept.label.text} or the date of the Document Period End Date.
