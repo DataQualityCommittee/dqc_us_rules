@@ -1,0 +1,34 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2018
+**/
+
+
+rule-name-prefix DQC
+
+
+/** RULES for the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis **/
+assert IFRS.0106.9550 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$invalidFact = {@concept.period-type = duration @AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis = *};
+exists($invalidFact)
+
+message
+"The filer has used the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis with the concept {$invalidFact.concept.name} and a reported value of {$invalidFact}. This concept is a duration concept. This axis should only be used with an instant concept.
+
+These values should be equal.
+The properties of this {$invalidFact.concept} fact are:
+Period :{$invalidFact.period}
+Dimensions :  {$invalidFact.dimensions.join(', ','=')}
+Unit : {$invalidFact.unit}
+"
+
+severity
+error
+
+effectiveDate $effective_dates[$rule_id]

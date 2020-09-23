@@ -12,8 +12,8 @@ rule-name-prefix DQC
 assert IFRS.0102.9539 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$Assets = {@Assets @MaturityAxis=none @PastDueStatusAxis=none};
-$LiabilitiesAndStockholdersEquity = {@EquityAndLiabilities @MaturityAxis=none @PastDueStatusAxis=none};
+$Assets = [@Assets];
+$LiabilitiesAndStockholdersEquity = [@EquityAndLiabilities];
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($Assets, $LiabilitiesAndStockholdersEquity, $decimal_tolerance_factor)
@@ -134,9 +134,9 @@ assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@Equity @MaturityAxis=none @PastDueStatusAxis=none};
-$CalcSE = {@EquityAttributableToOwnersOfParent @MaturityAxis=none @PastDueStatusAxis=none}#se <+> {@NoncontrollingInterests @MaturityAxis=none @PastDueStatusAxis=none}#mi;
-$Decimals = list({@Equity @MaturityAxis=none @PastDueStatusAxis=none},{@EquityAttributableToOwnersOfParent @MaturityAxis=none @PastDueStatusAxis=none},{@NoncontrollingInterests @MaturityAxis=none @PastDueStatusAxis=none});
+$SEINCI = [@Equity];
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')
+$Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -182,9 +182,9 @@ assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@ComprehensiveIncome};
-$agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncome}#a2;
-$Decimals = list({@ComprehensiveIncome},{@ProfitLoss},{@OtherComprehensiveIncome});
+$base = {@ComprehensiveIncome @srt:ConsolidationItemsAxis=none};
+$agg = {@ProfitLoss @srt:ConsolidationItemsAxis=none}#a1 <+> {@OtherComprehensiveIncome @srt:ConsolidationItemsAxis=none}#a2;
+$Decimals = list({@ComprehensiveIncome @srt:ConsolidationItemsAxis=none},{@ProfitLoss @srt:ConsolidationItemsAxis=none},{@OtherComprehensiveIncome @srt:ConsolidationItemsAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 

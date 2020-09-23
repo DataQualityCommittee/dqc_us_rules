@@ -10,31 +10,6 @@ Taxonomy: IFRS 2018
 
 rule-name-prefix DQC
 
-
-/** RULES for the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis **/
-assert IFRS.0104.9550 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$invalidFact = {@concept.period-type = duration @AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis = *};
-exists($invalidFact)
-
-message
-"The filer has used the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis with the concept {$invalidFact.concept.name} and a reported value of {$invalidFact}. This concept is a duration concept. This axis should only be used with an instant concept.
-
-These values should be equal.
-The properties of this {$invalidFact.concept} fact are:
-Period :{$invalidFact.period}
-Dimensions :  {$invalidFact.dimensions.join(', ','=')}
-Unit : {$invalidFact.unit}
-"
-
-severity
-error
-
-effectiveDate $effective_dates[$rule_id]
-
-
 assert IFRS.0104.9551 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -201,10 +176,6 @@ $member_IFRSGAAP = navigate dimensions dimension-member descendants from Segment
 
 $member_extension = navigate dimensions dimension-member descendants from SegmentConsolidationItemsAxis returns set (target-name);
 
-/** Define allowable extensions with the qname function **/
-
-$allowable_extensions = set();
-
 /** Extension members under the following base members are permitted.**/
 $ChildExtensions1 = navigate dimensions domain-member descendants from EliminationOfIntersegmentAmountsMember returns set (target-name); 
 
@@ -219,7 +190,7 @@ qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'Geography
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3 + $allowable_extensions;
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3;
 
 $unallowed_members = $member_extension - $allowed_members;
 
@@ -257,7 +228,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $member_IFRS = navigate dimensions dimension-member descendants from SegmentsAxis taxonomy $ifrs-gaap returns set (target-name);
 
-$baseMembers = navigate dimensions dimension-member descendants from SegmentsAxis where is_base($relationship.target, $all_ifrs_base_taxonomies) returns set (target-name);
+$baseMembers = navigate dimensions dimension-member descendants from SegmentsAxis where is_base($relationship.target, list($ifrs-gaap, $exchange, $naics, $sic, $dei, $currency )) returns set (target-name);
 
 /** Difference the sets**/
 
