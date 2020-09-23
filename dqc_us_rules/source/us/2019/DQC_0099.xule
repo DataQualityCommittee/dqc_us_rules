@@ -21,10 +21,10 @@ and (not $item.role.uri.lower-case.contains('capital'))
 and (not $item.role.uri.lower-case.contains('investment')) 
 and (not $item.role.uri.lower-case.contains('changes')) 
 and (not $item.role.uri.lower-case.contains('shareholder')) 
-and (not $item.role.uri.lower-case.contains('Convertible')) 
-and (not $item.role.uri.lower-case.contains('Preferred'))  
-and (not $item.role.uri.lower-case.contains('Temporary Equity')) 
-and (not $item.role.uri.lower-case.contains('Redeemable'))
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporary equity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -65,7 +65,7 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
                                         $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
 
     $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
