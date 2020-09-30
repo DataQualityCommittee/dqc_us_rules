@@ -19,9 +19,8 @@ $invalidFact = {@concept.period-type = duration @AssetsAndLiabilitiesClassifiedA
 exists($invalidFact)
 
 message
-"The filer has used the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis with the concept {$invalidFact.concept.name} and a reported value of {$invalidFact}. This concept is a duration concept. This axis should only be used with an instant concept.
+"The filer has used the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis with the concept {$invalidFact.concept.name} and a reported value of {$invalidFact}. This concept is a duration concept. This axis should only be used to disaggrate balances on the balance sheet between held for sale and not held for sale. If this value represents the loss or gain on a disposal group then the value should be tagged with the axis ContinuingAndDiscontinuedOperationsAxis with a member that reflects the disposal group or discontinued operation. If the members of DiscontinuedOperationsMember or DisposalGroupsClassifiedAsHeldForSaleMember are not used because either the member reflects a specific discontinued operation or specific disposal group then the specifc member should be included as either a child of DiscontinuedOperationsMember or DisposalGroupsClassifiedAsHeldForSaleMember.
 
-These values should be equal.
 The properties of this {$invalidFact.concept} fact are:
 Period :{$invalidFact.period}
 Dimensions :  {$invalidFact.dimensions.join(', ','=')}
