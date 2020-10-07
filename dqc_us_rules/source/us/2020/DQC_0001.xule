@@ -1087,7 +1087,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $member_USGAAP = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis taxonomy $us-gaap returns set (target-name);
 
-$baseMembers = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis where not is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+$baseMembers = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
 
 /** Difference the sets**/
