@@ -11,4 +11,13 @@ python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qname
 
 python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/filer_membership/taxonomies/2020/' --xule-qnames-format json -f 'http://xbrl.fasb.org/us-gaap/2020/dqcrules/dqcrules-2020-01-31.xsd'
 
-python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/F6-Rules/Form714/taxonomy/' --xule-qnames-format json -f 'https://eCollection.ferc.gov/taxonomy/form714/2020-01-01/form/Form714/form-714_2020-01-01.xsd'
+python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/taxonomy/us/2017/' --xule-qnames-format json -f 'http://xbrl.fasb.org/us-gaap/2017/entire/us-gaap-entryPoint-std-2017-01-31.xsd'
+
+python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/taxonomy/us/2016/' --xule-qnames-format json -f 'http://xbrl.fasb.org/us-gaap/2016/entire/us-gaap-entryPoint-std-2016-01-31.xsd'
+
+python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/taxonomy/us/2015/' --xule-qnames-format json -f 'http://xbrl.fasb.org/us-gaap/2015/entire/us-gaap-entryPoint-std-2015-01-31.xsd'
+
+python3 Arelle-master/arellecmdline.py --plugin xule/savexuleqnames --xule-qnames-dir '/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/taxonomy/us/2014/' --xule-qnames-format json -f 'http://xbrl.fasb.org/us-gaap/2014/entire/us-gaap-entryPoint-std-2014-01-31.xsd'
+
+
+
