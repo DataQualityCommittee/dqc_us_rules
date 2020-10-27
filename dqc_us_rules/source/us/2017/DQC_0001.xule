@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2018
+Taxonomy: US GAAP 2017
 Release Version 6
 **/
 
@@ -23,8 +23,8 @@ $member_extension = navigate dimensions dimension-member descendants from FairVa
 
 $allowable_extensions = set(qname($extension_ns,'FairValueInputsLevel1AndLevel2Member'), 
 						qname($extension_ns,'FairValueInputsLevel2AndLevel3Member'),
-						qname($extension_ns,'FairValueInputsLevel1AndLevel3Member'));
-						/** qname($extension_ns,'FairValueMeasuredAtNetAssetValuePerShareMember'));  ADDED TO THE TAXONOMY**/  
+						qname($extension_ns,'FairValueInputsLevel1AndLevel3Member'), 
+						qname($extension_ns,'FairValueMeasuredAtNetAssetValuePerShareMember'));
 
 /** Union the sets**/
 
@@ -620,7 +620,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** UPDATED FOR SRT **/
 
 $allowed_members_product = navigate dimensions dimension-member descendants from ProductOrServiceAxis taxonomy $us-gaap returns set (target-name);
-/**$allowed_members_reinsurance = navigate dimensions dimension-member descendants from ReinsurancePremiumsForInsuranceCompaniesByProductSegmentAxis taxonomy $us-gaap returns set (target-name);**/
+$allowed_members_reinsurance = navigate dimensions dimension-member descendants from ReinsurancePremiumsForInsuranceCompaniesByProductSegmentAxis taxonomy $us-gaap returns set (target-name);
 
 $allowed_members_aircraft = navigate domain-member descendants include start
      from (navigate dimension-domain children
@@ -636,11 +636,11 @@ $allowed_members_oil_reserves = navigate dimensions dimension-member descendants
 
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember, RegionalCarrierMember, MainlineMember);
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, CrudeOilMember, FuelMember, GeneralLiabilityMember, HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, NaturalGasLiquidsReservesMember, NaturalGasReservesMember, OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, SyntheticOilMember, ResidentialRealEstateMember, RealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember, RegionalCarrierMember, MainlineMember);
 
 $member_extension = navigate dimensions dimension-member descendants from ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
-$allowed_members = $allowed_members_product + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_ppe + $allowed_members_oil_reserves + $allowed_members_PublicUtilitiesInventoryAxis;
+$allowed_members = $allowed_members_product + $allowed_members_reinsurance + $allowed_members_aircraft + $allowed_members_malpractice_insurance + $allowed_base_member + $allowed_members_ppe + $allowed_members_oil_reserves + $allowed_members_PublicUtilitiesInventoryAxis;
 
 $unallowed_base_members = $member_extension - $allowed_members;
 
