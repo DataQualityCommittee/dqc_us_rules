@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22825 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 14.80 secs at 2020-10-28T11:22:14 - https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4310344424" severity="error" effectiveDate="2019-09-30" filing_url="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfFinancingCosts with a value of 3,218,000 and a calculation parent of us-gaap:NonoperatingIncomeExpense is represented as a sibling of us-gaap:InterestExpense with a value of 50,273,000 in the extension taxonomy role 1002000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS, but us-gaap:AmortizationOfFinancingCosts is represented as a descendent of us-gaap:InterestExpense in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+The filing should use the element InterestExpenseDebtExcludingAmortization instead of the element InterestExpense. The element InterestExpenseDebtExcludingAmortization excludes the element AmortizationOfFinancingCosts from interest expense.
+
+The properties of this us-gaap:AmortizationOfFinancingCosts fact are:
+
+Period :2019-01-01 to 2019-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 14.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml 9391</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml#d70255643e1534-wk-Fact-CD41B99F0174557FBCC4D8F42FFF8E64" sourceLine="9391">
+  <property name="label" value="Amortization of Debt Issuance Costs"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="AmortizationOfFinancingCosts"/>
+  <property name="QName" value="us-gaap:AmortizationOfFinancingCosts"/>
+  <property name="contextRef" value="FD2019Q4YTD">
+   <property name="entity" value="0000921825">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2019-01-01"/>
+   <property name="endDate" value="2019-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,218,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4310344424" severity="error" effectiveDate="2019-09-30" filing_url="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfFinancingCosts with a value of 3,162,000 and a calculation parent of us-gaap:NonoperatingIncomeExpense is represented as a sibling of us-gaap:InterestExpense with a value of 57,199,000 in the extension taxonomy role 1002000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS, but us-gaap:AmortizationOfFinancingCosts is represented as a descendent of us-gaap:InterestExpense in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+The filing should use the element InterestExpenseDebtExcludingAmortization instead of the element InterestExpense. The element InterestExpenseDebtExcludingAmortization excludes the element AmortizationOfFinancingCosts from interest expense.
+
+The properties of this us-gaap:AmortizationOfFinancingCosts fact are:
+
+Period :2017-01-01 to 2017-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 14.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml 9401</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml#d70255643e1574-wk-Fact-CB68F38B1CF059799E818CE031554EF6" sourceLine="9401">
+  <property name="label" value="Amortization of Debt Issuance Costs"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="AmortizationOfFinancingCosts"/>
+  <property name="QName" value="us-gaap:AmortizationOfFinancingCosts"/>
+  <property name="contextRef" value="FD2017Q4YTD">
+   <property name="entity" value="0000921825">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2017-01-01"/>
+   <property name="endDate" value="2017-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,162,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message cid="4310344424" severity="error" effectiveDate="2019-09-30" filing_url="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfFinancingCosts with a value of 3,404,000 and a calculation parent of us-gaap:NonoperatingIncomeExpense is represented as a sibling of us-gaap:InterestExpense with a value of 50,775,000 in the extension taxonomy role 1002000 - Statement - CONSOLIDATED STATEMENTS OF OPERATIONS, but us-gaap:AmortizationOfFinancingCosts is represented as a descendent of us-gaap:InterestExpense in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+The filing should use the element InterestExpenseDebtExcludingAmortization instead of the element InterestExpense. The element InterestExpenseDebtExcludingAmortization excludes the element AmortizationOfFinancingCosts from interest expense.
+
+The properties of this us-gaap:AmortizationOfFinancingCosts fact are:
+
+Period :2018-01-01 to 2018-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 14.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml 9396</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml#d70255643e1554-wk-Fact-0C85C203F8E553EF93803A9FAE280513" sourceLine="9396">
+  <property name="label" value="Amortization of Debt Issuance Costs"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="AmortizationOfFinancingCosts"/>
+  <property name="QName" value="us-gaap:AmortizationOfFinancingCosts"/>
+  <property name="contextRef" value="FD2018Q4YTD">
+   <property name="entity" value="0000921825">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2018-01-01"/>
+   <property name="endDate" value="2018-12-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,404,000"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 31.69 secs - https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/921825/000092182520000011/fr-20191231x10k_htm.xml"/></entry>
+</log>
