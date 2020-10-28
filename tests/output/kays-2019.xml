@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.22825 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.32 secs at 2020-10-27T23:49:25 - https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml"/></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message severity="error" filing_url="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml" cid="4558455528" effectiveDate="2019-09-30">[DQC.US.0081.9277] The line item concept us-gaap:MinorityInterest with a value of -1,325,781 is represented as a child of us-gaap:StockholdersEquity with a value of -13,491,480 in the companies extension taxonomy role 00000002 - Statement - Balance Sheets. The element us-gaap:MinorityInterest however, is not represented as a component of us-gaap:StockholdersEquity in the calculation relationships defined in the US GAAP taxonomy. The US-GAAP taxonomies include us-gaap:MinorityInterest as a sibling element (or child of that sibling) relative to us-gaap:StockholdersEquity in the calculation relationships of the US GAAP taxonomy. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:StockholdersEquity and the child element us-gaap:MinorityInterest.
+The element MinorityInterest should be defined as a child of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest and not a child of StockholdersEquity which excludes non controlling interests.
+
+The properties of this us-gaap:MinorityInterest fact are:
+
+Period :2019-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 14.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml 805</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml#element(/1/294)" sourceLine="805">
+  <property name="label" value="Non-controlling Interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="MinorityInterest"/>
+  <property name="QName" value="us-gaap:MinorityInterest"/>
+  <property name="contextRef" value="AsOf2019-12-31">
+   <property name="entity" value="0001530746">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2019-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-1,325,781"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9277" level="error">
+ <message severity="error" filing_url="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml" cid="4558455528" effectiveDate="2019-09-30">[DQC.US.0081.9277] The line item concept us-gaap:MinorityInterest with a value of -1,043,517 is represented as a child of us-gaap:StockholdersEquity with a value of -23,305,221 in the companies extension taxonomy role 00000002 - Statement - Balance Sheets. The element us-gaap:MinorityInterest however, is not represented as a component of us-gaap:StockholdersEquity in the calculation relationships defined in the US GAAP taxonomy. The US-GAAP taxonomies include us-gaap:MinorityInterest as a sibling element (or child of that sibling) relative to us-gaap:StockholdersEquity in the calculation relationships of the US GAAP taxonomy. Please review the element selection to determine that an appropriate element has been used for the parent element us-gaap:StockholdersEquity and the child element us-gaap:MinorityInterest.
+The element MinorityInterest should be defined as a child of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest and not a child of StockholdersEquity which excludes non controlling interests.
+
+The properties of this us-gaap:MinorityInterest fact are:
+
+Period :2018-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9277
+Rule version: 14.0.0RC1
+ - https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml 806</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml#element(/1/295)" sourceLine="806">
+  <property name="label" value="Non-controlling Interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2019-01-31"/>
+  <property name="name" value="MinorityInterest"/>
+  <property name="QName" value="us-gaap:MinorityInterest"/>
+  <property name="contextRef" value="AsOf2018-12-31">
+   <property name="entity" value="0001530746">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2018-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-1,043,517"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 24.21 secs - https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1530746/000172186820000213/kays-20191231.xml"/></entry>
+</log>
