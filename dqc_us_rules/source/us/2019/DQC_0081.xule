@@ -56,6 +56,8 @@ for ($network in $extCalcRelationship1.keys)
 				/** Get the fact values that have no dimensions, are not nil and the child element is not equal to zero (The parent element can be zero)**/
 				$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 				$source_value = [nonils @concept = $extCalcSourceName];
+
+				/** Get detailed messages if required **/
 				$detailed_message = filter $message_for_rule_9277 where ($item[1] == $inappropriate_child.concept.name and $item[2] == $extCalcSourceName) returns $item[3];
 
 				
