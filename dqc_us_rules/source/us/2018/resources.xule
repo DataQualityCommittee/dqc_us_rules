@@ -102,3 +102,14 @@ constant $extension_items = dict(
 		**/
 
 		constant $sibling_elements_with_siblings_demotable_to_descendant = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v14/dqc_us_rules/resources/DQC_US_0081/sibling_elements_with_siblings_demotable_to_descendant.json').to-set
+
+
+		/**
+		*	Inappropriate Children elements that should be a sibling
+		*
+		*	This is a list three components.  The first component is the focus element that is the child of what should be its sibling.
+		*	The second component is the actual ancestor of the element that should be its sibling.  The third item is the message to present to the user with a suggested *	*	*	improvement
+		*	
+		**/
+		
+		constant $message_for_rule_9277 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v14/dqc_us_rules/resources/DQC_US_0081/child_should_be_sibling_message-9277.csv', true, list('qname','qname','string')).to-set
