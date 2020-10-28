@@ -11,6 +11,28 @@ env:
     - CURDIR=$(pwd)
 
   matrix:
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1628369/000162836920000035/cwk-20200630.htm", "xule_run_only":"DQC.US.0001.81"}]' EXFILES=$EXPECTED/DQC.US.0001.81_cwk-us-2020.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/802481/000080248120000041/ppc-20200329.htm", "xule_run_only":"DQC.US.0001.81"}]' EXFILES=$EXPECTED/DQC.US.0001.81_ppc-us-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1532981/000117152020000322/eros-20200331.xml", "xule_run_only":"DQC.IFRS.0101.9535"}]' EXFILES=$EXPECTED/DQC.IFRS.0101.9535_ero-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1301713/000156459020033911/sam-20200430.xml", "xule_run_only":"DQC.IFRS.0101.9536"}]' EXFILES=$EXPECTED/DQC.IFRS.0101.9536_sam-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/888746/000129281420001470/ccu-20191231.xml", "xule_run_only":"DQC.US.0101.9537"}]' EXFILES=$EXPECTED/DQC.US.0101.9537_ccu-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1707919/000149315220008013/nakd-20200131.xml", "xule_run_only":"DQC.US.0101.9538"}]' EXFILES=$EXPECTED/DQC.US.0101.9538_nakd-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1538789/000117184320006150/je-20200630.xml", "xule_run_only":"DQC.IFRS.0102.9540"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9540_je-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1041792/000129281420001451/elp-20191231.xml", "xule_run_only":"DQC.IFRS.0102.9541"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9541_elp-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1095595/000095010320007907/ceo-20191231.xml", "xule_run_only":"DQC.IFRS.0102.9542"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9542_ceo-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1780531/000104746920004473/ocft-20191231.xml", "xule_run_only":"DQC.IFRS.0102.9543"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9543_ocft-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/910631/000119312520229250/kof-20200630.xml", "xule_run_only":"DQC.IFRS.0102.9544"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9544_kof-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1067428/000162828020012085/au-20200630.htm", "xule_run_only":"DQC.IFRS.0102.9546"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9546_au-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1668717/000119312520209350/bud-20200630.xml", "xule_run_only":"DQC.IFRS.0102.9548"}]' EXFILES=$EXPECTED/DQC.IFRS.0102.9548_bud-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1066116/000129281420001580/tsu-20191231.xml", "xule_run_only":"DQC.IFRS.0103.9549"}]' EXFILES=$EXPECTED/DQC.IFRS.0103.9549_tsu-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/806968/000119312520238995/wpp-20200630.xml", "xule_run_only":"DQC.IFRS.0104.9551"}]' EXFILES=$EXPECTED/DQC.IFRS.0104.9551_wpp-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/806968/000119312520238995/wpp-20200630.xml", "xule_run_only":"DQC.IFRS.0104.9552"}]' EXFILES=$EXPECTED/DQC.IFRS.0104.9552_wpp-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/ix?doc=/Archives/edgar/data/1067428/000162828020012085/au-20200630.htm", "xule_run_only":"DQC.IFRS.0104.9553"}]' EXFILES=$EXPECTED/DQC.IFRS.0104.9553_au-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1300050/000110465920040795/gpl-20191231.xml", "xule_run_only":"DQC.IFRS.0104.9554"}]' EXFILES=$EXPECTED/DQC.IFRS.0104.9554_gpl-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1445930/000119312520118233/kb-20191231.xml", "xule_run_only":"DQC.IFRS.0104.9555"}]' EXFILES=$EXPECTED/DQC.IFRS.0104.9555_kb-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1563411/000156341120000009/cstm-20200630.xml", "xule_run_only":"DQC.IFRS.0105.9556"}]' EXFILES=$EXPECTED/DQC.IFRS.0105.9556_cstm-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/ix?doc=/Archives/edgar/data/1545772/000154577220000022/bpy-20200630_d2.htm", "xule_run_only":"DQC.IFRS.0105.9556"}]' EXFILES=$EXPECTED/DQC.IFRS.0105.9556_bpy-ifrs-2019.xml
+    - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1075124/000119312520213749/tri-20200630.xml", "xule_run_only":"DQC.IFRS.0106.9550"}]' EXFILES=$EXPECTED/DQC.IFRS.0106.9550_tri-ifrs-2019.xml
     - INFILES='[{"file":"http://www.sec.gov/Archives/edgar/data/70866/000007086620000007/ncr-20191231x10k_htm.xml", "xule_run_only":"DQC.US.0004.9289"}]' EXFILES=$EXPECTED/DQC.US.0004.9289_ncr-2019.xml
     - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1282266/000128226620000031/a2020033110q_htm.xml", "xule_run_only":"DQC.US.0011"}]' EXFILES=$EXPECTED/DQC.US.0011_win-us-2020.xml
     - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/854560/000092708920000286/gsbc-20200331_htm.xml", "xule_run_only":"DQC.US.0013"}]' EXFILES=$EXPECTED/DQC.US.0013_gsbc-us-2020.xml
