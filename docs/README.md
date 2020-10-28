@@ -69,18 +69,18 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Approved | 12 |
 | [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Approved | 12 |
 | [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Approved | 12 |
-| [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | DQC for Approval to Release | 13 |
-| [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | DQC for Approval to Release | 13 |
-| [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | DQC for Approval to Release | 13 |
-| [DQC_US_0101](DQC_US_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees | DQC for review for public comment | 14 |
-| [DQC_US_0102](DQC_US_0102/DQC_0102.md) | Element Values Are Equal (IFRS) | DQC for review for public comment | 14 |
-| [DQC_US_0103](DQC_US_0103/DQC_0103.md) | Invalid Value for Percentage Items | DQC for review for public comment | 14 |
-| [DQC_US_0104](DQC_US_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | DQC for review for public comment | 14 |
-| [DQC_US_0105](DQC_US_0105/DQC_0105.md) | FS with No Associated Calculation | DQC for review for public comment | 14 |
-| [DQC_US_0106](DQC_US_0106/DQC_0106.md) | Assets and Liabilities Classified as Held-For-Sale using Duration Element | DQC for review for public comment | 14 |
+| [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | Approved | 13 |
+| [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | Approved | 13 |
+| [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | Approved | 13 |
+| [DQC_US_0101](DQC_US_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees (IFRS) | Public Review for IFRS | 14 |
+| [DQC_US_0102](DQC_US_0102/DQC_0102.md) | Element Values Are Equal (IFRS) | Public Review for IFRS | 14 |
+| [DQC_US_0103](DQC_US_0103/DQC_0103.md) | Invalid Value for Percentage Items (IFRS) | Public Review for IFRS | 14 |
+| [DQC_US_0104](DQC_US_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | Public Review for IFRS | 14 |
+| [DQC_US_0105](DQC_US_0105/DQC_0105.md) | FS with No Associated Calculation | Public Review | 14 |
+| [DQC_US_0106](DQC_US_0106/DQC_0106.md) | Assets and Liabilities Classified as Held-For-Sale using Duration Element | Public Review for IFRS &amp; US GAAP | 14 |
 
 ## Guidance 
-### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - DQC for review for public comment (14)
+### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - Public Review for IFRS November 1 - December 15, 2020
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
 
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
