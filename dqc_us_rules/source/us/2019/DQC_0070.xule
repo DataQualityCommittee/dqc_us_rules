@@ -55,14 +55,14 @@ for  $x in $drs_members.keys
 		
 		/** aggregate the fact values on the axis **/
 		$member_sum = sum($member_facts);
-		
+
 		/** Calculate the minimum decimals **/
 
 		$min_decimals = min(list(for $z in $member_facts
 				if $z == none 
 					skip
 				else
-					$z.decimals));		
+					$z.decimals));
 		
 		/** Make a string that shows the components of the components that comprise the total **/
 		$member_string = sum(list(for $member_fact in $member_facts

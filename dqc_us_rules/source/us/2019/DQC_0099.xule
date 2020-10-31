@@ -1,0 +1,98 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2019
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0099.9533 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporary equity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+
+$calcNetworks = taxonomy().networks(summation-item);
+
+$calcRelationshipItems = if $calcNetworks == set()
+                        set()
+                    else
+                        sum(set(for $network in $calcNetworks
+                                $network.relationships))
+
+
+$CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
+                        EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        EffectOfExchangeRateOnCash,
+                        EffectOfExchangeRateOnCashAndCashEquivalents)
+
+$Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name);
+
+for $presNetwork in $presNetworks
+    $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
+                                        $presConceptItems = $presNetwork.concept-names;
+                                        $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+                                        $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                    set($calc.target-name, $calc.source-name)
+                                                                else
+                                                                    skip);
+                                        $calcItems = sum($calcspresentSet);
+
+                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, OtherNoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+
+                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
+                                else 
+                                        $presConceptItems = $presNetwork.concept-names;
+                                        $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
+                                        $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                    set($calc.target-name, $calc.source-name)
+                                                                else
+                                                                    skip);
+                                        $calcItems = sum($calcspresentSet);
+                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
+
+    $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+                                 "
+                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
+                            else
+                                "";
+    $presConceptNoCalculation.length > 0
+        
+
+MESSAGE
+"
+The following elements are in the presentation linkbase of {$presNetwork.role.description} but are not included in any calculation relationship in the filing.
+{$presConceptNoCalculation.join(", 
+")}
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+{$cash_flow_message}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+SEVERITY error
+
+status $status
+
+effectiveDate $effective_dates[$rule_id]
+
