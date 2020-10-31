@@ -69,6 +69,9 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Approved | 12 |
 | [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Approved | 12 |
 | [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Approved | 12 |
+| [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | Approved | 13 |
+| [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | Approved | 13 |
+| [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | Approved | 13 |
 
 ## Guidance 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
