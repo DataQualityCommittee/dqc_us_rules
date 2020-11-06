@@ -29,6 +29,8 @@ $ChildExtensions1 = navigate dimensions domain-member descendants from Noncurren
 
 $ChildExtensions2 = navigate dimensions domain-member descendants from DisposalGroupsClassifiedAsHeldForSaleMember returns set (target-name);
 
+$ChildExtensions3 = navigate dimensions domain-member descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleMember returns set (target-name);
+
 /** Union the sets**/
 
 $allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1;
@@ -185,7 +187,7 @@ $ChildExtensions3 = navigate dimensions domain-member descendants from MaterialR
 
 /** Define allowable extensions with the qname function **/
 $allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'),
-qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'GeographyEliminationsMember'), qname($extension_ns,'OtherNonSegmentMember'));
+qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'GeographyEliminationsMember'), qname($extension_ns,'OtherNonSegmentMember'), qname($extension_ns,'OperatingSegmentsAndUnallocatedMember'));
 
 /** Union the sets**/
 
