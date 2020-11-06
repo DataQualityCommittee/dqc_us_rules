@@ -24,7 +24,7 @@ else
 	/** Get those networks that are the financial Statements **/
 	$FS_Networks = filter $all_networks where $item.role.description.contains('- Statement ');
 	
-	if $FS_Networks == none
+	if $FS_Networks.length == 0
 		false
 	else
 
