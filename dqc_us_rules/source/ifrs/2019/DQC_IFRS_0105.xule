@@ -9,10 +9,23 @@ Taxonomy: IFRS 2019
 
 RULE-NAME-PREFIX DQC
 
-ASSERT IFRS.0099.9550 SATISFIED
+ASSERT IFRS.0105.9556 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investment')) and (not $item.role.uri.lower-case.contains('changes')) and (not $item.role.uri.lower-case.contains('shareholder'))
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -')
+and (not $item.role.description.lower-case.contains('parenthetical'))
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporary equity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -30,6 +43,19 @@ $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlow
 for $presNetwork in $presNetworks
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         $presConceptItems = $presNetwork.concept-names;
+                                                                               
+                                        /** GET ANY SUPPLEMENTAL ABSTRACTS **/
+                                        $supplementalAbstracts = filter $presConceptItems where $item.local-name.lower-case.contains('supplement') and taxonomy().concept($item).is-abstract;
+
+                                        /** GET ANY noncash ABSTRACTS **/
+
+                                        $noncashAbstracts = filter $presConceptItems where $item.local-name.lower-case.contains('noncash') and taxonomy().concept($item).is-abstract;
+
+                                        /** GET monetary children of root elements **/
+                                        $levelOneItemsPreExemptions = navigate parent-child children from $presNetwork.roots role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents)
+
+                                        /** Get monetary items from presentation **/
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
                                         $calcspresentSet = set(for $calc in $calcRelationshipItems 
                                                                 if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
@@ -38,11 +64,18 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         
-                                        $supplementalCashItems = navigate parent-child descendants from list(IncomeTaxesPaidRefundAbstract, qname($extension_ns,'SupplementalCashFlowInformationAbstract'), qname($extension_ns,'SupplementalCashFlowElementsAbstract'), qname($extension_ns,'OtherNoncashInvestingAndFinancingItemsAbstract'), qname($extension_ns,'CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract'), qname($extension_ns,'NoncashInvestingAndFinancingItemsAbstract'), qname($extension_ns,'AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract'), qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
-                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
+                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items + $levelOneItems)
                                 else 
                                         $presConceptItems = $presNetwork.concept-names;
+
+                                        /** GET ANY commitments ABSTRACTS **/
+                                        $commitItems = filter $presConceptItems where $item.local-name.lower-case.contains('commit') and taxonomy().concept($item).is-monetary;
+
+                                        /** GET ANY contingent ABSTRACTS **/
+                                        $contingenItems = filter $presConceptItems where $item.local-name.lower-case.contains('contingen') and taxonomy().concept($item).is-monetary;
+
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
                                         $calcspresentSet = set(for $calc in $calcRelationshipItems 
                                                                 if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
@@ -51,11 +84,11 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         
-                                        $presNumericItems - ($calcItems + set())
+                                        $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set)
     
         $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                 "
-                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the extension abstracts  SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
                             else
                                 "";
                                 

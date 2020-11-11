@@ -13,7 +13,7 @@ assert IFRS.0103.9549 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-{nonils @concept.data-type = num:percentItemType where ((not $fact.concept.name.local-name.contains("EffectiveIncomeTaxRate"))) and is_base($fact.concept, $all_ifrs_base_taxonomies)}#fact1 > 10 
+{nonils @concept.data-type = num:percentItemType where ((not $fact.concept.name.local-name.contains("ApplicableTaxRate"))) and is_base($fact.concept, $all_ifrs_base_taxonomies)}#fact1 > 10 
 
 
 message

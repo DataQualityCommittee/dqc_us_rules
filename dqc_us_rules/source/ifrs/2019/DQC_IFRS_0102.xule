@@ -12,8 +12,8 @@ rule-name-prefix DQC
 assert IFRS.0102.9539 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$Assets = {@Assets};
-$LiabilitiesAndStockholdersEquity = {@EquityAndLiabilities};
+$Assets = [@Assets];
+$LiabilitiesAndStockholdersEquity = [@EquityAndLiabilities];
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($Assets, $LiabilitiesAndStockholdersEquity, $decimal_tolerance_factor)
@@ -43,9 +43,9 @@ assert IFRS.0102.9540 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Assets = {@Assets};
-$CalcAssets = {@CurrentAssets}#ca <+> {@NoncurrentAssets}#nca;
-$Decimals = list({@CurrentAssets},{@Assets},{@NoncurrentAssets});
+$Assets = {@Assets @MaturityAxis=none};
+$CalcAssets = {@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#ca <+> {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#nca;
+$Decimals = list({@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none},{@Assets @MaturityAxis=none @PastDueStatusAxis=none}, {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -63,7 +63,7 @@ else
 
 message
 
-"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.  If assets held for sale is included in the balance sheet presentation, then consider using CurrentAssetsOtherThanAssetsOrDisposalGroupsClassifiedAsHeldForSaleOrAsHeldForDistributionToOwners instead of current assets or NoncurrentAssetsOtherThanFinancialInstrumentsDeferredTaxAssetsPostemploymentBenefitAssetsAndRightsArisingUnderInsuranceContracts other than noncurrent assets.
 The properties of this {$Assets.concept} fact are:
 Period :{$Assets.period}
 Dimensions :  {$Assets.dimensions.join(', ','=')}
@@ -88,9 +88,9 @@ assert IFRS.0102.9541 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Liabilities = {@Liabilities};
-$CalcLiabilities = {@CurrentLiabilities}#cl <+> {@NoncurrentLiabilities}#ncl;
-$Decimals = list({@Liabilities},{@CurrentLiabilities},{@NoncurrentLiabilities});
+$Liabilities = {@Liabilities @MaturityAxis=none @PastDueStatusAxis=none};
+$CalcLiabilities = {@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#cl <+> {@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#ncl;
+$Decimals = list({@Liabilities @MaturityAxis=none @PastDueStatusAxis=none},{@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none},{@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -107,7 +107,7 @@ else
 
 message
 
-"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. 
+"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. Consider using the element CurrentLiabilitiesOtherThanLiabilitiesIncludedInDisposalGroupsClassifiedAsHeldForSale other than CurrentLiabilities.
 
 These values should be equal.
 The properties of this {$Liabilities.concept} fact are:
@@ -134,9 +134,9 @@ assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@Equity @@srt:ConsolidationItemsAxis = none};
-$CalcSE = {@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none}#se <+> {@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none}#mi;
-$Decimals = list({@Equity @@srt:ConsolidationItemsAxis = none},{@EquityAttributableToOwnersOfParent @@srt:ConsolidationItemsAxis = none},{@NoncontrollingInterests @@srt:ConsolidationItemsAxis = none});
+$SEINCI = [@Equity];
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + [@concept=qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')]
+$Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -182,9 +182,9 @@ assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@ComprehensiveIncome};
-$agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncome}#a2;
-$Decimals = list({@ComprehensiveIncome},{@ProfitLoss},{@OtherComprehensiveIncome});
+$base = {@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')};
+$agg = {@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a1 <+> {@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a2;
+$Decimals = list({@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
