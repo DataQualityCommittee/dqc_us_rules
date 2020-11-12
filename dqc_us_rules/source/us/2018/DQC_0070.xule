@@ -55,6 +55,14 @@ for  $x in $drs_members.keys
 		
 		/** aggregate the fact values on the axis **/
 		$member_sum = sum($member_facts);
+
+		/** Calculate the minimum decimals **/
+
+		$min_decimals = min(list(for $z in $member_facts
+				if $z == none 
+					skip
+				else
+					$z.decimals));
 		
 		/** Calculate the minimum decimals **/
 
@@ -91,6 +99,7 @@ The properties of this {$FairValueOfPlanAssets.concept} fact are:
 Period :{$FairValueOfPlanAssets.period}
 Dimensions : {$FairValueOfPlanAssets.dimensions.join(', ','=')}
 Unit : {$FairValueOfPlanAssets.unit}
+Decimals : {$FairValueOfPlanAssets.decimals}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
