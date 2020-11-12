@@ -22,7 +22,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22775 $
+$Change: 22792 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -686,7 +686,7 @@ class XuleRuleContext(object):
         
         return XuleValueSet(XuleValue(self, tuple(base_local_names), 'list'))
 
-    _BUILTIN_CONSTANTS = {'extension_ns': _const_extension_ns,
+    _BUILTIN_CONSTANTS = {'extension_ns-DISABLED': _const_extension_ns,
                           'ext_concepts': _const_ext_concepts,
                           'EXT_CONCEPT_LOCAL_NAMES': _const_ext_concept_local_name}    
 
