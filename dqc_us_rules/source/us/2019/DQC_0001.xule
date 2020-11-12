@@ -145,7 +145,7 @@ $allowed_members_lea = navigate domain-member descendants include start
      returns set (target-name);
 $allowed_members_FHLB = navigate dimensions dimension-member descendants from srt:FederalHomeLoanBankAdvancesBranchOfFHLBBankAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinOffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember
+$allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinoffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember
 						, qname($dei_namespace, 'EntityDomain')
 						);
 
@@ -258,7 +258,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** UPDATED FOR SRT **/
 $base_members = navigate dimensions dimension-member descendants from srt:CounterpartyNameAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
-$allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, DirectorMember, ChiefExecutiveOfficerMember, ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember, IndividuallyImmaterialCounterpartiesMember);
+$allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, srt:ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, srt:DirectorMember, srt:ChiefExecutiveOfficerMember, srt:ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember, IndividuallyImmaterialCounterpartiesMember);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -642,7 +642,7 @@ $allowed_members_oil_reserves = navigate dimensions dimension-member descendants
 
 $allowed_members_PublicUtilitiesInventoryAxis = navigate dimensions dimension-member descendants from PublicUtilitiesInventoryAxis taxonomy $us-gaap returns set (target-name);
 
-$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, MortgageLoansOnRealEstateMember, srt:NaturalGasLiquidsReservesMember, srt:NaturalGasReservesMember, srt:OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, srt:SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, HotelMember, RegionalCarrierMember, MainlineMember);
+$allowed_base_member = set(AuctionRateSecuritiesMember, AutomobileLoanMember, CommercialLoanMember, CommercialRealEstateMember, ConstructionLoansMember, ConsumerLoanMember, srt:CrudeOilMember, srt:FuelMember, GeneralLiabilityMember, srt:HeatingOilMember, HomeEquityLoanMember, HomeEquityMember, LetterOfCreditMember, LineOfCreditMember, LoansMember, srt:NaturalGasLiquidsReservesMember, srt:NaturalGasReservesMember, srt:OilReservesMember, ProfessionalMalpracticeLiabilityMember, RealEstateLoanMember, ResidentialMortgageMember, srt:SyntheticOilMember, ResidentialRealEstateMember, PublicUtilitiesInventoryPropaneMember, PublicUtilitiesInventoryWaterMember, AutomobilesMember, srt:HotelMember, RegionalCarrierMember, MainlineMember);
 
 $member_extension = navigate dimensions dimension-member descendants from srt:ProductOrServiceAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
 
@@ -688,11 +688,16 @@ $member_extension = navigate dimensions dimension-member descendants from srt:Co
 
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'));
+$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'), qname($extension_ns,'OtherOperatingSegmentsAndIntersegmentEliminationsMember'));
+
+/** Limit these to extensions filter out base taxonomy elements**/
+$ChildExtensions1 = navigate dimensions domain-member descendants from MaterialReconcilingItemsMember returns set (target-name); 
+
+$ChildExtensions2 = navigate dimensions domain-member descendants from srt:ConsolidationEliminationsMember returns set (target-name);
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_USGAAP;
+$allowed_members = $allowable_extensions + $member_USGAAP + $ChildExtensions2 + $ChildExtensions1;
 
 $unallowed_members = $member_extension - $allowed_members;
 
@@ -1071,4 +1076,5 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
+
 

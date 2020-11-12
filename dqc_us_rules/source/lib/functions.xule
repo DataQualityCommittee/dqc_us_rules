@@ -23,7 +23,6 @@ function compare_baseCalc_to_extensionCalc($base_concept, $base_taxonomy, $exten
 	$extensionNames = navigate summation-item descendants from $extension_concept returns set (target-name) 
 	navigate summation-item descendants from $base_concept taxonomy $base_taxonomy  where $relationship.target.name in $extensionNames and not ($relationship.target.name in $exceptions) returns set (target-name) 
 
-
 /** 
  * is_extension
  * 
@@ -91,16 +90,16 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 **/
 		
 function get_member_dims($member)		
-$domain_member_role = filter taxonomy().networks(domain-member) returns $item.role;
-$list_dict = list(for ($network in $domain_member_role)
-        $dim_items = navigate dimensions dimension-member ancestors from  $member role $network returns target;
-        $dimension_list = filter $dim_items where $item in taxonomy().dimensions.concept returns $item.name;
-        if $dimension_list.length == 0
-	 	skip
-	    else
-			for $x in range($dimension_list.length)
-				dict(list('dimension', $dimension_list[$x]),list('member',$member),list('role',$network.uri)));
-$list_dict
+	$domain_member_role = filter taxonomy().networks(domain-member) returns $item.role;
+	$list_dict = list(for ($network in $domain_member_role)
+			$dim_items = navigate dimensions dimension-member ancestors from  $member role $network returns target;
+			$dimension_list = filter $dim_items where $item in taxonomy().dimensions.concept returns $item.name;
+			if $dimension_list.length == 0
+			skip
+			else
+				for $x in range($dimension_list.length)
+					dict(list('dimension', $dimension_list[$x]),list('member',$member),list('role',$network.uri)));
+	$list_dict
 
 /** 
  * tolerance_for_decimals
@@ -115,35 +114,164 @@ $list_dict
 
 function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
 
-$left_decimal = if $left.decimals == none
-					inf else $left.decimals;
-					
-$right_decimal = if $right.decimals == none
-					inf else $right.decimals;
-					
-$tolerance1 = if ($left_decimal < $right_decimal) 
-					$left_decimal
+	$left_decimal = if $left.decimals == none
+						inf else $left.decimals;
+						
+	$right_decimal = if $right.decimals == none
+						$left_decimal else $right.decimals;
+						
+	$tolerance1 = if ($left_decimal < $right_decimal) 
+						$left_decimal
+					else 	
+						$right_decimal;
+	$tolerance2 = if ($tolerance1 == inf) 
+						0
+					else 	
+						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+						
+	$left = if $left == none
+				0
+			else
+				$left;
+
+	$right = if $right == none
+				0
+			else
+				$right;
+
+	if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
+		true
+	else 
+		false 
+
+
+/** 
+ * tolerance_for_decimals_comp
+ * 
+ * This function works out the tolerance between 2 values with different decimals with a tolerance factor and takes the minimum decimals from all facts for those cases where calc are used
+ * and decimals are droppped.
+ * 
+ * @param factset - $left - Passes a factset value to compare to a second parameter called $right
+ * @param factset - $right - Passes a factset value to compare to the first parameter called $left
+ * @param decimal - $min_decimals - Passes a decimal that represents the lowest decimal value in the facts.  This is used if any of the decimals are none.
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+
+function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tolerance_factor)
+
+	/** This eliminates crazy values for decimals **/
+	$min_decimals_adj = if $min_decimals > 5
+							5
+						else
+							$min_decimals
+
+	$left_decimal = if $left.decimals == none
+						$min_decimals_adj else $left.decimals;
+						
+	$right_decimal = if $right.decimals == none
+						$min_decimals_adj else $right.decimals;
+						
+	$tolerance1 = if ($left_decimal < $right_decimal) 
+						$left_decimal
+					else 	
+						$right_decimal;
+	$tolerance2 = if ($tolerance1 == inf) 
+						0
+					else 	
+						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+						
+	$left = if $left == none
+				0
+			else
+				$left;
+
+	$right = if $right == none
+				0
+			else
+				$right;
+
+	if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
+		true
+	else 
+		false 
+
+/** 
+ * tolerance_for_decimals_greater_than
+ * 
+ * This function returns true if the first parameter is greater than the 2nd parameter after taking into account decimals and tolerance factor.
+ * 
+ * @param factset - $less - Passes a factset value to compare to a second parameter called $greater
+ * @param factset - $greater - Passes a factset value to compare to the first parameter called $less
+ * @param factset - $min_decimals - Passes a decimal that represents the lowest decimal value in the facts.  This is used if any of the decimals are none.
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+
+function tolerance_for_decimals_greater_than($less, $greater, $minDecimals, $decimal_tolerance_factor)
+
+	$less_decimal = if $less.decimals == none
+						$minDecimals else $less.decimals;
+						
+	$greater_decimal = if $greater.decimals == none
+						$minDecimals else $greater.decimals;
+						
+	$tolerance1 = if ($less_decimal < $greater_decimal) 
+						$less_decimal
+					else 	
+						$greater_decimal;
+	$tolerance2 = if ($tolerance1 == inf) 
+						0
+					else 	
+						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+						
+	$less = if $less == none
+				0
+			else
+				$less;
+
+	$greater = if $greater == none
+				0
+			else
+				$greater;
+
+	if (($less - $greater) > 0 )
+		if (abs(round($less,$tolerance1) - round($greater,$tolerance1)) > $tolerance2)
+			true
+		else
+			false
+	else 
+		false 
+
+/** 
+ * tolerance_for_decimals_greater
+ * 
+ * This function returns true if the first parameter is greater than the 2nd parameter after taking into account decimals and tolerance factor. (SIMPLE VERSION WITH TWO FACTS PASSED ONLY)
+ * 
+ * @param factset - $left - Passes a factset value to compare to a second parameter called $greater
+ * @param factset - $right - Passes a factset value to compare to the first parameter called $less
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+		
+function tolerance_for_decimals_greater($left, $right, $decimal_tolerance_factor)
+$lowest_decimal = if ($left.decimals < $right.decimals) 
+					$left.decimals
 				else 	
-					$right_decimal;
-$tolerance2 = if ($tolerance1 == inf) 
+					$right.decimals;
+$tolerance2 = if ($lowest_decimal == inf) 
 					0
 				else 	
-					(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
-					
-$left = if $left == none
-			0
-		else
-			$left;
+					(10.power(-1 * $lowest_decimal)) * $decimal_tolerance_factor;
 
-$right = if $right == none
-			0
-		else
-			$right;
-
-if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
-	true
+if (($left - $right) > 0 )
+	if (abs(round($left,$lowest_decimal) - round($right,$lowest_decimal)) > $tolerance2)
+		true
+	else
+		false
 else 
 	false 
+
 
 /** 
  * match_set_substring
@@ -153,9 +281,9 @@ else
 **/
 	
 function match_set_substring($fact, $match_member_string_component)
-any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
-	for $y in $match_member_string_component
-	$y in $x))
+	any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
+		for $y in $match_member_string_component
+		$y in $x))
 	
 
 /**
@@ -171,18 +299,238 @@ any(set(for $x in $fact.dimensions-explicit.values.name.local-name.lower-case
 function not_elim_adjust($fact, $non_neg_axis_members)
 
 /* never touch this */
-all(set(
-		for ($x in $non_neg_axis_members)
-		/* get the axis name which is the first thing in the list */
-			$axis_name = $x[1];
+	all(set(
+			for ($x in $non_neg_axis_members)
+			/* get the axis name which is the first thing in the list */
+				$axis_name = $x[1];
 
-		/* get the set of elimination and adjustment members, which is the second thing on the list */
-			$elim_adjust_members = $x[2];
+			/* get the set of elimination and adjustment members, which is the second thing on the list */
+				$elim_adjust_members = $x[2];
+				
+				if ($fact.dimension($axis_name)!= none) 
+					not $elim_adjust_members.contains($fact.dimension($axis_name).name)
+				else
+					true
+			)
+	)
+
+/**
+** isin_check
+**
+** This function checks that the ISIN number is valid relative to its check sum
+**
+** @param string - $isin The string representation of the isin number.
+** @return boolean - Returns a boolean if the value passed is a valid ISIN.
+**/
+
+function  isin_check($isin)
+
+	/** get a set of the Alpha Keys i.e. A, B, etc.**/
+	$ASCIChars = $alpha_code_lookup.keys;
+
+	/** Return the check sum which is the last char of the string**/
+	$checkSum = last(string_to_list($isin));
+
+	/** Get the list of Chars without the checksum**/
+	$charList = list(for $i in range($isin.length - 1)
+					$isin.substring($i,$i));
+
+	/** Replace ASCII Characters with numbers **/
+	$replaceASCII = sum(list(for $x in $charList
+								if $x in $ASCIChars
+									$alpha_code_lookup[$x].string
+								else
+									$x.string))
+
+	/** split the string to a list **/
+	$valuesAsList = string_to_list($replaceASCII);
+
+	/** get the odd sequenced characters from the list **/
+	$getOddChar = list(for $y in range(1,$valuesAsList.length,2)
+						$valuesAsList[$y]);
+
+	/** get the even sequenced chars from the list **/
+	$getEvenChar = list(for $y in range(2,$valuesAsList.length,2)
+						$valuesAsList[$y]);
+
+	/** get the value to double **/
+	$getDoubleChar = if mod($valuesAsList.length,2) == 0
+						$getEvenChar
+					else
+						$getOddChar
+
+	/** Double each of the values in the selected list**/
+	$doubleValues = filter $getDoubleChar returns $item.number * 2;
+
+	/** convert the double values to a string **/
+	$convertDoubleValuesToString = sum(list(for $s in $doubleValues
+												$s.string))
+
+	/** Add odd or even list back to the double list **/
+	$preSumValues = string_to_list($convertDoubleValuesToString) +
+								if mod($valuesAsList.length,2) == 0
+									$getOddChar
+								else
+									$getEvenChar;
+
+	/** sum the single digit numbers after converting to a number **/
+	$sumValues = sum(filter $preSumValues returns $item.number);
+
+	/** Get the mod of the summed digits divided by 10 and deduct it from 10 **/
+	$CheckSumPreCalc = 10 - mod($sumValues,10)
 			
-			if ($fact.dimension($axis_name)!= none) 
-				not $elim_adjust_members.contains($fact.dimension($axis_name).name)
-			else
-				true
-		)
-)
+	/** turn a value of 10 into 0 **/
+	$CheckSumCalc = mod($CheckSumPreCalc,10);
+
+	/** check the calculated check sum matches the actual checksum **/
+	$CheckSumCalc == $checkSum
+
+
+/**
+** figi_check
+**
+** This function checks that the FIGI number is valid relative to its check sum
+**
+** @param string - $figi The string representation of the figi number.
+** @return boolean - Returns a boolean if the value passed is a valid figi.
+**/
+
+function  figi_check($figi)
+
+	/** get a set of the Alpha Keys i.e. A, B, etc.**/
+	$ASCIChars = $alpha_code_lookup.keys;
+
+	/** Return the check sum which is the last char of the string**/
+	$checkSum = last(string_to_list($figi));
+
+	/** Get the list of Chars without the checksum**/
+	$charList = list(for $i in range($figi.length - 1)
+					$figi.substring($i,$i));
+
+	/** Replace ASCII Characters with numbers **/
+	$replaceASCII = sum(list(for $x in $charList
+								if $x in $ASCIChars
+									$alpha_code_lookup[$x].string
+								else
+									$x.string))
+
+	/** split the string to a list **/
+	$valuesAsList = string_to_list($replaceASCII);
+
+	/** get the odd sequenced characters from the list **/
+	$getOddChar = list(for $y in range(1,$valuesAsList.length,2)
+						$valuesAsList[$y]);
+
+	/** get the even sequenced chars from the list **/
+	$getEvenChar = list(for $y in range(2,$valuesAsList.length,2)
+						$valuesAsList[$y]);
+
+
+	/** Double each of the values in the selected list**/
+	$doubleValues = filter $getEvenChar returns $item.number * 2;
+
+	/** convert the double values to a string **/
+	$convertDoubleValuesToString = sum(list(for $s in $doubleValues
+												$s.string))
+
+	/** Add odd or even list back to the double list **/
+	$preSumValues = string_to_list($convertDoubleValuesToString) + $getOddChar;
+
+	/** sum the single digit numbers after converting to a number **/
+	$sumValues = sum(filter $preSumValues returns $item.number);
+
+	/** Get the mod of the summed digits divided by 10 and deduct it from 10 **/
+	$CheckSumPreCalc = 10 - mod($sumValues,10)
+			
+	/** turn a value of 10 into 0 **/
+	$CheckSumCalc = mod($CheckSumPreCalc,10);
+
+	/** check the calculated check sum matches the actual checksum **/
+	$CheckSumCalc == $checkSum
+
+/**
+** lei_check
+**
+** This function checks that the lei number is valid relative to its check sum
+**
+** @param string - $lei The string representation of the lei number.
+** @return boolean - Returns a boolean of true if the value passed is a valid lei.
+**/
+
+function lei_check($lei)
+
+	/** get a set of the Alpha Keys i.e. A, B, etc. **/
+	$ASCIChars = $alpha_code_lookup.keys;
+
+	/** Get the list of Chars **/
+	$charList = list(for $i in range($lei.length)
+					$lei.substring($i,$i));
+
+	/** Replace ASCII Characters with numbers **/
+	$replaceASCII = sum(list(for $x in $charList
+						if $x in $ASCIChars
+							$alpha_code_lookup[$x].string
+						else
+							$x.string))
+	/** Add decimals so that the number function converts as a decimal and not an int.  An integer max value is exceeded**/
+	$replaceASCII2 = $replaceASCII + ".00"
+	
+	/** turn into a number **/
+	$numberValue = $replaceASCII2.number
+
+	/** Get the checksum **/
+	$CheckSum = mod($numberValue,97)
+
+	$CheckSum == 1
+
+
+/**
+** string_to_list
+**
+** This function converts a string to a list of single characters.
+**
+** @param string - $stringItem The string representation of the value to put in a list.
+** @return boolean - Returns a boolean if the value passed is a valid ISIN.
+**/
+
+function string_to_list($stringItem)
+
+	list(for $f in range($stringItem.length)
+					$stringItem.substring($f,$f))
+
+
+/**
+** CheckSum Function Constants
+**
+** Used tro support check sum functions. Many check sum functios turn Alpha numbers into digits.
+**/
+
+constant $alpha_code_lookup = 	dict(
+					list("A",10),
+					list("B",11),
+					list("C",12),
+					list("D",13),
+					list("E",14),
+					list("F",15),
+					list("G",16),
+					list("H",17),
+					list("I",18),
+					list("J",19),
+					list("K",20),
+					list("L",21),
+					list("M",22),
+					list("N",23),
+					list("O",24),
+					list("P",25),
+					list("Q",26),
+					list("R",27),
+					list("S",28),
+					list("T",29),
+					list("U",30),
+					list("V",31),
+					list("W",32),
+					list("X",33),
+					list("Y",34),
+					list("Z",35))
+
 
