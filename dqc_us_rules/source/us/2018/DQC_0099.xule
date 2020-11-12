@@ -13,7 +13,19 @@ ASSERT US.0099.9533 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) and (not $item.role.uri.lower-case.contains('equity')) and (not $item.role.uri.lower-case.contains('deficit')) and (not $item.role.uri.lower-case.contains('stockholders')) and (not $item.role.uri.lower-case.contains('capital')) and (not $item.role.uri.lower-case.contains('investment')) and (not $item.role.uri.lower-case.contains('changes')) and (not $item.role.uri.lower-case.contains('shareholder'))
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporary equity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -52,8 +64,10 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
                                         $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
+
+                                        
 
     $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                  "

@@ -56,6 +56,9 @@ for ($network in $extCalcRelationship1.keys)
 				/** Get the fact values that have no dimensions, are not nil and the child element is not equal to zero (The parent element can be zero)**/
 				$inappropriate_child = [nonils @concept.local-name in $inconsistencies where $fact != 0];
 				$source_value = [nonils @concept = $extCalcSourceName];
+
+				/** Get detailed messages if required **/
+				$detailed_message = filter $message_for_rule_9277 where ($item[1] == $inappropriate_child.concept.name and $item[2] == $extCalcSourceName) returns $item[3];
 				
 				/** Check for Actual values in the filing **/
 				exists($inappropriate_child) and 
@@ -77,6 +80,7 @@ for ($network in $extCalcRelationship1.keys)
 	 
 message
 "The line item concept {$inappropriate_child.concept.name} with a value of {$inappropriate_child} is represented as a child of {$extCalcSourceName} with a value of {$source_value} in the companies extension taxonomy role {$extCalcNetwork}. The element {$inappropriate_child.concept.name} however, is not represented as a component of {$extCalcSourceName} in the calculation relationships defined in the US GAAP taxonomy. The US-GAAP taxonomies include {$inappropriate_child.concept.name} as a sibling element (or child of that sibling) relative to {$extCalcSourceName} in the calculation relationships of the US GAAP taxonomy. Please review the element selection to determine that an appropriate element has been used for the parent element {$extCalcSourceName} and the child element {$inappropriate_child.concept.name}.
+{$detailed_message.join(', ')}
 
 The properties of this {$inappropriate_child.concept.name} fact are:
 
@@ -131,6 +135,10 @@ for ($value-con in $value-concepts)
 				/** If there is an inconsistency then get the fact value (Except zero or nil values) and if values exist then check there are not additional exceptions **/
 				
 				$inappropriate_sibling = [nonils @concept.local-name in $inconsistencies where $fact != 0];
+
+				/** Get detailed messages if required **/
+				$detailed_message = filter $message_for_rule_9278 where ($item[1] == $inappropriate_sibling.concept.name and $item[2] == $value-con) returns $item[3];
+
 				$source_value = [nonils @concept = $value-con];
 					$inconsistencies.length > 0 and 
 					exists($inappropriate_sibling) and 
@@ -149,6 +157,7 @@ for ($value-con in $value-concepts)
 	 
 message
 "The line item concept {$inappropriate_sibling.concept.name} with a value of {$inappropriate_sibling} and a calculation parent of {$extCalcSourceName} is represented as a sibling of {$value-con} with a value of {$source_value} in the extension taxonomy role {$extCalcNetwork}, but {$inappropriate_sibling.concept.name} is represented as a descendent of {$value-con} in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+{$detailed_message.join(', ')}
 
 The properties of this {$inappropriate_sibling.concept.name} fact are:
 
