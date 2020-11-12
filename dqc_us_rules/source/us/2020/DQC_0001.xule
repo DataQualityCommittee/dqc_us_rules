@@ -410,9 +410,11 @@ $member_extension = navigate dimensions dimension-member descendants from srt:Cu
 
 $allowable_extensions = set(qname($extension_ns,'SICAD1Member'), qname($extension_ns,'SICAD2Member'), qname($extension_ns,'OtherCurrencyMember'), qname($extension_ns,'NonUSDollarMember'),qname($extension_ns,'CENCOEXMember'),qname($extension_ns,'SICADMember'),qname($extension_ns,'SIMADIMember'),qname($extension_ns,'DIPROMember'),qname($extension_ns,'DICOMMember'),qname($extension_ns,'XBT'));
 
+$Currencies_Not_In_US-GAAP_Taxonomy = set(currency:VES, currency:SVC, currency:STN, currency:MRU);
+
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_USGAAP;
+$allowed_members = $allowable_extensions + $member_USGAAP + $Currencies_Not_In_US-GAAP_Taxonomy;
 
 $unallowed_members = $member_extension - $allowed_members;
 
