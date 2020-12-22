@@ -38,7 +38,8 @@ $calcRelationshipItems = if $calcNetworks == set()
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
                         EffectOfExchangeRateOnCash,
-                        EffectOfExchangeRateOnCashAndCashEquivalents)
+                        EffectOfExchangeRateOnCashAndCashEquivalents,
+                        NetCashProvidedByUsedInDiscontinuedOperations)
 
 $Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name);
 
