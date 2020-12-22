@@ -79,11 +79,14 @@ for $presNetwork in $presNetworks
     
   $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                  "
-                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of one of the following abstract items:
-                                " + $Set_Non_CF_Abstracts.join(", ") +
-                                ""
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of one of the following abstract items:
+" + $Set_Non_CF_Abstracts.join(", ") +
+ ""
                             else
-                                "";
+                                "If the item is an additional disclosure in the income statement statement then make sure that is included as a child of one of the following abstract items:
+ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, 
+SupplementalIncomeStatementElementsAbstract";
+
     $presConceptNoCalculation.length > 0
         
 
