@@ -43,6 +43,7 @@ assert IFRS.0102.9540 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+
 $Assets = {@Assets @MaturityAxis=none @PastDueStatusAxis=none};
 $CalcAssets = {@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#ca <+> {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#nca;
 $Decimals = list({@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none},{@Assets @MaturityAxis=none @PastDueStatusAxis=none},{@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none});
@@ -63,7 +64,7 @@ else
 
 message
 
-"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.  If assets held for sale is included in the balance sheet presentation, then consider using CurrentAssetsOtherThanAssetsOrDisposalGroupsClassifiedAsHeldForSaleOrAsHeldForDistributionToOwners instead of current assets.
 The properties of this {$Assets.concept} fact are:
 Period :{$Assets.period}
 Dimensions :  {$Assets.dimensions.join(', ','=')}
