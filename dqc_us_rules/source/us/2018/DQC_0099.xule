@@ -12,7 +12,6 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0099.9533 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
 $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
 and (not $item.role.uri.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity')) 
@@ -33,7 +32,7 @@ $calcRelationshipItems = if $calcNetworks == set()
                         set()
                     else
                         sum(set(for $network in $calcNetworks
-                                $network.relationships))
+                                $network.relationships))                        
 
 $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
                         EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
@@ -41,6 +40,14 @@ $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndR
                         EffectOfExchangeRateOnCashAndCashEquivalents)
 
 $Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name);
+
+/** Defines a set of CF Abstracts that if used on the CF any children will be excluded from the rules **/
+$Set_Non_CF_Abstracts1 = (navigate parent-child descendants from list(CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract) taxonomy $us-gaap where ($relationship.target.is-abstract == true and $relationship.target-name.local-name.contains("Abstract") ) returns set (target-name));
+
+$Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract'));
+
+$Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
+                        
 
 for $presNetwork in $presNetworks
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
@@ -52,7 +59,9 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        $supplementalCashItems = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, OtherNoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract')) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        
+                                        $supplementalCashItems = navigate parent-child descendants from ($Set_Non_CF_Abstracts) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
                                 else 
@@ -65,22 +74,26 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted) + $IS_Supplemental_Disclosures)
-
-    $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted, PremiumsWrittenGross) + $IS_Supplemental_Disclosures)
+    
+  $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                  "
-                                If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract or the extension abstracts NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of one of the following abstract items:
+" + $Set_Non_CF_Abstracts.join(", ") +
+ ""
                             else
-                                "";
-
+                                "If the item is an additional disclosure in the income statement statement then make sure that is included as a child of one of the following abstract items:
+ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, 
+SupplementalIncomeStatementElementsAbstract";
     $presConceptNoCalculation.length > 0
         
+
 MESSAGE
 "
 The following elements are in the presentation linkbase of {$presNetwork.role.description} but are not included in any calculation relationship in the filing.
 {$presConceptNoCalculation.join(", 
 ")}
-All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. Items not included in the financial statement calculations but included in the presentation are referred to as parenthetical items. These usualy appear as a referenced item, or as a value in parenthesis describing that the value reported includes another specific amount.  These values should be reported in a seperate link role for parenthetical items.
 
 This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
 {$cash_flow_message}
@@ -88,11 +101,11 @@ This rule will produce an error irrespective of a fact value being entered for t
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+
 SEVERITY error
 
 status $status
 
 effectiveDate $effective_dates[$rule_id]
-
 
 
