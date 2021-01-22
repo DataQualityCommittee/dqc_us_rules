@@ -1,0 +1,183 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+
+**/
+
+/**
+	Define report types  exluded from identified rules
+**/
+
+constant $report_type_exclusions = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3')
+
+constant $Accrual_Items =
+				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
+				NetIncomeLoss, 
+				NetIncomeLossAvailableToCommonStockholdersBasic,
+				NetIncomeLossAvailableToCommonStockholdersDiluted,
+				IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+				IncomeLossAttributableToParent,
+				NetIncomeLossAllocatedToGeneralPartners,
+				NetIncomeLossAllocatedToLimitedPartners,
+				StockholdersEquityPeriodIncreaseDecrease,
+				PartnersCapitalAccountPeriodIncreaseDecrease)  taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
+				+
+				navigate parent-child descendants from list(IncomeStatementAbstract,
+				StatementOfIncomeAndComprehensiveIncomeAbstract,
+				StatementOfStockholdersEquityAbstract,
+				StatementOfPartnersCapitalAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
+
+
+constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions, 
+				InterestPaidCapitalized,
+				ProceedsFromFederalHomeLoanBankAdvances,
+				PaymentsForFederalHomeLoanBankAdvances,
+				ProceedsFromPaymentsForTradingSecurities,
+				PaymentsForDepositsWithOtherInstitutions,
+				ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase,
+				IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet,
+				IncreaseDecreaseInRestrictedCash, IncreaseDecreaseOfRestrictedInvestments,
+				PaymentsForProceedsFromOtherDeposits,
+				ProceedsFromOtherDeposits,
+				PaymentsForOtherDeposits
+				)
+				
+//constant $base_qname = sum(filter $all_base_taxonomies.concepts returns $item.name)
+
+//constant $filing_qname = filter taxonomy().concepts returns $item.name
+
+//constant $extension_qname = $filing_qname - $base_qname
+
+//constant $extension_ns = first($extension_qname).namespace-uri
+
+constant $extension_ns = taxonomy().entry-point-namespace
+
+constant $extension_qname = filter taxonomy().concepts where $item.name.namespace-uri == $extension_ns returns $item.name
+
+
+constant $tax_items = set(IncomeTaxExpenseBenefit,
+				CurrentIncomeTaxExpenseBenefit,
+				CurrentForeignTaxExpenseBenefit,
+				CurrentFederalStateAndLocalTaxExpenseBenefit,
+				CurrentFederalTaxExpenseBenefit,
+				CurrentStateAndLocalTaxExpenseBenefit,
+				DeferredIncomeTaxExpenseBenefit,
+				DeferredForeignIncomeTaxExpenseBenefit,
+				DeferredFederalStateAndLocalTaxExpenseBenefit,
+				DeferredFederalIncomeTaxExpenseBenefit,
+				DeferredStateAndLocalIncomeTaxExpenseBenefit,
+				OtherTaxExpenseBenefit
+				)
+
+
+constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $us-gaap returns (relationship))
+										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
+										
+/** Constants Used for Nonneg Rules
+**
+
+Replaced the Hard coded string and read from dqc rules taxonomy.								 
+constant $exclude_non_neg_string_members = set(
+				'adjust',
+				'consolidat',
+				'eliminat',
+				'netting',
+				'reconcili',
+				'reclass'
+				)
+**/
+
+constant $non_neg_string_ref = filter ($dqc-rules.concept(dqcrules:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/dqcNote")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
+
+constant $exclude_non_neg_string_members = set(for $ref in $non_neg_string_ref 
+                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
+								
+
+/**
+constant $exclude_non_neg_members = set(
+				CorporateNonSegmentMember,
+				FairValueConcentrationOfRiskMarketRiskManagementEffectsOnIncomeOrNetAssetsMember,
+				AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember,
+				AccumulatedNetUnrealizedInvestmentGainLossMember,
+				DeferredDerivativeGainLossMember,
+				AboveMarketLeasesMember,
+				NewAccountingPronouncementEarlyAdoptionEffectMember,
+				UnallocatedFinancingReceivablesMember,
+				DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member
+				)
+**/
+
+constant $exclude_non_neg_members = navigate concept-rule descendants from list(dqcrules:Dqc_0015_ExcludeNonNegMembersAbstract)  taxonomy $dqc-rules returns set (target-name)	
+
+/**
+constant  $exclude_non_neg_axis_members = list(
+				list(StatementBusinessSegmentsAxis, set(CorporateAndOtherMember, CorporateMember, AllOtherSegmentsMember)),
+				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
+				list(FairValueByMeasurementBasisAxis, set(ChangeDuringPeriodFairValueDisclosureMember))
+				)
+**/ 
+constant  $exclude_non_neg_axis_members_pre = navigate concept-rule children from list(dqcrules:Dqc_0015_ExcludeNonNegAxisMembersAbstract) taxonomy $dqc-rules returns set (target-name)
+
+constant $exclude_non_neg_axis_members = list(for $axis in $exclude_non_neg_axis_members_pre
+												list($axis, navigate concept-rule children from $axis taxonomy $dqc-rules returns set (target-name)))
+
+/**
+constant $exclude_non_neg_axis = set(StatementEquityComponentsAxis,
+				ErrorCorrectionsAndPriorPeriodAdjustmentsRestatementByRestatementPeriodAndAmountAxis,
+				AdjustmentsForChangeInAccountingPrincipleAxis,
+				AdjustmentsForNewAccountingPronouncementsAxis,
+				ProspectiveAdoptionOfNewAccountingPronouncementsAxis,
+				QuantifyingMisstatementInCurrentYearFinancialStatementsByNatureOfErrorAxis,
+				PartnerCapitalComponentsAxis,
+				ChangeInAccountingEstimateByTypeAxis,
+				PartnerTypeOfPartnersCapitalAccountAxis,
+				StatementBusinessSegmentsAxis
+				)
+**/
+constant $exclude_non_neg_axis = navigate concept-rule descendants from list(dqcrules:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $dqc-rules returns set (target-name) + set(StatementBusinessSegmentsAxis)
+
+/** DQC.US.0001 **/
+				
+constant $member_USGAAP_fair_value = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis taxonomy $us-gaap returns set (target-name)
+
+
+constant $OCI_Totals = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
+
+
+
+constant $income_items = set(ProfitLoss,
+					NetIncomeLoss,
+					IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest,
+					IncomeLossFromContinuingOperations,
+					IncomeLossAttributableToParent,
+					IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+					IncomeLossBeforeExtraordinaryItemsAndCumulativeEffectOfChangeInAccountingPrinciple,
+					NetIncomeLossAvailableToCommonStockholdersBasic,
+					NetIncomeLossAllocatedToGeneralPartners,
+					NetIncomeLossAllocatedToLimitedPartners,
+					DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax,
+					ExtraordinaryItemGainOrLossNetOfTaxAttributableToNoncontrollingInterest,
+					ExtraordinaryItemGainOrLossNetOfTaxAttributableToReportingEntity,
+					ExtraordinaryItemNetOfTax,
+					ExtraordinaryItemsGross,
+					GainLossOnSaleOfPropertiesNetOfApplicableIncomeTaxes,
+					IncomeLossAttributableToNoncontrollingInterest,
+					IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity,
+					NetIncomeLossAttributableToParentNetOfFederalHomeLoanBankAssessments,
+					NetIncomeLossAttributableToNoncontrollingInterest,
+					IncomeLossBeforeGainOrLossOnSaleOfPropertiesExtraordinaryItemsAndCumulativeEffectsOfAccountingChanges,
+					ComprehensiveIncomeNetOfTax,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments,
+					IncomeLossFromContinuingOperationsBeforeInterestExpenseInterestIncomeIncomeTaxesExtraordinaryItemsNoncontrollingInterestsNet,
+					IncomeLossFromSubsidiariesNetOfTax
+					)
+
