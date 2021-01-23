@@ -4,7 +4,7 @@ DQC Rules
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
-Release Version 6
+Release Version 14
 **/
 
 rule-name-prefix DQC
@@ -539,7 +539,7 @@ $member_extension = navigate dimensions dimension-member descendants from FairVa
 
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'InvestmentsNetAssetValueMember'));
+$allowable_extensions = set();
 
 /** Union the sets**/
 
@@ -1078,4 +1078,47 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
+
+
+assert US.0001.81 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+
+$member_USGAAP = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis taxonomy $us-gaap returns set (target-name);
+
+$baseMembers = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+
+
+/** Difference the sets**/
+
+$unallowed_members = $baseMembers - $member_USGAAP;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @StatementBusinessSegmentsAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementBusinessSegmentsAxis and the unallowable member {$member.local-name}. The StatementBusinessSegmentsAxis should only be used with extension members and the  followng  US-GAAP  members: {$member_USGAAP.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis StatementBusinessSegmentsAxis. The StatementBusinessSegmentsAxis should only be used with extension members and the  followng  US-GAAP  members: {$member_USGAAP.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
 
