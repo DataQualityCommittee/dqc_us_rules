@@ -44,7 +44,7 @@ $Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlow
 /** Defines a set of CF Abstracts that if used on the CF any children will be excluded from the rules **/
 $Set_Non_CF_Abstracts1 = (navigate parent-child descendants from list(CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract) taxonomy $us-gaap where ($relationship.target.is-abstract == true and $relationship.target-name.local-name.contains("Abstract") ) returns set (target-name));
 
-$Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract'));
+$Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract, qname($extension_ns,'NoncashInvestingItemsAbstract'), qname($extension_ns,'NoncashFinancingItemsAbstract'), qname($extension_ns,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($extension_ns,'NonCashOperatingAndInvestingActivitiesAbstract'));
 
 $Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
                         
@@ -73,8 +73,19 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
+
+                                        /** This generates a list of items in the SHE that would not be included in the IS calculation. If these are reported in the presentation of the IS they will be ignored **/
+                                        $SSHExceptions =  navigate parent-child descendants from IncreaseDecreaseInStockholdersEquityRollForward taxonomy $us-gaap where $relationship.target.is-monetary == true and $relationship.target.period-type == duration returns set (target-name);
+
+                                        /** Identifies a list of IS supplemental items which are OK if in the presentation but not the calculation **/
                                         $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $presNumericItems - ($calcItems + set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic,NetIncomeLossAvailableToCommonStockholdersDiluted, PremiumsWrittenGross) + $IS_Supplemental_Disclosures)
+
+                                        /** Specific items seen in the presentation that can be excluded from the calc */
+
+                                        $BS_IS_exceptions = set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest, ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted, PremiumsWrittenGross);
+                                        
+                                        $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures)
+
     
   $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                  "
