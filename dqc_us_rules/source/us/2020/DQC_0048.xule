@@ -36,24 +36,42 @@ else
 			$network_role = $networkPresRole.join(', ');
 			true
 		else
-
-			for ($calcNetwork in 
-				filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
-							
-				$network_role = $calcNetwork.role.uri;
+			/** Test if all the calculations dont have the change in cash.  If one does then the rule will not fire. If all do not have the element then the rule will fire for each occurence.  If just one is fixed then the rule will stop running.  The DQC agreed to this because of examples of utilities having 5 cash flow statements and not wanting to duplicate the calcs because of the SEC rule prohibiting the occurence of duplicate calculation rules.  When this rule is changed this rule should be amended to flag every occurence.
+			**/
+			if
+				all(list(for ($calcNetwork in filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 
 				$roots = set(for $root in $calcNetwork.roots 
 									if ($root.name.namespace-uri != $extension_ns)
 										$root.name.local-name
 									else
 										none);
-							
-				$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
-	
+
 				not ($roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
 				$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
 				$EGCFlag) and
 				not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
+				))
+				/** Generate an error for every occurence of a cash flow that doesnt conform.  This wont run if just one role does **/
+				for ($calcNetwork in 
+					filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
+								
+					$network_role = $calcNetwork.role.uri;
+
+					$roots = set(for $root in $calcNetwork.roots 
+										if ($root.name.namespace-uri != $extension_ns)
+											$root.name.local-name
+										else
+											none);
+								
+					$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
+		
+					not ($roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
+					$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+					$EGCFlag) and
+					not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
+			else
+				false
 	
 	
 
