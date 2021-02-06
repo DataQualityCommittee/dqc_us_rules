@@ -85,7 +85,7 @@ for $presNetwork in $presNetworks
 
                                         $BS_IS_exceptions = set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest, ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted, PremiumsWrittenGross);
                                         
-                                        $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures)
+                                        $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $SSHExceptions)
     
   $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                  "
