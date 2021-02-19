@@ -52,11 +52,11 @@ if exists([@concept = OperatingLeaseLiability @unit=* where $fact != 0]#leaseLia
 				 	false
 				else 
 					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/
-					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) > 1
+					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) > 1
 						false
 					else
-						if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *})) == 1
-							{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiability}
+						if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
+							{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiability @unit=*}
 						else
 							true
 				
@@ -128,11 +128,11 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @unit=* where $fact != 0]#l
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
-				if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *})) > 1
+				if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
 					false
 				else
-					if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *})) == 1
-						{@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiabilityCurrent}
+					if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
+						{@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityCurrent @unit=*}
 					else
 						true
 				
@@ -204,12 +204,12 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent @unit=* where $fact != 0
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
-				if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *})) > 1
+				if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
 					false
 				else
 					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
-					if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *})) == 1
-						{@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = *} == {@concept = OperatingLeaseLiabilityNoncurrent}
+					if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
+						{@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityNoncurrent @unit=*}
 					else
 						true
 				
