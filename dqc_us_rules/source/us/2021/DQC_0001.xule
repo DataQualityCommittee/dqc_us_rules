@@ -845,6 +845,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $allowed_base_member_tree = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis taxonomy $us-gaap returns set (target-name);
 
+$classes_of_stock_members = navigate dimensions dimension-member descendants from StatementClassOfStockAxis taxonomy $us-gaap returns set (target-name);
+
 $allowed_base_member_predefined = set(TrustForBenefitOfEmployeesMember);
 
 $allowed_base_member_2017-12_transition = set(AccumulatedNetGainLossFromCashFlowHedgesIncludingPortionAttributableToNoncontrollingInterestMember, AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember, AccumulatedNetGainLossFromCashFlowHedgesAttributableToNoncontrollingInterestMember);
@@ -857,15 +859,23 @@ $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
 	$fact1 = {covered @StatementEquityComponentsAxis = $member};
+
+	$class_stock_message = (
+		if $member in $classes_of_stock_members
+		"
+When using the member " + $member.local-name + " this member should be used on the class of stock axis and not the StatementEquityComponentsAxis. Any facts reported using the member " + $member.local-name + " should have both the StatementClassOfStockAxis and the StatementEquityComponentsAxis axis associated with the fact. The StatementEquityComponentsAxis should use a generic stock type like CommonStockMember, PreferredStockMember etc."
+		else
+				"");
+
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementEquityComponentsAxis and the base taxonomy member {$member.local-name}. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis StatementEquityComponentsAxis.
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementEquityComponentsAxis and the base taxonomy member {$member.local-name}. Only extension members and the elements defined as children of this axis in the US GAAP taxonomy should be used with the axis StatementEquityComponentsAxis. " + $class_stock_message + "
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis StatementEquityComponentsAxis. The only members allowed on this axis are extension members defined by the filer and the elements defined as children of this axis in the US GAAP taxonomy. There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis StatementEquityComponentsAxis. The only members allowed on this axis are extension members defined by the filer and the elements defined as children of this axis in the US GAAP taxonomy. There are no facts associated with this member and axis. " + $class_stock_message;
 		true
 
 
@@ -1122,3 +1132,34 @@ SEVERITY error
 effectiveDate $effective_dates[$rule_id]
 
 
+assert US.0001.82 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base_members = navigate dimensions dimension-member descendants from AssetAcquisitionAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+$allowed_base_member = navigate dimensions dimension-member descendants from AssetAcquisitionAxis taxonomy $us-gaap returns set (target-name);
+$unallowed_base_members = $base_members - $allowed_base_member;
+
+for ($member in $unallowed_base_members)
+	$fact1 = {covered @AssetAcquisitionAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the AssetAcquisitionAxis and the base taxonomy member {$member.local-name}. Only extension members should be used with the axis AssetAcquisitionAxis and the members {$allowed_base_member.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis AssetAcquisitionAxis. The only members allowed on this axis are extension members defined by the filer and the members {$allowed_base_member.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:9366
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
