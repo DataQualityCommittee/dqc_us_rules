@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2020
+Taxonomy: US GAAP 2021
 Release Version 15
 **/
 
@@ -38,8 +38,6 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
-
-rule-focus $fact1
  
 /** RULE 9566 Identifies where element ConcentrationRiskPercentage1 is used and ConcentrationRiskByBenchmarkAxis and ConcentrationRiskByTypeAxis is missing but another third axis is used.
 ** WIth any value other than 1 the concentration risk element must have a numerator of ConcentrationRiskByTypeAxis and  a denominator of ConcentrationRiskByBenchmarkAxis **/
@@ -69,8 +67,6 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $fact1
-
 /** RULE 9567 Identifies where ConcentrationRiskByBenchmarkAxis is missing **/
 
 ASSERT US.0109.9567 SATISFIED
@@ -94,8 +90,6 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
-
-rule-focus $fact1
 
 /** RULE 9568 Identifies where ConcentrationRiskByTypeAxis is missing **/
 
@@ -121,8 +115,6 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $fact1
-
 /** RULE 9569 Identifies where a fact has both ConcentrationRiskByTypeAxis  and ConcentrationRiskByBenchmarkAxis but the disaggregated axis is missing **/
 
 
@@ -147,93 +139,3 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
-
-rule-focus $fact1
-
-
-/** RULE 9570 Identifies If the right risk is used with the right benchmark.  Uses a dictionary to look up the benchmark and makes sure that the appropriate risk is used. **/
-
-constant $BenchmarkWithRiskType = dict(list(SalesRevenueNetMember,list(GeographicConcentrationRiskMember,
-                                                                        CustomerConcentrationRiskMember, 
-                                                                        ProductConcentrationRiskMember, 
-                                                                        RevenueFromRightsConcentrationRiskMember, 
-                                                                        GovernmentContractsConcentrationRiskMember)
-                                                                        ),
-                                        list(AccountsReceivableMember,list(CreditConcentrationRiskMember)
-                                                                        ),
-                                        list(CostOfGoodsTotalMember,list(GeographicConcentrationRiskMember, 
-                                                                        SupplierConcentrationRiskMember,
-                                                                        ProductConcentrationRiskMember, 
-                                                                        LaborForceConcentrationRiskMember, 
-                                                                        UnionizedEmployeesConcentrationRiskMember)
-                                                                        )
-                                        )
-
-
-ASSERT US.0109.9570 SATISFIED
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$concentrationRisk = {nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = *}
-$benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
-$risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
-
-
-
-if ($benchmark not in $BenchmarkWithRiskType.keys) or (is_extension($risk, $all_base_taxonomies))
-    skip
-else
-    $allowableRisks = $BenchmarkWithRiskType[$benchmark];
-    $risk not in $allowableRisks
-
-
-message
-"The concept {$concentrationRisk.concept.name} with value {$concentrationRisk} is used with the ConcentrationRiskByBenchmarkAxis with a benchmark of {$benchmark}.  The risk associated with this benchmark of {$risk} is not approproiate to this benchmark.  Consider using an extension risk or one of the risks associated with this banch mark such as {$allowableRisks.join(", ")}
-
-The properties of this {$concentrationRisk.concept.name} fact are:
-
-Period :{$concentrationRisk.period}
-Dimensions : {$concentrationRisk.dimensions.join(', ','=')}
-Unit : {$concentrationRisk.unit}\n
-
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-SEVERITY error
-
-status $status
-
-effectiveDate $effective_dates[$rule_id]
-
-rule-focus $concentrationRisk
-
-/** This rule looks for concentration risk on the benchmark axis **/
-
-ASSERT US.0109.9571 SATISFIED
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$set_concentration_risk_items = (navigate parent-child descendants from list(ConcentrationRiskByTypeAxis) taxonomy $us-gaap returns set (target-name));
-
-exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis in $set_concentration_risk_items}#badbenchmark)
-
-message
-"The concept {$badbenchmark.concept.name} with value {$badbenchmark} is used with the ConcentrationRiskByBenchmarkAxis with a benchmark of {$badbenchmark.dimension(ConcentrationRiskByBenchmarkAxis)}.  This is an invalid benchmark as it is an actual type of risk and not a benchmark. The benchmark should reflect the accounting concept that the risk applies to such as revenues, receivables, loans etc.
-
-The properties of this {$badbenchmark.concept.name} fact are:
-
-Period :{$badbenchmark.period}
-Dimensions : {$badbenchmark.dimensions.join(', ','=')}
-Unit : {$badbenchmark.unit}\n
-
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-SEVERITY error
-
-status $status
-
-effectiveDate $effective_dates[$rule_id]
-
-rule-focus $badbenchmark
-
