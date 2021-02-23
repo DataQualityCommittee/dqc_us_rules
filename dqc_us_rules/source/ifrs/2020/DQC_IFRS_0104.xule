@@ -33,7 +33,7 @@ $ChildExtensions3 = navigate dimensions domain-member descendants from AssetsAnd
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1;
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3;
 
 $unallowed_members = $member_extension - $allowed_members;
 
@@ -185,13 +185,15 @@ $ChildExtensions2 = navigate dimensions domain-member descendants from Unallocat
 
 $ChildExtensions3 = navigate dimensions domain-member descendants from MaterialReconcilingItemsMember returns set (target-name);
 
+$segmentExtensions = navigate dimensions domain-member descendants from OperatingSegmentsMember where $relationship.target-name in (set(qname($extension_ns,'ReportableSubsegmentsMember'), qname($extension_ns,'IntersubsegmentEliminationsMember'))) returns set (target-name);
+
 /** Define allowable extensions with the qname function **/
 $allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'),
 qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'GeographyEliminationsMember'), qname($extension_ns,'OtherNonSegmentMember'), qname($extension_ns,'OperatingSegmentsAndUnallocatedMember'));
 
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3;
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3 + $segmentExtensions;
 
 $unallowed_members = $member_extension - $allowed_members;
 

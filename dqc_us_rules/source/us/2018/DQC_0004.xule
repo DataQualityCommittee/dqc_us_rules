@@ -12,8 +12,8 @@ rule-name-prefix DQC
 assert US.0004.16 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$Assets = {@Assets};
-$LiabilitiesAndStockholdersEquity = {@LiabilitiesAndStockholdersEquity};
+$Assets = {nonils @Assets};
+$LiabilitiesAndStockholdersEquity = {nonils @LiabilitiesAndStockholdersEquity};
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($Assets, $LiabilitiesAndStockholdersEquity, $decimal_tolerance_factor)
@@ -43,9 +43,9 @@ assert US.0004.9280 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Assets = {@Assets};
-$CalcAssets = {@AssetsCurrent}#ca <+> {@AssetsNoncurrent}#nca;
-$Decimals = list({@AssetsCurrent},{@Assets},{@AssetsNoncurrent});
+$Assets = {nonils @Assets};
+$CalcAssets = {nonils @AssetsCurrent}#ca <+> {nonils @AssetsNoncurrent}#nca;
+$Decimals = list({nonils @AssetsCurrent},{nonils @Assets},{nonils @AssetsNoncurrent});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -88,9 +88,9 @@ assert US.0004.9281 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Liabilities = {@Liabilities};
-$CalcLiabilities = {@LiabilitiesCurrent}#cl <+> {@LiabilitiesNoncurrent}#ncl;
-$Decimals = list({@Liabilities},{@LiabilitiesCurrent},{@LiabilitiesNoncurrent});
+$Liabilities = {nonils @Liabilities};
+$CalcLiabilities = {nonils @LiabilitiesCurrent}#cl <+> {nonils @LiabilitiesNoncurrent}#ncl;
+$Decimals = list({nonils @Liabilities},{nonils @LiabilitiesCurrent},{nonils @LiabilitiesNoncurrent});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -134,9 +134,9 @@ assert US.0004.9282 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$SEINCI = {@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
-$CalcSE = {@StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {@MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
-$Decimals = list({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{@StockholdersEquity @@srt:ConsolidationItemsAxis = none},{@MinorityInterest @@srt:ConsolidationItemsAxis = none});
+$SEINCI = {nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
+$CalcSE = {nonils @StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {nonils @MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
+$Decimals = list({nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{nonils @StockholdersEquity @@srt:ConsolidationItemsAxis = none},{nonils @MinorityInterest @@srt:ConsolidationItemsAxis = none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -183,11 +183,11 @@ assert US.0004.9283 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$LSE = {@LiabilitiesAndStockholdersEquity};
+$LSE = {nonils @LiabilitiesAndStockholdersEquity};
 
-$CalcEquity = first-value({@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest}, {@StockholdersEquity} <+ {@MinorityInterest});
+$CalcEquity = first-value({nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest}, {nonils @StockholdersEquity} <+ {nonils @MinorityInterest});
 
-$CalcLiabilities = first-value({@Liabilities}, {@LiabilitiesCurrent} <+> {@LiabilitiesNoncurrent});
+$CalcLiabilities = first-value({nonils @Liabilities}, {nonils @LiabilitiesCurrent} <+> {nonils @LiabilitiesNoncurrent});
 
 /** Components for temp Equity **/
 /** TOO COMPLICATED 
@@ -195,18 +195,18 @@ $TempAttParent = sum(axis_members(TemporaryEquityCarryingAmountAttributableToPar
 
 $RedeemNCI = sum(axis_members(RedeemableNoncontrollingInterestEquityCarryingAmount, StatementClassOfStockAxis));
 
-$TempSubComp = first-value({@TemporaryEquityCarryingAmountAttributableToParent}, $TempAttParent) + first-value({@RedeemableNoncontrollingInterestEquityCarryingAmount},$RedeemNCI);
+$TempSubComp = first-value({nonils @TemporaryEquityCarryingAmountAttributableToParent}, $TempAttParent) + first-value({nonils @RedeemableNoncontrollingInterestEquityCarryingAmount},$RedeemNCI);
 
 $TempIncNCI = sum(axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis));
 
-$CalcTempEquity = first-value({@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}, $TempSubComp, $TempIncNCI);
+$CalcTempEquity = first-value({nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}, $TempSubComp, $TempIncNCI);
 **/
 
-$CalcTempEquity = {@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests};
+$CalcTempEquity = {nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests};
 
 $CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
 
-$Decimals = list({@LiabilitiesAndStockholdersEquity},{@StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{@StockholdersEquity}, {@MinorityInterest}, {@Liabilities}, {@LiabilitiesCurrent}, {@LiabilitiesNoncurrent})
+$Decimals = list({nonils @LiabilitiesAndStockholdersEquity},{nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{nonils @StockholdersEquity}, {nonils @MinorityInterest}, {nonils @Liabilities}, {nonils @LiabilitiesCurrent}, {nonils @LiabilitiesNoncurrent})
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -217,7 +217,7 @@ $minDecimals = min(list(for $x in $Decimals
 $decimal_tolerance_factor = 2;
 
 /**
-$addMessage =  (if exists($TempIncNCI) and not exists({@TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}) and not exists($TempSubComp)
+$addMessage =  (if exists($TempIncNCI) and not exists({nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}) and not exists($TempSubComp)
 	"Temporary equity was calculated by adding the value of TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests across the dimension StatementClassOfStockAxis, with the values of {axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis).join(',')} "
 else
 	'');
@@ -256,9 +256,9 @@ assert US.0004.9284 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
-$agg = {@ProfitLoss}#a1 <+> {@OtherComprehensiveIncomeLossNetOfTax}#a2;
-$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ProfitLoss},{@OtherComprehensiveIncomeLossNetOfTax});
+$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
+$agg = {nonils @ProfitLoss}#a1 <+> {nonils @OtherComprehensiveIncomeLossNetOfTax}#a2;
+$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ProfitLoss},{nonils @OtherComprehensiveIncomeLossNetOfTax});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -303,9 +303,9 @@ assert US.0004.9285 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
-$agg = {@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}#a1 <+> {@ComprehensiveIncomeNetOfTax}#a2;
-$Decimals = list({@ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{@ComprehensiveIncomeNetOfTax});
+$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
+$agg = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest}#a1 <+> {nonils @ComprehensiveIncomeNetOfTax}#a2;
+$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTax});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -349,9 +349,9 @@ assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = first-value({@CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {@CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
+$base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {nonils @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
 
-$agg = {@NetCashProvidedByUsedInOperatingActivities}#a1 <+> {@NetCashProvidedByUsedInInvestingActivities}#a2 <+> {@NetCashProvidedByUsedInFinancingActivities}#a3;
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivities}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivities}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
 
 if $base == none
@@ -388,8 +388,8 @@ assert US.0004.9287 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@NetCashProvidedByUsedInFinancingActivities};
-$agg = {@NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a1 <+> {@CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a2;
+$base = {nonils @NetCashProvidedByUsedInFinancingActivities};
+$agg = {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -422,8 +422,8 @@ assert US.0004.9288 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@NetCashProvidedByUsedInInvestingActivities};
-$agg = {@NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a1 <+> {@CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2;
+$base = {nonils @NetCashProvidedByUsedInInvestingActivities};
+$agg = {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -458,8 +458,8 @@ assert US.0004.9289 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@NetCashProvidedByUsedInOperatingActivities};
-$agg = {@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a2;
+$base = {nonils @NetCashProvidedByUsedInOperatingActivities};
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -492,8 +492,8 @@ assert US.0004.9290 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@NetCashProvidedByUsedInDiscontinuedOperations};
-$agg = {@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {@CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {@CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a3;
+$base = {nonils @NetCashProvidedByUsedInDiscontinuedOperations};
+$agg = {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a3;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -527,8 +527,8 @@ assert US.0004.9291 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {@NetCashProvidedByUsedInContinuingOperations};
-$agg = {@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {@NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a2 <+> {@NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a3;
+$base = {nonils @NetCashProvidedByUsedInContinuingOperations};
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a3;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
