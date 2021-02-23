@@ -39,7 +39,7 @@ if exists([@concept = OperatingLeaseLiability @unit=* where $fact != 0]#leaseLia
 
 		/** Identify if OperatingLeaseLiability is contained in the financial statements**/
 
-		if $FS_Concepts_qname.contains(OperatingLeaseLiability)
+		if $FS_Concepts_qname.contains(OperatingLeaseLiability) or exists([@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*]) or exists([@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*])
 			false
 			/** Rule will not run if the company is using current and non current operating leases as these will be in the balance sheet **/
 		else
@@ -116,7 +116,7 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @unit=* where $fact != 0]#l
 
 		/** Identify if OperatingLeaseLiability is contained in the financial statements**/
 
-		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent)
+		if $FS_Concepts_qname.contains(OperatingLeaseLiabilityCurrent) 
 			false
 		else
 			/** If the operating Lease Liability is on the BAlanace Sheet then dont flag an error**/
