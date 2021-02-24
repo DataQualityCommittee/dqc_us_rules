@@ -17,9 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $valueRecognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period = *};
 $openingDate = $valueRecognized.period.start;
 
-
 $openingBalanceOfValueRecognized = {@concept = ContractWithCustomerLiability @period = $openingDate};
-
 
 tolerance_for_decimals_greater($valueRecognized, $openingBalanceOfValueRecognized, 2)
 
