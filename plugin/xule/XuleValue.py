@@ -5,7 +5,7 @@ Xule is a rule processor for XBRL (X)brl r(ULE).
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2020 XBRL US, Inc.
+Copyright (c) 2017 - 2021 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -905,9 +905,9 @@ class XuleDimensionCube:
                                                                                          XuleProperties.NETWORK_ARC]))
 
                     for rel in relationship_set.modelRelationships:
-                        drs_role = base_set[XuleProperties.NETWORK_ROLE] #rel.targetRole or base_set[XuleProperties.NETWORK_ROLE]
-                        hypercube = rel.toModelObject
-                        dts.xuleBaseDimensionSets[(drs_role, hypercube)].add(rel)
+                        if rel.toModelObject is not None:
+                            drs_role = base_set[XuleProperties.NETWORK_ROLE]
+                            dts.xuleBaseDimensionSets[(drs_role, rel.toModelObject)].add(rel)
 
     @classmethod
     def _establish_dimension_defaults(cls, dts):
