@@ -535,9 +535,18 @@ $member_USGAAP = navigate dimensions dimension-member descendants from FairValue
 
 $member_extension = navigate dimensions dimension-member descendants from FairValueByMeasurementBasisAxis returns set (target-name);
 
+$default_member = navigate dimension-default descendants from FairValueByMeasurementBasisAxis returns set (target-name);
+
+$default_member_USGAAP = navigate dimension-default descendants from FairValueByMeasurementBasisAxis taxonomy $us-gaap returns set (target-name);
+
+$default_Message = if ($default_member.intersect($default_member_USGAAP)).length == 0
+"The filer has defined a default member for the axis FairValueByMeasurementBasisAxis of " + $default_member.join(', ') + ". This member is not permitted on this axis, and given that it is the default, this causes every fact in the instance to include this member by default, and thus be an error. The default member should be changed to " + $default_member_USGAAP.join(', ') + " as this is the only default that can be used with this axis."
+					else
+					"";
+
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'InvestmentsNetAssetValueMember'));
+$allowable_extensions = set();
 
 /** Union the sets**/
 
@@ -551,7 +560,8 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @FairValueByMeasurementBasisAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}. 
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1.string.substring(1,300)} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}.  
+" + $default_Message + "
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
