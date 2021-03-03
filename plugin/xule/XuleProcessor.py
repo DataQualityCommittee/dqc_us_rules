@@ -7,7 +7,7 @@ The XuleProcessor module is the main module for processing a rule set against an
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2019 XBRL US, Inc.
+Copyright (c) 2017 - 2021 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 23189 $
+$Change: 23194 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -1551,7 +1551,8 @@ def evaluate_for(for_expr, xule_context):
                                                    xule_context)
         finally:
             xule_context.del_arg(for_expr['forVar'], for_expr['forLoopExpr']['node_id'])
-
+            del xule_context.tags[for_expr['forVar']]
+            
         if for_loop_var.alignment is None:
             # add all
             for body_value in body_values.values.values():
