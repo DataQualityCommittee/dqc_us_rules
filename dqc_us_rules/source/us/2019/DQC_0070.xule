@@ -42,11 +42,14 @@ for  $x in $drs_members.keys
 
 	/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 	$member_facts = list(for $member in $member_descendants
-		$ancestors_list = navigate dimensions domain-member ancestors from $member drs-role $x;
-		if list({nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
-			skip
-		else 
-			{nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
+			if $member.name == PlanAssetCategoriesDomain
+				skip
+			else
+				$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $x returns set (target-name)) - set(PlanAssetCategoriesDomain);
+				if list({nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
+					skip
+				else 
+					{nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
 	
 	/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 	if 	$member_facts.length == 0 
