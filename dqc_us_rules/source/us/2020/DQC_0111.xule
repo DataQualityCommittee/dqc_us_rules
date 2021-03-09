@@ -20,7 +20,7 @@ ASSERT US.0111.9560 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if ({@BusinessAcquisitionPercentageOfVotingInterestsAcquired @unit}#percentage < 1)
-    {@BusinessAcquisitionPercentageOfVotingInterestsAcquired @unit} and missing({@BusinessCombinationAcquisitionOfLessThan100PercentNoncontrollingInterestFairValue @unit})
+    exists({@BusinessAcquisitionPercentageOfVotingInterestsAcquired @unit}) and missing({@BusinessCombinationAcquisitionOfLessThan100PercentNoncontrollingInterestFairValue @unit})
 else
     false
 
