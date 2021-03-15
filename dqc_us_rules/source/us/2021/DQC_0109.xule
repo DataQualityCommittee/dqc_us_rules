@@ -159,6 +159,36 @@ constant $BenchmarkWithRiskType = dict(list(SalesRevenueNetMember,list(Geographi
                                                                         RevenueFromRightsConcentrationRiskMember, 
                                                                         GovernmentContractsConcentrationRiskMember)
                                                                         ),
+                                        list(SalesRevenueProductLineMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember)
+                                                                        ),
+                                        list(SalesRevenueSegmentMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerProductAndServiceBenchmarkMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerSegmentBenchmarkMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember)
+                                                                        ),                             
                                         list(AccountsReceivableMember,list(CreditConcentrationRiskMember, GeographicConcentrationRiskMember)
                                                                         ),
                                         list(CostOfGoodsTotalMember,list(GeographicConcentrationRiskMember, 
@@ -179,12 +209,11 @@ $benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
 $risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
 
 
-
-if ($benchmark not in $BenchmarkWithRiskType.keys) or (is_extension($risk, $all_base_taxonomies))
+if ($benchmark.name not in $BenchmarkWithRiskType.keys) or (is_extension($risk, $all_base_taxonomies))
     skip
 else
-    $allowableRisks = $BenchmarkWithRiskType[$benchmark];
-    $risk not in $allowableRisks
+    $allowableRisks = $BenchmarkWithRiskType[$benchmark.name];
+    $risk.name not in $allowableRisks
 
 
 message
@@ -237,3 +266,30 @@ effectiveDate $effective_dates[$rule_id]
 
 rule-focus $badbenchmark
 
+ASSERT US.0109.9572 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$set_benchmark_items = (navigate parent-child descendants from list(ConcentrationRiskByBenchmarkAxis) taxonomy $us-gaap returns set (target-name));
+
+exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByTypeAxis in $set_benchmark_items}#badRiskType)
+
+message
+"The concept {$badRiskType.concept.name} with value {$badRiskType} is used with the ConcentrationRiskByTypeAxis with a risk of of {$badRiskType.dimension(ConcentrationRiskByBenchmarkAxis)}.  This is an invalid risk as it is an actual benchmark and not a type of risk. The type of risk should reflect the risk associated with a benchmark.
+
+The properties of this {$badRiskType.concept.name} fact are:
+
+Period :{$badRiskType.period}
+Dimensions : {$badRiskType.dimensions.join(', ','=')}
+Unit : {$badRiskType.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+status $status
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $badRiskType
