@@ -13,14 +13,14 @@ ASSERT US.0108.9564 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-for ($x in (filter $non_neg_items.keys where not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))) - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid))
+$cut_down_list = filter $non_neg_items.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
 
-      $fact1 = {@concept = $x @period=*};
-      $large = {@concept = $x @period=*};
+for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid)))
 
-      if ($fact1.concept.is-type(xbrli:monetaryItemType) 
-         and $fact1.concept.period-type == duration
-         and $fact1.period.start >= $large.period.start
+      $fact1 = {@concept = $x @period=*}
+      $large = {@concept = $x @period=*}
+
+      if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
          and $fact1.abs > $large.abs
          and $fact1 > 0
@@ -28,7 +28,7 @@ for ($x in (filter $non_neg_items.keys where not ($item.local-name.lower-case.co
          and exists($fact1) and exists($large)
          )
             tolerance_for_decimals($fact1, $large, 2 ) 
-      else
+         else
             skip
 message
 "The concept {$fact1.concept.name} with a period duration starting on {$fact1.period.start} and ending on {$fact1.period.end} or {$fact1.period.days} days with a reported value of {$fact1} has a value greater than the value of the same element with a longer or equivalent period duration that starts on {$large.period.start} and ends on {$large.period.end} with a value of {$large}.
