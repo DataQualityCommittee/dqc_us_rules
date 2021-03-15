@@ -17,8 +17,8 @@ $cut_down_list = filter $non_neg_ifrs_items.keys where taxonomy().concept($item)
 
 for ($x in ($cut_down_list - set()))
 
-      $fact1 = {@concept = $x @period=*}
-      $large = {@concept = $x @period=*}
+      $fact1 = {nonils @concept = $x @period=*}
+      $large = {nonils @concept = $x @period=*}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 

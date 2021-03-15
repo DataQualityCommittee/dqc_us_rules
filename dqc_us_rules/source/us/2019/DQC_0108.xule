@@ -17,8 +17,8 @@ $cut_down_list = filter $non_neg_items.keys where taxonomy().concept($item).is-t
 
 for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid)))
 
-      $fact1 = {@concept = $x @period=*}
-      $large = {@concept = $x @period=*}
+      $fact1 = {nonils @concept = $x @period=*}
+      $large = {nonils @concept = $x @period=*}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
