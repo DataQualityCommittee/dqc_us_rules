@@ -13,14 +13,14 @@ ASSERT US.0108.9564 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-for ($x in (filter $non_neg_items.keys where not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))) - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid))
+$cut_down_list = filter $non_neg_items.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
+
+for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid)))
 
       $fact1 = {@concept = $x @period=*}
       $large = {@concept = $x @period=*}
 
-      if ($fact1.concept.is-type(xbrli:monetaryItemType) 
-         and $fact1.concept.period-type == duration
-         and $fact1.period.start >= $large.period.start
+      if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
          and $fact1.abs > $large.abs
          and $fact1 > 0
