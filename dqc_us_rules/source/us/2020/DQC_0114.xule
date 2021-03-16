@@ -37,7 +37,7 @@ else
 
 message
 
-"{$NetValueAcquired.concept.label.text} with a value of {$NetValueAcquired} is not equal to the combined total of Assets and Liabilities acquired and Goodwill ( {$nanl} + {$Goodwill} ) with a value of {$CalcNetValueAcquired}. 
+"{$NetValueAcquired.concept.label.text} with a value of {$NetValueAcquired} is not equal to the combined total of Assets and Liabilities acquired excluding Goodwill and Goodwill ( {$nanl} + {$Goodwill} ) with a value of {$CalcNetValueAcquired}. 
 
 These values should be equal.
 The properties of this {$NetValueAcquired.concept} fact are:
@@ -46,7 +46,7 @@ Dimensions :  {$NetValueAcquired.dimensions.join(', ','=')}
 Unit : {$NetValueAcquired.unit}
 Decimals of Net Value Acquired : {$NetValueAcquired.decimals}
 Decimals of Net Assets and Net Liabilities : {$nanl.decimals}
-Decimals of Non Current Liabilities : {$Goodwill.decimals}
+Decimals of Goodwill : {$Goodwill.decimals}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
