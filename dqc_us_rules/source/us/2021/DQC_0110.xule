@@ -26,7 +26,7 @@ ASSERT US.0110.9559 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$basePeriod = first(list({@concept.local-name ='DocumentPeriodEndDate'})).period.days
+$basePeriod = first(list({covered @concept.local-name ='DocumentPeriodEndDate'})).period.days
 $paid = [@BusinessCombinationConsiderationTransferred1];
 $paidDuration = $paid.period.days;
 
@@ -34,7 +34,7 @@ $paidDuration < ($basePeriod - 20 )
 
 message
 "
-The company has reported a value of  {$paid} as the default value paid for acquisitions. This represents all acquisitions during the period.  However the period is for {$paidDuration} days, which is less than the reporting period, based on the document period end date.  If the amount represents a specific acquisition then the business acquisition axis must be used.
+The company has reported a value of  {$paid} as the default value paid for acquisitions. This represents all acquisitions during the period.  However the period is for {$paidDuration} day(s), which is less than the reporting period, based on the document period end date.  If the amount represents a specific acquisition then the business acquisition axis must be used.
 
 The properties of this {$paid.concept.name} fact are:
 Period :{$paid.period}
