@@ -32,32 +32,5 @@ status $status
 
 effectiveDate $effective_dates[$rule_id]
 
-/** THIS RULE SEEMS TO AGGRESIVE **/
-ASSERT US.0107.9558 SATISFIED
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-/** This rule also needs to account for NCI **/
-({@BusinessCombinationConsiderationTransferred1 @@BusinessAcquisitionAxis=*}#paid < {@BusinessCombinationRecognizedIdentifiableAssetsAcquiredGoodwillAndLiabilitiesAssumedNet @@BusinessAcquisitionAxis=*}#valueRec) and missing({@BusinessCombinationBargainPurchaseGainRecognizedAmount @@BusinessAcquisitionAxis=*}#gain)
-
-message
-"
-The company has paid a value of {$paid} but has recognized a value of {$valueRec}. This represents a gain on the acquisition and the value for the purchase gain should appear in the instance. Please check that value for the gain has been tagged with the element BusinessCombinationBargainPurchaseGainRecognizedAmount.
-
-The properties of this {$paid.concept.name} fact are:
-Period :{$paid.period}
-Dimensions : {$paid.dimensions.join(', ','=')}
-Unit : {$paid.unit}\n
-
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-SEVERITY error
-
-status $status
-
-effectiveDate $effective_dates[$rule_id]
-
-rule-focus $paid
 
 
