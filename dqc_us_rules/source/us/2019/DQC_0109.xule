@@ -24,7 +24,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 exists([nonils @concept=ConcentrationRiskPercentage1 where $fact != 1]#fact1)
 message
-	"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. The properties of this {$fact1.concept.name} fact are:
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+    
+The properties of this {$fact1.concept.name} fact are:
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -54,7 +56,9 @@ else
     exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = none @ConcentrationRiskByTypeAxis = none}#fact1)
 
 message
-	"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. The properties of this {$fact1.concept.name} fact are:
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -80,7 +84,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = none @ConcentrationRiskByTypeAxis = *}#fact1)
 
 message
-	"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the numerator of ConcentrationRiskByTypeAxis, and not the member used on the ConcentrationRiskByBenchmarkAxis which represents the benchmark denominator. The properties of this {$fact1.concept.name} fact are:
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the numerator of ConcentrationRiskByTypeAxis, and not the member used on the ConcentrationRiskByBenchmarkAxis which represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -106,7 +112,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = none}#fact1)
 
 message
-"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the denominator of ConcentrationRiskByBenchmarkAxis, and not the member used on the ConcentrationRiskByTypeAxis which represents the benchmark numerator. The properties of this {$fact1.concept.name} fact are:
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the denominator of ConcentrationRiskByBenchmarkAxis, and not the member used on the ConcentrationRiskByTypeAxis which represents the benchmark numerator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
@@ -133,7 +141,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 exists([nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = * where $fact != 1]#fact1)
 
 message
-"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis the ConcentrationRiskByBenchmarkAxis and a third axis to identify the risk area.  This element can only have a value of 1 when only the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis are used.  This fact needs another axis to identify the specific {$fact1.dimension(ConcentrationRiskByTypeAxis)} risk. The properties of this {$fact1.concept.name} fact are:
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis the ConcentrationRiskByBenchmarkAxis and a third axis to identify the risk area.  This element can only have a value of 1 when only the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis are used.  This fact needs another axis to identify the specific {$fact1.dimension(ConcentrationRiskByTypeAxis)} risk. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
