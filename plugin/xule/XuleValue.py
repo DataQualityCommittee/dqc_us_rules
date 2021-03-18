@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 23202 $
+$Change: 23209 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -644,10 +644,14 @@ class XuleString(str):
 
         if substitutions is None or len(substitutions) == 0:
             # In this case there are no substitutions so the the XuleString is just a plain string
-            format_string = format_string.replace('%', '%%')
-            string_inst = super().__new__(cls, format_string % dict())
-            string_inst._format_string = format_string
-            string_inst.substitutions = dict()
+            if format_string is not None:
+                format_string = format_string.replace('%', '%%')
+                string_inst = super().__new__(cls, format_string % dict())
+                string_inst._format_string = format_string
+                string_inst._substitutions = dict()
+            else:
+                #string_inst = super().__new__(cls, format_string)
+                string_inst = None
         else:
             # The format string is not a real python format string. It is a string without the substitutions in it.
             # The substitutions is a list of 3 part tuples: 0=location in format string, 1=substitution name, 2=substitution value.
@@ -681,15 +685,18 @@ class XuleString(str):
                 string_inst._format_string = None
             else:
                 string_inst._format_string = format_string
-            string_inst.substitutions = format_subs
+            string_inst._substitutions = format_subs
         
         return string_inst
     
     
     @property
     def format_string(self):
-        return self._format_string or self
+        return getattr(self, '_format_string', None) or self
     
+    @property
+    def substitutions(self):
+        return getattr(self, '_substitutions', None) or dict()
 class XuleUnit:
     def __init__(self, *args):
         if len(args) == 1:
