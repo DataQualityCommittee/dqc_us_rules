@@ -140,6 +140,9 @@ constant $exclude_non_neg_axis = set(StatementEquityComponentsAxis,
 **/
 constant $exclude_non_neg_axis = navigate concept-rule descendants from list(dqcrules:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $dqc-rules returns set (target-name) + set(StatementBusinessSegmentsAxis)
 
+output test_axis2
+navigate concept-rule descendants taxonomy $dqc-rules returns set (target-name)
+
 /** DQC.US.0001 **/
 				
 constant $member_USGAAP_fair_value = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis taxonomy $us-gaap returns set (target-name)
