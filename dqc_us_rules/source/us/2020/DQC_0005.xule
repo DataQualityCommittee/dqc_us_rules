@@ -17,7 +17,6 @@ constant $document_period_end_context = set({covered @concept.local-name ='Docum
 
 constant $maximum_period_end_date = max($document_period_end_value + $document_period_end_context)
 
-
 rule-name-prefix DQC
 
 assert US.0005.17 satisfied
@@ -33,7 +32,8 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {covered @concept.local-name ='EntityCommonStockSharesOutstanding'};
 	$shares_at_date = $fact1.period.end;
-	$shares_at_date < $maximum_period_end_date
+	/** The and true makes a value of None cause a skip of the iteration **/
+	$shares_at_date < $maximum_period_end_date and true
 
 	
 message
@@ -63,7 +63,8 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
 	$sub_event_at_date = $fact1.period.end;
-	$sub_event_at_date <= $maximum_period_end_date
+	/** The and true makes a value of None cause a skip of the iteration **/
+	$sub_event_at_date <= $maximum_period_end_date and true
 	
 message
 "The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Subsequent Event Type [Axis] with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.
@@ -88,7 +89,8 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {@srt:StatementScenarioAxis = srt:ScenarioForecastMember};
 	$sub_event_at_date = $fact1.period.end;
-	$sub_event_at_date <= $maximum_period_end_date
+	/** The and true makes a value of None cause a skip of the iteration **/
+	$sub_event_at_date <= $maximum_period_end_date and true
 
 message
 "The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Scenario [Axis] and srt:ScenarioForecastMember with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the statement scenario axis and forecast member from this value, change the end date for the value or update the Document and Entity Information document period end date.
