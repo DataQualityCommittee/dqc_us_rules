@@ -8,7 +8,7 @@ Taxonomy: US GAAP 2020
 
 **/
 
-constant $us-gaap = taxonomy('http://xbrl.fasb.org/us-gaap/2021/entire/us-gaap-entryPoint-std-2021-01-31.xsd')
+constant $us-gaap = taxonomy('https://xbrl.fasb.org/us-gaap/2021/entire/us-gaap-entryPoint-std-2021-01-31.xsd')
 
 constant $exchange = taxonomy('https://xbrl.sec.gov/exch/2021/exch-entire-2021.xsd')
 
@@ -30,4 +30,4 @@ constant $dei_namespace_list = (filter taxonomy().concepts where $item.name.loca
 constant $dei_namespace = $dei_namespace_list[1].name.namespace-uri
 **/
 
-constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('dei')).to-list)
+constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
