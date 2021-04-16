@@ -301,47 +301,47 @@ ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest 
 
 assert US.0004.9285 satisfied
 
+
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** The first part of the if statement  was added to address the situation where additional extension items comprised the calc of ComprehensiveIncomeNetOfTax which threw the simple compare off. To address this we look at the calc to pick up any extension items or taxonomy items that could get pushed into the calculation. The if statement checks if a calc was defined and if the actual calculation works.**/
-$CalcItems = navigate summation-item children from (ComprehensiveIncomeNetOfTax) returns set (target-name);
-
-if $CalcItems.length > 2 and $CalcItems.contains(ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest) and $CalcItems.contains(ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest)
-	$CalcItems2 = navigate summation-item children from (ComprehensiveIncomeNetOfTax)  returns list (target-name, weight);
-	$agg = sum(list(for $pair in $CalcItems2
-		{nonils @concept= $pair[1]} * $pair[2]));
-	$base = {nonils @ComprehensiveIncomeNetOfTax};
-	$Decimals = list(for $pair in $CalcItems2
-					{nonils @concept= $pair[1]}) + list({nonils @ComprehensiveIncomeNetOfTax});
-	$minDecimals = min(list(for $x in $Decimals
-					if $x == none 
-						skip
-					else
-						$x.decimals));
-	$custom_message = "The element ComprehensiveIncomeNetOfTax has calculation children that do not add to the total value of " + $base.string + " the value of the aggregate components defined in the calculation sum to " + $agg.string + ". The elements comprising the calculation are " + $CalcItems.join(', ') + "."
-	tolerance_for_decimals_comp($base, $agg, $minDecimals, 2)
+$CalcNetworks = navigate summation-item children from (ComprehensiveIncomeNetOfTax) returns by network (target-name);
+for $key in $CalcNetworks.keys
+	if $CalcNetworks[$key].length > 2 and $CalcNetworks[$key].contains(ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest) and $CalcNetworks[$key].contains(ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest)
+		$CalcItems2 = navigate summation-item children from (ComprehensiveIncomeNetOfTax)  returns list (target-name, weight);
+		$agg = sum(list(for $pair in $CalcItems2
+			{nonils @concept= $pair[1]} * $pair[2]));
+		$base = {nonils @ComprehensiveIncomeNetOfTax};
+		$Decimals = list(for $pair in $CalcItems2
+						{nonils @concept= $pair[1]}) + list({nonils @ComprehensiveIncomeNetOfTax});
+		$minDecimals = min(list(for $x in $Decimals
+						if $x == none 
+							skip
+						else
+							$x.decimals));
+		$custom_message = "The element ComprehensiveIncomeNetOfTax has calculation children that do not add to the total value of " + $base.string + " the value of the aggregate components defined in the calculation sum to " + $agg.string + ". The elements comprising the calculation are " + $CalcNetworks[$key].join(', ') + "."
+		tolerance_for_decimals_comp($base, $agg, $minDecimals, 2)
 	
-
-else
-	$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
-	$a2 = {nonils @ComprehensiveIncomeNetOfTax};
-	$a1 = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest};
-	$agg = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest} <+> {nonils @ComprehensiveIncomeNetOfTax};
-	$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTax});
-
-	$minDecimals = min(list(for $x in $Decimals
-					if $x == none 
-						skip
-					else
-						$x.decimals));
-
-	$decimal_tolerance_factor = 2;
-
-	if ($agg == none)
-		skip
 	else
-		$custom_message = $base.concept.label.text + " with a value of " + $base.string + " is not equal to the combined total of " + $a1.concept.label.text + " and " + $a2.concept.label.text + " (" + $a1.string + " + " + $a2.string + ") with a value of " + $agg.string + ". If the calculation includes extension or additional items, then a calculation relationship defining the components of ComprehensiveIncomeNetOfTax should be defined in the extension taxonomy defining these additional items. This will clear the error."; 
-		tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
+		$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
+		$a2 = {nonils @ComprehensiveIncomeNetOfTax};
+		$a1 = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest};
+		$agg = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest} <+> {nonils @ComprehensiveIncomeNetOfTax};
+		$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTax});
+
+		$minDecimals = min(list(for $x in $Decimals
+						if $x == none 
+							skip
+						else
+							$x.decimals));
+
+		$decimal_tolerance_factor = 2;
+
+		if ($agg == none)
+			skip
+		else
+			$custom_message = $base.concept.label.text + " with a value of " + $base.string + " is not equal to the combined total of " + $a1.concept.label.text + " and " + $a2.concept.label.text + " (" + $a1.string + " + " + $a2.string + ") with a value of " + $agg.string + ". If the calculation includes extension or additional items, then a calculation relationship defining the components of ComprehensiveIncomeNetOfTax should be defined in the extension taxonomy defining these additional items. This will clear the error."; 
+			tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
 
 message
 
