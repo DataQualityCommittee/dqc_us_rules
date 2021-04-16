@@ -51,7 +51,7 @@ $Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvest
 $Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
                         
 
-for $presNetwork in $presNetworks
+for $presNetwork in $presNetworks.sort
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         $presConceptItems = $presNetwork.concept-names;
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;

@@ -67,12 +67,13 @@ for  $x in $drs_members.keys.sort('desc')
 				else
 					$z.decimals));
 
-		if tolerance_for_decimals_comp({nonils @concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}#FairValueOfPlanAssets, $member_sums, $min_decimals, 2 ) and $member_sums != 0
+		$FairValueOfPlanAssets = {nonils @concept = DefinedBenefitPlanFairValueOfPlanAssets @DefinedBenefitPlanByPlanAssetCategoriesAxis = none}
+
+		if tolerance_for_decimals_comp($FairValueOfPlanAssets, $member_sums, $min_decimals, 2 ) and $member_sums != 0
 		
 			/** Make a string that shows the components of the components that comprise the total **/
 			$member_string = sum(list(for $member_fact in $member_facts
 				"\t" + $member_fact.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).local-name + " --> {$member_fact}" + " --> {$member_fact.dimensions.join(', ','=')} \n"));
-
 			$member_sum = $member_sums;
 			true
 		else 
