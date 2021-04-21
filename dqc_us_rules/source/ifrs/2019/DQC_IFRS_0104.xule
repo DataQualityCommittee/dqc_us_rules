@@ -205,14 +205,14 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @SegmentConsolidationItemsAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the SegmentConsolidationItemsAxis and the unallowable member {$member.local-name}. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.join(', ')}.
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the SegmentConsolidationItemsAxis and the unallowable member {$member.local-name}. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.sort.join(', ')}.
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis SegmentConsolidationItemsAxis. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.join(', ')}. There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis SegmentConsolidationItemsAxis. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.sort.join(', ')}. There are no facts associated with this member and axis.";
 		true
 
 
