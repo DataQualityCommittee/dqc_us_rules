@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22775 $
+$Change: 23218 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -36,9 +36,11 @@ import decimal
 from aniso8601.__init__ import parse_duration, parse_datetime, parse_date
 import collections
 import copy
+from fractions import Fraction
 import pprint
 import re
 import textwrap
+
 
 class XuleValueSet:
     def __init__(self, values=None):
@@ -101,6 +103,8 @@ class XuleValue:
         elif self.type == 'dictionary' and self.shadow_collection is None:
             shadow = self.shadow_dictionary
             self.shadow_collection = frozenset(shadow.items())
+        elif self.type == 'string': # make all strings XuleStrings
+            self.value = XuleString(self.value)
     @property
     def shadow_dictionary(self):
         if self.type == 'dictionary':
@@ -186,10 +190,29 @@ class XuleValue:
         #set value, type, fact on the XuleValue
         if orig_type == 'fact':
             #get the underlying value and determine the type
-            xule_type, compute_value = model_to_xule_type(xule_context, orig_value.xValue)
-            return xule_type, compute_value, orig_value
+            if "{http://xbrl.org/2020/extensible-enumerations-2.0}enumerationSetItemType" in self._type_ancestry(orig_value.concept.type):
+                # This is concept that is an extensibile enumeration set. Arelle will pass the valueas
+                # a list of QNames. Need to convert to a set of XuleValues where each Xulevalue is a
+                # "qname" xule type.
+                # The orig_value should be a list or set of qname values
+                if not (isinstance(orig_value.xValue, list) or isinstance(orig_value.xValue, set)):
+                    raise XuleProcessingError(_("Encountered a extensible enumeration. Expected the fact value to be a set or list, but found '{}'.".format(type(orig_value.xValue).__name__)))
+                enum_set = set()
+                for enum in orig_value.xValue:
+                    enum_value_type, enum_compute_value = model_to_xule_type(xule_context, enum)
+                    enum_set.add(XuleValue(xule_context, enum_compute_value, enum_value_type))
+                return 'set', enum_set, orig_value
+            else:
+                xule_type, compute_value = model_to_xule_type(xule_context, orig_value.xValue)
+                return xule_type, compute_value, orig_value
         else:
             return orig_type, orig_value, None
+
+    def _type_ancestry(self, model_type):
+        if model_type.typeDerivedFrom is None:
+            return [model_type.qname.clarkNotation]
+        else:
+            return [model_type.qname.clarkNotation] + self._type_ancestry(model_type.typeDerivedFrom)
 
     @property
     def is_fact(self):
@@ -638,47 +661,61 @@ class XuleString(str):
         The constructor will save the formatted string as the underlying string
         """
 
-        # The format string is not a real python format string. It is a string without the substitutions in it.
-        # The substitutions is a list of 3 part tuples: 0=location in format string, 1=substitution name, 2=substitution value.
-        # The substitutions are applied to the format string to create a real python %-style format string.
-        
-        # Find all the '%' signs in the string. Thees wil need to be escaped.
-        percent_locations = [m.start() for m in re.finditer('%', format_string)]
-        #sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
-        sub_locations = collections.defaultdict(list)
-        for location, sub_name, sub_value in substitutions or []:
-            sub_locations[location].append((sub_name, sub_value))
-        
-        for i in sorted(percent_locations + list(sub_locations.keys()), reverse=True):
-            if i in percent_locations:
-                format_string = format_string[:i] + '%' + format_string[i:]
+        if substitutions is None or len(substitutions) == 0:
+            # In this case there are no substitutions so the the XuleString is just a plain string
+            if format_string is not None:
+                format_string = format_string.replace('%', '%%')
+                string_inst = super().__new__(cls, format_string % dict())
+                string_inst._format_string = format_string
+                string_inst._substitutions = dict()
             else:
-                # i must be in sub_locations
-                sub_value = ''
-                for sub in sub_locations[i]:
-                    sub_value += '%({})s'.format(sub[0])
-                format_string = format_string[:i] + sub_value + format_string[i:]
-                #format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
-        
-        format_subs = {x[1]:x[2] for x in substitutions or []}
-        
-        string_inst = super().__new__(cls, format_string % format_subs)
-        
-        if len(format_subs) == 0 and len(percent_locations) == 0:
-            # In this case the format string is already stored as the base class string. There is no need to duplicate it in the
-            # _format_string.
-            string_inst._format_string = None
+                #string_inst = super().__new__(cls, format_string)
+                string_inst = None
         else:
-            string_inst._format_string = format_string
-        string_inst.substitutions = format_subs
+            # The format string is not a real python format string. It is a string without the substitutions in it.
+            # The substitutions is a list of 3 part tuples: 0=location in format string, 1=substitution name, 2=substitution value.
+            # The substitutions are applied to the format string to create a real python %-style format string.
+            
+            # Find all the '%' signs in the string. Thees wil need to be escaped.
+            percent_locations = [m.start() for m in re.finditer('%', format_string)]
+            #sub_locations = {x[0]:(x[1], x[2]) for x in substitutions or []}
+            sub_locations = collections.defaultdict(list)
+            for location, sub_name, sub_value in substitutions or []:
+                sub_locations[location].append((sub_name, sub_value))
+            
+            for i in sorted(percent_locations + list(sub_locations.keys()), reverse=True):
+                if i in percent_locations:
+                    format_string = format_string[:i] + '%' + format_string[i:]
+                else:
+                    # i must be in sub_locations
+                    sub_value = ''
+                    for sub in sub_locations[i]:
+                        sub_value += '%({})s'.format(sub[0])
+                    format_string = format_string[:i] + sub_value + format_string[i:]
+                    #format_string = format_string[:i] + '%({})s'.format(sub_locations[i][0]) + format_string[i:]
+            
+            format_subs = {x[1]:x[2] for x in substitutions or []}
+            
+            string_inst = super().__new__(cls, format_string % format_subs)
+            
+            if len(format_subs) == 0 and len(percent_locations) == 0:
+                # In this case the format string is already stored as the base class string. There is no need to duplicate it in the
+                # _format_string.
+                string_inst._format_string = None
+            else:
+                string_inst._format_string = format_string
+            string_inst._substitutions = format_subs
         
         return string_inst
     
     
     @property
     def format_string(self):
-        return self._format_string or self
+        return getattr(self, '_format_string', None) or self
     
+    @property
+    def substitutions(self):
+        return getattr(self, '_substitutions', None) or dict()
 class XuleUnit:
     def __init__(self, *args):
         if len(args) == 1:
@@ -873,6 +910,16 @@ class XuleDimensionCube:
     def dimension_sets(cls, dts):
         cls._establish_cubes(dts)
         return dts.xuleDimensionSets
+
+    @classmethod
+    def dimension_defaults(cls, dts):
+        cls._establish_dimension_defaults(dts)
+        return dts.xuleDimensionDefaults
+
+    @classmethod
+    def dimension_defaults_by_name(cls, dts):
+        cls._establish_dimension_defaults(dts)
+        return {k.qname: v.qname for k, v in dts.xuleDimensionDefaults.items()}
 
     @classmethod
     def _establish_cubes(cls, dts):
@@ -1112,18 +1159,31 @@ class XuleDimensionCube:
         # Dimensions
         for dimension_concept in self._dimensions:
             if len(facts) > 0: # If there are no facts, then the facts for the dimension does not need to be checked.
+                dimension_index_key = ('explicit_dimension', dimension_concept.qname)
                 if dimension_concept.isTypedDimension:
                     # For typed dimensions all the facts will match
-                    dimension_facts = self._dts.xuleFactIndex[('explicit_dimension', dimension_concept.qname)].get('all', set())
+                    dimension_facts = set()
+                    for type_member in self._dts.xuleFactIndex.get(dimension_index_key, dict()).keys():
+                        if type_member is not None:
+                            dimension_facts |= self._dts.xuleFactIndex.get(dimension_index_key, dict()).get(type_member, set())
+                    #dimension_facts = self._dts.xuleFactIndex.get(dimension_index_key, dict()).get('all', set())
                 else:
                     dimension_facts = set()
                     for dimension_member in self._dimension_members[dimension_concept]:
                         if self.isUsable(dimension_member):
-                            dimension_facts |= self._dts.xuleFactIndex[('explicit_dimension', dimension_concept.qname)].get(dimension_member.qname, set())
+                            dimension_facts |= self._dts.xuleFactIndex.get(dimension_index_key, dict()).get(dimension_member.qname, set())
                     # default member
                     default_member = self._dimension_default.get(dimension_concept)
                     if default_member in self._dimension_members[dimension_concept] and self.isUsable(default_member):
-                        dimension_facts |= self._dts.xuleFactIndex[('explicit_dimension', dimension_concept.qname)].get(None, set())
+                        # Note the defaults on the get(). The first one for dimension_index_key returns an empty
+                        # dictionary. This happens when the dimension is not in the fact index which happens when
+                        # there are no facts that use this dimension. In this case, all  the facts match the default
+                        # for the dimension. This is in the second get() for the None value of the dimension. The None
+                        # value of the dimension represents all facts that do not have the dimension explicitly. The
+                        # 'all' on the fact index is used in this case. The 'all' is every fact in the instance. If the
+                        # dimension is not used in the instance at all, then the first get() returns an empty dict. The
+                        # second get() will not find a key of None (since the dict is empty) and will return all facts.
+                        dimension_facts |= self._dts.xuleFactIndex.get(dimension_index_key, dict()).get(None, self._dts.xuleFactIndex.get('all', set()))
 
                 facts &= dimension_facts
 
@@ -1449,7 +1509,8 @@ TYPE_SYSTEM_TO_XULE = {int: 'int',
                        gYear: 'model_g_year',
                        gMonthDay: 'model_g_month_day',
                        gYearMonth: 'model_g_year_month',
-                       AnyURI: 'uri'}
+                       AnyURI: 'uri',
+                       Fraction: 'fraction'}
 
 TYPE_STANDARD_CONVERSION = {'model_date_time': (model_to_xule_model_datetime, 'instant'),
                             'model_g_year': (model_to_xule_model_g_year, 'int'),

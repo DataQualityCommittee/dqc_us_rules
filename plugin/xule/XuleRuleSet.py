@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22775 $
+$Change: 23204 $
 DOCSKIP
 """
 
@@ -35,11 +35,19 @@ import tempfile
 import zipfile
 from arelle import PackageManager
 from pickle import UnpicklingError
+from . import XuleConstants as xc
+from . import XuleUtility as xu
 
 class XuleRuleSetError(Exception):
     """An exception class for handling errors managing the rule set"""
     def __init__(self, msg):
         print(msg)
+
+class XuleRuleCompatibilityError(Exception):
+    def __init__(self, msg):
+        print(msg)
+    
+
 
 class XuleRuleSet(object):
     """The XuleRuleSet class.
@@ -74,6 +82,11 @@ class XuleRuleSet(object):
     def __del__(self):
         self.close()
     
+    @property
+    def xuleCompiledVersion(self):
+        if self.catalog is not None:
+            return self.catalog.get('xule_compiled_version')
+
     def close(self):
         """Close the ruleset"""
         pass
@@ -97,12 +110,14 @@ class XuleRuleSet(object):
         :type open_packages: bool
         :param open_files: An indicator that determines if the rule files should be loaded into memory
         """
-        #self.name = os.path.splitext(os.path.basename(rule_set_location))[0]
-        self.location = rule_set_location
-        pickle_start = datetime.datetime.today()
-        
-        #Using arelle file source object. This will handle files from the web.
-        file_object = self._get_rule_set_file_object()
+
+        if isinstance(rule_set_location, io.IOBase):
+            file_object = rule_set_location
+        else:
+            # Only set the location if the the rule set file is a filename (not a file-like object)
+            self.location = rule_set_location
+            #Using arelle file source object. This will handle files from the web.
+            file_object = self._get_rule_set_file_object()
         try:
             with zipfile.ZipFile(file_object, 'r') as zf:
                 try: # pickle file first
@@ -127,7 +142,8 @@ class XuleRuleSet(object):
                                 self._xule_file_expression_trees[file_info['file']] = json.load(io.TextIOWrapper(p))
 
                             
-            self.name = self.catalog['name']               
+            self.name = self.catalog['name']    
+            self.verify_verson_compatability()           
         except KeyError:
             raise XuleRuleSetError(_("Error in the rule set. Cannot open catalog."))
         except FileNotFoundError:
@@ -136,10 +152,6 @@ class XuleRuleSet(object):
             raise XuleRuleSetError(_("Cannot open rule set file. Does not appear to be  zip file. File: {}".format(rule_set_location)))
         finally:
             file_object.close()
-    
-        #Check for packages
-        pickle_end = datetime.datetime.today()
-        #print("Rule Set Loaded", pickle_end - pickle_start)
 
     def _get_rule_set_file_object(self):
         from arelle import FileSource
@@ -530,4 +542,11 @@ class XuleRuleSet(object):
             
         return self.all_rules
 
+    def verify_verson_compatability(self):
+        if not (self.catalog.get('xule_compiled_version') is not None and int(self.catalog.get('xule_compiled_version')) in xu.get_rule_set_compatibility_version()):
+            
+            raise XuleRuleCompatibilityError("The rule set version '{}' is not compatible with version {} of the Xule Rule Processor".format(
+                self.catalog.get('xule_compiled_version'), xu.version())
+            )
 
+                
