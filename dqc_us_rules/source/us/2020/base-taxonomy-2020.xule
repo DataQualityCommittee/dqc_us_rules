@@ -24,7 +24,12 @@ constant $all_base_taxonomies = list($us-gaap, $exchange, $state_province, $naic
 
 /** DEI HANDLING**/
 
-constant $dei_namespace_list = (filter taxonomy().concepts where $item.name.local-name in list('DocumentPeriodEndDate','DocumentType') and $item.name.namespace-uri.lower-case.contains('dei')).to-list
+/** SlimBoy **/
+constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
 
-constant $dei_namespace = $dei_namespace_list[1].name.namespace-uri
+/** Fat Boy - This property will be implemented in V1.1 of XULE.**/
+/**constant $dei_namespace = ((filter taxonomy().namespaces where $item.lower-case.contains('dei')).to-list)[1]**/
 
+/**
+constant $dei_namespace = ((filter taxonomy().concepts where $item.name.local-name in list('DocumentPeriodEndDate','DocumentType') and $item.name.namespace-uri.lower-case.contains('dei')).to-list)[1].name.namespace-uri
+**/
