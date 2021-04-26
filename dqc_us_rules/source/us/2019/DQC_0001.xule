@@ -546,7 +546,7 @@ $default_Message = if ($default_member.intersect($default_member_USGAAP)).length
 
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'InvestmentsNetAssetValueMember'));
+$allowable_extensions = set();
 
 /** Union the sets**/
 
@@ -560,7 +560,7 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @FairValueByMeasurementBasisAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1.string.substring(1,128)} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}.  
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1.string.substring(1,300)} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}.  
 " + $default_Message + "
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
