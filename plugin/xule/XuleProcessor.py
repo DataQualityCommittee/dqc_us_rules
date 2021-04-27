@@ -21,7 +21,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 23194 $
+$Change: 23219 $
 DOCSKIP
 """
 from .XuleContext import XuleGlobalContext, XuleRuleContext  # XuleContext
@@ -35,6 +35,7 @@ from arelle.ModelInstanceObject import ModelFact
 from arelle.ModelRelationshipSet import ModelRelationshipSet
 from arelle.ModelDtsObject import ModelConcept
 from arelle.ModelObject import ModelObject
+from arelle.XmlValidate import VALID
 import decimal
 import datetime
 import math
@@ -269,6 +270,10 @@ def index_model(xule_context):
     facts_to_index = collections.defaultdict(list)
     if xule_context.model is not None:
         for model_fact in xule_context.model.factsInInstance:
+            if not fact_is_complete(model_fact):
+                # Fact is incomplete. This can be caused by a filing that is still in the process of being built.
+                # Ignore the fact and continue validating the rest of the filing.
+                continue
             all_aspects = list()
             all_aspects.append((('builtin', 'concept'), model_fact.qname))
 
@@ -4211,9 +4216,10 @@ def evaluate_property(property_expr, xule_context):
         property_info = XuleProperties.PROPERTIES[current_property_expr['propertyName']]
 
         # Check if the property can operate on a set or list.
-        if object_value.type not in ('set', 'list') or (object_value.type in ('set', 'list') and len(
-                {'set', 'list'} & set(property_info[XuleProperties.PROP_OPERAND_TYPES])) > 0):
-            pass
+        if object_value.type not in ('set', 'list') or (object_value.type in ('set', 'list') and (
+            len({'set', 'list'} & set(property_info[XuleProperties.PROP_OPERAND_TYPES])) > 0) or
+            (object_value.is_fact and 'fact' in property_info[XuleProperties.PROP_OPERAND_TYPES])
+        ):
             object_value = process_property(current_property_expr, object_value, property_info, xule_context)
         else:
             # This is a set or list. The property is not for a set or list, so try to create a new set or list after applying the property to the members.
@@ -4300,7 +4306,6 @@ def process_property(current_property_expr, object_value, property_info, xule_co
 
     return object_value
 
-
 def evaluate_index(index_expr, xule_context):
     # evaluate the left side of the expression
     left_value = evaluate(index_expr['expr'], xule_context)
@@ -4312,10 +4317,14 @@ def evaluate_index(index_expr, xule_context):
 
     return left_value
 
-
 def evaluate_tag_ref(tag_ref, xule_context):
     if tag_ref['varName'] in xule_context.tags:
-        return xule_context.tags[tag_ref['varName']]
+        # When tags are evaluated for message production, the tags associated with the tagged value
+        # should overwrite the the current tags. Making a copy of the value and removing the tags (and likewise for facts)
+        tag_value =  copy.copy(xule_context.tags[tag_ref['varName']])
+        tag_value.tags = dict()
+        tag_value.facts = collections.OrderedDict()
+        return tag_value
     else:
         # The reference may be to a constant
         cat_const = xule_context.global_context.catalog['constants'].get(tag_ref['varName'])
@@ -5392,3 +5401,16 @@ def trace_count_next_time(rule_part, traces):
                         total_child_times += child_info[0]
                         total_child_nodes += child_info[1]
     return (total_child_times, total_child_nodes)
+
+def fact_is_complete(model_fact):
+    if model_fact.xValid < VALID:
+        return False
+    if model_fact.context is None or not context_has_period(model_fact.context):
+        return False
+    if model_fact.isNumeric and model_fact.unit is None:
+        return False
+    return True
+
+
+def context_has_period(model_context):
+    return model_context.isStartEndPeriod or model_context.isInstantPeriod or model_context.isForeverPeriod

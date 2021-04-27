@@ -15,7 +15,8 @@ assert US.0095.9528 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 		$EntityCommonStockSharesOutstanding = {@concept.local-name = 'EntityCommonStockSharesOutstanding' @period = * where $fact > 0};
-		$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0};
+		$EntityStockPeriod = $EntityCommonStockSharesOutstanding.period.end;
+		$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0 and  ($fact.period.end + (time-span("P90D"))) > $EntityStockPeriod};
 
 		$factor = $EntityCommonStockSharesOutstanding / $CommonStockSharesOutstanding;
 
@@ -45,4 +46,6 @@ SEVERITY error
 status $status
 
 effectiveDate $effective_dates[$rule_id]
+
+rule-focus $EntityCommonStockSharesOutstanding
 		

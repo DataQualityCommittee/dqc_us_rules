@@ -5,7 +5,7 @@ Xule is a rule processor for XBRL (X)brl r(ULE).
 DOCSKIP
 See https://xbrl.us/dqc-license for license information.  
 See https://xbrl.us/dqc-patent for patent infringement notice.
-Copyright (c) 2017 - 2019 XBRL US, Inc.
+Copyright (c) 2017 - 2021 XBRL US, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-$Change: 22950 $
+$Change: 23218 $
 DOCSKIP
 """
 from .XuleRunTime import XuleProcessingError
@@ -103,6 +103,8 @@ class XuleValue:
         elif self.type == 'dictionary' and self.shadow_collection is None:
             shadow = self.shadow_dictionary
             self.shadow_collection = frozenset(shadow.items())
+        elif self.type == 'string': # make all strings XuleStrings
+            self.value = XuleString(self.value)
     @property
     def shadow_dictionary(self):
         if self.type == 'dictionary':
@@ -188,10 +190,29 @@ class XuleValue:
         #set value, type, fact on the XuleValue
         if orig_type == 'fact':
             #get the underlying value and determine the type
-            xule_type, compute_value = model_to_xule_type(xule_context, orig_value.xValue)
-            return xule_type, compute_value, orig_value
+            if "{http://xbrl.org/2020/extensible-enumerations-2.0}enumerationSetItemType" in self._type_ancestry(orig_value.concept.type):
+                # This is concept that is an extensibile enumeration set. Arelle will pass the valueas
+                # a list of QNames. Need to convert to a set of XuleValues where each Xulevalue is a
+                # "qname" xule type.
+                # The orig_value should be a list or set of qname values
+                if not (isinstance(orig_value.xValue, list) or isinstance(orig_value.xValue, set)):
+                    raise XuleProcessingError(_("Encountered a extensible enumeration. Expected the fact value to be a set or list, but found '{}'.".format(type(orig_value.xValue).__name__)))
+                enum_set = set()
+                for enum in orig_value.xValue:
+                    enum_value_type, enum_compute_value = model_to_xule_type(xule_context, enum)
+                    enum_set.add(XuleValue(xule_context, enum_compute_value, enum_value_type))
+                return 'set', enum_set, orig_value
+            else:
+                xule_type, compute_value = model_to_xule_type(xule_context, orig_value.xValue)
+                return xule_type, compute_value, orig_value
         else:
             return orig_type, orig_value, None
+
+    def _type_ancestry(self, model_type):
+        if model_type.typeDerivedFrom is None:
+            return [model_type.qname.clarkNotation]
+        else:
+            return [model_type.qname.clarkNotation] + self._type_ancestry(model_type.typeDerivedFrom)
 
     @property
     def is_fact(self):
@@ -642,9 +663,14 @@ class XuleString(str):
 
         if substitutions is None or len(substitutions) == 0:
             # In this case there are no substitutions so the the XuleString is just a plain string
-            string_inst = super().__new__(cls, format_string)
-            string_inst._format_string = None
-            string_inst.substitutions = dict()
+            if format_string is not None:
+                format_string = format_string.replace('%', '%%')
+                string_inst = super().__new__(cls, format_string % dict())
+                string_inst._format_string = format_string
+                string_inst._substitutions = dict()
+            else:
+                #string_inst = super().__new__(cls, format_string)
+                string_inst = None
         else:
             # The format string is not a real python format string. It is a string without the substitutions in it.
             # The substitutions is a list of 3 part tuples: 0=location in format string, 1=substitution name, 2=substitution value.
@@ -678,15 +704,18 @@ class XuleString(str):
                 string_inst._format_string = None
             else:
                 string_inst._format_string = format_string
-            string_inst.substitutions = format_subs
+            string_inst._substitutions = format_subs
         
         return string_inst
     
     
     @property
     def format_string(self):
-        return self._format_string or self
+        return getattr(self, '_format_string', None) or self
     
+    @property
+    def substitutions(self):
+        return getattr(self, '_substitutions', None) or dict()
 class XuleUnit:
     def __init__(self, *args):
         if len(args) == 1:
@@ -923,9 +952,9 @@ class XuleDimensionCube:
                                                                                          XuleProperties.NETWORK_ARC]))
 
                     for rel in relationship_set.modelRelationships:
-                        drs_role = base_set[XuleProperties.NETWORK_ROLE] #rel.targetRole or base_set[XuleProperties.NETWORK_ROLE]
-                        hypercube = rel.toModelObject
-                        dts.xuleBaseDimensionSets[(drs_role, hypercube)].add(rel)
+                        if rel.toModelObject is not None:
+                            drs_role = base_set[XuleProperties.NETWORK_ROLE]
+                            dts.xuleBaseDimensionSets[(drs_role, rel.toModelObject)].add(rel)
 
     @classmethod
     def _establish_dimension_defaults(cls, dts):
