@@ -43,9 +43,9 @@ assert IFRS.0102.9540 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Assets = {nonils @Assets @MaturityAxis=none};
-$CalcAssets = {nonils @CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#ca <+> {nonils @NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#nca;
-$Decimals = list({nonils @CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none},{nonils @Assets @MaturityAxis=none @PastDueStatusAxis=none}, {nonils @NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none});
+$Assets = {@Assets @MaturityAxis=none};
+$CalcAssets = {@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#ca <+> {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none}#nca;
+$Decimals = list({@CurrentAssets @MaturityAxis=none @PastDueStatusAxis=none},{@Assets @MaturityAxis=none @PastDueStatusAxis=none}, {@NoncurrentAssets @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -88,9 +88,9 @@ assert IFRS.0102.9541 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Liabilities = {nonils @Liabilities @MaturityAxis=none @PastDueStatusAxis=none};
-$CalcLiabilities = {nonils @CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#cl <+> {nonils @NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#ncl;
-$Decimals = list({nonils @Liabilities @MaturityAxis=none @PastDueStatusAxis=none},{nonils @CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none},{nonils @NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none});
+$Liabilities = {@Liabilities @MaturityAxis=none @PastDueStatusAxis=none};
+$CalcLiabilities = {@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#cl <+> {@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none}#ncl;
+$Decimals = list({@Liabilities @MaturityAxis=none @PastDueStatusAxis=none},{@CurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none},{@NoncurrentLiabilities @MaturityAxis=none @PastDueStatusAxis=none});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -182,9 +182,9 @@ assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')};
-$agg = {nonils @ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a1 <+> {nonils @OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a2;
-$Decimals = list({nonils @ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{nonils @ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{nonils @OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')});
+$base = {@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')};
+$agg = {@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a1 <+> {@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a2;
+$Decimals = list({@ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{@OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
@@ -230,9 +230,9 @@ assert IFRS.0102.9544 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @IncreaseDecreaseInCashAndCashEquivalentsBeforeEffectOfExchangeRateChanges};
+$base = {@IncreaseDecreaseInCashAndCashEquivalentsBeforeEffectOfExchangeRateChanges};
 
-$agg = {nonils @CashFlowsFromUsedInOperatingActivities}#a1 <+> {nonils @CashFlowsFromUsedInInvestingActivities}#a2 <+> {nonils @CashFlowsFromUsedInFinancingActivities}#a3;
+$agg = {@CashFlowsFromUsedInOperatingActivities}#a1 <+> {@CashFlowsFromUsedInInvestingActivities}#a2 <+> {@CashFlowsFromUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
 
 if $base == none
@@ -269,8 +269,8 @@ assert IFRS.0102.9545 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @CashFlowsFromUsedInFinancingActivities};
-$agg = {nonils @CashFlowsFromUsedInFinancingActivitiesContinuingOperations}#a1 <+> {nonils @CashFlowsFromUsedInFinancingActivitiesDiscontinuedOperations}#a2;
+$base = {@CashFlowsFromUsedInFinancingActivities};
+$agg = {@CashFlowsFromUsedInFinancingActivitiesContinuingOperations}#a1 <+> {@CashFlowsFromUsedInFinancingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -303,8 +303,8 @@ assert IFRS.0102.9546 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @CashFlowsFromUsedInInvestingActivities};
-$agg = {nonils @CashFlowsFromUsedInInvestingActivitiesContinuingOperations}#a1 <+> {nonils @CashFlowsFromUsedInInvestingActivitiesDiscontinuedOperations}#a2;
+$base = {@CashFlowsFromUsedInInvestingActivities};
+$agg = {@CashFlowsFromUsedInInvestingActivitiesContinuingOperations}#a1 <+> {@CashFlowsFromUsedInInvestingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -339,8 +339,8 @@ assert IFRS.0102.9547 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @CashFlowsFromUsedInOperatingActivities};
-$agg = {nonils @CashFlowsFromUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @CashFlowsFromUsedInOperatingActivitiesDiscontinuedOperations}#a2;
+$base = {@CashFlowsFromUsedInOperatingActivities};
+$agg = {@CashFlowsFromUsedInOperatingActivitiesContinuingOperations}#a1 <+> {@CashFlowsFromUsedInOperatingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
@@ -373,8 +373,8 @@ assert IFRS.0102.9548 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = {nonils @IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations};
-$agg = {nonils @CashFlowsFromUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {nonils @CashFlowsFromUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {nonils @CashFlowsFromUsedInFinancingActivitiesDiscontinuedOperations}#a3;
+$base = {@IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations};
+$agg = {@CashFlowsFromUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {@CashFlowsFromUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {@CashFlowsFromUsedInFinancingActivitiesDiscontinuedOperations}#a3;
 $decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
