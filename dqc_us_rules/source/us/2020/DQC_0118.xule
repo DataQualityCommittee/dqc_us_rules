@@ -34,30 +34,21 @@ for $cube in $statementCubes.sort
 	for $dimension in $cube
 		$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns (source);
 		for $concept_item in $calcNetworkSource.to-set
-			/**if $concept_item == none
+			if $concept_item == none
                 skip
-        	else**/
+        	else
                 $data = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);			
 				$addend = sum(list(for $x in $data
                                         $targetElement = $x[1];
                                         $targetWeight = $x[2];
-										/**if exists([nonils @concept = $targetElement])
-                                        		[nonils @concept = $targetElement] * $targetWeight
-										else
-												getDimensionSum($targetElement, $dimension, $cube.drs-role) * $targetWeight
-										**/
-										[nonils @concept = $targetElement] * $targetWeight
+										first-value([nonils @concept = $concept_item] * $targetWeight, getDimensionSum($concept_item, $dimension, $cube.drs-role) * $targetWeight)	
                                    )
                                 );
 				
 
 				$addend_string = sum(list(for $x in $data.sort
                                                 $targetElement = $x[1];
-                                                $factAmt = if exists([nonils @concept = $targetElement])
-																[nonils @concept = $targetElement].string
-															else 
-																getDimensionSum($targetElement, $dimension, $cube.drs-role).string;
-												
+                                                $factAmt = first-value([nonils @concept = $concept_item].string, getDimensionSum($concept_item, $dimension, $cube.drs-role).string)
 												$weight =  if $x[2] == 1
                                                                     "+"
                                                             else
@@ -72,17 +63,14 @@ for $cube in $statementCubes.sort
                                 );
 
 
-				$sum2 = if exists([nonils @concept = $concept_item])
-                            [nonils @concept = $concept_item]
-						else
-							getDimensionSum($concept_item, $dimension, $cube.drs-role);
+				$sum2 = first-value([nonils @concept = $concept_item], getDimensionSum($concept_item, $dimension, $cube.drs-role));
+				
 				tolerance_for_decimals($sum2,$addend,2)
-
-
-
 
 message
 "The element {$concept_item} with a default value of {$sum2} is defined in the calculation linkbase with addend children which sum to {$addend}. The addends are comprised of the following:
+
+{$addend_string}
 
 Total Element : {$sum2.concept.name}
 Total Period : {$sum2.period}
