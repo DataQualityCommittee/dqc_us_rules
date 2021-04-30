@@ -12,9 +12,13 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0118.9575 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+/**  Get the latest Report Period**/
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+
 /** Get tables for financial statement items **/
 
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -') 
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
 and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
 and (not $item.drs-role.uri.lower-case.contains('equity')) 
 and (not $item.drs-role.uri.lower-case.contains('deficit')) 
@@ -31,50 +35,65 @@ and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.drs-role.uri.lower-case.contains('membersinterest'));
 
 for $cube in $statementCubes.sort
-	for $dimension in $cube
-		$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns (source);
-		for $concept_item in $calcNetworkSource.to-set
-			if $concept_item == none
+	for $dimension in $cube.dimensions
+		/** get the calculations aligned with the cube role.  We assume that the same role is used for the cube and the dimension**/
+		$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns set (source-name);
+		/** Get the concept names from the cube that have a values for the current dimension being processed using the facts in the cube to determine which concepts are used. This is so we do not try and add dimensions that do not have any values in the cube for the calculation. **/
+		$conceptsInCube = filter $cube.facts where $item.dimensions().keys.name.contains($dimension.concept.name) returns $item.concept.name;
+		/** Go through each fact in the calculation and get its children so we can check the math. However an if statement stops the process if the concept has no values associated with the dimension.**/
+		for $concept_item in $calcNetworkSource
+			if $concept_item == none or (length($calcNetworkSource.intersect($conceptsInCube.to-set))==0)
                 skip
         	else
-                $data = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);			
+				/** Determine the children of the concept to check **/
+                $data = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);
+				/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/		
 				$addend = sum(list(for $x in $data
                                         $targetElement = $x[1];
                                         $targetWeight = $x[2];
-										first-value([nonils @concept = $concept_item] * $targetWeight, getDimensionSum($concept_item, $dimension, $cube.drs-role) * $targetWeight)	
+										first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role} * $targetWeight, getDimensionSum($targetElement, $dimension, $cube.drs-role) * $targetWeight)	
                                    )
                                 );
 				
-
+				/** Capture in a string what calc was performed  above to report in the rule message. **/
 				$addend_string = sum(list(for $x in $data.sort
                                                 $targetElement = $x[1];
-                                                $factAmt = first-value([nonils @concept = $concept_item].string, getDimensionSum($concept_item, $dimension, $cube.drs-role).string)
+												$defaultFact = if exists({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role})
+																	true
+																else
+																	false;
+												$DefaultMessage =  if $defaultFact "" else " (Sum:" + $dimension.concept.name.local-name + ")";
+                                                $factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string, getDimensionSum($targetElement , $dimension, $cube.drs-role).string)
 												$weight =  if $x[2] == 1
                                                                     "+"
                                                             else
                                                                     "-";
                                                 $strLength = $targetElement.local-name.string.length;
-                                                $pad = sum(list(for $x in range(150 - $strLength - $factAmt.length)
+                                                $pad = sum(list(for $x in range(150 - $strLength - $factAmt.length - $DefaultMessage.length)
                                                                                 " " 
                                                                                 )
                                                                         );
-                                        "" + $weight + "  \t" + $targetElement.local-name.string + $pad + $factAmt + " \n"
+                                        "" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  " \n"
                                                 )
                                 );
 
-
-				$sum2 = first-value([nonils @concept = $concept_item], getDimensionSum($concept_item, $dimension, $cube.drs-role));
+				/** Compare the addends to the sum.  This is only done for the current reporting period **/
+				$sum2 = {nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date};
 				
-				tolerance_for_decimals($sum2,$addend,2)
+				if $addend == none
+					skip 
+				else
+				$sum2 != $addend
 
 message
-"The element {$concept_item} with a default value of {$sum2} is defined in the calculation linkbase with addend children which sum to {$addend}. The addends are comprised of the following:
+"In the statement {$cube.drs-role.description} using the dimension {$dimension} with the element {$concept_item} with a default value of {$sum2} is defined in the calculation linkbase with addend children which sum to {$addend}. The addends are comprised of the following:
 
 {$addend_string}
 
-Total Element : {$sum2.concept.name}
-Total Period : {$sum2.period}
+Total Element : {$concept_item}
 Total Value : {$sum2} 
+Total period : {$sum2.period} 
+Dimensions : {$sum2.dimensions.join(', ','=')}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 

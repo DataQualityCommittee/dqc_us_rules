@@ -93,10 +93,10 @@ function getDimensionSum($concept, $dimension, $drs-role)
 				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 				$member_facts = list(for $member in $member_descendants
 									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-									if list({@cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
+									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
 										skip
 									else 
-										{@cube.drs-role = $drs-role @$dim = $member});
+										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
 				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 				if 	$member_facts.length == 0 
 					skip
