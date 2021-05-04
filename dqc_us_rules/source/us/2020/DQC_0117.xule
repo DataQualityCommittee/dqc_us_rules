@@ -80,26 +80,3 @@ status $status
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $TotalDefault
-
-function getDimensionSum($concept, $dimension, $drs-role)
-				$dim = $dimension.concept.name
-				$members = navigate dimensions descendants from $dimension.concept drs-role $drs-role returns target-name
-
-				$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs-role returns set target-name
-
-				/** Get a set  of the unique members **/
-				$member_descendants = $members.to-set - $domain;
-
-				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
-				$member_facts = list(for $member in $member_descendants
-									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
-										skip
-									else 
-										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
-				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
-				if 	$member_facts.length == 0 
-					skip
-				else		
-					/** aggregate the fact values on the axis **/
-					sum($member_facts)
