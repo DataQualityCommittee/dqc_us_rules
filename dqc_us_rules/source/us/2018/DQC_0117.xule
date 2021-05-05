@@ -1,0 +1,82 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2018
+Release Version 16
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+ASSERT US.0117.9574 SATISFIED
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Get tables for financial statement items **/
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -') 
+and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+and (not $item.drs-role.uri.lower-case.contains('equity')) 
+and (not $item.drs-role.uri.lower-case.contains('deficit')) 
+and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
+and (not $item.drs-role.uri.lower-case.contains('capital')) 
+and (not $item.drs-role.uri.lower-case.contains('investment')) 
+and (not $item.drs-role.uri.lower-case.contains('changes')) 
+and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
+and (not $item.drs-role.uri.lower-case.contains('convertible')) 
+and (not $item.drs-role.uri.lower-case.contains('preferred'))  
+and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.drs-role.uri.lower-case.contains('redeemable'))
+and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
+
+/** Get the DRS Roles and dimensions **/
+$drs_roles = set(for $y in $statementCubes
+					list($y.drs-role, $y.dimensions));
+
+/** Go through each cube **/
+for $drs_role in $drs_roles
+	for $dimension in $drs_role[2]
+		$dim = $dimension.concept.name
+		$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
+
+		$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
+
+		/** Get a set  of the unique members **/
+		$member_descendants = $members.to-set - $domain;
+
+		/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+		$member_facts = list(for $member in $member_descendants
+							$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
+							if list({@cube.drs-role = $drs_role[1] @$dim in $ancestors_list}).length > 0
+								skip
+							else 
+								{@cube.drs-role = $drs_role[1] @$dim = $member});
+		/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+		if 	$member_facts.length == 0 
+			skip
+		else		
+			/** aggregate the fact values on the axis **/
+			$member_sums = sum($member_facts);
+			$member_string = sum(list(for $member_fact in $member_facts
+				"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+		
+			$member_sums != {@cube.drs-role = $drs_role[1] @$dim in $domain}#TotalDefault
+	
+message
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
+ {$member_string}
+
+The properties of this {$TotalDefault.concept.name} fact are:
+Period :{$TotalDefault.period}
+Unit : {$TotalDefault.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TotalDefault
