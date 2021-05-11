@@ -78,20 +78,33 @@ for $cube in $statementCubes.sort
                                         "" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  " \n"
                                                 )
                                 );
+				/** WHat if the calculation children also include a dimensionalized amount of the concept total. i.e. the total is comprised of its children and the parent concept with a dimension.  Should then add these values in the total of the dimension. But only where the dimension member was not used. **/
+				
+				$additional_addend = getDimensionSum($concept_item , $dim, $cube.drs-role);
 
+				/** Add get the string **/
+				
+				$strLength2 = $concept_item.local-name.string.length;
+				$DefaultMessage2 =  " (Sum:" + $dim.local-name + ")";
+				$factLength = if $additional_addend == none 0 else 0 /**$additional_addend.length**/
+				$pad2 = sum(list(for $x in range(150 - $strLength2 - $factLength - $DefaultMessage2.length)
+																			" " 
+																			)
+																	);
+				$additional_addend_string =  if $additional_addend == none "" else "+  \t" + $concept_item.local-name.string + $DefaultMessage2 + $pad2 + $additional_addend.string  +  " \n"
 				/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 				$sum2 = {nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date};
 				
 				if $addend == none
 					skip 
 				else
-				$sum2 != $addend
+				$sum2 != ($addend + $additional_addend)
 
 message
-"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts. If a value is not available then the values associated with the members of the dimension {$dim} are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
+"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend + $additional_addend}. The values of the addends is determined by adding the values of the child concepts. If a value is not available then the values associated with the members of the dimension {$dim} are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
 
 {$addend_string}
-
+{$additional_addend_string}
 The addends are calculated based on the calculation linkbase defined for {$cube.drs-role.description}. If addends are missing then the calculation tree should be amended. The rule will add dimension components as well, so if the calculation is correct and the breakdown is a dimension, then check to ensure that the dimensions are defined correctly. Values calculated by adding a dimension member are shown in the calculation.
 
 If a value for the calculation addend is derived, then the dimension {$dim.local-name} with the following members has been used to derive a total:
