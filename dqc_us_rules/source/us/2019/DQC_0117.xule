@@ -38,45 +38,48 @@ $drs_roles = set(for $y in $statementCubes
 for $drs_role in $drs_roles
 	for $dimension in $drs_role[2]
 		$dim = $dimension.concept.name
-		$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
-
-		$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
-
-		/** Get a set  of the unique members **/
-		$member_descendants = $members.to-set - $domain;
-
-		/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
-		$member_facts = list(for $member in $member_descendants
-							$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
-							if list({@cube.drs-role = $drs_role[1] @$dim in $ancestors_list}).length > 0
-								skip
-							else 
-								{@cube.drs-role = $drs_role[1] @$dim = $member});
-		/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
-		if 	$member_facts.length == 0 
+		if $dim.local-name == 'LegalEntityAxis'
 			skip
-		else		
-			/** aggregate the fact values on the axis **/
-			$member_sums = sum($member_facts);
-			$member_string = sum(list(for $member_fact in $member_facts
-				"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+		else
+			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
+
+			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
+
+			/** Get a set  of the unique members **/
+			$member_descendants = $members.to-set - $domain;
+
+			/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+			$member_facts = list(for $member in $member_descendants
+								$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
+								if list({@cube.drs-role = $drs_role[1] @$dim in $ancestors_list}).length > 0
+									skip
+								else 
+									{@cube.drs-role = $drs_role[1] @$dim = $member});
+			/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+			if 	$member_facts.length == 0 
+				skip
+			else		
+				/** aggregate the fact values on the axis **/
+				$member_sums = sum($member_facts);
+				$member_string = sum(list(for $member_fact in $member_facts
+					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+			
+				$member_sums != {@cube.drs-role = $drs_role[1] @$dim in $domain}#TotalDefault
 		
-			$member_sums != {@cube.drs-role = $drs_role[1] @$dim in $domain}#TotalDefault
-	
-message
-"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
- {$member_string}
+	message
+	"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
+	{$member_string}
 
-The properties of this {$TotalDefault.concept.name} fact are:
-Period :{$TotalDefault.period}
-Unit : {$TotalDefault.unit}
+	The properties of this {$TotalDefault.concept.name} fact are:
+	Period :{$TotalDefault.period}
+	Unit : {$TotalDefault.unit}
 
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
+	Rule Element Id:{$rule_id}
+	Rule version: {$ruleVersion}"
 
 
-severity error
-status $status
-effectiveDate $effective_dates[$rule_id]
+	severity error
+	status $status
+	effectiveDate $effective_dates[$rule_id]
 
-rule-focus $TotalDefault
+	rule-focus $TotalDefault
