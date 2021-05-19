@@ -1,0 +1,41 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+Release Version 16
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0120.9578 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$balance_sheet_roles = (filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role).to-list
+
+$balance_sheet_role = $balance_sheet_roles[1]
+
+$balance_sheet_role_uri = $balance_sheet_roles[1].uri
+
+$balance_sheet_items = 
+            navigate parent-child descendants from list(StatementOfFinancialPositionAbstract, AssetsAbstract, LiabilitiesAbstract, LiabilitiesAndStockholdersEquityAbstract) role $balance_sheet_role where $relationship.target.is-monetary == true returns set (target-name)
+
+$bs_calc_items = navigate summation-item descendants from $balance_sheet_items role $balance_sheet_role returns set (target-name)
+
+for $y in list(FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList, FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList, FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList, OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList, OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList, OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList)
+	$listItem = {@concept = $y}
+	for $x in $listItem
+		not $bs_calc_items.contains($x)
+		
+
+message
+"The extensible list item {$y} has a value of {$x}. This item refers to the location of this item in the financial statements.  However, the concept {$x} does not appear in the calculation role {$balance_sheet_role.description}. Either update the value of the extensible list item {$y} with the correct balance sheet element or add the balance sheet line item {$x} to the calculation linkbase in the balance sheet role."
+
+severity error
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+
+
