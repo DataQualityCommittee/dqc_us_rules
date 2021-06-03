@@ -38,7 +38,7 @@ $drs_roles = set(for $y in $statementCubes
 for $drs_role in $drs_roles
 	for $dimension in $drs_role[2]
 		$dim = $dimension.concept.name
-		if $dim.local-name == 'LegalEntityAxis'
+		if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis')
 			skip
 		else
 			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
@@ -51,7 +51,7 @@ for $drs_role in $drs_roles
 			/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 			$member_facts = list(for $member in $member_descendants
 								$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
-								if list({@cube.drs-role = $drs_role[1] @$dim in $ancestors_list}).length > 0
+								if list([@cube.drs-role = $drs_role[1] @$dim in $ancestors_list]).length > 0
 									skip
 								else 
 									{@cube.drs-role = $drs_role[1] @$dim = $member});
@@ -64,7 +64,7 @@ for $drs_role in $drs_roles
 				$member_string = sum(list(for $member_fact in $member_facts
 					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
 			
-				$member_sums != [@cube.drs-role = $drs_role[1]]#TotalDefault
+				$member_sums != {@cube.drs-role = $drs_role[1] @$dim in $domain}#TotalDefault
 	
 message
 "In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
