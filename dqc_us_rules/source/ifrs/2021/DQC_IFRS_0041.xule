@@ -18,9 +18,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
 
-/** Get the dimesnios defaults from the IFRS Taxonomy **/
-
-$taxonomy_defaults = navigate dimension-default descendants taxonomy $ifrs-gaap returns  set (source-name, target-name);
+/** Get the dimesnios defaults from the IFRS Taxonomy defined in Constants now. **/
 
 /** Get relationships in filing not in taxonomy **/
 
