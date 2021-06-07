@@ -11,25 +11,25 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0119.9576 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments])#b4tax and 
+exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments])#beforeTax and 
 count(list([@concept=IncomeLossFromEquityMethodInvestments])) == 0 and count(list([@concept=IncomeLossFromAffordableHousingProjectsEquityMethodInvestments]))==0
 
 message
-"The company has reported a value for the concept representing Income before income tax, Non Controlling Interest and Equity Method Investments with a value of {$b4tax}. However the company has not reported a value for equity method investments. If the company has no equity method investements then the filer should use the element IncomeLossFromEquityMethodInvestments.
+"The company has reported a value for the concept representing Income before income tax, Non Controlling Interest and Equity Method Investments with a value of {$beforeTax}. However the company has not reported a value for equity method investments. If the company has no equity method investements then the filer should use the element IncomeLossFromEquityMethodInvestments.
 
-Element : {$b4tax}
-Value : {$b4tax} 
-Period : {$b4tax.period} 
-Rule Element Id:{$rule_id}
+Element : {$beforeTax}
+Value : {$beforeTax} 
+Period : {$beforeTax.period} 
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
 status $status
-effectiveDate $effective_dates[$rule_id]
+effectiveDate $effective_dates[$ruleId]
 
-rule-focus $b4tax
+rule-focus $beforeTax
 
 
 ASSERT US.0119.9577 SATISFIED
@@ -56,7 +56,7 @@ severity error
 status $status
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus IncomeLossFromEquityMethodInvestments
+rule-focus taxonomy().concept(IncomeLossFromEquityMethodInvestments)
 
 
 
