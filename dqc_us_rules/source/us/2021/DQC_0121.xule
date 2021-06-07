@@ -50,7 +50,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 			else 
 				false
 				
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) OR $EGCFlag
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) OR $EGCFlag
 	skip
 else
 	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
