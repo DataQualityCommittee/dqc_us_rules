@@ -22,7 +22,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 			else 
 				false
 				
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
 	skip
 else
 	if ($networkPresRole.length == 0)

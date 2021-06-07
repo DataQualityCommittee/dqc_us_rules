@@ -28,7 +28,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
     Check that the form is not in the excluded form list.
 */
 
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
 	skip
 else
 	$fact1 = {covered @concept.local-name ='EntityCommonStockSharesOutstanding'};
@@ -59,7 +59,7 @@ assert US.0005.48 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
 	skip
 else
 	$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
@@ -85,7 +85,7 @@ assert US.0005.49 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
 	skip
 else
 	$fact1 = {@srt:StatementScenarioAxis = srt:ScenarioForecastMember};

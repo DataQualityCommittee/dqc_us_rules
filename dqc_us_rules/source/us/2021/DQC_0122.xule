@@ -12,22 +12,22 @@ RULE-NAME-PREFIX DQC
 
 assert US.0122.9582 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check Components of Shareholders Equity is not used on the Balance Sheet **/
 
-$balance_sheet_roles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') )returns $item.role).to-list
+$balanceSheetRoles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') )returns $item.role).to-list
 
 /** Sort so we always get the first  statement **/
-$bs_roles_sorted = (filter $balance_sheet_roles returns list($item.description, $item.uri, $item )).sort
+$bsRolesSorted = (filter $balanceSheetRoles returns list($item.description, $item.uri, $item )).sort
 
-$bs_role = $bs_roles_sorted[1][3]
+$bsRole = $bsRolesSorted[1][3]
 
-$bs_role_uri = $bs_roles_sorted[1][2]
+$bsRoleUri = $bsRolesSorted[1][2]
 
-$bs_role_desc = $bs_roles_sorted[1][1]
+$bsRoleDesc = $bsRolesSorted[1][1]
 
-$BSCubes = FILTER taxonomy().cubes where $item.drs-role.uri == $bs_role_uri
+$BSCubes = FILTER taxonomy().cubes where $item.drs-role.uri == $bsRoleUri
 
 for $cube in $BSCubes.sort
 	for $dimension in $cube.dimensions
@@ -45,16 +45,16 @@ for $cube in $BSCubes.sort
 
 message
 
-"The dimension {$dim.local-name} has been defined as part of the Balance Sheet (Statement of Financial Position) structure in the companies filing. The dimension is included in the financial statement  {$bs_role_desc}.  Even though the filer does not intend the facts reported in the Statement of Shareholders Equity or Partners Capital to appear in the Balance Sheet the inclusion of the dimension {$dim.local-name} in the Balance Sheet structure implies that these values comprise the numbers reported on the Balance Sheet.  This means facts that are reported on the Statement of Shareholders Equity or Capital will also appear on the Balance Sheet. (These can also be seen on the SEC renderer view of the Balance Sheet). There are {$countOfFacts} facts reported in the filing using the axis {$dim.local-name} that end up being included in the Balance Sheet using the line items:
+"The dimension {$dim.local-name} has been defined as part of the Balance Sheet (Statement of Financial Position) structure in the companies filing. The dimension is included in the financial statement  {$bsRoleDesc}.  Even though the filer does not intend the facts reported in the Statement of Shareholders Equity or Partners Capital to appear in the Balance Sheet the inclusion of the dimension {$dim.local-name} in the Balance Sheet structure implies that these values comprise the numbers reported on the Balance Sheet.  This means facts that are reported on the Statement of Shareholders Equity or Capital will also appear on the Balance Sheet. (These can also be seen on the SEC renderer view of the Balance Sheet). There are {$countOfFacts} facts reported in the filing using the axis {$dim.local-name} that end up being included in the Balance Sheet using the line items:
 	{$cubeConcepts.join(',
 	')}
 
-To correct the issue the dimension {$dim.local-name} should be removed from the the financial statement  {$bs_role_desc} and the values using the dimension {$dim.local-name} on the Balance Sheet should either have the dimension removed and potentially be updated with a specific line item that reflects the nature of the member that was removed.
+To correct the issue the dimension {$dim.local-name} should be removed from the the financial statement  {$bsRoleDesc} and the values using the dimension {$dim.local-name} on the Balance Sheet should either have the dimension removed and potentially be updated with a specific line item that reflects the nature of the member that was removed.
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$rule_id]
+effectiveDate $effective_dates[$ruleId]
 rule-focus $dimConcept
