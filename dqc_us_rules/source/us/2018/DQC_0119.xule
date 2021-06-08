@@ -13,8 +13,8 @@ ASSERT US.0119.9576 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments])#b4tax and 
-count(list([@concept=IncomeLossFromEquityMethodInvestments])) == 0 and count(list([@concept=IncomeLossFromAffordableHousingProjectsEquityMethodInvestments]))==0
+exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments]#beforeTax) and 
+count(list({covered @concept in list(IncomeLossFromEquityMethodInvestments, IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions, IncomeLossFromAffordableHousingProjectsEquityMethodInvestments)})) == 0
 
 message
 "The company has reported a value for the concept representing Income before income tax, Non Controlling Interest and Equity Method Investments with a value of {$b4tax}. However the company has not reported a value for equity method investments. If the company has no equity method investements then the filer should use the element IncomeLossFromEquityMethodInvestments.
@@ -57,7 +57,3 @@ status $status
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept(IncomeLossFromEquityMethodInvestments)
-
-
-
-
