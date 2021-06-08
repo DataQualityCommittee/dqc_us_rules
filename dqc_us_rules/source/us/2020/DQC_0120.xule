@@ -15,9 +15,12 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $balanceSheetRoles = (filter taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role).to-list
 
-$balanceSheetRole = $balanceSheetRoles[1]
+/** Sort so we always get the first  statement **/
+$balanceSheetRolesSorted = (filter $balanceSheetRoles returns list($item.description, $item.uri, $item )).sort
 
-$balanceSheetRoleUri = $balanceSheetRoles[1].uri
+$balanceSheetRole = $balanceSheetRolesSorted[1][3]
+
+$balanceSheetRoleUri = $balanceSheetRolesSorted[1][2]
 
 $balanceSheetItems = 
             navigate parent-child descendants from list(StatementOfFinancialPositionAbstract, AssetsAbstract, LiabilitiesAbstract, LiabilitiesAndStockholdersEquityAbstract) role $balanceSheetRole where $relationship.target.is-monetary == true returns set (target-name)
