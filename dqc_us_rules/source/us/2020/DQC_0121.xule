@@ -12,13 +12,13 @@ RULE-NAME-PREFIX DQC
 
 assert US.0121.9580 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$transition_elements = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
+$transitionElements = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
 
-for $transition_element in $transition_elements
+for $transitionElement in $transitionElements
 
-	$fact1 = {@concept = $transition_element}
+	$fact1 = {@concept = $transitionElement}
 	
 	if exists($fact1)
 		true
@@ -34,16 +34,16 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$rule_id]
+effectiveDate $effective_dates[$ruleId]
 
 assert US.0121.9581 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
 				first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
@@ -53,11 +53,21 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) OR $EGCFlag
 	skip
 else
-	$transition_elements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
+	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
 
-	for $transition_element in $transition_elements
+	$exceptionTransitionElements = set(LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear
+										,LongTermDebtAndCapitalLeaseObligationsRepaymentsOfPrincipalInNextTwelveMonths
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearTwo
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearThree
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearsTwoAndThree
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFour
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFive
+										,LongtermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearsFourAndFive
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalAfterYearFive)
 
-		$fact1 = {@concept = $transition_element}
+	for $transitionElement in ($transitionElements - $exceptionTransitionElements)
+
+		$fact1 = {@concept = $transitionElement}
 		
 		if exists($fact1)
 			true
@@ -77,14 +87,9 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$rule_id]
-
-
-
-
-
+effectiveDate $effective_dates[$ruleId]

@@ -55,7 +55,17 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
 
-	for $transitionElement in $transitionElements
+	$exceptionTransitionElements = set(LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear
+										,LongTermDebtAndCapitalLeaseObligationsRepaymentsOfPrincipalInNextTwelveMonths
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearTwo
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearThree
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearsTwoAndThree
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFour
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFive
+										,LongtermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearsFourAndFive
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalAfterYearFive)
+
+	for $transitionElement in ($transitionElements - $exceptionTransitionElements)
 
 		$fact1 = {@concept = $transitionElement}
 		
