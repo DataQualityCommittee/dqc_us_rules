@@ -274,7 +274,7 @@ if exists([@concept = FinanceLeaseRightOfUseAsset @unit=* where $fact != 0]#leas
 
 		/** Identify if FinanceLeaseRightOfUseAsset is contained in the financial statements**/
 
-		if $FS_Concepts_qname.contains(FinanceLeaseRightOfUseAsset) 
+		if $FS_Concepts_qname.contains(FinanceLeaseRightOfUseAsset) or $FS_Concepts_qname.contains(PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization)
 			false
 			/** Rule will not run if the company is using current and non current finance leases as these will be in the balance sheet **/
 		else

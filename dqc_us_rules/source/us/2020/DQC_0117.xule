@@ -39,7 +39,7 @@ for $drs_role in $drs_roles
 	for $dimension in $drs_role[2]
 		$dim = $dimension.concept.name
 		/**if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis') or $dim.local-name not in list('StatementClassOfStockAxis')**/
-		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'FinancialInstrumentAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','FinancialInstrumentAxis','InformationByCategoryOfDebtSecurityAxis')
+		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','FinancialInstrumentAxis','InformationByCategoryOfDebtSecurityAxis')
 			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
 
 			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
