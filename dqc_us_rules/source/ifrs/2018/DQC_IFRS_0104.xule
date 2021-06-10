@@ -16,7 +16,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
 $dimensionDefault = taxonomy().dimension(AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis).default.name;
-$dimensionBaseDefault = taxonomy($ifrs-gaap).dimension(AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis).default.name;
 
 if $dimensionDefault != $dimensionBaseDefault
 	skip
@@ -81,7 +81,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
 $dimensionDefault = taxonomy().dimension(ConsolidatedAndSeparateFinancialStatementsAxis).default.name;
-$dimensionBaseDefault = taxonomy($ifrs-gaap).dimension(ConsolidatedAndSeparateFinancialStatementsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(ConsolidatedAndSeparateFinancialStatementsAxis).default.name;
 
 if $dimensionDefault != $dimensionBaseDefault
 	skip
@@ -140,7 +140,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
 $dimensionDefault = taxonomy().dimension(SegmentConsolidationItemsAxis).default.name;
-$dimensionBaseDefault = taxonomy($ifrs-gaap).dimension(SegmentConsolidationItemsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentConsolidationItemsAxis).default.name;
 
 if $dimensionDefault != $dimensionBaseDefault
 	skip
@@ -206,7 +206,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
 $dimensionDefault = taxonomy().dimension(SegmentsAxis).default.name;
-$dimensionBaseDefault = taxonomy($ifrs-gaap).dimension(SegmentsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentsAxis).default.name;
 
 if $dimensionDefault != $dimensionBaseDefault
 	skip

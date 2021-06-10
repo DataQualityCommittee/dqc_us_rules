@@ -532,38 +532,6 @@ constant $alpha_code_lookup = 	dict(
 					list("Y",34),
 					list("Z",35))
 
-/**
-** getDimensionSum
-**
-** This function sums the values provided with a concept the dimension and the drs-role
-**
-** @param concept - The concept associated with the fact that is to be summed acorss a given dmension.
-** @param dimension object - The dimension object that is to be aggregated  over.
-** @param role uri - The drs role uri that defines the members that will be summed
-** @return numeric - Returns a numerical value.
-**/
-
-function getDimensionSum($concept, $dim, $drs-role)
-			$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
-
-			$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
-
-			/** Get a set  of the unique members **/
-			$member_descendants = $members.to-set - $domain;
-
-			/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
-			$member_facts = list(for $member in $member_descendants
-								$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-								if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
-									skip
-								else 
-									{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
-			/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
-			if 	$member_facts.length == 0 
-				skip
-			else		
-				/** aggregate the fact values on the axis **/
-				sum($member_facts)
 
 /**
 ** getDimensionSums

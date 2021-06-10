@@ -50,10 +50,10 @@ for $drs_role in $drs_roles
 			/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 			$member_facts = list(for $member in $member_descendants
 								$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
-								if list([@cube.drs-role = $drs_role[1] @$dim in $ancestors_list where $fact.concept.is-monetary]).length > 0
+								if list([nonils @cube.drs-role = $drs_role[1] @$dim in $ancestors_list where $fact.concept.is-monetary]).length > 0
 									skip
 								else 
-									[@cube.drs-role = $drs_role[1] @$dim = $member where $fact.concept.is-monetary]);
+									[nonils @cube.drs-role = $drs_role[1] @$dim = $member where $fact.concept.is-monetary]);
 			/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 			if 	$member_facts.length == 0 
 				skip
@@ -62,8 +62,7 @@ for $drs_role in $drs_roles
 				$member_sums = sum($member_facts);
 				$member_string = sum(list(for $member_fact in $member_facts
 					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
-			
-				$member_sums != [@cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]#TotalDefault
+				$member_sums != [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]#TotalDefault
 		else
 			skip
 	

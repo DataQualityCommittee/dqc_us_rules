@@ -53,7 +53,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) OR $EGCFlag
 	skip
 else
-	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
+	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns set (target-name);
 
 	$exceptionTransitionElements = set(LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear
 										,LongTermDebtAndCapitalLeaseObligationsRepaymentsOfPrincipalInNextTwelveMonths
