@@ -16,7 +16,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check Components of Shareholders Equity is  used with class of stock **/
 
-$equityFactNoEquityComponent = [@concept in list(StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest, StockholdersEquity) @StatementClassOfStockAxis=*];
+$equityFactNoEquityComponent = [nonils @concept in list(StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest, StockholdersEquity) @StatementClassOfStockAxis=*];
 exists($equityFactNoEquityComponent)
 
 message
