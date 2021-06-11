@@ -17,7 +17,7 @@ exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInte
 count(list({covered @concept in list(IncomeLossFromEquityMethodInvestments, IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions, IncomeLossFromAffordableHousingProjectsEquityMethodInvestments)})) == 0
 
 message
-"The company has reported a value for the concept representing Income before income tax, Non Controlling Interest and Equity Method Investments with a value of {$beforeTax}. However the company has not reported a value for equity method investments. If the company has no equity method investements then the filer should use the element IncomeLossFromEquityMethodInvestments.
+"The company has reported a value for the concept representing Income before income tax, Non Controlling Interest and Equity Method Investments with a value of {$beforeTax}. However the company has not reported a value for equity method investments. If the company has no equity method investments then the filer should use the element IncomeLossFromEquityMethodInvestments.
 
 Element : {$beforeTax}
 Value : {$beforeTax} 
@@ -34,29 +34,34 @@ rule-focus $beforeTax
 
 ASSERT US.0119.9577 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Equity method investments is excluded from rule 0081, so this rule addresses this **/
 
-$ComponentsOfIncome = navigate summation-item descendants from  IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments returns set (target-name);
+$componentsOfIncome = navigate summation-item descendants from  IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments returns set (target-name);
 
-if $ComponentsOfIncome.contains(IncomeLossFromEquityMethodInvestments)
+if $componentsOfIncome.contains(IncomeLossFromEquityMethodInvestments)
+	$equityIncomeElement = IncomeLossFromEquityMethodInvestments;
 	true
 else
-	false
+	if $componentsOfIncome.contains(IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions)
+		$equityIncomeElement = IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions;
+		true
+	else
+		false
 
 message
-"The company has included IncomeLossFromEquityMethodInvestments as a component of the concept \"Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments\". The element IncomeLossFromEquityMethodInvestments cannot be included as a component of this element as this element excludes minority interest.  The filer should use the concept IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest instead.
+"The company has included {$equityIncomeElement} as a component of the concept \"Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments\". The element IncomeLossFromEquityMethodInvestments cannot be included as a component of \"Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments\" as this element excludes equity method investments.  The filer should use the concept IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest instead.
 
-Element : IncomeLossFromEquityMethodInvestments
-Rule Element Id:{$rule_id}
+Element : {$equityIncomeElement}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
 status $status
-effectiveDate $effective_dates[$rule_id]
+effectiveDate $effective_dates[$ruleId]
 
-rule-focus taxonomy().concept(IncomeLossFromEquityMethodInvestments)
+rule-focus taxonomy().concept($equityIncomeElement)
 
 
 
