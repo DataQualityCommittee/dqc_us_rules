@@ -139,18 +139,18 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Use nested navigation as the LegalEntityAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 $allowed_members_lea = navigate domain-member descendants include start
      from (navigate dimension-domain children
-           from qname($dei_namespace,'LegalEntityAxis')
+           from qname($DEI_NAMESPACE,'LegalEntityAxis')
            taxonomy $US-GAAP returns set)
      taxonomy $US-GAAP
      returns set (target-name);
 $allowed_members_FHLB = navigate dimensions dimension-member descendants from srt:FederalHomeLoanBankAdvancesBranchOfFHLBBankAxis taxonomy $US-GAAP returns set (target-name);
 
 $allowed_base_member = set(PredecessorMember, CoVenturerMember, SpinoffMember, PartnershipMember, LimitedLiabilityCompanyMember, TrustForBenefitOfEmployeesMember
-						, qname($dei_namespace, 'EntityDomain')
+						, qname($DEI_NAMESPACE, 'EntityDomain')
 						);
 
 $member_extension = navigate dimensions dimension-member descendants 
-					from qname($dei_namespace, 'LegalEntityAxis') 
+					from qname($DEI_NAMESPACE, 'LegalEntityAxis') 
 					where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
 
 $allowed_members = $allowed_members_lea + $allowed_members_FHLB + $allowed_base_member;
@@ -160,7 +160,7 @@ $unallowed_base_members = $member_extension - $allowed_members;
 /** Evaluate if facts exists with the unallowable members **/
 
 	for ($member in $unallowed_base_members)
-		$fact1 = {covered where $fact.dimension(qname($dei_namespace, 'LegalEntityAxis')) == taxonomy().concept($member)};
+		$fact1 = {covered where $fact.dimension(qname($DEI_NAMESPACE, 'LegalEntityAxis')) == taxonomy().concept($member)};
 		if exists($fact1)
 			$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the LegalEntityAxis and the unallowable member {$member.local-name}. Only extension members should be used with the axis LegalEntityAxis other than the members predefined in the US-GAAP taxonomy. 
 The properties of the fact for {$fact1.concept.name.local-name} are:
