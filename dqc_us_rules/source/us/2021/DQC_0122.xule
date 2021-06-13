@@ -16,7 +16,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check Components of Shareholders Equity is not used on the Balance Sheet **/
 
-$balanceSheetRoles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') )returns $item.role).to-list
+$balanceSheetRoles = (filter $PRES_NETWORKS where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') )returns $item.role).to-list
 
 /** Sort so we always get the first  statement **/
 $bsRolesSorted = (filter $balanceSheetRoles returns list($item.description, $item.uri, $item )).sort
@@ -27,9 +27,9 @@ $bsRoleUri = $bsRolesSorted[1][2]
 
 $bsRoleDesc = $bsRolesSorted[1][1]
 
-$BSCubes = FILTER taxonomy().cubes where $item.drs-role.uri == $bsRoleUri
+$bsCubes = FILTER taxonomy().cubes where $item.drs-role.uri == $bsRoleUri
 
-for $cube in $BSCubes.sort
+for $cube in $bsCubes.sort
 	for $dimension in $cube.dimensions
 		$dimConcept = $dimension.concept
 		$dim = $dimension.concept.name;
