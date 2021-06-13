@@ -42,7 +42,7 @@ else
 				all(list(for ($calcNetwork in filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 
 				$roots = set(for $root in $calcNetwork.roots 
-									if ($root.name.namespace-uri != $extension_ns)
+									if ($root.name.namespace-uri != $EXTENSION_NS)
 										$root.name.local-name
 									else
 										none);
@@ -59,7 +59,7 @@ else
 					$network_role = $calcNetwork.role.uri;
 
 					$roots = set(for $root in $calcNetwork.roots 
-										if ($root.name.namespace-uri != $extension_ns)
+										if ($root.name.namespace-uri != $EXTENSION_NS)
 											$root.name.local-name
 										else
 											none);

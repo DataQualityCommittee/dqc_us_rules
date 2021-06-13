@@ -14,7 +14,7 @@ assert US.0121.9580 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$transitionElements = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
+$transitionElements = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract) taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name);
 
 for $transitionElement in $transitionElements
 
@@ -53,7 +53,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) OR $EGCFlag
 	skip
 else
-	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $us-gaap where not $relationship.target.is-abstract returns set (target-name);
+	$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name);
 
 	$exceptionTransitionElements = set(LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalRemainderOfFiscalYear
 										,LongTermDebtAndCapitalLeaseObligationsRepaymentsOfPrincipalInNextTwelveMonths

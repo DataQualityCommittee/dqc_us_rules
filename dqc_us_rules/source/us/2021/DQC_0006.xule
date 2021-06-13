@@ -25,7 +25,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		and not(list({covered @concept.local-name ='DocumentType'}).length > 1)
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact.contains('T')}))
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))
-		and not(exists({covered @concept = qname($extension_ns,'TransitionReport')}))
+		and not(exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
 		and not(exists({covered @concept.local-name = 'DocumentTransitionReport'}))
 	else
 		false
