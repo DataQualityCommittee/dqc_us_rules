@@ -10,7 +10,7 @@ rule-name-prefix DQC
 
 assert US.0011 satisfied
 
-for ($x in $dim_items)
+for ($x in $DIM_EQUIVALENTS)
 	$rule_suffix_id = $x[1];
 	$line_item = [@concept = $x[2]];
 	$network_location_Line_item = filter $PRES_NETWORKS where $item.concepts.contains($line_item.concept) returns $item.role.uri;

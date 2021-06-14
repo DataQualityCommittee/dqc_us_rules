@@ -22,7 +22,7 @@ for ($network in $extCalcRelationship1.keys)
 		$extCalcSourceName = $extCalcSource.name.local-name;
 		$extCalcTargetName = $extCalcTarget.name.local-name;
 
-		$calcRelationships.contains(set($extCalcRelationship.target.name.namespace-uri + ':' + $extCalcTargetName + ':' + $extCalcRelationship.source.name.namespace-uri + ':' + $extCalcSourceName, $extCalcRelationship.weight))
+		$CALC_RELATIONSHIPS.contains(set($extCalcRelationship.target.name.namespace-uri + ':' + $extCalcTargetName + ':' + $extCalcRelationship.source.name.namespace-uri + ':' + $extCalcSourceName, $extCalcRelationship.weight))
 		and $extCalcSource != $extCalcTarget
 		/**and not OCI_Calc_Error_Elements().contains($extCalcSource.name)**/
 		

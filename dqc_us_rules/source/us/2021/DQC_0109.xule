@@ -163,7 +163,7 @@ rule-focus $fact1
 
 /** RULE 9570 Identifies If the right risk is used with the right benchmark.  Uses a dictionary to look up the benchmark and makes sure that the appropriate risk is used. **/
 
-constant $BenchmarkWithRiskType = dict(list(SalesRevenueNetMember,list(GeographicConcentrationRiskMember,
+constant $BENCHMARK_WITH_RISK_TYPE = dict(list(SalesRevenueNetMember,list(GeographicConcentrationRiskMember,
                                                                         CustomerConcentrationRiskMember, 
                                                                         ProductConcentrationRiskMember, 
                                                                         RevenueFromRightsConcentrationRiskMember, 
@@ -230,10 +230,10 @@ $benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
 $risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
 
 
-if ($benchmark.name not in $BenchmarkWithRiskType.keys) or (is_extension($risk, $ALL_BASE_TAXONOMIES))
+if ($benchmark.name not in $BENCHMARK_WITH_RISK_TYPE.keys) or (is_extension($risk, $ALL_BASE_TAXONOMIES))
     skip
 else
-    $allowableRisks = $BenchmarkWithRiskType[$benchmark.name];
+    $allowableRisks = $BENCHMARK_WITH_RISK_TYPE[$benchmark.name];
     $risk.name not in $allowableRisks
 
 

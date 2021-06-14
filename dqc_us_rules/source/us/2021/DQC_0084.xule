@@ -17,7 +17,7 @@ $decimal_tolerance_factor = 2
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average')
-	  	 	    and not $non_additive_duration_concepts.contains($fact.concept.name)};
+	  	 	    and not $NON_ADDITIVE_DURATION_CONCEPTS.contains($fact.concept.name)};
 				
 
 $sub-periods =  
@@ -87,5 +87,3 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1
-
-constant $non_additive_duration_concepts = set()
