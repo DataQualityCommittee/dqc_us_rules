@@ -193,4 +193,9 @@ constant $DOCUMENT_PERIOD_END_CONTEXT = set({covered @concept.local-name ='Docum
 
 constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_PERIOD_END_CONTEXT)
 
+/** DEPRECATED CONCEPTS 
+**
+** This will return a set of deprecated concepts that is used by a rule to evaluate these items.
+**/
 
+constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)	
