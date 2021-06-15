@@ -7,40 +7,6 @@
             "label": "Compile 2020 Rules",
             "type": "shell",
             "command": "/Applications/Arelle.app/Contents/MacOS/arelleCmdLine --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/source/us/2020/ --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2020-v14-ruleset.zip --xule-crash"
-        },
-        {
-            "label": "Run V14 Rules",
-            "type": "shell",
-            "command": "/Applications/Arelle.app/Contents/MacOS/arelleCmdLine --plugins \"validate/DQC|transforms/SEC\" -f ${input:filing_url}  -v --xule-time .005 --xule-debug --noCertificateCheck   --logFile  /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/output/${input:output_file_name} --xule-rule-set ../../../${input:ruleset_file} ${input:run_specific_rule}"
-        }
-    ],
-    "inputs":[
-        {
-            "id": "filing_url",
-            "description": "URI of the filing to run",
-            "type":"promptString"
-        },
-        {
-            "id": "output_file_name",
-            "description": "Name of the error results file",
-            "type":"promptString"
-        },
-        {
-            "id": "ruleset_file",
-            "description": "Name of the ruleset file",
-            "type":"pickString",
-            "options": [
-                "dqc-us-2020-v14-ruleset.zip",
-                "dqc-us-2019-v14-ruleset.zip",
-                "dqc-us-2018-v14-ruleset.zip"
-            ]
-        },
-        {
-            "id": "run_specific_rule",
-            "description": "Run specific rule",
-            "type":"promptString",
-            "default": "--xule-run-only "
-
         }
     ]
 }
