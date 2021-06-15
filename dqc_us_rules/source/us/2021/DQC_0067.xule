@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -14,7 +14,7 @@ assert US.0067.7644 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $us-gaap where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
+$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $US-GAAP where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
 or $relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' 
 or $relationship.target.name.local-name == 'DeferredRevenue' 
 or $relationship.target.name.local-name == 'DeferredRevenueCurrent' 
@@ -31,7 +31,7 @@ or $relationship.target.name.local-name == 'DeferredRevenueByArrangementDisclosu
 $PriorStandard = $network440000; 
 
 
-$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $us-gaap where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
+$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $US-GAAP where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
 returns set (target-name);
 
 /** Identifies a list of all the facts used that apply to 606. The existence of these facts determines if they have adopted the 606 revenue standard **/

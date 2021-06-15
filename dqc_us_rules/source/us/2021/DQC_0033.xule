@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -13,18 +13,18 @@ assert US.0033.2 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$exceptions_to_dei = set(qname($dei_namespace,'EntityCommonStockSharesOutstanding')
-						, qname($dei_namespace,'EntityPublicFloat')
-						, qname($dei_namespace,'DocumentPeriodEndDate')
-						, qname($dei_namespace,'EntityNumberOfEmployees')
-						, qname($dei_namespace,'EntityListingDepositoryReceiptRatio'));
+$exceptions_to_dei = set(qname($DEI_NAMESPACE,'EntityCommonStockSharesOutstanding')
+						, qname($DEI_NAMESPACE,'EntityPublicFloat')
+						, qname($DEI_NAMESPACE,'DocumentPeriodEndDate')
+						, qname($DEI_NAMESPACE,'EntityNumberOfEmployees')
+						, qname($DEI_NAMESPACE,'EntityListingDepositoryReceiptRatio'));
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end;
 
 /** The  first part of the expession checks if the document period end date is within three days if not the rule does not execute as rule DQC.US.0036 will have executed**/
 not($document_period > ($document_period_end_date + (time-span("P4D"))) or $document_period < ($document_period_end_date - (time-span("P4D"))))
 and 
-exists({@concept.namespace-uri = $dei_namespace @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
+exists({@concept.namespace-uri = $DEI_NAMESPACE @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
 and 
 /** The rule will not run if it is an 8-K that has the amendment flag flagged as true**/
 not (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in set('8-K')}))) and (exists({covered @concept.local-name ='AmendmentFlag' where $fact == true})))

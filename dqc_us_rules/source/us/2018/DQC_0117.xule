@@ -1,0 +1,96 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2018
+Release Version 16
+**/
+
+
+RULE-NAME-PREFIX DQC
+
+
+ASSERT US.0117.9574 SATISFIED
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Get tables for financial statement items **/
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -') 
+and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+and (not $item.drs-role.uri.lower-case.contains('equity')) 
+and (not $item.drs-role.uri.lower-case.contains('deficit')) 
+and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
+and (not $item.drs-role.uri.lower-case.contains('capital')) 
+and (not $item.drs-role.uri.lower-case.contains('investment')) 
+and (not $item.drs-role.uri.lower-case.contains('changes')) 
+and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
+and (not $item.drs-role.uri.lower-case.contains('convertible')) 
+and (not $item.drs-role.uri.lower-case.contains('preferred'))  
+and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.drs-role.uri.lower-case.contains('redeemable'))
+and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
+
+/** Get the DRS Roles and dimensions **/
+$drs_roles = set(for $y in $statementCubes
+					list($y.drs-role, $y.dimensions));
+
+/** Go through each cube **/
+for $drs_role in $drs_roles
+	for $dimension in $drs_role[2]
+		$dim = $dimension.concept.name
+		/**if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis') or $dim.local-name not in list('StatementClassOfStockAxis')**/
+		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'FinancialInstrumentAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','InformationByCategoryOfDebtSecurityAxis')
+			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
+
+			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
+
+			/** Get a set  of the unique members **/
+			$member_descendants = $members.to-set - $domain;
+
+			/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+			$member_facts = list(for $member in $member_descendants
+								$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
+								if list([nonils @cube.drs-role = $drs_role[1] @$dim in $ancestors_list where $fact.concept.is-monetary]).length > 0
+									skip
+								else 
+									[nonils @cube.drs-role = $drs_role[1] @$dim = $member where $fact.concept.is-monetary]);
+			/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+			if 	$member_facts.length == 0 
+				skip
+			else		
+				/** aggregate the fact values on the axis **/
+				$member_sums = sum($member_facts);
+				$member_string = sum(list(for $member_fact in $member_facts
+					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+			
+				$member_sums != [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]#TotalDefault
+		else
+			skip
+	
+message
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
+ {$member_string}
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.  There are some common mistakes filers make that causes this error to occur.
+
+1. The company provides an incomplete breakdown of an element. For example the company provides a breakdown of the Revenues element using the Product or Service Dimension with product A and product B. The breakdown uses the element Revenues with the product member A, but uses another revenue element such as RevenueFromContractWithCustomerExcludingAssessedTax with the product member B. If the dimension members for Revenues are added (Only product A) the value will be less as it does not include the values in RevenueFromContractWithCustomerExcludingAssessedTax with product B. To report this correctly the value reported with product member A should use the element RevenueNotFromContractWithCustomer and not the element Revenues. This eliminates the inconsistent breakdown of Revenues.
+
+2. The company reports the default value on one line item and a diminsionalized value of that same element on another line item comprising a common total. This often happens for cash flow items  where the presentation  shows the two reported items with the same element (One value with no dimensions and one with a dimension) adding into total cash flow adjustments. From a data perspective the dimensionalized value is really a sub component of the default value. These two values should not be added together as one is a subset of the other. To correct this the default value should be updated by adding a dimension which is a converse of the value reported with a dimension, or using a different line item for the dimensionalized value.
+
+3. The Financial Statements include an axis that is not used on the financial statements but is included in the table. No dimensions should be included in the financial statement table that are not used. These can bring facts into the face financials that were not reported there in the original filing. Filers can review the SEC renderer to see facts that are included in the financial statements, because of dimensions and bleed through from other statements.
+
+
+The properties of this {$TotalDefault.concept.name} fact are:
+Period :{$TotalDefault.period}
+Unit : {$TotalDefault.unit}
+Dimensions : {$TotalDefault.dimensions.join(', ','=')}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TotalDefault

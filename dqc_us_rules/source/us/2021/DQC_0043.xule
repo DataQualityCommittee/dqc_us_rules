@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -19,7 +19,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations})))) and not (any(set(exists({covered @NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations;
-	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $income_items  where $relationship.target.name not in $income_items returns set (target)	
+	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $INCOME_ITEMS  where $relationship.target.name not in $INCOME_ITEMS returns set (target)	
 	for ($bottom in $Children_to_check)
 		$message_text = 
 			if ($bottom.balance == credit)
@@ -70,7 +70,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivities;
-	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $income_items  where $relationship.target.name not in $income_items returns set (target)	
+	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $INCOME_ITEMS  where $relationship.target.name not in $INCOME_ITEMS returns set (target)	
 	for ($bottom in $Children_to_check)
 		$message_text = 
 			if ($bottom.balance == credit)

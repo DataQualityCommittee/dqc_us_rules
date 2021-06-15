@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -11,7 +11,7 @@ rule-name-prefix DQC
 
 assert US.0014 satisfied
 
-for ($x in $non_dimensional_non_negs)
+for ($x in $NON_DIMENSIONAL_NON_NEGS)
 	$rule_suffix_id = $x[1];
 
 	exists([@concept = $x[2] where $fact < 0]#fact1)
@@ -31,7 +31,7 @@ severity error
 
 effectiveDate $effective_dates[$rule_suffix_id]
 
-constant $non_dimensional_non_negs = list(
+constant $NON_DIMENSIONAL_NON_NEGS = list(
 				list('2786',DerivativeFairValueOfDerivativeLiability),
 				list('2787',DerivativeLiabilities),
 				list('2788',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue),
