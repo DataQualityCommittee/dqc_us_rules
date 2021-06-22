@@ -1,9 +1,9 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2018
+Taxonomy: IFRS 2020
 
 **/
 
@@ -14,7 +14,7 @@ ASSERT IFRS.0105.9556 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
 and (not $item.role.description.lower-case.contains('parenthetical'))
-and (not $item.role.uri.lower-case.contains('parenthetical'))
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity')) 
 and (not $item.role.uri.lower-case.contains('deficit')) 
 and (not $item.role.uri.lower-case.contains('stockholders')) 
@@ -46,7 +46,7 @@ $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlow
 for $presNetwork in $presNetworks
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         $presConceptItems = $presNetwork.concept-names;
-                                                                               
+                                        
                                         /** GET ANY SUPPLEMENTAL ABSTRACTS **/
                                         $supplementalAbstracts = filter $presConceptItems where $item.local-name.lower-case.contains('supplement') and taxonomy().concept($item).is-abstract;
 
@@ -56,9 +56,8 @@ for $presNetwork in $presNetworks
 
                                         /** GET monetary children of root elements **/
                                         $levelOneItemsPreExemptions = navigate parent-child children from $presNetwork.roots role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents, ProfitLoss, CashFlowsFromUsedInOperatingActivities, CashFlowsFromUsedInInvestingActivities, CashFlowsFromUsedInFinancingActivities, EffectOfExchangeRateChangesOnCashAndCashEquivalents)
+                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents)
 
-                                        /** Get monetary items from presentation **/
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
                                         $calcspresentSet = set(for $calc in $calcRelationshipItems 
                                                                 if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
@@ -70,7 +69,7 @@ for $presNetwork in $presNetworks
                                         $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items + $levelOneItems)
-                                else   
+                                else 
                                         $presConceptItems = $presNetwork.concept-names;
 
                                         /** GET ANY commitments ABSTRACTS **/
@@ -114,6 +113,8 @@ Rule version: {$ruleVersion}"
 
 
 SEVERITY error
+
+
 
 effectiveDate $effective_dates[$rule_id]
 
