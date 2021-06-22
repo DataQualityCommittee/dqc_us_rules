@@ -73,16 +73,16 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0104](DQC_US_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | Approved for IFRS | 14 |
 | [DQC_US_0105](DQC_US_0105/DQC_0105.md) | FS with No Associated Calculation | Approved | 14 |
 | DQC_US_0106 | Assets and Liabilities Classified as Held-For-Sale using Duration Element | Removed from Public Review |  |
-| [DQC_US_0107](DQC_US_0107/DQC_0107.md) | General Text Block | Public Review | 15 |
-| [DQC_US_0108](DQC_US_0108/DQC_0108.md) | Fact Value Consistency Over Time | Public Review | 15 |
-| [DQC_US_0109](DQC_US_0109/DQC_0109.md) | Concentration Risk | Public Review | 15 |
-| [DQC_US_0110](DQC_US_0110/DQC_0110.md) | Missing Business Acquisition Axis (Short Period) | Public Review | 15 |
-| [DQC_US_0111](DQC_US_0111/DQC_0111.md) | Percentage Acquired but no Controlling Interest | Removed prior to Public Review | 15 |
-| [DQC_US_0112](DQC_US_0112/DQC_0112.md) | Line Items Requiring the Business Acquisition Axis | Public Review | 15 |
-| [DQC_US_0113](DQC_US_0113/DQC_0113.md) | Gross Acquisition Less Than Net Acquisition | Public Review | 15 |
-| [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Public Review | 15 |
-| [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Public Review | 15 |
-| [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Public Review | 15 |
+| [DQC_US_0107](DQC_US_0107/DQC_0107.md) | General Text Block | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0108](DQC_US_0108/DQC_0108.md) | Fact Value Consistency Over Time | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0109](DQC_US_0109/DQC_0109.md) | Concentration Risk | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0110](DQC_US_0110/DQC_0110.md) | Missing Business Acquisition Axis (Short Period) | Exposure Draft for DQC Approval | 15 |
+| DQC_US_0111 | Percentage Acquired but no Controlling Interest | Removed prior to Public Review | 15 |
+| [DQC_US_0112](DQC_US_0112/DQC_0112.md) | Line Items Requiring the Business Acquisition Axis | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0113](DQC_US_0113/DQC_0113.md) | Gross Acquisition Less Than Net Acquisition | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Exposure Draft for DQC Approval | 15 |
+| [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Exposure Draft for DQC Approval | 15 |
 
 ## Guidance 
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
