@@ -72,13 +72,6 @@ message
 
 On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.  There are some common mistakes filers make that causes this error to occur.
 
-1. The company provides an incomplete breakdown of an element. For example the company provides a breakdown of the Revenues element using the Product or Service Dimension with product A and product B. The breakdown uses the element Revenues with the product member A, but uses another revenue element such as RevenueFromContractWithCustomerExcludingAssessedTax with the product member B. If the dimension members for Revenues are added (Only product A) the value will be less as it does not include the values in RevenueFromContractWithCustomerExcludingAssessedTax with product B. To report this correctly the value reported with product member A should use the element RevenueNotFromContractWithCustomer and not the element Revenues. This eliminates the inconsistent breakdown of Revenues.
-
-2. The company reports the default value on one line item and a diminsionalized value of that same element on another line item comprising a common total. This often happens for cash flow items  where the presentation  shows the two reported items with the same element (One value with no dimensions and one with a dimension) adding into total cash flow adjustments. From a data perspective the dimensionalized value is really a sub component of the default value. These two values should not be added together as one is a subset of the other. To correct this the default value should be updated by adding a dimension which is a converse of the value reported with a dimension, or using a different line item for the dimensionalized value.
-
-3. The Financial Statements include an axis that is not used on the financial statements but is included in the table. No dimensions should be included in the financial statement table that are not used. These can bring facts into the face financials that were not reported there in the original filing. Filers can review the SEC renderer to see facts that are included in the financial statements, because of dimensions and bleed through from other statements.
-
-
 The properties of this {$TotalDefault.concept.name} fact are:
 Period :{$TotalDefault.period}
 Unit : {$TotalDefault.unit}
