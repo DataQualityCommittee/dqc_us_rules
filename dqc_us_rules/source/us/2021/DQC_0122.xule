@@ -45,7 +45,7 @@ for $cube in $bsCubes.sort
 
 message
 
-"The dimension {$dim.local-name} has been defined as part of the Balance Sheet (Statement of Financial Position) structure in the companies filing. The dimension is included in the financial statement  {$bsRoleDesc}.  Even though the filer does not intend the facts reported in the Statement of Shareholders Equity or Partners Capital to appear in the Balance Sheet the inclusion of the dimension {$dim.local-name} in the Balance Sheet structure implies that these values comprise the numbers reported on the Balance Sheet.  This means facts that are reported on the Statement of Shareholders Equity or Capital will also appear on the Balance Sheet. (These can also be seen on the SEC renderer view of the Balance Sheet). There are {$countOfFacts} facts reported in the filing using the axis {$dim.local-name} that end up being included in the Balance Sheet using the line items:
+"The dimension {$dim.local-name} has been defined as part of the Balance Sheet (Statement of Financial Position) structure in the companies filing. The dimension is included in the financial statement  {$bsRoleDesc}.  The inclusion of the dimension {$dim.local-name} in the Balance Sheet structure implies that these values comprise the numbers reported on the Balance Sheet.  This will cause facts that are reported on the Statement of Shareholders Equity or Capital to also appear on the Balance Sheet. (These can also be seen on the SEC renderer view of the Balance Sheet). There are {$countOfFacts} facts reported in the filing using the axis {$dim.local-name} that end up being included in the Balance Sheet using the line items:
 	{$cubeConcepts.join(',
 	')}
 
