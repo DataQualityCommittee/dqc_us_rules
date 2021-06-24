@@ -138,7 +138,7 @@ ASSERT US.0109.9569 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-exists([nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = * where $fact != 1]#fact1)
+exists([nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = * where $fact != 1 and $fact.dimension(ConcentrationRiskByTypeAxis).name not in list(LaborForceConcentrationRiskMember, UnionizedEmployeesConcentrationRiskMember)]#fact1)
 
 message
 "The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis the ConcentrationRiskByBenchmarkAxis and a third axis to identify the risk area.  This element can only have a value of 1 when only the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis are used.  This fact needs another axis to identify the specific {$fact1.dimension(ConcentrationRiskByTypeAxis)} risk. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
