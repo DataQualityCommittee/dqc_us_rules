@@ -28,6 +28,7 @@ and (not $item.role.uri.lower-case.contains('temporaryequity'))
 and (not $item.role.uri.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('highlights'))
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -114,7 +115,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-status $status
+
 
 effectiveDate $effective_dates[$rule_id]
 

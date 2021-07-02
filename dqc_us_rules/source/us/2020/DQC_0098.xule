@@ -26,6 +26,8 @@ tolerance_for_decimals_greater($valueRecognized, $openingBalanceOfValueRecognize
 message
 "The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$valueRecognized} is greater than the opening balance of ContractWithCustomerLiability with an opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
 
+If representing the revenue recognized during the period as part of a rollforward including the revenue recognized from the opening balance use the extension concept ContractWithCustomerLiabilityRevenueRecognizedIncludingOpeningBalance. If reporting the revenue recognized during the period that excludes the opening balance use the extension element ContractWithCustomerLiabilityRevenueRecognizedExcludingOpeningBalance.
+
 The properties of this {$valueRecognized.concept.name} fact are:
 Period :{$valueRecognized.period}
 Dimensions : {$valueRecognized.dimensions.join(', ','=')}
@@ -36,7 +38,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-status $status
+
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -80,7 +82,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-status $status
+
 
 effectiveDate $effective_dates[$rule_id]
 

@@ -77,17 +77,19 @@ constant $tax_items = set(IncomeTaxExpenseBenefit,
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $us-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 										
-/** Constants Used for Nonneg Rules
-**
+/** Constants Used for Nonneg Rules **/
 
-Replaced the Hard coded string and read from dqc rules taxonomy.								 
+/**Replaced the Hard coded string and read from dqc rules taxonomy.	**/	
+
+/**
 constant $exclude_non_neg_string_members = set(
 				'adjust',
 				'consolidat',
 				'eliminat',
 				'netting',
 				'reconcili',
-				'reclass'
+				'reclass',
+				'basisswap'
 				)
 **/
 
@@ -109,8 +111,8 @@ constant $exclude_non_neg_members = set(
 				UnallocatedFinancingReceivablesMember,
 				DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member
 				)
-**/
 
+**/
 constant $exclude_non_neg_members = navigate concept-rule descendants from list(dqcrules:Dqc_0015_ExcludeNonNegMembersAbstract)  taxonomy $dqc-rules returns set (target-name)	
 
 /**
@@ -119,7 +121,8 @@ constant  $exclude_non_neg_axis_members = list(
 				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(FairValueByMeasurementBasisAxis, set(ChangeDuringPeriodFairValueDisclosureMember))
 				)
-**/ 
+
+**/
 constant  $exclude_non_neg_axis_members_pre = navigate concept-rule children from list(dqcrules:Dqc_0015_ExcludeNonNegAxisMembersAbstract) taxonomy $dqc-rules returns set (target-name)
 
 constant $exclude_non_neg_axis_members = list(for $axis in $exclude_non_neg_axis_members_pre
@@ -138,6 +141,7 @@ constant $exclude_non_neg_axis = set(StatementEquityComponentsAxis,
 				StatementBusinessSegmentsAxis
 				)
 **/
+
 constant $exclude_non_neg_axis = navigate concept-rule descendants from list(dqcrules:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $dqc-rules returns set (target-name) + set(StatementBusinessSegmentsAxis)
 
 /** DQC.US.0001 **/
