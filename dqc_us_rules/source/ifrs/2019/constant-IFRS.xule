@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2019
@@ -74,7 +74,9 @@ constant  $exclude_non_neg_axis_members = list(
 				list(AmountsArisingFromInsuranceContractsAxis,
 						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
 				list(NetDefinedBenefitLiabilityAssetAxis,
-						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember)),
+				list(UnobservableInputsAxis,
+						set(FinancialForecastOfCashFlowsForCashgeneratingUnitMeasurementInputMember,FinancialForecastOfProfitOrLossForCashgeneratingUnitMeasurementInputMember ))
 				)
 				
 constant  $exclude_non_pos_axis_members = list(
