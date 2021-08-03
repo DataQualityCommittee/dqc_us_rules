@@ -63,7 +63,8 @@ for $drs_role in $drs_roles
 				$member_string = sum(list(for $member_fact in $member_facts
 					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
 			
-				$member_sums != [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]#TotalDefault
+				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]
+				tolerance_for_decimals($member_sums, $TotalDefault, 2)
 		else
 			skip
 	
