@@ -17,8 +17,8 @@ $cut_down_list = filter $non_neg_ifrs_items.keys where taxonomy().concept($item)
 
 for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss)))
 
-      $fact1 = {nonils @concept = $x @period=*}
-      $large = {nonils @concept = $x @period=*}
+      $fact1 = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
+      $large = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
