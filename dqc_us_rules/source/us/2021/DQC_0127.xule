@@ -1,0 +1,94 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+Release Version 17
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0127.9591 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+/**  Get the latest Report Period**/
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+$document_period_start_date = $document_period.period.start;
+
+/** Get tables for financial statement items **/
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('highlights'));
+
+
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -');
+
+$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
+
+for $presNetwork in $presNetworks.sort
+         /** Don't run the rule if it is in a table as this is rule is only checking non table items **/
+         if $presNetwork.role.uri in $cubeURISet
+            skip
+         else 
+			/** get the presentation items aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
+			
+            $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
+
+			for $concept_item in $presItems
+				if $concept_item == none
+					skip
+				else
+				
+					/** Determine if each concept has a default value **/
+                    $AssetsValue = [@concept = $concept_item @unit=*]
+
+                    $defaultValueCount = list([@concept = $concept_item @unit=*]).length
+
+                    /** Determine if each concept has a dimension value **/
+                    $dimensionValues = list({covered-dims @concept = $concept_item @unit=*})
+
+                    $dimensionValueCount = $dimensionValues.length
+                    /** If there is no default value and if there is a dimension item then flag an error **/
+
+                    if $defaultValueCount == 0 and $dimensionValueCount > 0
+                        true
+                    else
+                        false
+
+message
+"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filng does not use dimensions for this statement.  The filing  does not include a default value for this presentation item {$concept_item} but does include dimensionalized values for this element of the following:
+
+{$dimensionValues.sort.join(',   ')}
+
+If the dimensionalized value appears in the financial statements, then a table woth the dimensions needs to be added to the report. If the item has no value on the financial statements, then the presentation itemm should be removed from the financial statements
+
+
+Total Element : {$concept_item}
+Total period : {first($dimensionValues).period} 
+Dimensions : {first($dimensionValues).dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus taxonomy().concept($concept_item)
+
