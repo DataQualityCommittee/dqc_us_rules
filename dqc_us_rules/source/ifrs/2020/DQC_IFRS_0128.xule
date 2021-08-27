@@ -22,7 +22,8 @@ $collective_dimensions = set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOr
 
 for $dimension in $collective_dimensions
                 $dimension_fact =[nonils @@concept in $MONETARY_NON_NEGS @$dimension = *]
-                $dimension_fact > [nonils]#default_value_of_dimension
+                $default_value_of_dimension = [nonils];
+                tolerance_for_decimals_greater_than($dimension_fact, $default_value_of_dimension, 0, 4)
 
 message
 "The concept {$dimension_fact.concept.name} with a value of {$dimension_fact} and dimensions of {$dimension_fact.dimensions.join(', ','=')} is greater than the default value for this concept of {$default_value_of_dimension}. Dimension values used with the dimension {$dimension} should aggregate to a value no greater then the default value of {$default_value_of_dimension}. Either update the default value or the dimension value.
