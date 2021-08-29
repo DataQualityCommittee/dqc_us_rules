@@ -564,7 +564,7 @@ function getDimensionSums($concept, $cube, $drs-role)
 									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
 										skip
 									else 
-										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
+										{covered-dims nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
 				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 				if 	$member_facts.length == 0 
 					skip
