@@ -48,7 +48,7 @@ for $presNetwork in $presNetworks.sort
 			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $presNetwork.role.uri returns set (source-name);
 			/** Work out the decimals used in the financial statements **/
-			$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource})) returns $item.decimals;
+			$fs_fact_values_decimals = filter (list([nonils covered @concept in $calcNetworkSource])) returns $item.decimals;
 			$fs_decimals = most_frequent($fs_fact_values_decimals)
 
 			for $concept_item in $calcNetworkSource
@@ -111,6 +111,8 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals of Total: {$sum2.decimals}
+Unit of Total: {$sum2.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 

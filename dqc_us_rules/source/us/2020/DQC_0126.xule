@@ -48,7 +48,7 @@ for $presNetwork in $presNetworks.sort
 			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $presNetwork.role.uri returns set (source-name);
 			/** Work out the decimals used in the financial statements **/
-			$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource})) returns $item.decimals;
+			$fs_fact_values_decimals = filter (list([nonils covered @concept in $calcNetworkSource])) returns $item.decimals;
 			$fs_decimals = most_frequent($fs_fact_values_decimals)
 
 			for $concept_item in $calcNetworkSource
@@ -63,7 +63,7 @@ for $presNetwork in $presNetworks.sort
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
-											[nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight
+											first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight, [nonils @concept = $targetElement] * $targetWeight)
 									)
 									);
 					
@@ -71,7 +71,7 @@ for $presNetwork in $presNetworks.sort
 					$addend_string = sum(list(for $x in $calcComponents.sort
 													$targetElement = $x[1];
 													
-													$factAmt = [nonils @concept = $targetElement].string
+													$factAmt = first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals], [nonils @concept = $targetElement]).string
 													$weight =  if $x[2] == 1
 																		"+"
 																else
@@ -104,13 +104,15 @@ message
 
 {$addend_string}
 
-The addends are calculated based on the calculation linkbase defined for {$presNetwork.role.description}. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
+The addends are calculated based on the calculation linkbase defined for {$presNetwork.role.description}. Only values using the decimals defined for the financial statement. In this case facts with decimals equal to {$fs_decimals} are used. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
 
 
 Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals of Total: {$sum2.decimals}
+Unit of Total: {$sum2.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
