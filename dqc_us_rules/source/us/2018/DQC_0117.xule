@@ -40,7 +40,7 @@ for $drs_role in $drs_roles
 	for $dimension in $drs_role[2]
 		$dim = $dimension.concept.name
 		/**if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis') or $dim.local-name not in list('StatementClassOfStockAxis')**/
-		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'FinancialInstrumentAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','InformationByCategoryOfDebtSecurityAxis')
+		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','FinancialInstrumentAxis','InformationByCategoryOfDebtSecurityAxis')
 			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
 
 			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
@@ -65,7 +65,26 @@ for $drs_role in $drs_roles
 					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
 			
 				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]
-				tolerance_for_decimals($member_sums, $TotalDefault, 2)
+
+				/** Get the financial statement cube **/
+				$bs_cubes = (filter $statementCubes where $item.drs-role == $drs_role[1]).to-list;
+				/** Check if the FASB Exception for 606 applies **/
+				if $bs_cubes.length > 0 and $TotalDefault.name in list(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax) and $dim == srt:ProductOrServiceAxis
+					$bs_cube = $bs_cubes[1]
+					if  $bs_cube.primary-concepts.name.contains(NoninterestIncome)
+						/** This takes into account those cases for Banks and FASB guidance https://www.fasb.org/revenue_2020 and calculation of non interest income.
+						** See Figure 13b-1a. Unfortunately the breakdown for 606 revenue for banks get interlaced and non-dimensional. For now
+						** this rule excludes those cases where the bank breaks down revenue and uses the product or service axis and the element NonInterestIncome
+						** appears in the cube and the value of the default is greater than the value of the members. In these cases a remainder is embedded somewhere else.
+						**/
+						$additional_message = "The value of the dimensions is greater than the the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
+						tolerance_for_decimals($member_sums, $TotalDefault, 2) and $member_sums > $TotalDefault
+					else
+						$additional_message = "When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases."
+						tolerance_for_decimals($member_sums, $TotalDefault, 2)
+				else
+					$additional_message = ""
+					tolerance_for_decimals($member_sums, $TotalDefault, 2)
 		else
 			skip
 	
@@ -73,18 +92,11 @@ message
 "In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
 {$member_string}
 
-On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error. 
-
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+{$additional_message}
 The properties of this {$TotalDefault.concept.name} fact are:
 Period :{$TotalDefault.period}
 Unit : {$TotalDefault.unit}
 Dimensions : {$TotalDefault.dimensions.join(', ','=')}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
-
-
-severity error
-status $status
-effectiveDate $effective_dates[$rule_id]
-
-rule-focus $TotalDefault
