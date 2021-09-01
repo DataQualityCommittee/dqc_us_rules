@@ -132,3 +132,5 @@ constant $cash_flow_exceptions = set(
 constant $taxonomy_defaults = navigate dimension-default descendants taxonomy $ifrs-gaap returns  set (source-name, target-name)
 
 constant $MONETARY_NON_NEGS = filter $non_neg_ifrs_items.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
+
+constant $PRES_NETWORKS = taxonomy().networks(parent-child)

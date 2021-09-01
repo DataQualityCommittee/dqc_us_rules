@@ -38,3 +38,7 @@ constant $extension_items = dict(
 				for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v16/dqc_us_rules/resources/DQC_IFRS_0091/dqc_0091_ifrs_2018_concepts.csv', false, list('string', 'qname')))
 						list($pair[2], $pair[1])
 		)
+
+/** DQC.IFRS.0129 **/
+
+		constant $DIM_EQUIVALENTS = csv-data('https://raw.githubusercontent.com/davidtauriello/dqc_us_rules/v17/dqc_us_rules/resources/DQC_IFRS_0129/dqc_0129.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
