@@ -79,7 +79,7 @@ for $presNetwork in $presNetworks.sort
                         false
 
 message
-"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing does not include a dimensional structure for this statement.  The filing  does not include a  default value for this presentation item {$concept_item} but does include dimensionalized values for this element of the following:
+"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing does not include a dimensional structure for this statement.  The filing does not include a default value for this presentation item {$concept_item} but does include dimensionalized values for this element of the following:
 
 {$dimensionValues.sort.join(',   ')}
 
@@ -165,9 +165,9 @@ message
 
 {$dimensionValues.sort.join(',   ')}
 
-None of these values however, are valid for the Balance Sheet statement table. If the value appears in the financial statements, then a either a dimension or line item needs to be added to the structure of the definition linkbase that defines the report. If the item is not represented on the financial statements, then the presentation item should be removed.
+None of these values however, are valid for the financial statement table. If the value appears in the financial statements, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the report. If the item is not represented on the financial statements, then the presentation item should be removed.
 {if $is_concept_in_table.length == 0 '
-In this case the concept ' + $concept_item.local-name + ' is missing from the definition linbase and should be added.' else ''}
+In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase and should be added.' else ''}
 
 Total Element : {$concept_item}
 Total period : {first($dimensionValues).period} 

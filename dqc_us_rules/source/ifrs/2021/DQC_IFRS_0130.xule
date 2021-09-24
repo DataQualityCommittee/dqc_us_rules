@@ -20,10 +20,10 @@ for $x in $SHARE_PERCENTAGES.keys
 		skip 
 	else
 		$calcResult = ($numerator / $denominator);
-		tolerance_for_decimals($result, $calcResult, 1)
+		tolerance_for_decimals($result, $calcResult, 4)
 
 message
-"The calculated share percentage does not equal the actual value reported for the concept {$x} for the period {$result.period}. The value reported is {$result}. The calculated value is calculated by dividing the concept {$SHARE_PERCENTAGES[$x][1]} with a value of {$numerator}  by the denominator {$SHARE_PERCENTAGES[$x][2]} with a value of {$denominator}. This equals {$calcResult} which differs from the reported value of {$result}. Please check that the calculation is correct or that the correct elements have been used.
+"The calculated earnings or loss per share does not equal the actual value reported for the concept {$x} for the period {$result.period}. The value reported is {$result}. The calculated value is calculated by dividing the concept {$SHARE_PERCENTAGES[$x][1]} with a value of {$numerator}  by the denominator {$SHARE_PERCENTAGES[$x][2]} with a value of {$denominator}. This equals {$calcResult} which differs from the reported value of {$result}. Please check that the calculation is correct or that the correct elements have been used.
 
 Element : {$x}
 Period : {$result.period} 
