@@ -14,20 +14,23 @@ assert US.0095.9528 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-		$EntityCommonStockSharesOutstanding = {@concept.local-name = 'EntityCommonStockSharesOutstanding' @period = * where $fact > 0};
-		$EntityStockPeriod = $EntityCommonStockSharesOutstanding.period.end;
-		$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0 and  ($fact.period.end + (time-span("P90D"))) > $EntityStockPeriod};
+/** Check if any subsequent event impacted shares at the end of the period. If it did then the rule will not run **/
+if count(set({covered @concept.data-type = xbrli:sharesItemType  @SubsequentEventTypeAxis = SubsequentEventMember})) > 1
+	skip
+else
+	$EntityCommonStockSharesOutstanding = {@concept.local-name = 'EntityCommonStockSharesOutstanding' @period = * where $fact > 0};
+	$EntityStockPeriod = $EntityCommonStockSharesOutstanding.period.end;
+	$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0 and  ($fact.period.end + (time-span("P90D"))) > $EntityStockPeriod};
 
-		$factor = $EntityCommonStockSharesOutstanding / $CommonStockSharesOutstanding;
+	$factor = $EntityCommonStockSharesOutstanding / $CommonStockSharesOutstanding;
 
-		if $factor > 99
+	if $factor > 99
+		true
+	else
+		if $factor < 0.099
 			true
 		else
-			if $factor < 0.099
-				true
-			else
-				false
-
+			false
 
 message
 
@@ -43,7 +46,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-status $status
+
 
 effectiveDate $effective_dates[$rule_id]
 

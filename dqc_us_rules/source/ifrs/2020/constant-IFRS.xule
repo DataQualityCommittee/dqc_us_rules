@@ -73,7 +73,9 @@ constant  $exclude_non_neg_axis_members = list(
 				list(AmountsArisingFromInsuranceContractsAxis,
 						set(ReinsurersShareOfAmountArisingFromInsuranceContractsMember)),
 				list(NetDefinedBenefitLiabilityAssetAxis,
-						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember))
+						set(PresentValueOfDefinedBenefitObligationMember,PlanAssetsMember,EffectOfAssetCeilingMember)),
+				list(UnobservableInputsAxis,
+						set(FinancialForecastOfCashFlowsForCashgeneratingUnitMeasurementInputMember,FinancialForecastOfProfitOrLossForCashgeneratingUnitMeasurementInputMember ))
 				)
 				
 constant  $exclude_non_pos_axis_members = list(
@@ -126,5 +128,3 @@ constant  $exclude_non_pos_asset_axis_members = list(
 
 constant $cash_flow_exceptions = set(
 				)
-
-constant $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name)

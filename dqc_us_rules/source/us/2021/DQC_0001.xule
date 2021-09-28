@@ -431,7 +431,7 @@ Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis CurrencyAxis. The Currency Axis should only be used with the members defined in the US GAAP taxonomy or the followng extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis CurrencyAxis. The Currency Axis should only be used with the members defined in the US GAAP taxonomy or the following extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
 		true
 
 
@@ -478,7 +478,7 @@ Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis PositionAxis. The Position Axis should only be used with the members defined in the US GAAP taxonomy or the followng extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis PositionAxis. The Position Axis should only be used with the members defined in the US GAAP taxonomy or the following extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
 		true
 
 
@@ -562,7 +562,7 @@ $unallowed_members = $member_extension - $allowed_members;
 for ($member in $unallowed_members)
 	$fact1 = {covered @FairValueByMeasurementBasisAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1.string.substring(1,128)} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}.  
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1.string.substring(1,300)} is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member {$member.local-name}.  
 " + $default_Message + "
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
@@ -570,7 +570,7 @@ Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis FairValueByMeasurementBasisAxis. The FairValueByMeasurementBasisAxis should only be used with the members defined in the US GAAP taxonomy or the followng extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis FairValueByMeasurementBasisAxis. The FairValueByMeasurementBasisAxis should only be used with the members defined in the US GAAP taxonomy or the following extension members: {$allowable_extensions.join(', ')} .There are no facts associated with this member and axis.";
 		true
 
 
@@ -726,7 +726,7 @@ Dimensions: {$fact1.dimensions.join(', ','=')}
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis ConsolidationItemsAxis. The ConsolidationItemsAxis should only be used with the members defined in the US GAAP taxonomy or the followng extension members: {$allowable_extensions.join(', ')}. There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis ConsolidationItemsAxis. The ConsolidationItemsAxis should only be used with the members defined in the US GAAP taxonomy or the following extension members: {$allowable_extensions.join(', ')}. There are no facts associated with this member and axis.";
 		true
 
 
@@ -1120,14 +1120,14 @@ $unallowed_members = $baseMembers - $member_USGAAP;
 for ($member in $unallowed_members)
 	$fact1 = {covered @StatementBusinessSegmentsAxis = $member};
 	if exists($fact1)
-		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementBusinessSegmentsAxis and the unallowable member {$member.local-name}. The StatementBusinessSegmentsAxis should only be used with extension members and the  followng  US-GAAP  members: {$member_USGAAP.join(', ')}.
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the StatementBusinessSegmentsAxis and the unallowable member {$member.local-name}. The StatementBusinessSegmentsAxis should only be used with extension members and the  following  US-GAAP  members: {$member_USGAAP.join(', ')}.
 The properties of the fact for {$fact1.concept.name.local-name} are:
 Period: {$fact1.period}
 Dimensions: {$fact1.dimensions.join(', ','=')} 
 Unit: {$fact1.unit}";
 		true
 	else 
-		$message_for_fact = " The member {$member.local-name} is used on the axis StatementBusinessSegmentsAxis. The StatementBusinessSegmentsAxis should only be used with extension members and the  followng  US-GAAP  members: {$member_USGAAP.join(', ')}. There are no facts associated with this member and axis.";
+		$message_for_fact = " The member {$member.local-name} is used on the axis StatementBusinessSegmentsAxis. The StatementBusinessSegmentsAxis should only be used with extension members and the  following  US-GAAP  members: {$member_USGAAP.join(', ')}. There are no facts associated with this member and axis.";
 		true
 
 

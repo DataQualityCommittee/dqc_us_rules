@@ -7,9 +7,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0001](DQC_US_0001/DQC_0001.md) | Axis with inappropriate members | Approved | 11 |
 | [DQC_US_0004](DQC_US_0004/DQC_0004.md) | Element values are equal | Approved | 9 |
 | [DQC_US_0005](DQC_US_0005/DQC_0005.md) | Context dates after period end date | Approved | 6 |
-| [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved | 9 |
 | [DQC_US_0006](DQC_US_0006/DQC_0006.md) | DEI and block tag date contexts | Approved for IFRS &amp; US GAAP | 9 |
-| [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Approved | 6 |
 | [DQC_US_0008](DQC_US_0008/DQC_0008.md) | Reversed calculation | Approved for IFRS &amp; US GAAP | 6 |
 | [DQC_US_0009](DQC_US_0009/DQC_0009.md) | Element A must be less than or equal to element B | Approved | 6 |
 | [DQC_US_0011](DQC_US_0011/DQC_0011.md) | Dimensional equivalents | Approved | 9 |
@@ -17,11 +15,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0014](DQC_US_0014/DQC_0014.md) | Negative values with no dimensions | Approved | 7 |
 | [DQC_US_0015](DQC_US_0015/DQC_0015.md) | Negative values | Approved | 9 |
 | [DQC_US_0018](DQC_US_0018/DQC_0018.md) | Deprecated element is used in the filing | Approved | 6 |
-| [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved | 6 |
 | [DQC_US_0033](DQC_US_0033/DQC_0033.md) | Document period end date context | Approved for IFRS &amp; US GAAP | 6 |
-| [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved | 6 |
 | [DQC_US_0036](DQC_US_0036/DQC_0036.md) | Document period end date context/fact value check | Approved for IFRS &amp; US GAAP | 6 |
-| [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved | 6 |
 | [DQC_US_0041](DQC_US_0041/DQC_0041.md) | Axis with a default member that differs from the US GAAP Taxonomy | Approved for IFRS &amp; US GAAP | 6 |
 | [DQC_US_0043](DQC_US_0043/DQC_0043.md) | Incorrect Calculation Weights in Operating Cash Flows | Approved | 6 |
 | [DQC_US_0044](DQC_US_0044/DQC_0044.md) | Accrual Items used in Investing/Financing Cash flow Reconciliation | Approved | 6 |
@@ -69,17 +64,41 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Approved | 12 |
 | [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Approved | 12 |
 | [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Approved | 12 |
+| [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | Approved | 13 |
+| [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | Approved | 13 |
+| [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | Approved | 13 |
+| [DQC_US_0101](DQC_US_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees (IFRS) | Approved for IFRS | 14 |
+| [DQC_US_0102](DQC_US_0102/DQC_0102.md) | Element Values Are Equal (IFRS) | Approved for IFRS | 14 |
+| [DQC_US_0103](DQC_US_0103/DQC_0103.md) | Invalid Value for Percentage Items (IFRS) | Approved for IFRS | 14 |
+| [DQC_US_0104](DQC_US_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | Approved for IFRS | 14 |
+| [DQC_US_0105](DQC_US_0105/DQC_0105.md) | FS with No Associated Calculation | Approved | 14 |
+| DQC_US_0106 | Assets and Liabilities Classified as Held-For-Sale using Duration Element | Removed from Public Review |  |
+| [DQC_US_0107](DQC_US_0107/DQC_0107.md) | General Text Block | Approved | 15 |
+| [DQC_US_0108](DQC_US_0108/DQC_0108.md) | Fact Value Consistency Over Time | Approved | 15 |
+| [DQC_US_0109](DQC_US_0109/DQC_0109.md) | Concentration Risk | Approved | 15 |
+| [DQC_US_0110](DQC_US_0110/DQC_0110.md) | Missing Business Acquisition Axis (Short Period) | Approved | 15 |
+| DQC_US_0111 | Percentage Acquired but no Controlling Interest | Removed prior to Public Review | 15 |
+| [DQC_US_0112](DQC_US_0112/DQC_0112.md) | Line Items Requiring the Business Acquisition Axis | Approved | 15 |
+| [DQC_US_0113](DQC_US_0113/DQC_0113.md) | Gross Acquisition Less Than Net Acquisition | Approved | 15 |
+| [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Approved | 15 |
+| [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Approved | 15 |
+| [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Approved | 15 |
 
 ## Guidance 
+### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
+
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
 
 ### [Guiding Principles for Element Selection](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/GuidingPrinciples.pdf) - approved 10/4/2017
 
-### [Dimensional Modeling Guidance - Legal Entities &amp; Consolidation](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md) - approved 11/20/2018   
-### [Guidance on Statement of Cash Flows](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md) - approved 10/4/2017     
+### [Dimensional Modeling Guidance - Legal Entities &amp; Consolidation](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/LegalEntitiesConsolidation.md) - approved 11/20/2018 
+  
+### [Guidance on Statement of Cash Flows](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/cashflows.md) - approved 10/4/2017 
+   
 ### [Guidance on Tagging Axis and Members Using the US GAAP Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging.md) - approved 9/29/16, updated 11/29/16
+
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2020 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

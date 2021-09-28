@@ -33,9 +33,8 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {covered @concept.local-name ='EntityCommonStockSharesOutstanding'};
 	$shares_at_date = $fact1.period.end;
-	/** The and true makes a value of None cause a skip of the iteration **/
+	/** Added and true for the case where max period end date comes back as none. none and true = skip **/
 	$shares_at_date < $maximum_period_end_date and true
-
 
 	
 message
@@ -65,6 +64,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
 	$sub_event_at_date = $fact1.period.end;
+	/** Added and true for the case where max period end date comes back as none. none and true = skip **/
 	$sub_event_at_date <= $maximum_period_end_date and true
 	
 message
@@ -90,6 +90,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 else
 	$fact1 = {@srt:StatementScenarioAxis = srt:ScenarioForecastMember};
 	$sub_event_at_date = $fact1.period.end;
+	/** Added and true for the case where max period end date comes back as none. none and true = skip **/
 	$sub_event_at_date <= $maximum_period_end_date and true
 
 message
