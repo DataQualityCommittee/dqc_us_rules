@@ -18,7 +18,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 ** In many filings companies use the default value not realizing they have used the same element on a dimension elswhere in the filing
 ** thus creating a conflict**/
 
-$collective_dimensions = set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, srt:ProductOrServiceAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis)
+$collective_dimensions = set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, srt:ProductOrServiceAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis)
 
 for $dimension in $collective_dimensions
                 $dimension_fact =[nonils @@concept in $MONETARY_NON_NEGS @$dimension = *]
