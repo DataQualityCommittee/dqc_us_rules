@@ -1,7 +1,7 @@
 
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2018
@@ -13,6 +13,16 @@ rule-name-prefix DQC
 assert IFRS.0104.9551 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis).default.name;
+/** In IFRS taxonomy this dimension is not in a hypercube so have to navigate **/
+$dimensionBaseDefault = navigate dimension-default descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis taxonomy $ifrs-gaap returns  set (target-name);
+
+if $dimensionDefault not in $dimensionBaseDefault
+	skip
+else
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
@@ -69,6 +79,15 @@ effectiveDate $effective_dates[$rule_id]
 assert IFRS.0104.9553 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(ConsolidatedAndSeparateFinancialStatementsAxis).default.name;
+$dimensionBaseDefault = navigate dimension-default descendants from ConsolidatedAndSeparateFinancialStatementsAxis taxonomy $ifrs-gaap returns  set (target-name);
+
+if $dimensionDefault not in $dimensionBaseDefault
+	skip
+else
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
@@ -119,6 +138,15 @@ effectiveDate $effective_dates[$rule_id]
 assert IFRS.0104.9554 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
+$dimensionDefault = taxonomy().dimension(SegmentConsolidationItemsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentConsolidationItemsAxis).default.name;
+
+if $dimensionDefault != $dimensionBaseDefault
+	skip
+else
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
@@ -176,6 +204,15 @@ effectiveDate $effective_dates[$rule_id]
 assert IFRS.0104.9555 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule has reported by rule 41**/
+$dimensionDefault = taxonomy().dimension(SegmentsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentsAxis).default.name;
+
+if $dimensionDefault != $dimensionBaseDefault
+	skip
+else
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_IFRS = navigate dimensions dimension-member descendants from SegmentsAxis taxonomy $ifrs-gaap returns set (target-name);

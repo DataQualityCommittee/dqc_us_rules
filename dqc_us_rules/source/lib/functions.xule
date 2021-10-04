@@ -1,6 +1,6 @@
 /** 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
  Shared Function Library IFRS & US
@@ -12,7 +12,7 @@ DQC Rules
  * This function compares the calc in the base taxonomy to the calc in the extension taxonomy to identify any common elements.
  * 
  * @param concept - $baseConcept - Passes base taxonomy concept .
- * @param taxonomy - $baseTaxonommy - Passes the base taxonomy to use .  i.e. $us-gaap
+ * @param taxonomy - $baseTaxonommy - Passes the base taxonomy to use .  i.e. $US-GAAP
  * @param concept - $extensionConcept - Passes extension taxonomy concept.
  * @param list - $exceptions - Passes a list of exception items to exclude. i.e. cashflow_exceptions
  * @return set - Returns a set of target qnames.
@@ -41,7 +41,7 @@ function is_extension($test_extension, $base_taxonomies)
  * This function Checks if the concept is a base taxonomy element  .
  * 
  * @param concept - $test_base - Passes concept to check if it is a base concept.   
-  * @param concept - $base_taxonomies - Set of taxonomies that comprise the base taxonomies. -> $all_base_taxonomies
+  * @param concept - $base_taxonomies - Set of taxonomies that comprise the base taxonomies. -> $ALL_BASE_TAXONOMIES
  * @return boolean - Returns true if the concept is a base concept.
 **/
 
@@ -291,7 +291,7 @@ function match_set_substring($fact, $match_member_string_component)
  * This function returns a boolean indicating if the fact has a dimension that can be negative. If true this means the fact does not have a valid reason to be negative.
  *
  * @param factset - $fact - Passes a fact to the function to determine if the fact has a dimension and member that allows it to be negative.
-   @param list - $list - Passes a list of lists with axis member combinations that allow negatie values -> i.e. $exclude_non_neg_axis_members
+   @param list - $list - Passes a list of lists with axis member combinations that allow negatie values -> i.e. $EXCLUDE_NON_NEG_AXIS_MEMBERS
  * @return boolean - Returns a boolean of false if the value can be negative.
 **/
 
@@ -325,7 +325,7 @@ function not_elim_adjust($fact, $non_neg_axis_members)
 function  isin_check($isin)
 
 	/** get a set of the Alpha Keys i.e. A, B, etc.**/
-	$ASCIChars = $alpha_code_lookup.keys;
+	$ASCIChars = $ALPHA_CODE_LOOKUP.keys;
 
 	/** Return the check sum which is the last char of the string**/
 	$checkSum = last(string_to_list($isin));
@@ -337,7 +337,7 @@ function  isin_check($isin)
 	/** Replace ASCII Characters with numbers **/
 	$replaceASCII = sum(list(for $x in $charList
 								if $x in $ASCIChars
-									$alpha_code_lookup[$x].string
+									$ALPHA_CODE_LOOKUP[$x].string
 								else
 									$x.string))
 
@@ -397,7 +397,7 @@ function  isin_check($isin)
 function  figi_check($figi)
 
 	/** get a set of the Alpha Keys i.e. A, B, etc.**/
-	$ASCIChars = $alpha_code_lookup.keys;
+	$ASCIChars = $ALPHA_CODE_LOOKUP.keys;
 
 	/** Return the check sum which is the last char of the string**/
 	$checkSum = last(string_to_list($figi));
@@ -409,7 +409,7 @@ function  figi_check($figi)
 	/** Replace ASCII Characters with numbers **/
 	$replaceASCII = sum(list(for $x in $charList
 								if $x in $ASCIChars
-									$alpha_code_lookup[$x].string
+									$ALPHA_CODE_LOOKUP[$x].string
 								else
 									$x.string))
 
@@ -459,7 +459,7 @@ function  figi_check($figi)
 function lei_check($lei)
 
 	/** get a set of the Alpha Keys i.e. A, B, etc. **/
-	$ASCIChars = $alpha_code_lookup.keys;
+	$ASCIChars = $ALPHA_CODE_LOOKUP.keys;
 
 	/** Get the list of Chars **/
 	$charList = list(for $i in range($lei.length)
@@ -468,7 +468,7 @@ function lei_check($lei)
 	/** Replace ASCII Characters with numbers **/
 	$replaceASCII = sum(list(for $x in $charList
 						if $x in $ASCIChars
-							$alpha_code_lookup[$x].string
+							$ALPHA_CODE_LOOKUP[$x].string
 						else
 							$x.string))
 	/** Add decimals so that the number function converts as a decimal and not an int.  An integer max value is exceeded**/
@@ -504,7 +504,7 @@ function string_to_list($stringItem)
 ** Used tro support check sum functions. Many check sum functios turn Alpha numbers into digits.
 **/
 
-constant $alpha_code_lookup = 	dict(
+constant $ALPHA_CODE_LOOKUP = 	dict(
 					list("A",10),
 					list("B",11),
 					list("C",12),
@@ -531,3 +531,82 @@ constant $alpha_code_lookup = 	dict(
 					list("X",33),
 					list("Y",34),
 					list("Z",35))
+
+
+/**
+** getDimensionSums
+**
+** This function sums the values provided with a concept the cube and the drs-role
+**
+** @param concept - The concept associated with the fact that is to be summed acorss a given dmension.
+** @param cube object - The cube objects  whose dimensions are aggregated  over.
+** @param role uri - The drs role uri that defines the members that will be summed
+** @return numeric - Returns a numerical value.
+**/
+
+function getDimensionSums($concept, $cube, $drs-role)
+
+			/** Get the dimensions in the cube **/
+			$dimensions = $cube.dimensions
+
+			for $dimObject in $dimensions
+				$dim = $dimObject.concept.name
+				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+
+				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
+
+				/** Get a set  of the unique members **/
+				$member_descendants = $members.to-set - $domain;
+
+				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+				$member_facts = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
+									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
+										skip
+									else 
+										{covered-dims nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
+				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+				if 	$member_facts.length == 0 
+					skip
+				else		
+					/** aggregate the fact values on the axis **/
+					sum($member_facts)
+
+/**
+** getDimensionNames
+**
+** This function gets the dimension name values provided with a concept the cube and the drs-role
+**
+** @param concept - The concept associated with the fact that is to be summed acorss a given dmension.
+** @param cube object - The cube objects  whose dimensions are aggregated  over.
+** @param role uri - The drs role uri that defines the members that will be summed
+** @return numeric - Returns a numerical value.
+**/
+
+function getDimensionNames($concept, $cube, $drs-role)
+
+			/** Get the dimensions in the cube **/
+			$dimensions = $cube.dimensions
+
+			for $dimObject in $dimensions
+				$dim = $dimObject.concept.name
+				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+
+				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
+
+				/** Get a set  of the unique members **/
+				$member_descendants = $members.to-set - $domain;
+
+				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+				$member_facts = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
+									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
+										skip
+									else 
+										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
+				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+				if 	$member_facts.length == 0 
+					skip
+				else		
+					/** aggregate the fact values on the axis **/
+					list($dim.local-name,sum($member_facts),$member_facts)

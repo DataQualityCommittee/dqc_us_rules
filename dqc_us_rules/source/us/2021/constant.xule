@@ -1,10 +1,10 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2020
+Taxonomy: US GAAP 2021
 
 **/
 
@@ -12,9 +12,9 @@ Taxonomy: US GAAP 2020
 	Define report types  exluded from identified rules
 **/
 
-constant $report_type_exclusions = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3')
+constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3')
 
-constant $Accrual_Items =
+constant $ACCRUAL_ITEMS =
 				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
 				NetIncomeLoss, 
 				NetIncomeLossAvailableToCommonStockholdersBasic,
@@ -24,15 +24,15 @@ constant $Accrual_Items =
 				NetIncomeLossAllocatedToGeneralPartners,
 				NetIncomeLossAllocatedToLimitedPartners,
 				StockholdersEquityPeriodIncreaseDecrease,
-				PartnersCapitalAccountPeriodIncreaseDecrease)  taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
+				PartnersCapitalAccountPeriodIncreaseDecrease)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 				+
 				navigate parent-child descendants from list(IncomeStatementAbstract,
 				StatementOfIncomeAndComprehensiveIncomeAbstract,
 				StatementOfStockholdersEquityAbstract,
-				StatementOfPartnersCapitalAbstract) taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
+				StatementOfPartnersCapitalAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 
 
-constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions, 
+constant $CASH_FLOW_EXCEPTIONS = set(ProceedsFromDepositsWithOtherInstitutions, 
 				InterestPaidCapitalized,
 				ProceedsFromFederalHomeLoanBankAdvances,
 				PaymentsForFederalHomeLoanBankAdvances,
@@ -45,21 +45,13 @@ constant $cash_flow_exceptions = set(ProceedsFromDepositsWithOtherInstitutions,
 				ProceedsFromOtherDeposits,
 				PaymentsForOtherDeposits
 				)
-				
-//constant $base_qname = sum(filter $all_base_taxonomies.concepts returns $item.name)
 
-//constant $filing_qname = filter taxonomy().concepts returns $item.name
+constant $EXTENSION_NS = taxonomy().entry-point-namespace
 
-//constant $extension_qname = $filing_qname - $base_qname
-
-//constant $extension_ns = first($extension_qname).namespace-uri
-
-constant $extension_ns = taxonomy().entry-point-namespace
-
-constant $extension_qname = filter taxonomy().concepts where $item.name.namespace-uri == $extension_ns returns $item.name
+constant $EXTENSION_QNAME = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS returns $item.name
 
 
-constant $tax_items = set(IncomeTaxExpenseBenefit,
+constant $TAX_ITEMS = set(IncomeTaxExpenseBenefit,
 				CurrentIncomeTaxExpenseBenefit,
 				CurrentForeignTaxExpenseBenefit,
 				CurrentFederalStateAndLocalTaxExpenseBenefit,
@@ -74,14 +66,14 @@ constant $tax_items = set(IncomeTaxExpenseBenefit,
 				)
 
 
-constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $us-gaap returns (relationship))
+constant $CALC_RELATIONSHIPS = set(for ($rel in navigate summation-item descendants taxonomy $US-GAAP returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 										
 /** Constants Used for Nonneg Rules
 **
 
 Replaced the Hard coded string and read from dqc rules taxonomy.								 
-constant $exclude_non_neg_string_members = set(
+constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(
 				'adjust',
 				'consolidat',
 				'eliminat',
@@ -91,14 +83,14 @@ constant $exclude_non_neg_string_members = set(
 				)
 **/
 
-constant $non_neg_string_ref = filter ($dqc-rules.concept(dqcrules15:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/ruleExclusions")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
+constant $NON_NEG_STRING_REF = filter ($DQC_RULES.concept(dqcrules15:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/ruleExclusions")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
 
-constant $exclude_non_neg_string_members = set(for $ref in $non_neg_string_ref 
+constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(for $ref in $NON_NEG_STRING_REF 
                                 for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
 								
 
 /**
-constant $exclude_non_neg_members = set(
+constant $EXCLUDE_NON_NEG_MEMBERS = set(
 				CorporateNonSegmentMember,
 				FairValueConcentrationOfRiskMarketRiskManagementEffectsOnIncomeOrNetAssetsMember,
 				AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember,
@@ -111,22 +103,22 @@ constant $exclude_non_neg_members = set(
 				)
 **/
 
-constant $exclude_non_neg_members = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegMembersAbstract)  taxonomy $dqc-rules returns set (target-name)	
+constant $EXCLUDE_NON_NEG_MEMBERS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegMembersAbstract)  taxonomy $DQC_RULES returns set (target-name)	
 
 /**
-constant  $exclude_non_neg_axis_members = list(
+constant  $EXCLUDE_NON_NEG_AXIS_MEMBERS = list(
 				list(StatementBusinessSegmentsAxis, set(CorporateAndOtherMember, CorporateMember, AllOtherSegmentsMember)),
 				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(FairValueByMeasurementBasisAxis, set(ChangeDuringPeriodFairValueDisclosureMember))
 				)
 **/ 
-constant  $exclude_non_neg_axis_members_pre = navigate rule-concept children from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisMembersAbstract) taxonomy $dqc-rules returns set (target-name)
+constant  $EXCLUDE_NON_NEG_AXIS_MEMBERS_PRE = navigate rule-concept children from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisMembersAbstract) taxonomy $DQC_RULES returns set (target-name)
 
-constant $exclude_non_neg_axis_members = list(for $axis in $exclude_non_neg_axis_members_pre
-												list($axis, navigate rule-concept children from $axis taxonomy $dqc-rules returns set (target-name)))
+constant $EXCLUDE_NON_NEG_AXIS_MEMBERS = list(for $axis in $EXCLUDE_NON_NEG_AXIS_MEMBERS_PRE
+												list($axis, navigate rule-concept children from $axis taxonomy $DQC_RULES returns set (target-name)))
 
 /**
-constant $exclude_non_neg_axis = set(StatementEquityComponentsAxis,
+constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
 				ErrorCorrectionsAndPriorPeriodAdjustmentsRestatementByRestatementPeriodAndAmountAxis,
 				AdjustmentsForChangeInAccountingPrincipleAxis,
 				AdjustmentsForNewAccountingPronouncementsAxis,
@@ -138,18 +130,22 @@ constant $exclude_non_neg_axis = set(StatementEquityComponentsAxis,
 				StatementBusinessSegmentsAxis
 				)
 **/
-constant $exclude_non_neg_axis = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $dqc-rules returns set (target-name) + set(StatementBusinessSegmentsAxis)
+constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis)
+
+/** Rule DQC.US.0084 **/
+
+constant $NON_ADDITIVE_DURATION_CONCEPTS = set()
 
 /** DQC.US.0001 **/
 				
-constant $member_USGAAP_fair_value = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis taxonomy $us-gaap returns set (target-name)
+constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis taxonomy $US-GAAP returns set (target-name)
 
 
-constant $OCI_Totals = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
+constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
 
 
-constant $income_items = set(ProfitLoss,
+constant $INCOME_ITEMS = set(ProfitLoss,
 					NetIncomeLoss,
 					IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest,
 					IncomeLossFromContinuingOperations,
@@ -182,3 +178,24 @@ constant $income_items = set(ProfitLoss,
 					NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest
 					)
 
+constant $PRES_NETWORKS = taxonomy().networks(parent-child)
+
+/*  
+*	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
+*	value or the context end date on the fact, whichever is later.
+*
+*	Used for Rule 5
+*/
+
+constant $DOCUMENT_PERIOD_END_VALUE =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
+
+constant $DOCUMENT_PERIOD_END_CONTEXT = set({covered @concept.local-name ='DocumentPeriodEndDate'}.period.end)
+
+constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_PERIOD_END_CONTEXT)
+
+/** DEPRECATED CONCEPTS 
+**
+** This will return a set of deprecated concepts that is used by a rule to evaluate these items.
+**/
+
+constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)	

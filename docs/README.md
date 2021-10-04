@@ -83,6 +83,14 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Approved | 15 |
 | [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Approved | 15 |
 | [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Approved | 15 |
+| [DQC_US_0117](DQC_US_0117/DQC_0117.md) | Financial Statement Tables Dimensional Cross Check | Approved | 16 |
+| [DQC_US_0118](DQC_US_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | Approved | 16 |
+| [DQC_US_0119](DQC_US_0119/DQC_0119.md) | Income Before Tax Equity Method | Approved | 16 |
+| [DQC_US_0120](DQC_US_0120/DQC_0120.md) | Incorrect Line Item Reference | Approved | 16 |
+| [DQC_US_0121](DQC_US_0121/DQC_0121.md) | Incorrect Transition Elements Used | Approved | 16 |
+| [DQC_US_0122](DQC_US_0122/DQC_0122.md) | Components of Equity on the Balance Sheet | Approved | 16 |
+| [DQC_US_0123](DQC_US_0123/DQC_0123.md) | Missing Components of Equity Axis | Approved | 16 |
+| [DQC_US_0124](DQC_US_0124/DQC_0124.md) | Breakdown of Lease Liabilities & Assets Across Financial Statement Lines Items | Approved | 16 |
 
 ## Guidance 
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
