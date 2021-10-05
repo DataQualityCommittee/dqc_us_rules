@@ -17,7 +17,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiability @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -94,7 +94,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityCurrent @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -173,7 +173,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityNoncurrent @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -254,7 +254,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseRightOfUseAsset @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
@@ -327,7 +327,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseRightOfUseAsset @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
