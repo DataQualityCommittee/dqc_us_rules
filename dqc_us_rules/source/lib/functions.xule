@@ -180,17 +180,17 @@ function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tole
 					else 	
 						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
 						
-	$left = if $left == none
+	$leftSide = if $left == none
 				0
 			else
 				$left;
 
-	$right = if $right == none
+	$rightSide = if $right == none
 				0
 			else
 				$right;
 
-	if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
+	if (abs(round($leftSide,$tolerance1) - round($rightSide,$tolerance1)) > $tolerance2) 
 		true
 	else 
 		false 
@@ -610,35 +610,3 @@ function getDimensionNames($concept, $cube, $drs-role)
 				else		
 					/** aggregate the fact values on the axis **/
 					list($dim.local-name,sum($member_facts),$member_facts)
-
-/** 
- * most_frequent
- * 
- * This function will return the most frequent item in a list.
- * 
- * @param list - $listOfItems - Passes the list of items to determine the most common.
- **/
-function most_frequent($list_of_items)
-            $unique_items = $list_of_items.to-set;
-            $index = dict(for $x in $unique_items
-                        list((filter $list_of_items where $item == $x).length, $x)
-            );
-            $max_occurence = max(list(for $x in $unique_items
-                                    (filter $list_of_items where $item == $x).length
-                              )
-                              )
-            $index[$max_occurence]
-
-/** SIGN FLIP tolerance for decimals **/
-
-function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
-$tolerance1 = if ($left.decimals < $right.decimals) 
-					$left.decimals
-				else 	
-					$right.decimals;
-$tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
-
-if (abs(round($left,$tolerance1) - round($right,$tolerance1)*$weight) > $tolerance2) 
-	true
-else 
-	false 
