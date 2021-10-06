@@ -95,9 +95,9 @@ for $cube in $statementCubes.sort
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
 						/** Deals with FASB Guidance **/
 						if $concept_item in list(NoninterestIncome) and length($calcComponentConcepts intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax))> 0
-							 tolerance_for_decimals($sum2, $addend, 2) and $sum2 > $addend
+							 tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2) and $sum2 > $addend
 						else			
-							tolerance_for_decimals($sum2, $addend, 2)
+							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
 
 message
 "The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:

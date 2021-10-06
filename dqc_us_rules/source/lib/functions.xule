@@ -180,17 +180,17 @@ function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tole
 					else 	
 						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
 						
-	$left = if $left == none
+	$leftSide = if $left == none
 				0
 			else
 				$left;
 
-	$right = if $right == none
+	$rightSide = if $right == none
 				0
 			else
 				$right;
 
-	if (abs(round($left,$tolerance1) - round($right,$tolerance1)) > $tolerance2) 
+	if (abs(round($leftSide,$tolerance1) - round($rightSide,$tolerance1)) > $tolerance2) 
 		true
 	else 
 		false 
