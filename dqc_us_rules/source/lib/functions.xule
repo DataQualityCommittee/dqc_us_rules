@@ -551,26 +551,34 @@ function getDimensionSums($concept, $cube, $drs-role)
 
 			for $dimObject in $dimensions
 				$dim = $dimObject.concept.name
-				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+				
+				/** Want to exclude legal entity axis as a dimension that is added **/
 
-				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
-
-				/** Get a set  of the unique members **/
-				$member_descendants = $members.to-set - $domain;
-
-				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
-				$member_facts = list(for $member in $member_descendants
-									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
-										skip
-									else 
-										{covered-dims nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
-				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
-				if 	$member_facts.length == 0 
+				if $dim.local-name == 'LegalEntityAxis'
 					skip
-				else		
-					/** aggregate the fact values on the axis **/
-					sum($member_facts)
+				else 
+					$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+
+					$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
+
+					/** Get a set  of the unique members **/
+					$member_descendants = $members.to-set - $domain;
+
+					/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. 
+					
+					It also excludes any values with the Legal entity axis.**/
+					$member_facts = list(for $member in $member_descendants
+										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
+										if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
+											skip
+										else 
+											{covered-dims nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member where not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis')});
+					/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+					if 	$member_facts.length == 0 
+						skip
+					else		
+						/** aggregate the fact values on the axis **/
+						sum($member_facts)
 
 /**
 ** getDimensionNames
@@ -590,6 +598,12 @@ function getDimensionNames($concept, $cube, $drs-role)
 
 			for $dimObject in $dimensions
 				$dim = $dimObject.concept.name
+
+				/** Want to exclude legal entity axis as a dimension that is added **/
+
+				if $dim.local-name == 'LegalEntityAxis'
+					skip
+				else 
 				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
 
 				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
@@ -603,7 +617,7 @@ function getDimensionNames($concept, $cube, $drs-role)
 									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
 										skip
 									else 
-										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
+										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member where not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis')});
 				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 				if 	$member_facts.length == 0 
 					skip
