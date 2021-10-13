@@ -18,7 +18,7 @@ $transitionElements = navigate parent-child descendants from set(Asu201601Transi
 
 for $transitionElement in $transitionElements
 
-	$fact1 = {@concept = $transitionElement}
+	$fact1 = {@concept = $transitionElement where $fact.period.end >= date('2020-01-01')}
 	
 	if exists($fact1)
 		true
@@ -71,7 +71,7 @@ else
 
 	for $transitionElement in ($transitionElements - $exceptionTransitionElements)
 
-		$fact1 = {@concept = $transitionElement}
+		$fact1 = {@concept = $transitionElement where $fact.period.end >= date('2020-01-01')}
 		
 		if exists($fact1)
 			true
