@@ -160,15 +160,18 @@ function tolerance_for_decimals($left, $right, $decimal_tolerance_factor)
 function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tolerance_factor)
 
 	/** This eliminates crazy values for decimals **/
-	$min_decimals_adj = if $min_decimals > 5
+	$min_decimals_adj = if $min_decimals == inf
 							5
 						else
-							$min_decimals
+							if $min_decimals > 5
+								5
+							else
+								$min_decimals
 
-	$left_decimal = if $left.decimals == none
+	$left_decimal = if ($left.decimals == none or $left.decimals == inf)
 						$min_decimals_adj else $left.decimals;
 						
-	$right_decimal = if $right.decimals == none
+	$right_decimal = if ($right.decimals == none or $right.decimals == inf)
 						$min_decimals_adj else $right.decimals;
 						
 	$tolerance1 = if ($left_decimal < $right_decimal) 
@@ -180,12 +183,12 @@ function tolerance_for_decimals_comp($left, $right, $min_decimals, $decimal_tole
 					else 	
 						(10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
 						
-	$leftSide = if $left == none
+	$leftSide = if ($left == none)
 				0
 			else
 				$left;
 
-	$rightSide = if $right == none
+	$rightSide = if ($right == none)
 				0
 			else
 				$right;
