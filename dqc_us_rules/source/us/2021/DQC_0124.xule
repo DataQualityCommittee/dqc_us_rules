@@ -57,7 +57,7 @@ if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* wh
 						false
 					else
 						if count(list({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
-							$FLL = list({@concept = OperatingLeaseLiability @unit=*})
+							$FLL = list({@concept = FinanceLeaseLiability @unit=*})
 							({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiability @unit=*}) or $FLL.length == 0
 						else
 							true
@@ -366,7 +366,7 @@ if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @u
 						false
 					else
 						if count(list({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) == 1
-							$OLROU = list({@concept = FinanceLeaseRightOfUseAsset @unit=*})
+							$OLROU = list({@concept = OperatingLeaseRightOfUseAsset @unit=*})
 							({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseRightOfUseAsset @unit=*}) or $OLROU.length == 0
 						else
 							true
