@@ -632,3 +632,21 @@ function getDimensionNames($concept, $cube, $drs-role)
 				else		
 					/** aggregate the fact values on the axis **/
 					list($dim.local-name,sum($member_facts),$member_facts)
+
+/** 
+ * most_frequent
+ * 
+ * This function will return the most frequent item in a list.
+ * 
+ * @param list - $listOfItems - Passes the list of items to determine the most common.
+ **/
+function most_frequent($list_of_items)
+            $unique_items = $list_of_items.to-set;
+            $index = dict(for $x in $unique_items
+                        list((filter $list_of_items where $item == $x).length, $x)
+            );
+            $max_occurence = max(list(for $x in $unique_items
+                                    (filter $list_of_items where $item == $x).length
+                              )
+                              )
+            $index[$max_occurence]
