@@ -48,7 +48,7 @@ for $presNetwork in $presNetworks.sort
 			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $presNetwork.role.uri returns set (source-name);
 			/** Work out the decimals used in the financial statements **/
-			$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource})) returns $item.decimals;
+			$fs_fact_values_decimals = filter (list([nonils covered @concept in $calcNetworkSource])) returns $item.decimals;
 			$fs_decimals = most_frequent($fs_fact_values_decimals)
 
 			for $concept_item in $calcNetworkSource
@@ -71,7 +71,7 @@ for $presNetwork in $presNetworks.sort
 					$addend_string = sum(list(for $x in $calcComponents.sort
 													$targetElement = $x[1];
 													
-													$factAmt = [nonils @concept = $targetElement].string
+													$factAmt = [nonils @concept = $targetElement where $fact.decimals == $fs_decimals].string
 													$weight =  if $x[2] == 1
 																		"+"
 																else
@@ -89,10 +89,10 @@ for $presNetwork in $presNetworks.sort
 					
 					$sum2 = if (taxonomy().concept($concept_item).period-type == duration)
 
-								$durationValue = [nonils @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date]
+								$durationValue = [nonils @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals]
 									$durationValue
 							else
-								[nonils @concept = $concept_item @@period.end = $document_period_end_date];
+								[nonils @concept = $concept_item @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals];
 					
 					if $addend == none
 						skip 

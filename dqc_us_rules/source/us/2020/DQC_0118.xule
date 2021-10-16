@@ -48,12 +48,17 @@ for $cube in $statementCubes.sort
 				
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);
+
+					/** Work out the decimals used in the financial statements **/
+					$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource @cube.drs-role = $cube.drs-role})) returns $item.decimals;
+					$fs_decimals = most_frequent($fs_fact_values_decimals)
+
 					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/
 
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role} * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
 									)
 									);
 					
@@ -69,7 +74,7 @@ for $cube in $statementCubes.sort
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
-													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string)
+													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
@@ -85,9 +90,9 @@ for $cube in $statementCubes.sort
 
 					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date }
+								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date  where $fact.decimals == $fs_decimals}
 							else
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date};
+								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 					
 					if $addend == none
 						skip 

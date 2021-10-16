@@ -89,10 +89,10 @@ for $presNetwork in $presNetworks.sort
 					
 					$sum2 = if (taxonomy().concept($concept_item).period-type == duration)
 
-								$durationValue = [nonils @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date]
+								$durationValue = [nonils @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals]
 									$durationValue
 							else
-								[nonils @concept = $concept_item @@period.end = $document_period_end_date];
+								[nonils @concept = $concept_item @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals];
 					
 					if $addend == none
 						skip 
