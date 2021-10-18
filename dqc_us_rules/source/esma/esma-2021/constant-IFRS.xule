@@ -4,7 +4,7 @@ DQC Rules
  (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2020
+Taxonomy: IFRS 2021
 
 **/
 
@@ -51,7 +51,6 @@ constant $exclude_non_neg_axis = set(SegmentsAxis,
 				ComponentsOfEquityAxis)
 
 constant  $exclude_non_neg_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(SegmentConsolidationItemsAxis,
 						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
@@ -79,7 +78,6 @@ constant  $exclude_non_neg_axis_members = list(
 				)
 				
 constant  $exclude_non_pos_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
 						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
 				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
@@ -103,7 +101,6 @@ constant  $exclude_non_pos_axis_members = list(
 				)
 
 constant  $exclude_non_pos_asset_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(SegmentConsolidationItemsAxis,
 						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
@@ -129,4 +126,4 @@ constant  $exclude_non_pos_asset_axis_members = list(
 constant $cash_flow_exceptions = set(
 				)
 
-constant $taxonomy_defaults = navigate dimension-default descendants taxonomy $ifrs-gaap returns  set (source-name, target-name)
+constant $TAXONOMY_DEFAULTS = navigate dimension-default descendants taxonomy $ifrs-gaap returns  set (source-name, target-name)

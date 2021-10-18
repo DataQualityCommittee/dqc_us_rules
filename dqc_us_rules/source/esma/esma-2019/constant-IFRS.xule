@@ -4,7 +4,7 @@ DQC Rules
  (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2020
+Taxonomy: IFRS 2019
 
 **/
 
@@ -12,6 +12,7 @@ constant $calcRelationships = set(for ($rel in navigate summation-item descendan
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
 
 /** Constants Used for Extensions  **/
+										
 /** REMOVED AS REPLACED WITH entry-point-namespace								
 constant $base_qname = sum(filter $all_ifrs_base_taxonomies.concepts returns $item.name)
 
@@ -51,7 +52,6 @@ constant $exclude_non_neg_axis = set(SegmentsAxis,
 				ComponentsOfEquityAxis)
 
 constant  $exclude_non_neg_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(SegmentConsolidationItemsAxis,
 						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
@@ -79,7 +79,6 @@ constant  $exclude_non_neg_axis_members = list(
 				)
 				
 constant  $exclude_non_pos_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis,
 						set(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember)),
 				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
@@ -103,7 +102,6 @@ constant  $exclude_non_pos_axis_members = list(
 				)
 
 constant  $exclude_non_pos_asset_axis_members = list(
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
 				list(SegmentConsolidationItemsAxis,
 						set(EliminationOfIntersegmentAmountsMember, MaterialReconcilingItemsMember, UnallocatedAmountsMember)),
 				list(RetrospectiveApplicationAndRetrospectiveRestatementAxis,
@@ -128,5 +126,3 @@ constant  $exclude_non_pos_asset_axis_members = list(
 
 constant $cash_flow_exceptions = set(
 				)
-
-constant $taxonomy_defaults = navigate dimension-default descendants taxonomy $ifrs-gaap returns  set (source-name, target-name)
