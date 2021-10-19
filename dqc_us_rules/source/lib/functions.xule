@@ -650,3 +650,24 @@ function most_frequent($list_of_items)
                               )
                               )
             $index[$max_occurence]
+
+/**
+ * 
+ * @param factset - $left - Passes a factset value to compare to a second parameter called $right
+ * @param factset - $right - Passes a factset value to compare to the first parameter called $left
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @param weight - $weight - value of 1 or -1 that determines if the sign is flipped
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+
+function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
+$tolerance1 = if ($left.decimals < $right.decimals) 
+					$left.decimals
+				else 	
+					$right.decimals;
+$tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+
+if (abs(round($left,$tolerance1) - round($right,$tolerance1)*$weight) > $tolerance2) 
+	true
+else 
+	false 

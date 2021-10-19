@@ -41,7 +41,7 @@ $statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.conta
 $cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
-         /** Don't run the rule if it is in a table as this is handled by rule 118 **/
+         /** Don't run the rule if it is in a table as this is handled by another rule **/
          if $presNetwork.role.uri in $cubeURISet
             skip
          else 
@@ -72,16 +72,18 @@ for $presNetwork in $presNetworks.sort
 													$targetElement = $x[1];
 													
 													$factAmt = [nonils @concept = $targetElement where $fact.decimals == $fs_decimals].string
+
+													$factDecimals = first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals].decimals, [nonils @concept = $targetElement].decimals);
 													$weight =  if $x[2] == 1
 																		"+"
 																else
 																		"-";
 													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(150 - $strLength - $factAmt.length)
+													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length)
 																					" " 
 																					)
 																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string  + $pad + $factAmt  +  " \n"
+											"" + $weight + "  \t" + $targetElement.local-name.string  + $pad + $factAmt  +  (if $factDecimals != $fs_decimals " (Incorrect decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
 
@@ -97,10 +99,10 @@ for $presNetwork in $presNetworks.sort
 					if $addend == none
 						skip 
 					else
-					tolerance_for_decimals($sum2, $addend, 2)
+						tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
 
 message
-"The statement {$presNetwork.role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2}  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts.  The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
+"The statement {$presNetwork.role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2}  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$fs_decimals.string}. All values in the financial statements should use the same decimal value. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
 
 {$addend_string}
 
@@ -111,6 +113,7 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals : {$sum2.decimals} 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
