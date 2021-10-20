@@ -74,17 +74,18 @@ for $cube in $statementCubes.sort
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
-													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string)
+													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string)
+													$factDecimals = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).decimals, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.decimals)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
 																		"-";
 													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(150 - $strLength - $factAmt.length - $DefaultMessage.length)
+													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
 																					" " 
 																					)
 																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  " \n"
+											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals != $fs_decimals " (Incorrect decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
 
@@ -105,7 +106,7 @@ for $cube in $statementCubes.sort
 							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
 
 message
-"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
+"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$fs_decimals.string}. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
 
 {$addend_string}
 
@@ -116,6 +117,7 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals : {$sum2.decimals} 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
