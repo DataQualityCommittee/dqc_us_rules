@@ -4,7 +4,7 @@ DQC Rules
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
-Release Version 16
+Release Version 17
 **/
 
 RULE-NAME-PREFIX DQC
@@ -58,7 +58,16 @@ for $cube in $statementCubes.sort
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
+											
+											/** IMPORTANT **/
+											/**
+											** If a number is reported twice and the value is the same but they have different decimals then the arelle
+											** processor will eliminate the fact with the lower decimal value and keep the most accurate fact where the
+											** values are the same.  Both facts will not be available in the processor. The first(list()) was included for
+											** safety so lines don't duplicate.
+											**/
+
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
 									)
 									);
 					
@@ -74,8 +83,10 @@ for $cube in $statementCubes.sort
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
-													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string)
-													$factDecimals = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).decimals, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.decimals)
+
+													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string)
+
+													$factDecimals = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).decimals, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.decimals)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
@@ -85,7 +96,7 @@ for $cube in $statementCubes.sort
 																					" " 
 																					)
 																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals != $fs_decimals " (Incorrect decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
+											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Incorrect decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
 
