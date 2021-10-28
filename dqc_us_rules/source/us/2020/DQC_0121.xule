@@ -18,7 +18,11 @@ $transitionElements = navigate parent-child descendants from set(Asu201601Transi
 
 for $transitionElement in $transitionElements
 
-	$fact1 = {@concept = $transitionElement where $fact.period.end >= date('2020-01-01')}
+		$fact1 = if set('S-1','S-1/A').contains([covered @concept.local-name ='DocumentType'])
+				/** Private companies do not have to adopt ASU's until after 2021-12-15 **/
+				{@concept = $transitionElement where ($fact.period.start > date('2021-12-15') and $fact.concept.period-type == duration) or ($fact.period.start > date('2022-12-15') and $fact.concept.period-type == instant)}
+			else 
+				{@concept = $transitionElement where $fact.period.end >= date('2020-01-01')}
 	
 	if exists($fact1)
 		true
