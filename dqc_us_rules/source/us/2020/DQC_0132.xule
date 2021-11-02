@@ -23,7 +23,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 ** excludes various items from analysis of elements used.
  **/
 
-for $extension in $EXTENSION_QNAME
+for $extension in $extension_qname
         $extension.local-name.lower-case.contains('operating')
         and $extension.local-name.lower-case.contains('lease')
         and $extension.local-name.lower-case.contains('right')
