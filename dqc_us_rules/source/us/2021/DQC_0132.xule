@@ -12,28 +12,45 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0132.9727 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-/** CHECK ROLLFORWARD OF INVESTMENTS **/
 
-$list_of_Items_to_check = list(
-                            list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, DebtSecuritiesAvailableForSaleAllowanceForCreditLoss, DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss, AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax,AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax,
-                            AvailableForSaleSecuritiesDebtSecurities),
-                            list(DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss,DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest,DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss,
-                            AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax,
-                            AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax,
-                            DebtSecuritiesAvailableForSaleExcludingAccruedInterest
-                            )
-);
+/** get list of all extension elements in the filing using $EXTENSION_QNAME and go through each one to identify one with the following:
+** contains operating
+** contains lease
+** contains (Amortization, depreciation or expense)
+** Is a duration
+** Has a balance of debit
+** and Element OperatingLeaseRightOfUseAssetAmortizationExpense has not been used.
+ **/
 
-$alternative_subtotal = list(
-    list(AvailableForSaleSecuritiesDebtSecurities, list(AvailableForSaleSecuritiesDebtSecuritiesCurrent, AvailableForSaleSecuritiesDebtSecuritiesNoncurrent)),
-    list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, list(DebtSecuritiesAvailableForSaleAmortizedCostCurrent, DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent)),
-    list(DebtSecuritiesAvailableForSaleAllowanceForCreditLoss, list(DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent,DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent )),
-
-)
-true
+for $extension in $EXTENSION_QNAME
+        $extension.local-name.lower-case.contains('operating')
+        and $extension.local-name.lower-case.contains('lease')
+        and $extension.local-name.lower-case.contains('right')
+        and ($extension.local-name.lower-case.contains('expense') or $extension.local-name.lower-case.contains('amortiz') or $extension.local-name.lower-case.contains('depreci'))
+        and not $extension.local-name.lower-case.contains('financelease')
+        and not $extension.local-name.lower-case.contains('finance')
+        and not $extension.local-name.lower-case.contains('increasedecrease')
+        and not $extension.local-name.lower-case.contains('excluding')
+        and not $extension.local-name.lower-case.contains('relatedparty')
+        and not $extension.local-name.lower-case.contains('liabilit')
+        and not $extension.local-name.lower-case.contains('accumulated')
+        and not $extension.local-name.lower-case.contains('rent')
+        and not $extension.local-name.lower-case.contains('reversa')
+        and not $extension.local-name.lower-case.contains('ropertyplantandequipment')
+        and not $extension.local-name.lower-case.contains('restructuring')
+        and not $extension.local-name.lower-case.contains('remeasurement')
+        and not $extension.local-name.lower-case.contains('disposal')
+        and not $extension.local-name.lower-case.contains('credit')
+        and not $extension.local-name.lower-case.contains('current')
+        and not $extension.local-name.lower-case.contains('noncurrent')
+        and taxonomy().concept($extension).period-type == duration and taxonomy().concept($extension).balance == debit 
+    
 
 message
-"T
+"The concept {$extension} has been included as an extension item in the filing where a standard element could be used. The standard element OperatingLeaseRightOfUseAssetAmortizationExpense was added in the 2020 version of the U.S. Generally Accepted Accounting Principles (GAAP) taxonomy for filers to tag this expense. While filers using the 2019 or an earlier version of the U.S. GAAP taxonomy for their fiscal year 2020 filings would have to create custom tags to tag this expense, SEC staff observed that some filers using the 2020 version of the U.S. GAAP taxonomy still tagged the expense using custom tags instead of the standard element.
+
+If this element represents the element OperatingLeaseRightOfUseAssetAmortizationExpense then the extension element should be removed.
+
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 

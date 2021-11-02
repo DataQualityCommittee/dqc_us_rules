@@ -29,8 +29,8 @@ for $leaseItem in $leaseItems
 
     /** Check if an extensible list item exists. If it does then get the qname and look up the value of the BS Item and compare it to value of the lease
     If the value of the lease is greater than the balance sheet line item then report an error. **/
-    if exists({@concept = $leaseItem[2]})
-        $extensibleListQname = {@concept = $leaseItem[2]};
+    if exists({@concept = $leaseItem[2] @unit}) and exists({@concept = $leaseItem[1] @unit=*})
+        $extensibleListQname = {@concept = $leaseItem[2] @unit};
         
         /** Get Value of the QName **/
         
@@ -43,8 +43,8 @@ for $leaseItem in $leaseItems
                                                             qname(taxonomy().entry-point-namespace,$local-name-ext)
                                                         )
         /** Handles where the lease is split across line items **/
-        $ValueOfLeaseLineItemINBS = sum(list({@concept in $leaseLocationQnames}));
-        $ValueOfLeaseItem = {@concept = $leaseItem[1]};
+        $ValueOfLeaseLineItemINBS = first-value(sum(list({@concept in $extensibleListQname @unit=*})), skip);
+        $ValueOfLeaseItem = {@concept = $leaseItem[1] @unit=*};
         $ValueOfLeaseItem > $ValueOfLeaseLineItemINBS
     else
         skip
