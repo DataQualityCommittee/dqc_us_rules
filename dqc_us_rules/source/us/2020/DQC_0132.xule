@@ -21,28 +21,29 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 ** Has a balance of debit
 ** and Element OperatingLeaseRightOfUseAssetAmortizationExpense has not been used.
 ** excludes various items from analysis of elements used.
+**i.e. AmortizationandImpairmentofOperatingLeaseRightOfUseAsset
  **/
 
 for $extension in $extension_qname
         $extension.local-name.lower-case.contains('operating')
         and $extension.local-name.lower-case.contains('lease')
-        and $extension.local-name.lower-case.contains('right')
+        and $extension.local-name.lower-case.contains('rightofuseasset')
         and ($extension.local-name.lower-case.contains('expense') or $extension.local-name.lower-case.contains('amortiz') or $extension.local-name.lower-case.contains('depreci'))
-        and not $extension.local-name.lower-case.contains('finance')
-        and not $extension.local-name.lower-case.contains('increasedecrease')
-        and not $extension.local-name.lower-case.contains('excluding')
-        and not $extension.local-name.lower-case.contains('relatedparty')
-        and not $extension.local-name.lower-case.contains('liabilit')
-        and not $extension.local-name.lower-case.contains('accumulated')
-        and not $extension.local-name.lower-case.contains('rent')
-        and not $extension.local-name.lower-case.contains('reversa')
-        and not $extension.local-name.lower-case.contains('propertyplantandequipment')
-        and not $extension.local-name.lower-case.contains('restructuring')
-        and not $extension.local-name.lower-case.contains('remeasurement')
-        and not $extension.local-name.lower-case.contains('disposal')
-        and not $extension.local-name.lower-case.contains('credit')
-        and not $extension.local-name.lower-case.contains('current')
-        and not $extension.local-name.lower-case.contains('noncurrent')
+        and not ($extension.local-name.lower-case.contains('finance'))
+        and not ($extension.local-name.lower-case.contains('increasedecrease'))
+        and not ($extension.local-name.lower-case.contains('excluding'))
+        and not ($extension.local-name.lower-case.contains('relatedparty'))
+        and not ($extension.local-name.lower-case.contains('liabilit'))
+        and not ($extension.local-name.lower-case.contains('accumulated'))
+        and not ($extension.local-name.lower-case.contains('rent'))
+        and not ($extension.local-name.lower-case.contains('reversa'))
+        and not ($extension.local-name.lower-case.contains('propertyplantandequipment'))
+        and not ($extension.local-name.lower-case.contains('restructuring'))
+        and not ($extension.local-name.lower-case.contains('remeasurement'))
+        and not ($extension.local-name.lower-case.contains('disposal'))
+        and not ($extension.local-name.lower-case.contains('credit'))
+        and not ($extension.local-name.lower-case.contains('current'))
+        and not ($extension.local-name.lower-case.contains('noncurrent'))
         and taxonomy().concept($extension).period-type == duration and taxonomy().concept($extension).balance == debit 
     
 
