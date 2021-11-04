@@ -44,6 +44,12 @@ for $extension in $extension_qname
         and not ($extension.local-name.lower-case.contains('credit'))
         and not ($extension.local-name.lower-case.contains('current'))
         and not ($extension.local-name.lower-case.contains('noncurrent'))
+        and not ($extension.local-name.lower-case.contains('impairment'))
+        and not ($extension.local-name.lower-case.contains('writeoff'))
+        and not ($extension.local-name.lower-case.contains('abandonment'))
+        and not ($extension.local-name.lower-case.contains('accelerated'))
+        and not ($extension.local-name.lower-case.contains('accretion'))
+        and not ($extension.local-name.lower-case.contains('reduction'))
         and taxonomy().concept($extension).period-type == duration and taxonomy().concept($extension).balance == debit 
     
 
