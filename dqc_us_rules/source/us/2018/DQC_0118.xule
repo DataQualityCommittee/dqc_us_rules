@@ -113,7 +113,7 @@ for $cube in $statementCubes.sort
 							else
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 					
-					if $addend == none
+					if $addend == none or $sum2 == none
 						skip 
 					else
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
