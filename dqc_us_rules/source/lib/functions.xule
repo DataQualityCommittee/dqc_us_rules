@@ -557,7 +557,7 @@ function getDimensionSums($concept, $cube, $drs-role)
 				
 				/** Want to exclude legal entity axis as a dimension that is added **/
 
-				if $dim.local-name == 'LegalEntityAxis'
+				if $dim.local-name in list('LegalEntityAxis','StatementScenarioAxis')
 					skip
 				else 
 					$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
@@ -609,7 +609,7 @@ function getDimensionNames($concept, $cube, $drs-role)
 
 				/** Want to exclude legal entity axis as a dimension that is added **/
 
-				if $dim.local-name == 'LegalEntityAxis'
+				if $dim.local-name in list('LegalEntityAxis','StatementScenarioAxis')
 					skip
 				else 
 				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
