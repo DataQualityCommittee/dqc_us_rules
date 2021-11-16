@@ -4,7 +4,7 @@ DQC Rules
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2018
-Release Version 16
+Release Version 17
 **/
 
 RULE-NAME-PREFIX DQC
@@ -48,12 +48,25 @@ for $cube in $statementCubes.sort
 				
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);
+					/** Work out the decimals used in the financial statements **/
+					$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource @cube.drs-role = $cube.drs-role})) returns $item.decimals;
+					$fs_decimals = most_frequent($fs_fact_values_decimals)
+
 					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/
 
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role} * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
+											
+											/** IMPORTANT **/
+											/**
+											** If a number is reported twice and the value is the same but they have different decimals then the arelle
+											** processor will eliminate the fact with the lower decimal value and keep the most accurate fact where the
+											** values are the same.  Both facts will not be available in the processor. The first(list()) was included for
+											** safety so lines don't duplicate.
+											**/
+
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -69,38 +82,49 @@ for $cube in $statementCubes.sort
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
-													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string)
+													
+													$factAmt = first-value(
+														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
+														max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string,
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
+
+													$factDecimals = first-value(
+														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
+														max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))).decimals,
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
 																		"-";
 													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(150 - $strLength - $factAmt.length - $DefaultMessage.length)
+													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
 																					" " 
 																					)
 																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  " \n"
+											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
 
 					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date }
+								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
 							else
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date};
+								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 					
-					if $addend == none
+					if $addend == none or $sum2 == none
 						skip 
 					else
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
 						/** Deals with FASB Guidance **/
 						if $concept_item in list(NoninterestIncome) and length($calcComponentConcepts intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax))> 0
-							 tolerance_for_decimals($sum2, $addend, 2) and $sum2 > $addend
+							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2) and $sum2 > $addend
 						else			
-							tolerance_for_decimals($sum2, $addend, 2)
+							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
 
 message
-"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
+"The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$fs_decimals.string}. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
 
 {$addend_string}
 
@@ -111,12 +135,13 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals : {$sum2.decimals} 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $sum2

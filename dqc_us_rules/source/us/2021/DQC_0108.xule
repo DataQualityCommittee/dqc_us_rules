@@ -13,7 +13,7 @@ ASSERT US.0108.9564 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$cut_down_list = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
+$cut_down_list = filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name
 
 for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
 

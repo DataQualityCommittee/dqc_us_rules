@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiability @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -57,7 +57,8 @@ if exists([@concept = FinanceLeaseLiability @unit=* where $fact != 0]#leaseLiabi
 						false
 					else
 						if count(list({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
-							{@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiability @unit=*}
+							$FLL = list({@concept = FinanceLeaseLiability @unit=*})
+							({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiability @unit=*}) or $FLL.length == 0
 						else
 							true
 else
@@ -80,7 +81,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 rule-focus $leaseLiability 
 
@@ -93,7 +94,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityCurrent @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -135,7 +136,7 @@ if exists([@concept = FinanceLeaseLiabilityCurrent @unit=* where $fact != 0]#lea
 					if count(list({@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
 						$fact_item = {@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*}
 						$specific_error = "The element FinanceLeaseLiabilityCurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the FinanceLeaseLiabilityCurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
-						{@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityCurrent @unit=*}
+						({@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityCurrent @unit=*}) or list({@concept = FinanceLeaseLiabilityCurrent @unit=*}).length == 0
 					else
 						$fact_item = [@concept = FinanceLeaseLiabilityCurrent @unit=*]
 						$specific_error = "The element FinanceLeaseLiabilityCurrent with a value of " + $fact_item.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
@@ -158,7 +159,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact_item 
@@ -172,7 +173,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityNoncurrent @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -216,7 +217,7 @@ if exists([@concept = FinanceLeaseLiabilityNoncurrent @unit=* where $fact != 0]#
 					if count(list({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
 						$fact_item = {@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*}
 						$specific_error = "The element FinanceLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the FinanceLeaseLiabilityNoncurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
-						{@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityNoncurrent @unit=*}
+						({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityNoncurrent @unit=*}) or list({@concept = FinanceLeaseLiabilityNoncurrent @unit=*}).length == 0
 					else
 						$fact_item = [@concept = FinanceLeaseLiabilityNoncurrent @unit=*]
 						$specific_error = "The element FinanceLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
@@ -239,7 +240,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact_item
@@ -253,7 +254,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseRightOfUseAsset @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -290,7 +291,8 @@ if exists([@concept = FinanceLeaseRightOfUseAsset @unit=* where $fact != 0]#leas
 						false
 					else
 						if count(list({@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) == 1
-							{@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseRightOfUseAsset @unit=*}
+							$FLROU = list({@concept = FinanceLeaseRightOfUseAsset @unit=*})
+							({@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseRightOfUseAsset @unit=*}) or $FLROU.length == 0
 						else
 							true
 else
@@ -313,7 +315,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 rule-focus $leaseAsset 
 
@@ -326,7 +328,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseRightOfUseAsset @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -363,7 +365,8 @@ if exists([@concept = OperatingLeaseRightOfUseAsset @unit=* where $fact != 0]#le
 						false
 					else
 						if count(list({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) == 1
-							{@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseRightOfUseAsset @unit=*}
+							$OLROU = list({@concept = OperatingLeaseRightOfUseAsset @unit=*})
+							({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseRightOfUseAsset @unit=*}) or $OLROU.length == 0
 						else
 							true
 else
@@ -386,7 +389,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseAsset 
