@@ -56,7 +56,7 @@ for $presNetwork in $presNetworks
 
                                         /** GET monetary children of root elements **/
                                         $levelOneItemsPreExemptions = navigate parent-child children from $presNetwork.roots role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents)
+                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents, IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations)
 
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
                                         $calcspresentSet = set(for $calc in $calcRelationshipItems 
