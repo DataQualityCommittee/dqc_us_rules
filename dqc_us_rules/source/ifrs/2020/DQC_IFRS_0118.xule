@@ -106,7 +106,34 @@ for $cube in $statementCubes.sort
 							else
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 					
-					if $addend == none or $sum2 == none
+					/** REMOVE DEFAULT FROM CALCULATION TEST **/
+					$dimensions = $cube.dimensions;
+					$countDimensions = count($dimensions);
+
+					/** Useable is false - Option 3 Handled By Arelle**/
+					
+					/**$useable = navigate dimensions dimension-domain descendants from (filter $dimensions returns $item.concept.name) drs-role $cube.drs-role returns set (source-name, usable)
+					$unUsableDefault = filter $useable where $item[2] == true
+					$sum2_dimension_count = length($sum2.dimensions.keys)**/
+
+					/** No default defined for a dimension - Option 4 **/
+
+					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (target-name);
+					$defaultMissingFlag = if ($countDimensions - count($DefaultDimensions)) > 0
+												true
+										else
+												false
+					
+					/** Label Check - Option 5 **/
+					$DefaultPresentation = navigate parent-child children from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (target-name, preferred-label);
+					$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
+					$textDefaultFlag = if length($textDefault) > 0
+										true
+									else
+										false
+					/** END ***/
+
+					if $addend == none or $sum2 == none or $defaultMissingFlag or $textDefaultFlag
 						skip 
 					else
 						tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
