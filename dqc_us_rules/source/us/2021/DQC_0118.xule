@@ -132,13 +132,15 @@ for $cube in $statementCubes.sort
 					$MissingDefaultLabel = filter $textDefault returns $item[1]
 					
 					/** Label Check - Option 6 **/
-					/** Check any table with legal entity Axis don't check default **/
+					/** Check any table with legal entity Axis or ConsolidatedEntitiesAxis don't check default **/
 					
-					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis'returns $item
+					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
+
+					$ConsolidatedEntityAxisInCube = filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
 
 					/** Dimension to check **/
 					/** Identify the axis that indicate their default values should not have a  calculation check**/
-					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube
+					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube
 					
 					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
 					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero
