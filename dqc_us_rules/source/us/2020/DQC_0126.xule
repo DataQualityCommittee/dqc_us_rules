@@ -63,7 +63,7 @@ for $presNetwork in $presNetworks.sort
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
-											first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight, [nonils @concept = $targetElement] * $targetWeight)
+											first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals >= $fs_decimals])) * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals < $fs_decimals])) * $targetWeight)
 									)
 									);
 					
@@ -71,7 +71,7 @@ for $presNetwork in $presNetworks.sort
 					$addend_string = sum(list(for $x in $calcComponents.sort
 													$targetElement = $x[1];
 													
-													$factAmt = first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals], [nonils @concept = $targetElement]).string
+													$factAmt = first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals],first(list([nonils @concept = $targetElement where $fact.decimals >= $fs_decimals])), first(list([nonils @concept = $targetElement where $fact.decimals < $fs_decimals]))).string
 													$weight =  if $x[2] == 1
 																		"+"
 																else
