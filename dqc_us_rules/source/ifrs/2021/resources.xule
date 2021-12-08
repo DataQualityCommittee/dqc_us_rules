@@ -17,7 +17,7 @@ constant $effective_dates = dict(
 /** DQC.IFRS.0080 **/
 
 /** The following constant builds up a list of non-negative items that should be checked against the against the IFRS taxonomy Items**/
-constant $non_neg_ifrs_items = dict(
+constant $NON_NEG_IFRS_ITEMS = dict(
 		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v16/dqc_us_rules/resources/DQC_IFRS_0080/dqc_0080_ifrs_2020_concepts.csv', false, list('string', 'qname')) + 						csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v16/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_concepts.csv', false, list('string', 'qname')) + 						csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v16/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
 				list($pair[2], $pair[1])
 )
