@@ -100,7 +100,7 @@ for $cube in $statementCubes.sort
 																else
 																		"-";
 													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
+													$pad = sum(list(for $x in range(120 - $strLength - ($factAmt + "").length - $DefaultMessage.length)
 																					" " 
 																					)
 																			);
@@ -114,8 +114,54 @@ for $cube in $statementCubes.sort
 							else
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 					
-					if $addend == none or $sum2 == none
-						skip 
+					/** REMOVE DEFAULT FROM CALCULATION TEST **/
+					$dimensions = $cube.dimensions;
+					$dimObjects = filter $dimensions returns $item.concept.name
+					$sum2Dimensions = $sum2.dimensions.keys.name
+
+					/** Option 3 built into Arelle **/
+
+					/** No default defined for a dimension - Option 4 **/
+
+					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name);
+					$MissingDefaults = $dimObjects - $DefaultDimensions
+					
+					/** Label Check - Option 5 **/
+					$DefaultPresentation = navigate parent-child children from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name, preferred-label, target-name);
+					$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
+					$MissingDefaultLabel = filter $textDefault returns $item[1]
+
+					/** Label Check - Option 6 **/
+					/** Check any table with legal entity Axis don't check default **/
+					
+					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis'returns $item
+					$ConsolidatedEntityAxisInCube = filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
+
+					/** Dimension to check **/
+					/** Identify the axis that indicate their default values should not have a  calculation check**/
+					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube
+					
+					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
+					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero
+					it means that the sum fact does not have a dimension (default) and the default of the dimensions has been tagged not to add. **/
+
+					$FactDimensionsWithDefaultToSkip = $AxisDefaultsNotToCheck intersect ($dimObjects - $sum2Dimensions)
+
+					$DefaultCheckflag = if ($AxisDefaultsNotToCheck).length == 0
+											false
+									else 
+										if ($dimObjects - $sum2Dimensions).length == 0
+											false
+										else
+											if ($FactDimensionsWithDefaultToSkip.length) > 0
+												true
+											else
+												false
+										
+					/** END ***/
+
+					if $addend == none or $sum2 == none or $DefaultCheckflag
+						skip
 					else
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
 						/** Deals with FASB Guidance **/
