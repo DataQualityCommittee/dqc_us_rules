@@ -42,3 +42,60 @@ rule-focus $ComponentAmount
 
 effectiveDate $effective_dates[$rule_id]
 
+
+assert US.0133.9729 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+/**
+navigate parent-child descendants from list(StatementOfCashFlowsAbstract, StatementLineItems, OperatingCashFlowsDirectMethodAbstract) stop when $relationship.target.name in $Set_Non_CF_Abstracts role $cf_role where $relationship.target.is-monetary == true returns set (target)**/
+
+
+$FinancialDataEMI = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
+
+exists({@concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis}#EquityMethodFact)
+
+
+message
+"The filer has reported a value for the element {$EquityMethodFact.concept.name} with a value of {$EquityMethodFact}  using the axis ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis. This axis must be not be used when reporting a value for {$EquityMethodFact.concept.name}. The filer should use the axis EquityMethodInvestmentNonconsolidatedInvesteeAxis. Please refer to the FASB implementation guide on Dimensional Modeling for Disclosures of Consolidated and Nonconsolidated Entities on the FASB website.
+
+The properties of this {$EquityMethodFact.concept.name} fact are:
+Period :{$EquityMethodFact.period}
+Dimensions : {$EquityMethodFact.dimensions.join(', ','=')}
+Unit : {$EquityMethodFact.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+SEVERITY error
+
+rule-focus $EquityMethodFact
+
+effectiveDate $effective_dates[$rule_id]
+
+assert US.0133.9730 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$NonFinancialDataEMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target);
+
+exists({@concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis}#EquityMethodFact)
+
+
+message
+"The filer has reported a value for the element {$EquityMethodFact.concept.name} with a value of {$EquityMethodFact}  using the axis ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis. This axis must be not be used when reporting a value for {$EquityMethodFact.concept.name}. The filer should use the axis ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis. Please refer to the FASB implementation guide on Dimensional Modeling for Disclosures of Consolidated and Nonconsolidated Entities on the FASB website.
+
+The properties of this {$EquityMethodFact.concept.name} fact are:
+Period :{$EquityMethodFact.period}
+Dimensions : {$EquityMethodFact.dimensions.join(', ','=')}
+Unit : {$EquityMethodFact.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+SEVERITY error
+
+rule-focus $EquityMethodFact
+
+effectiveDate $effective_dates[$rule_id]
