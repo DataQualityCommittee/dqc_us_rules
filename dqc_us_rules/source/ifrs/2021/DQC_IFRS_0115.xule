@@ -13,9 +13,13 @@ ASSERT IFRS.0115.9565 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$cut_down_list = filter $non_neg_ifrs_items.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
+	skip
+else
 
-for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss)))
+$cut_down_list = filter $NON_NEG_IFRS_ITEMS.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
+
+for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss, NetForeignExchangeLoss, NetForeignExchangeGain)))
 
       $fact1 = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
       $large = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}

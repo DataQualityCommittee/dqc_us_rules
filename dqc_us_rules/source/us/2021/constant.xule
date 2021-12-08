@@ -199,3 +199,5 @@ constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_P
 **/
 
 constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)	
+
+constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
