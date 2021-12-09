@@ -52,7 +52,7 @@ navigate parent-child descendants from list(StatementOfCashFlowsAbstract, Statem
 
 $FinancialDataEMI = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
 
-exists({@concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis}#EquityMethodFact)
+exists({@concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis = *}#EquityMethodFact)
 
 
 message
@@ -79,7 +79,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $NonFinancialDataEMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target);
 
-exists({@concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis}#EquityMethodFact)
+exists({@concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis = *}#EquityMethodFact)
 
 
 message
