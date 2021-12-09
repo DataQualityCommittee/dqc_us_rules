@@ -10,7 +10,7 @@ Taxonomy: US GAAP 2020
 
 /**  **/
 
-
+/**
 rule-name-prefix DQC
 
 assert US.0133.9728 satisfied
@@ -46,8 +46,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0133.9729 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-/**
-navigate parent-child descendants from list(StatementOfCashFlowsAbstract, StatementLineItems, OperatingCashFlowsDirectMethodAbstract) stop when $relationship.target.name in $Set_Non_CF_Abstracts role $cf_role where $relationship.target.is-monetary == true returns set (target)**/
+
 
 
 $FinancialDataEMI = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
@@ -99,3 +98,5 @@ SEVERITY error
 rule-focus $EquityMethodFact
 
 effectiveDate $effective_dates[$rule_id]
+
+**/
