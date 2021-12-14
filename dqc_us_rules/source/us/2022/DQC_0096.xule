@@ -1,0 +1,71 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+**/
+
+
+
+/** IS  Location axis rules **/
+
+/** IMPACT ANALYSIS QUERY 
+select 
+r.report_id, 
+r.entity_name, 
+r.creation_software, 
+r.entry_url, 
+r.entry_type, 
+r.accepted_timestamp, 
+r.source_report_identifier,
+f.element_namespace,
+f.element_local_name, 
+f.dimension_count, 
+f.fiscal_year, 
+f.fiscal_period, 
+f.uom, 
+f.fact_value, 
+f.inline_display_value
+from fact f
+join report r on f.accession_id = r.report_id
+JOIN context_dimension_explicit cde ON f.context_id = cde.context_id
+join element e ON e.element_id = f.element_id
+
+where dimension_qname_id in (17626183,
+20541883,
+23683661,
+26586225)
+and (period_type_id = 1 or datatype_qname_id != 3)
+and accepted_timestamp > '2020-01-01'
+
+**/
+/**
+rule-name-prefix DQC
+
+
+assert US.0096.9529 satisfied
+
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+exists({@IncomeStatementLocationAxis=* where not ($fact.concept.data-type.name == srt-types:extensibleListItemType or $fact.concept.data-type.name == xbrli:monetaryItemType)}#fact1)
+message
+	"The value \"{$fact1}\" for {$fact1.concept.name} has been broken down using the axis IncomeStatementLocationAxis. The IncomeStatementLocationAxis is used to show where a value appears in an income statement. As such the element qualified by this axis should only ever have a monetary or extensible list item type.   Consider using a different element.  
+
+The properties of this {$fact1.concept.name} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion} 
+"
+
+SEVERITY error
+
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+**/
