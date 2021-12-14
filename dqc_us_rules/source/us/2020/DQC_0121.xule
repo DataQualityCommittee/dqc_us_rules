@@ -57,6 +57,16 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 				first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
 			else 
 				false
+
+/** Added for situation when an EGC goes non EGC.  Prior elements included in presentation group with text priortoadoptionoftopic842 will be excluded from the rule. **/
+
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Disclosure -') 
+and ($item.role.uri.lower-case.contains('priortoadoptionoftopic842'))
+
+$priorAdoptionItems = sum(set(for $presNetwork in $presNetworks 
+							$presNetwork.concept-names
+							)
+						)
 				
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) OR $EGCFlag
 	skip
@@ -71,7 +81,7 @@ else
 										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFour
 										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearFive
 										,LongtermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalInYearsFourAndFive
-										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalAfterYearFive)
+										,LongTermDebtAndCapitalLeaseObligationsMaturitiesRepaymentsOfPrincipalAfterYearFive) + $priorAdoptionItems
 
 	for $transitionElement in ($transitionElements - $exceptionTransitionElements)
 
