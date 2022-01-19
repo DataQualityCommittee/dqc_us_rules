@@ -73,7 +73,7 @@ for $presNetwork in $presNetworks.sort
                     
                     /** If there is no default value and if there is a dimension item then flag an error **/
 
-                    if $defaultValueCount == 0 and $dimensionValueCount > 0
+                    if $defaultValueCount == 0 and $dimensionValueCount > 0 and sum($dimensionValues) != 0
                         true
                     else
                         false
