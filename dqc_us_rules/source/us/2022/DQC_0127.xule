@@ -153,15 +153,18 @@ for $presNetwork in $presNetworks.sort
                                     list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
                                 else
                                     list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
-//ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
-                if $dimensionValues.length == 0 or sum($dimensionValues) == 0 or $dimensionValues.dimensions().keys.name.local-name.contains('LegalEntityAxis') 
+
+                if $dimensionValues.length == 0 or sum($dimensionValues) == 0
                     skip
                 else
                     $set_of_concept_facts_included_in_bs = filter $bs_cube_facts where $item.concept.name in $dimensionValues.concept.name;
 
                     $is_concept_in_table = filter sum($bs_cube.primary-concepts) where $item.name == $concept_item
 
-                    if $set_of_concept_facts_included_in_bs.length == 0
+                    //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                    $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                    if $set_of_concept_facts_included_in_bs.length == 0 and not $legalEntityAxisUsed
                         true
                     else
                         false
