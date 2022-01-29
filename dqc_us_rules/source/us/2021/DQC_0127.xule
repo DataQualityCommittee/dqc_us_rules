@@ -58,16 +58,16 @@ for $presNetwork in $presNetworks.sort
 					/** Determine if each concept has a default value **/
 
                     $defaultValueCount = if taxonomy().concept($concept_item).period-type == duration
-								list([@concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*]).length
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*]).length
 							else
-								list([@concept = $concept_item @@period.end = $document_period_end_date @unit=*]).length
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @unit=*]).length
                     
 
                     /** Determine if each concept has a dimension value **/
                     $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
 							else
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
                     
                     $dimensionValueCount = $dimensionValues.length
                     
@@ -150,9 +150,9 @@ for $presNetwork in $presNetworks.sort
             for $concept_item in $validPresentationItems
 
                 $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-                                    list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+                                    list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=* where $fact.concept.is-numeric})
                                 else
-                                    list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+                                    list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=* where $fact.concept.is-numeric})
 
 
                 if $dimensionValues.length == 0 or sum($dimensionValues) == 0
