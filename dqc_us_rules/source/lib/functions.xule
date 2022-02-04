@@ -64,6 +64,22 @@ function effective_weight_is_positive($topConcept,$bottomConcept)
 		$network[1] > 0
 
 /** 
+ * effective_weight_is_positive_network
+ * 
+ * This function checks if effective weight between two concepts is positive.
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is positive else returns false
+**/
+
+function effective_weight_is_positive_network($topConcept,$bottomConcept,$network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] > 0
+
+/** 
  * effective_weight_is_negative
  * 
  * This function checks if effective weight between two concepts is negative
@@ -77,6 +93,39 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
 	for ($network in $effectiveWeight)
 		$network[1] < 0
+
+
+/** 
+ * effective_weight_is_negative_network
+ * 
+ * This function checks if effective weight between two concepts is negative
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is negative else returns false
+**/
+
+function effective_weight_is_negative_network($topConcept,$bottomConcept, $network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] < 0
+
+/** 
+ * effective_weight_is_zero_network
+ * 
+ * This function checks if effective weight between two concepts is negative
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is negative else returns false
+**/
+
+function effective_weight_is_zero_network($topConcept,$bottomConcept, $network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] == 0
 		
 		
 /**
