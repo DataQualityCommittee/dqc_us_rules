@@ -42,13 +42,13 @@ else
 				all(list(for ($calcNetwork in filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
 
 				$roots = set(for $root in $calcNetwork.roots 
-									if ($root.name.namespace-uri != $EXTENSION_NS)
 										$root.name.local-name
-									else
-										none);
+									);
 
 				not ($roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
 				$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+				$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations') or
+				$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations') or
 				$EGCFlag) and
 				not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
 				))
@@ -59,15 +59,15 @@ else
 					$network_role = $calcNetwork.role.uri;
 
 					$roots = set(for $root in $calcNetwork.roots 
-										if ($root.name.namespace-uri != $EXTENSION_NS)
-											$root.name.local-name
-										else
-											none);
+										$root.name.local-name
+									);
 								
 					$root_string = "The calculation linkbase in the filing has the following root elements defined: " + $roots.join(', ');
 		
 					not ($roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect') or
 					$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect') or
+					$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations') or
+					$roots.contains('CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations') or
 					$EGCFlag) and
 					not ($roots.contains('NetCashProvidedByUsedInContinuingOperations') and $roots.contains('NetCashProvidedByUsedInDiscontinuedOperations'))
 			else
@@ -80,9 +80,11 @@ CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecre
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect, 
 NetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash).
 
+In some cases the following extension elements can be used when the change in cash is broken up into continuing and discontinued operations:
+CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations
+CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations
+
 {$root_string}.
-
-
 
 Rule Element Id: {$rule_id}
 Rule version: {$ruleVersion}"
