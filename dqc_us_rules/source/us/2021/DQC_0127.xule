@@ -74,7 +74,16 @@ for $presNetwork in $presNetworks.sort
                     /** If there is no default value and if there is a dimension item then flag an error **/
 
                     if $defaultValueCount == 0 and $dimensionValueCount > 0 and sum($dimensionValues) != 0
-                        true
+
+                        //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                        $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+
+                        if ($legalEntityAxisUsed or $InvestmentAxisUsed)
+                            false
+                        else 
+                            true
                     else
                         false
 
@@ -165,7 +174,9 @@ for $presNetwork in $presNetworks.sort
                     //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                     $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                    if $set_of_concept_facts_included_in_bs.length == 0 and not $legalEntityAxisUsed
+                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+
+                    if $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
                         true
                     else
                         false
