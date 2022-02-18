@@ -8,7 +8,7 @@ Taxonomy: IFRS 2019
 
 **/
 
-constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3')
+constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3', '10-12G', '10-12G/A')
 
 constant $calcRelationships = set(for ($rel in navigate summation-item descendants taxonomy $ifrs-gaap returns (relationship))
 										set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
