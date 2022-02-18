@@ -10,7 +10,7 @@ Taxonomy: US GAAP 2020
 
 rule-name-prefix DQC
 
-/** *This rule attempts to improce the consistency of the Investment Schedule.*/
+/** This rule attempts to improce the consistency of the Investment Schedule.**/
 
 assert US.0134.9734 satisfied
 
@@ -26,17 +26,16 @@ $FinancialInstrumentAxisFlag = $Dimensions.contains(FinancialInstrumentAxis);
 
 $InvalidDimensions = $Dimensions.intersect($InvalidAxis);
 
-$FIAxisMessage = "The fact only requires the axis FinancialInstrumentAxis and should not contain the additional axis " + $InvalidDimensions.join(",") + ". If there is a subtotal the the members on the FinancialInstrumentAxis should be organized in a hierachy to reflect the breakdown of financial instruments."
+$FIAxisMessage = "The fact only requires the axis FinancialInstrumentAxis and should not contain the additional axis " + $InvalidDimensions.join(',') + ". If there is a subtotal the the members on the FinancialInstrumentAxis should be organized in a hierachy to reflect the breakdown of financial instruments."
 
 $InvalidDimensions.length > 0
 
-
 message
-"The filer has reported a value for the element {$ComponentAmount.concept.name} with a value of {$ComponentAmount}  using the axis {$InvalidDimensions.join(",")}. The axis listed must be not be used when reporting a value for {$ComponentAmount.concept.name}. The filer should use the axis FinancialInstrumentAxis instead of this axis.  
+"The filer has reported a value for the element {$ComponentAmount.concept.name} with a value of {$ComponentAmount}  using the axis {$InvalidDimensions.join(',')}. The axis listed must be not be used when reporting a value for {$ComponentAmount.concept.name}. The filer should use the axis FinancialInstrumentAxis instead of this axis. 
 
-{if $FinancialInstrumentAxisFlag $FIAxisMessage else none}
+{if $FinancialInstrumentAxisFlag $FIAxisMessage else none} 
 
-Please refer to the FASB implementation guide on Financial Instruments—Debt Securities on the FASB website at https://www.fasb.org/debtsecurities_2019.
+Please refer to the FASB implementation guide on Financial Instruments Debt Securities on the FASB website at https://www.fasb.org/debtsecurities_2019.
 
 The properties of this {$ComponentAmount.concept.name} fact are:
 Period :{$ComponentAmount.period}
@@ -46,9 +45,7 @@ Unit : {$ComponentAmount.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 SEVERITY error
 
 rule-focus $ComponentAmount
-
 effectiveDate $effective_dates[$rule_id]
