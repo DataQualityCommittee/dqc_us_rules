@@ -28,3 +28,11 @@ where qf.local_name = 'TreasuryStockValue'
 and qt.local_name = 'TreasuryStockCommonValue' 
 
 
+select base_taxonomy_name(report_id),* 
+from xuscc.cc_list_report
+where true
+and run_date > '2021-02-07'
+and error_code = 'DQC.IFRS.0130.9725'
+limit 30
+
+
