@@ -15,7 +15,7 @@ select *
 from xuscc.cc_list_report
 where true
 and run_date > '2021-02-07'
-and error_code = 'DQC.IFRS.0104.9554'
+and error_code = 'DQC.IFRS.0128.9598'
 limit 3
 
 select r.* 
