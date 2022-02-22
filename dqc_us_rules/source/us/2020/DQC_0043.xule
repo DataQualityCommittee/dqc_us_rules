@@ -42,10 +42,8 @@ The significant portion of values input to the Instance are expected to be absol
 					
 	if ($bottom.balance == credit)
 		if (effective_weight_is_positive_network($top, $bottom, $key.role))
-				$duplicate_elements_alt_weights = "";
 				true
-		else
-				$duplicate_elements_alt_weights = "In this case the company has reported the child concept " + $bottom.name.local-name + "	multiple times with alternative weights.";	
+		else	
 				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
 					true
 				else
@@ -53,10 +51,8 @@ The significant portion of values input to the Instance are expected to be absol
 	else 
 		if ($bottom.balance == debit)
 			if (effective_weight_is_negative_network($top, $bottom, $key.role))
-				$duplicate_elements_alt_weights = "";
 				true
 			else
-				$duplicate_elements_alt_weights = "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights.";
 				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
 					true
 				else
@@ -66,7 +62,7 @@ The significant portion of values input to the Instance are expected to be absol
 else
 	false
 message
-"{$message_text}  {$duplicate_elements_alt_weights}
+"{$message_text}  {if (effective_weight_is_zero_network($top, $bottom, $key.role))  "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights." else ""} 
 
 
 Rule Element Id:6833
@@ -104,10 +100,8 @@ The significant portion of values input to the Instance are expected to be absol
 		 
 	if ($bottom.balance == credit)
 		if (effective_weight_is_positive_network($top, $bottom, $key.role))
-				$duplicate_elements_alt_weights = "";
 				true
 		else
-				$duplicate_elements_alt_weights = "In this case the company has reported the child concept " + $bottom.name.local-name + "	multiple times with alternative weights.";	
 				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
 					true
 				else
@@ -115,11 +109,9 @@ The significant portion of values input to the Instance are expected to be absol
 	else 
 		if ($bottom.balance == debit)
 			if (effective_weight_is_negative_network($top, $bottom, $key.role))
-				$duplicate_elements_alt_weights = "";
 				true
 			else
-				$duplicate_elements_alt_weights = "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights.";
-				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
+				if (effective_weight_is_zero_network($top, $bottom, $key.role))
 					true
 				else
 					false
@@ -128,7 +120,7 @@ The significant portion of values input to the Instance are expected to be absol
 else
 	false
 message
-"{$message_text} {$duplicate_elements_alt_weights}
+"{$message_text} {if (effective_weight_is_zero_network($top, $bottom, $key.role))  "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights." else ""} 
 
 Rule Element Id:7488
 Rule version: {$ruleVersion}"
