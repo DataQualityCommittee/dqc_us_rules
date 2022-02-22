@@ -93,7 +93,7 @@ for $drs_role in $drs_roles
 						** this rule excludes those cases where the bank breaks down revenue and uses the product or service axis and the element NonInterestIncome
 						** appears in the cube and the value of the default is greater than the value of the members. In these cases a remainder is embedded somewhere else.
 						**/
-						$additional_message = "The value of the dimensions is greater than the the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
+						$additional_message = "The value of the dimensions is greater than the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
 						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2) and $member_sums > $TotalDefault
 					else
 						if $member_sums < $TotalDefault and $bs_cube.primary-concepts.name.contains(Revenues)

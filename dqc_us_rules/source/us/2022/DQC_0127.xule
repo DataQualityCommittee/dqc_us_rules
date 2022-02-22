@@ -95,8 +95,8 @@ message
 If the dimensionalized value appears in the financial statements, then a dimension needs to be added to the report. If the item has no value on the financial statements, then the presentation item should be removed from the financial statements.
 
 Total Element : {$concept_item}
-Total period : {first($dimensionValues).period} 
-Dimensions : {first($dimensionValues).dimensions.join(', ','=')}
+Total period : {first($dimensionValues.sort).period} 
+Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -192,8 +192,8 @@ The presentation concept is defined for the statement but no fact values are def
 In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase table nd should be added.' else ''}
 
 Total Element : {$concept_item}
-Total period : {first($dimensionValues).period} 
-Dimensions : {first($dimensionValues).dimensions.join(', ','=')}
+Total period : {first($dimensionValues.sort).period} 
+Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
