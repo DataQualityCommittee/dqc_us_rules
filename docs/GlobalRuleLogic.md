@@ -83,6 +83,6 @@ Concepts may be provided for message argument fact dimensions and their members,
 If there are variable references that can't be resolved, such as missing facts, prefixed named concepts not passed in argument facts or their dimensions, or for any other reason, an error message is logged when using Arelle to indicate the unresolved references.  The variable reference substitutes as "unavailable" in the expanded message text in addition to the error indicating unresolved references.  
 
 
-© Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

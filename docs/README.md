@@ -91,6 +91,14 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0122](DQC_US_0122/DQC_0122.md) | Components of Equity on the Balance Sheet | Approved | 16 |
 | [DQC_US_0123](DQC_US_0123/DQC_0123.md) | Missing Components of Equity Axis | Approved | 16 |
 | [DQC_US_0124](DQC_US_0124/DQC_0124.md) | Breakdown of Lease Liabilities & Assets Across Financial Statement Lines Items | Approved | 16 |
+| [DQC_US_0125](DQC_US_0125/DQC_0125.md) | Lease Cost Cannot be Negative | Approved | 17 |
+| [DQC_US_0126](DQC_US_0126/DQC_0126.md) | FS Calculation Check with Non-Dimensional Data | Approved | 17 |
+| [DQC_US_0127](DQC_US_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | Approved | 17 |
+| [DQC_US_0128](DQC_US_0128/DQC_0128.md) | Dimensional Values Larger than the Default | Approved | 17 |
+| [DQC_US_0129](DQC_US_0129/DQC_0129.md) | Dimensional Equivalents IFRS | Approved | 17 |
+| [DQC_US_0130](DQC_US_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
+| [DQC_US_0131](DQC_US_0131/DQC_0131.md) | Lease Allocation in Balance Sheet | Approved | 17 |
+| [DQC_US_0132](DQC_US_0132/DQC_0132.md) | Operating Lease Amortization | Approved | 17 |
 
 ## Guidance 
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
@@ -107,6 +115,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

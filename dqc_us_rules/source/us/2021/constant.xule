@@ -12,7 +12,7 @@ Taxonomy: US GAAP 2021
 	Define report types  exluded from identified rules
 **/
 
-constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3')
+constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3', '10-12G', '10-12G/A')
 
 constant $ACCRUAL_ITEMS =
 				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
@@ -145,16 +145,8 @@ constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehen
 
 
 
-constant $INCOME_ITEMS = set(ProfitLoss,
-					NetIncomeLoss,
-					IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest,
-					IncomeLossFromContinuingOperations,
-					IncomeLossAttributableToParent,
-					IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
-					IncomeLossBeforeExtraordinaryItemsAndCumulativeEffectOfChangeInAccountingPrinciple,
-					NetIncomeLossAvailableToCommonStockholdersBasic,
-					NetIncomeLossAllocatedToGeneralPartners,
-					NetIncomeLossAllocatedToLimitedPartners,
+constant $INCOME_ITEMS = set(
+					ComprehensiveIncomeNetOfTax,
 					DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax,
 					ExtraordinaryItemGainOrLossNetOfTaxAttributableToNoncontrollingInterest,
 					ExtraordinaryItemGainOrLossNetOfTaxAttributableToReportingEntity,
@@ -162,20 +154,29 @@ constant $INCOME_ITEMS = set(ProfitLoss,
 					ExtraordinaryItemsGross,
 					GainLossOnSaleOfPropertiesNetOfApplicableIncomeTaxes,
 					IncomeLossAttributableToNoncontrollingInterest,
+					IncomeLossAttributableToParent,
+					IncomeLossBeforeExtraordinaryItemsAndCumulativeEffectOfChangeInAccountingPrinciple,
+					IncomeLossBeforeGainOrLossOnSaleOfPropertiesExtraordinaryItemsAndCumulativeEffectsOfAccountingChanges,
+					IncomeLossFromContinuingOperations,
 					IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic,
 					IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments,
+					IncomeLossFromContinuingOperationsBeforeInterestExpenseInterestIncomeIncomeTaxesExtraordinaryItemsNoncontrollingInterestsNet,
+					IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest,
 					IncomeLossFromDiscontinuedOperationsNetOfTax,
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity,
-					NetIncomeLossAttributableToParentNetOfFederalHomeLoanBankAssessments,
-					NetIncomeLossAttributableToNoncontrollingInterest,
-					IncomeLossBeforeGainOrLossOnSaleOfPropertiesExtraordinaryItemsAndCumulativeEffectsOfAccountingChanges,
-					ComprehensiveIncomeNetOfTax,
-					IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic,
-					IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments,
-					IncomeLossFromContinuingOperationsBeforeInterestExpenseInterestIncomeIncomeTaxesExtraordinaryItemsNoncontrollingInterestsNet,
 					IncomeLossFromSubsidiariesNetOfTax,
-					NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest
+					IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+					NetIncomeLoss,
+					NetIncomeLossAllocatedToGeneralPartners,
+					NetIncomeLossAllocatedToLimitedPartners,
+					NetIncomeLossAttributableToNoncontrollingInterest,
+					NetIncomeLossAttributableToParentNetOfFederalHomeLoanBankAssessments,
+					NetIncomeLossAvailableToCommonStockholdersBasic,
+					NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest,
+					ProfitLoss,
 					)
 
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
@@ -198,6 +199,7 @@ constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_P
 ** This will return a set of deprecated concepts that is used by a rule to evaluate these items.
 **/
 
-constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)	
+constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)
+
 
 constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)

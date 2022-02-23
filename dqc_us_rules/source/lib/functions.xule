@@ -1,6 +1,6 @@
 /** 
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
  Shared Function Library IFRS & US
@@ -64,6 +64,22 @@ function effective_weight_is_positive($topConcept,$bottomConcept)
 		$network[1] > 0
 
 /** 
+ * effective_weight_is_positive_network
+ * 
+ * This function checks if effective weight between two concepts is positive.
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is positive else returns false
+**/
+
+function effective_weight_is_positive_network($topConcept,$bottomConcept,$network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] > 0
+
+/** 
  * effective_weight_is_negative
  * 
  * This function checks if effective weight between two concepts is negative
@@ -77,6 +93,39 @@ function effective_weight_is_negative($topConcept,$bottomConcept)
 	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept);
 	for ($network in $effectiveWeight)
 		$network[1] < 0
+
+
+/** 
+ * effective_weight_is_negative_network
+ * 
+ * This function checks if effective weight between two concepts is negative
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is negative else returns false
+**/
+
+function effective_weight_is_negative_network($topConcept,$bottomConcept, $network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] < 0
+
+/** 
+ * effective_weight_is_zero_network
+ * 
+ * This function checks if effective weight between two concepts is negative
+ * 
+ * @param concept - $topConcept - Passes a parent concept to determine the effective weight relative to a calculation decendant.
+ * @param concept - $bottomConcept - Passes a descendant concept to compare against an ancestor defined in the first parameter
+ * @param concept - $network_role - Passes a network role.
+ * @return boolean - Returns true if the effective weight is negative else returns false
+**/
+
+function effective_weight_is_zero_network($topConcept,$bottomConcept, $network_role)
+	$effectiveWeight = taxonomy().effective-weight-network($topConcept, $bottomConcept, $network_role);
+	for ($network in $effectiveWeight)
+		$network[1] == 0
 		
 		
 /**
@@ -274,6 +323,76 @@ if (($left - $right) > 0 )
 else 
 	false 
 
+/** 
+ * division_intervals
+ * 
+ * This function returns a list of two intervals, the first being the lower bound and the second being the upperbound
+ * of possible values for the result of the divisor. The function uses the decimals of the facts to determien the interval
+ * 
+ * @param factset - $numerator - Passes a factset value of the numerator
+ * @param factset - $denominator - Passes a factset value as the denominator
+ * @return list - Returns a list of the minimum value and the maximum value of the division.
+**/
+
+function division_intervals($numerator, $denominator)
+
+	$numerator_decimals =  if $numerator.decimals == inf
+								10
+							else
+								if $numerator.decimals == none
+									0
+								else
+									$numerator.decimals
+
+	$denominator_decimals =  if $denominator.decimals == inf
+								10
+							else
+								if $denominator.decimals == none
+									0
+								else
+									$denominator.decimals
+
+	$numerator_interval_factor = (10.power(-1 * $numerator_decimals))/2;
+	$denominator_interval_factor = (10.power(-1 * $denominator_decimals))/2
+
+	$numerator_intervals = list(($numerator - $numerator_interval_factor),($numerator + $numerator_interval_factor));
+	$denominator_intervals = list(($denominator - $denominator_interval_factor),($denominator + $denominator_interval_factor));
+
+	$list_of_intervals = list(for $x in $numerator_intervals
+								for $y in $denominator_intervals
+								$x / $y
+								)
+
+	list(min($list_of_intervals), max($list_of_intervals))
+			
+/** 
+ * fact intervals
+ * 
+ * This function returns a list of two intervals, the first being the lower bound and the second being the upperbound
+ * of possible values for the result of the fact. The function uses the decimals of the fact to determien the interval
+ * 
+ * @param factset - $factItem - Passes a factset value 
+ * @return list - Returns a list of the minimum value and the maximum value of the fact.
+**/
+
+function fact_intervals($factItem)
+
+	$fact_decimals =  if $factItem.decimals == inf
+								10
+							else
+								if $factItem.decimals == none
+									0
+								else
+									$factItem.decimals
+
+	
+
+	$fact_interval_factor = (10.power(-1 * $fact_decimals))/2;
+	
+
+	$fact_intervals = list(($factItem - $fact_interval_factor),($factItem + $fact_interval_factor));
+
+	$fact_intervals
 
 /** 
  * match_set_substring
@@ -555,7 +674,7 @@ function getDimensionSums($concept, $cube, $drs-role)
 			for $dimObject in $dimensions
 				$dim = $dimObject.concept.name
 				
-				/** Want to exclude legal entity axis as a dimension that is added **/
+				/** Want to exclude legal entity axis and statement scenerio axis as this is a dimension that is added **/
 
 				if $dim.local-name in list('LegalEntityAxis','StatementScenarioAxis')
 					skip
@@ -650,3 +769,24 @@ function most_frequent($list_of_items)
                               )
                               )
             $index[$max_occurence]
+
+/**
+ * 
+ * @param factset - $left - Passes a factset value to compare to a second parameter called $right
+ * @param factset - $right - Passes a factset value to compare to the first parameter called $left
+ * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
+ * @param weight - $weight - value of 1 or -1 that determines if the sign is flipped
+ * @return boolean - Returns true if the two values provided are outside of the tolerance range.
+**/
+
+function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
+$tolerance1 = if ($left.decimals < $right.decimals) 
+					$left.decimals
+				else 	
+					$right.decimals;
+$tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
+
+if (abs(round($left,$tolerance1) - round($right,$tolerance1)*$weight) > $tolerance2) 
+	true
+else 
+	false 

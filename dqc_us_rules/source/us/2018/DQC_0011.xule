@@ -45,19 +45,3 @@ rule-suffix
 $rule_suffix_id
 
 effectiveDate $effective_dates[$rule_suffix_id]
-
-
-
-
-
-function tolerance_for_decimals_sign_flip($left, $right, $decimal_tolerance_factor, $weight)
-$tolerance1 = if ($left.decimals < $right.decimals) 
-					$left.decimals
-				else 	
-					$right.decimals;
-$tolerance2 = (10.power(-1 * $tolerance1)) * $decimal_tolerance_factor;
-
-if (abs(round($left,$tolerance1) - round($right,$tolerance1)*$weight) > $tolerance2) 
-	true
-else 
-	false 

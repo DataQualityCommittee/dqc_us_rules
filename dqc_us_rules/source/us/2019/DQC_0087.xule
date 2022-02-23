@@ -57,7 +57,8 @@ if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* 
 						false
 					else
 						if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
-							{@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiability @unit=*}
+							$OLL = list({@concept = OperatingLeaseLiability @unit=*})
+							({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiability @unit=*}) or $OLL.length == 0
 						else
 							true
 else

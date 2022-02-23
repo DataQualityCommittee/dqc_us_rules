@@ -18,15 +18,15 @@ $network = FILTER taxonomy().networks(parent-child) where ($item.concept-names.c
 
 $network.count > 0 
  AND
- count(list([COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect])) == 0 AND
- count(list([COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
- count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecrease])) == 0 AND
- count(list([COVERED @CashPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
- count(list([COVERED @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect])) == 0 AND
- count(list([COVERED @concept = qname($extension_ns,'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations')])) == 0 AND
- count(list([COVERED @concept = qname($extension_ns,'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations')])) == 0 AND
- count(list([COVERED @NetCashProvidedByUsedInContinuingOperations])) == 0 AND
- count(list([COVERED @CashPeriodIncreaseDecrease])) == 0
+ count(list({COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect})) == 0 AND
+ count(list({COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
+ count(list({COVERED @CashAndCashEquivalentsPeriodIncreaseDecrease})) == 0 AND
+ count(list({COVERED @CashPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
+ count(list({COVERED @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
+ count(list({COVERED @concept = qname($extension_ns,'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations')})) == 0 AND
+ count(list({COVERED @concept = qname($extension_ns,'CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations')})) == 0 AND
+ count(list({COVERED @NetCashProvidedByUsedInContinuingOperations})) == 0 AND
+ count(list({COVERED @CashPeriodIncreaseDecrease})) == 0
 
 MESSAGE
 "The filing includes a cash flow statement in the role {$network.role.description.join(",")}, but does not report a value for the change in cash using any of the following elements:
