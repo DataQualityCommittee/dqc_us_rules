@@ -8,12 +8,9 @@ Taxonomy: US GAAP 2022
 
 **/
 
-/**  
-
-
 rule-name-prefix DQC
 
-assert US.0133.9728 satisfied
+assert US.0133.9831 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $ComponentAmount = {@concept in list(EquityMethodInvestmentOwnershipPercentage, EquityMethodInvestmentDescriptionOfPrincipalActivities)};
@@ -43,7 +40,7 @@ rule-focus $ComponentAmount
 effectiveDate $effective_dates[$rule_id]
 
 
-assert US.0133.9729 satisfied
+assert US.0133.9832 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -72,7 +69,7 @@ rule-focus $EquityMethodFact
 
 effectiveDate $effective_dates[$rule_id]
 
-assert US.0133.9730 satisfied
+assert US.0133.9833 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -98,5 +95,3 @@ SEVERITY error
 rule-focus $EquityMethodFact
 
 effectiveDate $effective_dates[$rule_id]
-
-**/
