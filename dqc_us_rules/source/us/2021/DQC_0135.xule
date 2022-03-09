@@ -1,0 +1,126 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+**/
+
+
+rule-name-prefix DQC
+
+constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibleEnumerationLineItemLocation' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
+
+assert US.0135.9835 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $ext_pairs in $EXT_ENUM
+	$FS_concept = $ext_pairs[1]
+	$related_ext_enum = $ext_pairs[2]
+
+/** If concept amount is reported but is not included in the Financial statement presentation then the extensible list element ExtensibleList must be tagged with a value. **/
+
+/** Does the concept exist and is the report a 10-K **/
+
+if exists([@concept = $FS_concept @BalanceSheetLocationAxis @unit=* where $fact != 0]#FS_Concept_Item) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+	
+	/** Identify all presentation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no presentations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$fsConcepts = sum(set(for ($network in $fsNetworks)
+								$network.concepts));
+								
+		$fsConceptsQname = filter $fsConcepts returns $item.name;
+
+		/** Identify if FinanceLeaseLiability is contained in the financial statements**/
+
+		if $fsConceptsQname.contains($FS_concept) 
+			false
+			/** Rule will not run if the company is using current and non current finance leases as these will be in the balance sheet **/
+		else
+			
+				/** Determine if any the extensible list element has been used with a value  **/
+				if exists({@concept = $related_ext_enum @unit})
+				 	false
+				else 
+					true
+else
+ 	false
+ 
+
+
+message
+
+"The element {$FS_Concept_Item.concept.name} with a value of {$FS_Concept_Item} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList should be used to identify the account where the Finance Lease liability is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Finance Lease liability has been apportioned.
+ 
+Period :{$FS_Concept_Item.period}
+Dimensions : {$FS_Concept_Item.dimensions.join(', ','=')}
+Unit : {$FS_Concept_Item.unit}
+Decimals: {$FS_Concept_Item.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $FS_Concept_Item 
+
+
+ASSERT US.0120.9578 SATISFIED
+
+/** This rule identifies if an extended link role is **/
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Identify all presentation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no presentations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$fsConcepts = sum(set(for ($network in $fsNetworks)
+								$network.concepts));
+								
+		$fsConceptsQname = filter $fsConcepts where $item.data-type.name == xbrli:monetaryItemType returns $item.name;
+
+		for $ext_pairs in $EXT_ENUM
+			$FS_concept = $ext_pairs[1]
+			$related_ext_enum = $ext_pairs[2]
+
+			$listItem = {@concept = $related_ext_enum}
+			for $x in $listItem
+				not $fsConceptsQname.contains($x)
+			
+
+	message
+	"The extensible list item {$ext_pairs} has a value of {$x}. This item refers to the location of this item in the financial statements.  However, the concept {$x} does not appear in the face financial statements. Either update the value of the extensible list item {$ext_pairs} with the correct balance sheet element or add the balance sheet line item {$x} to the calculation linkbase in the balance sheet role.
+
+	Rule Element Id:{$ruleId}
+	Rule version: {$ruleVersion}"
+
+	severity error
+	status $status
+	effectiveDate $effective_dates[$ruleId]
+
