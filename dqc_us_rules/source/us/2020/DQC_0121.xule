@@ -54,8 +54,6 @@ rule-focus $fact1
 assert US.0121.9581 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
-$document_period_end = $document_period.period.end;
 
 $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
 				first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
@@ -91,9 +89,9 @@ else
 
 		$fact1 = if set('S-1','S-1/A').contains([covered @concept.local-name ='DocumentType'])
 				/** Private companies do not have to adopt ASU's until after 2021-12-15 **/
-				{@concept = $transitionElement where ($fact.period.start > date('2021-12-15') and $fact.concept.period-type == duration) or ($fact.period.start > date('2022-12-15') and $fact.concept.period-type == instant) and ($fact.period.end == $document_period_end)}
+				{@concept = $transitionElement where ($fact.period.start > date('2021-12-15') and $fact.concept.period-type == duration) or ($fact.period.start > date('2022-12-15') and $fact.concept.period-type == instant)}
 			else 
-				{@concept = $transitionElement where $fact.period.end >= date('2020-01-01') and ($fact.period.end == $document_period_end)}
+				{@concept = $transitionElement where $fact.period.end >= date('2020-01-01')}
 
 		$factIsTextBlock = $fact1.is-type(nonnum:textBlockItemType);
 		
