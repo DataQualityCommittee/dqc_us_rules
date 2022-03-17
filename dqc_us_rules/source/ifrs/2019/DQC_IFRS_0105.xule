@@ -38,7 +38,7 @@ $calcRelationshipItems = if $calcNetworks == set()
                         sum(set(for $network in $calcNetworks
                                 $network.relationships))                        
 
-$CF_Exclusions = set(EffectOfExchangeRateChangesOnCashAndCashEquivalents)
+$CF_Exclusions = set(EffectOfExchangeRateChangesOnCashAndCashEquivalents, IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations)
 
 $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlowStatementExplanatory) taxonomy $ifrs-gaap where $relationship.target.is-monetary == true returns set (target-name);
                         
@@ -56,7 +56,7 @@ for $presNetwork in $presNetworks
 
                                         /** GET monetary children of root elements **/
                                         $levelOneItemsPreExemptions = navigate parent-child children from $presNetwork.roots role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
-                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents, IncreaseDecreaseInCashAndCashEquivalentsDiscontinuedOperations)
+                                        $levelOneItems = $levelOneItemsPreExemptions - set(IncreaseDecreaseInCashAndCashEquivalents)
 
                                         /** Get monetary items from presentation **/
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;

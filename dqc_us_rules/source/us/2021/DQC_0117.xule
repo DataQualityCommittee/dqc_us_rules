@@ -4,7 +4,7 @@ DQC Rules
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2021
-Release Version 16
+Release Version 17
 **/
 
 RULE-NAME-PREFIX DQC
@@ -33,6 +33,14 @@ and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $statementCubes
 					list($y.drs-role, $y.dimensions));
+
+/** GET THE DOCUMENT PERIOD 
+** Only use facts where the duration matches
+** This is done so that the statement cube dosent include peridos that were not reported in the cube.
+**/
+
+$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
+$document_period_duration = $document_period.period.days;
 
 /** Go through each cube **/
 for $drs_role in $drs_roles
@@ -71,7 +79,8 @@ for $drs_role in $drs_roles
 				$member_string = sum(list(for $member_fact in $member_facts
 					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
 			
-				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary]
+				/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
+				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
 
 				/** Get the financial statement cube **/
 				$bs_cubes = (filter $statementCubes where $item.drs-role == $drs_role[1]).to-list;
@@ -84,11 +93,19 @@ for $drs_role in $drs_roles
 						** this rule excludes those cases where the bank breaks down revenue and uses the product or service axis and the element NonInterestIncome
 						** appears in the cube and the value of the default is greater than the value of the members. In these cases a remainder is embedded somewhere else.
 						**/
-						$additional_message = "The value of the dimensions is greater than the the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
+						$additional_message = "The value of the dimensions is greater than the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
 						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2) and $member_sums > $TotalDefault
 					else
-						$additional_message = "When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases."
-						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+						if $member_sums < $TotalDefault and $bs_cube.primary-concepts.name.contains(Revenues)
+							$calcRevComponents = navigate summation-item descendants from Revenues role $bs_cube.drs-role.uri returns set (target-name);
+							if $calcRevComponents.length > 1 and ($calcRevComponents intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax)).length > 0 /** This checks that the breakdown could have a rev item that is 606 and non 606 **/
+								false
+							else
+								$additional_message = "The calculation breakdown of Revenues should include both Revenue From Contract With Customers and at least one additional revenue item that includes both 606 and non 606 income, if the sum of Revenue From Contract With Customers breakdown is not equal to the aggregated value of the dimension members on the ProductOrServiceAxis. Either add a calculation breakdown of Revenues or represent all the 606 revenue as members."
+								tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+						else
+							$additional_message = "When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases."
+							tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
 				else
 					$additional_message = ""
 					tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)

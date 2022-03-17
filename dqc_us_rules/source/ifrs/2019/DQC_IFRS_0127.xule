@@ -58,23 +58,30 @@ for $presNetwork in $presNetworks.sort
 					/** Determine if each concept has a default value **/
 
                     $defaultValueCount = if taxonomy().concept($concept_item).period-type == duration
-								list([@concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*]).length
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*]).length
 							else
-								list([@concept = $concept_item @@period.end = $document_period_end_date @unit=*]).length
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @unit=*]).length
                     
 
                     /** Determine if each concept has a dimension value **/
                     $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
 							else
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
                     
                     $dimensionValueCount = $dimensionValues.length
                     
                     /** If there is no default value and if there is a dimension item then flag an error **/
 
-                    if $defaultValueCount == 0 and $dimensionValueCount > 0
-                        true
+                    if $defaultValueCount == 0 and $dimensionValueCount > 0 and sum($dimensionValues) != 0
+                        
+                        //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                        $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                        if ($legalEntityAxisUsed)
+                            false
+                        else 
+                            true
                     else
                         false
 
@@ -142,18 +149,21 @@ for $presNetwork in $presNetworks.sort
         for $concept_item in $presItems
 
             $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
 							else
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
 
-            if $dimensionValues.length == 0
+            if $dimensionValues.length == 0 or sum($dimensionValues) == 0
                 skip
             else
-                $set_of_concept_facts_included_in_bs = filter $bs_cube_facts where $item in $dimensionValues;
+                $set_of_concept_facts_included_in_bs = filter $bs_cube_facts where $item.concept.name in $dimensionValues.concept.name;
 
                 $is_concept_in_table = filter sum($bs_cube.primary-concepts) where $item.name == $concept_item
 
-                if $set_of_concept_facts_included_in_bs.length == 0
+               //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                if $set_of_concept_facts_included_in_bs.length == 0 and not $legalEntityAxisUsed
                     true
                 else
                     false
@@ -161,13 +171,13 @@ for $presNetwork in $presNetworks.sort
 			skip
 
 message
-"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing includes a dimensional table to represent  this statement.  The filing  does not include a valid dimensional structure for the presentation item {$concept_item}. The concept has the following values associated with it in the filing :
+"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing uses an XBRL table called {first($bs_cube.cube-concept())} to represent this statement. The table includes the dimensions {(for $d in $bs_cube.dimensions $d.concept.name).sort.join(", ")}.  The statement presentation group {$presNetwork.role.description} includes a presentation concept called {$concept_item}. This concept  has the following values associated with it that do not appear in the financial statement table  {first($bs_cube.cube-concept())}:
 
-{$dimensionValues.sort.join(',   ')}
+{(list(for $d in $dimensionValues list($d.concept.name, $d).join(' = ')).sort).to-set.join(' \n')}
 
-None of these values however, are valid for the financial statement table. If the value appears in the financial statements, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the report. If the item is not represented on the financial statements, then the presentation item should be removed.
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table {first($bs_cube.cube-concept())}. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
 {if $is_concept_in_table.length == 0 '
-In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase and should be added.' else ''}
+In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase table nd should be added.' else ''}
 
 Total Element : {$concept_item}
 Total period : {first($dimensionValues).period} 
@@ -182,4 +192,3 @@ status $status
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($concept_item)
-

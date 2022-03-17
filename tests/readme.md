@@ -32,6 +32,6 @@ python3.5 compare.py --compare-file report.txt --test-files log.xml --expected-r
 
 #### See also `compare.py` in the root of this archive  
 
-© Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
