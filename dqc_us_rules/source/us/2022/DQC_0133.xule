@@ -13,7 +13,7 @@ rule-name-prefix DQC
 assert US.0133.9831 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$ComponentAmount = {@concept in list(EquityMethodInvestmentOwnershipPercentage, EquityMethodInvestmentDescriptionOfPrincipalActivities)};
+$ComponentAmount = {nonils @concept in list(EquityMethodInvestmentOwnershipPercentage, EquityMethodInvestmentDescriptionOfPrincipalActivities)};
 
 $Member = $ComponentAmount.dimension(srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis);
 
@@ -43,7 +43,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $FinancialDataEMI = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
 
-exists({@concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis = *}#EquityMethodFact)
+exists({nonils @concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis = *}#EquityMethodFact)
 
 
 message
@@ -70,7 +70,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $NonFinancialDataEMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target);
 
-exists({@concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis = *}#EquityMethodFact)
+exists({nonils @concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis = *}#EquityMethodFact)
 
 
 message
