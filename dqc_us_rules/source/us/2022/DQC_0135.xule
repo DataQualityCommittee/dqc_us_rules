@@ -61,7 +61,7 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 				else
 					/** Get a list of values for this element **/
 
-					$FS_Concept_Item = list({covered @concept = $FS_concept where $fact != 0});
+					$FS_Concept_Item = list({covered @concept = $FS_concept where $fact != 0}).sort;
 					
 					if $FS_Concept_Item.length > 0
 
