@@ -13,6 +13,8 @@ ASSERT IFRS.0105.9556 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('Statement') 
+and (not $item.role.uri.lower-case.contains('comprehensive'))
+and (not $item.role.description.lower-case.contains('comprehensive'))
 and (not $item.role.uri.lower-case.contains('parenthetical'))
 and (not $item.role.description.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity'))
