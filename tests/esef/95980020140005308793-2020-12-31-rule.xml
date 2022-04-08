@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in XBRL rule processor (xule) successful, version Check version using Tools->Xule->Version on the GUI or --xule-version on the command line. - xule </message>
+ <ref href="xule"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Validate EFM successful, version 1.21.1. - validate/EFM </message>
+ <ref href="validate/EFM"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.23303 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 14.15 secs at 2022-04-06T22:31:07 - https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020-12-31/reports/_IXDS </message>
+ <ref href="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020-12-31/reports/_IXDS#?#https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020-12-31/reports/95980020140005308793-2020-12-31.xhtml"/></entry>
+<entry code="DQC.IFRS.0080.8857" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." rule-suffix="8857" severity="error" effectiveDate="2019-09-30" cid="4381384560">[DQC.IFRS.0080.8857] ifrs-full:OtherCashReceiptsFromSalesOfEquityOrDebtInstrumentsOfOtherEntitiesClassifiedAsInvestingActivities has a value of -62,000 which is less than zero. This element should not have a negative value. 
+
+The properties of this ifrs-full:OtherCashReceiptsFromSalesOfEquityOrDebtInstrumentsOfOtherEntitiesClassifiedAsInvestingActivities fact are:
+Period :2019-01-01 to 2019-12-31
+Dimensions : 
+Unit : EUR
+Rule version: 17.0.2 - https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020-12-31/reports/95980020140005308793-2020-12-31.xhtml 6139</message>
+ <ref href="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020-12-31/reports/95980020140005308793-2020-12-31.xhtml#element(/1/2/17/1/1/27/3/1/1/1)" sourceLine="6139"/></entry>
+<entry code="DQC.IFRS.0105.9556" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" effectiveDate="2021-05-01" cid="4381384560">[DQC.IFRS.0105.9556] 
+The following elements are in the presentation linkbase of 00200 - Statement - Consolidated Income Statement but are not included in any calculation relationship in the filing.
+ifrs-full:ProfitLossAttributableToNoncontrollingInterests
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+
+
+Rule Element Id:9556
+Rule version: 17.0.2 - </message></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLossBeforeTax in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLossBeforeTax. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLossBeforeTax = -72,413,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLossBeforeTax is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLossBeforeTax
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4251</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLossBeforeTax" sourceLine="4251"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:DepreciationAndAmortisationExpense in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:DepreciationAndAmortisationExpense. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:DepreciationAndAmortisationExpense = 110,279,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept DepreciationAndAmortisationExpense is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:DepreciationAndAmortisationExpense
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 881</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_DepreciationAndAmortisationExpense" sourceLine="881"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:IncomeTaxExpenseContinuingOperations in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:IncomeTaxExpenseContinuingOperations. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:IncomeTaxExpenseContinuingOperations = -14,946,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept IncomeTaxExpenseContinuingOperations is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:IncomeTaxExpenseContinuingOperations
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2988</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_IncomeTaxExpenseContinuingOperations" sourceLine="2988"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:OtherIncome in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:OtherIncome. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:OtherIncome = 18,103,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept OtherIncome is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:OtherIncome
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4067</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_OtherIncome" sourceLine="4067"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:FinanceCosts in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:FinanceCosts. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:FinanceCosts = 47,258,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept FinanceCosts is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:FinanceCosts
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2605</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_FinanceCosts" sourceLine="2605"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:OtherGainsLosses in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:OtherGainsLosses. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:OtherGainsLosses = -49,890,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept OtherGainsLosses is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:OtherGainsLosses
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4065</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_OtherGainsLosses" sourceLine="4065"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:RawMaterialsAndConsumablesUsed in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:RawMaterialsAndConsumablesUsed. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:RawMaterialsAndConsumablesUsed = 734,599,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept RawMaterialsAndConsumablesUsed is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:RawMaterialsAndConsumablesUsed
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4361</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_RawMaterialsAndConsumablesUsed" sourceLine="4361"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod = 1,598,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4740</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod" sourceLine="4740"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLoss in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLoss. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLoss = 0 
+ifrs-full:ProfitLoss = 7,686,000 
+ifrs-full:ProfitLoss = -65,153,000 
+ifrs-full:ProfitLoss = -57,467,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLoss is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLoss
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : ifrs-full:ComponentsOfEquityAxis=ifrs-full:SharePremiumMember
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4243</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLoss" sourceLine="4243"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ChangesInInventoriesOfFinishedGoodsAndWorkInProgress in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ChangesInInventoriesOfFinishedGoodsAndWorkInProgress. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ChangesInInventoriesOfFinishedGoodsAndWorkInProgress = -39,750,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ChangesInInventoriesOfFinishedGoodsAndWorkInProgress is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ChangesInInventoriesOfFinishedGoodsAndWorkInProgress
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 491</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ChangesInInventoriesOfFinishedGoodsAndWorkInProgress" sourceLine="491"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLossAttributableToNoncontrollingInterests in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLossAttributableToNoncontrollingInterests. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLossAttributableToNoncontrollingInterests = 7,686,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLossAttributableToNoncontrollingInterests is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLossAttributableToNoncontrollingInterests
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4246</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLossAttributableToNoncontrollingInterests" sourceLine="4246"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:FinanceIncomeCost in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:FinanceIncomeCost. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:FinanceIncomeCost = -41,126,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept FinanceIncomeCost is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:FinanceIncomeCost
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2608</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_FinanceIncomeCost" sourceLine="2608"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:EmployeeBenefitsExpense in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:EmployeeBenefitsExpense. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:EmployeeBenefitsExpense = 1,877,868,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept EmployeeBenefitsExpense is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:EmployeeBenefitsExpense
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2318</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_EmployeeBenefitsExpense" sourceLine="2318"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:OtherExpenseByNature in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:OtherExpenseByNature. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:OtherExpenseByNature = 393,625,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept OtherExpenseByNature is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:OtherExpenseByNature
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4057</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_OtherExpenseByNature" sourceLine="4057"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost = -36,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2761</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_GainLossArisingFromDerecognitionOfFinancialAssetsMeasuredAtAmortisedCost" sourceLine="2761"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLossFromContinuingOperations in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLossFromContinuingOperations. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLossFromContinuingOperations = -57,467,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLossFromContinuingOperations is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLossFromContinuingOperations
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4252</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLossFromContinuingOperations" sourceLine="4252"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:OtherWorkPerformedByEntityAndCapitalised in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:OtherWorkPerformedByEntityAndCapitalised. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:OtherWorkPerformedByEntityAndCapitalised = 51,403,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept OtherWorkPerformedByEntityAndCapitalised is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:OtherWorkPerformedByEntityAndCapitalised
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4119</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_OtherWorkPerformedByEntityAndCapitalised" sourceLine="4119"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:Revenue in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:Revenue. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:Revenue = 3,043,408,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept Revenue is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:Revenue
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4583</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_Revenue" sourceLine="4583"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLossAttributableToOwnersOfParent in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLossAttributableToOwnersOfParent. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLossAttributableToOwnersOfParent = -65,153,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLossAttributableToOwnersOfParent is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLossAttributableToOwnersOfParent
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4250</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLossAttributableToOwnersOfParent" sourceLine="4250"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:FinanceIncome in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:FinanceIncome. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:FinanceIncome = 6,168,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept FinanceIncome is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:FinanceIncome
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2607</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_FinanceIncome" sourceLine="2607"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss = 19,288,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 2957</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss" sourceLine="2957"/></entry>
+<entry code="DQC.IFRS.0127.9597" level="error">
+ <message filing_url="https://filings.xbrl.org/95980020140005308793/2020-12-31/ESEF/ES/0/95980020140005308793-2020-12-31.zip/95980020140005308793-2020..." severity="error" status="Approved" effectiveDate="None" cid="4381384560">[DQC.IFRS.0127.9597] The statement 00200 - Statement - Consolidated Income Statement includes the concept ifrs-full:ProfitLossFromOperatingActivities in the presentation tree. The filing uses an XBRL table called ifrs-full:EarningsPerShareTable to represent this statement. The table includes the dimensions ifrs-full:ClassesOfOrdinarySharesAxis.  The statement presentation group 00200 - Statement - Consolidated Income Statement includes a presentation concept called ifrs-full:ProfitLossFromOperatingActivities. This concept  has the following values associated with it that do not appear in the financial statement table  ifrs-full:EarningsPerShareTable:
+
+ifrs-full:ProfitLossFromOperatingActivities = -32,885,000
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table ifrs-full:EarningsPerShareTable. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+
+In this case the concept ProfitLossFromOperatingActivities is missing from the definition linkbase table nd should be added.
+
+Total Element : ifrs-full:ProfitLossFromOperatingActivities
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+
+Rule Element Id:9597
+Rule version: 17.0.2 - http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd 4260</message>
+ <ref href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ProfitLossFromOperatingActivities" sourceLine="4260"/></entry>
+</log>
