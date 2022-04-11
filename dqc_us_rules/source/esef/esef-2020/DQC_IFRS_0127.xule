@@ -13,7 +13,7 @@ ASSERT IFRS.0127.9596 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  Get the latest Report Period**/
-$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements')});
+$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements','DescriptionOfPresentationCurrency','DateOfEndOfReportingPeriod2013')});
 
 if $document_period_facts.length < 1
 	skip
@@ -24,7 +24,7 @@ $document_period_start_date = $document_period.period.start;
 
 
 /** Get tables for financial statement items **/
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('Statement') 
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.concept-names.contains(IncomeStatementAbstract)  or $item.concept-names.contains(StatementOfCashFlowsAbstract))
 and (not $item.role.uri.lower-case.contains('parenthetical'))
 and (not $item.role.description.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity'))
@@ -131,12 +131,18 @@ ASSERT IFRS.0127.9597 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  Get the latest Report Period**/
-$document_period = first(list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements')}));
+$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements','DescriptionOfPresentationCurrency','DateOfEndOfReportingPeriod2013')});
+
+if $document_period_facts.length < 1
+	skip
+else
+$document_period = first($document_period_facts)
 $document_period_end_date = $document_period.period.end - time-span("P1D");
 $document_period_start_date = $document_period.period.start;
 
+
 /** Get tables for financial statement items **/
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('Statement') 
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.concept-names.contains(IncomeStatementAbstract)  or $item.concept-names.contains(StatementOfCashFlowsAbstract))
 and (not $item.role.uri.lower-case.contains('parenthetical'))
 and (not $item.role.description.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity'))

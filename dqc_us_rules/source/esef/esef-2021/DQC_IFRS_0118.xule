@@ -13,7 +13,7 @@ ASSERT IFRS.0118.9727 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  Get the latest Report Period**/
-$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements')});
+$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements','DescriptionOfPresentationCurrency','DateOfEndOfReportingPeriod2013')});
 
 if $document_period_facts.length < 1
 	skip
@@ -24,7 +24,7 @@ $document_period_start_date = $document_period.period.start
 
 /** Get tables for financial statement items **/
 
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('Statement') 
+$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.contains(IncomeStatementAbstract)  or $item.primary-concepts.contains(StatementOfCashFlowsAbstract))
 and (not $item.drs-role.uri.lower-case.contains('parenthetical'))
 and (not $item.drs-role.description.lower-case.contains('parenthetical')) 
 and (not $item.drs-role.uri.lower-case.contains('equity'))

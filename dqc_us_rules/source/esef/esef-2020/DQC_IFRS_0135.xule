@@ -1,0 +1,45 @@
+/**
+DQR Rules
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2021
+**/
+
+rule-name-prefix DQC
+
+assert IFRS.0135.9835 satisfied
+
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract));
+
+if $presNetworks.length > 0
+    skip
+else
+    true
+
+message
+"The filing does not report the element StatementOfFinancialPositionAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement of Financial Position appearing in the filing."
+
+assert IFRS.0135.9836 satisfied
+
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(IncomeStatementAbstract));
+
+if $presNetworks.length > 0
+    skip
+else
+    true
+
+message
+"The filing does not report the element IncomeStatementAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Income Statement appearing in the filing."
+
+assert IFRS.0135.9837 satisfied
+
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract));
+
+if $presNetworks.length > 0
+    skip
+else
+    true
+
+message
+"The filing does not report the element StatementOfCashFlowsAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement Of Cash Flows  appearing in the filing."

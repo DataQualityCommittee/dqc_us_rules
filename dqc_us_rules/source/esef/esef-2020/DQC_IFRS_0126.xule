@@ -13,10 +13,10 @@ ASSERT IFRS.0126.9595 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  Get the latest Report Period**/
-$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements')});
+$document_period_facts = list({covered @concept.local-name in list('NameOfReportingEntityOrOtherMeansOfIdentification','LegalFormOfEntity','DomicileOfEntity','CountryOfIncorporation','AddressOfRegisteredOfficeOfEntity','PeriodCoveredByFinancialStatements','DescriptionOfPresentationCurrency','DateOfEndOfReportingPeriod2013')});
 
 /** Get tables for financial statement items **/
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('Statement') 
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.concept-names.contains(IncomeStatementAbstract)  or $item.concept-names.contains(StatementOfCashFlowsAbstract))
 and (not $item.role.uri.lower-case.contains('parenthetical'))
 and (not $item.role.description.lower-case.contains('parenthetical')) 
 and (not $item.role.uri.lower-case.contains('equity'))
