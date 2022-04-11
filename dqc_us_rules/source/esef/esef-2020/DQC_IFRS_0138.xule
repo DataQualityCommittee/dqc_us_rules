@@ -6,9 +6,9 @@ DQR Rules
 Taxonomy: IFRS 2021
 **/
 
-rule-name-prefix DQC
+rule-name-prefix DQR
 
-assert IFRS.0135.9835 satisfied
+assert IFRS.0138.9839 satisfied
 
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract));
 
@@ -20,7 +20,7 @@ else
 message
 "The filing does not report the element StatementOfFinancialPositionAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement of Financial Position appearing in the filing."
 
-assert IFRS.0135.9836 satisfied
+assert IFRS.0138.9840 satisfied
 
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(IncomeStatementAbstract));
 
@@ -32,7 +32,7 @@ else
 message
 "The filing does not report the element IncomeStatementAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Income Statement appearing in the filing."
 
-assert IFRS.0135.9837 satisfied
+assert IFRS.0138.9841 satisfied
 
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract));
 
