@@ -61,7 +61,7 @@ $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlow
                         
 
 for $presNetwork in $presNetworks
-    $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
+    $presConceptNoCalculation =  if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                         $presConceptItems = $presNetwork.concept-names;
                                         
                                         /** GET ANY SUPPLEMENTAL ABSTRACTS **/
@@ -105,7 +105,7 @@ for $presNetwork in $presNetworks
                                         
                                         $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set)
     
-        $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+        $cash_flow_message =    if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                 "
 If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the extension abstracts  SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
                             else
