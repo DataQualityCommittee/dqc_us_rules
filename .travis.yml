@@ -9,6 +9,8 @@ env:
   global:
     - EXPECTED=./tests/output
     - CURDIR=$(pwd)
+    - GH_SLUG=https://github.com/${TRAVIS_REPO_SLUG}
+    - PR_BR=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
   matrix:
     - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1476963/000155837022003452/htbx-20211231x10k.htm", "xule_run_only":"DQC.US.0133.9831"},{"file":"https://www.sec.gov/Archives/edgar/data/780571/000078057122000004/itri-20211231.htm", "xule_run_only":"DQC.US.0133.9831"},{"file":"https://www.sec.gov/Archives/edgar/data/1514705/000151470522000004/sxc-20211231.htm", "xule_run_only":"DQC.US.0133.9831"},{"file":"https://www.sec.gov/Archives/edgar/data/1463972/000155837022002641/vuzi-20211231x10k.htm", "xule_run_only":"DQC.US.0133.9831"}]' EXFILES=$EXPECTED/DQC.US.0133.9831_hbtx-us-2021.xml,$EXPECTED/DQC.US.0133.9831_itri-us-2021.xml,$EXPECTED/DQC.US.0133.9831_sxc-us-2021.xml,$EXPECTED/DQC.US.0133.9831_vuzi-us-2021.xml
