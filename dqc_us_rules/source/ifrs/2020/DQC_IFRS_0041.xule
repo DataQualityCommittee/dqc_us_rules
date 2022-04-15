@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2019
@@ -8,7 +8,7 @@ Original Release: Version 6
 **/
 
 
-rule-name-prefix DQC
+rule-name-prefix DQR
 
 assert IFRS.0041.73 satisfied
 
@@ -44,7 +44,9 @@ for ($x in $default_in_filing_not_in_taxonomy)
 		false
 
 message
-"The dimension default defined for the axis in the base Taxonomy should not be changed in a company extension taxonomy. The default for the {$dim_name} in the base taxonomy is {$dim_base_name}, but the default has been replaced with {$mem_name} in the extension taxonomy role {$dim_role}.  This issue is addressed in Question E.16 (Updated 02/05/2013) (formerly Question 38) of the SEC Staff Interpretations and FAQs Related to Interactive Data Disclosure.
+"The dimension default defined for the axis in the base Taxonomy should not be changed in a company extension taxonomy. The default for the {$dim_name} in the base taxonomy is {$dim_base_name}, but the default has been replaced with {$mem_name} in the extension taxonomy role {$dim_role}.
+
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
