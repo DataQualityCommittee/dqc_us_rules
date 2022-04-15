@@ -1,5 +1,5 @@
 # Using DQC Rules with Arelle - from a command prompt 
-[return to README](README.md#using) | [managing rulesets from the command prompt](usage_rulesets.md)
+[return to Deployment and Usage](usage.md#using) | [managing rulesets from the command prompt](usage_rulesets.md)
 
 ### Confirm the DQC Arelle plugin is installed by running `arelleCmdLine --plugin validate/DQC`.
 
@@ -36,7 +36,7 @@ To get additional options use the option `--help` (eg. `arelleCmdLine --plugins 
 
 The DQC plugin options will be displayed at the bottom of the list under the title "DQC validation plugin". All DQC specific options start with `--DQC` or `--xule`.
 
-[return to README](README.md#using) | [managing rulesets from the command prompt](usage_rulesets.md)
+[return to Deployment and Usage](usage.md#using) | [managing rulesets from the command prompt](usage_rulesets.md)
  
 © Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
