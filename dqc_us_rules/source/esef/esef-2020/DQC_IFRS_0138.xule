@@ -9,7 +9,7 @@ Taxonomy: IFRS 2021
 rule-name-prefix DQR
 
 assert IFRS.0138.9839 satisfied
-
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract));
 
 if $presNetworks.length > 0
@@ -18,10 +18,13 @@ else
     true
 
 message
-"The filing does not report the element StatementOfFinancialPositionAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement of Financial Position appearing in the filing."
+"The filing does not report the element StatementOfFinancialPositionAbstract in any presentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement of Financial Position appearing in the filing.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
 
 assert IFRS.0138.9840 satisfied
-
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(IncomeStatementAbstract));
 
 if $presNetworks.length > 0
@@ -30,10 +33,13 @@ else
     true
 
 message
-"The filing does not report the element IncomeStatementAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Income Statement appearing in the filing."
+"The filing does not report the element IncomeStatementAbstract in any presentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Income Statement appearing in the filing.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
 
 assert IFRS.0138.9841 satisfied
-
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfCashFlowsAbstract));
 
 if $presNetworks.length > 0
@@ -42,4 +48,7 @@ else
     true
 
 message
-"The filing does not report the element StatementOfCashFlowsAbstract in any presenentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement Of Cash Flows  appearing in the filing."
+"The filing does not report the element StatementOfCashFlowsAbstract in any presentation linkroles.  According to ESMA filing rules this abstract item must be reported as the root element of a Statement Of Cash Flows  appearing in the filing.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
