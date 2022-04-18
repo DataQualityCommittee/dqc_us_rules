@@ -1,34 +1,51 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2020
 
 **/
 
-RULE-NAME-PREFIX DQC
+RULE-NAME-PREFIX DQR
 
 ASSERT IFRS.0105.9556 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
-and (not $item.role.description.lower-case.contains('parenthetical'))
-and (not $item.role.uri.lower-case.contains('parenthetical')) 
-and (not $item.role.uri.lower-case.contains('equity')) 
-and (not $item.role.uri.lower-case.contains('deficit')) 
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.concept-names.contains(IncomeStatementAbstract)  or $item.concept-names.contains(StatementOfCashFlowsAbstract))
+and (not $item.role.uri.lower-case.contains('comprehensive'))
+and (not $item.role.description.lower-case.contains('comprehensive'))
+and (not $item.role.uri.lower-case.contains('parenthetical'))
+and (not $item.role.description.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity'))
+and (not $item.role.description.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit'))
+and (not $item.role.description.lower-case.contains('deficit')) 
 and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.description.lower-case.contains('stockholders')) 
 and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.description.lower-case.contains('capital')) 
 and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.description.lower-case.contains('investment')) 
 and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.description.lower-case.contains('changes')) 
 and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.description.lower-case.contains('shareholder')) 
 and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.description.lower-case.contains('convertible')) 
 and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.description.lower-case.contains('preferred'))  
 and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.description.lower-case.contains('temporaryequity')) 
 and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.description.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.description.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
-and (not $item.role.uri.lower-case.contains('highlights'))
+and (not $item.role.description.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('notes'))
+and (not $item.role.description.lower-case.contains('notes'))
+and (not $item.role.uri.lower-case.contains('highlights'));
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -44,7 +61,7 @@ $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlow
                         
 
 for $presNetwork in $presNetworks
-    $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
+    $presConceptNoCalculation =  if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                         $presConceptItems = $presNetwork.concept-names;
                                         
                                         /** GET ANY SUPPLEMENTAL ABSTRACTS **/
@@ -65,8 +82,8 @@ for $presNetwork in $presNetworks
                                                                 else
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
-                                        
-                                        $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+
+                                        $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract, CashAndCashEquivalentsIfDifferentFromStatementOfFinancialPositionAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesAbstract, ChangesInLiabilitiesArisingFromFinancingActivitiesAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesLineItems) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items + $levelOneItems)
                                 else 
@@ -88,9 +105,9 @@ for $presNetwork in $presNetworks
                                         
                                         $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set)
     
-        $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+        $cash_flow_message =    if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                 "
-If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the extension abstracts  SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the following abstracts  IncomeTaxesPaidRefundAbstract, CashAndCashEquivalentsIfDifferentFromStatementOfFinancialPositionAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesAbstract, ChangesInLiabilitiesArisingFromFinancingActivitiesAbstract or DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesLineItems."
                             else
                                 "";
                                 
