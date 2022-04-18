@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2021
@@ -60,7 +60,7 @@ $Non_CF_Items = navigate parent-child descendants from list(DisclosureOfCashFlow
                         
 
 for $presNetwork in $presNetworks
-    $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
+    $presConceptNoCalculation =  if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                         $presConceptItems = $presNetwork.concept-names;
                                         
                                         /** GET ANY SUPPLEMENTAL ABSTRACTS **/
@@ -82,7 +82,7 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         
-                                        $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+                                        $supplementalCashItems = navigate parent-child descendants from ($supplementalAbstracts.to-set + set(IncomeTaxesPaidRefundAbstract, CashAndCashEquivalentsIfDifferentFromStatementOfFinancialPositionAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesAbstract, ChangesInLiabilitiesArisingFromFinancingActivitiesAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesLineItems) + $noncashAbstracts.to-set) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
 
                                         $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items + $levelOneItems)
                                 else 
@@ -104,9 +104,9 @@ for $presNetwork in $presNetworks
                                         
                                         $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set)
     
-        $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+        $cash_flow_message =    if $presNetwork.concept-names.contains(StatementOfCashFlowsAbstract)
                                 "
-If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the extension abstracts  SupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, NoncashInvestingAndFinancingItemsAbstract, NonCashOperatingAndFinancingActivitiesAbstract, NonCashOperatingAndInvestingActivitiesAbstract, NoncashFinancingItemsAbstract or NoncashInvestingItemsAbstract."
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of DisclosureOfCashFlowStatementExplanatory or the following abstracts  IncomeTaxesPaidRefundAbstract, CashAndCashEquivalentsIfDifferentFromStatementOfFinancialPositionAbstract, DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesAbstract, ChangesInLiabilitiesArisingFromFinancingActivitiesAbstract or DisclosureOfReconciliationOfLiabilitiesArisingFromFinancingActivitiesLineItems."
                             else
                                 "";
                                 
