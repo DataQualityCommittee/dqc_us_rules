@@ -2,7 +2,7 @@
 
 The following automated checks have been drawn from experience with IFRS filings to the SEC and form the initial XBRL International Data Quality Rules in the Beta Release. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. 
 
-These freely-available automated checks are written in an [open-source processing language (XULE)](https://xbrl.us/home/use/what-is-xule) that is used for XBRL business rules, rendering, and data collection activities. XULE is available as a plug-in for the free [Arelle](https://arelle.org/pub) processor, and works with the ruleset.zip files maintained here on ESEF filings. 
+These freely-available automated checks are written in an [open-source processing language (XULE)](https://xbrl.us/home/use/what-is-xule) that is used for XBRL business rules, rendering, and data collection activities. The open source [XULE engine and ESEF plugin](https://github.com/xbrlus/xule/releases/latest) works with the [Arelle](https://arelle.org/pub) processor, and works with the ruleset.zip files maintained here on ESEF filings. 
 
 | Number | Short name | Rule version |
 | ----- | ----- | ----- |
@@ -17,9 +17,13 @@ These freely-available automated checks are written in an [open-source processin
 | [DQC_IFRS_0104](docs/DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members | 17 |
 | [DQC_IFRS_0105](docs/DQC_IFRS_0105/DQC_0105.md) | FS with No Associated Calculation | 17 |
 | [DQC_IFRS_0115](docs/DQC_IFRS_0115/DQC_0115.md) | Fact Value Consistency Over Time | 17 |
+| [DQC_IFRS_0118](docs/DQC_IFRS_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | 17 |
+| [DQC_IFRS_0126](docs/DQC_IFRS_0126/DQC_0126.md) | FS Calculation Check with Non Dimensional Data | 17 |
+| [DQC_IFRS_0127](docs/DQC_IFRS_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | 17 |
 | [DQC_IFRS_0128](docs/DQC_IFRS_0128/DQC_0128.md) | Dimensional Values Larger than the Default | 17 |
 | [DQC_IFRS_0129](docs/DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents | 17 |
 | [DQC_IFRS_0130](docs/DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation | 17 |
+| [DQC_IFRS_0138](docs/DQC_IFRS_0138/DQC_0138.md) | Missing Abstract from Financial Statements | 17 |
 
 © Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
