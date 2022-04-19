@@ -10,7 +10,7 @@ rule-name-prefix DQR
 
 assert IFRS.0138.9839 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.roots.contains(StatementOfFinancialPositionAbstract));
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.roots.name.contains(StatementOfFinancialPositionAbstract));
 
 if $presNetworks.length > 0
     skip
@@ -29,8 +29,8 @@ effectiveDate $effective_dates[$rule_id]
 
 assert IFRS.0138.9840 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworksIS = FILTER taxonomy().networks(parent-child) where ($item.roots.contains(IncomeStatementAbstract));
-$presNetworksCI = FILTER taxonomy().networks(parent-child) where ($item.roots.contains(StatementOfComprehensiveIncomeAbstract));
+$presNetworksIS = FILTER taxonomy().networks(parent-child) where ($item.roots.name.contains(IncomeStatementAbstract));
+$presNetworksCI = FILTER taxonomy().networks(parent-child) where ($item.roots.name.contains(StatementOfComprehensiveIncomeAbstract));
 
 $presNetworks = $presNetworksIS  + $presNetworksCI
 
@@ -51,7 +51,7 @@ effectiveDate $effective_dates[$rule_id]
 
 assert IFRS.0138.9841 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.roots.contains(StatementOfCashFlowsAbstract));
+$presNetworks = FILTER taxonomy().networks(parent-child) where ($item.roots.name.contains(StatementOfCashFlowsAbstract));
 
 if $presNetworks.length > 0
     skip
