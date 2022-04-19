@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in XBRL rule processor (xule) successful, version Check version using Tools->Xule->Version on the GUI or --xule-version on the command line. - xule </message>
+ <ref href="xule"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Validate EFM successful, version 1.21.1. - validate/EFM </message>
+ <ref href="validate/EFM"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.23303 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.70 secs at 2022-04-19T00:55:30 - https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/_IXDS </message>
+ <ref href="https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/_IXDS#?#https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/altarea-2020-12-31AR.xhtml"/></entry>
+<entry code="DQR.IFRS.0008.6819" level="error">
+ <message filing_url="https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/_IXDS" severity="error" effectiveDate="2018-06-29" cid="4528439152">[DQR.IFRS.0008.6819] The calculation in the extension taxonomy rolling up from OtherComprehensiveIncomeThatWillNotBeReclassifiedToProfitOrLossNetOfTax to OtherComprehensiveIncomeNetOfTaxGainsLossesOnRemeasurementsOfDefinedBenefitPlans in 00310 - Statement - Consolidated Statements Of Comprehensive Income is the opposite of a calculation defined in the base taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.
+Check that the concept OtherComprehensiveIncomeNetOfTaxGainsLossesOnRemeasurementsOfDefinedBenefitPlans is the correct calculation parent for this element.
+
+Rule version: 18.0.0RC1 - </message></entry>
+<entry code="DQR.IFRS.0105.9556" level="error">
+ <message filing_url="https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/_IXDS" severity="error" effectiveDate="2021-05-01" cid="4528439152">[DQR.IFRS.0105.9556] 
+The following elements are in the presentation linkbase of 00210 - Statement - Consolidated Income Statement but are not included in any calculation relationship in the filing.
+ifrs-full:ProceedsFromSalesOfInvestmentProperty, 
+ifrs-full:DisposalsInvestmentProperty, 
+altarea:NetChargeToProvisionsForRentalGuarantee
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+
+
+Rule Element Id:9556
+Rule version: 18.0.0RC1 - </message></entry>
+<entry code="DQR.IFRS.0126.9595" level="error">
+ <message filing_url="https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/_IXDS" severity="error" effectiveDate="2022-05-01" cid="4528439152">[DQR.IFRS.0126.9595] The statement 00210 - Statement - Consolidated Income Statement includes an inconsistent calculation. The value of the concept altarea:ProfitLossFromOperatingActivitiesBeforeShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod of -377,400,000  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is -377,100,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -5. All values in the financial statements should use the same decimal value. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of altarea:ProfitLossFromOperatingActivitiesBeforeShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod that should add to -377,400,000 are comprised of the following:
+
+-  	ImpairmentLossReversalOfImpairmentLossOtherNoncurrentAssets                                                     -100,000
+-  	NetChargeToProvisionsForRisksAndContingencies                                                                 -1,600,000
+-  	NetOverheadExpense                                                                                           111,900,000
++  	NetPropertyIncome                                                                                            223,800,000
++  	GainsLossesOnDisposalsOfInvestmentProperties                                                                  -4,700,000
++  	GainsLossesOnFairValueAdjustmentInvestmentProperty                                                          -580,700,000
+-  	ImpairmentLossRecognisedInProfitOrLossGoodwill                                                                 1,000,000
+-  	ImpairmentLossRecognisedInProfitOrLossInvestmentProperty                                                      59,800,000
++  	OtherOperatingIncomeExpense                                                                                   -3,800,000
++  	RentalIncomeFromInvestmentPropertyNetOfDirectOperatingExpense                                                159,300,000
+
+
+The addends are calculated based on the calculation linkbase defined for 00210 - Statement - Consolidated Income Statement. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
+
+
+Total Element : altarea:ProfitLossFromOperatingActivitiesBeforeShareOfProfitLossOfAssociatesAndJointVenturesAccountedForUsingEquityMethod
+Total Value : -377,400,000 
+Total period : 2020-01-01 to 2020-12-31 
+Dimensions : 
+Decimals : -5 
+Rule Element Id:9595
+Rule version: 18.0.0RC1 - https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/altarea-2020-12-31AR.xhtml 22968</message>
+ <ref href="https://filings.xbrl.org/969500ICGCY1PD6OT783/2020-12-31/ESEF/FR/0/altarea-2020-12-31AR.zip/altarea-2020-12-31AR/reports/altarea-2020-12-31AR.xhtml#fact_16257" sourceLine="22968"/></entry>
+</log>

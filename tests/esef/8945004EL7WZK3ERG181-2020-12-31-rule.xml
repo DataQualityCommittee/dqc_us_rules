@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in XBRL rule processor (xule) successful, version Check version using Tools->Xule->Version on the GUI or --xule-version on the command line. - xule </message>
+ <ref href="xule"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Validate EFM successful, version 1.21.1. - validate/EFM </message>
+ <ref href="validate/EFM"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.23303 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.91 secs at 2022-04-19T05:10:35 - https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/reports/_IXDS </message>
+ <ref href="https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/reports/_IXDS#?#https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/reports/alzchemgroupag-2020-12-31.xhtml"/></entry>
+<entry code="DQR.IFRS.0105.9556" level="error">
+ <message filing_url="https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/repor..." severity="error" effectiveDate="2021-05-01" cid="4430856048">[DQR.IFRS.0105.9556] 
+The following elements are in the presentation linkbase of 01 - Gewinn (Verlust) but are not included in any calculation relationship in the filing.
+ifrs-full:ProfitLossAttributableToNoncontrollingInterests
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+
+
+Rule Element Id:9556
+Rule version: 18.0.0RC1 - </message></entry>
+<entry code="DQR.IFRS.0105.9556" level="error">
+ <message filing_url="https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/repor..." severity="error" effectiveDate="2021-05-01" cid="4430856048">[DQR.IFRS.0105.9556] 
+The following elements are in the presentation linkbase of 04 - Eigenkapital und Schulden but are not included in any calculation relationship in the filing.
+ifrs-full:EquityAttributableToOwnersOfParent
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+
+
+Rule Element Id:9556
+Rule version: 18.0.0RC1 - </message></entry>
+<entry code="DQR.IFRS.0126.9595" level="error">
+ <message filing_url="https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/repor..." severity="error" effectiveDate="2022-05-01" cid="4430856048">[DQR.IFRS.0126.9595] The statement 06 - Kapitalflussrechnung includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInOperatingActivities of 43,631,000  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 43,632,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of 0. All values in the financial statements should use the same decimal value. The values reported in the financial statement in the current reporting period of 2019-01-01 to 2019-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInOperatingActivities that should add to 43,631,000 are comprised of the following:
+
++  	AbnahmeOderZunahmeDerForderungenAusLieferungenUndLeistungenUndSonstigenForderungen                             1,636,000
++  	AbnahmeOderZunahmeDerVerbindlichkeitenAusLieferungenUndLeistungenSonstigenVerbindlichkeitenSowieSonstigenRueckstellungen-8,739,000
++  	AdjustmentsForDecreaseIncreaseInInventories                                                                    2,431,000
++  	AdjustmentsForDepreciationAndAmortisationExpense                                                              19,492,000
++  	AdjustmentsForLossesGainsOnDisposalOfNoncurrentAssets                                                            -45,000
++  	AdjustmentsForProvisions                                                                                      -1,005,000
++  	FinanceIncomeCost                                                                                              5,094,000
+-  	IncomeTaxesPaidRefundClassifiedAsOperatingActivities                                                           6,191,000
+-  	InterestPaidClassifiedAsOperatingActivities                                                                    1,225,000
++  	InterestReceivedClassifiedAsOperatingActivities                                                                  133,000
++  	OtherAdjustmentsForNoncashItems                                                                                6,246,000
++  	OtherInflowsOutflowsOfCashClassifiedAsOperatingActivities                                                        313,000
++  	ProfitLossBeforeTax                                                                                           25,492,000
+
+
+The addends are calculated based on the calculation linkbase defined for 06 - Kapitalflussrechnung. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
+
+
+Total Element : ifrs-full:CashFlowsFromUsedInOperatingActivities
+Total Value : 43,631,000 
+Total period : 2019-01-01 to 2019-12-31 
+Dimensions : 
+Decimals : 0 
+Rule Element Id:9595
+Rule version: 18.0.0RC1 - https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/reports/alzchemgroupag-2020-12-31.xhtml 10741</message>
+ <ref href="https://filings.xbrl.org/8945004EL7WZK3ERG181/2020-12-31/ESEF/DE/0/alzchemgroupag-2020-12-31.zip/alzchemgroupag-2020-12-31/reports/alzchemgroupag-2020-12-31.xhtml#fact-287" sourceLine="10741"/></entry>
+</log>
