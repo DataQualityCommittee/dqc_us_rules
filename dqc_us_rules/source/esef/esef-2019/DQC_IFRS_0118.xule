@@ -24,7 +24,7 @@ $document_period_start_date = $document_period.period.start
 
 /** Get tables for financial statement items **/
 
-$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.contains(IncomeStatementAbstract)  or $item.primary-concepts.contains(StatementOfCashFlowsAbstract))
+$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.name.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.name.contains(IncomeStatementAbstract)  or $item.primary-concepts.contains(StatementOfCashFlowsAbstract))
 and (not $item.drs-role.uri.lower-case.contains('parenthetical'))
 and (not $item.drs-role.description.lower-case.contains('parenthetical')) 
 and (not $item.drs-role.uri.lower-case.contains('equity'))
