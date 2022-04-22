@@ -1,9 +1,9 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2021
+Taxonomy: IFRS 2019
 Release Version 17
 **/
 
@@ -24,7 +24,7 @@ $document_period_start_date = $document_period.period.start
 
 /** Get tables for financial statement items **/
 
-$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.contains(IncomeStatementAbstract)  or $item.primary-concepts.contains(StatementOfCashFlowsAbstract))
+$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.name.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.name.contains(IncomeStatementAbstract)  or $item.primary-concepts.name.contains(StatementOfCashFlowsAbstract))
 and (not $item.drs-role.uri.lower-case.contains('parenthetical'))
 and (not $item.drs-role.description.lower-case.contains('parenthetical')) 
 and (not $item.drs-role.uri.lower-case.contains('equity'))
