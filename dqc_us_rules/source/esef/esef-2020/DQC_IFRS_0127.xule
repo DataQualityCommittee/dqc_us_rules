@@ -174,7 +174,7 @@ and (not $item.role.uri.lower-case.contains('notes'))
 and (not $item.role.description.lower-case.contains('notes'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -');
+$statementCubes = FILTER taxonomy().cubes where ($item.primary-concepts.name.contains(StatementOfFinancialPositionAbstract) or $item.primary-concepts.name.contains(IncomeStatementAbstract)  or $item.primary-concepts.name.contains(StatementOfCashFlowsAbstract));
 
 $cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
 
