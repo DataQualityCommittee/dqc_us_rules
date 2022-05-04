@@ -30,7 +30,7 @@ The specification of the current ESEF DQR rules can be found below:
 The rules definitions make reference to the following terms:
 
 * The **report taxonomy** is the DTS of XBRL Report, and includes the extension taxonomy.
-* THe **base taxonomy** is the IFRS taxonomy corresponding to the ruleset version.  The entry point used for each ruleset is shown below.
+* The **base taxonomy** is the IFRS taxonomy corresponding to the ruleset version.  The entry point used for each ruleset is shown below.
 
 ## IFRS Entry Points
 
