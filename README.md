@@ -1,4 +1,4 @@
-# Data Quality Committee Rules &amp; Guidance
+# ESEF Data Quality Rules & Guidance
 
 The following automated checks have been drawn from experience with IFRS filings to the SEC and form the initial XBRL International Data Quality Rules in the Beta Release. 
 
