@@ -31,6 +31,8 @@ The rules definitions make reference to the following terms:
 
 * The **extension taxonomy** is the DTS of XBRL Report against which the rules are being evaluated.
 * The **base taxonomy** is the IFRS taxonomy corresponding to the ruleset version.  The entry point used for each ruleset is shown below.
+* **Monetary** concepts are concepts with a datatype of, or derived from, `xbrli:monetaryItemType`.
+* A set of facts are **dimensionally aligned** if they share the same value for all [dimensions](https://www.xbrl.org/Specification/oim/REC-2021-10-13/oim-REC-2021-10-13.html#term-dimension).  Note that this definition refers to the [OIM](https://www.xbrl.org/Specification/oim/REC-2021-10-13/oim-REC-2021-10-13.html) definition of dimension, and so includes the core dimensions such as period and unit, as well as taxonomy-defined dimensions.
 
 ## IFRS Entry Points
 
