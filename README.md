@@ -8,10 +8,10 @@ The specification of the current ESEF DQR rules can be found below:
 | ----- | ----- | ----- |
 | [DQC_IFRS_0008](docs/DQC_IFRS_0008/DQC_0008.md) | Reversed calculation | 17 |
 | [DQC_IFRS_0041](docs/DQC_IFRS_0041/DQC_0041.md) | Axis with a default member that differs from the IFRS Taxonomy | 17 |
-| [DQC_IFRS_0080](docs/DQC_IFRS_0080/DQC_0080.md) | Negative Values | 17 |
-| [DQC_IFRS_0092](docs/DQC_IFRS_0092/DQC_0092.md) | Non Positive Items | 17 |
+| [DQC_IFRS_0080](docs/DQC_IFRS_0080/DQC_0080.md) | IFRS Non-Negative Items | 17 |
+| [DQC_IFRS_0092](docs/DQC_IFRS_0092/DQC_0092.md) | IFRS Non-Positive Items | 17 |
 | [DQC_IFRS_0093](docs/DQC_IFRS_0093/DQC_0093.md) | Durational Aggregation | 17 |
-| [DQC_IFRS_0101](docs/DQC_IFRS_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees | 17 |
+| [DQC_IFRS_0101](docs/DQC_IFRS_0101/DQC_0101.md) | Misapplication of Concepts between Investing, Financing and Operating Activities | 17 |
 | [DQC_IFRS_0102](docs/DQC_IFRS_0102/DQC_0102.md) | Element Values Are Equal | 17 |
 | [DQC_IFRS_0103](docs/DQC_IFRS_0103/DQC_0103.md) | Invalid Value for Percentage Items | 17 |
 | [DQC_IFRS_0104](docs/DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members | 17 |
