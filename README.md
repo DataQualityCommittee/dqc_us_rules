@@ -1,18 +1,18 @@
-# Data Quality Committee Rules &amp; Guidance
+# ESEF Data Quality Rules & Guidance
 
-The following automated checks have been drawn from experience with IFRS filings to the SEC and form the initial XBRL International Data Quality Rules in the Beta Release. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. 
+The following automated checks have been drawn from experience with IFRS filings to the SEC and form the initial XBRL International Data Quality Rules in the Beta Release. 
 
-These freely-available automated checks are written in an [open-source processing language (XULE)](https://xbrl.us/home/use/what-is-xule) that is used for XBRL business rules, rendering, and data collection activities. The open source [XULE engine and ESEF plugin](https://github.com/xbrlus/xule/releases/latest) works with the [Arelle](https://arelle.org/pub) processor, and works with the ruleset.zip files maintained here on ESEF filings. 
+The specification of the current ESEF DQR rules can be found below:
 
 | Number | Short name | Rule version |
 | ----- | ----- | ----- |
 | [DQC_IFRS_0008](docs/DQC_IFRS_0008/DQC_0008.md) | Reversed calculation | 17 |
 | [DQC_IFRS_0041](docs/DQC_IFRS_0041/DQC_0041.md) | Axis with a default member that differs from the IFRS Taxonomy | 17 |
-| [DQC_IFRS_0080](docs/DQC_IFRS_0080/DQC_0080.md) | Negative Values | 17 |
-| [DQC_IFRS_0092](docs/DQC_IFRS_0092/DQC_0092.md) | Non Positive Items | 17 |
+| [DQC_IFRS_0080](docs/DQC_IFRS_0080/DQC_0080.md) | IFRS Non-Negative Items | 17 |
+| [DQC_IFRS_0092](docs/DQC_IFRS_0092/DQC_0092.md) | IFRS Non-Positive Items | 17 |
 | [DQC_IFRS_0093](docs/DQC_IFRS_0093/DQC_0093.md) | Durational Aggregation | 17 |
-| [DQC_IFRS_0101](docs/DQC_IFRS_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees | 17 |
-| [DQC_IFRS_0102](docs/DQC_IFRS_0102/DQC_0102.md) | Element Values Are Equal | 17 |
+| [DQC_IFRS_0101](docs/DQC_IFRS_0101/DQC_0101.md) | Misapplication of Concepts between Investing, Financing and Operating Activities | 17 |
+| [DQC_IFRS_0102](docs/DQC_IFRS_0102/DQC_0102.md) | Accounting Relationships| 17 |
 | [DQC_IFRS_0103](docs/DQC_IFRS_0103/DQC_0103.md) | Invalid Value for Percentage Items | 17 |
 | [DQC_IFRS_0104](docs/DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members | 17 |
 | [DQC_IFRS_0105](docs/DQC_IFRS_0105/DQC_0105.md) | FS with No Associated Calculation | 17 |
@@ -24,6 +24,30 @@ These freely-available automated checks are written in an [open-source processin
 | [DQC_IFRS_0129](docs/DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents | 17 |
 | [DQC_IFRS_0130](docs/DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation | 17 |
 | [DQC_IFRS_0138](docs/DQC_IFRS_0138/DQC_0138.md) | Missing Abstract from Financial Statements | 17 |
+
+## Documentation definitions
+
+The rules definitions make reference to the following terms:
+
+* The **extension taxonomy** is the DTS of XBRL Report against which the rules are being evaluated.
+* The **base taxonomy** is the IFRS taxonomy corresponding to the ruleset version.  The entry point used for each ruleset is shown below.
+* **Monetary** concepts are concepts with a datatype of, or derived from, `xbrli:monetaryItemType`.
+* A set of facts are **dimensionally aligned** if they share the same value for all [dimensions](https://www.xbrl.org/Specification/oim/REC-2021-10-13/oim-REC-2021-10-13.html#term-dimension).  Note that this definition refers to the [OIM](https://www.xbrl.org/Specification/oim/REC-2021-10-13/oim-REC-2021-10-13.html) definition of dimension, and so includes the core dimensions such as period and unit, as well as taxonomy-defined dimensions.
+
+## IFRS Entry Points
+
+The following entry points define the _base taxonomy_ for each version of the ruleset:
+
+| Version | Entry point |
+| ------- | ----------- |
+| ESEF DQR 2019 | `http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs_entry_point_2019-03-27.xsd` |
+| ESEF DQR 2020 | `http://xbrl.ifrs.org/taxonomy/2020-03-16/full_ifrs_entry_point_2020-03-16.xsd` | 
+| ESEF DQR 2021 | `http://xbrl.ifrs.org/taxonomy/2021-03-24/full_ifrs_entry_point_2021-03-24.xsd` | 
+
+## Reference implementation
+
+A reference implementation of the ESEF DQR rules is also available.  The reference implementation is defined using the [XULE language](https://xbrl.us/home/use/what-is-xule) developed by XBRL US.  The language is free to use, and an open source [XULE engine](https://github.com/xbrlus/xule/releases/latest) is available for the [Arelle](https://arelle.org/pub) XBRL processor.   
+
 
 © Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
