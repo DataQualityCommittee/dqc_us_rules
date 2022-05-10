@@ -134,23 +134,6 @@ assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Elements_That_Are_Children_of_Equity = navigate summation-item children from Equity returns by network set (target);
-
-/** Get the correct elements from the right calculation network**/
-
-$Correct_Network_Elements = sum(for ($network in $Elements_That_Are_Children_of_Equity.keys)
-					$NoncontrollingInterests = taxonomy().concept(NoncontrollingInterests);
-					$EquityAttributableToOwnersOfParent = taxonomy().concept(EquityAttributableToOwnersOfParent);
-
-					if ($Elements_That_Are_Children_of_Equity[$network].contains($NoncontrollingInterests) and  $Elements_That_Are_Children_of_Equity[$network].contains($EquityAttributableToOwnersOfParent))
-						$Elements_That_Are_Children_of_Equity[$network]
-					else
-						set()
-					)
-
-/** Only get elements that are temp equity and are an extension **/
-$Extension_Credit_Elements_That_Are_Children_of_Equity = filter $Correct_Network_Elements where $item.balance == credit and $item.name.namespace-uri == $extension_ns returns $item.name;
-
 $SEINCI = [@Equity];
 $CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + [@concept=qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')]
 $Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
