@@ -16,20 +16,20 @@
  <message>[info] Xule version: 3.0.23303 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 5.85 secs at 2022-04-22T11:19:22 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS </message>
+ <message>[info] loaded in 5.83 secs at 2022-04-23T04:14:40 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS </message>
  <ref href="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS#?#https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml"/></entry>
 <entry code="DQR.IFRS.0105.9556" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="2021-05-01" cid="4537032560">[DQR.IFRS.0105.9556] 
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="2021-05-01" cid="4472352624">[DQR.IFRS.0105.9556] 
 The following elements are in the presentation linkbase of 06 - Pinigų srautų ataskaita but are not included in any calculation relationship in the filing.
+ifrs-full:IncreaseDecreaseInWorkingCapital, 
 ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable, 
+ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable, 
 ifrs-full:AdjustmentsForDecreaseIncreaseInOtherAssets, 
 ifrs-full:AdjustmentsForDecreaseIncreaseInInventories, 
-ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable, 
 ifrs-full:AdjustmentsForDecreaseIncreaseInOtherOperatingReceivables, 
 ifrs-full:CashFlowsFromUsedInOperatingActivities, 
-ifrs-full:AdjustmentsForIncreaseDecreaseInOtherOperatingPayables, 
-ifrs-full:IncreaseDecreaseInWorkingCapital, 
-ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
+ifrs-full:IncreaseDecreaseInCashAndCashEquivalents, 
+ifrs-full:AdjustmentsForIncreaseDecreaseInOtherOperatingPayables
 All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
 
 This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
@@ -39,7 +39,7 @@ If the item is an additional disclosure in the cash flow statement then make sur
 Rule Element Id:9556
 Rule version: 18.0.0RC1 - </message></entry>
 <entry code="DQR.IFRS.0118.9727" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="None" cid="4537032560">[DQR.IFRS.0118.9727] The statement 06 - Pinigų srautų ataskaita includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInFinancingActivities of 47,145,000 for ifrs-full:SeparateMember should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 47,142,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -3. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInFinancingActivities that should add to 47,145,000 are comprised of the following:
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="None" cid="4472352624">[DQR.IFRS.0118.9727] The statement 06 - Pinigų srautų ataskaita includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInFinancingActivities of 47,145,000 for ifrs-full:SeparateMember should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 47,142,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -3. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInFinancingActivities that should add to 47,145,000 are comprised of the following:
 
 +  	CashFlowsFromUsedInIncreaseDecreaseInCurrentBorrowings                                                         1,580,000
 -  	DividendsPaidClassifiedAsFinancingActivities                                                                       3,000
@@ -60,27 +60,8 @@ Decimals : -3
 Rule Element Id:9727
 Rule version: 18.0.0RC1 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml 14907</message>
  <ref href="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml#fact-569" sourceLine="14907"/></entry>
-<entry code="DQR.IFRS.0126.9595" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="2022-05-01" cid="4537032560">[DQR.IFRS.0126.9595] The statement 06 - Pinigų srautų ataskaita includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInFinancingActivities of 46,939,000  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is -14,635,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -3. All values in the financial statements should use the same decimal value. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInFinancingActivities that should add to 46,939,000 are comprised of the following:
-
--  	InterestPaidClassifiedAsFinancingActivities                                                                      421,000
--  	PaymentsOfLeaseLiabilitiesClassifiedAsFinancingActivities                                                        416,000
--  	RepaymentsOfBorrowingsClassifiedAsFinancingActivities                                                         13,798,000
-
-
-The addends are calculated based on the calculation linkbase defined for 06 - Pinigų srautų ataskaita. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
-
-
-Total Element : ifrs-full:CashFlowsFromUsedInFinancingActivities
-Total Value : 46,939,000 
-Total period : 2020-01-01 to 2020-12-31 
-Dimensions : 
-Decimals : -3 
-Rule Element Id:9595
-Rule version: 18.0.0RC1 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml 14907</message>
- <ref href="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml#fact-567" sourceLine="14907"/></entry>
 <entry code="DQR.IFRS.0129.9601" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" rule-suffix="9601" effectiveDate="2022-05-01" cid="4537032560">[DQR.IFRS.0129.9601] It is expected that RetainedEarnings with a value of -22,407,000 reported in the network role http://ambergrid.lt/roles/FinansinesBuklesAtaskaita should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:RetainedEarningsMember and a reported value of 22,407,000 multiplied by 1. This value appears in the network role http://ambergrid.lt/roles/NuosavoKapitaloPokyciuAtaskaita. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/0/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" rule-suffix="9601" effectiveDate="2022-05-01" cid="4472352624">[DQR.IFRS.0129.9601] It is expected that RetainedEarnings with a value of -22,407,000 reported in the network role http://ambergrid.lt/roles/FinansinesBuklesAtaskaita should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:RetainedEarningsMember and a reported value of 22,407,000 multiplied by 1. This value appears in the network role http://ambergrid.lt/roles/NuosavoKapitaloPokyciuAtaskaita. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
 
 The properties of this ifrs-full:RetainedEarnings fact are:
 
@@ -111,20 +92,20 @@ Rule version: 18.0.0RC1
  <message>[info] Xule version: 3.0.23303 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 4.58 secs at 2022-04-22T11:19:58 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS </message>
+ <message>[info] loaded in 4.57 secs at 2022-04-23T04:15:12 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS </message>
  <ref href="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IXDS#?#https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml"/></entry>
 <entry code="DQR.IFRS.0105.9556" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="2021-05-01" cid="4472110960">[DQR.IFRS.0105.9556] 
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="2021-05-01" cid="4456857456">[DQR.IFRS.0105.9556] 
 The following elements are in the presentation linkbase of 06 - Statement of cash flows but are not included in any calculation relationship in the filing.
+ifrs-full:AdjustmentsForDecreaseIncreaseInOtherAssets, 
+ifrs-full:AdjustmentsForIncreaseDecreaseInOtherOperatingPayables, 
+ifrs-full:AdjustmentsForDecreaseIncreaseInOtherOperatingReceivables, 
 ifrs-full:AdjustmentsForIncreaseDecreaseInTradeAccountPayable, 
 ifrs-full:AdjustmentsForDecreaseIncreaseInTradeAccountReceivable, 
-ifrs-full:AdjustmentsForDecreaseIncreaseInInventories, 
-ifrs-full:AdjustmentsForIncreaseDecreaseInOtherOperatingPayables, 
-ifrs-full:AdjustmentsForDecreaseIncreaseInOtherAssets, 
-ifrs-full:AdjustmentsForDecreaseIncreaseInOtherOperatingReceivables, 
 ifrs-full:IncreaseDecreaseInWorkingCapital, 
-ifrs-full:IncreaseDecreaseInCashAndCashEquivalents, 
-ifrs-full:CashFlowsFromUsedInOperatingActivities
+ifrs-full:AdjustmentsForDecreaseIncreaseInInventories, 
+ifrs-full:CashFlowsFromUsedInOperatingActivities, 
+ifrs-full:IncreaseDecreaseInCashAndCashEquivalents
 All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. 
 
 This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
@@ -134,7 +115,7 @@ If the item is an additional disclosure in the cash flow statement then make sur
 Rule Element Id:9556
 Rule version: 18.0.0RC1 - </message></entry>
 <entry code="DQR.IFRS.0118.9727" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="None" cid="4472110960">[DQR.IFRS.0118.9727] The statement 06 - Statement of cash flows includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInFinancingActivities of 47,145,000 for ifrs-full:SeparateMember should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 47,142,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -3. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInFinancingActivities that should add to 47,145,000 are comprised of the following:
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" effectiveDate="None" cid="4456857456">[DQR.IFRS.0118.9727] The statement 06 - Statement of cash flows includes an inconsistent calculation. The value of the concept ifrs-full:CashFlowsFromUsedInFinancingActivities of 47,145,000 for ifrs-full:SeparateMember should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 47,142,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -3. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of 2020-01-01 to 2020-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of ifrs-full:CashFlowsFromUsedInFinancingActivities that should add to 47,145,000 are comprised of the following:
 
 +  	CashFlowsFromUsedInIncreaseDecreaseInCurrentBorrowings                                                         1,580,000
 -  	DividendsPaidClassifiedAsFinancingActivities                                                                       3,000
@@ -156,7 +137,7 @@ Rule Element Id:9727
 Rule version: 18.0.0RC1 - https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml 15788</message>
  <ref href="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/abambergrid-2020-12-31.xhtml#fact-569" sourceLine="15788"/></entry>
 <entry code="DQR.IFRS.0129.9601" level="error">
- <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" rule-suffix="9601" effectiveDate="2022-05-01" cid="4472110960">[DQR.IFRS.0129.9601] It is expected that RetainedEarnings with a value of -22,407,000 reported in the network role http://ambergrid.lt/roles/StatementOfFinancialPosition should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:RetainedEarningsMember and a reported value of 22,407,000 multiplied by 1. This value appears in the network role http://ambergrid.lt/roles/StatementOfChangesInEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+ <message filing_url="https://filings.xbrl.org/097900BGMP0000061061/2020-12-31/ESEF/LT/1/abambergrid-2020-12-31.zip/abambergrid-2020-12-31/reports/_IX..." severity="error" rule-suffix="9601" effectiveDate="2022-05-01" cid="4456857456">[DQR.IFRS.0129.9601] It is expected that RetainedEarnings with a value of -22,407,000 reported in the network role http://ambergrid.lt/roles/StatementOfFinancialPosition should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:RetainedEarningsMember and a reported value of 22,407,000 multiplied by 1. This value appears in the network role http://ambergrid.lt/roles/StatementOfChangesInEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
 
 The properties of this ifrs-full:RetainedEarnings fact are:
 

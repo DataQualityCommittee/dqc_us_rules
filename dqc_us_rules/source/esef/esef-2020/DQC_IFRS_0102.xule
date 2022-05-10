@@ -108,7 +108,7 @@ else
 
 message
 
-"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. 
+"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. If liabilities held for sale is included in the Statement of Financial Position presentation, then consider using CurrentLiabilitiesOtherThanLiabilitiesIncludedInDisposalGroupsClassifiedAsHeldForSale instead of current liabilities.
 
 These values should be equal.
 The properties of this {$Liabilities.concept} fact are:
@@ -135,8 +135,23 @@ assert IFRS.0102.9542 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$Elements_That_Are_Children_of_Equity = navigate summation-item children from Equity returns by network set (target);
+
+/** Get the correct elements from the right calculation network**/
+
+$Extension_Credit_Elements_That_Are_Children_of_Equity = sum(set(for ($network in $Elements_That_Are_Children_of_Equity.keys)
+					$NoncontrollingInterests = taxonomy().concept(NoncontrollingInterests);
+					$EquityAttributableToOwnersOfParent = taxonomy().concept(EquityAttributableToOwnersOfParent);
+
+					if ($Elements_That_Are_Children_of_Equity[$network].contains($NoncontrollingInterests) and  $Elements_That_Are_Children_of_Equity[$network].contains($EquityAttributableToOwnersOfParent))
+					/** Only get elements that are temp equity and are an extension **/
+						filter $Elements_That_Are_Children_of_Equity[$network] where $item.balance == credit and $item.name.namespace-uri == $extension_ns returns $item.name
+					else
+						skip
+					))
+
 $SEINCI = [@Equity];
-$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + [@concept=qname($extension_ns,'EquityAttributableToParticipatingPolicyholders')]
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + sum(list([@concept in $Extension_Credit_Elements_That_Are_Children_of_Equity]))#oth
 $Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
@@ -154,7 +169,7 @@ else
 
 message
 
-"{$SEINCI.concept.label.text} with a value of {$SEINCI} is not equal to the combined total of Stockholders Equity Excluding NI and Noncontrolling Interest ( {$se} + {$mi} ) with a value of {$CalcSE}. 
+"{$SEINCI.concept.label.text} with a value of {$SEINCI} is not equal to the combined total of Stockholders Equity Excluding NI and Noncontrolling Interest ( {$se} + {$mi} {if $Extension_Credit_Elements_That_Are_Children_of_Equity.length > 0 " + " + $oth.string else ""}) with a value of {$CalcSE}. 
 
 These values should be equal.
 The properties of this {$SEINCI.concept} fact are:
@@ -183,10 +198,10 @@ assert IFRS.0102.9543 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Have to use the where clause as there is no guarantee that they use the srt taxonomy **/
-$base = {nonils @ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')};
-$agg = {nonils @ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a1 <+> {nonils @OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')}#a2;
-$Decimals = list({nonils @ComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{nonils @ProfitLoss where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')},{nonils @OtherComprehensiveIncome where not $fact.dimensions().keys.name.local-name.contains('ConsolidationItemsAxis')});
+/** Have to use the where clause as the components of Equity axis causes issues for this test **/
+$base = {nonils @ComprehensiveIncome @ComponentsOfEquityAxis != *};
+$agg = {nonils @ProfitLoss @ComponentsOfEquityAxis != *}#a1 <+> {nonils @OtherComprehensiveIncome @ComponentsOfEquityAxis != *}#a2;
+$Decimals = list({nonils @ComprehensiveIncome @ComponentsOfEquityAxis != *},{nonils @ProfitLoss @ComponentsOfEquityAxis != *},{nonils @OtherComprehensiveIncome @ComponentsOfEquityAxis != *});
 
 $minDecimals = min(list(for $x in $Decimals
 				if $x == none 

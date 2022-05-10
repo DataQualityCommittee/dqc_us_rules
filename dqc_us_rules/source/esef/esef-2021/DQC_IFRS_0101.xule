@@ -99,7 +99,7 @@ assert US.0101.9538 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/* This rule identifies elements in the financing section of the cash flow calculation that are investing items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
+/* This rule identifies elements in the financing section of the cash flow calculation that are operating items. It uses a function to build a list of misplaced items by navigating the calculation linkbase of the filing dts and the calculation of the US-GAAP taxonomy.*/
 
 $extensionNames = navigate summation-item descendants from CashFlowsFromUsedInFinancingActivities returns set (target-name);
 

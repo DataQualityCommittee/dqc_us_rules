@@ -33,7 +33,7 @@ for ($x in $default_in_filing_not_in_taxonomy)
 		$dim_concept = $default_details['source'].name.local-name;
 		$dim_role = $default_details['role'].description;
 		$dim_base_names = navigate dimension-default descendants from $default_details['source-name'] taxonomy $ifrs-gaap returns (target-name);
-		/** In the 2017 and 2016 IFRS Taxonomies a filer should use the ContinuingOperationsMember as the default on the  ContinuingAndDiscontinuedOperationsAxis rather than the one defined in the taxonomy. **/
+		
 		if ($dim_base_names.length == 0 or $dim_concept == 'ContinuingAndDiscontinuedOperationsAxis')
 			false
 		else 
