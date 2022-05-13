@@ -151,7 +151,7 @@ $Extension_Credit_Elements_That_Are_Children_of_Equity = sum(set(for ($network i
 
 $SEINCI = [@Equity];
 
-$oth = if $Extension_Credit_Elements_That_Are_Children_of_Equity.length == 0
+$oth = if $Extension_Credit_Elements_That_Are_Children_of_Equity.length == 0 or $Extension_Credit_Elements_That_Are_Children_of_Equity == none
 			0
 		else
 			sum(list([@concept in $Extension_Credit_Elements_That_Are_Children_of_Equity]));
