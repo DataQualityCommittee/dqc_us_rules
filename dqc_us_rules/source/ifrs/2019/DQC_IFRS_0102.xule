@@ -149,7 +149,13 @@ $Extension_Credit_Elements_That_Are_Children_of_Equity = sum(set(for ($network i
 						skip
 					))
 $SEINCI = [@Equity];
-$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + sum(list([@concept in $Extension_Credit_Elements_That_Are_Children_of_Equity]))#oth
+
+$oth = if $Extension_Credit_Elements_That_Are_Children_of_Equity.length == 0
+			0
+		else
+			sum(list([@concept in $Extension_Credit_Elements_That_Are_Children_of_Equity]));
+			
+$CalcSE = [@EquityAttributableToOwnersOfParent]#se <+> [@NoncontrollingInterests]#mi + $oth
 $Decimals = list([@Equity],[@EquityAttributableToOwnersOfParent],[@NoncontrollingInterests]);
 
 $minDecimals = min(list(for $x in $Decimals
