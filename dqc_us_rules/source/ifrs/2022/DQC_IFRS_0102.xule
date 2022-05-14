@@ -174,7 +174,7 @@ else
 
 message
 
-"{$SEINCI.concept.label.text} with a value of {$SEINCI} is not equal to the combined total of Stockholders Equity Excluding NI and Noncontrolling Interest ( {$se} + {$mi} {if $Extension_Credit_Elements_That_Are_Children_of_Equity.length > 0 " + " + $oth.string else ""}) with a value of {$CalcSE}. 
+"{$SEINCI.concept.label.text} with a value of {$SEINCI} is not equal to the combined total of Stockholders Equity Excluding NI and Noncontrolling Interest ( {$se} + {$mi} {if $oth != 0 " + " + $oth.string else ""}) with a value of {$CalcSE}. 
 
 These values should be equal.
 The properties of this {$SEINCI.concept} fact are:
