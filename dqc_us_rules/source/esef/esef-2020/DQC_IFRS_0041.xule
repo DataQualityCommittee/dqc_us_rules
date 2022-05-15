@@ -3,8 +3,8 @@ DQC Rules
  (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: IFRS 2020
-
+Taxonomy: IFRS 2019
+Original Release: Version 6
 **/
 
 
@@ -18,7 +18,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
 
-/** Get relationships in filing not in taxonomy **/
+
+/** Get relationships in filing not in taxonomy. Taxonomy defaults are defined as a constant**/
 
 $default_in_filing_not_in_taxonomy = $filing_defaults - $taxonomy_defaults;
 
@@ -32,7 +33,7 @@ for ($x in $default_in_filing_not_in_taxonomy)
 		$dim_concept = $default_details['source'].name.local-name;
 		$dim_role = $default_details['role'].description;
 		$dim_base_names = navigate dimension-default descendants from $default_details['source-name'] taxonomy $ifrs-gaap returns (target-name);
-		/** In the 2017 and 2016 IFRS Taxonomies a filer should use the ContinuingOperationsMember as the default on the  ContinuingAndDiscontinuedOperationsAxis rather than the one defined in the taxonomy. **/
+		
 		if ($dim_base_names.length == 0 or $dim_concept == 'ContinuingAndDiscontinuedOperationsAxis')
 			false
 		else 
