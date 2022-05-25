@@ -1,0 +1,4 @@
+output assetComponents
+
+$Asset = filter taxonomy().concepts where $item.name.local-name == 'Assets' returns $item.name
+navigate summation-item children from $Asset returns (target-name)
