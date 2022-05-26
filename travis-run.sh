@@ -2,8 +2,8 @@
 set -x
 svn export --quiet https://github.com/xbrlus/xule/trunk/plugin/xule $CURDIR/plugin/xule
 svn export --quiet https://github.com/xbrlus/xule/trunk/plugin/validate $CURDIR/plugin/validate
-cp -R $CURDIR/plugin/xule $VIRTUAL_ENV/src/arelle/arelle/plugin/xule
-cp $CURDIR/plugin/validate/DQC.py $VIRTUAL_ENV/src/arelle/arelle/plugin/validate/DQC.py
+cp -R $CURDIR/plugin/xule $VIRTUAL_ENV/src/arelle-release/arelle/plugin/xule
+cp $CURDIR/plugin/validate/DQC.py $VIRTUAL_ENV/src/arelle-release/arelle/plugin/validate/DQC.py
 echo $INFILES > infiles.json
 sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|$GH_SLUG/raw/$PR_BR/dqc_us_rules/|" $CURDIR/rulesetMap.json
 sed -i "s|\?raw=true||" $CURDIR/rulesetMap.json
