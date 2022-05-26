@@ -77,7 +77,7 @@ for $presNetwork in $presNetworks.sort
                         //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                         $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
                         if ($legalEntityAxisUsed or $InvestmentAxisUsed)
                             false
@@ -172,7 +172,7 @@ for $presNetwork in $presNetworks.sort
                     //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                     $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
                     if $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
                         true
