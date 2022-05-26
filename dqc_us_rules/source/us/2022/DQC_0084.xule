@@ -57,7 +57,7 @@ else
 			$tolerance = ($componentNum - 1) * $scale * $decimal_tolerance_factor;
 
 			/** Check if decimals are 0 and the diff is immaterial using a 1% threshold and used flagged as immaterial by the filer **/
-			if (($fact1 - $sum-periods).abs < $fact1.abs * 0.01) and $min-decimals == 0 and list({covered @concept.local_name = 'ImmaterialDifferenceFlag'}).length > 0
+			if (($fact1 - $sum-periods).abs < $fact1.abs * 0.01) and $min-decimals == 0 and list({covered @concept.local-name = 'ImmaterialDifferenceFlag'}).length > 0
 				false
 			else
 				($fact1 - $sum-periods).abs > $tolerance;
