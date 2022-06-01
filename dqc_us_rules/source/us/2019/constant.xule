@@ -160,3 +160,21 @@ constant $income_items = set(ProfitLoss,
 					)
 
 constant $MONETARY_NON_NEGS = filter $non_neg_items.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
+
+constant $STATEMENT_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+and (not $item.drs-role.uri.lower-case.contains('equity')) 
+and (not $item.drs-role.uri.lower-case.contains('deficit')) 
+and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
+and (not $item.drs-role.uri.lower-case.contains('capital')) 
+and (not $item.drs-role.uri.lower-case.contains('investment')) 
+and (not $item.drs-role.uri.lower-case.contains('changes')) 
+and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
+and (not $item.drs-role.uri.lower-case.contains('convertible')) 
+and (not $item.drs-role.uri.lower-case.contains('preferred'))  
+and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.drs-role.uri.lower-case.contains('redeemable'))
+and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
+and (not $item.drs-role.description.lower-case.contains('schedule iii'))
+and (not $item.drs-role.description.lower-case.contains('schedule iv'));
