@@ -1,10 +1,9 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2021
-Release Version 17
 **/
 
 RULE-NAME-PREFIX DQC
@@ -34,11 +33,11 @@ and (not $item.role.uri.lower-case.contains('temporaryequity'))
 and (not $item.role.uri.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -');
-
-$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
 
@@ -78,7 +77,7 @@ for $presNetwork in $presNetworks.sort
                         //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                         $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
                         if ($legalEntityAxisUsed or $InvestmentAxisUsed)
                             false
@@ -103,7 +102,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($concept_item)
@@ -132,11 +131,12 @@ and (not $item.role.uri.lower-case.contains('temporaryequity'))
 and (not $item.role.uri.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -');
 
-$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
 
@@ -145,7 +145,7 @@ for $presNetwork in $presNetworks.sort
         $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
          /** If use a table check that facts have the correct member **/
         if $presNetwork.role.uri in $cubeURISet
-            $bs_cube = filter $statementCubes where $item.drs-role.uri == $presNetwork.role.uri
+            $bs_cube = filter $STATEMENT_CUBES where $item.drs-role.uri == $presNetwork.role.uri
             $bs_cube_facts = sum($bs_cube.facts)
 
             /** This section excludes presentation items not included in the table **/
@@ -174,7 +174,7 @@ for $presNetwork in $presNetworks.sort
                     //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                     $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis'));
+                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
                     if $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
                         true
@@ -201,7 +201,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($concept_item)
