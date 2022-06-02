@@ -17,25 +17,7 @@ $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndD
 $document_period_end_date = $document_period.period.end - time-span("P1D");
 $document_period_start_date = $document_period.period.start
 
-/** Get tables for financial statement items **/
-
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
-and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
-and (not $item.drs-role.uri.lower-case.contains('equity')) 
-and (not $item.drs-role.uri.lower-case.contains('deficit')) 
-and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
-and (not $item.drs-role.uri.lower-case.contains('capital')) 
-and (not $item.drs-role.uri.lower-case.contains('investment')) 
-and (not $item.drs-role.uri.lower-case.contains('changes')) 
-and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
-and (not $item.drs-role.uri.lower-case.contains('convertible')) 
-and (not $item.drs-role.uri.lower-case.contains('preferred'))  
-and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
-and (not $item.drs-role.uri.lower-case.contains('redeemable'))
-and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
-and (not $item.drs-role.uri.lower-case.contains('membersinterest'));
-
-for $cube in $statementCubes.sort
+for $cube in $STATEMENT_CUBES.sort
 			/** get the calculations aligned with the cube role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns set (source-name);
 			

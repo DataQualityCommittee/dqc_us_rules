@@ -14,7 +14,7 @@ assert US.0135.9835 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-KT','10-K/A','10-Q','10-QT','10-Q/A','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
@@ -136,7 +136,7 @@ assert US.0135.9836 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','20-F', '10-K/A').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-KT','10-K/A','10-Q','10-QT','10-Q/A','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
