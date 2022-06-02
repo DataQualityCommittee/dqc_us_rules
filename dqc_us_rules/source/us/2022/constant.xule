@@ -11,7 +11,7 @@ Taxonomy: US GAAP 2022
 	Define report types  exluded from identified rules
 **/
 
-constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3', '10-12G', '10-12G/A')
+constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3','10-12G', '10-12G/A')
 
 constant $ACCRUAL_ITEMS =
 				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
@@ -197,3 +197,22 @@ constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems 
 
 
 constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
+
+
+constant $STATEMENT_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+and (not $item.drs-role.uri.lower-case.contains('equity')) 
+and (not $item.drs-role.uri.lower-case.contains('deficit')) 
+and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
+and (not $item.drs-role.uri.lower-case.contains('capital')) 
+and (not $item.drs-role.uri.lower-case.contains('investment')) 
+and (not $item.drs-role.uri.lower-case.contains('changes')) 
+and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
+and (not $item.drs-role.uri.lower-case.contains('convertible')) 
+and (not $item.drs-role.uri.lower-case.contains('preferred'))  
+and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.drs-role.uri.lower-case.contains('redeemable'))
+and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
+and (not $item.drs-role.description.lower-case.contains('schedule iii'))
+and (not $item.drs-role.description.lower-case.contains('schedule iv'))
