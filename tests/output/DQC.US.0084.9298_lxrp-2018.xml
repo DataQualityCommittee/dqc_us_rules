@@ -4,23 +4,28 @@
  <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
  <ref href="validate/DQC"/></entry>
 <entry code="info" level="info">
- <message>[info] Activation of plug-in SEC Inline Transforms successful, version 1.0.0.178. - transforms/SEC </message>
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
  <ref href="transforms/SEC"/></entry>
 <entry code="info" level="info">
- <message>[info] Xule version: 3.0.22790 - </message>
+ <message>[info] Xule version: 3.0.23361 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 2.33 secs at 2019-07-21T22:09:25 - http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml </message>
- <ref href="http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml"/></entry>
+ <message>[info] loaded in 3.74 secs at 2022-06-02T15:51:10 - https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of package dqc_15_concepts.csv, dqc_0011.csv, dqc_0079.csv, dqc_0080.csv, dqc_0081.csv, dqc_0091_ifrs_2018_concepts.csv, dqc_0091_ifrs_2019_concepts.csv, dqc_0094.csv, dqc_0129.csv and effective_dates.csv successful. - D:\Temp\tmpb7ccdzru\packages\resources.zip </message>
+ <ref href="D:\Temp\tmpb7ccdzru\packages\resources.zip"/></entry>
 <entry code="DQC.US.0084.9298" level="error">
- <message severity="error" effectiveDate="None" filing_url="http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml" cid="4544692352">[DQC.US.0084.9298] Sum of the cumulative periods of -3,037,303 for us-gaap:IncomeLossFromContinuingOperations does not match the reported total of -3,042,438, a difference of 5,135.
+ <message filing_url="https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml" severity="error" effectiveDate="2020-03-31" cid="1501582525392">[DQC.US.0084.9298] Sum of the cumulative periods of -3,037,303 for us-gaap:IncomeLossFromContinuingOperations does not match the reported total of -3,042,438, a difference of 5,135.
 
 Period values are:
-	2018-09-01 to 2018-11-30	-701,391	 Decimals: 0
-	2018-12-01 to 2019-02-28	-1,147,976	 Decimals: 0
-	2019-03-01 to 2019-05-31	-1,187,936	 Decimals: 0
+ 	2018-09-01 to 2018-11-30 	-701,391 	 Decimals: 0
+ 	2018-12-01 to 2019-02-28 	-1,147,976 	 Decimals: 0
+ 	2019-03-01 to 2019-05-31 	-1,187,936 	 Decimals: 0
 
 This rule takes into account possible rounding of values across periods and the decimals associated with each fact. This rule used a tolerance of 4 which is calculated by taking the lowest decimal value used in the calculation of 0. If there is a difference between the sum of the periods and the aggregate value reported the difference may be due to incorrect decimals associated with the individual fact values. The filer should check that the fact values do not have a decimal value that implies a higher level of accuracy than intended.
+
+In those rare cases where there are small immaterial differences that are less than 1% of the total and decimals are zero the rule can be overidden. This is performed by creating an extension element called ImmaterialDifferenceFlag.  If this element has any value in any context in the instance then the immaterial difference will not result in an error.
 
 The rule excludes elements in the base taxonomy that cannot be aggregated such as an average, maximum or minimum value.
 
@@ -32,8 +37,8 @@ Unit : USD
 Decimals: 0
 
 Rule Element Id:9298
-Rule version: 10.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml 3078</message>
- <ref href="http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml#element(/1/369)" sourceLine="3078">
+Rule version: 17.0.5 - https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml 3078</message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml#element(/1/369)" sourceLine="3078">
   <property name="label" value="Net loss"/>
   <property name="namespace" value="http://fasb.org/us-gaap/2018-01-31"/>
   <property name="name" value="IncomeLossFromContinuingOperations"/>
@@ -54,6 +59,6 @@ Rule version: 10.0.0RC1 - http://www.sec.gov/Archives/edgar/data/1348362/0001640
   <property name="value" value="-3,042,438"/>
  </ref></entry>
 <entry code="info" level="info">
- <message>[info] validated in 27.45 secs - http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml </message>
- <ref href="http://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml"/></entry>
+ <message>[info] validated in 22.87 secs - https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml </message>
+ <ref href="https://www.sec.gov/Archives/edgar/data/1348362/000164033419001297/lxrp-20190531.xml"/></entry>
 </log>
