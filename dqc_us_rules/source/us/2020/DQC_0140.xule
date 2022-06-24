@@ -9,9 +9,9 @@ Taxonomy: US GAAP 2022
 
 rule-name-prefix DQC
 
-assert US.0139.9861 satisfied
+assert US.0140.9861 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** This rule checks the cross calculation for interest Included **/
 
@@ -19,7 +19,7 @@ $AmortCost = first-value({nonils @AvailableForSaleDebtSecuritiesAmortizedCostBas
 
 $creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLoss}, {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent})
 
-$AmortizedCostAfterAllowanceCalc = $AmortCost -  $creditLoss
+$AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 
 $AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowanceCalc)
 
@@ -48,7 +48,7 @@ else
 message
 
 "The reported fair value of Available For Sale Debt Securities Securities of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
-Amortized Cost of {$AmortCost }
+Amortized Cost of {$AmortCost}
 Gain on Securities {$gain}
 Loss on Securities of {$loss}
 Credit Loss on Securities of {$creditLoss}
@@ -57,8 +57,8 @@ Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
 Unit : {$fairValue.unit}\n
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$rule_id]
+effectiveDate $effective_dates[$ruleId]

@@ -161,4 +161,4 @@ constant $income_items = set(ProfitLoss,
 
 constant $MONETARY_NON_NEGS = filter $non_neg_items.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
 
-constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descendants from list(RiskBasedRatiosAbstract, LeverageRatiosAbstract, BankingRegulationTangibleEquityRatioAbstract, BankingRegulationCapitalConservationBufferAbstract, BankingRegulationLeverageBufferAbstract, BankingRegulationMaximumPayoutRatioAndAmountAbstract, BankingRegulationMaximumLeveragePayoutRatioAndAmountAbstract) taxonomy $us-gaap where $relationship.target.data-type.name == xbrli:pureItemType returns set (target-name)
+constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descendants from list(RiskBasedRatiosAbstract, LeverageRatiosAbstract) taxonomy $us-gaap where $relationship.target.data-type.name == xbrli:pureItemType returns set (target-name)
