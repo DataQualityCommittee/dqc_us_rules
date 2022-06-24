@@ -1,0 +1,52 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0140.9863 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Determine if accrued Interest and Available for sale securities are reported on the BS **/
+
+$valuesReportedWithInterest = list({@concept in $INCLUDING_ACCRUED_INTEREST})
+
+
+if $valuesReportedWithInterest.length > 0
+    $valuesReportedExcludingInterest = list({@concept in $EXCLUDING_ACCRUED_INTEREST})
+    if $valuesReportedExcludingInterest.length > 0
+
+        /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
+        if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
+            $IncorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+            $setType = "Elements excluding interest"
+            true
+        else
+            $IncorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+            $setType = "Elements including interest"
+            true 
+    else   
+        false
+else
+    false
+
+message
+"The filing reports values that using the including accrued interest items and the excluding accrued interest items. Review the accounting policy elections to determine if you should be using the excluding accrued interest items or the including accrued interest items. 
+
+Review the following {$setType} are appropriate given the majority of disclosure items are the opposite in regard to interest:
+{$IncorrectElements.join(", ")}.
+
+Period :{first($valuesReportedExcludingInterest).period}
+Dimensions : {first($valuesReportedExcludingInterest).dimensions.join(', ','=')}
+Unit : {first($valuesReportedExcludingInterest).unit}\n
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]

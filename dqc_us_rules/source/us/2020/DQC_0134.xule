@@ -16,7 +16,12 @@ assert US.0134.9834 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$ComponentAmount = {@concept in list(AvailableForSaleDebtSecuritiesAmortizedCostBasis)};
+$ComponentAmount = {@concept in list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, 
+DebtSecuritiesAvailableForSaleAmortizedCostCurrent, 
+DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent,
+AvailableForSaleSecuritiesDebtSecurities,
+AvailableForSaleSecuritiesDebtSecuritiesCurrent,
+AvailableForSaleSecuritiesDebtSecuritiesNoncurrent)};
 
 $Dimensions = filter $ComponentAmount.dimensions.keys returns $item.name;
 
