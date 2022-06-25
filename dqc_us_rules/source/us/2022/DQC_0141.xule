@@ -25,11 +25,11 @@ if $valuesReportedWithInterest.length > 0
         /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
         if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
             $IncorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
-            $setType = "Elements excluding interest"
+            $setType = "elements excluding interest"
             true
         else
             $IncorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
-            $setType = "Elements including interest"
+            $setType = "elements including interest"
             true 
     else   
         false
