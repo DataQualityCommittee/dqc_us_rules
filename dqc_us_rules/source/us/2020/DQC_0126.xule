@@ -1,10 +1,10 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
-Release Version 17
+Release Version 18
 **/
 
 RULE-NAME-PREFIX DQC
@@ -33,12 +33,11 @@ and (not $item.role.uri.lower-case.contains('temporaryequity'))
 and (not $item.role.uri.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-
-$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -');
-
-$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
          /** Don't run the rule if it is in a table as this is handled by rule 118 **/
@@ -118,7 +117,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $sum2

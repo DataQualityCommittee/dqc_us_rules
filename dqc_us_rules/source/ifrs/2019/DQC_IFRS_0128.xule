@@ -1,10 +1,10 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2019
-Release Version 17
+Release Version 18
 **/
 
 RULE-NAME-PREFIX DQC
@@ -21,7 +21,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Check if the srt taxonomy is used **/
 
 $srttaxonomy = any(set(for $link in dts-document-locations(taxonomy())
-                            if $link.contains('http://xbrl.fasb.org/srt/2019/elts/srt-2019-01-31.xsd')
+                            if $link.contains('http://xbrl.fasb.org/srt/2020/elts/srt-2020-01-31.xsd')
                                 true
                             else
                                 false
@@ -33,7 +33,6 @@ $collective_dimensions = if $srttaxonomy
                         else
                                 set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis, ProductsAndServicesAxis)
 
-$collective_dimensions = set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, srt:ProductOrServiceAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis, ProductsAndServicesAxis)
 
 for $dimension in $collective_dimensions
                 $dimension_fact =[nonils @@concept in $MONETARY_NON_NEGS @$dimension = *]
@@ -52,7 +51,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $dimension_fact

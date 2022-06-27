@@ -21,29 +21,46 @@
 			"name": "US-2018"
 		},
 		{
+			"path": "source/ifrs/2022",
+			"name": "ifrs-2022"
+		},
+		{
 			"path": "source/ifrs/2021",
-			"name": "IFRS-2021"
+			"name": "ifrs-2021"
 		},
 		{
 			"path": "source/ifrs/2020",
-			"name": "IFRS-2020"
+			"name": "ifrs-2020"
 		},
 		{
 			"path": "source/ifrs/2019",
-			"name": "IFRS-2019"
+			"name": "ifrs-2019"
 		},
 		{
 			"path": "source/ifrs/2018",
-			"name": "IFRS-2018"
+			"name": "ifrs-2018"
+		},
+		{
+			"path": "source/esef/esef-2022",
+			"name": "esef-2022"
 		},
 		{
 			"path": "source/esef/esef-2021"
+			"name": "esef-2021"
 		},
 		{
 			"path": "source/esef/esef-2020"
+			"name": "esef-2020"
 		},
 		{
 			"path": "source/esef/esef-2019"
+			"name": "esef-2019"
+		},
+		{
+			"path": "resources"
+		},
+		{
+			"path": "../guidance"
 		}
 	],
 	"tasks": {
@@ -68,7 +85,7 @@
 				{
 					"label": "Compile all Rules",
 					"type": "shell",
-					"command": "/Users/campbellpryde/'My Drive'/Committees/'Data Quality Committee/Rules/2 - Guidance and Rules in Progress'/Releases/Release${input:version_num}/dqc_v${input:version_num}_compile.sh"
+					"command": "/Releases/Release${input:version_num}/dqc_v${input:version_num}_compile.sh"
 				}
 			
 		],
@@ -76,9 +93,10 @@
 			{
 				"id":"version_num",
 				"description":"Rule Release Version",
-				"default":"17",
+				"default":"18",
 				"type":"promptString"
 			}
 		]
-	}
+	},
+	"settings": {}
 }
