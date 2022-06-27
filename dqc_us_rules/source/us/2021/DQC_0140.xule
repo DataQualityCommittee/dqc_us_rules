@@ -29,7 +29,7 @@ $AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 
 $AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent}))
 
-$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
+$AmortizedCostAfterCreditLoss = first-value( $AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
 
 $gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
 
@@ -44,7 +44,7 @@ $minDecimals = min(list(for $x in $Decimals
 				else
 					$x.decimals));
 
-$fairValueCalc = $AmortizedCostAfterCreditLoss <+ $gain - $loss
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
 $decimal_tolerance_factor = 2;
 
@@ -84,9 +84,9 @@ $creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAl
 
 $AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 
-$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent}))
+$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent}))
 
-$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
 
 $gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
 
@@ -102,7 +102,7 @@ $minDecimals = min(list(for $x in $Decimals
 				else
 					$x.decimals));
 
-$fairValueCalc = $AmortizedCostAfterCreditLoss <+ $gain - $loss
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
 $fairValue != $fairValueCalc
 
