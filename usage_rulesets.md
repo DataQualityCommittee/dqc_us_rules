@@ -12,16 +12,16 @@ It is recommended not to change the ruleset map in the plugin folder. The copy i
 **Example Ruleset Map**
 ```
 {
-	"http://xbrl.ifrs.org/taxonomy/2017-03-09/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2017-V5-ruleset.zip?raw=true",
-	"http://xbrl.ifrs.org/taxonomy/2016-03-31/ifrs-full" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc-ifrs-2016-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2017-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2017-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2016-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2016-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2015-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2015-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2014-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2014-V5-ruleset.zip?raw=true",	
-	"http://fasb.org/us-gaap/2013-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2013-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2012-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2012-V5-ruleset.zip?raw=true",
-	"http://fasb.org/us-gaap/2011-01-31" : "https://github.com/DataQualityCommittee/dqc_us_rules/blob/next_q1_17v5/dqc_us_rules/dqc-us-2011-V5-ruleset.zip?raw=true"
-}
+    "http://xbrl.ifrs.org/taxonomy/2021-03-24/ifrs-full": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-ifrs-2021-V18-ruleset.zip",
+    "http://xbrl.ifrs.org/taxonomy/2020-03-16/ifrs-full": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-ifrs-2020-V18-ruleset.zip",
+    "http://xbrl.ifrs.org/taxonomy/2019-03-27/ifrs-full": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-ifrs-2019-V18-ruleset.zip",
+    "http://xbrl.ifrs.org/taxonomy/2018-03-16/ifrs-full": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-ifrs-2018-V18-ruleset.zip",
+    "http://fasb.org/us-gaap/2022": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-us-2022-V18-ruleset.zip",
+    "http://fasb.org/us-gaap/2021-01-31": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-us-2021-V18-ruleset.zip",
+    "http://fasb.org/us-gaap/2020-01-31": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-us-2020-V18-ruleset.zip",
+    "http://fasb.org/us-gaap/2019-01-31": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-us-2019-V18-ruleset.zip",
+    "http://fasb.org/us-gaap/2018-01-31": "https://github.com/DataQualityCommittee/dqc_us_rules/raw/v18/dqc_us_rules/dqc-us-2018-V18-ruleset.zip"
+    }
 ```
 The DQC plugin reads the ruleset map in order from the top. If the namespace in the ruleset map matches a namespace used on a primary item of a fact in the instance, then the corresponding ruleset is used.
 
@@ -101,7 +101,7 @@ Note that `rewritePrefix` is mapping to the parent directory that the catalog.xm
 
 Normally taxonomy packages are used to archive (zip) taxonomies and identity taxonomy entry points. Here the taxonomy package mechanism is used to remap csv files, which is out of scope for the taxonomy package spec. However, it does work and using taxonomy package handling built into Arelle. The XBRL spec working group is considering using taxonomy packages for other file types.
 
-### [return to README](README.md#using)
+### [return to Deployment and Usage](usage.md#using)
 
 © Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  

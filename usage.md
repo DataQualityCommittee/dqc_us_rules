@@ -5,7 +5,7 @@
 ## <a name="deploying"></a>Deploying the DQC Arelle Plugin
 ### Windows/Mac/Linux Application Install
 1. Download the latest version of [Arelle](http://arelle.org/pub/) to your environment and install. 
-2. Download the latest release of the [DQC plugin](https://github.com/DataQualityCommittee/dqc_us_rules/releases) 
+2. Download the latest release of the [DQC plugin](https://github.com/xbrlus/xule/releases) 
 3. Extract the DQC archive and copy the ```plugin/xule``` folder and files to the plugin directory of Arelle in your environment (if prompted, overwrite files in the existing xule subfolder). In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin. 
 **Also copy the DQC.py file** (located in the ```plugin/validate``` folder of the DQC release) to the ```plugin/validate``` directory of Arelle in your environoment. In a Windows environment, this would be located on a path similar to C:\Program Files\Arelle\plugin\validate; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/plugin/validate.
 4. Copy the "aniso8601" folder to the root of the Arelle install in your environment. In a Windows environment, this would be located on a path similar to C:\Program FIles\Arelle; on a Mac, the location would be at /Applications/Arelle.app/Contents/MacOS/.
