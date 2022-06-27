@@ -1,5 +1,5 @@
 # Using DQC Rules with Arelle - from the GUI 
-[return to README](README.md#using)
+[return to Deployment and Usage](usage.md#using)
 
 ## Initial setup for the DQC Rules xule plugin
 
@@ -32,7 +32,7 @@
 
 See also [from a command prompt](usage_command_prompt.md) for advanced configuration options. 
 
-### [return to README](README.md#using)
+### [return to Deployment and Usage](usage.md#using)
  
 © Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
