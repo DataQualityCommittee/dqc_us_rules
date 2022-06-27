@@ -24,12 +24,16 @@ if $valuesReportedWithInterest.length > 0
 
         /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
         if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
-            $IncorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+            $incorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+            $correctElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
             $setType = "elements excluding interest"
+            $setTypeContra = "elements including interest"
             true
         else
-            $IncorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+            $incorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+            $correctElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
             $setType = "elements including interest"
+            $setTypeContra = "elements excluding interest"
             true 
     else   
         false
@@ -37,10 +41,13 @@ else
     false
 
 message
-"The filing reports values that using the including accrued interest items and the excluding accrued interest items. Review the accounting policy elections to determine if you should be using the excluding accrued interest items or the including accrued interest items. 
+"The filing reports values that use the including accrued interest items and the excluding accrued interest items. Review the accounting policy elections to determine if you should be using the excluding accrued interest items or the including accrued interest items. 
 
-Review the following {$setType} are appropriate given the majority of disclosure items are the opposite in regard to interest:
-{$IncorrectElements.join(", ")}.
+Review the following {$setType} are appropriate given the majority of disclosure items are {$setTypeContra}}:
+{$incorrectElements.join(", ")}.
+
+The  {$setTypeContra} are as follows:
+{$correctElements.join(", ")}.
 
 Period :{first($valuesReportedExcludingInterest).period}
 Dimensions : {first($valuesReportedExcludingInterest).dimensions.join(', ','=')}
