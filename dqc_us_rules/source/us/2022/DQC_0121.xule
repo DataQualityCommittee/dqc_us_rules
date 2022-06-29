@@ -94,7 +94,7 @@ else
 			else 
 				{@concept = $transitionElement where $fact.period.end >= date('2020-01-01') and ($fact.period.end == $document_period_end)}
 
-		$factIsTextBlock = $fact1.is-type(nonnum:textBlockItemType);
+		$factIsTextBlock = $fact1.is-type(nonnum:textBlockItemType) or $fact1.is-type(dtr-types:textBlockItemType);
 		
 		if exists($fact1)
 			true
