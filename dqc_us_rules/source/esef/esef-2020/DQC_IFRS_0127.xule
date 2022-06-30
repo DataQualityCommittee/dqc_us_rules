@@ -114,7 +114,7 @@ message
 If the dimensionalized value appears in the financial statements, then a dimension needs to be added to the report. If the item has no value on the financial statements, then the presentation item should be removed from the financial statements.
 
 Total Element : {$concept_item}
-Total period : {first($dimensionValues).period} 
+Total period : {first($dimensionValues.sort).period} 
 Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
@@ -191,9 +191,9 @@ for $presNetwork in $presNetworks.sort
         for $concept_item in $presItems
 
             $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
 							else
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
 
             if $dimensionValues.length == 0 or sum($dimensionValues) == 0
                 skip
@@ -222,7 +222,7 @@ The presentation concept is defined for the statement but no fact values are def
 In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase table nd should be added.' else ''}
 
 Total Element : {$concept_item}
-Total period : {first($dimensionValues).period} 
+Total period : {first($dimensionValues.sort).period} 
 Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
