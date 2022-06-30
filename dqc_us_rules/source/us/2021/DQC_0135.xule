@@ -20,12 +20,13 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 	$allNetworks = $PRES_NETWORKS;
 
-	/** eliminate reports with no presentations such as an 8-K with no financial data**/
-	if $allNetworks == none
-			false
+	/** eliminate reports with no presentations containg a statement **/
+
+	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+	
+	if $fsNetworks.length == 0
+			skip
 	else
-		/** Get those networks that are the financial Statements **/
-		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
 
 		/** Get all concepts in FS Networks **/
 		$fsConcepts = sum(set(for ($network in $fsNetworks)
@@ -115,11 +116,11 @@ message
 The following is an example of a fact that does not have an extensible list.
  
 Concept : {$FS_concept}
-Value : {first($FS_Concept_Item)}
-Period : {first($FS_Concept_Item).period}
-Dimensions : {first($FS_Concept_Item).dimensions.join(', ','=')}
-Unit : {first($FS_Concept_Item).unit}
-Decimals: {first($FS_Concept_Item).decimals}
+Value : {first($FS_Concept_Item.sort)}
+Period : {first($FS_Concept_Item.sort).period}
+Dimensions : {first($FS_Concept_Item.sort).dimensions.join(', ','=')}
+Unit : {first($FS_Concept_Item.sort).unit}
+Decimals: {first($FS_Concept_Item.sort).decimals}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -142,12 +143,13 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 	$allNetworks = $PRES_NETWORKS;
 
-	/** eliminate reports with no presentations such as an 8-K with no financial data**/
-	if $allNetworks == none
-			false
+	/** eliminate reports with no presentations containg a statement **/
+
+	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+	
+	if $fsNetworks.length == 0
+			skip
 	else
-		/** Get those networks that are the financial Statements **/
-		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
 
 		/** Get all concepts in FS Networks **/
 		$fsConcepts = sum(set(for ($network in $fsNetworks)
