@@ -149,9 +149,9 @@ for $presNetwork in $presNetworks.sort
         for $concept_item in $presItems
 
             $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
 							else
-								list({covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
 
             if $dimensionValues.length == 0 or sum($dimensionValues) == 0
                 skip
