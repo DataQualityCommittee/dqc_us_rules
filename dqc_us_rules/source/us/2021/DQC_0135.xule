@@ -24,8 +24,8 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
 	
-	if $fsNetworks == none
-			false
+	if $fsNetworks.length == 0
+			skip
 	else
 
 		/** Get all concepts in FS Networks **/
@@ -147,8 +147,8 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
 	
-	if $fsNetworks == none
-			false
+	if $fsNetworks.length == 0
+			skip
 	else
 
 		/** Get all concepts in FS Networks **/

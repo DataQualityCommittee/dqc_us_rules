@@ -24,8 +24,8 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
 	
-	if $fsNetworks == none
-			false
+	if $fsNetworks.length == 0
+			skip
 	else
 		/** Get all concepts in FS Networks **/
 		$fsConcepts = sum(set(for ($network in $fsNetworks)
