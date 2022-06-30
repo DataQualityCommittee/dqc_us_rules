@@ -112,11 +112,11 @@ message
 The following is an example of a fact that does not have an extensible list.
  
 Concept : {$FS_concept}
-Value : {first($FS_Concept_Item)}
-Period : {first($FS_Concept_Item).period}
-Dimensions : {first($FS_Concept_Item).dimensions.join(', ','=')}
-Unit : {first($FS_Concept_Item).unit}
-Decimals: {first($FS_Concept_Item).decimals}
+Value : {first($FS_Concept_Item.sort)}
+Period : {first($FS_Concept_Item.sort).period}
+Dimensions : {first($FS_Concept_Item.sort).dimensions.join(', ','=')}
+Unit : {first($FS_Concept_Item.sort).unit}
+Decimals: {first($FS_Concept_Item.sort).decimals}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
