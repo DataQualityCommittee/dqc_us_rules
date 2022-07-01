@@ -12,8 +12,6 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0117.9574 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-
-
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $STATEMENT_CUBES
 					list($y.drs-role, $y.dimensions));

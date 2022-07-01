@@ -73,9 +73,6 @@ message
 "Sum of the cumulative periods of {$sum-periods} for {$fact1.concept.name} does not match the reported total of {$fact1}, a difference of {abs($sum-periods - $fact1)}.
 
 Period values are:\n{$period-message}\n\nThis rule takes into account possible rounding of values across periods and the decimals associated with each fact. This rule used a tolerance of {$tolerance} which is calculated by taking the lowest decimal value used in the calculation of {$min-decimals}. If there is a difference between the sum of the periods and the aggregate value reported the difference may be due to incorrect decimals associated with the individual fact values. The filer should check that the fact values do not have a decimal value that implies a higher level of accuracy than intended.
-{if (($fact1 - $sum-periods).abs < $fact1.abs * 0.01) and $min-decimals == 0
-'
-In those rare cases where there are small immaterial differences that are less than 1% of the total and decimals are zero the rule can be overidden. This is performed by creating an extension element called ImmaterialDifferenceFlag.  If this element has any value in any context in the instance then the immaterial difference will not result in an error.' else ''}
 
 The rule excludes elements in the base taxonomy that cannot be aggregated such as an average, maximum or minimum value.
 
