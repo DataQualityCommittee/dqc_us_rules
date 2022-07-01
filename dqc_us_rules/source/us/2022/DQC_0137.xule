@@ -47,13 +47,13 @@ else
  
 message
 
-"The element {$fsConcept} with a value of {first($fsConceptItems)} has been used in the filing with the axis {$locationAxis}.  This is the only fact reported with this element.  Rather than using the {$locationAxis} the filer should use the extensible enumeration element to indicate the location of the item in the financial statements. In this case the element {$relatedExtEnum} should be used to identify the account where the element {$fsConcept} is included. 
+"The element {$fsConcept} with a value of {first($fsConceptItems.sort)} has been used in the filing with the axis {$locationAxis}.  This is the only fact reported with this element.  Rather than using the {$locationAxis} the filer should use the extensible enumeration element to indicate the location of the item in the financial statements. In this case the element {$relatedExtEnum} should be used to identify the account where the element {$fsConcept} is included. 
 
  
-Period :{first($fsConceptItems).period}
-Dimensions : {first($fsConceptItems).dimensions.join(', ','=')}
-Unit : {first($fsConceptItems).unit}
-Decimals: {first($fsConceptItems).decimals}
+Period :{first($fsConceptItems.sort).period}
+Dimensions : {first($fsConceptItems.sort).dimensions.join(', ','=')}
+Unit : {first($fsConceptItems.sort).unit}
+Decimals: {first($fsConceptItems.sort).decimals}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -62,5 +62,5 @@ SEVERITY error
 status $status
 effectiveDate $effective_dates[$ruleId]
 
-rule-focus first($fsConceptItems)
+rule-focus first($fsConceptItems.sort)
 
