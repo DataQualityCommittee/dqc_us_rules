@@ -37,7 +37,11 @@ and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and (not $item.drs-role.description.lower-case.contains('schedule iii'))
+and (not $item.drs-role.description.lower-case.contains('schedule iv'));
+
+$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
 
@@ -135,7 +139,11 @@ and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
-$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
+$statementCubes = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and (not $item.drs-role.description.lower-case.contains('schedule iii'))
+and (not $item.drs-role.description.lower-case.contains('schedule iv'));
+
+$cubeURISet = (FILTER $statementCubes returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
 
@@ -144,7 +152,7 @@ for $presNetwork in $presNetworks.sort
         $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
          /** If use a table check that facts have the correct member **/
          if $presNetwork.role.uri in $cubeURISet
-            $bs_cube = filter $STATEMENT_CUBES where $item.drs-role.uri == $presNetwork.role.uri
+            $bs_cube = filter $statementCubes where $item.drs-role.uri == $presNetwork.role.uri
             $bs_cube_facts = sum($bs_cube.facts)
 
             /** This section excludes presentation items not included in the table **/
@@ -191,7 +199,7 @@ The presentation concept is defined for the statement but no fact values are def
 In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase table nd should be added.' else ''}
 
 Total Element : {$concept_item}
-Total period : {first($dimensionValues).period} 
+Total period : {first($dimensionValues.sort).period} 
 Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
