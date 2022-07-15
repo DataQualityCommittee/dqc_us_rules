@@ -1,0 +1,125 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+**/
+
+
+rule-name-prefix DQC
+
+/** Overview  of the rules **/
+/**
+** This rule is comprised of two sub-rules.  The rule chacks that the investment schedule that show the difference between amortized cost and fair value is calculated correctly.
+** The rule takes the components an calculates each line as a seperate iteration, for each dimension member. The rule operates once for amounts including accrued interest and once for amounts excluding accrued interest.   Both rules should not fire for the same filing as filers are required to report either the values including accrued interest or excluding accrued interest.  The fair value and amortized cost must be present for the rule to fire.
+**/
+
+assert US.0140.9861 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** This rule checks the cross calculation for interest Included **/
+
+$AmortCost = first-value({nonils @AvailableForSaleDebtSecuritiesAmortizedCostBasis}, {nonils @DebtSecuritiesAvailableForSaleAmortizedCostCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent})
+
+$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLoss}, {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent})
+
+$AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
+
+$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent}))
+
+$AmortizedCostAfterCreditLoss = first-value( $AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
+
+$gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
+
+$loss = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax}
+
+$fairValue = first-value({nonils @AvailableForSaleSecuritiesDebtSecurities}, {nonils @AvailableForSaleSecuritiesDebtSecuritiesCurrent} + {nonils @AvailableForSaleSecuritiesDebtSecuritiesNoncurrent})
+
+$Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
+
+$decimal_tolerance_factor = 2;
+
+if $fairValueCalc == none
+	skip
+else
+	tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+
+message
+
+"The reported fair value of Available For Sale Debt Securities Securities of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
+Amortized Cost of {$AmortCost}
+Gain on Securities {$gain}
+Loss on Securities of {$loss}
+Credit Loss on Securities of {$creditLoss}
+
+Period :{$fairValue.period}
+Dimensions : {$fairValue.dimensions.join(', ','=')}
+Unit : {$fairValue.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+
+assert US.0140.9862 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** This rule checks the cross calculation **/
+
+$AmortCost = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss},{nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent})
+
+$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest}, {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent})
+
+$AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
+
+$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent}))
+
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
+
+$gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
+
+$loss = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax}
+
+
+$fairValue = first-value({nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterest}, {nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent} + {nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent})
+
+$Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
+
+$fairValue != $fairValueCalc
+
+
+message
+
+"The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
+Amortized Cost of {$AmortCost}
+Gain on Securities {$gain}
+Loss on Securities of {$loss}
+Credit Loss on Securities of {$creditLoss}
+
+Period :{$fairValue.period}
+Dimensions : {$fairValue.dimensions.join(', ','=')}
+Unit : {$fairValue.unit}\n
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]

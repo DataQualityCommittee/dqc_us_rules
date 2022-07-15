@@ -37,6 +37,7 @@ and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
 
+
 $cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
 for $presNetwork in $presNetworks.sort
@@ -134,7 +135,6 @@ and (not $item.role.uri.lower-case.contains('membersinterest'))
 and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'));
-
 
 $cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
