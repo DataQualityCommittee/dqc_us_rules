@@ -118,13 +118,13 @@ for ($network in $networks)
 	$paths = navigate parent-child descendants from RetirementPlanSponsorLocationAxis role $network returns paths (target-name)
 	for $pathElements in $paths 
 		if ($pathElements.last == ForeignPlanMember)
-			true
+			list({covered @RetirementPlanSponsorLocationAxis = ForeignPlanMember}).length == 0
 		else 
 			false
 		
 
 message
-"The Foreign Plan [Member] has been included as a descendant of the Retirement Plan Sponsor Location [Axis] in the presentation linkbase {$network.uri}. The FASB requires this member includes children elements representing the Foreign Geography. In this case the Foreign Plan [Member] has no children. Please add a member representing the foreign location or remove the Foreign Plan [Member].
+"The Foreign Plan [Member] has been included as a descendant of the Retirement Plan Sponsor Location [Axis] in the presentation linkbase {$network.uri}. The FASB requires this member includes children elements representing the Foreign Geography if no value is reported for the foreign plan member. In this case the Foreign Plan [Member] has no children. Please add a member representing the foreign location or remove the Foreign Plan [Member].
 
 The axis RetirementPlanSponsorLocationAxis has the following members listed under it for this path:
 {$pathElements.join(', 
