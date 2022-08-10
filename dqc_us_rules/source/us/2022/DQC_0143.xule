@@ -17,16 +17,16 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $AllowableDerivativeFactValues = set(CallOptionMember, PutOptionMember)
 
-		$DerivativeFact = {@us-gaap-supplement:DerivativePositionExtensibleEnumeration}
+$DerivativeFact = {@us-gaap-supplement:DerivativePositionExtensibleEnumeration}
 
-		$AllowableDerivativeFactValues.intersect($DerivativeFact).length == 0
+$AllowableDerivativeFactValues.intersect($DerivativeFact).length == 0
 
 message
 "The filing reports a value of {$DerivativeFact} for the concept {$DerivativeFact.concept.name}.  This concept can only use the values of either {$AllowableDerivativeFactValues.join(', ')}.  Please change the value to one of these members or select another element.
 
 
 
-Period :{first($DerivativeFact).period}
+Period :{($DerivativeFact).period}
 Dimensions : {($DerivativeFact).dimensions.join(', ','=')}
 
 Rule Element Id:{$ruleId}
