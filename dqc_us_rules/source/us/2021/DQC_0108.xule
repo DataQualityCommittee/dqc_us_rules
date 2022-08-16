@@ -20,8 +20,8 @@ $cut_down_list = filter $MONETARY_NON_NEGS where $item.period-type == duration a
 
 for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
 
-      $fact1 = {nonils @concept = $x @period=* where not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)}
-      $large = {nonils @concept = $x @period=* where not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)}
+      $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
+      $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
