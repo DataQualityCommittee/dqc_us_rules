@@ -42,10 +42,19 @@ for $leaseItem in $leaseItems
 		                                                    $local-name-ext = $x.substring($colan_loc);
                                                             qname(taxonomy().entry-point-namespace,$local-name-ext)
                                                         )
-        /** Handles where the lease is split across line items **/
+         /** Handles where the lease is split across line items **/
         $ValueOfLeaseLineItemINBS = first-value(sum(list({@concept in $leaseLocationQnames @unit=*})), skip);
+       
+        $fact_values = list({@concept in $leaseLocationQnames @unit=*});
+
+	    $minDecimals = min(list(for $x in $fact_values
+					if $x == none 
+						skip
+					else
+						$x.decimals));
         $ValueOfLeaseItem = {@concept = $leaseItem[1] @unit=*};
-        $ValueOfLeaseItem > $ValueOfLeaseLineItemINBS
+        
+        tolerance_for_decimals_greater_than($ValueOfLeaseItem, $ValueOfLeaseLineItemINBS, $minDecimals, 0)
     else
         skip
 
