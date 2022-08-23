@@ -162,4 +162,7 @@ constant $income_items = set(ComprehensiveIncomeNetOfTax,
 					)
 
 constant $MONETARY_NON_NEGS = filter $non_neg_items.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
-			
+
+constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
+
+constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
