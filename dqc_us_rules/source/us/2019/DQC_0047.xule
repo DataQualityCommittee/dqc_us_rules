@@ -20,6 +20,7 @@ for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuing
 	where $relationship.target.balance == none 
 	/** Excludes as this is a known exception **/
     and $relationship.target.name  != NetCashProvidedByUsedInOperatingActivitiesContinuingOperations
+	and $relationship.target.name  != InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
 	/** DOes not flag an error if the element is an extension element **/
 	and is_base($relationship.target, $all_base_taxonomies);
 
