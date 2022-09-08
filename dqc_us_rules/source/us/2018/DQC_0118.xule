@@ -122,7 +122,7 @@ for $cube in $statementCubes.sort
 
 					/** No default defined for a dimension - Option 4 **/
 
-					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name);
+					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) returns set (source-name);
 					$MissingDefaults = $dimObjects - $DefaultDimensions
 					
 					/** Label Check - Option 5 **/
