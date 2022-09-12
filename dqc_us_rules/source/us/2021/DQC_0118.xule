@@ -17,6 +17,8 @@ $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndD
 $document_period_end_date = $document_period.period.end - time-span("P1D");
 $document_period_start_date = $document_period.period.start
 
+/** Get tables for financial statement items **/
+
 for $cube in $STATEMENT_CUBES.sort
 			/** get the calculations aligned with the cube role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns set (source-name);
@@ -49,7 +51,7 @@ for $cube in $STATEMENT_CUBES.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -60,8 +62,9 @@ for $cube in $STATEMENT_CUBES.sort
 																		true
 																	else
 																		false;
+													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, $cube.drs-role))
+													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
@@ -69,13 +72,13 @@ for $cube in $STATEMENT_CUBES.sort
 													$factAmt = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
-														max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string,
+														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
 													$factDecimals = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
-														max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))).decimals,
+														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
@@ -105,7 +108,7 @@ for $cube in $STATEMENT_CUBES.sort
 
 					/** No default defined for a dimension - Option 4 **/
 
-					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name);
+					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) returns set (source-name);
 					$MissingDefaults = $dimObjects - $DefaultDimensions
 					
 					/** Label Check - Option 5 **/
