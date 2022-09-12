@@ -49,7 +49,7 @@ for $cube in $STATEMENT_CUBES.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -60,8 +60,9 @@ for $cube in $STATEMENT_CUBES.sort
 																		true
 																	else
 																		false;
+													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, $cube.drs-role))
+													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
@@ -69,20 +70,20 @@ for $cube in $STATEMENT_CUBES.sort
 													$factAmt = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
-														max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string,
+														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
 													$factDecimals = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
-														max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))).decimals,
+														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
 																		"-";
 													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(120 - $strLength - ($factAmt + "").length - $DefaultMessage.length)
+													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
 																					" " 
 																					)
 																			);
@@ -105,7 +106,7 @@ for $cube in $STATEMENT_CUBES.sort
 
 					/** No default defined for a dimension - Option 4 **/
 
-					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name);
+					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) returns set (source-name);
 					$MissingDefaults = $dimObjects - $DefaultDimensions
 					
 					/** Label Check - Option 5 **/
