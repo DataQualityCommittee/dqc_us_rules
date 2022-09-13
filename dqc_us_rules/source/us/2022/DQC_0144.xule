@@ -36,7 +36,12 @@ and (not $item.role.uri.lower-case.contains('highlights'))
 for $network in $presNetworks
 	$items_with_no_balance = navigate parent-child descendants role $network.role where $relationship.target.is-monetary == true and $relationship.target.balance == none and $relationship.target.namespace-uri == $EXTENSION_NS returns set (target-name);
 
-	for $no_balance_item in $items_with_no_balance
+	//Exclude Items that are interim totals as may not have a balance type in the case of cashflows//  
+	$parent_elements = navigate summation-item descendants role $network.role returns set (source-name)
+
+	$ItemsThatAreLeafItems = $items_with_no_balance - $parent_elements
+
+	for $no_balance_item in $ItemsThatAreLeafItems
 		$no_balance_item_values = list({covered @concept = $no_balance_item })
 		$no_balance_item_values.length > 0
 
@@ -54,8 +59,113 @@ Rule version: {$ruleVersion}"
 severity error
 effectiveDate $effective_dates[$ruleId]
 
-// TODO Add rule to determine if the concept IncreaseDecreaseInDerivativeLiabilities is used in the income statement //
+
+assert US.0145.9867 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
+
+$taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name) 
+
+$extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
+
+for $invalidConcept in $extensionNames
+	true
+
+message
+"The company has reported the concept {$invalidConcept} as a child of the presentation concept NetCashProvidedByUsedInFinancingActivitiesAbstract.  This concept is not a component of financing activities and should be presented outside of this group in the presentation linkbase.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
 
 
-//TODO Add rule to check that a 10K actually has the correct period i.e. i1 year American Semiconductor 10K is a year but tahgged as one quarter.//
-/** To fix this we need to look at the calulation in the income statement and check that the majority of elements defined have a duration of 1 year in the default and the fiscal focus is one year**/
+
+assert US.0145.9868 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
+
+$taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name) 
+
+$extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInInvestingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
+
+for $invalidConcept in $extensionNames
+	true
+
+message
+"The company has reported the concept {$invalidConcept} as a child of the presentation concept NetCashProvidedByUsedInInvestingActivitiesAbstract.  This concept is not a component of investing activities and should be presented outside of this group in the presentation linkbase.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+
+assert US.0145.9869  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$taxonomyChangeInOperatingCapital = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name) 
+
+$filinComponentsOfNetIncomeLoss = navigate parent-child descendants from IncomeStatementAbstract where $relationship.target.is-monetary == true returns set (target-name)
+
+$misplacedConcepts = $filinComponentsOfNetIncomeLoss.intersect($taxonomyChangeInOperatingCapital)
+
+for $invalidConcept in $misplacedConcepts
+	true
+
+message
+"The company has reported the concept {$invalidConcept} as a child of the presentation concept IncomeStatementAbstract.  This concept is not a component the income statement and should not be presented within the income statement.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+
+
+assert US.0146.9870  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+$document_period_start_date = $document_period.period.start
+
+if  not set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+	skip
+else
+	$presNetworks = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+	and (not $item.role.uri.lower-case.contains('parenthetical')) 
+	and (not $item.role.uri.lower-case.contains('equity')) 
+	and (not $item.role.uri.lower-case.contains('deficit')) 
+	and (not $item.role.uri.lower-case.contains('stockholders')) 
+	and (not $item.role.uri.lower-case.contains('capital')) 
+	and (not $item.role.uri.lower-case.contains('investment')) 
+	and (not $item.role.uri.lower-case.contains('changes')) 
+	and (not $item.role.uri.lower-case.contains('shareholder')) 
+	and (not $item.role.uri.lower-case.contains('convertible')) 
+	and (not $item.role.uri.lower-case.contains('preferred'))  
+	and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+	and (not $item.role.uri.lower-case.contains('redeemable'))
+	and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+	and (not $item.role.uri.lower-case.contains('membersinterest'))
+	and (not $item.role.uri.lower-case.contains('highlights'))
+                        
+	for $presNetwork in $presNetworks.sort
+		
+		$presConceptItems = $presNetwork.concept-names;
+
+		// Income Statement Processing 
+		if $presConceptItems.contains(IncomeStatementAbstract)
+			$presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+			$periodDuration = duration($document_period_start_date, $document_period_end_date);
+			$totalYearItems = list([covered @concept in $presNumericItems @period in list($periodDuration)]).count
+			$totalNonYearItems = list([covered @concept in $presNumericItems @period.end = $document_period_end_date @period.start != $document_period_start_date ]).count
+			$totalYearItems < $totalNonYearItems
+
+		else 
+			skip
+
+
+message
+"The company has reported a 10K but the majority of the values reported on the Income Statement are for a period other than a year.  Please check that the values used on the Income Statement represent a full year for the required reporting period.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"

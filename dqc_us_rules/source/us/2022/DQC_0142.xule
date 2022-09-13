@@ -26,7 +26,8 @@ for $typedDimension in $BDCTypedDimensionsToCheck
 
 		$BDCInvestmentFact = {@$typedDimension = *}
 
-		$BDCInvestmentFact.dimensions.length > 1
+		$Legitimateimensions = $BDCInvestmentFact.dimensions.keys - set(us-gaap-supplement:InvestmentCompanyNonconsolidatedSubsidiaryAxis);
+        $Legitimateimensions > 1
 
 message
 "The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension}. 
