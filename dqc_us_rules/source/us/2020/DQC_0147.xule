@@ -14,11 +14,11 @@ rule-name-prefix DQC
 assert US.0147.9871  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-{nonils @concept in $NON_NEG_ITEMS.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
-		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
-		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
-		and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
-		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}#fact1.signum == {nonils @srt:ConsolidationItemsAxis = none where $fact.is-numeric and $fact != 0}#fact2.signum
+{nonils @concept in $non_neg_items.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
+		(not match_set_substring($fact, $exclude_non_neg_string_members)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0
+		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
+		and not_elim_adjust($fact, $exclude_non_neg_axis_members))}#fact1.signum == {nonils @srt:ConsolidationItemsAxis = none where $fact.is-numeric and $fact != 0}#fact2.signum
 message
 	"The concept {$fact1.concept.name} with an elimination value of {$fact1} has a sign which is the same as the defaulted value for {$fact2.concept.name} of {$fact2}. It is expected that the defaulted value and eliminations for the line item {$fact1.concept.name}} would be the opposite of each other.
 Review the elimination amount to determine that the sign is correct.
