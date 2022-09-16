@@ -15,14 +15,13 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Determine if accrued Interest and Available for sale securities are reported on the BS **/
 
-// TODO Fix this! Add calculation check that looks for Including interest = accrued int + investments excluding intest  ( DO for all 5 sets of investment types ) // 
-
 $valuesReportedWithInterest = list({@concept in $INCLUDING_ACCRUED_INTEREST})
-
 
 if $valuesReportedWithInterest.length > 0
     $valuesReportedExcludingInterest = list({@concept in $EXCLUDING_ACCRUED_INTEREST})
     if $valuesReportedExcludingInterest.length > 0
+    // LOOK Up all the calculation relationships and see if that calc relationship exists in the filing. This is used to determine if there is a reconciliation. //
+        $IncludingInterestSourceCalcs = navigate summation-item children from (filter $valuesReportedWithInterest returns $item.concept.name).to-set where $relationship.target-name in $EXCLUDING_ACCRUED_INTEREST returns set source-name;
 
         /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
         if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
@@ -30,13 +29,13 @@ if $valuesReportedWithInterest.length > 0
             $correctElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
             $setType = "elements excluding interest"
             $setTypeContra = "elements including interest"
-            true
+            $IncludingInterestSourceCalcs.intersect($correctElements).length == 0
         else
             $incorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
             $correctElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
             $setType = "elements including interest"
             $setTypeContra = "elements excluding interest"
-            true 
+            $IncludingInterestSourceCalcs.intersect($incorrectElements).length == 0 
     else   
         false
 else
@@ -50,6 +49,8 @@ Review the following {$setType} are appropriate given the majority of disclosure
 
 The  {$setTypeContra} are as follows:
 {$correctElements.join(", ")}.
+
+{$IncludingInterestSourceCalcs.join(", ")}
 
 Period :{first($valuesReportedExcludingInterest).period}
 Dimensions : {first($valuesReportedExcludingInterest).dimensions.join(', ','=')}
