@@ -21,7 +21,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Check if the srt taxonomy is used **/
 
 $srttaxonomy = any(set(for $link in dts-document-locations(taxonomy())
-                            if $link.contains('http://xbrl.fasb.org/srt/2020/elts/srt-2020-01-31.xsd')
+                            if $link.contains('http://xbrl.fasb.org/srt/2022/elts/srt-2022.xsd')
                                 true
                             else
                                 false
