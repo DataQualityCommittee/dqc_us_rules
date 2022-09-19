@@ -106,15 +106,13 @@ assert US.0081.9278 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Get all the calculations defined in the Instance document. **/
 
-$fact_concepts = set([nonils covered @concept in $STATEMENT_CONCEPTS where $fact.is-monetary].concept.name);
-
-/** Exludes NetIncomeLoss, ProfitLoss as these are are used in the CF for addbacks **/
-$value-concepts = $fact_concepts - $INCOME_ITEMS;
-
-if length($value-concepts) == 0
+if $STATEMENT_CONCEPTS == none
 	skip
 else
+	$fact_concepts = set([nonils covered @concept in $STATEMENT_CONCEPTS where $fact.is-monetary].concept.name);
 
+	/** Exludes NetIncomeLoss, ProfitLoss as these are are used in the CF for addbacks **/
+	$value-concepts = $fact_concepts - $INCOME_ITEMS;
 	for ($value-con in $value-concepts)
 		$extCalcRelationship1 = navigate summation-item siblings from $value-con returns by network set (relationship);
 		
