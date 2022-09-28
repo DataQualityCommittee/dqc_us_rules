@@ -666,38 +666,40 @@ constant $ALPHA_CODE_LOOKUP = 	dict(
 ** @return numeric - Returns a numerical value.
 **/
 
-function getDimensionSums($concept, $cube, $drs-role)
+function getDimensionSums($concept, $cube, $dimensions_of_sum)
 
 			/** Get the dimensions in the cube **/
-			$dimensions = $cube.dimensions
-
+			$dimensions = sum(set({covered nonils @concept = $concept @cube.drs-role = $cube.drs-role where $fact.dimensions.keys.count == $dimensions_of_sum}.dimensions.keys))
+			if $dimensions == none
+				skip
+			else
 			for $dimObject in $dimensions
-				$dim = $dimObject.concept.name
+				$dim = $dimObject.name
 				
 				/** Want to exclude legal entity axis and statement scenerio axis as this is a dimension that is added **/
 
 				if $dim.local-name in list('LegalEntityAxis','StatementScenarioAxis')
 					skip
 				else 
-					$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+					$members = navigate dimensions descendants from $dim drs-role $cube.drs-role returns target-name
 
-					$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
+					$domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name
 
 					/** Get a set  of the unique members **/
 					$member_descendants = $members.to-set - $domain;
 
 					/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded.**/
 
-					$member_facts = list(for $member in $member_descendants
-										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-										if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
-											skip
-										else 
-											if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member}).length > 0
-												{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member}
-											else
-												{covered-dims nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member}	
-												);
+
+					$valid_Members = list(for $member in $member_descendants.to-list.sort
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
+									if list({@$dim in $ancestors_list {nonils @concept = $concept @cube.drs-role = $cube.drs-role}}).length > 0
+										skip
+									else
+										$member);
+
+					$member_facts = list({@$dim in $valid_Members {nonils @concept = $concept @cube.drs-role = $cube.drs-role}}
+											);
 
 											/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 					/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
@@ -718,40 +720,45 @@ function getDimensionSums($concept, $cube, $drs-role)
 ** @return numeric - Returns a numerical value.
 **/
 
-function getDimensionNames($concept, $cube, $drs-role)
+function getDimensionNames($concept, $cube, $dimensions_of_sum)
 
 			/** Get the dimensions in the cube **/
-			$dimensions = $cube.dimensions
+			$dimensions = sum(set({covered nonils @concept = $concept @cube.drs-role = $cube.drs-role where $fact.dimensions.keys.count == $dimensions_of_sum}.dimensions.keys))
+			if $dimensions == none
+				skip
+			else
 
 			for $dimObject in $dimensions
-				$dim = $dimObject.concept.name
+				$dim = $dimObject.name
 
 				/** Want to exclude legal entity axis as a dimension that is added **/
 
 				if $dim.local-name in list('LegalEntityAxis','StatementScenarioAxis')
 					skip
 				else 
-				$members = navigate dimensions descendants from $dim drs-role $drs-role returns target-name
+				$members = navigate dimensions descendants from $dim drs-role $cube.drs-role returns target-name
 
-				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $drs-role returns set target-name
+				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name
 
 				/** Get a set  of the unique members **/
 				$member_descendants = $members.to-set - $domain;
 
 				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
-				$member_facts = list(for $member in $member_descendants
-									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs-role returns set (target-name)) - $domain;
-									if list({nonils @concept = $concept @cube.drs-role = $drs-role @$dim in $ancestors_list}).length > 0
+
+				$valid_Members = list(for $member in $member_descendants.to-list.sort
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
+									if list({@$dim in $ancestors_list {nonils @concept = $concept @cube.drs-role = $cube.drs-role}}).length > 0
 										skip
-									else 
-										{nonils @concept = $concept @cube.drs-role = $drs-role @$dim = $member});
+									else
+										$member);
+
+				$member_facts = list({@$dim in $valid_Members {nonils @concept = $concept @cube.drs-role = $cube.drs-role}})
 				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 				if 	$member_facts.length == 0 
 					skip
 				else		
 					/** aggregate the fact values on the axis **/
 					list($dim.local-name,sum($member_facts),$member_facts)
-
 /** 
  * most_frequent
  * 
