@@ -20,18 +20,27 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check if the srt taxonomy is used **/
 
-$srttaxonomy = any(set(for $link in dts-document-locations(taxonomy())
+$srttaxonomy2020 = any(set(for $link in dts-document-locations(taxonomy())
                             if $link.contains('http://xbrl.fasb.org/srt/2020/elts/srt-2020-01-31.xsd')
                                 true
                             else
                                 false
                                     ));
+$srttaxonomy2021 = any(set(for $link in dts-document-locations(taxonomy())
+                            if $link.contains('http://xbrl.fasb.org/srt/2021/elts/srt-2021-01-31.xsd')
+                                true
+                            else
+                                false
+                                    ));
 
+$collective_dimensions_srt = if $srttaxonomy2021
+                                set(srt_2021:ProductOrServiceAxis)
+                             else if $srttaxonomy2020
+                                set(srt:ProductOrServiceAxis)
+                            else
+                                set()
 
-$collective_dimensions = if $srttaxonomy
-                                set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, srt:ProductOrServiceAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis, ProductsAndServicesAxis)
-                        else
-                                set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis, ProductsAndServicesAxis)
+$collective_dimensions = set(ClassesOfPropertyPlantAndEquipmentAxis, ClassesOfOrdinarySharesAxis, ClassesOfIntangibleAssetsOtherThanGoodwillAxis, BorrowingsByNameAxis, ProductsAndServicesAxis) + $collective_dimensions_srt
 
 for $dimension in $collective_dimensions
                 $dimension_fact =[nonils @@concept in $MONETARY_NON_NEGS @$dimension = *]

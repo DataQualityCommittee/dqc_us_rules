@@ -28,7 +28,6 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -50,7 +49,6 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$ruleId]
 
 assert US.0139.9857 satisfied 
@@ -72,18 +70,33 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$ruleId]
 
+//----------------9858-----------------------//
 assert  US.0139.9858 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-{@TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets}#fact2 >  {@TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets}#fact
+// SHould be 6.0 percent for fact2 vs 8% for well capitalized (fact1). If greater then peraps the buffer of 2.5% is an issue //
+
+$fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets}
+$fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets}
+$BufferAmount = 0.085
+
+$bufferMessage = if $fact2  != 0.085
+                    "Confirm that the Tier One capital percentages have been tagged with the appropriate scale."
+                else 
+                    "It looks like the tier 1 capital includes a buffer.  If a buffer is used the extension element TierOneRiskBasedCapitalRequiredForCapitalAdequacyWithBufferToRiskWeightedAssets should be used rather than the element TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets." 
+
+if $fact2 > $fact1
+        true
+else
+        false
 
 message
-"The percentage of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the percentage of Tier One capital to be well capitalized with a value of  {$fact}. 
- Confirm that the Tier One capital percentages have been tagged with the appropriate scale.
+"The percentage of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the percentage of Tier One capital to be well capitalized with a value of  {$fact1}.
+
+{$bufferMessage}
 
 The properties of this {$fact2.concept.name} fact are:
 Period :{$fact2.period}
@@ -94,18 +107,33 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$ruleId]
+
+//----------------9859-----------------------//
 
 assert  US.0139.9859 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-{@TierOneRiskBasedCapitalRequiredForCapitalAdequacy}#fact2 > {@TierOneRiskBasedCapitalRequiredToBeWellCapitalized}#fact
+$fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalized}
+$fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacy}
+$CapAddAndBufferAmount = (0.085 * ($fact1 / 0.08));
+$BufferAmount = 0.025 * ($fact1 / 0.08)
+
+$bufferMessage = if tolerance_for_decimals($fact2, $CapAddAndBufferAmount, 2 )
+                     "Confirm that the Tier One capital values have been tagged with the appropriate scale."
+                else 
+                    "It looks like the tier 1 capital includes a buffer with a value of " + $BufferAmount.string + ", if a buffer is used the extension element TierOneRiskBasedCapitalRequiredForCapitalAdequacyWithBuffer should be used rather than the element TierOneRiskBasedCapitalRequiredForCapitalAdequacy." 
+                     
+if $fact2 > $fact1
+        true
+else
+        false
 
 message
-"The value of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the value of Tier One capital to be well capitalized with a value of  {$fact}. 
- Confirm that the Tier One capital values have been tagged correctly.
+"The value of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the value of Tier One capital to be well capitalized with a value of  {$fact1}. 
+
+{$bufferMessage}
 
 The properties of this {$fact2.concept.name} fact are:
 Period :{$fact2.period}
@@ -116,8 +144,9 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$ruleId]
+
+//----------------9860-----------------------//
 
 assert US.0139.9860 satisfied
 
@@ -138,5 +167,4 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$ruleId]
