@@ -104,11 +104,13 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0135](DQC_US_0135/DQC_0135.md) | Extensible Enumerations for Financial Statement Captions | Approved | 18 |
 | [DQC_US_0136](DQC_US_0136/DQC_0136.md) | Caption Value Matches Financial Statements | Approved | 18 |
 | [DQC_US_0137](DQC_US_0137/DQC_0137.md) | Location Axis with a Single Member | Approved | 18 |
-| [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Public Review | 19 |
-| [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Public Review | 19 |
-| [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Public Review | 19 |
+| [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
+| [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
+| [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
 
 ## Guidance 
+
+### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/)
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
