@@ -1,10 +1,10 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2019
-Release Version 15
+Release Version 18
 **/
 
 RULE-NAME-PREFIX DQC
@@ -21,8 +21,8 @@ $cut_down_list = filter $MONETARY_NON_NEGS where $item.period-type == duration a
 
 for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
 
-      $fact1 = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
-      $large = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
+      $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
+      $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 
@@ -47,6 +47,6 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-status $status
+
 
 effectiveDate $effective_dates[$rule_id]

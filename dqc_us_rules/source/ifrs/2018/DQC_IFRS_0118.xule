@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2018
@@ -59,6 +59,7 @@ for $cube in $statementCubes.sort
 					$addend = sum(list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
+											
 											/** IMPORTANT **/
 											/**
 											** If a number is reported twice and the value is the same but they have different decimals then the arelle
@@ -67,7 +68,7 @@ for $cube in $statementCubes.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, $cube.drs-role))) * $targetWeight)	
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -78,15 +79,24 @@ for $cube in $statementCubes.sort
 																		true
 																	else
 																		false;
+													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, $cube.drs-role))
+													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
 													
-													$factAmt = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).string, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.string)
+													$factAmt = first-value(
+														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
+														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
-													$factDecimals = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, max(list(getDimensionSums($targetElement , $cube, $cube.drs-role))).decimals, {nonils @concept = $targetElement @cube.drs-role = $cube.drs-role}.decimals)
+													$factDecimals = first-value(
+														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
+														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
+														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
 																else
@@ -96,10 +106,9 @@ for $cube in $statementCubes.sort
 																					" " 
 																					)
 																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Incorrect decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
+											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
-
 					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}

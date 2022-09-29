@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2018
@@ -25,7 +25,7 @@ $document_period_end_date = $document_period.period.end;
 /** The  first part of the expession checks if the document period end date is within three days if not the rule does not execute as rule DQC.US.0036 will have executed**/
 not($document_period > ($document_period_end_date + (time-span("P4D"))) or $document_period < ($document_period_end_date - (time-span("P4D"))))
 and 
-exists({@concept.namespace-uri = 'http://xbrl.sec.gov/dei/2018-01-31' @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
+exists({@concept.namespace-uri = $dei_namespace @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
 
 
 message
