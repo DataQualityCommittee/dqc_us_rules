@@ -4,7 +4,6 @@
 
 * Final rules that the XBRL US Data Quality Committee approved for public release
 * Draft rules that the XBRL US Data Quality Committee approved to expose for public comment
-* Python-based reference implementation of the rules in Xule-syntax, using Arelle as an XBRL processor
 * Archived files in .zip format for approved and public exposure rules that can be installed and invoked as an Arelle plugin 
 * Unit tests for the reference implementation
 * Test suite documentation
@@ -13,14 +12,17 @@
 
 The DQC rules are run using an Arelle plugin written in an XBRL rule syntax called Xule. Xule is processed in a plugin for the [Arelle Open Source XBRL processor](http://arelle.org/pub) on a local computer or server. The DQC Arelle plugin reads a specified ruleset and the assertions defined in the ruleset are evaluated against an XBRL instance, a taxonomy or an extension taxonomy, creating validation messages.
 
+### [Download the latest Xule release and DQC validation plugin](https://github.com/xbrlus/xule/releases/latest)
+
+  - **Read [Deployment and Usage](usage.md) for details on deployment, configuration and usage of the compiled ruleset.zip files.**
+
 The ruleset is comprised of compiled rule files representing rule submission forms that define the rules in a human-readable syntax. Both the compiled rule files and the human-readable rule submission forms are included in the distribution. 
 
   - **[The ``docs`` subdirectory README](docs/README.md) includes an index of human-readable Data Quality Committee rule submission forms**. The index lists the most-recent major version in which each rule was released or substantively modified. 
-  - **[The ``plugin\xule`` subdirectory README](plugin/xule/README.md) has details on deployment, configuration and usage of the compiled ruleset.zip files.**
 
 ## Repository Change Management (versioning)
 
-The dqc_us_rules reference implementation library (and compiled ruleset.zip files) follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC), and become the [latest-approved version (x.0.0)](https://github.com/DataQualityCommittee/dqc_us_rules/releases/) when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period. Each release is inclusive of all prior approved rules, and error messages include this detail [as referenced to the corresponding taxonomy's constant.xule or constant-IFRS.xule](https://github.com/DataQualityCommittee/dqc_us_rules/search?o=desc&q=constant+%24ruleVersion&s=indexed)).
+The dqc_us_rules reference implementation library (and compiled ruleset.zip files) follows a standard semantic versioning system of MAJOR.MINOR.FIX format. Major releases are specified at the beginning of each public comment period, suffixed with Release Candidate subversions (RC), and become the [latest-approved version (x.0.0)](https://github.com/DataQualityCommittee/dqc_us_rules/releases/) when a new set of rules have been approved, coded, and accepted by the DQC after a public comment period. Each release is inclusive of all prior approved rules, and error messages include this detail [as referenced to the corresponding taxonomy's constant.xule or constant-IFRS.xule](https://github.com/DataQualityCommittee/dqc_us_rules/search?q=constant+%24ruleVersion)).
 
 ### Proposed Changes
 
@@ -51,4 +53,4 @@ When new rules that have been approved for coding are released by the DQC, the r
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.
 
-Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.
+Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.

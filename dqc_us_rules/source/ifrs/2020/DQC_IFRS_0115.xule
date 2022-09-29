@@ -1,24 +1,31 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2021, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2020
-Release Version 16
+Release Version 18
 **/
 
-RULE-NAME-PREFIX DQC
+rule-name-prefix DQC
 
 ASSERT IFRS.0115.9565 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
+	skip
+else
+
 $cut_down_list = filter $non_neg_ifrs_items.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
 
-for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss)))
+for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss, NetForeignExchangeLoss, NetForeignExchangeGain)))
 
-      $fact1 = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
-      $large = {nonils @concept = $x @period=* where not match_set_substring($fact, $exclude_non_neg_string_members)}
+      $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
+
+      $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
 
       if ($fact1.period.start >= $large.period.start
          and $fact1.period.end <= $large.period.end 

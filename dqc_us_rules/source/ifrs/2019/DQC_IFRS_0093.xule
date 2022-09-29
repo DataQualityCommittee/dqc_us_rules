@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2019
@@ -13,7 +13,7 @@ assert IFRS.0093.9525 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$decimal_tolerance_factor = 2
+$decimal_tolerance_factor = 3
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average')

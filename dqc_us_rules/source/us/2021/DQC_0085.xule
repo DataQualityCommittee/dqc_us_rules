@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -15,7 +15,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify all presentation networks in the company extension **/
 
-$all_networks = taxonomy().networks(parent-child);
+$all_networks = $PRES_NETWORKS;
 
 if $all_networks == none or set('8-K').contains([covered @concept.local-name ='DocumentType'])
 	false

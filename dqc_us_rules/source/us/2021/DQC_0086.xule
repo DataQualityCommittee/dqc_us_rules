@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -13,7 +13,7 @@ assert US.0086.9368 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$transition_elements = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $us-gaap where not $relationship.target.is-abstract returns (target-name);
+$transition_elements = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name);
 
 for $transition_element in $transition_elements
 

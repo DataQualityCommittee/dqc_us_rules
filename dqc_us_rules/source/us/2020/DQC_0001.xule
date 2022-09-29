@@ -1,10 +1,10 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
-Release Version 14
+Release Version 18
 **/
 
 rule-name-prefix DQC
@@ -1142,3 +1142,39 @@ SEVERITY error
 effectiveDate $effective_dates[$rule_id]
 
 
+
+assert US.0001.83 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+$base_members = navigate dimensions dimension-member descendants from RetirementPlanSponsorLocationAxis where is_base($relationship.target, $all_base_taxonomies) returns set (target-name);
+
+$allowed_base_member = navigate parent-child descendants from srt:StatementGeographicalAxis taxonomy $us-gaap returns set (target-name) + set(RetirementPlanSponsorLocationDomain, DomesticPlanMember, ForeignPlanMember);
+
+$allowed_base_memer_local_name = filter $allowed_base_member returns $item.local-name;
+$unallowed_base_members = $base_members - $allowed_base_member;
+
+for ($member in $unallowed_base_members)
+	$fact1 = {covered @RetirementPlanSponsorLocationAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the RetirementPlanSponsorLocationAxis and the base taxonomy member {$member.local-name}. Only Geographical location members, DomesticPlanMember, ForeignPlanMember and extension members should be used with the axis RetirementPlanSponsorLocationAxis.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is inappropriately used on the axis RetirementPlanSponsorLocationAxis. The only members allowed on this axis are extension members defined by the filer and the following members in the US-GAAP taxonomy {$allowed_base_memer_local_name .join(', ')} . There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

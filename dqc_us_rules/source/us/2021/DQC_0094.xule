@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -24,7 +24,7 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covere
 	$document_period_end_date = $document_period.period.end;
 
 /** Loop through Maturity Elements **/
-	for $schedule in $maturity_schedule_elements
+	for $schedule in $MATURITY_SCHEDULE_ELEMENTS
 		$remaining = {covered @concept = $schedule[2]};
 		$year_one = $schedule[3];
 		$remainder_end_date = $remaining.period.end;
@@ -56,7 +56,7 @@ assert US.0094.9527 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Loop through Maturity Elements **/
-	for $schedule in $maturity_schedule_elements
+	for $schedule in $MATURITY_SCHEDULE_ELEMENTS
 		$remaining = $schedule[2];
 		$year_one = $schedule[3];
 		$year_two = $schedule[4];

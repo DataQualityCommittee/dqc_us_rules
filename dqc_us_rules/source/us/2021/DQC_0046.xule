@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2020, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -122,10 +122,10 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 NetIncomeLoss
 in
-navigate summation-item descendants from $OCI_Totals returns set (target-name)
+navigate summation-item descendants from $OCI_TOTALS returns set (target-name)
 
 message
-"The element NetIncomeLoss (Net Income Loss) should not be included as a total of {$OCI_Totals.join(', ')}. The OCI element represents Other Comprehensive Income and should be aggregated with NetIncome Loss to derive the value of Comprehensive Income. Please remove Net Income Loss from the calculation, or change  the total to be a Comprehensive Income element such as ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest. (Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest)
+"The element NetIncomeLoss (Net Income Loss) should not be included as a total of {$OCI_TOTALS.join(', ')}. The OCI element represents Other Comprehensive Income and should be aggregated with NetIncome Loss to derive the value of Comprehensive Income. Please remove Net Income Loss from the calculation, or change  the total to be a Comprehensive Income element such as ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest. (Comprehensive Income (Loss), Net of Tax, Including Portion Attributable to Noncontrolling Interest)
 
 
 Rule Element Id:{$rule_id}
