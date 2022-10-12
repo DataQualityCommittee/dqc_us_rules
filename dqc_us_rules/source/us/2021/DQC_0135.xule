@@ -48,6 +48,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			** Exclude lease items already checked in other rules.
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
+				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
                     
 				/** If the concept is in the FS then stop the rule **/
 				false
@@ -166,7 +167,9 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			/** Identify if required element disclosure  is contained in the financial statements 
 			** Exclude lease items already checked in other rules.
 			**/
-			if $fsConceptsQname.contains($FS_concept) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
+			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
+				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
+				 
 				/** If the concept is in the FS then stop the rule **/
 				false
 			else
