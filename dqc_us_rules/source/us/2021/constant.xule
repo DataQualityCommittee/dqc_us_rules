@@ -208,6 +208,8 @@ constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concep
 
 constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibleEnumerationLineItemLocation' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
 
+constant $DEFINED_BENEFIT_COST_FS_LINE_ITEMS = navigate summation-item descendants from NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent taxonomy $US-GAAP returns set (target-name)
+
 constant $LEASE_ITEMS = list(FinanceLeaseLiability, FinanceLeaseLiabilityCurrent, FinanceLeaseLiabilityNoncurrent, FinanceLeaseRightOfUseAsset, OperatingLeaseRightOfUseAsset, OperatingLeaseLiability, OperatingLeaseLiabilityCurrent, OperatingLeaseLiabilityNoncurrent)
 
 constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, RestrictedCash, RestrictedCashAndCashEquivalents, RestrictedCashAndCashEquivalentsAtCarryingValue, RestrictedCashAndCashEquivalentsNoncurrent, RestrictedCashCurrent, RestrictedCashEquivalents, RestrictedCashEquivalentsCurrent, RestrictedCashEquivalentsNoncurrent, RestrictedCashNoncurrent)
