@@ -18,6 +18,8 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Updated for public comment by using other concepts that are used for amortized cost**/
 
+$AllowableMembersOnInvestmentTypeAxis = list(FixedMaturitiesMember, ShortTermInvestmentsMember)
+
 $ComponentAmount = {@concept in list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, 
 DebtSecuritiesAvailableForSaleAmortizedCostCurrent, 
 DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent,
@@ -30,7 +32,7 @@ AvailableForSaleSecuritiesDebtSecuritiesCurrent,
 AvailableForSaleSecuritiesDebtSecuritiesNoncurrent,
 DebtSecuritiesAvailableForSaleExcludingAccruedInterest,
 DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent, 
-DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent)};
+DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent) @InvestmentTypeAxis not in $AllowableMembersOnInvestmentTypeAxis};
 
 $Dimensions = filter $ComponentAmount.dimensions.keys returns $item.name;
 

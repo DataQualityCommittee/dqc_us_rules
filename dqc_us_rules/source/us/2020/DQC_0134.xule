@@ -16,12 +16,14 @@ assert US.0134.9834 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$AllowableMembersOnInvestmentTypeAxis = list(FixedMaturitiesMember, ShortTermInvestmentsMember)
+
 $ComponentAmount = {@concept in list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, 
 DebtSecuritiesAvailableForSaleAmortizedCostCurrent, 
 DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent,
 AvailableForSaleSecuritiesDebtSecurities,
 AvailableForSaleSecuritiesDebtSecuritiesCurrent,
-AvailableForSaleSecuritiesDebtSecuritiesNoncurrent)};
+AvailableForSaleSecuritiesDebtSecuritiesNoncurrent) @InvestmentTypeAxis not in $AllowableMembersOnInvestmentTypeAxis};
 
 $Dimensions = filter $ComponentAmount.dimensions.keys returns $item.name;
 
