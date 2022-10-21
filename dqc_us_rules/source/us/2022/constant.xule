@@ -208,6 +208,8 @@ constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, R
 
 constant $DEFINED_BENEFIT_COST_EXT_ENUM = navigate parent-child descendants include start from DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList taxonomy $US-GAAP returns set (target-name)
 
+constant $DEFINED_BENEFIT_COST_FS_LINE_ITEMS = navigate summation-item descendants from NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent taxonomy $US-GAAP returns set (target-name)
+
 constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descendants from list(RiskBasedRatiosAbstract, LeverageRatiosAbstract, BankingRegulationTangibleEquityRatioAbstract, BankingRegulationCapitalConservationBufferAbstract, BankingRegulationLeverageBufferAbstract, BankingRegulationMaximumPayoutRatioAndAmountAbstract, BankingRegulationMaximumLeveragePayoutRatioAndAmountAbstract) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:pureItemType returns set (target-name)
 
 constant $STATEMENT_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
