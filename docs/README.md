@@ -99,8 +99,18 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0130](DQC_US_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
 | [DQC_US_0131](DQC_US_0131/DQC_0131.md) | Lease Allocation in Balance Sheet | Approved | 17 |
 | [DQC_US_0132](DQC_US_0132/DQC_0132.md) | Operating Lease Amortization | Approved | 17 |
+| [DQC_US_0133](DQC_US_0133/DQC_0133.md) | Equity Method Investment Reporting | Approved | 18 |
+| [DQC_US_0134](DQC_US_0134/DQC_0134.md) | Investment Schedule - Financial Instrument Axis | Approved | 18 |
+| [DQC_US_0135](DQC_US_0135/DQC_0135.md) | Extensible Enumerations for Financial Statement Captions | Approved | 18 |
+| [DQC_US_0136](DQC_US_0136/DQC_0136.md) | Caption Value Matches Financial Statements | Approved | 18 |
+| [DQC_US_0137](DQC_US_0137/DQC_0137.md) | Location Axis with a Single Member | Approved | 18 |
+| [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
+| [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
+| [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
 
 ## Guidance 
+
+### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/)
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
