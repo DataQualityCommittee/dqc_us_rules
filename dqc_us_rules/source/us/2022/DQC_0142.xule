@@ -15,19 +15,31 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check that the following axis have a single dimension **/
 
-$BDCTypedDimensionsToCheck = list(us-gaap-supplement:InvestmentIdentifierAxis, 
-                                    us-gaap-supplement:SecuritySoldShortIdentifierAxis,
-                                    us-gaap-supplement:OpenOptionContractIdentifierAxis,
-                                    us-gaap-supplement:OpenFuturesContractIdentifierAxis,
-                                    us-gaap-supplement:OpenForwardForeignCurrencyContractIdentifierAxis,
-                                    us-gaap-supplement:OpenSwapContractIdentifierAxis);
+/** Check if the BDC taxonomy is used **/
 
-for $typedDimension in $BDCTypedDimensionsToCheck
+$srttaxonomy = any(set(for $link in dts-document-locations(taxonomy())
+                            if $link.contains('https://xbrl.fasb.org/us-gaap/2022q3/us-gaap-sup-2022q3.xsd')
+                                true
+                            else
+                                false
+                                    ));
+if $srttaxonomy
 
-		$BDCInvestmentFact = {@$typedDimension = *}
+    $BDCTypedDimensionsToCheck = list(us-gaap-supplement:InvestmentIdentifierAxis, 
+                                        us-gaap-supplement:SecuritySoldShortIdentifierAxis,
+                                        us-gaap-supplement:OpenOptionContractIdentifierAxis,
+                                        us-gaap-supplement:OpenFuturesContractIdentifierAxis,
+                                        us-gaap-supplement:OpenForwardForeignCurrencyContractIdentifierAxis,
+                                        us-gaap-supplement:OpenSwapContractIdentifierAxis);
 
-		$Legitimateimensions = $BDCInvestmentFact.dimensions.keys - set(us-gaap-supplement:InvestmentCompanyNonconsolidatedSubsidiaryAxis);
-        $Legitimateimensions > 1
+    for $typedDimension in $BDCTypedDimensionsToCheck
+
+            $BDCInvestmentFact = {@$typedDimension = *}
+
+            $Legitimateimensions = $BDCInvestmentFact.dimensions.keys - set(us-gaap-supplement:InvestmentCompanyNonconsolidatedSubsidiaryAxis);
+            $Legitimateimensions > 1
+else
+    false
 
 message
 "The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension}. 

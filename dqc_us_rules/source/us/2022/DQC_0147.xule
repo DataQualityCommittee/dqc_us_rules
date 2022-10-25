@@ -14,7 +14,7 @@ rule-name-prefix DQC
 assert US.0147.9871  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-{nonils @concept in $NON_NEG_ITEMS.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
+{nonils @@concept in $NON_NEG_ITEMS.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
 		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
 		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
 		and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
