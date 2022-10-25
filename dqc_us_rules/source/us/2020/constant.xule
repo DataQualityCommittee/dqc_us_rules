@@ -95,7 +95,7 @@ constant $exclude_non_neg_string_members = set(
 constant $non_neg_string_ref = filter ($dqc-rules.concept(dqcrules:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/dqcNote")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
 
 constant $exclude_non_neg_string_members = set(for $ref in $non_neg_string_ref 
-                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
+                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap','unfunded')
 								
 
 /**
