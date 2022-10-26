@@ -75,10 +75,26 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 														else
 															skip
 												)
+						/** Handle OCI Items **/
+						$OCI_Parent_Items = set(OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax, OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax, OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustment, OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTax, OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentBeforeTaxPortionAttributableToParent, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationBeforeTaxParent,
+						OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentBeforeTaxPortionAttributableToParent,
+						OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionBeforeTaxAfterReclassificationAdjustmentAttributableToParent,
+						OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsBeforeTaxParent,
+						OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentNetOfTaxPortionAttributableToParent,
+						OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentNetOfTaxPortionAttributableToParent,
+						OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTaxParent,
+						OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTaxParent,
+						OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent
+						);
 
-					/** For pensions we allow the high level element to be used DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList if
-					** any of the pension elements are used. So if interest cost is tagged it is ok to use the generic all element as companies often say all of the above items are included in other expenses.
-					**/
+						$Allowable_OCI_Items = navigate summation-item descendants include start  from $OCI_Parent_Items taxonomy $US-GAAP returns set (target-name);
+
+						$FS_Concepts_With_OCI = set(FairValueAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueAssetRecurringBasisStillHeldUnrealizedGainLossOci, FairValueLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueNetDerivativeAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueRecurringBasisUnobservableInputReconciliationAssetLiabilityGainLossOci);
+
+
+						/** For pensions we allow the high level element to be used DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList if
+						** any of the pension elements are used. So if interest cost is tagged it is ok to use the generic all element as companies often say all of the above items are included in other expenses.
+						**/
 						
 						$related_pension_item_list = if $related_ext_enum in $DEFINED_BENEFIT_COST_EXT_ENUM
 													list(DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList)
