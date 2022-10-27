@@ -85,7 +85,7 @@ constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(
 constant $NON_NEG_STRING_REF = filter ($DQC_RULES.concept(dqcrules15:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/ruleExclusions")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
 
 constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(for $ref in $NON_NEG_STRING_REF 
-                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
+                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap','unfunded')
 								
 
 /**
@@ -443,3 +443,15 @@ SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossCurrent,
 SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossNoncurrent,
 SalesTypeLeaseNetInvestmentInLeaseBeforeAllowanceForCreditLossNoncurrent,
 SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossNoncurrent)
+
+constant $OCI_PARENT_ITEMS = set(OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax, OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax, OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustment, OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTax, OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentBeforeTaxPortionAttributableToParent, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationBeforeTaxParent,
+OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentBeforeTaxPortionAttributableToParent,
+OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionBeforeTaxAfterReclassificationAdjustmentAttributableToParent,
+OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsBeforeTaxParent,
+OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentNetOfTaxPortionAttributableToParent,
+OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentNetOfTaxPortionAttributableToParent,
+OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTaxParent,
+OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTaxParent,
+OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent)
+
+constant $OCI_SECURITY_RELATED_ITEMS = navigate summation-item descendants include start from $OCI_PARENT_ITEMS taxonomy $US-GAAP returns set (target-name)

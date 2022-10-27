@@ -41,13 +41,16 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			$FS_concept = $ext_pairs[1]
 			$related_ext_enum = $ext_pairs[2]
 
+			$FS_Concepts_With_OCI = set(FairValueAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueAssetRecurringBasisStillHeldUnrealizedGainLossOci, FairValueLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueNetDerivativeAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueRecurringBasisUnobservableInputReconciliationAssetLiabilityGainLossOci);
+
 			/** Identify if required element disclosure  is contained in the financial statements 
 			** Exclude lease items already checked in other rules.
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
 				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
+				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0))
                     
-				/** If the concept is in the FS then stop the rule **/
+				/** If the concept is in the FSor its equivalent is then stop the rule **/
 				false
 			else
 
@@ -76,9 +79,9 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 															skip
 												)
 
-					/** For pensions we allow the high level element to be used DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList if
-					** any of the pension elements are used. So if interest cost is tagged it is ok to use the generic all element as companies often say all of the above items are included in other expenses.
-					**/
+						/** For pensions we allow the high level element to be used DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList if
+						** any of the pension elements are used. So if interest cost is tagged it is ok to use the generic all element as companies often say all of the above items are included in other expenses.
+						**/
 						
 						$related_pension_item_list = if $related_ext_enum in $DEFINED_BENEFIT_COST_EXT_ENUM
 													list(DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList)
