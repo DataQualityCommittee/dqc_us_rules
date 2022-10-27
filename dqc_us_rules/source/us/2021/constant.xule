@@ -86,7 +86,7 @@ constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(
 constant $NON_NEG_STRING_REF = filter ($DQC_RULES.concept(dqcrules15:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/ruleExclusions")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
 
 constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(for $ref in $NON_NEG_STRING_REF 
-                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
+                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap','unfunded')
 								
 
 /**
@@ -182,6 +182,17 @@ constant $INCOME_ITEMS = set(
 					)
 
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
+
+constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
+
+constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
+	or $item.role.description.contains('148411 - Statement -') 
+	or $item.role.description.contains('148412 - Statement -')
+	or $item.role.description.contains('148413 - Statement -')
+
+constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
+						$calcNetwork.concept-names
+					))
 
 /*  
 *	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
