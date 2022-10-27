@@ -60,12 +60,15 @@ for $presNetwork in $presNetworks.sort
 					$calcComponents = navigate summation-item children from $concept_item role $presNetwork.role.uri returns  (target-name, weight);
 					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/	
 						
-					$addend = sum(list(for $x in $calcComponents
+					$addendComponents = (list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
 											first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals >= $fs_decimals])) * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals < $fs_decimals])) * $targetWeight)
 									)
 									);
+
+					$addend = sum($addendComponents);
+					$addendNumber = count($addendComponents);
 					
 					/** Capture in a string what calc was performed  above to report in the rule message. **/
 					$addend_string = sum(list(for $x in $calcComponents.sort
@@ -97,7 +100,7 @@ for $presNetwork in $presNetworks.sort
 					if $addend == none
 						skip 
 					else
-					tolerance_for_decimals($sum2, $addend, 2)
+					tolerance_for_decimals($sum2, $addend, $addendNumber + 1)
 
 message
 "The statement {$presNetwork.role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2}  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts.  The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
