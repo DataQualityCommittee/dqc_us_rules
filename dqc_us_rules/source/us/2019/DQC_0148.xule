@@ -13,18 +13,9 @@ rule-name-prefix DQC
 assert US.0148.9872  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$calcNetworks = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
-	or $item.role.description.contains('148411 - Statement -') 
-	or $item.role.description.contains('148412 - Statement -')
-	or $item.role.description.contains('148413 - Statement -')
-
-$OCI_Concepts = set(for $calcNetwork in $calcNetworks.sort
-						$calcNetwork.concept-names
-					);
-
 $Calc_Descendants_of_NetIncome = navigate summation-item descendants from list(NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted) returns set (target-name)
 
-$invalidConcepts = $Calc_Descendants_of_NetIncome.intersect($OCI_Concepts)
+$invalidConcepts = $Calc_Descendants_of_NetIncome.intersect($OCI_CONCEPTS)
 
 for $invalidConcept in $invalidConcepts
 	true

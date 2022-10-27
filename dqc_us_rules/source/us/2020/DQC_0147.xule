@@ -15,7 +15,7 @@ assert US.0147.9871  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 {nonils @@concept in $non_neg_items.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
-		(not match_set_substring($fact, $exclude_non_neg_string_members)
+		(not match_set_substring($fact, ($exclude_non_neg_string_members - set('eliminat','consolidat')))
 		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0
 		and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0
 		and not_elim_adjust($fact, $exclude_non_neg_axis_members))}#fact1.signum == {nonils @srt:ConsolidationItemsAxis = none where $fact.is-numeric and $fact != 0}#fact2.signum
