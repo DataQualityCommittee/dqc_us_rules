@@ -13,6 +13,8 @@ assert US.0135.9835 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+$decimal_tolerance_factor = 20;
+
 /** Is this report a 10-K **/
 if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
@@ -101,8 +103,21 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 						if list({covered @concept in $related_ext_enum_list}).length > 0 
 							false
-						else 
-							true
+						else
+							$fs_fact_values_decimals = filter (list({nonils covered @concept.is-monetary = true})) returns $item.decimals;
+							$fs_decimals = most_frequent($fs_fact_values_decimals)
+							$tolerance = (10.power(-1 * $fs_decimals)) * $decimal_tolerance_factor;
+							/** This gets the max value either neg or pos **/
+							$FS_Concept_Item_abs_only = filter $FS_Concept_Item returns $item.abs;
+							$FS_Concept_Item_abs = filter $FS_Concept_Item returns list($item.abs, $item);
+							$FS_Concept_Item_abs_sort = $FS_Concept_Item_abs.sort("desc")
+							$FS_Concept_Item_max_first = first($FS_Concept_Item_abs_sort)
+							$FS_Concept_Item_max = $FS_Concept_Item_max_first[2]
+							/** Test if amount is larger than tolerance **/
+							if max($FS_Concept_Item_abs_only) > $tolerance
+								true
+							else 
+								false
 					else
 						false
 else
@@ -116,11 +131,11 @@ message
 The following is an example of a fact that does not have an extensible list.
  
 Concept : {$FS_concept}
-Value : {first($FS_Concept_Item.sort)}
-Period : {first($FS_Concept_Item.sort).period}
-Dimensions : {first($FS_Concept_Item.sort).dimensions.join(', ','=')}
-Unit : {first($FS_Concept_Item.sort).unit}
-Decimals: {first($FS_Concept_Item.sort).decimals}
+Value : {$FS_Concept_Item_max}
+Period : {$FS_Concept_Item_max.period}
+Dimensions : {$FS_Concept_Item_max.dimensions.join(', ','=')}
+Unit : {$FS_Concept_Item_max.unit}
+Decimals: {$FS_Concept_Item_max.decimals}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -129,7 +144,7 @@ SEVERITY error
 status $status
 effectiveDate $effective_dates[$ruleId]
 
-rule-focus $FS_Concept_Item 
+rule-focus $FS_Concept_Item_max 
 
 assert US.0135.9836 satisfied
 
