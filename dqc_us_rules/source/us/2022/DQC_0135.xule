@@ -64,7 +64,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				else
 					/** Get a list of values for this element **/
 
-					$FS_Concept_Item = list({covered @concept = $FS_concept where $fact != 0}).sort;
+					$FS_Concept_Item = list(nonils covered @concept = $FS_concept where $fact != 0}).sort;
 					
 					if $FS_Concept_Item.length > 0
 
@@ -101,7 +101,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 						** In some cases this may cause duplicates
 						**/
 
-						if list({covered @concept in $related_ext_enum_list}).length > 0 
+						if list({nonils covered @concept in $related_ext_enum_list}).length > 0 
 							false
 						else
 							$fs_fact_values_decimals = filter (list({nonils covered @concept.is-monetary = true})) returns $item.decimals;
@@ -187,21 +187,21 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 				if taxonomy().concept($FS_concept).period-type == instant
 
-					$FS_Concept_Item = {@concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * where $fact != 0};
+					$FS_Concept_Item = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * where $fact != 0};
 				    
 				
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					if exists({@concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
+					if exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
 						
 							false
 					else 
 						
 							true
 				else
-					$FS_Concept_Item = {@concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = * where $fact != 0};
+					$FS_Concept_Item = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = * where $fact != 0};
 					
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
