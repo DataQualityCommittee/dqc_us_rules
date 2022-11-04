@@ -179,7 +179,8 @@ constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
 
-constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
+constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
+	where $item.role.description.contains('148410 - Statement -') 
 	or $item.role.description.contains('148411 - Statement -') 
 	or $item.role.description.contains('148412 - Statement -')
 	or $item.role.description.contains('148413 - Statement -')
