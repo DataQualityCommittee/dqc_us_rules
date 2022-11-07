@@ -57,6 +57,7 @@ env:
     - INFILES='[{"file":"http://www.sec.gov/Archives/edgar/data/1108134/000110813422000004/bhlb-20211231.htm", "xule_run_only":"DQC.US.0141.9863"}]' EXFILES=$EXPECTED/DQC.US.0141.9863_bhlb-us-2021.xml
 install:
   - pip install -r requirements.txt
+  - pip install Arelle-release==2.1.2
 script:
   - travis_wait bash ./travis-run.sh
 after_script:
