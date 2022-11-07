@@ -14,14 +14,17 @@ assert US.0135.9835 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $decimal_tolerance_factor = 20;
-
 /** Is this report a 10-K **/
 if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
-	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
 
-	/** eliminate reports with no presentations such as an 8-K with no financial data**/
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eliminate reports with no presentations containg a statement **/
+
+	$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+	
 	if $fsNetworks.length == 0
 			skip
 	else
@@ -55,16 +58,13 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				/** get set of ancestor calculation concepts and test if in financial statement items to exclude from rule as has linkage back to financials through a calculation**/
 
 				$fsConceptsQnameAncestor = navigate summation-item ancestors from $FS_concept returns set (target-name)
-
-				/** We do not get calc ancestors defined in the taxonomy as this would potentially return something in the FS.  We deal with the pension case of NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent above as this calc will not be defined in the company calc
-				as it excludes service costs. **/
 				
 				if $fsConceptsQnameAncestor.intersect($fsConceptsQname).length > 0
 					false
 				else
 					/** Get a list of values for this element **/
 
-					$FS_Concept_Item = list(nonils covered @concept = $FS_concept where $fact != 0}).sort;
+					$FS_Concept_Item = list({nonils covered @concept = $FS_concept where $fact != 0}).sort;
 					
 					if $FS_Concept_Item.length > 0
 
@@ -103,7 +103,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 						if list({nonils covered @concept in $related_ext_enum_list}).length > 0 
 							false
-						else
+						else 
 							$fs_fact_values_decimals = filter (list({nonils covered @concept.is-monetary = true})) returns $item.decimals;
 							$fs_decimals = most_frequent($fs_fact_values_decimals)
 							$tolerance = (10.power(-1 * $fs_decimals)) * $decimal_tolerance_factor;
