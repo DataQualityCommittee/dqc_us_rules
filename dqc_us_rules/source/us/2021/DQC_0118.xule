@@ -51,7 +51,7 @@ for $cube in $STATEMENT_CUBES.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -64,7 +64,7 @@ for $cube in $STATEMENT_CUBES.sort
 																		false;
 													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
+													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item), getDimensionNames($targetElement , $cube, 2, $concept_item)))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
@@ -72,13 +72,13 @@ for $cube in $STATEMENT_CUBES.sort
 													$factAmt = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
-														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
+														max(list(getDimensionSums($targetElement , $cube, 1, $concept_item))).string, max(list(getDimensionSums($targetElement , $cube,2, $concept_item))).string,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
 													$factDecimals = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
-														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
+														max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))).decimals, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))).decimals,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"

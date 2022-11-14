@@ -15,7 +15,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Calc_Descendants_of_NetIncome = navigate summation-item descendants from list(NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted) returns set (target-name)
 
-$invalidConcepts = $Calc_Descendants_of_NetIncome.intersect($OCI_CONCEPTS )
+$invalidConcepts = $Calc_Descendants_of_NetIncome.intersect($OCI_CONCEPTS)
 
 for $invalidConcept in $invalidConcepts
 	true
