@@ -51,7 +51,7 @@ for $cube in $STATEMENT_CUBES.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -64,7 +64,7 @@ for $cube in $STATEMENT_CUBES.sort
 																		false;
 													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
+													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item), getDimensionNames($targetElement , $cube, 2, $concept_item)))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
@@ -72,13 +72,13 @@ for $cube in $STATEMENT_CUBES.sort
 													$factAmt = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
-														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
+														max(list(getDimensionSums($targetElement , $cube, 1, $concept_item))).string, max(list(getDimensionSums($targetElement , $cube,2, $concept_item))).string,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
 													$factDecimals = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
-														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
+														max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))).decimals, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))).decimals,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
@@ -154,7 +154,8 @@ for $cube in $STATEMENT_CUBES.sort
 						if $concept_item in list(NoninterestIncome) and length($calcComponentConcepts intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax))> 0
 							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2) and $sum2 > $addend
 						else			
-							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
+							true
+							/**tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)**/
 
 message
 "The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$fs_decimals.string}. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
@@ -178,3 +179,104 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $sum2
+
+
+
+
+output test_118
+
+
+$concept = FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisChangeInUnrealizedGainLoss
+
+$dimensions_of_sum = 2
+
+$nonAddedDimensions = set('LegalEntityAxis','StatementScenarioAxis')
+
+for $cube in $STATEMENT_CUBES.sort
+
+			/** Get the dimensions in the cube **/
+
+			$dimensions = sum(set({covered nonils @concept = $concept @cube.drs-role = $cube.drs-role where $fact.dimensions.keys.count == $dimensions_of_sum}.dimensions.keys)).to-list
+			if $dimensions == none
+				skip
+			else
+			
+			if $dimensions_of_sum == 1 or (((filter $dimensions.to-set returns $item.name.local-name) intersect $nonAddedDimensions).length > 0 and  $dimensions.length == 2)
+				for $dim in $dimensions.name
+				
+				/** Want to exclude legal entity axis and statement scenerio axis as this is a dimension that is added **/
+
+				if $dim.local-name in $nonAddedDimensions
+					skip
+				else 
+					$members = navigate dimensions descendants from $dim drs-role $cube.drs-role returns target-name
+
+					$domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name
+
+					/** Get a set  of the unique members **/
+					$member_descendants = $members.to-set - $domain;
+
+					/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded.**/
+
+
+					$valid_facts = list(for $member in $member_descendants.to-list.sort
+										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
+										if $ancestors_list.length > 0
+											if  list({ nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list}).length > 0
+												skip
+											else
+												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member }
+										else
+											{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member });
+
+											/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
+					/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+					if 	$valid_facts.length == 0 
+						skip
+					else		
+						/** aggregate the fact values on the axis **/
+						sum($valid_facts)
+			else
+				
+				$dim = $dimensions[1].name
+				$dim2 = $dimensions[2].name
+					
+				$members = navigate dimensions descendants from $dim drs-role $cube.drs-role returns target-name
+				$members2 = navigate dimensions descendants from $dim2 drs-role $cube.drs-role returns target-name
+
+				$domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name
+				$domain2 = navigate dimensions dimension-domain descendants from $dim2 drs-role $cube.drs-role returns set target-name
+
+				/** Get a set  of the unique members **/
+				$member_descendants = $members.to-set - $domain;
+				$member_descendants2 = $members2.to-set - $domain2;
+
+				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded.**/
+
+				$valid_facts = list(for $member in $member_descendants.to-list.sort
+										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
+										for $member2 in $member_descendants2.to-list.sort
+											$ancestors_list2 = (navigate dimensions domain-member ancestors from $member2 drs-role $cube.drs-role returns set (target-name)) - $domain2;
+											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 = $ancestors_list2]).length > 0
+												skip
+											else
+												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2]
+									);
+
+										/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
+				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+				if 	$valid_facts.length == 0 
+					skip
+				else		
+					/** aggregate the fact values on the axis **/
+					sum($valid_facts)
+
+
+message 
+"The is the total {sum($valid_facts)}  with facts of {$valid_facts} with a rule focus dimension of {$dim} using dimensions of {$dimensions}."
+
+output test_118-1
+
+for $cube in $STATEMENT_CUBES.sort
+
+	first-value(getDimensionNames(FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisChangeInUnrealizedGainLoss, $cube, 1, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations), getDimensionNames(FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisChangeInUnrealizedGainLoss, $cube, 2, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations ))
