@@ -68,7 +68,7 @@ for $cube in $statementCubes.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
 					
@@ -81,7 +81,7 @@ for $cube in $statementCubes.sort
 																		false;
 													
 
-													$DimStringList = list(getDimensionNames($targetElement , $cube, 1))
+													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item), getDimensionNames($targetElement , $cube, 2, $concept_item)))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
@@ -89,13 +89,13 @@ for $cube in $statementCubes.sort
 													$factAmt = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.string, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).string,
-														max(list(getDimensionSums($targetElement , $cube, 1))).string, max(list(getDimensionSums($targetElement , $cube,2))).string,
+														max(list(getDimensionSums($targetElement , $cube, 1, $concept_item))).string, max(list(getDimensionSums($targetElement , $cube,2, $concept_item))).string,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).string)
 
 													$factDecimals = first-value(
 														{nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}.decimals, 
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})).decimals, 
-														max(list(getDimensionSums($targetElement, $cube, 1))).decimals, max(list(getDimensionSums($targetElement, $cube, 2))).decimals,
+														max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))).decimals, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))).decimals,
 														first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})).decimals)
 													$weight =  if $x[2] == 1
 																		"+"
@@ -109,6 +109,7 @@ for $cube in $statementCubes.sort
 											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									);
+									
 					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
