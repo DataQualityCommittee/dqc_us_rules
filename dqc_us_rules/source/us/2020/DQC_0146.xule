@@ -20,7 +20,7 @@ $document_period_start_date = $document_period.period.start + time-span("P0D")
 if  not set('10-K','20-F').contains([covered @concept.local-name ='DocumentType'])
 	or (exists({covered @concept = qname($extension_ns,'TransitionReport')}))
 	or (exists({covered @concept = qname($extension_ns,'YearOfInception')}))
-	or (exists({covered @concept.local-name = 'DocumentTransitionReport'}))
+	or (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
 	or (exists({covered @concept = FinancialDesignationPredecessorAndSuccessorFixedList}))
 	skip
 else
@@ -61,7 +61,9 @@ message
 
 Facts with values not reported for a year are as follows: {$facts.join(' | ')}
 
-Facts with values reported for a year are as follows: {$YearFacts.join(' | ')}
+Facts with values reported for a year are as follows: {if $totalYearItems == 0 "none" else $YearFacts.join(' | ')}
+
+If this is a transition report  use the DocumentTransitionReport element. If this is a successor company then ensure the element FinancialDesignationPredecessorAndSuccessorFixedList has been tagged. If this is the Year of Inception then define an extension element called YearOfInception with a nil value to indicate this fact.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
