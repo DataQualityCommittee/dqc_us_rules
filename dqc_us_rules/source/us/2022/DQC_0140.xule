@@ -42,14 +42,11 @@ $minDecimals = min(list(for $x in $Decimals
 				if $x == none 
 					skip
 				else
-					if $x.decimals == none 
-						skip
-					else
-						$x.decimals));
+					$x.decimals));
 
 $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
-$decimal_tolerance_factor = 2;
+$decimal_tolerance_factor = 4;
 
 if $fairValueCalc == none
 	skip

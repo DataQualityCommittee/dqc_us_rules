@@ -44,12 +44,17 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 		for $ext_pairs in $EXT_ENUM
 			$FS_concept = $ext_pairs[1]
 			$related_ext_enum = $ext_pairs[2]
+			$NotDisclosedAsImmaterial = $related_ext_enum.local-name + 'NotDisclosedFlag'
+
+			$FS_Concepts_With_OCI = set(FairValueAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueAssetRecurringBasisStillHeldUnrealizedGainLossOci, FairValueLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueNetDerivativeAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueRecurringBasisUnobservableInputReconciliationAssetLiabilityGainLossOci);
 
 			/** Identify if required element disclosure  is contained in the financial statements 
 			** Exclude lease items already checked in other rules.
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
 				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
+				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0))
+				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
                     
 				/** If the concept is in the FS then stop the rule **/
 				false
@@ -128,6 +133,8 @@ message
 "The element {$FS_concept} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) {$related_ext_enum_list.to-set.join(",")} should be used to identify the account where the financial statement element {$FS_concept} is included. 
 {$pension_message}
 
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.
+
 The following is an example of a fact that does not have an extensible list.
  
 Concept : {$FS_concept}
@@ -143,7 +150,7 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
-rule-focus $FS_Concept_Item 
+rule-focus $FS_Concept_Item_max 
 
 assert US.0135.9836 satisfied
 

@@ -95,7 +95,7 @@ constant $exclude_non_neg_string_members = set(
 constant $non_neg_string_ref = filter ($dqc-rules.concept(dqcrules:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/dqcNote")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
 
 constant $exclude_non_neg_string_members = set(for $ref in $non_neg_string_ref 
-                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap')
+                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap','unfunded')
 								
 
 /**
@@ -186,6 +186,19 @@ constant $income_items = set(ProfitLoss,
 					DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax,
 					InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
 					)
+
+constant $PRES_NETWORKS = taxonomy().networks(parent-child)
+
+constant $CALC_NETWORKS = $us-gaap.networks(summation-item)
+
+constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
+	or $item.role.description.contains('148411 - Statement -') 
+	or $item.role.description.contains('148412 - Statement -')
+	or $item.role.description.contains('148413 - Statement -')
+
+constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
+						$calcNetwork.concept-names
+					))
 
 constant $MONETARY_NON_NEGS = filter $non_neg_items.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
 
