@@ -19,7 +19,7 @@ else
 
 $cut_down_list = filter $NON_NEG_IFRS_ITEMS.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
 
-for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss, NetForeignExchangeLoss, NetForeignExchangeGain)))
+for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss, NetForeignExchangeLoss, NetForeignExchangeGain, LossesOnChangeInFairValueOfDerivatives, GainsOnChangeInFairValueOfDerivatives)))
 
       $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or 
 		(not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
