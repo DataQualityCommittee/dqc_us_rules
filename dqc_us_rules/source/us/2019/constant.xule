@@ -180,3 +180,4 @@ constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.descript
 constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
 						$calcNetwork.concept-names
 					))
+constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
