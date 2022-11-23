@@ -15,31 +15,35 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Determine if accrued Interest and Available for sale securities are reported on the BS **/
 
-$valuesReportedWithInterest = list({@concept in $INCLUDING_ACCRUED_INTEREST})
+$AccruedInterestClasses = list("AccountsRec","DebtSecuritiesHeldToMaturity","AvailableForSaleSecuritiesDebtSecurities","DirectFinancingLeaseNet","FinancingReceivable","NetInvestmentInLease","SalesTypeLeaseNet")
 
-if $valuesReportedWithInterest.length > 0
-    $valuesReportedExcludingInterest = list({@concept in $EXCLUDING_ACCRUED_INTEREST})
-    if $valuesReportedExcludingInterest.length > 0
-    // LOOK Up all the calculation relationships and see if that calc relationship exists in the filing. This is used to determine if there is a reconciliation. //
-        $IncludingInterestSourceCalcs = navigate summation-item children from (filter $valuesReportedWithInterest returns $item.concept.name).to-set where $relationship.target-name in $EXCLUDING_ACCRUED_INTEREST returns set source-name;
+for $class in $AccruedInterestClasses
 
-        /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
-        if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
-            $incorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
-            $correctElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
-            $setType = "elements excluding interest"
-            $setTypeContra = "elements including interest"
-            $IncludingInterestSourceCalcs.intersect($correctElements).length == 0
-        else
-            $incorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
-            $correctElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
-            $setType = "elements including interest"
-            $setTypeContra = "elements excluding interest"
-            $IncludingInterestSourceCalcs.intersect($incorrectElements).length == 0 
-    else   
+    $valuesReportedWithInterest = list({@concept in $INCLUDING_ACCRUED_INTEREST_DICT[$class]})
+
+    if $valuesReportedWithInterest.length > 0
+        $valuesReportedExcludingInterest = list({@concept in $EXCLUDING_ACCRUED_INTEREST_DICT[$class]})
+        if $valuesReportedExcludingInterest.length > 0
+        // LOOK Up all the calculation relationships and see if that calc relationship exists in the filing. This is used to determine if there is a reconciliation. //
+            $IncludingInterestSourceCalcs = navigate summation-item children from (filter $valuesReportedWithInterest returns $item.concept.name).to-set where $relationship.target-name in $EXCLUDING_ACCRUED_INTEREST_DICT[$class] returns set source-name;
+
+            /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
+            if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
+                $incorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+                $correctElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+                $setType = "elements excluding interest"
+                $setTypeContra = "elements including interest"
+                $IncludingInterestSourceCalcs.intersect($correctElements).length == 0
+            else
+                $incorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+                $correctElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+                $setType = "elements including interest"
+                $setTypeContra = "elements excluding interest"
+                $IncludingInterestSourceCalcs.intersect($incorrectElements).length == 0 
+        else   
+            false
+    else
         false
-else
-    false
 
 message
 "The filing reports values that use the including accrued interest items and the excluding accrued interest items. Review the accounting policy elections to determine if you should be using the excluding accrued interest items or the including accrued interest items. 

@@ -27,6 +27,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))
 		and not(exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
 		and not(exists({covered @concept.local-name = 'DocumentTransitionReport'}))
+		and not $DOCUMENT_PERIOD_END_VALUE.length > 1
 	else
 		false
 else

@@ -169,4 +169,6 @@ constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descenda
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
+
+constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
 			
