@@ -11,8 +11,6 @@ Taxonomy: US GAAP 2020
 	value or the context end date on the fact, whichever is later.
 */
 
-constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
-
 constant $document_period_end_context = set({covered @concept.local-name ='DocumentPeriodEndDate'}.period.end)
 
 constant $maximum_period_end_date = max($document_period_end_value + $document_period_end_context)
@@ -60,10 +58,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 	if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions}))))
 		skip
 	else
-		$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
-		$sub_event_at_date = $fact1.period.end;
-		/** Added and true for the case where max period end date comes back as none. none and true = skip **/
-		$sub_event_at_date <= $maximum_period_end_date and true
+		if $document_period_end_value.length > 1
+			skip
+		else
+			$fact1 = {@SubsequentEventTypeAxis = * as $ssa};
+			$sub_event_at_date = $fact1.period.end;
+			/** Added and true for the case where max period end date comes back as none. none and true = skip **/
+			$sub_event_at_date <= $maximum_period_end_date and true
 	
 message
 "The date of {$sub_event_at_date} used for {$fact1.concept.label.text} and the Subsequent Event Type [Axis] with a value of {$fact1} is earlier than or the same as the reporting period end date of {$maximum_period_end_date}. Either remove the subsequent event axis from this value, change the reporting period end date for the value or update the Document and Entity Information document period end date.
