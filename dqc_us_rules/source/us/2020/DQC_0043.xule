@@ -132,7 +132,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0043.9873  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-for $IncomeItem in ($INCOME_ITEMS)
+for $IncomeItem in ($income_items)
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
 
 	effective_weight_is_negative($Operating, $IncomeItem)
