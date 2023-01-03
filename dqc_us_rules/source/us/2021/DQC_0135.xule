@@ -237,6 +237,8 @@ message
 
 "The element {$FS_concept} with a value of {$FS_Concept_Item} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the element {$related_ext_enum} should be used to identify the account where the element {$FS_concept} is included.  Because this value uses a statement location axis the enumerated value should also include the appropriate statement location axis. If there is only one statement location axis value the location axis does not have to be used.
 
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.
+
 Concept : {$FS_concept}
 Period :{$FS_Concept_Item.period}
 Dimensions : {$FS_Concept_Item.dimensions.join(', ','=')}
