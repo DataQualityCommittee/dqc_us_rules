@@ -24,7 +24,14 @@ for $cube in $STATEMENT_CUBES.sort
 			$conceptsInCube = filter $cube.facts returns $item.concept.name;
 
 			for $concept_item in $calcNetworkSource
-				if $concept_item == none or (length($calcNetworkSource.intersect($conceptsInCube.to-set))==0)
+
+			/**DOnt run the rule if the concept is none or the concept has no value in the cube or the total uses PledgedStatusAxis**/
+
+				/**Add to AxisNotToCheck any fact total we do not want to check adds because it has an axis that will not apply across all children of the calc **/
+				$AxisNotToCheck = set(PledgedStatusAxis)
+				/** first value is used to eliminate none value **/
+				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set({covered nonils @concept = $concept_item @cube.drs-role = $cube.drs-role }.dimensions.keys)),set()) intersect $AxisNotToCheck).length > 0
+				if $concept_item == none or (length(first-value($calcNetworkSource,set()).intersect($conceptsInCube.to-set))==0) or $TotalsWithAxisNotToCheckFlag
 					skip
 				else
 				
