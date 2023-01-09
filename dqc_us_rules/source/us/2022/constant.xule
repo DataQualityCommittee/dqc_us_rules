@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2022
@@ -246,6 +246,25 @@ and (not $item.drs-role.description.lower-case.contains('schedule iv'))
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
+
+constant $STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
+and (not $item.role.uri.lower-case.contains('highlights'))
 
 
 constant $EXCLUDING_ACCRUED_INTEREST_DICT =  dict(
