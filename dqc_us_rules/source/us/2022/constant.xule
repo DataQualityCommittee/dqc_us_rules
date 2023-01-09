@@ -23,7 +23,8 @@ constant $ACCRUAL_ITEMS =
 				NetIncomeLossAllocatedToGeneralPartners,
 				NetIncomeLossAllocatedToLimitedPartners,
 				StockholdersEquityPeriodIncreaseDecrease,
-				PartnersCapitalAccountPeriodIncreaseDecrease)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+				PartnersCapitalAccountPeriodIncreaseDecrease,
+				DistributedEarnings)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 				+
 				navigate parent-child descendants from list(IncomeStatementAbstract,
 				StatementOfIncomeAndComprehensiveIncomeAbstract,
