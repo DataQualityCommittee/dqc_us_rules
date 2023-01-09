@@ -31,7 +31,7 @@ $fairValue = first-value({nonils @AvailableForSaleSecuritiesDebtSecurities}, {no
 
 $Decimals = list($AmortCost, $creditLoss, $gain, $loss);
 $minDecimals = min(list(for $x in $Decimals
-				if $x == none 
+				if $x == none or $x.decimals == none
 					skip
 				else
 					$x.decimals));
