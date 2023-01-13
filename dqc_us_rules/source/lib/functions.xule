@@ -721,6 +721,9 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
 				/** Handles case where we have 2 dimensions in the financial statements **/
 
 				$dimensionList = $dimensions.to-list
+				if $dimensionList.length == 0
+					skip
+				else
 				$dim = $dimensionList[1].name
 				$dim2 = $dimensionList[2].name
 					
@@ -821,6 +824,9 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept)
 				/** Handles case where we have 2 dimensions in the financial statements **/
 
 				$dimensionList = $dimensions.to-list
+				if $dimensionList.length == 0
+					skip
+				else
 				$dim = $dimensionList[1].name
 				$dim2 = $dimensionList[2].name
 					
