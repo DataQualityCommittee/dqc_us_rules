@@ -217,17 +217,35 @@ constant $FDII_EXTENSION_ITEMS = list('BenefitForForeignDerivedIntangibleIncome'
 'EffectiveIncomeTaxRateReconciliationForeignIntangibleIncomePercent',
 'TaxCutsAndJobsActIncomeTaxExpenseBenefitForeignIntangibleIncome')
 
-constant $FDII_MEMBERS = list('FDIIEffectiveTaxRateMember')
-
 assert US.0154.9881  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-/**Find cases where an extension is used **/
-$fdii_reported_amount = list([covered @concept.local-name in $FDII_EXTENSION_ITEMS])
+/** Find the network where taxes are by looking for the disclosure presentation network that contains the following:
+IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate
+EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate
+IncomeTaxExpenseBenefit
+EffectiveIncomeTaxRateContinuingOperations
+**/
 
-$fdii_extension_concepts = ($fdii_reported_amount.concept.name).to-set;
+$IncomeTaxElements = set(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate,
+EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate,
+IncomeTaxExpenseBenefit,
+EffectiveIncomeTaxRateContinuingOperations);
 
-$fdii_reported_amount.length > 0
+$incomeTaxNetworks = FILTER $PRES_NETWORKS where $item.role.description.contains('- Disclosure -') and (($item.concept-names).to-set intersect $IncomeTaxElements).length > 0
+
+for $incomeTaxNetwork in $incomeTaxNetworks.sort
+    $incomeTaxConcepts =  $incomeTaxNetwork.concepts;
+    $incomeTaxRelationships = $incomeTaxNetwork.relationships
+    $preferredLabels = (filter $incomeTaxRelationships returns $item.preferred-label).to-set
+    for $x in (filter $incomeTaxConcepts where $item.is-numeric returns $item.name)
+        for $labelRole in $preferredLabels
+            $label = taxonomy().concept($x).label($labelRole).text
+            if ($label.lower-case.contains('fdii') or $label.lower-case.contains('foreign-derived intangible income') or $label.lower-case.contains('foreign derived intangible income')) and $x not in list(EffectiveIncomeTaxRateReconciliationFdiiPercent, EffectiveIncomeTaxRateReconciliationFdiiAmount)
+                true
+            else
+                false
+
 
 message
 "The filer has reported a value for foreign-derived intangible income that is not using the element defined in the US-GAAP taxonomy.  The FASB has added elements for the FDII percntage amount and the FDII monetary amount in the 2022 taxonomy.  These elements are:
@@ -235,34 +253,7 @@ message
 1. EffectiveIncomeTaxRateReconciliationFdiiPercent
 2. EffectiveIncomeTaxRateReconciliationFdiiAmount
 
-The extension  element(s) {$fdii_extension_concepts.join(", ")}  has been used in the filing that should be updated to the appropriate  US-GAAP element listed above.
-
-Rule Element Id:{$ruleId}
-Rule version: {$ruleVersion}
-"
-
-assert US.0154.9882  satisfied
-
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-/** Look where base elements are used incorrectly look at the qcom qualcomm filing for 2022 10-K**/
-
-$standard_deduction_elements = list(EffectiveIncomeTaxRateReconciliationTaxCutsAndJobsActOf2017Amount, EffectiveIncomeTaxRateReconciliationTaxCutsAndJobsActOf2017Percent, IncomeTaxReconciliationTaxCreditsForeign, EffectiveIncomeTaxRateReconciliationTaxCreditsForeign, qname($EXTENSION_NS,'EffectiveIncomeTaxRateReconciliationGILTIPercent'));
-
-
-for $x in $standard_deduction_elements
-    $label = taxonomy().concept($x).label.text
-    if $label.lower-case.contains('fdii') or $label.lower-case.contains('foreign-derived intangible income') or $label.lower-case.contains('foreign derived intangible income')
-        true
-    else
-        skip
-
-message
-"The filer has reported a value for foreign-derived intangible income that is not using the element defined in the US-GAAP taxonomy.  The FASB has added elements for the FDII percntage amount and the FDII monetary amount in the 2022 taxonomy.  These elements are:
-
-1. EffectiveIncomeTaxRateReconciliationFdiiAmount
-2. EffectiveIncomeTaxRateReconciliationFdiiPercent
-
-The filing has used the element {$x} in the filing with a label of {$label}.  The element should be changed to one of the elements defined above.
+The  element {$x}  with the label \"{$label}\" has been used in the filing in the disclosure section \"{$incomeTaxNetwork.role.description}\" that should be updated to the appropriate  US-GAAP element listed above.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
