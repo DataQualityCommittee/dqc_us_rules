@@ -110,13 +110,15 @@ $minDecimals = min(list(for $x in $Decimals
 
 $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
-$fairValue != $fairValueCalc
+$decimal_tolerance_factor = 4;
+
+tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
 
 
 message
 
 "The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
-Amortized Cost of {$AmortCost}
+Amortized Cost of {first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss)}
 Gain on Securities {$gain}
 Loss on Securities of {$loss}
 Credit Loss on Securities of {$creditLoss}
