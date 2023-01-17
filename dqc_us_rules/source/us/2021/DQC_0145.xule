@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2021
@@ -41,7 +41,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
-$taxonomyItemsNotInExtensions = (navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments) 
+$taxonomyItemsNotInExtensions = (navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments, ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase) 
 
 $extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInInvestingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
 
