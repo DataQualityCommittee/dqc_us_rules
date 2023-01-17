@@ -79,19 +79,18 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         if $addedDimensions == none or $dimensionTotal == none 
                             skip
                         else
-                        tolerance_for_decimals_comp($dimensionTotal, $addedDimensions, $dimensionTotal.decimals, 2)
+                        tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
                 else
                     skip
               
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept} of {$dimensionTotal} {if length($dimensionTotal.dimensions.values) > 0 'for ' + $dimensionTotal.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addedDimensions}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$seg_decimals.string}. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$dimensionTotal.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept} that should add to {$dimensionTotal} are comprised of the following:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept} with a total of the consolidated dimension is  {$dimensionTotal} for the period {$dimensionTotal.period} .  However the sum of this same element using the consolidated dimension axis is {$addedDimensions}. This value should be less than or equal to the value of the default. should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addedDimensions}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$seg_decimals.string}.  The components of {$concept} that should add to {$dimensionTotal} are comprised of the following:
 
 {$addend_string}
 
-The addends are calculated based on the calculation linkbase defined for {$segmentCube.drs-role.description}. If addends are missing then the calculation tree should be amended. The rule will add dimension components as well, so if the calculation is correct and the breakdown is a dimension, then check to ensure that the dimensions are defined correctly. Values calculated by adding a dimension member are shown in the calculation.
-
+The addends are calculated based on the members on the consolidated items  linkbase defined for {$segmentCube.drs-role.description}. 
 
 Total Element : {$concept}
 Total Value : {$dimensionTotal} 
