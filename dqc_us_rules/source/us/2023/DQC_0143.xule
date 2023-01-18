@@ -17,21 +17,12 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check if the BDC taxonomy is used **/
 
-$srttaxonomy = any(set(for $link in dts-document-locations(taxonomy())
-                            if $link.contains('https://xbrl.fasb.org/us-gaap/2022q3/us-gaap-sup-2022q3.xsd')
-                                true
-                            else
-                                false
-                                    ));
-if $srttaxonomy
-
     $AllowableDerivativeFactValues = set(CallOptionMember, PutOptionMember)
 
-    $DerivativeFact = {@us-gaap-supplement:DerivativePositionExtensibleEnumeration}
+    $DerivativeFact = {@DerivativePositionExtensibleEnumeration}
 
     $AllowableDerivativeFactValues.intersect($DerivativeFact).length == 0
-else
-    false
+
 
 message
 "The filing reports a value of {$DerivativeFact} for the concept {$DerivativeFact.concept.name}.  This concept can only use the values of either {$AllowableDerivativeFactValues.join(', ')}.  Please change the value to one of these members or select another element.

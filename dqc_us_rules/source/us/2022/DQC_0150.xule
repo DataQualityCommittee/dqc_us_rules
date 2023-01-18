@@ -21,7 +21,7 @@ constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-rol
 and ($item.drs-role.uri.lower-case.contains('segment')) 
 
 
-ASSERT US.0150.9875 SATISFIED
+ASSERT US.0150.9876 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
@@ -86,7 +86,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept} with a total of the consolidated dimension is  {$dimensionTotal} for the period {$dimensionTotal.period} .  However the sum of this same element using the consolidated dimension axis is {$addedDimensions}. This value should be less than or equal to the value of the default. should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addedDimensions}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$seg_decimals.string}.  The components of {$concept} that should add to {$dimensionTotal} are comprised of the following:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the consolidated items decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
 
 {$addend_string}
 
@@ -105,7 +105,7 @@ severity error
 
 
 
-/**DQC 0150.9876 **/
+/**DQC 0150.9877 **/
 /** Calculation of segments 
 Realculate Segment Profit loss and make sure matches to total after breakdown by segment axis and Consolidated Items Axis.
 
@@ -113,7 +113,7 @@ Also check totals by segment.
 
 **/
 
-ASSERT US.0150.9876 SATISFIED
+ASSERT US.0150.9877 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
@@ -196,11 +196,11 @@ Rule version: {$ruleVersion}"
 
 severity error
 
-/**DQC 0150.9876 **/
+/**DQC 0150.10200 **/
 /** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
 **/
 
-ASSERT US.0150.9877 SATISFIED
+ASSERT US.0150.10200 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -244,7 +244,7 @@ Rule version: {$ruleVersion}"
 severity error
 
 
-/**DQC 0150.9876 **/
+/**DQC 0150.9878 **/
 /** FIND WHERE OPERATING SEGMENT HAS NOT BEEN USED. 
 Look at segment table and look where the consolidated items axis is used for a line item and the business segment has been used for the same item without the operating segment member.  
 **/
@@ -273,7 +273,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {first($reconcilingItems)} and the dimension of  {first($reconcilingItems).dimensions.join(', ','=')}. This same line item however was used to report the value of {first($operatingItems)} for a busines segment axis with the dimensions of  {first($operatingItems).dimensions.join(', ','=')}, but with no associated operating member. If a value is reported for a segment then an operating member should be used if there are reconciling items for that line item
+"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {first($reconcilingItems)} and the dimension of  {first($reconcilingItems).dimensions.join(', ','=')}. This same line item however was used to report the value of {first($operatingItems)} for a busines segment axis with the dimensions of  {first($operatingItems).dimensions.join(', ','=')}, but with no associated operating member. If a value is reported for a segment then an operating member should be used if there are reconciling items for that line item.
 
 Concept : {$concept}
 Value : {first($operatingItems)} 
@@ -287,14 +287,6 @@ Rule version: {$ruleVersion}"
 
 severity error
 
-/** DQC 151 ** /
-
-/** Identification axis and extensible enumeration **/
-
-
-/** 0152 **/
-
-/** Check if glistYear elements is taxperiodaxis **/
 
 
 /**
