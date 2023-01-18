@@ -14,22 +14,7 @@ ASSERT US.0099.9533 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**Identify relevant financial statement presentation networks **/
-$presNetworks = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
-and (not $item.role.uri.lower-case.contains('parenthetical')) 
-and (not $item.role.uri.lower-case.contains('equity')) 
-and (not $item.role.uri.lower-case.contains('deficit')) 
-and (not $item.role.uri.lower-case.contains('stockholders')) 
-and (not $item.role.uri.lower-case.contains('capital')) 
-and (not $item.role.uri.lower-case.contains('investment')) 
-and (not $item.role.uri.lower-case.contains('changes')) 
-and (not $item.role.uri.lower-case.contains('shareholder')) 
-and (not $item.role.uri.lower-case.contains('convertible')) 
-and (not $item.role.uri.lower-case.contains('preferred'))  
-and (not $item.role.uri.lower-case.contains('temporaryequity')) 
-and (not $item.role.uri.lower-case.contains('redeemable'))
-and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
-and (not $item.role.uri.lower-case.contains('membersinterest'))
-and (not $item.role.uri.lower-case.contains('highlights'))
+    /** See the constants file that defines the variable $STATEMENT_PRES_NETWORKS **/
 
 $calcNetworks = taxonomy().networks(summation-item);
 
@@ -57,7 +42,7 @@ $Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
 /** This generates a list of items in the SHE that would not be included in the IS calculation. If these are reported in the presentation of the IS they will be ignored **/
 $SSHExceptions =  navigate parent-child descendants from IncreaseDecreaseInStockholdersEquityRollForward taxonomy $US-GAAP where $relationship.target.is-monetary == true and $relationship.target.period-type == duration returns set (target-name);
                         
-for $presNetwork in $presNetworks.sort
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         $presConceptItems = $presNetwork.concept-names;
                                         $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
