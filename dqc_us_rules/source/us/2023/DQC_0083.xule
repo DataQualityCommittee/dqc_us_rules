@@ -8,7 +8,9 @@ Taxonomy: US GAAP 2022
 
 
 rule-name-prefix DQC
+/** RULE IS DEPRECATED BECAUSE AXIS IS REMOVED FROM THE 2023 TAXONOMY **/
 
+/**
 assert US.0083.9296 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -18,21 +20,17 @@ $all_networks = $PRES_NETWORKS;
 if $all_networks == none or set('8-K').contains([covered @concept.local-name ='DocumentType'])
 	false
 else
-	/** Get those networks that are the financial Statements **/
 	$FS_Networks = filter $all_networks where $item.role.description.contains('- Statement ');
 
 	if $FS_Networks.length == 0
 		false
 	else
 
-		/** Get all concepts in FS Networks **/
 		$FS_Concepts = sum(set(for ($network in $FS_Networks)
 								$network.concepts));
 
-		/** Get all the monetary item types that could be consolidated **/						
 		$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
 
-		/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
 		$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryAggregatedDisclosureMember};
 
 		exists($fact1)
@@ -53,7 +51,13 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1
+**/
 
+
+/** RULE IS DEPRECATED BECAUSE VariableInterestEntitiesByClassificationOfEntityAxis AXIS IS REMOVED FROM THE 2023 TAXONOMY **/
+
+
+/**
 assert US.0083.9297 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -64,22 +68,17 @@ if $all_networks == none or set('8-K').contains([covered @concept.local-name ='D
 	false
 else
 
-	/** Get those networks that are the financial Statements **/
 	$FS_Networks = filter $all_networks where $item.role.description.contains('- Statement ');
 
 	if $FS_Networks.length == 0
 		false
 	else
 
-		/** Get all concepts in FS Networks **/
 		$FS_Concepts = sum(set(for ($network in $FS_Networks)
 								$network.concepts));
 
-		/** Get monetary items used in the financial statements **/	
-
 		$FS_Monetary_Concepts = filter $FS_Concepts where $item.data-type.name == xbrli:monetaryItemType;
 
-		/** Get all FS Statement facts that use the primary beneficiary member and the VariableInterestEntitiesByClassificationOfEntityAxis **/
 		$fact1 = {@concept in $FS_Monetary_Concepts @VariableInterestEntitiesByClassificationOfEntityAxis = VariableInterestEntityPrimaryBeneficiaryMember};
 
 		exists($fact1)
@@ -100,3 +99,5 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1
+
+**/
