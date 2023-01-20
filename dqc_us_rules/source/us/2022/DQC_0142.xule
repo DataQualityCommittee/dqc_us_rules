@@ -36,13 +36,13 @@ if $srttaxonomy
 
             $BDCInvestmentFact = {@$typedDimension = *}
 
-            $Legitimateimensions = $BDCInvestmentFact.dimensions.keys - set(us-gaap-supplement:InvestmentCompanyNonconsolidatedSubsidiaryAxis);
+            $Legitimateimensions = $BDCInvestmentFact.dimensions.keys.name - set(us-gaap-supplement:InvestmentCompanyNonconsolidatedSubsidiaryAxis);
             $Legitimateimensions.length > 1
 else
     false
 
 message
-"The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension}. 
+"The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension} axis.
 
 If the {$typedDimension} is used no other axis should be used. Remove any additional axis on this fact.
 
