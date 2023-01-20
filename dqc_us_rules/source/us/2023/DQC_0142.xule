@@ -28,12 +28,12 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
             $BDCInvestmentFact = {@$typedDimension = *}
 
-            $Legitimateimensions = $BDCInvestmentFact.dimensions.keys - set(InvestmentCompanyNonconsolidatedSubsidiaryAxis);
+            $Legitimateimensions = $BDCInvestmentFact.dimensions.keys.name - set(InvestmentCompanyNonconsolidatedSubsidiaryAxis);
             $Legitimateimensions.length > 1
 
 
 message
-"The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension}. 
+"The filing reports a value of {$BDCInvestmentFact} for the concept {$BDCInvestmentFact.concept.name} using the {$typedDimension} axis. 
 
 If the {$typedDimension} is used no other axis should be used. Remove any additional axis on this fact.
 
