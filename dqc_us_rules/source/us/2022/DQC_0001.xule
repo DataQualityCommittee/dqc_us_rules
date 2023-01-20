@@ -224,7 +224,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** UPDATED FOR SRT **/
 
 $base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
-$allowed_base_member = set(srt:EquityMethodInvesteeNameDomain);
+
+$allowed_base_member = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis taxonomy $US-GAAP returns set (target-name) + set(srt:EquityMethodInvesteeNameDomain);
+
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
