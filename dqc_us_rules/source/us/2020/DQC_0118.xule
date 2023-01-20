@@ -26,7 +26,7 @@ for $cube in $STATEMENT_CUBES.sort
 			for $concept_item in $calcNetworkSource
 				/**Add to AxisNotToCheck any fact total we do not want to check adds because it has an axis that will not apply across all children of the calc **/
 				$AxisNotToCheck = set(PledgedStatusAxis)
-				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set({covered nonils @concept = $concept_item @cube.drs-role = $cube.drs-role }.dimensions.keys)),set()) intersect $AxisNotToCheck).length > 0
+				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set({covered nonils @concept = $concept_item @cube.drs-role = $cube.drs-role }.dimensions.keys.name)),set()) intersect $AxisNotToCheck).length > 0
 				if $concept_item == none or (length(first-value($calcNetworkSource,set()).intersect($conceptsInCube.to-set))==0) or $TotalsWithAxisNotToCheckFlag
 					skip
 				else
