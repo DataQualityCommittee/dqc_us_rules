@@ -21,6 +21,22 @@ constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-rol
 and ($item.drs-role.uri.lower-case.contains('segment')) 
 
 
+
+/** THis rule does not work because:
+all components of the consolidated axis may not be reported. i.e. may have the reconcilation of an immaterial item but the operating is not reported because they did not break the expense down at that level.  Because of negative items it may be the case that athe less than assertion cannot be tested.  In the end the errors detected are neglible.
+
+For this reason the rule is being replaced with the following rule logic:
+
+1. Look at the line items that are disclosed on the income statement.  Each of the elements used here should be identified. Only select those line items that are in the default. Put these items into a list.
+2, Go look at the segment not and identify where any items form the IS are used in the segments.
+3. Look for those facts that have a business segment member and are not on the financial statements.  These items will need an operating segment member on the consolidated Items axis
+
+This will pick up ... because they have to reconcile back to the income statement.  i.e. Conagra if operatingIncome is not on the financials but is reported for a segment then this must be part of a reconcilation and would need the operating segment item.
+
+Also if a reconciling item has no operating segment member it must have a reconciling item member
+
+Also add shelly rule for number of business segment.
+**/
 ASSERT US.0150.9876 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
