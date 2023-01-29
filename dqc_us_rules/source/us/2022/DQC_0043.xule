@@ -137,8 +137,12 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 for $IncomeItem in ($INCOME_ITEMS)
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
 		if $Operating == NetCashProvidedByUsedInOperatingActivities
-			$signFlag = "negative"
-			effective_weight_is_negative($Operating, $IncomeItem)
+			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
+			if $DescendantsToCheck.contains(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
+				false
+			else
+				$signFlag = "negative"
+				effective_weight_is_negative($Operating, $IncomeItem)
 		else
 			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
