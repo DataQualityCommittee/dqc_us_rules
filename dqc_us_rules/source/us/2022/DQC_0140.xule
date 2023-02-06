@@ -29,7 +29,7 @@ $AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 
 $AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent}))
 
-$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
 
 $gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
 
@@ -51,7 +51,74 @@ $decimal_tolerance_factor = 4;
 if $fairValueCalc == none
 	skip
 else
-	tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+	if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+
+	$additionalMessage = ""
+	$expectedElements = set(AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax, AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax, AvailableForSaleSecuritiesDebtSecurities, AvailableForSaleSecuritiesDebtSecuritiesCurrent,
+	AvailableForSaleSecuritiesDebtSecuritiesNoncurrent,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLoss,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent
+	)
+	
+	/** Need to check they did not use an extension element in the calc **/
+	$calcComponentsOfAmortizedCostDict = navigate summation-item children from list(AvailableForSaleDebtSecuritiesAmortizedCostBasis) returns by network (target-name, weight) 
+	/** Cut down to networks with only fair value **/
+	/** Check if network includes the fair value element. If not then drop the network  creates list(list(target,weight), list(target,weight),list(target,weight))**/
+	$calcComponentsOfAmortizedCostNetworks = set(for $network in $calcComponentsOfAmortizedCostDict.keys
+													for $relationship in $calcComponentsOfAmortizedCostDict[$network]
+														if $relationship.contains(AvailableForSaleSecuritiesDebtSecurities)
+															$calcComponentsOfAmortizedCostDict[$network]
+														else
+															skip		 
+											)
+				
+	if $calcComponentsOfAmortizedCostNetworks.length > 0
+			$amortValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostNetworks
+												for $x in $network
+													$targetElement = $x[1];
+													$targetWeight = $x[2];
+													{nonils @concept = $targetElement } * $targetWeight	
+										)
+									);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
+													for $x in $network
+														$x[1]) - $expectedElements
+			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+			))
+			tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+	else
+		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
+
+		$calcComponentsOfAmortizedCostAfterCreditNetwork = set(for $network in $calcComponentsOfAmortizedCostAfterCredit.keys
+													for $relationship in $calcComponentsOfAmortizedCostAfterCredit[$network]
+														if $relationship.contains(AvailableForSaleSecuritiesDebtSecurities)
+															$calcComponentsOfAmortizedCostAfterCredit[$network]
+														else
+															skip		 
+											)
+
+		if $calcComponentsOfAmortizedCostAfterCreditNetwork.length > 0
+			$amortAfterCreditValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$targetElement = $x[1];
+														$targetWeight = $x[2];
+														{nonils @concept = $targetElement } * $targetWeight	
+												)
+											);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$x[1]) - $expectedElements
+			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"
+			))
+		tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+	else
+		$additionalMessage = ""
+		true
+else
+	false
 
 message
 
@@ -60,10 +127,11 @@ Amortized Cost of {$AmortCost}
 Gain on Securities {$gain}
 Loss on Securities of {$loss}
 Credit Loss on Securities of {$creditLoss}
+{$additionalMessage}
 
 Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
-Unit : {$fairValue.unit}\n
+Unit : {$fairValue.unit}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -86,7 +154,7 @@ $AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 
 $AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent}))
 
-$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowanceCalc, $AmortizedCostAfterAllowance)
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
 
 $gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
 
@@ -106,7 +174,73 @@ $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
 $decimal_tolerance_factor = 4;
 
-tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+
+	$additionalMessage = "";
+	$expectedElements = set(AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax, AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterest,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent
+	)
+
+	/** Need to check they did not use an extension element in the calc **/
+	$calcComponentsOfAmortizedCostDict = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss) returns by network (target-name, weight) 
+	/** Cut down to networks with only fair value **/
+	/** Check if network includes the fair value element. If not then drop the network  creates list(list(target,weight), list(target,weight),list(target,weight))**/
+	$calcComponentsOfAmortizedCostNetworks = set(for $network in $calcComponentsOfAmortizedCostDict.keys
+													for $relationship in $calcComponentsOfAmortizedCostDict[$network]
+														if $relationship.contains(DebtSecuritiesAvailableForSaleExcludingAccruedInterest)
+															$calcComponentsOfAmortizedCostDict[$network]
+														else
+															skip		 
+											)
+				
+	if $calcComponentsOfAmortizedCostNetworks.length > 0
+			$amortValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostNetworks
+												for $x in $network
+													$targetElement = $x[1];
+													$targetWeight = $x[2];
+													{nonils @concept = $targetElement } * $targetWeight	
+										)
+									);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
+													for $x in $network
+														$x[1]) - $expectedElements
+			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+			))
+			tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+	else
+		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
+
+		$calcComponentsOfAmortizedCostAfterCreditNetwork = set(for $network in $calcComponentsOfAmortizedCostAfterCredit.keys
+													for $relationship in $calcComponentsOfAmortizedCostAfterCredit[$network]
+														if $relationship.contains(DebtSecuritiesAvailableForSaleExcludingAccruedInterest)
+															$calcComponentsOfAmortizedCostAfterCredit[$network]
+														else
+															skip		 
+											)
+
+		if $calcComponentsOfAmortizedCostAfterCreditNetwork.length > 0
+			$amortAfterCreditValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$targetElement = $x[1];
+														$targetWeight = $x[2];
+														{nonils @concept = $targetElement } * $targetWeight	
+												)
+											);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$x[1]) - $expectedElements
+			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"
+									))
+		tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+		else
+			$additionalMessage = ""
+			true
+else
+	false
 
 
 message
@@ -116,10 +250,11 @@ Amortized Cost of {first-value($AmortCost, $AmortizedCostAfterCreditLoss + $cred
 Gain on Securities {$gain}
 Loss on Securities of {$loss}
 Credit Loss on Securities of {$creditLoss}
+{$additionalMessage}
 
 Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
-Unit : {$fairValue.unit}\n
+Unit : {$fairValue.unit}
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
