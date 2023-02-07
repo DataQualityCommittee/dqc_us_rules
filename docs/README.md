@@ -107,6 +107,13 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
 | [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
 | [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
+| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Approved | 20 |
+| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Approved | 20 |
+| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Approved | 20 |
+| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Approved | 20 |
+| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Approved | 20 |
+| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Approved | 20 |
+| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
 
 ## Guidance 
 
@@ -125,6 +132,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2022 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2023 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

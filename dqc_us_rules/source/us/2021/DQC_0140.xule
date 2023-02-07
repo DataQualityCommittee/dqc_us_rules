@@ -39,13 +39,10 @@ $fairValue = first-value({nonils @AvailableForSaleSecuritiesDebtSecurities}, {no
 
 $Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
 $minDecimals = min(list(for $x in $Decimals
-				if $x == none 
+				if $x == none or $x.decimals == none
 					skip
 				else
-					if $x.decimals == none 
-						skip
-					else
-						$x.decimals));
+					$x.decimals));
 
 $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
@@ -178,13 +175,10 @@ $fairValue = first-value({nonils @DebtSecuritiesAvailableForSaleExcludingAccrued
 
 $Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
 $minDecimals = min(list(for $x in $Decimals
-				if $x == none 
+				if $x == none or $x.decimals == none
 					skip
 				else
-					if $x.decimals == none 
-						skip
-					else
-						$x.decimals));
+					$x.decimals));
 
 $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
