@@ -49,7 +49,9 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
 				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
-				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0)) 
+				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0))
+				 or ($FS_concept in ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets))).length > 0)
+				 or ($FS_concept in ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeLiabilities))).length > 0)
 				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
                     
 				/** If the concept is in the FSor its equivalent is then stop the rule **/
@@ -190,7 +192,9 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
 				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
-				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0)) 
+				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0))
+				 or ($FS_concept in ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets))).length > 0)
+				 or ($FS_concept in ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeLiabilities))).length > 0)
 				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
 				/** If the concept is in the FS then stop the rule **/
 				false
