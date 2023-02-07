@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2022, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2021
@@ -84,10 +84,16 @@ else
 			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
 													for $x in $network
 														$x[1]) - $expectedElements
-			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
-										$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
-			))
-			tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			
+
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+											$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+				))
+				tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
 	else
 		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
 
@@ -110,10 +116,14 @@ else
 			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
 													for $x in $network
 														$x[1]) - $expectedElements
-			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
-										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"
-			))
-		tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"))
+				tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
+		
 	else
 		$additionalMessage = ""
 		true
@@ -206,10 +216,15 @@ if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decim
 			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
 													for $x in $network
 														$x[1]) - $expectedElements
-			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
-										$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
-			))
-			tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+											$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+				))
+				tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
 	else
 		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
 
@@ -232,10 +247,13 @@ if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decim
 			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
 													for $x in $network
 														$x[1]) - $expectedElements
-			$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
-										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"
-									))
-		tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"))
+				tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
 		else
 			$additionalMessage = ""
 			true
