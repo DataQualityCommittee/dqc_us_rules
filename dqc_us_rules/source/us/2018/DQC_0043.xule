@@ -131,7 +131,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0043.9873  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-for $IncomeItem in ($income_items)
+for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax))
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
 		if $Operating == NetCashProvidedByUsedInOperatingActivities
 			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
@@ -143,7 +143,7 @@ for $IncomeItem in ($income_items)
 		else
 			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
-					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity, DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax)
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
 			if $IncomeItem in $discOPs
 					$signFlag = "positive"
 					effective_weight_is_positive($Operating, $IncomeItem)
