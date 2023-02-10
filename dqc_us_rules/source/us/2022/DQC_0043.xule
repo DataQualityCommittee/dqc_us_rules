@@ -134,7 +134,7 @@ Example filing:
 assert US.0043.9873  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax))
+for $IncomeItem in ($INCOME_ITEMS)
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
 		if $Operating == NetCashProvidedByUsedInOperatingActivities
 			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
@@ -146,7 +146,7 @@ for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposa
 		else
 			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
-					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity, DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax)
 			if $IncomeItem in $discOPs
 					$signFlag = "positive"
 					effective_weight_is_positive($Operating, $IncomeItem)
