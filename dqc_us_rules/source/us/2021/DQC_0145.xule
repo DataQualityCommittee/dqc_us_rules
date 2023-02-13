@@ -16,7 +16,9 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
-$taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name) 
+$allowableFinancingItems = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) 
+
+$taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name) - $allowableFinancingItems
 
 $extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
 
