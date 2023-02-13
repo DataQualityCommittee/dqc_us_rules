@@ -1,8 +1,8 @@
 #!/bin/bash
 pip show Arelle-release
 set -x
-svn export --quiet https://github.com/xbrlus/xule/trunk/plugin/xule $CURDIR/plugin/xule
-svn export --quiet https://github.com/xbrlus/xule/trunk/plugin/validate $CURDIR/plugin/validate
+svn export --quiet https://github.com/xbrlus/xule/tags/23469/plugin/xule $CURDIR/plugin/xule
+svn export --quiet https://github.com/xbrlus/xule/tags/23469/plugin/validate $CURDIR/plugin/validate
 cp -R $CURDIR/plugin/xule $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/xule
 cp $CURDIR/plugin/validate/DQC.py $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/validate/DQC.py
 echo $INFILES > infiles.json
