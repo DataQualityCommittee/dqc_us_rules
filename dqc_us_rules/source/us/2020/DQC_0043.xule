@@ -132,7 +132,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0043.9873  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax))
+for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax, IncomeLossFromSubsidiariesNetOfTax))
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
 		if $Operating == NetCashProvidedByUsedInOperatingActivities
 			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
