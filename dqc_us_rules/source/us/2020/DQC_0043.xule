@@ -132,13 +132,27 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0043.9873  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-for $IncomeItem in ($income_items)
+for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax, IncomeLossFromSubsidiariesNetOfTax))
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
-
-	effective_weight_is_negative($Operating, $IncomeItem)
+		if $Operating == NetCashProvidedByUsedInOperatingActivities
+			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
+			if $DescendantsToCheck.contains(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
+				false
+			else
+				$signFlag = "negative"
+				effective_weight_is_negative($Operating, $IncomeItem)
+		else
+			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
+			if $IncomeItem in $discOPs
+					$signFlag = "positive"
+					effective_weight_is_positive($Operating, $IncomeItem)
+			else
+				false
 
 message
-"The company has reported the concept {$IncomeItem} as a negative weight descendant of Operating cash flows in the calculation linkbase of the filing.  This element must make a positive cash contribution to operating cash flows.
+"The company has reported the concept {$IncomeItem} as a {$signFlag} weight descendant of Operating cash flows in the calculation linkbase of the filing.  This element must make a {$signFlag} cash contribution to operating cash flows when the element {$Operating} is used.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"

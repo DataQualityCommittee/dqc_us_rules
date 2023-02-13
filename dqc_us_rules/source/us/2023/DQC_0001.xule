@@ -224,7 +224,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** UPDATED FOR SRT **/
 
 $base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
-$allowed_base_member = set(srt:EquityMethodInvesteeNameDomain);
+$allowed_base_member = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis taxonomy $US-GAAP returns set (target-name) + set(srt:EquityMethodInvesteeNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -408,7 +408,7 @@ $member_extension = navigate dimensions dimension-member descendants from srt:Cu
 
 /** Define allowable extensions with the qname function. XBT is used for bitcoin. **/
 
-$allowable_extensions = set(qname($EXTENSION_NS,'SICAD1Member'), qname($EXTENSION_NS,'SICAD2Member'), qname($EXTENSION_NS,'OtherCurrencyMember'), qname($EXTENSION_NS,'NonUSDollarMember'),qname($EXTENSION_NS,'CENCOEXMember'),qname($EXTENSION_NS,'SICADMember'),qname($EXTENSION_NS,'SIMADIMember'),qname($EXTENSION_NS,'DIPROMember'),qname($EXTENSION_NS,'DICOMMember'),qname($EXTENSION_NS,'XBT'));
+$allowable_extensions = set(qname($EXTENSION_NS,'SICAD1Member'), qname($EXTENSION_NS,'SICAD2Member'),qname($EXTENSION_NS,'CENCOEXMember'),qname($EXTENSION_NS,'SICADMember'),qname($EXTENSION_NS,'SIMADIMember'),qname($EXTENSION_NS,'DIPROMember'),qname($EXTENSION_NS,'DICOMMember'),qname($EXTENSION_NS,'XBT'));
 
 $Currencies_Not_In_US-GAAP_Taxonomy = set(currency:VES, currency:SVC, currency:STN, currency:MRU);
 
