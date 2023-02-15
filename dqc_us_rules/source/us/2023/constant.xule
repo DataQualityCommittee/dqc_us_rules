@@ -143,8 +143,6 @@ constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descen
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-
-
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
 					DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax,
@@ -442,3 +440,11 @@ OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdju
 OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent)
 
 constant $OCI_SECURITY_RELATED_ITEMS = navigate summation-item descendants include start from $OCI_PARENT_ITEMS taxonomy $US-GAAP returns set (target-name)
+
+constant $TYPED_DIMENSIONS = taxonomy().dimensions-typed
+
+constant $CASH_FLOW_ROLES  = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) or $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role
+
+constant $CASH_FLOW_ROLE_SORTED = (filter $CASH_FLOW_ROLES returns list($item.description, $item.uri, $item )).sort
+
+constant $CASH_FLOW_ROLE = $CASH_FLOW_ROLE_SORTED[1][3]

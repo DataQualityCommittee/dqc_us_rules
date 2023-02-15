@@ -9,14 +9,14 @@ Taxonomy: US GAAP 2022
 
 rule-name-prefix DQC
 
-
+/** CHECK an example of : https://www.sec.gov/Archives/edgar/data/108985/000010898522000113/form10q.htm **/
 assert US.0145.9867 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
-$allowableFinancingItems = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) 
+$allowableFinancingItems = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) + set(ProceedsFromAdvancesForConstruction, RepaymentsOfAdvancesForConstruction, ProceedsFromContributionInAidOfConstruction)
 
 $taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name) - $allowableFinancingItems
 

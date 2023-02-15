@@ -1,0 +1,37 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+**/
+
+rule-name-prefix DQC
+
+/** Pick up Invalid extension items used on the income statement.
+
+Example filing: http://www.sec.gov/Archives/edgar/data/1132509/000147793222006042/nnax_10q.htm
+**/
+
+assert US.0156.10074  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$BasicAndDilutedIExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.name.local-name.lower-case.contains('basicanddiluted')returns $item.name
+
+exists({@concept.local-name in $BasicAndDilutedIExtensionItems})#invalidFact
+
+message
+"The filer has reported a value of {$invalidFact}  using the extension concept {$invalidFact.concept.name}. This value should be tagged with seperate  US GAAP elements for the Basic amount and the diluted amount.  This means the same fact needs to be tagged with seperate elements.  An extension element should not be used to tag this fact.
+
+The properties of this {$invalidFact.concept.name} fact are:
+
+Period :{$invalidFact.period}
+Dimensions : {$invalidFact.dimensions.join(', ','=')}
+Unit : {$invalidFact.unit}\n
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $invalidFact
