@@ -575,45 +575,5 @@ severity error
 
 effectiveDate $effective_dates[$rule_id]
 
-/**
-output temp_tot
-axis_members(TemporaryEquityCarryingAmountAttributableToParent, StatementClassOfStockAxis)
-**/
-
-function axis_members($lineItem, $axis)
-
-$drs_roles = list(for $y in
-					filter taxonomy().cubes where 
-						$lineItem in $item.primary-concepts.name						
-						and taxonomy().concept($axis) in $item.dimensions.concept				/** Include Cubes with requested axis								**/
-						and $item.drs-role.description.contains('- Statement ')
-						and not $item.drs-role.description.contains('Parenthetical')
-				$y.drs-role);
-
-/** Get a list of all the members on the Axis and include the role they are used in. **/
-
-$drs_members = dict(for $drs_role in $drs_roles.sort
-					list($drs_role, navigate dimensions descendants from $axis drs-role $drs_role));
-					
-
-/** Go through the first role and evaluate that the members add to the total in the default. **/
-for  $x in first(list($drs_members.keys))
-
-	/** Get a list of the members **/
-	$member_descendants = $drs_members[$x].to-set;
-
-	/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded.**/
-	$member_facts = list(for $member in $member_descendants
-		$ancestors_list = navigate dimensions domain-member ancestors from $member drs-role $x;
-		if list({nonils @concept = $lineItem @cube.drs-role = $x @$axis in $ancestors_list}).length > 0
-			skip
-		else 
-			{nonils @concept = $lineItem @cube.drs-role = $x @$axis = $member});
-	
-	/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
-	if 	$member_facts.length == 0 
-	 skip
-	else
-		$member_facts.sort
 
 

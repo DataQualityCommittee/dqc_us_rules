@@ -16,7 +16,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $ComponentAmount = {@concept = DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount};
 
 
-$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
+$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).name;
 
 if $childMember == none
 	$message_inv_in_cat = "The element {$ComponentAmount.concept} with a value of {$ComponentAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";
@@ -55,7 +55,7 @@ assert US.0069.7643 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $ComponentAmount = {@concept = DefinedBenefitPlanAmountOfEmployerAndRelatedPartySecuritiesIncludedInPlanAssets};
 
-$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis);
+$childMember = $ComponentAmount.dimension(DefinedBenefitPlanByPlanAssetCategoriesAxis).name;
 
 if $childMember == none
 	$message_related_party = "The element {$ComponentAmount.concept} with a value of {$ComponentAmount} must be used with the dimension DefinedBenefitPlanByPlanAssetCategoriesAxis.";

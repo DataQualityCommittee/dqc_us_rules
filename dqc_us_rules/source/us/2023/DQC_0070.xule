@@ -44,11 +44,11 @@ for  $x in $drs_members.keys.sort('asc')
 			if $member.name == PlanAssetCategoriesDomain
 				skip
 			else
-				$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $x returns set (target-name)) - set(PlanAssetCategoriesDomain);
+				$ancestors_list = (navigate dimensions domain-member ancestors from $member.name drs-role $x returns set (target-name)) - set(PlanAssetCategoriesDomain);
 				if list({nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis in $ancestors_list}).length > 0
 					skip
 				else 
-					{nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member});
+					{nonils @DefinedBenefitPlanFairValueOfPlanAssets @cube.drs-role = $x @DefinedBenefitPlanByPlanAssetCategoriesAxis = $member.name});
 	
 	/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 		if 	$member_facts.length == 0 
