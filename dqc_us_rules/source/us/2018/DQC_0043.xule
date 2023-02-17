@@ -71,9 +71,11 @@ assert US.0043.7488 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$extensionNetIncomeItems = filter taxonomy().concepts where $item.is-monetary == true and $item.balance == credit and $item.namespace-uri == $extension_ns and $item.name.local-name.lower-case.contains("netincome") returns $item.name; 
+
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivities;
-	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $income_items  where $relationship.target.name not in $income_items returns by network set (target)	
+	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in ($income_items + $extensionNetIncomeItems.to-set)   where $relationship.target.name not in ($income_items + $extensionNetIncomeItems.to-set)  returns by network set (target)	
 	for $key in $Children_to_check.keys	
 		for ($bottom in $Children_to_check[$key])
 		$message_text = 
