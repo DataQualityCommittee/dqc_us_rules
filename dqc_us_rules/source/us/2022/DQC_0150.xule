@@ -39,7 +39,7 @@ Also add shelly rule for number of business segment.
 **/
 ASSERT US.0150.9876 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
 t**/
 
@@ -113,13 +113,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
-
-severity error
-
-
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 /**DQC 0150.9877 **/
 /** Calculation of segments 
@@ -131,7 +129,7 @@ Also check totals by segment.
 
 ASSERT US.0150.9877 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
 t**/
 
@@ -206,11 +204,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
-
-severity error
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 /**DQC 0150.10200 **/
 /** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
@@ -218,7 +216,7 @@ severity error
 
 ASSERT US.0150.10200 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -253,11 +251,11 @@ Total period : {$associatedValue.period}
 Dimensions : {$associatedValue.dimensions.join(', ','=')}
 Decimals : {$associatedValue.decimals} 
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
-
-severity error
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 
 /**DQC 0150.9878 **/
@@ -267,7 +265,7 @@ Look at segment table and look where the consolidated items axis is used for a l
 
 ASSERT US.0150.9878 SATISFIED
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -297,11 +295,11 @@ Total period : {first($operatingItems).period}
 Dimensions : {first($operatingItems).dimensions.join(', ','=')}
 Decimals : {first($operatingItems).decimals} 
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
-
-severity error
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 
 

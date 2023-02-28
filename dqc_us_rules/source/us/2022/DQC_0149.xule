@@ -27,3 +27,30 @@ message
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
 "
+
+severity error
+
+
+assert US.0149.10075 satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/**Noncurrent Assets used incorrectly  Rule checks that  the element appears as a descendant ofScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable **/
+
+$NonCurrantAssetFact = {@NoncurrentAssets}
+
+if exists($NonCurrantAssetFact)
+    $locationCheck = navigate parent-child descendants from ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable where $relationship.target-name == NoncurrentAssets returns set (target-name)
+    if $locationCheck.length == 0
+        true
+    else 
+        false
+else
+    false
+
+message
+"A value of {$NonCurrantAssetFact} has been reported for the concept NoncurrentAssets. This element is used to represent the value of Long Lived Assets by Geographic region.  This element must be included as a presentation descendant of the table ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable. 
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
