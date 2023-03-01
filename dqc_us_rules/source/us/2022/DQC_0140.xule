@@ -182,6 +182,8 @@ $minDecimals = min(list(for $x in $Decimals
 
 $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
+$AmortizedCostBeforeAndAfterCreditSameValue = ($AmortCost  == $AmortizedCostAfterCreditLoss) and ($creditLoss > 0)
+
 $decimal_tolerance_factor = 4;
 
 if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
@@ -268,7 +270,7 @@ Amortized Cost of {first-value($AmortCost, $AmortizedCostAfterCreditLoss + $cred
 Gain on Securities {$gain}
 Loss on Securities of {$loss}
 Credit Loss on Securities of {$creditLoss}
-{$additionalMessage}
+{$additionalMessage}{if $AmortizedCostBeforeAndAfterCreditSameValue "The value of the amortized cost before the credit allowance and after the credit loss is the same with a value of "  + first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss).string +  ", but a credit allowance has also been recognized with a value of " + $creditLoss.string + ". Review the filing to ensure a value for DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss has not been used by mistake." else ""}
 
 Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
