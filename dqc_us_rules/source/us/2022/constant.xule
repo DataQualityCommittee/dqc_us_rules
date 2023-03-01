@@ -143,7 +143,7 @@ constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descen
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-constant $IncomeLossExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss')returns $item.name
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss')returns $item.name
 
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
@@ -174,7 +174,7 @@ constant $INCOME_ITEMS = set(
 					ProfitLoss,
 					DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax,
 					InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
-					) + $IncomeLossExtensionItems 
+					) + $INCOME_LOSS_EXTENSION_ITEMS 
 
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
