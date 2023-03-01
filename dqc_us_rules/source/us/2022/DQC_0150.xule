@@ -17,27 +17,32 @@ rule-name-prefix DQC
 **          These 2 rules should be able to combined into 1. Use rule 128 as a model.
 **/
 
-constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
-and ($item.drs-role.uri.lower-case.contains('segment')) 
+/** 
 
-
-
-/** THis rule does not work because:
-all components of the consolidated axis may not be reported. i.e. may have the reconcilation of an immaterial item but the operating is not reported because they did not break the expense down at that level.  Because of negative items it may be the case that athe less than assertion cannot be tested.  In the end the errors detected are neglible.
-
-For this reason the rule is being replaced with the following rule logic:
 
 1. Look at the line items that are disclosed on the income statement.  Each of the elements used here should be identified. Only select those line items that are in the default. Put these items into a list.
-2, Go look at the segment not and identify where any items form the IS are used in the segments.
+2, Go look at the segment not and identify where any items from the IS are used in the segments.
 3. Look for those facts that have a business segment member and are not on the financial statements.  These items will need an operating segment member on the consolidated Items axis
 
 This will pick up ... because they have to reconcile back to the income statement.  i.e. Conagra if operatingIncome is not on the financials but is reported for a segment then this must be part of a reconcilation and would need the operating segment item.
 
 Also if a reconciling item has no operating segment member it must have a reconciling item member
 
-Also add shelly rule for number of business segment.
+TODO Also add shelly rule for number of business segment.
 **/
+
+
 ASSERT US.0150.9876 SATISFIED
+
+/** RULE LOGIC Consolidation Items Axis
+1. Identify the segment diclosure cube.
+2. Only use cubes using the ConsolidationItemsAxis
+3. Get Monetary items in the cube
+4. Get the decimals used
+5. For each line item in the cube sum the values of the values using the Consolidation Items Axis
+6. Check if the value of the dimensions is greater than the total.
+7. If there is no value for the total or the components then the rule willk not run.
+**/
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
@@ -54,7 +59,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     $primaryConcepts = $segmentCube.primary-concepts
                     $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
 
-                    /** Work out the decimals used in the financial statements **/
+                    /** Work out the decimals used in the segment disclosure **/
                         $seg_fact_values_decimals = filter (list({nonils covered @concept in $monetaryConceptsInCube @cube.drs-role = $segmentCube.drs-role})) returns $item.decimals;
                         $seg_decimals = most_frequent($seg_fact_values_decimals)
 
@@ -102,7 +107,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the consolidated items decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the consolidated items decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
 
 {$addend_string}
 
@@ -119,19 +124,21 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
-/**DQC 0150.9877 **/
-/** Calculation of segments 
-Realculate Segment Profit loss and make sure matches to total after breakdown by segment axis and Consolidated Items Axis.
-
-Also check totals by segment.
-
-**/
 
 ASSERT US.0150.9877 SATISFIED
 
+/** RULE LOGIC Statement Business Segments Axis
+1. Identify the segment diclosure cube.
+2. Only use cubes using the StatementBusinessSegmentsAxis
+3. Get Monetary items in the cube
+4. Get the decimals used
+5. For each line item in the cube sum the values of the values using the Statement Business Segments Axis
+6. Check if the value of the dimensions is greater than the total.
+7. If there is no value for the total or the components then the rule will not run.
+**/
+
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-/**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
-t**/
+
 
 $ConsolidatedItemsSet = set(taxonomy().concept(StatementBusinessSegmentsAxis))
 
@@ -192,7 +199,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of dimensional member. The value of the concept {$concept} represents the sum of business segment members with a total of {$dimensionTotal}. The value of the total should be equal to the sum of the values of the business segments with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the business segment decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of business segment members with a total of {$dimensionTotal}. The value of the total should be equal to the sum of the values of the business segments with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the business segment decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
 
 {$addend_string}
 
@@ -219,7 +226,7 @@ ASSERT US.0150.10200 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
-                /** Get cubes with StatementBusinessSegmentsAxis **/
+                
                 $dimensions = $segmentCube.dimensions;
 				$dimObjects = filter $dimensions returns $item.concept.name
                 if $dimObjects.contains(StatementBusinessSegmentsAxis) and $dimObjects.contains(srt:ConsolidationItemsAxis)
