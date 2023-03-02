@@ -1,17 +1,58 @@
-
-/** Calculation of segments 
-Realculate Segment Profit loss and make sure matches to total after breakdown by segment axis and Consolidated Items Axis.
-
-Also check totals by segment.
-
+/**
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
 **/
 
+rule-name-prefix DQC
 
-/** DQC 151 ** /
+/** DQC0 0149.9943 **/
+assert US.0149.9943  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Identification axis and extensible enumeration **/
+/**Noncurrent Assets used incorrectly  Rule checks that if the element appears in a statement presentation linkbase then an error is recorded.**/
+
+$invalidUseOfElement = set(NoncurrentAssets) intersect $STATEMENT_PRES_NETWORKS.concepts
+
+if $invalidUseOfElement.length > 0
+    true
+else
+    false
+
+message
+"The element NoncurrentAssets should not appear in the face financial statements of a filing. This element represents long lived assets that is reported in the segment reporting section of the financial statements. Use the element AssetsNoncurrent instead on the Balance Sheet.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}
+"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
 
 
-/** 0152 **/
+assert US.0149.10075 satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Check if glistYear elements is taxperiodaxis **/
+/**Noncurrent Assets used incorrectly  Rule checks that  the element appears as a descendant ofScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable **/
+
+$NonCurrantAssetFact = {@NoncurrentAssets}
+
+if exists($NonCurrantAssetFact)
+    $locationCheck = navigate parent-child descendants from ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable where $relationship.target-name == NoncurrentAssets returns set (target-name)
+    if $locationCheck.length == 0
+        true
+    else 
+        false
+else
+    false
+
+message
+"A value of {$NonCurrantAssetFact} has been reported for the concept NoncurrentAssets. This element is used to represent the value of Long Lived Assets by Geographic region.  This element must be included as a presentation descendant of the table ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable. 
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
