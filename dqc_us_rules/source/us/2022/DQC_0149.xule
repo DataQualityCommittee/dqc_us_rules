@@ -38,7 +38,8 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /**Noncurrent Assets used incorrectly  Rule checks that  the element appears as a descendant ofScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable **/
 
 $NonCurrantAssetFact = {@NoncurrentAssets}
-
+$actualLocation = navigate parent-child ancestors from NoncurrentAssets where $relationship.source.substitution == xbrldt:hypercubeItem returns set (target-name);
+$additionalMessage = if $actualLocation.length > 0 "The element appears as a descendant of the table " +  $actualLocation.join(', ') + ".  Update the table to ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable." else "";
 if exists($NonCurrantAssetFact)
     $locationCheck = navigate parent-child descendants from ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable where $relationship.target-name == NoncurrentAssets returns set (target-name)
     if $locationCheck.length == 0
@@ -49,7 +50,13 @@ else
     false
 
 message
-"A value of {$NonCurrantAssetFact} has been reported for the concept NoncurrentAssets. This element is used to represent the value of Long Lived Assets by Geographic region.  This element must be included as a presentation descendant of the table ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable. 
+"A value of {$NonCurrantAssetFact} has been reported for the concept NoncurrentAssets. This element is used to represent the value of Long Lived Assets by Geographic region.  This element must be included as a presentation descendant of the table ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable. {$additionalMessage}
+
+Concept : {$NonCurrantAssetFact.concept}
+Value : {$NonCurrantAssetFact} 
+Total period : {$NonCurrantAssetFact.period} 
+Dimensions : {$NonCurrantAssetFact.dimensions.join(', ','=')}
+Decimals : {$NonCurrantAssetFact.decimals} 
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"

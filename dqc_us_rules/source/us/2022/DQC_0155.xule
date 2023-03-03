@@ -20,7 +20,7 @@ $exchange_rate_elements = list(EffectOfExchangeRateOnCashCashEquivalentsRestrict
 
 $Fact_for_Exchange_Rate_effect = list({covered @concept in $exchange_rate_elements});
 
-if $Fact_for_Exchange_Rate_effect.length > 0 and $Calc_Descendants_of_Cash_Change > 0
+if $Fact_for_Exchange_Rate_effect.length > 0 and $Calc_Descendants_of_Cash_Change.length > 0
     if $Calc_Descendants_of_Cash_Change.intersect($exchange_rate_elements).length > 0
         false
     else

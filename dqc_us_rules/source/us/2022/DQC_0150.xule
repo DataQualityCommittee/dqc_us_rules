@@ -191,7 +191,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         if $addedDimensions == none or $dimensionTotal == none 
                             skip
                         else
-                         tolerance_for_decimals_comp($dimensionTotal, $addedDimensions, $dimensionTotal.decimals, 2)
+                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
                 else
                     skip
               
@@ -314,7 +314,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
-				$segmentMembers = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis drs-role $segmentCube returns set (target-name) - set(SegmentDomain)
+				$segmentMembers = navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis drs-role $segmentCube.drs-role returns set (target-name) - set(SegmentDomain)
 
                 if $segmentMembers.length > 0
                    $NumberOfSegments = [@NumberOfReportableSegments]#NumberSegments
