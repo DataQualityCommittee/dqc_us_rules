@@ -455,7 +455,10 @@ constant $CASH_FLOW_ROLES  = filter $PRES_NETWORKS where ($item.concept-names.co
 
 constant $CASH_FLOW_ROLE_SORTED = (filter $CASH_FLOW_ROLES returns list($item.description, $item.uri, $item )).sort
 
-constant $CASH_FLOW_ROLE = $CASH_FLOW_ROLE_SORTED[1][3]
+constant $CASH_FLOW_ROLE = if $CASH_FLOW_ROLES.length > 0 
+								$CASH_FLOW_ROLE_SORTED[1][3]
+						else
+							none
 
 constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
 and ($item.drs-role.uri.lower-case.contains('segment')) 
