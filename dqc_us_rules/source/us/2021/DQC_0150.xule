@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2022
+Taxonomy: US GAAP 2021
 **/
 
 rule-name-prefix DQC
@@ -33,15 +33,9 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     $primaryConcepts = $segmentCube.primary-concepts
                     $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
 
-                    /** Work out the decimals used in the segment disclosure **/
-                        $seg_fact_values_decimals = filter (list({nonils covered @concept in $monetaryConceptsInCube @cube.drs-role = $segmentCube.drs-role})) returns $item.decimals;
-                        $seg_decimals = most_frequent($seg_fact_values_decimals)
-
                     for $concept in $monetaryConceptsInCube
 
-						$factsToAdd = list(first-value([nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @srt:ConsolidationItemsAxis = * where $fact.decimals == $seg_decimals],
-						 first(list([nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role @srt:ConsolidationItemsAxis = * where $fact.decimals >= $seg_decimals])),
-						 first(list([nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role where $fact.decimals < $seg_decimals]))));
+						$factsToAdd = list([nonils @concept = $concept  @srt:ConsolidationItemsAxis = *]);
 
                         $addedDimensions = sum($factsToAdd)
 
@@ -49,7 +43,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                        $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item + '. ') ;
 
 
-                        $dimensionTotal = {nonils @concept = $concept  @srt:ConsolidationItemsAxis = none where $fact.decimals == $seg_decimals}
+                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
                         if $addedDimensions == none or $dimensionTotal == none 
                             skip
@@ -61,7 +55,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the consolidated items decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values for the component dimensions are as follows:
 
 {$addend_string}
 
@@ -102,24 +96,19 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     $primaryConcepts = $segmentCube.primary-concepts
                     $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
 
-                    /** Work out the decimals used in the Segment Disclosure **/
-                        $seg_fact_values_decimals = filter (list({nonils covered @concept in $monetaryConceptsInCube @cube.drs-role = $segmentCube.drs-role})) returns $item.decimals;
-                        $seg_decimals = most_frequent($seg_fact_values_decimals)
 
                     for $concept in $monetaryConceptsInCube
 
-                        $factsToAdd = (list(first-value(
-							[nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @StatementBusinessSegmentsAxis = * where $fact.decimals == $seg_decimals], 
-								first(list([nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = * where $fact.decimals >= $seg_decimals])),
-								first(list([nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = * where $fact.decimals < $seg_decimals]))
-								)));
+                        $factsToAdd = list(
+							[nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @StatementBusinessSegmentsAxis = * ]
+								);
 
 						$addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
                         $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item + '. ') ;
 
-                        $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none where $fact.decimals == $seg_decimals]
+                        $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
                         if $addedDimensions == none or $dimensionTotal == none 
                             skip
                         else
@@ -130,7 +119,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of business segment members with a total of {$dimensionTotal}. The value of the total should be equal to the sum of the values of the business segments with a value of {$addedDimensions}. The values of the addends is determined by adding the values of the business segment decimal values of {$seg_decimals.string}. The values for the component dimensions are as follows:
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of business segment members with a total of {$dimensionTotal}. The value of the total should be equal to the sum of the values of the business segments with a value of {$addedDimensions}. The values for the component dimensions are as follows:
 
 {$addend_string}
 
@@ -152,48 +141,7 @@ effectiveDate $effective_dates[$ruleId]
 /** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
 **/
 
-ASSERT US.0150.10200 SATISFIED
-
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-
-for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
-                
-                $dimensions = $segmentCube.dimensions;
-				$dimObjects = filter $dimensions returns $item.concept.name
-                if $dimObjects.contains(StatementBusinessSegmentsAxis) and $dimObjects.contains(srt:ConsolidationItemsAxis)
-                    /**Identify all monetary primary concepts in Cubes with StatementBusinessSegmentsAxis **/
-                    $primaryConcepts = $segmentCube.primary-concepts
-                    $monetaryDurationConceptsInCube = filter $primaryConcepts where $item.is-monetary and $item.period-type == duration returns $item.name
-                    $calculationConcepts = navigate summation-item descendants include start role $segmentCube.drs-role.uri returns set target-name
-                    for $concept in $monetaryDurationConceptsInCube
-                        /** See if the concept has any value with the consolidated items axis and make sure the concept has no business segment associated with the concept. This means it is a reconciling item.**/
-                        if list([nonils covered @concept = $concept  @cube.drs-role = $segmentCube.drs-role @srt:ConsolidationItemsAxis = *]).length > 0 
-                            and list({nonils covered @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *}).length == 0
-                            /** Check that the value is in a calculation.**/
-                            /** get calculation items in the network **/
-                            $associatedValue = [nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @srt:ConsolidationItemsAxis = *];
-                            not $calculationConcepts.contains($concept)
-                        else
-                            false
-
-                else
-                    skip
-
-
-message
-"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {$associatedValue}.  This concept is not disagregated  by segment but appears in the segment disclosure using the consolidated items axis. This concept is not included in a calculation relationship showing how the associated amounts reconcile to net income.
-
-Concept : {$concept}
-Value : {$associatedValue} 
-Total period : {$associatedValue.period} 
-Dimensions : {$associatedValue.dimensions.join(', ','=')}
-Decimals : {$associatedValue.decimals} 
-
-Rule Element Id:{$ruleId}
-Rule version: {$ruleVersion}"
-
-SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+/** REMOVED RULE **/
 
 
 /**DQC 0150.9878 **/
@@ -244,10 +192,10 @@ ASSERT US.0150.10076 SATISFIED
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
- $segmentMembers  = set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+ $segmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
 					navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis drs-role $segmentCube.drs-role returns set (target-name) - set(SegmentDomain)
- 					)	
+ 					))
 
 if $segmentMembers.length > 0
 	$NumberOfSegments = [@NumberOfReportableSegments]#NumberSegments
