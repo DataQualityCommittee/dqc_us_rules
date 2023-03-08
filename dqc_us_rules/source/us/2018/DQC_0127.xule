@@ -83,7 +83,9 @@ for $presNetwork in $presNetworks.sort
 
                         $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
-                        if ($legalEntityAxisUsed or $InvestmentAxisUsed)
+                        $ConsolidatedEntitiesAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ConsolidatedEntitiesAxis'));
+
+                        if ($legalEntityAxisUsed or $InvestmentAxisUsed or $ConsolidatedEntitiesAxisUsed)
                             false
                         else 
                             true
