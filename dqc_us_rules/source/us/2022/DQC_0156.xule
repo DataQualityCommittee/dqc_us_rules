@@ -18,7 +18,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $BasicAndDilutedIExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.name.local-name.lower-case.contains('basicanddiluted')returns $item.name
 
-exists({@concept.local-name in $BasicAndDilutedIExtensionItems})#invalidFact
+exists({@concept in $BasicAndDilutedIExtensionItems})#invalidFact
 
 message
 "The filer has reported a value of {$invalidFact}  using the extension concept {$invalidFact.concept.name}. This value should be tagged with seperate  US GAAP elements for the Basic amount and the diluted amount.  This means the same fact needs to be tagged with seperate elements.  An extension element should not be used to tag this fact.
