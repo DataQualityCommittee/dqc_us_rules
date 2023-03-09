@@ -45,7 +45,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        if $addedDimensions == none or $dimensionTotal == none 
+                        if $addedDimensions == none or $dimensionTotal == none or $dimensionTotal <= 0 
                             skip
                         else
                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
@@ -109,7 +109,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item + '. ') ;
 
                         $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
-                        if $addedDimensions == none or $dimensionTotal == none 
+                        if $addedDimensions == none or $dimensionTotal == none or $dimensionTotal <= 0
                             skip
                         else
                          tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
