@@ -40,7 +40,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         $addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
-                       $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item + '. ') ;
+                       $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
@@ -106,7 +106,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 						$addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
-                        $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item + '. ') ;
+                        $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
                         $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
                         if $addedDimensions == none or $dimensionTotal == none or $dimensionTotal <= 0
