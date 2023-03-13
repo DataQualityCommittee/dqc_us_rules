@@ -14,7 +14,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**Noncurrent Assets used incorrectly  Rule checks that if the element appears in a statement presentation linkbase then an error is recorded.**/
 
-$invalidUseOfElement = set(NoncurrentAssets) intersect $STATEMENT_PRES_NETWORKS.concepts
+$invalidUseOfElement = set(NoncurrentAssets) intersect (filter $STATEMENT_PRES_NETWORKS.concepts returns $item.name)
 
 if $invalidUseOfElement.length > 0
     true
@@ -22,7 +22,7 @@ else
     false
 
 message
-"The element NoncurrentAssets should not appear in the face financial statements of a filing. This element represents long lived assets that is reported in the segment reporting section of the financial statements. Use the element AssetsNoncurrent instead on the Balance Sheet.
+"The element NoncurrentAssets should not appear in the face financial statements of a filing. This element represents long lived assets that are reported in the segment reporting section of the financial statements. Use the element AssetsNoncurrent on the Balance Sheet.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
