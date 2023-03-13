@@ -107,13 +107,13 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
 | [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
 | [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
-| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Public Exposure | 20 |
-| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Public Exposure | 20 |
-| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Public Exposure | 20 |
-| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Public Exposure | 20 |
-| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Public Exposure | 20 |
-| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Public Exposure | 20 |
-| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Public Exposure | 20 |
+| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Approved | 20 |
+| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Approved | 20 |
+| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Approved | 20 |
+| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Approved | 20 |
+| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Approved | 20 |
+| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Approved | 20 |
+| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
 
 ## Guidance 
 
