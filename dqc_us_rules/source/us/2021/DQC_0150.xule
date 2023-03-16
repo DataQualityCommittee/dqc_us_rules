@@ -37,6 +37,8 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 						$factsToAdd = list([nonils @concept = $concept  @srt:ConsolidationItemsAxis = *]);
 
+                        $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
+
                         $addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
@@ -45,10 +47,10 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
                             skip
                         else
-                        tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
+                        tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
                 else
                     skip
               
@@ -103,16 +105,18 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 							[nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @StatementBusinessSegmentsAxis = * ]
 								);
 
+                        $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
+
 						$addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
                         $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
                         $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
                             skip
                         else
-                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, $dimensionTotal.decimals, 2)
+                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
                 else
                     skip
               
@@ -165,21 +169,22 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     for $concept in $monetaryConceptsInCube
                         /** See if the concept has any value with the consolidated items axis and make sure the concept has no business segment associated with the concept. This means it is a reconciling item.**/
                         $reconcilingItems =  list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = none @srt:ConsolidationItemsAxis != OperatingSegmentsMember}).sort
-                        $operatingItems = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = none}).sort
-                        $reconcilingItems.length > 0 and $operatingItems.length > 0
+                        $consolidationItemsPresent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+                        $consolidationItemsAbsent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = none}).sort
+                        $reconcilingItems.length > 0 and $consolidationItemsAbsent.length > 0 and $consolidationItemsPresent.length == 0
                         
                 else
                     skip
 
 
 message
-"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {first($reconcilingItems)} and the dimension of  {first($reconcilingItems).dimensions.join(', ','=')}. This same line item however was used to report the value of {first($operatingItems)} for a busines segment axis with the dimensions of  {first($operatingItems).dimensions.join(', ','=')}, but with no associated operating member. If a value is reported for a segment then an operating member should be used if there are reconciling items for that line item.
+"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {first($reconcilingItems)} and the dimension of  {first($reconcilingItems).dimensions.join(', ','=')}. This same line item however was used to report the value of {first($consolidationItemsAbsent)} for a busines segment axis with the dimensions of  {first($consolidationItemsAbsent).dimensions.join(', ','=')}, but with no associated operating member. If a value is reported for a segment then an operating member should be used if there are reconciling items for that line item.
 
 Concept : {$concept}
-Value : {first($operatingItems)} 
-Total period : {first($operatingItems).period} 
-Dimensions : {first($operatingItems).dimensions.join(', ','=')}
-Decimals : {first($operatingItems).decimals} 
+Value : {first($consolidationItemsAbsent)} 
+Total period : {first($consolidationItemsAbsent).period} 
+Dimensions : {first($consolidationItemsAbsent).dimensions.join(', ','=')}
+Decimals : {first($consolidationItemsAbsent).decimals} 
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
