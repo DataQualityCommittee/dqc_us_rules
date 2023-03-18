@@ -203,11 +203,14 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
  					))
 
 if $segmentMembers.length > 0
-	$NumberOfSegments = [@NumberOfReportableSegments]#NumberSegments
-	if $segmentMembers.length < $NumberOfSegments
-		true
-	else
-		false
+	$NumberOfSegments = set([@NumberOfReportableSegments @period=*])
+    if $NumberOfSegments.length == 0
+        false
+    else
+        if $segmentMembers.length < min($NumberOfSegments)
+            true
+        else
+            false
 		
 else
 	skip
@@ -215,12 +218,10 @@ else
 
 message
 "The filer uses the segment axis and has defined {$segmentMembers.length} segments in the filing. These include the following:
-{$segmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberSegments}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
+{$segmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberOfSegments.join(' and ')}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
 
-Concept : {$NumberSegments.concept.name}
-Value : {$NumberSegments} 
-Total period : {$NumberSegments.period} 
-Decimals : {$NumberSegments.decimals} 
+Concept : NumberOfReportableSegments
+Value : {$NumberOfSegments.join(' and ')} 
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
