@@ -22,10 +22,18 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 	$sum1 = [@LesseeOperatingLeaseLiabilityPaymentsDue];
 
 	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount];
-	
-	if tolerance_for_decimals($sum1,$addend,2)
+
+	$Decimals = list([nonils @LesseeOperatingLeaseLiabilityPaymentsDue], [nonils @OperatingLeaseLiability], [nonils @LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] )
+
+	$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+	if tolerance_for_decimals_comp($sum1, $addend, $minDecimals, 2)
 		$paymentsDueCalc =  navigate summation-item descendants from LesseeOperatingLeaseLiabilityPaymentsDue returns set (target-name);
-		$extInCalc = $paymentsDueCalc intersect $extension_qname
+		$extInCalc = $paymentsDueCalc intersect $extension_qname;
 		$liabilityInCalcBool = OperatingLeaseLiability in $paymentsDueCalc;
 		if $extInCalc.length > 0 and $liabilityInCalcBool
 			false
@@ -70,23 +78,31 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 
 	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount];
 
-		if tolerance_for_decimals($sum1,$addend,2)
-			$paymentsDueCalc =  navigate summation-item descendants from FinanceLeaseLiabilityPaymentsDue returns set (target-name);
-			$extInCalc = $paymentsDueCalc intersect $extension_qname
-			if $extInCalc.length == 0
-				true
-			else
-				false
+	$Decimals = list([nonils @FinanceLeaseLiabilityPaymentsDue], [nonils @FinanceLeaseLiability], [nonils @FinanceLeaseLiabilityUndiscountedExcessAmount] )
+
+	$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+	if tolerance_for_decimals_comp($sum1, $addend, $minDecimals, 2)
+		$paymentsDueCalc =  navigate summation-item descendants from FinanceLeaseLiabilityPaymentsDue returns set (target-name);
+		$extInCalc = $paymentsDueCalc intersect $extension_qname
+		if $extInCalc.length == 0
+			true
 		else
 			false
 	else
 		false
+else
+	false
 message
 
 "The element {$sum1.concept.name} with a value of {$sum1} should be equal to the sum of FinanceLeaseLiability plus FinanceLeaseLiabilityUndiscountedExcessAmount. The value of these adds to {$addend}.  A difference of {$sum1 - $addend}. In an annual filing this reconciliation is required and all elements should have a value in the current reporting period.
 
 If the difference is due to an extension reconciliation item, then the filer should add a calculation relationship. The calculation tree should show the parent element as FinanceLeaseLiabilityPaymentsDue with children of FinanceLeaseLiabilityUndiscountedExcessAmount + FinanceLeaseLiability + any extension items. There should already be a calculation tree defined for the components of FinanceLeaseLiabilityPaymentsDue comprised of FinanceLeaseLiabilityPaymentsDueNextTwelveMonths +  FinanceLeaseLiabilityPaymentsDueYearTwo etc.  These two beakdowns of FinanceLeaseLiabilityPaymentsDue should be in seperate calculation groups. If an extension item appears as a child calculation of FinanceLeaseLiabilityPaymentsDue then no error is produced.
-
+ 
 Period :{$sum1.period}
 Unit : {$sum1.unit}
 Decimals: {$sum1.decimals}
