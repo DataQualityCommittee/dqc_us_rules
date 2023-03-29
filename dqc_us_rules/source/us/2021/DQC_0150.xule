@@ -198,8 +198,8 @@ ASSERT US.0150.10076 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
  $segmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
-                /** Get cubes with StatementBusinessSegmentsAxis **/
-					navigate dimensions dimension-member descendants from StatementBusinessSegmentsAxis drs-role $segmentCube.drs-role returns set (target-name) - set(SegmentDomain)
+                 /** Get members that are a child of the domain as reportable segments should be reported at this level. **/
+					navigate dimensions domain-member children from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
  					))
 
 if $segmentMembers.length > 0
