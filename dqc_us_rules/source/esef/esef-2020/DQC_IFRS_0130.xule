@@ -15,7 +15,7 @@ for $x in $SHARE_PERCENTAGES.keys
 	$result = {nonils @concept = $x @unit = * };
 	$currency = $result.unit.numerator;
 	$numerator = {nonils @concept = $SHARE_PERCENTAGES[$x][1] @unit=* where $fact.unit == unit($currency)};
-	$denominator = {nonils @concept = $SHARE_PERCENTAGES[$x][2] @unit=* };
+	$denominator = {nonils @concept = $SHARE_PERCENTAGES[$x][2] @unit=* where $fact != 0};
 	if $result == none or $numerator == none or $denominator == none 
 		skip 
 	else
