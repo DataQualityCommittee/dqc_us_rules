@@ -862,8 +862,10 @@ $classes_of_stock_members = navigate dimensions dimension-member descendants fro
 $allowed_base_member_predefined = set(TrustForBenefitOfEmployeesMember);
 
 $allowed_base_member_2017-12_transition = set(AccumulatedNetGainLossFromCashFlowHedgesIncludingPortionAttributableToNoncontrollingInterestMember, AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember, AccumulatedNetGainLossFromCashFlowHedgesAttributableToNoncontrollingInterestMember);
+/** 2022 only **/
+$allowed_base_member_2018-12_transition = set(AociLiabilityForFuturePolicyBenefitNoncontrollingInterestMember, AociLiabilityForFuturePolicyBenefitParentMember, AociLiabilityForFuturePolicyBenefitIncludingNoncontrollingInterestMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskIncludingNoncontrollingInterestMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskParentMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskNoncontrollingInterestMember);
 
-$allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined + $allowed_base_member_2017-12_transition);
+$allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined + $allowed_base_member_2017-12_transition + $allowed_base_member_2018-12_transition);
 
 $base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
 
