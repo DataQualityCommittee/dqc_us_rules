@@ -1,10 +1,14 @@
 #!/bin/bash
 pip show Arelle-release
 set -x
-svn export --quiet https://github.com/xbrlus/xule/tags/23379.3/plugin/xule $CURDIR/plugin/xule
-svn export --quiet https://github.com/xbrlus/xule/tags/23379.3/plugin/validate $CURDIR/plugin/validate
-cp -R $CURDIR/plugin/xule $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/xule
-cp $CURDIR/plugin/validate/DQC.py $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/validate/DQC.py
+
+# Copy xule files to the appropriate directory
+mkdir $CURDIR/temp
+git clone --depth=1 --branch 23469 --single-branch https://github.com/xbrlus/xule.git $CURDIR/temp/xule
+mv $CURDIR/temp/xule/plugin/xule $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin
+mv $CURDIR/temp/xule/plugin/validate/DQC.py $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/validate
+rm -fR $CURDIR/temp
+
 echo $INFILES > infiles.json
 sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|$GH_SLUG/raw/$PR_BR/dqc_us_rules/|" $CURDIR/rulesetMap.json
 sed -i "s|\?raw=true||" $CURDIR/rulesetMap.json
