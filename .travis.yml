@@ -9,6 +9,7 @@ env:
   global:
     - EXPECTED=./tests/output
     - CURDIR=$(pwd)
+    - XULE_VERSION=23469
     - GH_SLUG=https://github.com/${TRAVIS_REPO_SLUG}
     - PR_BR=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
@@ -59,7 +60,7 @@ env:
     - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1212545/000121254523000093/wal-20221231.htm", "xule_run_only":"DQC.US.0141.9863"}]' EXFILES=$EXPECTED/DQC.US.0141.9863_wal-us-2022.xml
 install:
   - pip install -r requirements.txt
-  - pip install Arelle-release==2.1.4
+  - pip install Arelle-release==2.4.2
 script:
   - travis_wait bash ./travis-run.sh
 after_script:
