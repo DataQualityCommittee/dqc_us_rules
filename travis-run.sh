@@ -4,7 +4,7 @@ set -x
 
 # Copy xule files to the appropriate directory
 mkdir $CURDIR/temp
-git clone --depth=1 --branch 23469 --single-branch https://github.com/xbrlus/xule.git $CURDIR/temp/xule
+git clone --depth=1 --branch $XULE_VERSION --single-branch https://github.com/xbrlus/xule.git $CURDIR/temp/xule
 mv $CURDIR/temp/xule/plugin/xule $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin
 mv $CURDIR/temp/xule/plugin/validate/DQC.py $VIRTUAL_ENV/lib/python3.9/site-packages/arelle/plugin/validate
 rm -fR $CURDIR/temp
