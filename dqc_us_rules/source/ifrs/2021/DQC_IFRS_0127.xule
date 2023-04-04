@@ -78,7 +78,9 @@ for $presNetwork in $presNetworks.sort
                         //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
                         $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
 
-                        if ($legalEntityAxisUsed)
+                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('SignificantInvestmentsInAssociatesAxis'));
+
+                        if ($legalEntityAxisUsed or $InvestmentAxisUsed)
                             false
                         else 
                             true
