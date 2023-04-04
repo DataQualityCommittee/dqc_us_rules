@@ -37,7 +37,14 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
 						$factsToAdd = list([nonils @concept = $concept  @srt:ConsolidationItemsAxis = *]);
 
-                        $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
+                        $decimalsAddedFacts =   if $factsToAdd.length == 0
+                                                        0
+                                                else
+                                                    min(list(for $x in $factsToAdd
+                                                        if $x == none 
+                                                            skip
+                                                        else
+                                                            $x.decimals));
 
                         $addedDimensions = sum($factsToAdd)
 
