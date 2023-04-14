@@ -17,7 +17,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $AmortCost = first-value({nonils @AvailableForSaleDebtSecuritiesAmortizedCostBasis}, {nonils @DebtSecuritiesAvailableForSaleAmortizedCostCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent})
 
-$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLoss}, {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent})
+$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLoss}, {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent}, 0)
 
 $AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
 

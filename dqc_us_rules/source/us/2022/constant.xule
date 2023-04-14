@@ -143,10 +143,11 @@ constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descen
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss')returns $item.name
 
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
+					ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,
 					DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax,
 					GainLossOnSaleOfPropertiesNetOfApplicableIncomeTaxes,
 					IncomeLossAttributableToNoncontrollingInterest,
@@ -174,7 +175,7 @@ constant $INCOME_ITEMS = set(
 					ProfitLoss,
 					DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax,
 					InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
-					)
+					) + $INCOME_LOSS_EXTENSION_ITEMS 
 
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
@@ -187,6 +188,13 @@ constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS
 	or $item.role.description.contains('148413 - Statement -')
 
 constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
+						$calcNetwork.concept-names
+					))
+
+constant $NI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
+	where $item.role.description.contains('124000 - Statement -') 
+
+constant $NI_CONCEPTS = sum(set(for $calcNetwork in $NI_CONCEPT_NETWORKS.sort
 						$calcNetwork.concept-names
 					))
 
@@ -215,6 +223,8 @@ constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concep
 
 constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibleEnumerationLineItemLocation' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
 
+constant $IDENTIFICATION = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
+
 constant $LEASE_ITEMS = list(FinanceLeaseLiability, FinanceLeaseLiabilityCurrent, FinanceLeaseLiabilityNoncurrent, FinanceLeaseRightOfUseAsset, OperatingLeaseRightOfUseAsset, OperatingLeaseLiability, OperatingLeaseLiabilityCurrent, OperatingLeaseLiabilityNoncurrent)
 
 constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, RestrictedCash, RestrictedCashAndCashEquivalents, RestrictedCashAndCashEquivalentsAtCarryingValue, RestrictedCashAndCashEquivalentsNoncurrent, RestrictedCashCurrent, RestrictedCashEquivalents, RestrictedCashEquivalentsCurrent, RestrictedCashEquivalentsNoncurrent, RestrictedCashNoncurrent)
@@ -222,6 +232,9 @@ constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, R
 constant $DEFINED_BENEFIT_COST_EXT_ENUM = navigate parent-child descendants include start from DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList taxonomy $US-GAAP returns set (target-name)
 
 constant $DEFINED_BENEFIT_COST_FS_LINE_ITEMS = navigate summation-item descendants from NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent taxonomy $US-GAAP returns set (target-name)
+
+constant $DERIVATIVE_LIABILITIES_FS_LINE_ITEMS = navigate summation-item descendants from DerivativeLiabilities taxonomy $US-GAAP returns set (target-name)
+constant $DERIVATIVE_ASSETS_FS_LINE_ITEMS = navigate summation-item descendants from DerivativeAssets taxonomy $US-GAAP returns set (target-name)
 
 constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descendants from list(RiskBasedRatiosAbstract, LeverageRatiosAbstract, BankingRegulationTangibleEquityRatioAbstract, BankingRegulationCapitalConservationBufferAbstract, BankingRegulationLeverageBufferAbstract, BankingRegulationMaximumPayoutRatioAndAmountAbstract, BankingRegulationMaximumLeveragePayoutRatioAndAmountAbstract) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:pureItemType returns set (target-name)
 
@@ -246,6 +259,25 @@ and (not $item.drs-role.description.lower-case.contains('schedule iv'))
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
+
+constant $STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
+and (not $item.role.uri.lower-case.contains('highlights'))
 
 
 constant $EXCLUDING_ACCRUED_INTEREST_DICT =  dict(
@@ -381,6 +413,7 @@ NotesAndLoansReceivableNetNoncurrent,
 NotesAndLoansReceivableGrossNoncurrent,
 AllowanceForNotesAndLoansReceivableNoncurrent)),
 list("FinancingReceivable",list(
+NotesReceivableNet,
 FinancingReceivableAllowanceForCreditLosses,
 FinancingReceivableRevolvingConvertedToTermLoan,
 FinancingReceivableRevolving,
@@ -422,3 +455,17 @@ OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdju
 OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent)
 
 constant $OCI_SECURITY_RELATED_ITEMS = navigate summation-item descendants include start from $OCI_PARENT_ITEMS taxonomy $US-GAAP returns set (target-name)
+
+constant $TYPED_DIMENSIONS = list(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis, ReinsuranceContractAxis)
+
+constant $CASH_FLOW_ROLES  = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) or $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role
+
+constant $CASH_FLOW_ROLE_SORTED = (filter $CASH_FLOW_ROLES returns list($item.description, $item.uri, $item )).sort
+
+constant $CASH_FLOW_ROLE = if $CASH_FLOW_ROLES.length > 0 
+								$CASH_FLOW_ROLE_SORTED[1][3]
+						else
+							none
+
+constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+and ($item.drs-role.uri.lower-case.contains('segment')) and not ($item.drs-role.uri.lower-case.contains('narrative')) 

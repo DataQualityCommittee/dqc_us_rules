@@ -224,7 +224,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** UPDATED FOR SRT **/
 
 $base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
-$allowed_base_member = set(srt:EquityMethodInvesteeNameDomain);
+
+$allowed_base_member = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis taxonomy $US-GAAP returns set (target-name) + set(srt:EquityMethodInvesteeNameDomain);
+
 $unallowed_base_members = $base_members - $allowed_base_member;
 
 for ($member in $unallowed_base_members)
@@ -860,8 +862,10 @@ $classes_of_stock_members = navigate dimensions dimension-member descendants fro
 $allowed_base_member_predefined = set(TrustForBenefitOfEmployeesMember);
 
 $allowed_base_member_2017-12_transition = set(AccumulatedNetGainLossFromCashFlowHedgesIncludingPortionAttributableToNoncontrollingInterestMember, AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember, AccumulatedNetGainLossFromCashFlowHedgesAttributableToNoncontrollingInterestMember);
+/** 2022 only **/
+$allowed_base_member_2018-12_transition = set(AociLiabilityForFuturePolicyBenefitNoncontrollingInterestMember, AociLiabilityForFuturePolicyBenefitParentMember, AociLiabilityForFuturePolicyBenefitIncludingNoncontrollingInterestMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskIncludingNoncontrollingInterestMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskParentMember,AociMarketRiskBenefitInstrumentSpecificCreditRiskNoncontrollingInterestMember);
 
-$allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined + $allowed_base_member_2017-12_transition);
+$allowed_base_member = ($allowed_base_member_tree + $allowed_base_member_predefined + $allowed_base_member_2017-12_transition + $allowed_base_member_2018-12_transition);
 
 $base_members = navigate dimensions dimension-member descendants from StatementEquityComponentsAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES) returns set (target-name);
 
@@ -1204,7 +1208,7 @@ Unit: {$fact1.unit}";
 message
 "{$message_for_fact}
 
-Rule Element Id:{$rule_id}}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error

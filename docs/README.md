@@ -107,13 +107,19 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
 | [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
 | [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
-| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Public Exposure | 20 |
-| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Public Exposure | 20 |
-| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Public Exposure | 20 |
-| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Public Exposure | 20 |
-| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Public Exposure | 20 |
-| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Public Exposure | 20 |
-| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Public Exposure | 20 |
+| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Approved | 20 |
+| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Approved | 20 |
+| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Approved | 20 |
+| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Approved | 20 |
+| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Approved | 20 |
+| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Approved | 20 |
+| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
+| [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Public Exposure | 21 |
+| [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Public Exposure | 21 |
+| [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Public Exposure | 21 |
+| [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Public Exposure | 21 |
+| [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Public Exposure | 21 |
+| [DQC_US_0156](DQC_US_0156/DQC_0156.md) | Basic and Diluted Extension Elements | Public Exposure | 21 |
 
 ## Guidance 
 

@@ -22,8 +22,16 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 	$sum1 = [@LesseeOperatingLeaseLiabilityPaymentsDue];
 
 	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount];
-	
-	if tolerance_for_decimals($sum1,$addend,2)
+
+	$Decimals = list([nonils @LesseeOperatingLeaseLiabilityPaymentsDue], [nonils @OperatingLeaseLiability], [nonils @LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] )
+
+	$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+	if tolerance_for_decimals_comp($sum1, $addend, $minDecimals, 2)
 		$paymentsDueCalc =  navigate summation-item descendants from LesseeOperatingLeaseLiabilityPaymentsDue returns set (target-name);
 		$extInCalc = $paymentsDueCalc intersect $EXTENSION_QNAME;
 		$liabilityInCalcBool = OperatingLeaseLiability in $paymentsDueCalc;
@@ -70,7 +78,15 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 
 	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount];
 
-	if tolerance_for_decimals($sum1,$addend,2)
+	$Decimals = list([nonils @FinanceLeaseLiabilityPaymentsDue], [nonils @FinanceLeaseLiability], [nonils @FinanceLeaseLiabilityUndiscountedExcessAmount] )
+
+	$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+	if tolerance_for_decimals_comp($sum1, $addend, $minDecimals, 2)
 		$paymentsDueCalc =  navigate summation-item descendants from FinanceLeaseLiabilityPaymentsDue returns set (target-name);
 		$extInCalc = $paymentsDueCalc intersect $EXTENSION_QNAME
 		if $extInCalc.length == 0
@@ -97,5 +113,3 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
-
-
