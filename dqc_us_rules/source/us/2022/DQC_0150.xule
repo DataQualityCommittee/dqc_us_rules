@@ -105,7 +105,14 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 							[nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @StatementBusinessSegmentsAxis = * ]
 								);
 
-                        $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
+                        $decimalsAddedFacts =   if $factsToAdd.length == 0
+                                                        0
+                                                else
+                                                    min(list(for $x in $factsToAdd
+                                                        if $x == none 
+                                                            skip
+                                                        else
+                                                            $x.decimals));
 
 						$addedDimensions = sum($factsToAdd)
 
@@ -116,7 +123,12 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
                             skip
                         else
-                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
+                        $dimensionTotalDecimals = if $dimensionTotal.decimals == inf
+                                                        0
+                                                 else
+                                                    $dimensionTotal.decimals
+
+                       tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotalDecimals,$decimalsAddedFacts)), 2)
                 else
                     skip
               
