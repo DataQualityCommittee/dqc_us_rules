@@ -121,7 +121,7 @@ else
 				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
 										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"))
 				tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
-			else
+		else
 				true
 		
 	else
@@ -133,10 +133,12 @@ else
 message
 
 "The reported fair value of Available For Sale Debt Securities Securities of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
-Amortized Cost of {$AmortCost}
-Gain on Securities {$gain}
-Loss on Securities of {$loss}
-Credit Loss on Securities of {$creditLoss}
+Amortized Cost of 					{first-value($AmortCost, ($AmortizedCostAfterCreditLoss + $creditLoss))}
+Credit Loss on Securities of 		{$creditLoss}
+Amortized Cost After Credit Loss 	{$AmortizedCostAfterCreditLoss}
+Gain on Securities 					{$gain}
+Loss on Securities of 				{$loss}
+
 {$additionalMessage}
 
 Period :{$fairValue.period}
@@ -266,10 +268,11 @@ else
 message
 
 "The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
-Amortized Cost of {first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss)}
-Gain on Securities {$gain}
-Loss on Securities of {$loss}
-Credit Loss on Securities of {$creditLoss}
+Amortized Cost of 					{first-value($AmortCost, ($AmortizedCostAfterCreditLoss + $creditLoss))}
+Credit Loss on Securities of 		{$creditLoss}
+Amortized Cost After Credit Loss 	{$AmortizedCostAfterCreditLoss}
+Gain on Securities 					{$gain}
+Loss on Securities of 				{$loss}
 {$additionalMessage}{if $AmortizedCostBeforeAndAfterCreditSameValue "The value of the amortized cost before the credit allowance and after the credit loss is the same with a value of "  + first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss).string +  ", but a credit allowance has also been recognized with a value of " + $creditLoss.string + ". Review the filing to ensure a value for DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss has not been used by mistake." else ""}
 
 Period :{$fairValue.period}
