@@ -81,7 +81,7 @@ $MaxValueOfDiscOps = if $discOpsValue.length > 0
         else
             skip
 
-$discOpsMaterialityFlag = if  ($MaxValueOfDiscOps  >   $continuingOpsValue *  0.05)
+$discOpsMaterialityFlag = if  (abs($MaxValueOfDiscOps)  >  abs(max($continuingOpsValue)) *  0.05)
                                 true
                           else
                                 false              
