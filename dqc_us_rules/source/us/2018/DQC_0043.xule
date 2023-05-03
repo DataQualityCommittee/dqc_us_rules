@@ -141,6 +141,7 @@ for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposa
 				false
 			else
 				$signFlag = "negative"
+				$messageText = "The company has reported the concept " + $IncomeItem + " as part of the cash flow statement. This income item is being deducted from the value of operating cash flows in the calculation defined by the filer.  This implies that the resulting operating cash flow calculation excludes this income item from cash flow from operations.  If  " + $IncomeItem + " represents income from discontinued operations then the element NetCashProvidedByUsedInOperatingActivitiesContinuingOperations should be used as the total rather than the current total element of NetCashProvidedByUsedInOperatingActivities. If the item is an income item and is being deducted because the value is negative then consider changing the sign and weight of the element."
 				effective_weight_is_negative($Operating, $IncomeItem)
 		else
 			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
@@ -148,12 +149,13 @@ for $IncomeItem in (($income_items) - set(DiscontinuedOperationGainLossOnDisposa
 					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
 			if $IncomeItem in $discOPs
 					$signFlag = "positive"
+					$messageText = "The company has reported the concept " + $IncomeItem + " as part of the cash flow statement. This income item is being added to the value of operating cash flows in the calculation defined by the filer.  This implies that the resulting operating cash flow calculation includes this income item in cash flow from operations.  If  " + $IncomeItem + " represents income from discontinued operations then the element NetCashProvidedByUsedInOperatingActivities should be used as the total rather than the current total element of  NetCashProvidedByUsedInOperatingActivitiesContinuingOperations."
 					effective_weight_is_positive($Operating, $IncomeItem)
 			else
 				false
 
 message
-"The company has reported the concept {$IncomeItem} as a {$signFlag} weight descendant of Operating cash flows in the calculation linkbase of the filing.  This element must make a {$signFlag} cash contribution to operating cash flows when the element {$Operating} is used.
+"{$messageText}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
