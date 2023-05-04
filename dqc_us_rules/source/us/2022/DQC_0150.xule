@@ -163,6 +163,8 @@ effectiveDate $effective_dates[$ruleId]
 /**DQC 0150.9878 **/
 /** FIND WHERE OPERATING SEGMENT HAS NOT BEEN USED. 
 Look at segment table and look where the consolidated items axis is used for a line item and the business segment has been used for the same item without the operating segment member.  
+
+This has an issue when the disclosure is spread over multiple line items. Need to look at concepts as a group with the same balance type representing the same balance calculation group. Get primary items and find all +1 calculations and include as 1 list.  Need code to work out groups of elements that have same balance type and positive calc weights. First might exclude concepts with calc parents
 **/
 
 ASSERT US.0150.9878 SATISFIED
