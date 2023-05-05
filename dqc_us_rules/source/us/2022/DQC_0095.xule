@@ -16,6 +16,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check if any subsequent event impacted shares at the end of the period. If it did then the rule will not run **/
 if count(set({covered @concept.data-type = xbrli:sharesItemType  @SubsequentEventTypeAxis = SubsequentEventMember})) > 1
+	or count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
 	skip
 else
 
@@ -36,7 +37,7 @@ else
 
 message
 
-"The element {$EntityCommonStockSharesOutstanding.concept.name} with a value of {$EntityCommonStockSharesOutstanding} is different than the value reported for the concept {$CommonStockSharesOutstanding.concept.name} with a value of {$CommonStockSharesOutstanding} by a factor of greater than 100 times. If the difference is the result of a stock split then tag either the element StockIssuedDuringPeriodSharesStockSplits or the element StockIssuedDuringPeriodSharesStockSplits.
+"The element {$EntityCommonStockSharesOutstanding.concept.name} with a value of {$EntityCommonStockSharesOutstanding} is different than the value reported for the concept {$CommonStockSharesOutstanding.concept.name} with a value of {$CommonStockSharesOutstanding} by a factor of greater than 100 times. If the difference is the result of a stock split then tag either the element StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits or the element StockholdersEquityNoteStockSplitConversionRatio1.
 
 Period :{$EntityCommonStockSharesOutstanding.period}
 Unit : {$EntityCommonStockSharesOutstanding.unit}
