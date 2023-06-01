@@ -36,7 +36,7 @@ for $network in $presNetworks
 	$ItemsThatAreLeafItems = $items_with_no_balance - $parent_elements
 
 	for $no_balance_item in $ItemsThatAreLeafItems
-		$no_balance_item_values = list({covered @concept = $no_balance_item })
+		$no_balance_item_values = list({covered @concept = $no_balance_item }).sort
 		$no_balance_item_values.length > 0
 
 
