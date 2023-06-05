@@ -139,11 +139,12 @@ for $cube in $statementCubes.sort
 					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis'returns $item
 					$ConsolidatedEntityAxisInCube = filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
 					$ContinuingAndDiscontinuedOperationsInCube = filter $dimObjects where $item == ContinuingAndDiscontinuedOperationsAxis returns $item
+					$InvestmentAxisUsed = filter $dimObjects where $item == SignificantInvestmentsInAssociatesAxis returns $item
 
 					/** Dimension to check **/
 					/** Identify the axis that indicate their default values should not have a  calculation check
 					Add $ContinuingAndDiscontinuedOperationsInCube for those calc on the income statement that are always continuing ops.**/
-					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube + $ContinuingAndDiscontinuedOperationsInCube
+					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube + $ContinuingAndDiscontinuedOperationsInCube + $InvestmentAxisUsed
 					
 					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
 					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero

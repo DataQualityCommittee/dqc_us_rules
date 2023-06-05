@@ -23,7 +23,7 @@ for $network in $STATEMENT_PRES_NETWORKS
 	$items_with_no_balance = navigate parent-child descendants role $network.role where $relationship.target.is-monetary == true and $relationship.target.balance == none and $relationship.target.namespace-uri == $extension_ns returns set (target-name);
 
 	for $no_balance_item in $items_with_no_balance
-		$no_balance_item_values = list({covered @concept = $no_balance_item })
+		$no_balance_item_values = list({covered @concept = $no_balance_item }).sort
 		$no_balance_item_values.length > 0
 
 

@@ -177,6 +177,10 @@ constant $INCOME_ITEMS = set(
 					InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
 					) + $INCOME_LOSS_EXTENSION_ITEMS 
 
+constant $DISCONTINUED_INCOME_ITEMS = set(IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
+
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)

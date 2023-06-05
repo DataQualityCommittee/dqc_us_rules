@@ -74,6 +74,8 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
+rule-status $status
+
 
 ASSERT US.0150.9877 SATISFIED
 
@@ -155,12 +157,7 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
-/**DQC 0150.10200 **/
-/** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
-**/
-
-/** REMOVED RULE **/
-
+rule-status $status
 
 /**DQC 0150.9878 **/
 /** FIND WHERE OPERATING SEGMENT HAS NOT BEEN USED. 
@@ -182,10 +179,34 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     
                     for $concept in $monetaryConceptsInCube
                         /** See if the concept has any value with the consolidated items axis and make sure the concept has no business segment associated with the concept. This means it is a reconciling item.**/
+
+                        /** Are there any reconciling items.  If there are none the rule will not fire**/
                         $reconcilingItems =  list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = none @srt:ConsolidationItemsAxis != OperatingSegmentsMember}).sort
+
+                        /** find if operating segment is used with operating member. If this is zero the rule wil fire. **/
                         $consolidationItemsPresent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+
+                        /** find if business segment is used with no operating segment member.  These are business segments after elimination. **/
                         $consolidationItemsAbsent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = none}).sort
-                        $reconcilingItems.length > 0 and $consolidationItemsAbsent.length > 0 and $consolidationItemsPresent.length == 0
+
+                        if  $reconcilingItems.length > 0 and $consolidationItemsAbsent.length > 0 and $consolidationItemsPresent.length == 0
+
+                            /** In some cases the filer does not have the operating segment member because a parent calculation concept has the value reported for the segment with the Operating segment member.  Cigna is an example of this where the calc is reversed and they have Revenue from external customers + internal sales + some other revenue = new revenue element total.  This total as the op segment domain. This next section identifies any **/
+
+                            /** get calc parent of concept and check if uses operating segment member **/
+
+                            $calcParents = navigate summation-item parents from $concept where $relationship.weight == 1 returns set (target-name)
+
+                            if $calcParents.length == 0
+                                true
+                            else
+
+                                /** excluded  @cube.drs-role = $segmentCube.drs-role as there is often blled through over multiple segment cubess See Cigna case with 2 segment disclosures disaggregating revenue **/
+                                $consolidationItemsParentPresent = list({nonils @concept in $calcParents  @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+                                
+                                $consolidationItemsParentPresent.length == 0
+                        else    
+                            skip
                         
                 else
                     skip
@@ -205,23 +226,28 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
-
+rule-status $status
 
 ASSERT US.0150.10076 SATISFIED
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
- $segmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
-                /** Get members that are a child of the domain as reportable segments should be reported at this level. **/
-					navigate dimensions domain-member children from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
+$parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                 /** Get members that are parent reportable segments. **/
+					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (source-name)
  					))
 
-if $segmentMembers.length > 0
+$AllSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                 /** Get members that are a descendants of the domain as reportable segments and remove parent segments **/
+					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
+ 					)) - $parentSegmentMembers 
+
+if $AllSegmentMembers.length > 0
 	$NumberOfSegments = set([@NumberOfReportableSegments @period=*])
     if $NumberOfSegments.length == 0
         false
     else
-        if $segmentMembers.length < min($NumberOfSegments)
+        if $AllSegmentMembers.length < min($NumberOfSegments)
             true
         else
             false
@@ -231,8 +257,8 @@ else
 
 
 message
-"The filer uses the segment axis and has defined {$segmentMembers.length} segments in the filing. These include the following:
-{$segmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberOfSegments.join(' and ')}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
+"The filer uses the segment axis and has defined {$AllSegmentMembers.length} segments in the filing. These include the following:
+{$AllSegmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberOfSegments.join(' and ')}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
 
 Concept : NumberOfReportableSegments
 Value : {$NumberOfSegments.join(' and ')} 
