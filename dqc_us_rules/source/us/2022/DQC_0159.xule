@@ -9,9 +9,9 @@ Taxonomy: US GAAP 2023
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0158.10080 satisfied
+ASSERT US.0159.10080 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $All_statement_abstract_elements = sum(set(for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 		                        filter $presNetwork.concepts where $item.is-abstract returns $item.name))
@@ -30,6 +30,10 @@ message
 "The concept {$header} does not appear in the financial statements of the filer.  This element need to be included as a component of the financial statements.  Please add the element  {$header}  to he presentation linkbase of the filing.
 
 
-Rule Element Id:{$rule_id}
+Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
 "
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
