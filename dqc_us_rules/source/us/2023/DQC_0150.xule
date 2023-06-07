@@ -233,10 +233,10 @@ $parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (source-name)
  					))
 
-$AllSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+$AllSegmentMembers  = (sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                  /** Get members that are a descendants of the domain as reportable segments and remove parent segments **/
 					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
- 					)) - $parentSegmentMembers 
+ 					)) - $parentSegmentMembers).to-set
 
 if $AllSegmentMembers.length > 0
 	$NumberOfSegments = set([@NumberOfReportableSegments @period=*])

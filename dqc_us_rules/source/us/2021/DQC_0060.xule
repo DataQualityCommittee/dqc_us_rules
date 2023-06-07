@@ -66,7 +66,6 @@ count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fac
 count(list([@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations]))== 0  and
 $discOpsMaterialityFlag
 
-
 message
 "This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
  The element {$fact1.name}  has been reported with a value of {$fact1}. However no value has been reported for either the element(s) NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations. 
@@ -89,9 +88,35 @@ assert US.0060.7497 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
-count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
-count(list([@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations]))== 0 
+
+/** The discOpsMaterialityFlag is added to address those cases where the value has used cashflow from continuing ops, but the filer has no disc ops from cash flow
+ because it is immaterial. We asses this situation if the filer reported discontinued operations from income and the value of this is less than 5% of 
+ cash flow from continuing ops. If the filer has used continuing ops by mistake  this will get picked up if they have no Disc ops income and if disc ops 
+ income is more than 5% of cash flow from continuing ops. **/
+
+$discOpsValue = (list([nonils @concept in $DISCONTINUED_INCOME_ITEMS]))
+$continuingOpsValue =  list([nonils @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations])
+
+if $continuingOpsValue.length == 0
+    skip
+else
+    $MaxValueOfDiscOps = if $discOpsValue.length > 0
+            max($discOpsValue)
+        else
+            if $continuingOpsValue.length > 0
+                max($continuingOpsValue)
+            else
+                skip
+
+    $discOpsMaterialityFlag = if  (abs($MaxValueOfDiscOps)  >  abs(max($continuingOpsValue)) *  0.05)
+                                    true
+                            else
+                                    false              
+
+    count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
+    count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
+    count(list([@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations]))== 0  and
+    $discOpsMaterialityFlag
 
 message
 "This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
