@@ -241,10 +241,10 @@ $parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (source-name)
  					))
 
-$AllSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+$AllSegmentMembers  = (sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                  /** Get members that are a descendants of the domain as reportable segments and remove parent segments **/
 					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
- 					)) - $parentSegmentMembers 
+ 					)) - $parentSegmentMembers ).to-set
 
 if $AllSegmentMembers.length > 0
 	$NumberOfSegments = set([@NumberOfReportableSegments @period=*])
@@ -263,6 +263,8 @@ else
 message
 "The filer uses the segment axis and has defined {$AllSegmentMembers.length} segments in the filing. These include the following:
 {$AllSegmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberOfSegments.join(' and ')}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
+
+{$AllSegmentMembers}
 
 Concept : NumberOfReportableSegments
 Value : {$NumberOfSegments.join(' and ')} 
