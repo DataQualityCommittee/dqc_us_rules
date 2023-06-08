@@ -15,23 +15,28 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**Check that tickers are correct **/
 
-$InvalidTickers = set('N/A','n/a','-','NONE')
+$InvalidTickers = set('N/A','n/a','-','NONE','NOT APPLICABLE')
 
 $InvalidCharacters = set('"','@','*','&' )
 
 $TradingSymbol = {@dei:TradingSymbol}
 
+$EntityCIK =  {covered @dei:EntityCentralIndexKey}
 
-if $TradingSymbol in $InvalidTickers or (filter $InvalidCharacters where $item in $TradingSymbol returns true)
+
+if $TradingSymbol in $InvalidTickers or (filter $InvalidCharacters where $item in $TradingSymbol returns true) or $TradingSymbol == none
     true
 else 
     if $TradingSymbol.upper-case != $TradingSymbol
         true
     else
-        false
+        if $TradingSymbol == 'NA' and $EntityCIK != '0001872302'
+            true
+        else
+            false
 
 message
-"The filer has used an invaild trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then the trading symbol should be entered as 'NOT APPLICABLE'. The trading synbol cannot contain special characters and should be entered as an upper-case value.
+"The filer has used an invaild trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading synbol cannot contain special characters and should be entered as an upper-case value.
 
 The properties of this {$TradingSymbol.concept} fact are:
 Period :{$TradingSymbol.period}
@@ -40,3 +45,8 @@ Dimensions : {$TradingSymbol.dimensions.join(', ','=')}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TradingSymbol
