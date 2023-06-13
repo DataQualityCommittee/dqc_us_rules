@@ -20,11 +20,16 @@ $All_statement_abstract_elements = sum(set(for $presNetwork in $STATEMENT_PRES_N
 $Required_Abstracts = set(IncomeStatementAbstract, StatementOfFinancialPositionAbstract, StatementOfCashFlowsAbstract)
 
 for $header in $Required_Abstracts
-
-		if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
-            true
+        if $header == IncomeStatementAbstract
+                if $All_statement_abstract_elements.length > 0 and not ($All_statement_abstract_elements.contains($header) or $All_statement_abstract_elements.contains(StatementOfIncomeAndComprehensiveIncomeAbstract))
+                true
+            else
+                false
         else
-            false
+            if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
+                true
+            else
+                false
 
 message
 "The concept {$header} does not appear in the financial statements of the filer.  This element need to be included as a component of the financial statements.  Please add the element  {$header}  to he presentation linkbase of the filing.

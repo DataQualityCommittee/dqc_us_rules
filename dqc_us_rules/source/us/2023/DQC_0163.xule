@@ -14,18 +14,20 @@ Assert US.0163.10085 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $AdditionalCapitalFact = {@SegmentExpenditureAdditionToLongLivedAssets}
-$PPEFacts = {@concept in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions)}
 
-$PPEHypercubeLocation = navigate parent-child ancestors from list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions) where $relationship.source.name in list(ScheduleOfSegmentReportingInformationBySegmentTable, ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable) returns set (target-name);
+for $x in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions)
+    $PPEFacts = {@concept = $x}
 
-if exists($PPEFacts) and $PPEHypercubeLocation.length > 0
-    $locationCheck = navigate parent-child descendants from list(ScheduleOfSegmentReportingInformationBySegmentTable, ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable) where $relationship.target-name == SegmentExpenditureAdditionToLongLivedAssets returns set (target-name)
-    if $locationCheck.length == 0
-        true
-    else 
+    $PPEHypercubeLocation = navigate parent-child ancestors from $x where $relationship.source.name in list(ScheduleOfSegmentReportingInformationBySegmentTable, ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable) returns set (target-name);
+
+    if exists($PPEFacts) and $PPEHypercubeLocation.length > 0
+        $locationCheck = navigate parent-child descendants from list(ScheduleOfSegmentReportingInformationBySegmentTable, ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable) where $relationship.target-name == SegmentExpenditureAdditionToLongLivedAssets returns set (target-name)
+        if $locationCheck.length == 0
+            true
+        else 
+            false
+    else
         false
-else
-    false
 
 message
 "A value of {$PPEFacts} has been reported for the concept {$PPEFacts.concept}. This represents additions to PPE and is used in the segment note as a descendant of a segment reporting table {$PPEHypercubeLocation}.  When reporting addition to long lived assets in the segment disclosure the element SegmentExpenditureAdditionToLongLivedAssets should be used even if the value is the same as the additions to PPE.

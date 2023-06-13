@@ -15,8 +15,10 @@ ASSERT US.0161.10083 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $axisExtensibleEnumDict = dict(
-                                list(RetirementPlanFundingStatusAxis, DefinedBenefitPlanFundingStatusExtensibleList)
+                                list(RetirementPlanFundingStatusAxis, DefinedBenefitPlanFundingStatusExtensibleList),
+                                list(RetirementPlanTaxStatusAxis,"DefinedBenefitPlanTaxStatusExtensibleList or DefinedContributionPlanTaxStatusExtensibleList")
                                 )
+
 
 $all_cubes = filter taxonomy().cubes;
 
