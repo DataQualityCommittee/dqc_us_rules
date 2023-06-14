@@ -13,7 +13,7 @@ ASSERT US.0159.10081 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$All_statement_abstract_elements = sum(set(for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+$All_statement_abstract_elements = sum(set(for $presNetwork in $BROAD_STATEMENT_PRES_NETWORKS.sort
 		                        filter $presNetwork.concepts where $item.is-abstract returns $item.name))
 
 
