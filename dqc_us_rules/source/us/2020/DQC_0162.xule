@@ -19,9 +19,9 @@ $InvalidTickers = set('N/A','n/a','-','NONE','NOT APPLICABLE')
 
 $InvalidCharacters = set('"','@','*','&' )
 
-$TradingSymbol = {@concept = qname($DEI_NAMESPACE,'TradingSymbol')}   
+$TradingSymbol = {@concept = qname($dei_namespace,'TradingSymbol')}   
 
-$EntityCIK =  {covered @concept = qname($DEI_NAMESPACE,'EntityCentralIndexKey')}   
+$EntityCIK =  {covered @concept = qname($dei_namespace,'EntityCentralIndexKey')}   
 
 
 if $TradingSymbol in $InvalidTickers or any(filter $InvalidCharacters where $item in $TradingSymbol returns true) or $TradingSymbol == none
