@@ -43,6 +43,12 @@ exists({@concept in $HighLevelElements @BalanceSheetLocationAxis = *}#fact2)
 message
 "A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept is an aggregation concept and should not be disaggregated using the BalanceSheetLocationAxis and the member {$fact2.dimension(BalanceSheetLocationAxis)}. Use a more specific line item from the fact.
 
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
+
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
@@ -61,6 +67,12 @@ exists({@concept in $HighLevelElements @IncomeStatementLocationAxis = *}#fact2)
 message
 "A value of {$fact2} is reported for the concept {$fact2.concept.name} with the IncomeStatementLocationAxis. This concept is an aggregation concept and should not be disaggregated using the IncomeStatementLocationAxis and the member {$fact2.dimension(IncomeStatementLocationAxis)}. Use a more specific line item to report the fact value or remove the IncomeStatementLocationAxis.
 
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
+
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
@@ -77,7 +89,13 @@ $assetsElements = navigate parent-child descendants from FairValueAssetsMeasured
 
 exists({@concept in $assetsElements @BalanceSheetLocationAxis = *}#fact2)
 message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityAssetClassAxis should be used with the member  {$fact2.dimension(IncomeStatementLocationAxis)}. 
+"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityAssetClassAxis should be used with the member  {$fact2.dimension(BalanceSheetLocationAxis)}. 
+
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -96,7 +114,13 @@ $assetsElements = navigate parent-child descendants from FairValueLiabilitiesMea
 
 exists({@concept in $assetsElements @BalanceSheetLocationAxis = *}#fact2)
 message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityClassAxis should be used with the member  {$fact2.dimension(IncomeStatementLocationAxis)}. 
+"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityClassAxis should be used with the member  {$fact2.dimension(BalanceSheetLocationAxis)}.
+
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
