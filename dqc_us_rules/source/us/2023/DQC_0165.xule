@@ -23,6 +23,12 @@ else
 message
 "A value of {$fact2} was reported for the concept {$fact2.concept.name} and the member LeaseholdImprovementsMember. A value was also reported for the concept PropertyPlantAndEquipmentUsefulLifeDescriptionOfTermExtensibleEnumeration with a value of UsefulLifeTermOfLeaseMember. If the element PropertyPlantAndEquipmentUsefulLifeDescriptionOfTermExtensibleEnumeration is used with this value then this implies that no value would be provided for the concept PropertyPlantAndEquipmentUsefulLife. If the useful life is the actual term of the lease then the extensible enumeration does not have to be provided.
 
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
+
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
