@@ -32,9 +32,13 @@ for $header in $Required_Abstracts
                 false
 
 message
-"The concept {$header} does not appear in the financial statements of the filer.  This element need to be included as a component of the financial statements.  Please add the element  {$header}  to he presentation linkbase of the filing.
+"The concept {$header} does not appear in the financial statements of the filer.  This element needs to be included as a component of the financial statements.  Please add the element  {$header}  to the presentation of the filing.
 
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
