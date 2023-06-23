@@ -44,6 +44,9 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
 "
 
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
 assert US.0154.10069  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -76,7 +79,8 @@ The  element {$x}  with the label \"{$label}\" has been used in the filing in th
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
 "
-
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 assert US.0154.10070  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
@@ -110,7 +114,8 @@ The  element {$x}  with the label \"{$label}\" has been used in the filing in th
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
 "
-
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
 
 
 assert US.0154.10071  satisfied
