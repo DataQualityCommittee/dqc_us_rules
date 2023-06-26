@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $InvalidTickers = set('N/A','n/a','-','NONE','NOT APPLICABLE')
 
-$InvalidCharacters = set('"','@','*','&' )
+$InvalidCharacters = set('"','@','*','&','!','$', '%','#','^')
 
 $TradingSymbol = {@concept = qname($DEI_NAMESPACE,'TradingSymbol')}   
 
@@ -36,7 +36,7 @@ else
             false
 
 message
-"The filer has used an invaild trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading synbol cannot contain special characters and should be entered as an upper-case value.
+"The filer has used an invalid trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading symbol cannot contain special characters such as {$InvalidCharacters.join(', ')} or Invalid Tickers such as {$InvalidTickers.join(', ')} and should be entered as an upper-case value.
 
 The properties of this {$TradingSymbol.concept} fact are:
 Period :{$TradingSymbol.period}
