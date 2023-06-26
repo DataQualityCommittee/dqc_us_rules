@@ -30,7 +30,7 @@ for $x in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquip
         false
 
 message
-"A value of {$PPEFacts} has been reported for the concept {$PPEFacts.concept}. This represents additions to PPE and is used in the segment note as a descendant of a segment reporting table {$PPEHypercubeLocation}.  When reporting addition to long lived assets in the segment disclosure the element SegmentExpenditureAdditionToLongLivedAssets should be used even if the value is the same as the additions to PPE.
+"A value of {$PPEFacts} has been reported for the concept {$PPEFacts.concept}. This represents additions to PPE and is used in the segment note as a descendant of a segment reporting table {$PPEHypercubeLocation.join(', ')}.  When reporting additions to long lived assets in the segment disclosure the element SegmentExpenditureAdditionToLongLivedAssets should be used even if the value is the same as the additions to PPE.
 
 Concept : {$PPEFacts.concept}
 Value : {$PPEFacts} 
