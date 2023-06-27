@@ -21,13 +21,18 @@ $InvalidCharacters = set('"','@','*','&','!','$', '%','#','^')
 
 $TradingSymbol = {@concept = qname($DEI_NAMESPACE,'TradingSymbol')}   
 
+$SecurityTitle =    if exists({@concept = qname($DEI_NAMESPACE,'Security12bTitle')})
+                        {@concept = qname($DEI_NAMESPACE,'Security12bTitle')}
+                    else
+                        ''
+
 $EntityCIK =  {covered @concept = qname($DEI_NAMESPACE,'EntityCentralIndexKey')}   
 
 
 if $TradingSymbol in $InvalidTickers or any(filter $InvalidCharacters where $item in $TradingSymbol returns true) or $TradingSymbol == none
     true
 else 
-    if $TradingSymbol.upper-case != $TradingSymbol
+    if $TradingSymbol.upper-case != $TradingSymbol and not $SecurityTitle.lower-case.contains('preferred')
         true
     else
         if $TradingSymbol == 'NA' and $EntityCIK != '0001872302'
@@ -36,7 +41,8 @@ else
             false
 
 message
-"The filer has used an invalid trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading symbol cannot contain special characters such as {$InvalidCharacters.join(', ')} or Invalid Tickers such as {$InvalidTickers.join(', ')} and should be entered as an upper-case value.
+"The filer has used an invalid trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading symbol cannot contain special characters such as {$InvalidCharacters.join(', ')} or Invalid Tickers such as {$InvalidTickers.join(', ')} . In addition tickers  should be entered in upper-case. If the ticker is a preferred security the element Security12bTitle should be tagged to indicate that it is a preferred security.
+
 
 The properties of this {$TradingSymbol.concept} fact are:
 Period :{$TradingSymbol.period}
