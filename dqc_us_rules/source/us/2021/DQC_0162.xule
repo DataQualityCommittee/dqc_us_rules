@@ -32,7 +32,7 @@ $EntityCIK =  {covered @concept = qname($DEI_NAMESPACE,'EntityCentralIndexKey')}
 if $TradingSymbol in $InvalidTickers or any(filter $InvalidCharacters where $item in $TradingSymbol returns true) or $TradingSymbol == none
     true
 else 
-    if $TradingSymbol.upper-case != $TradingSymbol and not $SecurityTitle.lower-case.contains('preferred')
+    if $TradingSymbol.upper-case != $TradingSymbol and not $SecurityTitle.lower-case.contains('pref')
         true
     else
         if $TradingSymbol == 'NA' and $EntityCIK != '0001872302'
