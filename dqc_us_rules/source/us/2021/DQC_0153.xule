@@ -24,8 +24,6 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
         for $hypercubeItem in $hypercubeItems
 
-        for $hypercubeItem in $hypercubeItems
-
             $siblingItems = navigate parent-child siblings from $hypercubeItem role $presNetwork.role.uri returns set (target)
             $subSiblingItems = navigate parent-child descendants from $siblingItems role $presNetwork.role.uri returns set (target)
             $hypercubeSiblings = filter $subSiblingItems where ($item.is-monetary) returns $item.name
