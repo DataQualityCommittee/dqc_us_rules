@@ -20,7 +20,7 @@ $factsNotIncubes = list({covered @ where $fact.dimensions.length > 0 and $fact.c
 for $fact2 in $factsNotIncubes
     true
 message
-"A value of {$fact2} was reported for the concept {$fact2.concept.name}.  This value has dimensions of  {$fact2.dimensions.join(', ','=')} but this fact is not inluded in a dimensional table ( hypercube). All dimensional facts should be included in a hypercube.
+"A value of {$fact2} was reported for the concept {$fact2.concept.name}.  This value has dimensions of  {$fact2.dimensions.join(', ','=')} but this fact is not included in a dimensional table ( hypercube). All dimensional facts should be included in a hypercube.
 
 The properties of this {$fact2.concept.name} fact are:
 
