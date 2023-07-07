@@ -24,16 +24,21 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
         for $hypercubeItem in $hypercubeItems
 
-        $siblingItems = navigate parent-child siblings from $hypercubeItem role $presNetwork.role.uri returns set (target)
-        $hypercubeSiblings = filter $siblingItems where $item.is-monetary returns $item.name
+        for $hypercubeItem in $hypercubeItems
 
-        if $hypercubeSiblings.length == 0
-            false
-        else
-            true
+            $siblingItems = navigate parent-child siblings from $hypercubeItem role $presNetwork.role.uri returns set (target)
+            $subSiblingItems = navigate parent-child descendants from $siblingItems role $presNetwork.role.uri returns set (target)
+            $hypercubeSiblings = filter $subSiblingItems where ($item.is-monetary) returns $item.name
+
+            if $hypercubeSiblings.length == 0
+                false
+            else
+                true
 
 message
-"The hypercube {$hypercubeItem} should not appear in the statement {$presNetwork.role.description} with the monetary sibling concepts of {$hypercubeSiblings.join(", ")}. The hypercube should be a child of an abstract concept and should have the primary monetary concepts as decendants.
+"The hypercube {$hypercubeItem} appears in the statement {$presNetwork.role.description}. Only a single hypercube should be used in the face financial statements and it should include all monetary items. This hypercube excludes the following  monetary concepts {$hypercubeSiblings.join(", ")}. 
+
+The hypercube should be a child of an abstract concept and should have the primary monetary concepts as decendants.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}
