@@ -16,8 +16,9 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /** Balance SHeet location and others should not be in any statement cubes role **/
 
 for $cube in $STATEMENT_CUBES
+    $dimensionsSet = filter $cube.dimensions returns $item.concept.name 
     for $abstract in set(BalanceSheetLocationAxis, IncomeStatementLocationAxis, OtherComprehensiveIncomeLocationAxis)
-        if $cube.dimensions.contains($abstract)
+        if $dimensionsSet.contains($abstract)
             true
         else
             false
