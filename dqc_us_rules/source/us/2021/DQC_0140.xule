@@ -185,6 +185,8 @@ $fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
 
 $AmortizedCostBeforeAndAfterCreditSameValue = ($AmortCost  == $AmortizedCostAfterCreditLoss) and ($creditLoss > 0)
 
+$additionalMessage2 = if $AmortizedCostBeforeAndAfterCreditSameValue "The value of the amortized cost before the credit allowance and after the credit loss is the same with a value of "  + first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss).string +  ", but a credit allowance has also been recognized with a value of " + $creditLoss.string + ". Review the filing to ensure a value for DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss has not been used by mistake." else ""
+
 $decimal_tolerance_factor = 4;
 
 if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
@@ -266,13 +268,13 @@ else
 
 message
 
-"The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}.following:
+"The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
 Amortized Cost of 					{first-value($AmortCost, ($AmortizedCostAfterCreditLoss + $creditLoss))}
 Credit Loss on Securities of 		{$creditLoss}
 Amortized Cost After Credit Loss 	{$AmortizedCostAfterCreditLoss}
 Gain on Securities 					{$gain}
 Loss on Securities of 				{$loss}
-{$additionalMessage}{if $AmortizedCostBeforeAndAfterCreditSameValue "The value of the amortized cost before the credit allowance and after the credit loss is the same with a value of "  + first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss).string +  ", but a credit allowance has also been recognized with a value of " + $creditLoss.string + ". Review the filing to ensure a value for DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss has not been used by mistake." else ""}
+{$additionalMessage}{$additionalMessage2}
 
 Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}

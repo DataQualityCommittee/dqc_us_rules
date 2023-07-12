@@ -62,14 +62,18 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.21 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-$less_fact = {@CommonStockSharesIssued};
-$greater_fact = {@CommonStockSharesAuthorized};
 
-tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+if count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
+    skip
+else
+    $less_fact = {@CommonStockSharesIssued};
+    $greater_fact = {@CommonStockSharesAuthorized};
+
+    tolerance_for_decimals_greater($less_fact,$greater_fact,0)
 
 message
 
-"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}.
+"The value of {$less_fact.label.text}, {$less_fact}, should be less than or equal to {$greater_fact.label.text}, {$greater_fact}. If this is the result of a stock split then tag one of the following three elements StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1.
 
 The properties of this {$less_fact.name} fact are:
 

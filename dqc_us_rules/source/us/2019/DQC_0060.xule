@@ -74,24 +74,28 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
  income is more than 5% of cash flow from continuing ops. **/
 
 $discOpsValue = (list([nonils @concept in $DISCONTINUED_INCOME_ITEMS]))
-$continuingOpsValue =  list([@concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations])
-$MaxValueOfDiscOps = if $discOpsValue.length > 0
-        max($discOpsValue)
-    else
-        if $continuingOpsValue.length > 0
-            max($continuingOpsValue)
+$continuingOpsValue =  list([nonils @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations])
+
+if $continuingOpsValue.length == 0
+    skip
+else
+    $MaxValueOfDiscOps = if $discOpsValue.length > 0
+            max($discOpsValue)
         else
-            skip
+            if $continuingOpsValue.length > 0
+                max($continuingOpsValue)
+            else
+                skip
 
-$discOpsMaterialityFlag = if  (abs($MaxValueOfDiscOps)  >  abs(max($continuingOpsValue)) *  0.05)
-                                true
-                          else
-                                false              
+    $discOpsMaterialityFlag = if  (abs($MaxValueOfDiscOps)  >  abs(max($continuingOpsValue)) *  0.05)
+                                    true
+                            else
+                                    false              
 
-count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
-count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
-count(list([@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations]))== 0  and
-$discOpsMaterialityFlag
+    count(list([@NetCashProvidedByUsedInOperatingActivities])) == 0 and 
+    count(list([@NetCashProvidedByUsedInOperatingActivitiesContinuingOperations]#fact1))!= 0 and  
+    count(list([@CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations]))== 0  and
+    $discOpsMaterialityFlag
 
 message
 "This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.

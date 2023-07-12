@@ -9,6 +9,8 @@ Release Version 18
 
 RULE-NAME-PREFIX DQC
 
+constant $CUT_DOWN_LIST = (filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name) 
+
 ASSERT US.0108.9564 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -17,9 +19,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 
-$cut_down_list = filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name
-
-for ($x in ($cut_down_list - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
+for ($x in ($CUT_DOWN_LIST - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
 
       $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
       $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}

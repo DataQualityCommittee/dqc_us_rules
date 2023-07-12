@@ -232,6 +232,25 @@ constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
 
+constant $STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
+and (not $item.role.uri.lower-case.contains('highlights'))
+
 /*  
 *	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
 *	value or the context end date on the fact, whichever is later.
