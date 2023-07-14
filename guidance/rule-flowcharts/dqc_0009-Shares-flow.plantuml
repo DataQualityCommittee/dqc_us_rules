@@ -52,31 +52,40 @@ split again
    :Run rule 0009.22;
    :Get PreferredStockSharesIssued;
    :Get PreferredStockSharesAuthorized;
-   if (PreferredStockSharesIssued > 
-        PreferredStockSharesAuthorized) then (yes)
-     #tomato:Show error;
-   else (no)
-  endif
+    if (Are both values present?) then (yes)
+      if (PreferredStockSharesIssued > 
+            PreferredStockSharesAuthorized) then (yes)
+        #tomato:Show error;
+      else (no)
+      endif
+    else (no)
+      endif
     
 split again
    :Run rule 0009.23;
    :Get PreferredStockSharesOutstanding;
    :Get PreferredStockSharesAuthorized;
-   if (PreferredStockSharesOutstanding > 
-        PreferredStockSharesAuthorized) then (yes)
-     #tomato:Show error;
-   else (no)
-  endif
+   if (Are both values present?) then (yes)
+      if (PreferredStockSharesOutstanding > 
+            PreferredStockSharesAuthorized) then (yes)
+        #tomato:Show error;
+      else (no)
+        endif
+  else (no)
+      endif
 
   split again
    :Run rule 0009.24;
    :Get CommonStockSharesOutstanding;
    :Get CommonStockSharesIssued;
-   if (CommonStockSharesOutstanding > 
-        CommonStockSharesIssued) then (yes)
-     #tomato:Show error;
-   else (no)
-  endif
+   if (Are both values present?) then (yes)
+      if (CommonStockSharesOutstanding > 
+            CommonStockSharesIssued) then (yes)
+        #tomato:Show error;
+      else (no)
+      endif
+  else (no)
+      endif
     
 end split
 
