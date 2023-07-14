@@ -1,0 +1,88 @@
+@startuml rule_0009_shares
+title "Rule DQC 0009 Shares Comparison"
+!pragma useVerticalIf on
+start
+
+repeat : Go through each context in the filing;
+ 
+ split
+   :Run rule 0009.15;
+   :Get CommonStockSharesOutstanding;
+   :Get CommonStockSharesAuthorized;
+   if (Are both values present?) then (yes)
+    if (CommonStockSharesOutstanding > 
+            CommonStockSharesAuthorized) then (yes)
+        #tomato:Show error;
+    else (no)
+        endif
+   else (no)
+    endif
+split again
+   :Run rule 0009.19;
+   :Get PreferredStockSharesOutstanding;
+   :Get CommonStockSharesAuthorized;
+   if (Are both values present?) then (yes)
+        if (PreferredStockSharesOutstanding > 
+                PreferredStockSharesIssued) then (yes)
+            #tomato:Show error;
+        else (no)
+        endif
+    else (no)
+    endif
+split again
+   :Run rule 0009.21;
+   if (exists any StockIssuedDuringPeriodSharesStockSplits,
+    StockIssuedDuringPeriodSharesReverseStockSplits, 
+    StockholdersEquityNoteStockSplitConversionRatio1) then (yes)
+    else (no)
+   :Get CommonStockSharesIssued;
+   :Get CommonStockSharesAuthorized;
+   if (Are both values present?) then (yes)
+   if (CommonStockSharesIssued > 
+        CommonStockSharesAuthorized) then (yes)
+     #tomato:Show error;
+   else (no)
+    
+    
+    endif
+    else (no)
+    endif
+    endif
+split again
+   :Run rule 0009.22;
+   :Get PreferredStockSharesIssued;
+   :Get PreferredStockSharesAuthorized;
+   if (PreferredStockSharesIssued > 
+        PreferredStockSharesAuthorized) then (yes)
+     #tomato:Show error;
+   else (no)
+  endif
+    
+split again
+   :Run rule 0009.23;
+   :Get PreferredStockSharesOutstanding;
+   :Get PreferredStockSharesAuthorized;
+   if (PreferredStockSharesOutstanding > 
+        PreferredStockSharesAuthorized) then (yes)
+     #tomato:Show error;
+   else (no)
+  endif
+
+  split again
+   :Run rule 0009.24;
+   :Get CommonStockSharesOutstanding;
+   :Get CommonStockSharesIssued;
+   if (CommonStockSharesOutstanding > 
+        CommonStockSharesIssued) then (yes)
+     #tomato:Show error;
+   else (no)
+  endif
+    
+end split
+
+    repeat while (Is there another context in the filing) is (yes)
+    ->no;
+    
+end
+
+@enduml

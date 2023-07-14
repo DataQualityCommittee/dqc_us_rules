@@ -1,0 +1,94 @@
+@startuml rule_0117_9574
+title "Rule DQC 117.9574"
+!pragma useVerticalIf on
+start
+
+repeat : Get next statement hypercube in the filing;
+ 
+ : Get a list of the dimensions on the statement hypercube;
+while (Is there a dmension left to process on the hypercube) is (yes)
+
+    :Read list of target dimensions;
+    note left
+    StatementClassOfStockAxis
+    ProductOrServiceAxis
+    PropertyPlantAndEquipmentByTypeAxis
+    LongtermDebtTypeAxis
+    RelatedPartyTransactionsByRelatedPartyAxis
+    StatementBusinessSegmentsAxis
+    LimitedPartnersCapitalAccountByClassAxis
+    PartnerTypeOfPartnersCapitalAccountAxis
+    FiniteLivedIntangibleAssetsByMajorClassAxis
+    FinancialInstrumentAxis
+    InformationByCategoryOfDebtSecurityAxis'
+    end note
+ if (Is the dimension a target dimension to be calculated?) then (yes)
+    
+    
+     :Identify if facts in the cube
+      have 2  dimensions 
+      including the target dimension;
+      if (facts with 2 dimensions including the target dimension exist) then (yes)
+       : Get Members of the Target Dimension;
+       while (is there a member on the target dimension) is (yes)
+            :Get facts in hypercube with the member of target Dimension;
+            :Put all the facts with the member in a list;
+            :Get the other dimension from the list
+            (not the target dimension);
+            :Get facts from hypercube with both the target
+            dimension and the dimension member identified 
+            above that have 3 dimension members;
+             group SubTotal_Exists
+                :Identify if facts in the cube
+                have 3 or more dimensions 
+                including the target dimension;
+                if (facts with 3 dimensions exist) then (yes)
+                
+                :Identify if there a subtotal for the target 
+                    dimension member which 
+                    has two dimensions?;
+                        if (Does SubTotal Exist?) then (yes)
+                            : SubTotalExists is set to true;
+                        else (no)
+                            : SubTotalExists is set to false;
+                            endif
+                else (no)
+                    : SubTotalExists is set to true;
+                endif
+    
+            end group
+        backward: Get next 
+        member;
+       end while (no)
+    
+   
+     if (Does Subtotal for multi facts equal true) then (yes)
+        :Get the member facts using the 
+        members and domain values;
+            if (Were facts present?) then (yes)
+                :Sum the member facts;
+                :Get the minimum decimals of the facts;
+                :Create message line for each fact;
+                :Get the fact representing the total of 
+                the target dimension of the concept with one 
+                dimension with durations that match the 
+                document period and all instant concepts.;
+                
+             else (no)
+            endif
+        else (no)
+            endif
+    else (no)
+        
+    endif
+     
+ else (no)
+    endif 
+    backward: Get next dimension;
+endwhile  (no)
+    repeat while (Is there another hypercube in the filing) is (yes)
+    ->no;
+    
+end
+
+@enduml
