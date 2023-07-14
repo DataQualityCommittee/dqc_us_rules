@@ -18,29 +18,12 @@ $document_period_start_date = $document_period.period.start;
 
 
 /** Get tables for financial statement items **/
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
-and (not $item.role.uri.lower-case.contains('parenthetical')) 
-and (not $item.role.uri.lower-case.contains('equity')) 
-and (not $item.role.uri.lower-case.contains('deficit')) 
-and (not $item.role.uri.lower-case.contains('stockholders')) 
-and (not $item.role.uri.lower-case.contains('capital')) 
-and (not $item.role.uri.lower-case.contains('investment')) 
-and (not $item.role.uri.lower-case.contains('changes')) 
-and (not $item.role.uri.lower-case.contains('shareholder')) 
-and (not $item.role.uri.lower-case.contains('convertible')) 
-and (not $item.role.uri.lower-case.contains('preferred'))  
-and (not $item.role.uri.lower-case.contains('temporaryequity')) 
-and (not $item.role.uri.lower-case.contains('redeemable'))
-and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
-and (not $item.role.uri.lower-case.contains('membersinterest'))
-and (not $item.role.description.lower-case.contains('schedule iii'))
-and (not $item.role.description.lower-case.contains('schedule iv'))
-and (not $item.role.uri.lower-case.contains('highlights'));
+    /** See the constants file that deines the variable $STATEMENT_PRES_NETWORKS **/
 
 
 $cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
-for $presNetwork in $presNetworks.sort
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
 /** get the presentation items aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			

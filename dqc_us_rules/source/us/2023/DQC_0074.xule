@@ -15,14 +15,16 @@ rule-name-prefix DQC
 assert US.0074.7649 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-exists({where taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)] == none}#fact_with_nil_member)
+
+for $typedDimension in $TYPED_DIMENSIONS
+    exists({where taxonomy().concept($typedDimension) in $fact.dimensions-typed.keys and ($fact.dimensions-typed)[taxonomy().concept($typedDimension)] == none}#fact_with_nil_member)
 
 
 message
-"The element {$fact_with_nil_member.concept} with a value of {$fact_with_nil_member} has been tagged with the axis RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis with a nil value as a member. This element should be reported without using this axis.
+"The element {$fact_with_nil_member.concept} with a value of {$fact_with_nil_member} has been tagged with the axis {$typedDimension} with a nil value as a member. This element should be reported without using this axis.
 
 The properties of this {$fact_with_nil_member.concept} fact are:
-Period :{$fact_with_nil_member.period}
+Period :{$fact_with_nil_member.period}  
 Dimensions : {$fact_with_nil_member.dimensions.join(', ','=')}
 Unit : {$fact_with_nil_member.unit}
 

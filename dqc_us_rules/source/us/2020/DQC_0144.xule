@@ -17,28 +17,13 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 
 /**Identify relevant financial statement presentation networks **/
-$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -') 
-and (not $item.role.uri.lower-case.contains('parenthetical')) 
-and (not $item.role.uri.lower-case.contains('equity')) 
-and (not $item.role.uri.lower-case.contains('deficit')) 
-and (not $item.role.uri.lower-case.contains('stockholders')) 
-and (not $item.role.uri.lower-case.contains('capital')) 
-and (not $item.role.uri.lower-case.contains('investment')) 
-and (not $item.role.uri.lower-case.contains('changes')) 
-and (not $item.role.uri.lower-case.contains('shareholder')) 
-and (not $item.role.uri.lower-case.contains('convertible')) 
-and (not $item.role.uri.lower-case.contains('preferred'))  
-and (not $item.role.uri.lower-case.contains('temporaryequity')) 
-and (not $item.role.uri.lower-case.contains('redeemable'))
-and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
-and (not $item.role.uri.lower-case.contains('membersinterest'))
-and (not $item.role.uri.lower-case.contains('highlights'));
+	/** See the constants file that deines the variable $STATEMENT_PRES_NETWORKS **/
 
-for $network in $presNetworks
+for $network in $STATEMENT_PRES_NETWORKS
 	$items_with_no_balance = navigate parent-child descendants role $network.role where $relationship.target.is-monetary == true and $relationship.target.balance == none and $relationship.target.namespace-uri == $extension_ns returns set (target-name);
 
 	for $no_balance_item in $items_with_no_balance
-		$no_balance_item_values = list({covered @concept = $no_balance_item })
+		$no_balance_item_values = list({covered @concept = $no_balance_item }).sort
 		$no_balance_item_values.length > 0
 
 

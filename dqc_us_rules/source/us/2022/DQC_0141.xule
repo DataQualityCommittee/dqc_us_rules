@@ -38,7 +38,6 @@ for $class in $AccruedInterestClasses
 
         $valuesReportedExcludingInterest =   list({nonils @concept in  $excluding_accrued_interest where $fact != 0})
                                             
-
         if $valuesReportedExcludingInterest.length > 0
         // LOOK Up all the calculation relationships and see if that calc relationship exists in the filing. This is used to determine if there is a reconciliation. //
             $IncludingInterestSourceCalcs = navigate summation-item children from (filter $valuesReportedWithInterest returns $item.concept.name).to-set where $relationship.target-name in $EXCLUDING_ACCRUED_INTEREST_DICT[$class] returns set source-name;
@@ -82,19 +81,3 @@ Rule version: {$ruleVersion}"
 
 severity error
 effectiveDate $effective_dates[$ruleId]
-
-
-
-constant $ACCRUED_INTEREST_BEFORE_CREDIT_LOSS_DICT =  dict(
-list("DebtSecuritiesHeldToMaturity", list(DebtSecuritiesHeldToMaturityAccruedInterestBeforeAllowanceForCreditLoss)),
-list("FinancingReceivable",list(FinancingReceivableAccruedInterestBeforeAllowanceForCreditLoss)),
-list("AvailableForSaleSecuritiesDebtSecurities",list(DebtSecuritiesAvailableForSaleAccruedInterestAfterAllowanceForCreditLoss))
-
-
-
-)
-
-constant $CREDIT_LOSS_INCLUDING_ACCRUED_INT_DICT =  dict(
-list("DebtSecuritiesHeldToMaturity", list(DebtSecuritiesHeldToMaturityAllowanceForCreditLoss)),
-list("FinancingReceivable",list(FinancingReceivableAllowanceForCreditLosses))
-)

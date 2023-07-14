@@ -16,18 +16,8 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /** Check that the all monetary concepts in the balance sheet, income statement and cash flow have a debit or credit balance. **/
 
 /**Identify relevant financial statement presentation networks **/
-$presNetworks = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
-and (not $item.role.uri.lower-case.contains('parenthetical')) 
-and (not $item.role.uri.lower-case.contains('capital')) 
-and (not $item.role.uri.lower-case.contains('investment')) 
-and (not $item.role.uri.lower-case.contains('convertible')) 
-and (not $item.role.uri.lower-case.contains('preferred'))  
-and (not $item.role.uri.lower-case.contains('temporaryequity')) 
-and (not $item.role.uri.lower-case.contains('redeemable'))
-and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
-and (not $item.role.uri.lower-case.contains('highlights'))
 
-for $network in $presNetworks
+for $network in $STATEMENT_PRES_NETWORKS
 	$items_with_no_balance = navigate parent-child descendants role $network.role where $relationship.target.is-monetary == true and $relationship.target.balance == none and $relationship.target.namespace-uri == $EXTENSION_NS returns set (target-name);
 
 	//Exclude Items that are interim totals as may not have a balance type in the case of cashflows//  
@@ -36,7 +26,7 @@ for $network in $presNetworks
 	$ItemsThatAreLeafItems = $items_with_no_balance - $parent_elements
 
 	for $no_balance_item in $ItemsThatAreLeafItems
-		$no_balance_item_values = list({covered @concept = $no_balance_item })
+		$no_balance_item_values = list({covered @concept = $no_balance_item }).sort
 		$no_balance_item_values.length > 0
 
 

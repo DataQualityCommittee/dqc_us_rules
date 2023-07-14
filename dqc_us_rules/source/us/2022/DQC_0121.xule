@@ -66,10 +66,10 @@ else
 					false
 
 	/** Added for situation when an EGC goes non EGC.  Prior elements included in presentation group with text priortoadoptionoftopic842 will be excluded from the rule. **/
-	$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Disclosure -') 
+	$presDisclosureNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Disclosure -') 
 	and ($item.role.uri.lower-case.contains('priortoadoptionoftopic842'))
 
-	$priorAdoptionItems = sum(set(for $presNetwork in $presNetworks 
+	$priorAdoptionItems = sum(set(for $presNetwork in $presDisclosureNetworks 
 								$presNetwork.concept-names
 								)
 							)
@@ -111,8 +111,8 @@ message
 
 December 15, 2018 for ASU 2016-02 - Leases
 December 15, 2018 for ASU 2017-12 - Derivatives and Hedging
-December 15, 2019 for ASU 2018-07 - Compensation - Stock Compensation  
-
+December 15, 2019 for ASU 2018-07 - Compensation - Stock Compensation 
+{if $fact1.concept.name == RepaymentsOfLongTermCapitalLeaseObligations 'Replace with the element FinanceLeasePrincipalPayments.' else ''} 
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}

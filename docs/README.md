@@ -114,10 +114,19 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Approved | 20 |
 | [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Approved | 20 |
 | [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
+| [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Approved | 21 |
+| [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Approved | 21 |
+| [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Approved | 21 |
+| [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
+| [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
+| [DQC_US_0156](DQC_US_0156/DQC_0156.md) | Basic and Diluted Extension Elements | Approved | 21 |
+| [DQC_US_0156](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
+| [DQC_US_0156](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
 
 ## Guidance 
 
-### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/)
+### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/) - approved 9/21/2022
+
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
