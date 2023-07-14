@@ -73,7 +73,11 @@ while (Is there a dmension left to process on the hypercube) is (yes)
                 the target dimension of the concept with one 
                 dimension with durations that match the 
                 document period and all instant concepts.;
-                
+                 if (Is the sum of members not equal to TotalDefault?) then (yes)
+                                        :Produce standard error message;
+                                        :See rule message.;
+                                else (no)
+                                    endif
              else (no)
             endif
         else (no)
