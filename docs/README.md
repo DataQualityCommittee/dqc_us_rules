@@ -56,7 +56,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Approved | 11 |
 | [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Approved | 11 |
 | [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Approved | 11 |
-| DQC_US_0088 | Operating Lease Cost And Expense | Removed from Public Review |  |
+
+| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Public Review | 22 |
 | [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
 | [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
 | [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Approved | 12 |
@@ -120,8 +121,15 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
 | [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
 | [DQC_US_0156](DQC_US_0156/DQC_0156.md) | Basic and Diluted Extension Elements | Approved | 21 |
-| [DQC_US_0156](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
-| [DQC_US_0156](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
+| [DQC_US_0157](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
+| [DQC_US_0158](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
+| [DQC_US_0159](DQC_US_0159/DQC_0159.md) | Financial Statement Abstract Concepts | Public Review | 22 |
+| [DQC_US_0160](DQC_US_0160/DQC_0160.md) | Descendants of NonrelatedPartyMember | Public Review | 22 |
+| [DQC_US_0161](DQC_US_0161/DQC_0161.md) | Single Member Disaggregation | Public Review | 22 |
+| [DQC_US_0162](DQC_US_0162/DQC_0162.md) | Trading Symbol | Public Review | 22 |
+| [DQC_US_0163](DQC_US_0163/DQC_0163.md) | Segment Expenditure Addition To Long Lived Assets | Public Review | 22 |
+| [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Public Review | 22 |
+| [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Public Review | 22 |
 
 ## Guidance 
 
