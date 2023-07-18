@@ -251,6 +251,8 @@ and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'))
 
+
+constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) 
 /*  
 *	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
 *	value or the context end date on the fact, whichever is later.
