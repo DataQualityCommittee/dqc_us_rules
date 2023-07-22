@@ -1,0 +1,38 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2023
+
+**/
+
+constant $ifrs-gaap = taxonomy('http://xbrl.ifrs.org/taxonomy/2023-03-23/full_ifrs_entry_point_2023-03-23.xsd')
+
+constant $ifrs-gaap-dep = taxonomy('http://xbrl.ifrs.org/taxonomy/2023-03-23/depr_entry_point_2023-03-23.xsd')
+
+constant $country = taxonomy('https://xbrl.sec.gov/country/2023/country-entire-2023.xsd')
+
+constant $currency = taxonomy('https://xbrl.sec.gov/currency/2023/currency-entire-2023.xsd')
+
+constant $exchange = taxonomy('https://xbrl.sec.gov/exch/2023/exch-entire-2023.xsd')
+
+constant $state_province = taxonomy('https://xbrl.sec.gov/stpr/2023/stpr-entire-2023.xsd')
+
+constant $naics = taxonomy('https://xbrl.sec.gov/naics/2023/naics-entire-2023.xsd')
+
+constant $sic = taxonomy('https://xbrl.sec.gov/sic/2023/sic-entire-2023.xsd')
+
+constant $srt = taxonomy('http://xbrl.fasb.org/srt/2023/elts/srt-2023.xsd')
+
+constant $dei = taxonomy('https://xbrl.sec.gov/dei/2023/dei-entire-2023.xsd')
+
+constant $all_ifrs_base_taxonomies = list($ifrs-gaap, $exchange, $state_province, $naics, $sic, $dei, $srt, $country, $currency )
+
+constant $ext_enum_links = taxonomy('https://xbrl.fasb.org/us-gaap/2023/elts/us-gaap-tin-def-2023.xml')
+
+
+/** DEI HANDLING **/
+
+constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
