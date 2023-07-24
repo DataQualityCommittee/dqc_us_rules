@@ -47,7 +47,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept.local-name.lower-case.contains('incomeexpense')
                             skip
                         else
                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
