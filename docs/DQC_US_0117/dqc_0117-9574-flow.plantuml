@@ -45,20 +45,44 @@ while (Is there a dimension left to process on the hypercube) is (yes)
     endif
     
     end group
-     if (Does Subtotal for multi facts equal true) then (yes)
-         
+
+    :Get facts that could also exist in a Notes Hypercube for the current concept;
+    :Get the default total of the concept
+     with durations that match the document 
+     period and all instant concepts.;
+    if (Are there values in a note hypercube?) then (no)
+                : set noFactsInNotes to true;
+                note left
+    This prevents bleed through to the 
+    face Financial statement from facts 
+    in the note hypercubes. If the value is valid 
+    in a note hypercube the rule will not run.
+    Unless that value is greater than the default total.
+    Ideally the filer should define a negative hypercube
+    to eliminate facts in the notes from the face financials
+    end note
+            else (yes)
+                : set noFactsInNotes to false;
+                endif
+     if (Does the largest dimensional Value exceed the total?) then (yes)
+                : set $DimValueGreaterThanTotal to true;
+            else (no)
+                : set $DimValueGreaterThanTotal to false;
+                endif
+
+
+     if (Does Subtotal for multi facts equal true?) then (yes)
+         if (Does $noFactsInNotes or $DimValueGreaterThanTotal equal true?) then (yes)
         
-        :Get the member facts using the 
-        members and domain values;
+            :Get the member facts using the 
+            members and domain values;
     
         
             if (Were facts present?) then (yes)
                 :Sum the member facts;
                 :Get the minimum decimals of the facts;
                 :Create message line for each fact;
-                :Get the default total of the concept
-                with durations that match the document 
-                period and all instant concepts.;
+                
                 if (Are Revenue Facts used with Product axis?) then (yes)
                 :Revenue ContractWithCustomer 
                 concepts Used;
@@ -117,6 +141,8 @@ while (Is there a dimension left to process on the hypercube) is (yes)
                     endif
 
              else (no)
+            endif
+        else (no)
             endif
         else (no)
             endif
