@@ -8,7 +8,6 @@ Taxonomy: US GAAP 2022
 
 RULE-NAME-PREFIX DQC
 
-
 ASSERT US.0117.9574 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -55,11 +54,23 @@ for $drs_role in $drs_roles
 								else
 									true
 
-			
+			/** Identify if facts exist for the dimension and concept in a notes hypercube **/
+				$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = *])
+
+				/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
+				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
+
+				$noFactsInNotes = $factsInNotes.length == 0
+
+				$DimValueGreaterThanTotal = if $noFactsInNotes 
+												false
+											else
+												max($factsInNotes) > $TotalDefault
+										
 				/** Get a set  of the unique members **/
 				$member_descendants = $members.to-set - $domain;
 				
-			if $SubTotalExists
+			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal)
 				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 				$member_facts = list(for $member in $member_descendants
 									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
@@ -83,9 +94,6 @@ for $drs_role in $drs_roles
 
 					$member_string = sum(list(for $member_fact in $member_facts
 						"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
-				
-					/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
-					$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
 
 					/** Get the financial statement cube **/
 					$bs_cubes = (filter $STATEMENT_CUBES  where $item.drs-role == $drs_role[1]).to-list;
@@ -188,8 +196,22 @@ for $drs_role in $drs_roles
 						$factsWithMoreThanTwoDimensions = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember  @$Dim2Dimension = * where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length > 2})
 
 						$DoSubTotalExists = CheckSubTotalExists($factsWithMoreThanTwoDimensions,$drs_role, $dim, $SubMember, $Dim2Dimension)
+
+						/** Identify if facts exist for the dimensions and concept in a notes hypercube If they do then the rule will not run as we get bleed through from other hypercubes.**/
+						$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = $SubMember  @$Dim2Dimension = *])
+
+						/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
+						$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
+
+						$noFactsInNotes = $factsInNotes.length == 0
+
+						$DimValueGreaterThanTotal = if $noFactsInNotes 
+														false
+													else
+														max($factsInNotes) > $TotalDefault
+						
 					
-						if $DoSubTotalExists
+						if $DoSubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal)
 							$member_facts = list([covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember @$Dim2Dimension = * where $fact.concept.is-monetary]);
 							/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 								
