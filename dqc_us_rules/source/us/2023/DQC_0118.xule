@@ -59,7 +59,6 @@ for $cube in $STATEMENT_CUBES.sort
 											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
-					
 					/** Capture in a string what calc was performed  above to report in the rule message. **/
 					$addend_string = sum(list(for $x in $calcComponents.sort
 													$targetElement = $x[1];
@@ -98,6 +97,13 @@ for $cube in $STATEMENT_CUBES.sort
 													)
 									);
 
+					$addend_facts = (list(for $x in $calcComponents
+											$targetElement = $x[1];
+
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})), max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))), first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})))		
+									)
+									);
+
 					/** Get the reported total to compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
@@ -126,12 +132,26 @@ for $cube in $STATEMENT_CUBES.sort
 					
 					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
 
-					$ConsolidatedEntityAxisInCube = filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
+					/** HANDLE CONSOLIDATED ITEMS AXIS FACTS **/
+					/** Identify if facts exist for the ConsolidatedEntitiesAxis dimension in a notes hypercube that could possibly bleed though in the financials **/
+					$factsInNotes = list([nonils @concept = * @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = *])
+
+					$noFactsInNotes = $factsInNotes.length == 0;
+
+					/** Identify if the current calculation uses any fact values that are including the consolidated entities axis **/
+
+					$valid_addend_facts = (filter $addend_facts where $item.is-fact)
+					$Addends_Do_Not_Use_Consolidated_Entities_Axis = (filter $valid_addend_facts where $item.dimensions.keys.name.contains(srt:ConsolidatedEntitiesAxis) returns $item).length == 0
+
+					/** FLAG if the rule should not run because of consolidated Entity Axis Complications **/
+					$ConsolidatedEntityAxisInCube = if $noFactsInNotes and $Addends_Do_Not_Use_Consolidated_Entities_Axis
+														set()
+													else
+														filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
 
 					/** Dimension to check **/
 					/** Identify the axis that indicate their default values should not have a  calculation check**/
 					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube
-					
 					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
 					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero
 					it means that the sum fact does not have a dimension (default) and the default of the dimensions has been tagged not to add. **/
