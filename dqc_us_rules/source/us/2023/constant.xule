@@ -471,3 +471,5 @@ constant $CASH_FLOW_ROLE = if $CASH_FLOW_ROLES.length > 0
 
 constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
 and ($item.drs-role.uri.lower-case.contains('segment')) 
+
+constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')

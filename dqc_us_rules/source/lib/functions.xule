@@ -743,7 +743,7 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
 										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
 										for $member2 in $member_descendants2.to-list.sort
 											$ancestors_list2 = (navigate dimensions domain-member ancestors from $member2 drs-role $cube.drs-role returns set (target-name)) - $domain2;
-											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 = $ancestors_list2]).length > 0
+											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 in $ancestors_list2]).length > 0
 												skip
 											else
 												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2]

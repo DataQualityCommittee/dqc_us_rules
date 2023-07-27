@@ -29,13 +29,24 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 $dimensions = $segmentCube.dimensions;
 				$dimObjects = filter $dimensions returns $item.concept.name
                 if $dimObjects.contains(srt:ConsolidationItemsAxis)
+                 /* Handle member trees */
+                    $drs_role = $segmentCube.drs-role;
+                    $members = navigate dimensions descendants from srt:ConsolidationItemsAxis drs-role $drs_role returns target-name
+			        $domain = navigate dimensions dimension-domain descendants from srt:ConsolidationItemsAxis drs-role $drs_role returns set target-name
+                    $member_descendants = $members.to-set - $domain;
+
                     /**Identify all monetary primary concepts in Cubes with ConsolidationItemsAxis **/
                     $primaryConcepts = $segmentCube.primary-concepts
                     $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
 
                     for $concept in $monetaryConceptsInCube
 
-						$factsToAdd = list([nonils @concept = $concept  @srt:ConsolidationItemsAxis = *]);
+						 $factsToAdd = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+										skip
+									else 
+										[nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
 
                         $decimalsAddedFacts =   if $factsToAdd.length == 0
                                                         0
@@ -54,7 +65,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept.local-name.lower-case.contains('incomeexpense')
                             skip
                         else
                          $dimensionTotalDecimals = if $dimensionTotal.decimals == inf
@@ -106,6 +117,12 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 $dimensions = $segmentCube.dimensions;
 				$dimObjects = filter $dimensions returns $item.concept.name
                 if $dimObjects.contains(StatementBusinessSegmentsAxis)
+                    /* Handle member trees */
+                    $drs_role = $segmentCube.drs-role;
+                    $members = navigate dimensions descendants from StatementBusinessSegmentsAxis drs-role $drs_role returns target-name
+			        $domain = navigate dimensions dimension-domain descendants from StatementBusinessSegmentsAxis drs-role $drs_role returns set target-name
+                    $member_descendants = $members.to-set - $domain;
+
                     /**Identify all monetary primary concepts in Cubes with StatementBusinessSegmentsAxis **/
                     $primaryConcepts = $segmentCube.primary-concepts
                     $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
@@ -113,9 +130,13 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                     for $concept in $monetaryConceptsInCube
 
-                        $factsToAdd = list(
-							[nonils @concept = $concept @cube.drs-role = $segmentCube.drs-role  @StatementBusinessSegmentsAxis = * ]
-								);
+                        $factsToAdd = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+										$h = [nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis = $member];
+                                        skip
+									else 
+										[nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis = $member]);
 
                         $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
 
@@ -125,7 +146,9 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                         $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
                         $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
+                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname
                             skip
                         else
                          tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
