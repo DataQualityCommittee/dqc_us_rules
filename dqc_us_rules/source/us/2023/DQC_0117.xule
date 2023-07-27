@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2022
+Taxonomy: US GAAP 2023
 **/
 
 RULE-NAME-PREFIX DQC
@@ -13,7 +13,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $STATEMENT_CUBES 
-					list($y.drs-role, $y.dimensions));
+					list($y.drs-role, $y.dimensions, $y));
 
 /** GET THE DOCUMENT PERIOD 
 ** Only use facts where the duration matches
@@ -33,8 +33,9 @@ for $drs_role in $drs_roles
 
 			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
 
-			/** Get a set  of the unique members **/
-			$member_descendants = $members.to-set - $domain;
+			/** We need some code here to determine if the rule should run when mutiple breakdowns are defined using multiple dimensions
+			An example is where revenue is broken down by product and then a product category is broken down by related party with not subtotal for the product.
+			**/
 
 			/** Step 1 - Identify facts in the cube that have 2 or more dimensions including the target dimension **/
 
@@ -123,55 +124,11 @@ for $drs_role in $drs_roles
 						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
 			else
 				skip
-			else		
-				/** aggregate the fact values on the axis **/
-				$member_sums = sum($member_facts);
-				/** Calculate the minimum decimals **/
-
-				$min_decimals = min(list(for $z in $member_facts
-				if $z == none 
-					skip
-				else
-					$z.decimals));
-
-				$member_string = sum(list(for $member_fact in $member_facts
-					"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
-			
-				/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
-				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
-
-				/** Get the financial statement cube **/
-				$bs_cubes = (filter $STATEMENT_CUBES  where $item.drs-role == $drs_role[1]).to-list;
-				/** Check if the FASB Exception for 606 applies **/
-				if $bs_cubes.length > 0 and $TotalDefault.name in list(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax) and $dim == srt:ProductOrServiceAxis
-					$bs_cube = $bs_cubes[1]
-					if  $bs_cube.primary-concepts.name.contains(NoninterestIncome)
-						/** This takes into account those cases for Banks and FASB guidance https://www.fasb.org/revenue_2020 and calculation of non interest income.
-						** See Figure 13b-1a. Unfortunately the breakdown for 606 revenue for banks get interlaced and non-dimensional. For now
-						** this rule excludes those cases where the bank breaks down revenue and uses the product or service axis and the element NonInterestIncome
-						** appears in the cube and the value of the default is greater than the value of the members. In these cases a remainder is embedded somewhere else.
-						**/
-						$additional_message = "The value of the dimensions is greater than the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
-						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2) and $member_sums > $TotalDefault
-					else
-						if $member_sums < $TotalDefault and $bs_cube.primary-concepts.name.contains(Revenues)
-							$calcRevComponents = navigate summation-item descendants from Revenues role $bs_cube.drs-role.uri returns set (target-name);
-							if $calcRevComponents.length > 1 and ($calcRevComponents intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax)).length > 0 /** This checks that the breakdown could have a rev item that is 606 and non 606 **/
-								false
-							else
-								$additional_message = "The calculation breakdown of Revenues should include both Revenue From Contract With Customers and at least one additional revenue item that includes both 606 and non 606 income, if the sum of Revenue From Contract With Customers breakdown is not equal to the aggregated value of the dimension members on the ProductOrServiceAxis. Either add a calculation breakdown of Revenues or represent all the 606 revenue as members."
-								tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
-						else
-							$additional_message = "When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases."
-							tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
-				else
-					$additional_message = ""
-					tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
 		else
 			skip
 	
 message
-"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} which is comprised of the members:
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} using the dimension {$dim} which is comprised of the members {$member_descendants.join(", ")}:
 {$member_string}
 
 On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
