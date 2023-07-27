@@ -24,8 +24,12 @@ for $cube in $STATEMENT_CUBES.sort
 			$conceptsInCube = filter $cube.facts returns $item.concept.name;
 
 			for $concept_item in $calcNetworkSource
+
+			/**DOnt run the rule if the concept is none or the concept has no value in the cube or the total uses PledgedStatusAxis**/
+
 				/**Add to AxisNotToCheck any fact total we do not want to check adds because it has an axis that will not apply across all children of the calc **/
 				$AxisNotToCheck = set(PledgedStatusAxis)
+				/** first value is used to eliminate none value **/
 				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set({covered nonils @concept = $concept_item @cube.drs-role = $cube.drs-role }.dimensions.keys.name)),set()) intersect $AxisNotToCheck).length > 0
 				if $concept_item == none or (length(first-value($calcNetworkSource,set()).intersect($conceptsInCube.to-set))==0) or $TotalsWithAxisNotToCheckFlag
 					skip
@@ -52,10 +56,9 @@ for $cube in $STATEMENT_CUBES.sort
 											** safety so lines don't duplicate.
 											**/
 
-											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)				
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals} * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))) * $targetWeight, max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))) * $targetWeight, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})) * $targetWeight)		
 									)
 									);
-					
 					/** Capture in a string what calc was performed  above to report in the rule message. **/
 					$addend_string = sum(list(for $x in $calcComponents.sort
 													$targetElement = $x[1];
@@ -94,12 +97,19 @@ for $cube in $STATEMENT_CUBES.sort
 													)
 									);
 
-					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
+					$addend_facts = (list(for $x in $calcComponents
+											$targetElement = $x[1];
+
+											first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})), max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))), first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})))		
+									)
+									);
+
+					/** Get the reported total to compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
 					$sum2 = if taxonomy().concept($concept_item).period-type == duration
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
 							else
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
-					
+	
 					/** REMOVE DEFAULT FROM CALCULATION TEST **/
 					$dimensions = $cube.dimensions;
 					$dimObjects = filter $dimensions returns $item.concept.name
@@ -116,17 +126,32 @@ for $cube in $STATEMENT_CUBES.sort
 					$DefaultPresentation = navigate parent-child children from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name, preferred-label, target-name);
 					$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
 					$MissingDefaultLabel = filter $textDefault returns $item[1]
-
-					/** Label Check - Option 6 **/
-					/** Check any table with legal entity Axis don't check default **/
 					
-					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis'returns $item
-					$ConsolidatedEntityAxisInCube = filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
+					/** Label Check - Option 6 **/
+					/** Check any table with legal entity Axis or ConsolidatedEntitiesAxis don't check default **/
+					
+					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
+
+					/** HANDLE CONSOLIDATED ITEMS AXIS FACTS **/
+					/** Identify if facts exist for the ConsolidatedEntitiesAxis dimension in a notes hypercube that could possibly bleed though in the financials **/
+					$factsInNotes = list([nonils @concept = * @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = *])
+
+					$noFactsInNotes = $factsInNotes.length == 0;
+
+					/** Identify if the current calculation uses any fact values that are including the consolidated entities axis **/
+
+					$valid_addend_facts = (filter $addend_facts where $item.is-fact)
+					$Addends_Do_Not_Use_Consolidated_Entities_Axis = (filter $valid_addend_facts where $item.dimensions.keys.name.contains(srt:ConsolidatedEntitiesAxis) returns $item).length == 0
+
+					/** FLAG if the rule should not run because of consolidated Entity Axis Complications **/
+					$ConsolidatedEntityAxisInCube = if $noFactsInNotes and $Addends_Do_Not_Use_Consolidated_Entities_Axis
+														set()
+													else
+														filter $dimObjects where $item == srt:ConsolidatedEntitiesAxis returns $item
 
 					/** Dimension to check **/
 					/** Identify the axis that indicate their default values should not have a  calculation check**/
 					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube
-					
 					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
 					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero
 					it means that the sum fact does not have a dimension (default) and the default of the dimensions has been tagged not to add. **/
