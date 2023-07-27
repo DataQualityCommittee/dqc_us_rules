@@ -148,7 +148,7 @@ effectiveDate $effective_dates[$rule_id]
 
 rule-focus $TotalDefault
 
-ASSERT US.0117.10093 UNSATISFIED
+ASSERT US.0117.10093 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Get the DRS Roles and dimensions **/
@@ -212,7 +212,7 @@ for $drs_role in $drs_roles
 														max($factsInNotes) > $TotalDefault
 						
 					
-						if $DoSubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal)
+						if $DoSubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal) and exists($TotalDefault) and not (set('LegalEntityAxis').contains($Dim2Dimension.local-name))
 							$member_facts = list([covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember @$Dim2Dimension = * where $fact.concept.is-monetary]);
 							/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
 								
@@ -228,9 +228,6 @@ for $drs_role in $drs_roles
 
 								$member_string = sum(list(for $member_fact in $member_facts
 									"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
-							
-								/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
-								$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
 
 								tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
 						else
@@ -240,7 +237,7 @@ for $drs_role in $drs_roles
 			skip
 	
 message
-"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} using the dimension {$dim} and the second dimension {$Dim2Dimension}:
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} and dimension of {$dim} and member of {$SubMember} is not equal to the dimensional breakdown of {$member_sums} using the dimension {$dim} and the second dimension {$Dim2Dimension}:
 {$member_string}
 
 On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
