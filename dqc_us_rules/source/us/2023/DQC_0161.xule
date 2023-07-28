@@ -14,7 +14,7 @@ ASSERT US.0161.10083 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$axisExtensibleEnumDict = dict(list(VariableRateAxis, "InvestmentVariableInterestRateTypeExtensibleEnumeration"),
+$axisExtensibleEnumDict = dict(
                                 list(RetirementPlanFundingStatusAxis, "DefinedBenefitPlanFundingStatusExtensibleList"),
                                 list(InvestmentTypeAxis, "InvestmentTypeExtensibleEnumeration"),
                                 list(RetirementPlanTaxStatusAxis,"DefinedBenefitPlanTaxStatusExtensibleList or DefinedContributionPlanTaxStatusExtensibleList" )
@@ -56,5 +56,5 @@ Rule version: {$ruleVersion}
 "
 
 SEVERITY error
-
+status $status
 effectiveDate $effective_dates[$rule_id]
