@@ -1,0 +1,159 @@
+@startuml rule_0117_9574
+title "Rule DQC 117.9574"
+!pragma useVerticalIf on
+start
+
+repeat : Get next statement hypercube in the filing;
+ 
+ : Get a list of the dimensions on the statement hypercube;
+while (Is there a dimension left to process on the hypercube) is (yes)
+
+    :Read list of target dimensions;
+    note left
+    StatementClassOfStockAxis
+    ProductOrServiceAxis
+    PropertyPlantAndEquipmentByTypeAxis
+    LongtermDebtTypeAxis
+    RelatedPartyTransactionsByRelatedPartyAxis
+    StatementBusinessSegmentsAxis
+    LimitedPartnersCapitalAccountByClassAxis
+    PartnerTypeOfPartnersCapitalAccountAxis
+    FiniteLivedIntangibleAssetsByMajorClassAxis
+    FinancialInstrumentAxis
+    InformationByCategoryOfDebtSecurityAxis'
+    end note
+ if (Is the dimension a target dimension to be calculated?) then (yes)
+ 
+     :Get the members of the dimension;
+     :Get the domain of the dimension;
+     group SubTotal_Exists
+     :Identify if facts in the cube
+      have 2 or more dimensions 
+      including the target dimension;
+      if (facts with 2 dimensions exist) then (yes)
+       
+     :Identify if there a subtotal for the target 
+        dimension member which 
+        has one dimensions?;
+            if (Does SubTotal Exist?) then (yes)
+                : SubTotalExists is set to true;
+            else (no)
+                : SubTotalExists is set to false;
+                endif
+       else (no)
+        : SubTotalExists is set to true;
+    endif
+    
+    end group
+
+    :Get facts that could also exist in a Notes Hypercube for the current concept;
+    :Get the default total of the concept
+     with durations that match the document 
+     period and all instant concepts.;
+    if (Are there values in a note hypercube?) then (no)
+                : set noFactsInNotes to true;
+                note left
+    This prevents bleed through to the 
+    face Financial statement from facts 
+    in the note hypercubes. If the value is valid 
+    in a note hypercube the rule will not run.
+    Unless that value is greater than the default total.
+    Ideally the filer should define a negative hypercube
+    to eliminate facts in the notes from the face financials
+    end note
+            else (yes)
+                : set noFactsInNotes to false;
+                endif
+     if (Does the largest dimensional Value exceed the total?) then (yes)
+                : set $DimValueGreaterThanTotal to true;
+            else (no)
+                : set $DimValueGreaterThanTotal to false;
+                endif
+
+
+     if (Does Subtotal for multi facts equal true?) then (yes)
+         if (Does $noFactsInNotes or $DimValueGreaterThanTotal equal true?) then (yes)
+        
+            :Get the member facts using the 
+            members and domain values;
+    
+        
+            if (Were facts present?) then (yes)
+                :Sum the member facts;
+                :Get the minimum decimals of the facts;
+                :Create message line for each fact;
+                
+                if (Are Revenue Facts used with Product axis?) then (yes)
+                :Revenue ContractWithCustomer 
+                concepts Used;
+                    if (Does cube contain non interest income?) then (yes)
+                        if (Is the sum of members > TotalDefault?) then (yes)
+                        :Produce additional error message;
+                        :The value of the dimensions is greater than the default. 
+                        In the cases of banks reporting non interest income the 
+                        value of the revenue default should be at least greater 
+                        than the dimensionalized values.;
+                        else (no)
+                            endif
+                    else (no)
+                        if (Is member sums < TotalDefault
+                        and cube has Revenues) then (yes)
+                            if (Does Revenue include a 606 revenue) then (no)
+                                if (Is the sum of members not equal to TotalDefault?) then (yes)
+                                :Produce additional error message;
+                                :The calculation breakdown of Revenues should
+                                include both Revenue From Contract With 
+                                Customers and at least one additional revenue
+                                item that includes both 606 and non 606 income, 
+                                if the sum of Revenue From Contract With 
+                                Customers breakdown is not equal to the 
+                                aggregated value of the dimension members on 
+                                the ProductOrServiceAxis. Either add a 
+                                calculation breakdown of Revenues or represent 
+                                all the 606 revenue as members.;
+                                else (no)
+                                    endif
+                            else (yes)
+                                
+                                endif
+                        else (no)
+                                if (Is the sum of members not equal to TotalDefault?) then (yes)
+                                        :Produce additional error message;
+                                        :When breaking down 606 revenue using the 
+                                        product or service axis and the total does
+                                        not aggregate, then the element 
+                                        NoninterestIncome income should be used as 
+                                        the total to comply with the FASB guidance 
+                                        for breaking down 606 revenue. To correct 
+                                        this error ensure that a the element 
+                                        NoninterestIncome is included in the 
+                                        presentation and definition linkbases.;
+                                else (no)
+                                    endif
+                            endif
+                        endif
+                else (no)
+                    if (Is the sum of members not equal to TotalDefault?) then (yes)
+                                        :Produce standard error message;
+                                        :See rule message.;
+                                else (no)
+                                    endif
+                    endif
+
+             else (no)
+            endif
+        else (no)
+            endif
+        else (no)
+            endif
+     
+ else (no)
+    endif 
+    backward: Get next dimension;
+endwhile  (no)
+    repeat while (Is there another hypercube in the filing) is (yes)
+    ->no;
+    
+end
+
+@enduml
