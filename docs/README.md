@@ -56,7 +56,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Approved | 11 |
 | [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Approved | 11 |
 | [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Approved | 11 |
-| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Public Review | 22 |
+| DQC_US_0088 | Operating Lease Cost And Expense | Removed from Review July 2023 |  |
 | [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
 | [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
 | [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Approved | 12 |
