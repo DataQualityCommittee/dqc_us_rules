@@ -23,6 +23,34 @@ for $cube in $STATEMENT_CUBES.sort
 			
 			$conceptsInCube = filter $cube.facts returns $item.concept.name;
 
+			/** Get Dimension Information **/
+			$dimensions = $cube.dimensions;
+			$dimObjects = filter $dimensions returns $item.concept.name
+
+			/** No default defined for a dimension. If Dont add a default then rule will not run **/
+
+			$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) returns set (source-name);
+			$MissingDefaults = $dimObjects - $DefaultDimensions
+
+			/** Label Check If put the text "default" in the preferred label  **/
+			$DefaultPresentation = navigate parent-child children from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name, preferred-label, target-name);
+			$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
+			$MissingDefaultLabel = filter $textDefault returns $item[1]
+
+			/** Check if the statement cube contains any facts with the legal entity Axis **/
+			$LegalEntityFactsInCube = list({nonils covered @concept = * @cube = $cube  @dei:LegalEntityAxis = *})
+
+			$LegalEntityAxisInCube = if $LegalEntityFactsInCube.length > 0
+										filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
+									else
+										set()
+
+			/** HANDLE CONSOLIDATED ITEMS AXIS FACTS **/
+			/** Identify if facts exist for the ConsolidatedEntitiesAxis dimension in a notes hypercube that could possibly bleed though in the financials **/
+			$factsInNotes = list([nonils @concept = * @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = *])
+
+			$noFactsInNotes = $factsInNotes.length == 0;
+
 			for $concept_item in $calcNetworkSource
 
 			/**DOnt run the rule if the concept is none or the concept has no value in the cube or the total uses PledgedStatusAxis**/
@@ -111,32 +139,8 @@ for $cube in $STATEMENT_CUBES.sort
 								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 	
 					/** REMOVE DEFAULT FROM CALCULATION TEST **/
-					$dimensions = $cube.dimensions;
-					$dimObjects = filter $dimensions returns $item.concept.name
+					
 					$sum2Dimensions = $sum2.dimensions.keys.name
-
-					/** Option 3 built into Arelle **/
-
-					/** No default defined for a dimension - Option 4 **/
-
-					$DefaultDimensions = navigate dimension-default descendants from (filter $dimensions returns $item.concept.name) returns set (source-name);
-					$MissingDefaults = $dimObjects - $DefaultDimensions
-					
-					/** Label Check - Option 5 **/
-					$DefaultPresentation = navigate parent-child children from (filter $dimensions returns $item.concept.name) role $cube.drs-role returns set (source-name, preferred-label, target-name);
-					$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
-					$MissingDefaultLabel = filter $textDefault returns $item[1]
-					
-					/** Label Check - Option 6 **/
-					/** Check any table with legal entity Axis or ConsolidatedEntitiesAxis don't check default **/
-					
-					$LegalEntityAxisInCube = filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
-
-					/** HANDLE CONSOLIDATED ITEMS AXIS FACTS **/
-					/** Identify if facts exist for the ConsolidatedEntitiesAxis dimension in a notes hypercube that could possibly bleed though in the financials **/
-					$factsInNotes = list([nonils @concept = * @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = *])
-
-					$noFactsInNotes = $factsInNotes.length == 0;
 
 					/** Identify if the current calculation uses any fact values that are including the consolidated entities axis **/
 
