@@ -83,10 +83,11 @@ severity error
 status $status
 effectiveDate $effective_dates[$ruleId]
 
+/**NREMOVED RULES BASED ON FILER FEEDBACK Sometimes this is a valid case See Shelly Wavrin email**/
+
+/**
 Assert US.0164.10089 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-
-/** Get Asset elements **/
 
 $assetsElements = navigate parent-child descendants from FairValueAssetsMeasuredOnRecurringBasisUnobservableInputReconciliationLineItems returns target 
 
@@ -112,8 +113,6 @@ effectiveDate $effective_dates[$ruleId]
 Assert US.0164.10090 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Get Asset elements **/
-
 $assetsElements = navigate parent-child descendants from FairValueLiabilitiesMeasuredOnRecurringBasisUnobservableInputReconciliationLineItems returns target 
 
 exists({@concept in $assetsElements @BalanceSheetLocationAxis = *}#fact2)
@@ -132,3 +131,5 @@ Rule version: {$ruleVersion}"
 severity error
 status $status
 effectiveDate $effective_dates[$ruleId]
+
+**/
