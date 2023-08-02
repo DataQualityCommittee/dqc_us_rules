@@ -127,7 +127,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0161](DQC_US_0161/DQC_0161.md) | Single Member Disaggregation | Public Review | 22 |
 | [DQC_US_0162](DQC_US_0162/DQC_0162.md) | Trading Symbol | Public Review | 22 |
 | [DQC_US_0163](DQC_US_0163/DQC_0163.md) | Segment Expenditure Addition To Long Lived Assets | Public Review | 22 |
-| [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Public Review | 22 |
+| DQC_US_0164 | Use of Location Axis | Removed from Review August 2023 |  |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Public Review | 22 |
 
 ## Guidance 
