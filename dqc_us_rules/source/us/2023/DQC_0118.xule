@@ -37,8 +37,9 @@ for $cube in $STATEMENT_CUBES.sort
 			$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
 			$MissingDefaultLabel = filter $textDefault returns $item[1]
 
+			$legalEntityAxis = qname($DEI_NAMESPACE,'LegalEntityAxis')
 			/** Check if the statement cube contains any facts with the legal entity Axis **/
-			$LegalEntityFactsInCube = list({nonils covered @concept = * @cube = $cube  @dei:LegalEntityAxis = *})
+			$LegalEntityFactsInCube = list({nonils covered @concept = * @cube = $cube  @$legalEntityAxis = *})
 
 			$LegalEntityAxisInCube = if $LegalEntityFactsInCube.length > 0
 										filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
