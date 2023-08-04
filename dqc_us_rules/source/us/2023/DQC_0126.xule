@@ -22,27 +22,9 @@ $document_period_start_date = $document_period.period.start;
 
 $cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
-$cubSet = (FILTER $STATEMENT_CUBES returns $item).to-set;
-
 for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
-
-		$StatementCube = filter $cubSet where $item.drs-role.uri == $presNetwork.role.uri
-        $cubeExists = if $StatementCube.length == 0 false else true
-        
-        $CubeUsed =  if $cubeExists
-								$presItems = navigate parent-child descendants  role $presNetwork.role.uri  returns set (target-name)
-								$presItemsCount = $presItems.length
-								all(set(for $cube in $StatementCube
-									$primaryConceptsCount = ($cube.primary-concepts).length
-									if $presItemsCount * 0.8 > $primaryConceptsCount
-										false
-									else
-										true))
-							else
-								false
-
          /** Don't run the rule if it is in a table as this is handled by rule 118 **/
-         if $presNetwork.role.uri in $cubeURISet and $CubeUsed
+         if $presNetwork.role.uri in $cubeURISet
             skip
          else 
 			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
