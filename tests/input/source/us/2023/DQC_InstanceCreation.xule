@@ -77,3 +77,111 @@ fact-decimals $decimal_value
 
 
 /** python3.9 ~/arelle/Arelle-master/arellecmdline.py --plugins 'xule|xince|transforms/SEC|validate/EFM|inlineXbrlDocumentSet' -f /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/TestCo-2022-NonNeg-2018-base.xml --xule-time .005 --xule-debug --noCertificateCheck --logFile /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/Testco-log.xml --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2022-V22-ruleset.zip --xule-run-only createInstance,create_fact_values,new-instance-values --logNoRefObjectProperties --xince-location /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/ --xince-show-xule-log --xince-file-type=xml  **/
+
+output createMarbleInstance
+true
+instance-name  'marbles' 
+instance-taxonomy list('http://www.xbrlsite.com/seattlemethod/golden/marbles/base-taxonomy/marbles-entryPoint.xsd').to-json
+
+
+
+constant $marbleData = dict(list('Marble1', list(marble:RedMember,marble:PlasticMember,marble:LargeMember,2.23)),
+    list('Marble2', list(marble:RedMember,marble:GlassMember,marble:LargeMember,3.23)),
+    list('Marble3', list(marble:RedMember,marble:MetalMember,marble:LargeMember,4.23)),
+    list('Marble4', list(marble:RedMember,marble:PlasticMember,marble:MediumMember,1.23)),
+    list('Marble5', list(marble:RedMember,marble:GlassMember,marble:MediumMember,0.23)),
+    list('Marble6', list(marble:YellowMember,marble:PlasticMember,marble:ExtraLargeMember,1.15)),
+    list('Marble7', list(marble:YellowMember,marble:GlassMember,marble:ExtraLargeMember,2.15)),
+    list('Marble8', list(marble:YellowMember,marble:MetalMember,marble:ExtraLargeMember,3.89)),
+    list('Marble9', list(marble:YellowMember,marble:PlasticMember,marble:SmallMember,7.00)),
+    list('Marble10', list(marble:YellowMember,marble:GlassMember,marble:SmallMember,0.99))
+    )
+
+constant $ColorMateriaSizelDefault = list(for $size in list(marble:LargeMember,marble:MediumMember, marble:ExtraLargeMember, marble:SmallMember,marble:AllSizesMember)
+                                            for $color in list(marble:RedMember,marble:YellowMember, marble:AllColorsMember)
+                                                for $material in list(marble:PlasticMember, marble:GlassMember, marble:MetalMember, marble:AllMaterialsMember)
+                                                    for $line in list(marble:Quantity,marble:Amount)
+                                                        list($line, $color , $material , $size, sum(list(for $y in $marbleData.values
+                                                            if $material == $y[2] and $color == $y[1]  and $size == $y[3]
+                                                                if $line == marble:Quantity
+                                                                    1
+                                                                else
+                                                                    $y[4]
+                                                            else
+                                                                if $material == $y[2] and $color == $y[1] and $size == marble:AllSizesMember
+                                                                    if $line == marble:Quantity
+                                                                        1
+                                                                    else
+                                                                        $y[4]
+                                                                else
+                                                                    if $material == $y[2] and $size == $y[3] and $color == marble:AllColorsMember
+                                                                        if $line == marble:Quantity
+                                                                            1
+                                                                        else
+                                                                            $y[4]
+                                                                    else
+                                                                        if $color == $y[1] and $size == $y[3] and  $material == marble:AllMaterialsMember
+                                                                            if $line == marble:Quantity
+                                                                                1
+                                                                            else
+                                                                                $y[4]
+                                                                        else
+                                                                            if $color == $y[1] and  $material == marble:AllMaterialsMember and $size == marble:AllSizesMember
+                                                                                if $line == marble:Quantity
+                                                                                    1
+                                                                                else
+                                                                                    $y[4]
+                                                                            else
+                                                                                if $material == $y[2] and $color == marble:AllColorsMember and $size == marble:AllSizesMember
+                                                                                    if $line == marble:Quantity
+                                                                                        1
+                                                                                    else
+                                                                                        $y[4]
+                                                                                else
+                                                                                    if $size == $y[3] and $color == marble:AllColorsMember and $material == marble:AllMaterialsMember
+                                                                                        if $line == marble:Quantity
+                                                                                            1
+                                                                                        else
+                                                                                            $y[4]
+                                                                                    else
+                                                                                         if $size ==  marble:AllSizesMember and $color == marble:AllColorsMember and $material == marble:AllMaterialsMember
+                                                                                            if $line == marble:Quantity
+                                                                                                1
+                                                                                            else
+                                                                                                $y[4]
+                                                                                        else
+                                                                                           0)))
+                                                                                        )
+
+
+output marble_color_values
+for $item in $ColorMateriaSizelDefault 
+    $concept = taxonomy('http://www.xbrlsite.com/seattlemethod/golden/marbles/base-taxonomy/marbles-entryPoint.xsd').concept($item[1]);
+    $period_type = $concept.period-type;
+    $period-value = date('2022-12-31');            
+    $decimal_value = 0;               
+    $units = if $concept.is-monetary
+                        unit(iso4217:USD)
+                    else if $concept.is-numeric
+                        unit(xbrli:pure)
+                        else
+                            none
+    $fact_value = $item[5]
+    $fact_dimensions = dict(list(marble:ColorDimension, $item[2]),
+        list(marble:MaterialDimension, $item[3]),
+        list(marble:SizeDimension, $item[4])
+        ).to-xince
+
+    true
+
+fact-instance 'marbles'
+fact-value $fact_value
+fact-concept $item[1].to-xince
+fact-entity entity('http://xbrl.org/entity/identification/scheme', 'Testco').to-xince
+fact-period $period-value.to-xince
+fact-unit $units.to-xince
+fact-decimals $decimal_value
+fact-dimensions $fact_dimensions
+
+output tests
+$ColorMateriaSizelDefault 
