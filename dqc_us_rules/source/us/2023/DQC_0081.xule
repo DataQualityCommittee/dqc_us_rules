@@ -61,7 +61,7 @@ for ($network in $extCalcRelationship1.keys)
 				$detailed_message = filter $MESSAGE_FOR_RULE_9277 where ($item[1] == $inappropriate_child.concept.name and $item[2] == $extCalcSourceName) returns $item[3];
 				
 				/** Check for Actual values in the filing **/
-				exists($inappropriate_child) and 
+				$test = exists($inappropriate_child) and 
 				exists($source_value) and
 				
 				/** Read list of elements that can have any siblings demoted to a child except the exceptions. Any source elements of the inconsistencies in this list will not be reported -- This is typically "Other elments".  These 2 checks are run at the end so they are only checked for a limited set of relationships.**/
@@ -74,7 +74,8 @@ for ($network in $extCalcRelationship1.keys)
 						$descendants_of_demotable_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
 						not $extCalcRelationship.target.name in $descendants_of_demotable_child
 					else
-						true))
+						true));
+				$test
 			else
 				false
 	 
@@ -105,10 +106,6 @@ ASSERT US.0081.9278 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** Get all the calculations defined in the Instance document. **/
-
-if $STATEMENT_CONCEPTS == none
-	skip
-else
 
 	$fact_concepts = set([nonils covered @concept in $STATEMENT_CONCEPTS where $fact.is-monetary].concept.name);
 
@@ -144,7 +141,7 @@ else
 					$detailed_message = filter $MESSAGE_FOR_RULE_9278 where ($item[1] == $inappropriate_sibling.concept.name and $item[2] == $value-con) returns $item[3];
 
 					$source_value = [nonils @concept = $value-con];
-						$inconsistencies.length > 0 and 
+					$test =	$inconsistencies.length > 0 and 
 						exists($inappropriate_sibling) and 
 						exists($source_value) and
 						not any(set(for ($parent in $PARENT_ELEMENTS_WITH_CHILDREN_PROMOTABLE_TO_SIBLING)
@@ -156,7 +153,8 @@ else
 								$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
 								not $extCalcRelationship.target.name in $descendants_of_promoted_child
 							else
-								true))
+								true));
+					$test
 				
 	 
 message
@@ -216,7 +214,7 @@ for ($value-con in $value-concepts)
 				$detailed_message = filter $MESSAGE_FOR_RULE_9278 where ($item[1] == $inappropriate_sibling.concept.name and $item[2] == $value-con) returns $item[3];
 
 				$source_value = [nonils @concept = $value-con];
-					$inconsistencies.length > 0 and 
+					$test = $inconsistencies.length > 0 and 
 					exists($inappropriate_sibling) and 
 					exists($source_value) and
 					not any(set(for ($parent in $PARENT_ELEMENTS_WITH_CHILDREN_PROMOTABLE_TO_SIBLING)
@@ -228,7 +226,8 @@ for ($value-con in $value-concepts)
 							$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
 							not $extCalcRelationship.target.name in $descendants_of_promoted_child
 						else
-							true))
+							true));
+					$test
 				
 	 
 message

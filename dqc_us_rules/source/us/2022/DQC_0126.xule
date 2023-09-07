@@ -33,11 +33,7 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 			$fs_fact_values_decimals = filter (list([nonils covered @concept in $calcNetworkSource])) returns $item.decimals;
 			$fs_decimals = most_frequent($fs_fact_values_decimals)
 
-			for $concept_item in $calcNetworkSource
-				if $concept_item == none
-					skip
-				else
-				
+			for $concept_item in filter $calcNetworkSource where $item != none
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $presNetwork.role.uri returns  (target-name, weight);
 					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/	

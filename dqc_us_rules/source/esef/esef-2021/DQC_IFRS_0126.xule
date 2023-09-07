@@ -67,10 +67,7 @@ for $presNetwork in $presNetworks.sort
 			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $presNetwork.role.uri returns set (source-name);
 
-			for $concept_item in $calcNetworkSource
-				if $concept_item == none
-					skip
-				else
+			for $concept_item in (filter $calcNetworkSource where $item != none)
 				
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $presNetwork.role.uri returns  (target-name, weight);

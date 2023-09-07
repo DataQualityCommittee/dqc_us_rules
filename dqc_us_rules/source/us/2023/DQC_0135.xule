@@ -6,7 +6,6 @@ DQC Rules
 Taxonomy: US GAAP 2022
 **/
 
-
 rule-name-prefix DQC
 
 assert US.0135.9835 satisfied
@@ -14,27 +13,25 @@ assert US.0135.9835 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 $decimal_tolerance_factor = 20
 
-/** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+/** Identify all presentation networks in the company extension **/
+	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
+
+/** Is this report a 10-K  and  eliminate reports with no presentations such as an 8-K with no financial data **/
+if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType']) and $fsNetworks.length > 0
 	
 	/** Identify all presentation networks in the company extension **/
 	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
 
-	/** eliminate reports with no presentations such as an 8-K with no financial data**/
-	if $fsNetworks.length == 0
-			skip
-	else
+	/** Get all concepts in FS Networks **/
+	$fsConcepts = sum(set(for ($network in $fsNetworks)
+								$network.concepts));
 
-		/** Get all concepts in FS Networks **/
-		$fsConcepts = sum(set(for ($network in $fsNetworks)
-									$network.concepts));
+	/** Get the QName of FS elements that are monetary **/
+	$fsConceptsQname_pre_all = filter $fsConcepts where $item.is-monetary returns $item.name;
 
-		/** Get the QName of FS elements that are monetary **/
-		$fsConceptsQname_pre_all = filter $fsConcepts where $item.is-monetary returns $item.name;
+	/** Get calculation descendants of $fsConceptsQname as this indicates they have a reconciliation of the items in the financials**/
 
-		/** Get calculation descendants of $fsConceptsQname as this indicates they have a reconciliation of the items in the financials**/
-
-		$fsConceptsQname = navigate summation-item descendants include start from $fsConceptsQname_pre_all returns set (target-name)
+	$fsConceptsQname = navigate summation-item descendants include start from $fsConceptsQname_pre_all returns set (target-name)
 
 		/** Get the list of items to check **/
 		for $ext_pairs in $EXT_ENUM
@@ -43,6 +40,10 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			$NotDisclosedAsImmaterial = $related_ext_enum.local-name + 'NotDisclosedFlag'
 
 			$FS_Concepts_With_OCI = set(FairValueAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueAssetRecurringBasisStillHeldUnrealizedGainLossOci, FairValueLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueNetDerivativeAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueRecurringBasisUnobservableInputReconciliationAssetLiabilityGainLossOci);
+
+			/** get set of ancestor calculation concepts and test if in financial statement items to exclude from rule as has linkage back to financials through a calculation**/
+
+			$fsConceptsQnameAncestor = navigate summation-item ancestors from $FS_concept returns set (target-name)
 
 			/** Identify if required element disclosure  is contained in the financial statements 
 			** Exclude lease items already checked in other rules.
@@ -53,21 +54,13 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				 or ($FS_concept in ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets))).length > 0)
 				 or ($FS_concept in ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeLiabilities))).length > 0)
 				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
+				 /** We do not get calc ancestors defined in the taxonomy as this would potentially return something in the FS.  We deal with the pension case of NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent above as this calc will not be defined in the company calc
+				as it excludes service costs. **/
+				 or $fsConceptsQnameAncestor.intersect($fsConceptsQname).length > 0
                     
 				/** If the concept is in the FSor its equivalent is then stop the rule **/
-				false
+				skip
 			else
-
-				/** get set of ancestor calculation concepts and test if in financial statement items to exclude from rule as has linkage back to financials through a calculation**/
-
-				$fsConceptsQnameAncestor = navigate summation-item ancestors from $FS_concept returns set (target-name)
-
-				/** We do not get calc ancestors defined in the taxonomy as this would potentially return something in the FS.  We deal with the pension case of NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent above as this calc will not be defined in the company calc
-				as it excludes service costs. **/
-				
-				if $fsConceptsQnameAncestor.intersect($fsConceptsQname).length > 0
-					false
-				else
 					/** Get a list of values for this element, but exclude detailed breakdowns of disclosure for financial instruments **/
 					/** But exclude some member items not to check **/
 					$FairValueBreakdownItemsNotChecked = list(FairValueInputsLevel2Member, FairValueInputsLevel1Member, FairValueMeasuredAtNetAssetValuePerShareMember, FairValueInputsLevel12And3Member)
@@ -122,10 +115,8 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 							$FS_Concept_Item_max_first = first($FS_Concept_Item_abs_sort)
 							$FS_Concept_Item_max = $FS_Concept_Item_max_first[2]
 							/** Test if amount is larger than tolerance **/
-							if max($FS_Concept_Item_abs_only) > $tolerance
-								true
-							else 
-								false
+							max($FS_Concept_Item_abs_only) > $tolerance
+								
 					else
 						false
 else
@@ -210,17 +201,12 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 					$FS_Concept_Item = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
 				    
-				
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					if exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
+					not exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
 						
-							false
-					else 
-						
-							true
 				else
 					$FS_Concept_Item = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
 					
@@ -228,12 +214,8 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					if exists({nonils @concept = $related_ext_enum @@IncomeStatementLocationAxis = *})
-						
-							false
-					else 
-						
-							true
+					not exists({nonils @concept = $related_ext_enum @@IncomeStatementLocationAxis = *})
+					
 else
  	false
  
