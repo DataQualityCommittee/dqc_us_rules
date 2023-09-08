@@ -24,14 +24,20 @@ $document_period_start_date = $document_period.period.start;
 
 $cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
 
-for $presNetwork in (filter $STATEMENT_PRES_NETWORKS where $item.role.uri not in $cubeURISet).sort
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
 /** get the presentation items aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
 			
         $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
          /** This rule applies where no table is used. **/
-         
-			for $concept_item in filter $presItems where $item != none
+         if $presNetwork.role.uri in $cubeURISet
+            skip
+         else 
+
+			for $concept_item in $presItems
+				if $concept_item == none
+					skip
+				else
 				
 					/** Determine if each concept has a default value **/
 
@@ -60,7 +66,10 @@ for $presNetwork in (filter $STATEMENT_PRES_NETWORKS where $item.role.uri not in
 
                         $ConsolidatedEntitiesAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ConsolidatedEntitiesAxis'));
 
-                       not ($legalEntityAxisUsed or $InvestmentAxisUsed or $ConsolidatedEntitiesAxisUsed)
+                        if ($legalEntityAxisUsed or $InvestmentAxisUsed or $ConsolidatedEntitiesAxisUsed)
+                            false
+                        else 
+                            true
                     else
                         false
 
@@ -136,8 +145,10 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
                     $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
 
-                    $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
-                       
+                    if $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
+                        true
+                    else
+                        false
          else 
 			skip
 

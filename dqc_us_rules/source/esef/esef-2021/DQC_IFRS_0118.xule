@@ -61,9 +61,9 @@ for $cube in $statementCubes.sort
 			/** get the calculations aligned with the cube role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns set (source-name);
 			
-			$conceptsInCube = filter $cube.primary-concepts.name;
+			$conceptsInCube = filter $cube.facts returns $item.concept.name;
 
-			for $concept_item in (filter $calcNetworkSource where $item != none).intersect($conceptsInCube.to-set)
+			for $concept_item in $calcNetworkSource
 
 				/** Work out the decimals used in the financial statements **/
 				$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource @cube.drs-role = $cube.drs-role})) returns $item.decimals;
@@ -74,6 +74,10 @@ for $cube in $statementCubes.sort
 							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
 						else
 							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
+
+				if $concept_item == none or (length($calcNetworkSource.intersect($conceptsInCube.to-set))==0)
+					skip
+				else
 				
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);

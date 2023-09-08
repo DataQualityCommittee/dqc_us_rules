@@ -14,15 +14,16 @@ assert US.0135.9835 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 $decimal_tolerance_factor = 20
 
-/** Identify all presentation networks in the company extension **/
-	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
-
-/** Is this report a 10-K  and  eliminate reports with no presentations such as an 8-K with no financial data **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType']) and $fsNetworks.length > 0
+/** Is this report a 10-K **/
+if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
 
+	/** eliminate reports with no presentations such as an 8-K with no financial data**/
+	if $fsNetworks.length == 0
+			skip
+	else
 
 		/** Get all concepts in FS Networks **/
 		$fsConcepts = sum(set(for ($network in $fsNetworks)
@@ -121,8 +122,10 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 							$FS_Concept_Item_max_first = first($FS_Concept_Item_abs_sort)
 							$FS_Concept_Item_max = $FS_Concept_Item_max_first[2]
 							/** Test if amount is larger than tolerance **/
-							max($FS_Concept_Item_abs_only) > $tolerance
-								
+							if max($FS_Concept_Item_abs_only) > $tolerance
+								true
+							else 
+								false
 					else
 						false
 else
@@ -212,7 +215,12 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					not exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
+					if exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
+						
+							false
+					else 
+						
+							true
 				else
 					$FS_Concept_Item = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
 					
@@ -220,7 +228,12 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					not exists({nonils @concept = $related_ext_enum @@IncomeStatementLocationAxis = *})
+					if exists({nonils @concept = $related_ext_enum @@IncomeStatementLocationAxis = *})
+						
+							false
+					else 
+						
+							true
 else
  	false
  

@@ -177,6 +177,9 @@ for $drs_role in $drs_roles
 
 			$factsWithMutipleDimensions = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = * where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length == 2})
 
+			if $factsWithMutipleDimensions.length == 0
+				skip
+			else
 				/**Step2 Identify members of TargetDim with more than one dimension so we can determine if a subtotal was included.
 				**/
 				$MembersOfTargetDim = (filter $factsWithMutipleDimensions returns $item.dimension($dim).name).to-set
