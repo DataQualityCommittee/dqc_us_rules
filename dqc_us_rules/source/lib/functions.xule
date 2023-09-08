@@ -666,7 +666,7 @@ constant $ALPHA_CODE_LOOKUP = 	dict(
 ** @return numeric - Returns a numerical value.
 **/
 
-function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
+function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $sum2)
 			/** Identify Non Added dimensions **/
 			$nonAddedDimensions = set('LegalEntityAxis','StatementScenarioAxis')
 
@@ -705,9 +705,9 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
 												if  list({ nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list}).length > 0
 													skip
 												else
-													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member }
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
 											else
-												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member });
+												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
 
 												/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 						/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
@@ -746,7 +746,7 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
 											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 in $ancestors_list2]).length > 0
 												skip
 											else
-												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2]
+												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2 @@period = $sum2.period]
 									);
 
 										/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
@@ -769,14 +769,14 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept)
 ** @return list - Returns a numerical value.
 **/
 
-function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept)
+function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept, $sum2)
 			/** Identify Non Added dimensions **/
 			$nonAddedDimensions = set('LegalEntityAxis','StatementScenarioAxis')
 
 			/** Get the parent dimensions **/
 
 			/**These have to be removed from any of the tests as we are already in that dimension **/
-			$parentDimensions = sum(set({covered nonils @concept = $parentConcept @cube.drs-role = $cube.drs-role where $fact.dimensions.keys.count == ($dimensions_of_sum - 1)}.dimensions.keys))
+			$parentDimensions = sum(set({covered nonils @concept = $parentConcept @cube.drs-role = $cube.drs-role  where $fact.dimensions.keys.count == ($dimensions_of_sum - 1)}.dimensions.keys))
 
 			/** Get the dimensions in the cube **/
 			
@@ -805,12 +805,12 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept)
 						$valid_facts = list(for $member in $member_descendants.to-list.sort
 											$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
 											if $ancestors_list.length > 0
-												if  list({ nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list}).length > 0
+												if  list({ nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list }).length > 0
 													skip
 												else
-													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member }
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
 											else
-												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member });
+												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
 
 												/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 						/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
@@ -846,10 +846,10 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept)
 										$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
 										for $member2 in $member_descendants2.to-list.sort
 											$ancestors_list2 = (navigate dimensions domain-member ancestors from $member2 drs-role $cube.drs-role returns set (target-name)) - $domain2;
-											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 = $ancestors_list2]).length > 0
+											if ($ancestors_list.length > 0 or $ancestors_list2.length > 0) and list([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list @$dim2 = $ancestors_list2 ]).length > 0
 												skip
 											else
-												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2]
+												[nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$dim2 = $member2 @@period = $sum2.period]
 									);
 
 										/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
@@ -898,3 +898,32 @@ if (abs(round($left,$tolerance1) - round($right,$tolerance1)*$weight) > $toleran
 	true
 else 
 	false 
+
+
+function calculationExplananation($addendComponents, $cube, $concept_item, $fs_decimals, $sum2)
+								sum(list(for $k in $addendComponents
+													$targetElement = $k[3];
+													
+													$DefaultMessage =  if exists({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role @@period=$sum2.period})
+																			"" 
+																		else 
+																			$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item, $sum2), getDimensionNames($targetElement , $cube, 2, $concept_item, $sum2)))
+																			$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
+																			$DimString2 = $DimString.join(' | ');
+																			" (" + $DimString2 + ")"
+													
+													$factAmt = $k[4]
+														
+													$factDecimals = $k[5]
+													$weight =  if $k[2] == 1
+																		"+"
+																else
+																		"-";
+													$strLength = $targetElement.local-name.string.length;
+													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
+																					" " 
+																					)
+																			);
+											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
+													)
+									)
