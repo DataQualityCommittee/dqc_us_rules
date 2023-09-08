@@ -21,7 +21,7 @@ for $cube in $STATEMENT_CUBES.sort
 			/** get the calculations aligned with the cube role.  We assume that the same role is used for the cube and the dimension**/
 			$calcNetworkSource = navigate summation-item descendants include start role $cube.drs-role.uri returns set (source-name);
 			
-			$conceptsInCube = filter $cube.facts returns $item.concept.name;
+			$conceptsInCube = filter $cube.primary-concepts.name;
 
 			/** Get Dimension Information **/
 			$dimensions = $cube.dimensions;
@@ -37,48 +37,50 @@ for $cube in $STATEMENT_CUBES.sort
 			$textDefault = filter $DefaultPresentation where $item[2].text.lower-case.contains('default')
 			$MissingDefaultLabel = filter $textDefault returns $item[1]
 
-			$legalEntityAxis = qname($dei_namespace,'LegalEntityAxis')
-			/** Check if the statement cube contains any facts with the legal entity Axis **/
-			$LegalEntityFactsInCube = list({nonils covered @concept = * @cube = $cube  @$legalEntityAxis = *})
+			$fs_fact_values_decimals = filter (list({nonils covered @cube.drs-role = $cube.drs-role})) returns $item.decimals;
+					$fs_decimals = most_frequent($fs_fact_values_decimals)
 
-			$LegalEntityAxisInCube = if $LegalEntityFactsInCube.length > 0
-										filter $dimObjects where $item.local-name == 'LegalEntityAxis' returns $item
-									else
-										set()
+			for $concept_item in ($calcNetworkSource.intersect($conceptsInCube.to-set))
 
-			for $concept_item in $calcNetworkSource
-
-			/**DOnt run the rule if the concept is none or the concept has no value in the cube or the total uses PledgedStatusAxis or the StatementBusinessSegmentsAxis**/
+				/**DOnt run the rule if the concept is none or the concept has no value in the cube or the total uses PledgedStatusAxis or StatementBusinessSegmentsAxis**/
 
 				/**Add to AxisNotToCheck any fact total we do not want to check adds because it has an axis that will not apply across all children of the calc **/
 				$AxisNotToCheck = set(PledgedStatusAxis, StatementBusinessSegmentsAxis)
+				
+				/** Get the reported total to compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
+				$sum2 = if taxonomy().concept($concept_item).period-type == duration
+							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
+						else
+							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
+
+
 				/** first value is used to eliminate none value **/
-				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set({covered nonils @concept = $concept_item @cube.drs-role = $cube.drs-role }.dimensions.keys.name)),set()) intersect $AxisNotToCheck).length > 0
-				if $concept_item == none or (length(first-value($calcNetworkSource,set()).intersect($conceptsInCube.to-set))==0) or $TotalsWithAxisNotToCheckFlag
+				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set($sum2.dimensions.keys.name)),set()) intersect $AxisNotToCheck).length > 0 
+
+				if $concept_item == none  or $sum2 == none or $TotalsWithAxisNotToCheckFlag
 					skip
 				else
+
+					$Sum2Dimensions = $sum2.dimensions
 				
 					/** Determine the children of the concept to check **/
 					$calcComponents = navigate summation-item children from $concept_item role $cube.drs-role.uri returns  (target-name, weight);
-
-					/** Work out the decimals used in the financial statements **/
-					$fs_fact_values_decimals = filter (list({nonils covered @concept in $calcNetworkSource @cube.drs-role = $cube.drs-role})) returns $item.decimals;
-					$fs_decimals = most_frequent($fs_fact_values_decimals)
 
 					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/
 
 					$addendComponents = (list(for $x in $calcComponents
 											$targetElement = $x[1];
 											$targetWeight = $x[2];
+											$factInfo = list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role @@period = $sum2.period where $Sum2Dimensions == $fact.dimensions})
 
-											$factValue = first-value({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals == $fs_decimals}, first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals >= $fs_decimals})), max(list(getDimensionSums($targetElement, $cube, 1, $concept_item))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item))), first(list({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role where $fact.decimals < $fs_decimals})));
+											$factValue = first-value(first(filter $factInfo where $item.decimals == $fs_decimals), first(filter $factInfo where $item.decimals >= $fs_decimals),  max(list(getDimensionSums($targetElement, $cube, 1, $concept_item, $sum2))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item, $sum2))), first(filter $factInfo where $item.decimals < $fs_decimals));
 											
 											if exists($factValue)
 												list($factValue, $targetWeight, $targetElement, $factValue.string, $factValue.decimals)	
 											else
 												skip	
 									)
-									);							
+									);								
 
 					$addend = sum(list(for $j in $addendComponents 
 											/** IMPORTANT **/
@@ -92,35 +94,7 @@ for $cube in $STATEMENT_CUBES.sort
 											)
 											);
 									/** Capture in a string what calc was performed  above to report in the rule message. **/
-					$addend_string = sum(list(for $k in $addendComponents
-													$targetElement = $k[3];
-													$defaultFact = if exists({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role})
-																		true
-																	else
-																		false;
-													
-
-													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item), getDimensionNames($targetElement , $cube, 2, $concept_item)))
-													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
-													$DimString2 = $DimString.join(' | ');
-													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";
-													
-													$factAmt = $k[4]
-														
-
-													$factDecimals = $k[5]
-													$weight =  if $k[2] == 1
-																		"+"
-																else
-																		"-";
-													$strLength = $targetElement.local-name.string.length;
-													$pad = sum(list(for $x in range(120 - $strLength - $factAmt.length - $DefaultMessage.length)
-																					" " 
-																					)
-																			);
-											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
-													)
-									);
+					
 
 					$addend_facts = (list(for $x in $addendComponents
 											$x[1]	
@@ -131,12 +105,6 @@ for $cube in $STATEMENT_CUBES.sort
 									)
 									);
 
-					/** Get the reported total to compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
-					$sum2 = if taxonomy().concept($concept_item).period-type == duration
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals}
-							else
-								{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
-	
 					/** REMOVE DEFAULT FROM CALCULATION TEST **/
 					
 					$sum2Dimensions = $sum2.dimensions.keys.name
@@ -148,7 +116,7 @@ for $cube in $STATEMENT_CUBES.sort
 
 					/** HANDLE CONSOLIDATED ITEMS AXIS FACTS **/
 					/** Identify if facts exist for the ConsolidatedEntitiesAxis dimension in a notes hypercube that could possibly bleed though in the financials **/
-					$factsInNotes = list([nonils @concept in $addend_Concepts  @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = *])
+					$factsInNotes = list([nonils @concept in $addend_Concepts  @cube in $NOTES_CUBES  @srt:ConsolidatedEntitiesAxis = * @@period = $sum2.period])
 
 					$noFactsInNotes = $factsInNotes.length == 0;
 
@@ -160,7 +128,7 @@ for $cube in $STATEMENT_CUBES.sort
 
 					/** Dimension to check **/
 					/** Identify the axis that indicate their default values should not have a  calculation check**/
-					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults + $LegalEntityAxisInCube + $ConsolidatedEntityAxisInCube
+					$AxisDefaultsNotToCheck = $MissingDefaultLabel + $MissingDefaults  + $ConsolidatedEntityAxisInCube
 					/** Identify if the current iteration is a default by taking the table dimensions deducting the dimensions
 					of the fact and seeing if the resulting set intersects with the axis that are not checked.  If this is greater than zero
 					it means that the sum fact does not have a dimension (default) and the default of the dimensions has been tagged not to add. **/
@@ -180,9 +148,10 @@ for $cube in $STATEMENT_CUBES.sort
 										
 					/** END ***/
 
-					if $addend == none or $sum2 == none or $DefaultCheckflag
+					if $addend == none or $DefaultCheckflag or not tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
 						skip
 					else
+						$addend_string = calculationExplananation($addendComponents, $cube, $concept_item, $fs_decimals, $sum2)
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
 						/** Deals with FASB Guidance **/
 						if $concept_item in list(NoninterestIncome) and length($calcComponentConcepts intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax))> 0
