@@ -13,6 +13,12 @@ ASSERT US.0159.10081 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$liquidation_networks = filter $PRES_NETWORKS where $item.concept-names.intersect($LIQUIDATION_BASIS_CONCEPTS) returns $item;
+
+if $liquidation_networks.length > 0
+    skip
+else
+
 $All_statement_abstract_elements = sum(set(for $presNetwork in $BROAD_STATEMENT_PRES_NETWORKS.sort
 		                        filter $presNetwork.concepts where $item.is-abstract returns $item.name))
 
