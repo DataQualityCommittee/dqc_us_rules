@@ -17,7 +17,7 @@ $decimal_tolerance_factor = 3
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average') 
-				and $fact.dimensions-typed.keys.length == 0  /** TODO - Exclude typed dimensions as they cause a xule error as tries to recognize the typed value as a qname. XULE Processor - line 4796, in convert_value_to_qname **/
+				and $fact.dimensions-typed.keys.length == 0  /* TODO - Exclude typed dimensions as they cause a xule error as tries to recognize the typed value as a qname. XULE Processor - line 4796, in convert_value_to_qname */
 	  	 	    and not $NON_ADDITIVE_DURATION_CONCEPTS.contains($fact.concept.name)};
 				
 

@@ -26,7 +26,7 @@ else
 	$parentMember = navigate dimensions descendants from DefinedBenefitPlanByPlanAssetCategoriesAxis to $childMember where $relationship.target == $childMember returns source-name;
 	
 	if (DefinedBenefitPlanByPlanAssetCategoriesAxis in  $parentMember)
-		$message_inv_in_cat = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount} should not be a direct child of DefinedBenefitPlanByPlanAssetCategoriesAxis .  The element {$ComponentAmount.concept} is supposed to be used as a  component of DefinedBenefitPlanFairValueOfPlanAssets with a more specific member.  This member should appear on the DefinedBenefitPlanByPlanAssetCategoriesAxis as a child of the member used to report the value for DefinedBenefitPlanFairValueOfPlanAssets.";
+		$message_inv_in_cat = "It is expected that the concept {$ComponentAmount.concept} with a value of {$ComponentAmount} should not be a direct child of DefinedBenefitPlanByPlanAssetCategoriesAxis.  The element {$ComponentAmount.concept} is supposed to be used as a  component of DefinedBenefitPlanFairValueOfPlanAssets with a more specific member.  This member should appear on the DefinedBenefitPlanByPlanAssetCategoriesAxis as a child of the member used to report the value for DefinedBenefitPlanFairValueOfPlanAssets.";
 		true
 	else
 		false
