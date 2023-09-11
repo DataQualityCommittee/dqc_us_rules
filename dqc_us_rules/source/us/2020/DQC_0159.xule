@@ -13,7 +13,7 @@ ASSERT US.0159.10081 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$liquidation_networks = filter $PRES_NETWORKS where $item.concept-names.intersect($LIQUIDATION_BASIS_CONCEPTS) returns $item;
+$liquidation_networks = filter $PRES_NETWORKS where ($item.concept-names.intersect($LIQUIDATION_BASIS_CONCEPTS)).length > 0 returns $item;
 
 if $liquidation_networks.length > 0
     skip
