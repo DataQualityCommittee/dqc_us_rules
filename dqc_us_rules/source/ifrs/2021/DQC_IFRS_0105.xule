@@ -86,7 +86,12 @@ for $presNetwork in $presNetworks
                                                                     skip);
                                         $calcItems = sum($calcspresentSet);
                                         
-                                        $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set)
+                                         /** Revenue can be excluded because under IFRS the Income Statement does not require that COS is reported so a calculation canot be defined in these cases - Arghh **/
+                                        $RevenueException = if $presNumericItems.contains(CostOfSales) 
+                                                                set()
+                                                            else
+                                                                set(Revenue)
+                                        $presNumericItems - ($calcItems + set(ProfitLossAttributableToOwnersOfParent) + $commitItems.to-set + $contingenItems.to-set + $RevenueException)
     
         $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
                                 "

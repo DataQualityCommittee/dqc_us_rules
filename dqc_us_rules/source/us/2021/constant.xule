@@ -143,7 +143,7 @@ constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descen
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equityMethod') returns $item.name
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
 
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
@@ -482,3 +482,5 @@ constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-rol
 and ($item.drs-role.uri.lower-case.contains('segment')) 
 
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
