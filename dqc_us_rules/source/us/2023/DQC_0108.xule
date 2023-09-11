@@ -57,7 +57,9 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 
-for ($x in $NON_DIMENSIONAL_NON_NEGS)
+$non_dimensional_non_negs_monetary_duration = filter $NON_DIMENSIONAL_NON_NEGS where taxonomy().concept($item[2]).is-monetary and  taxonomy().concept($item[2]).period-type == duration returns $item[2]
+
+for ($x in $non_dimensional_non_negs_monetary_duration)
 
       $fact1 = [nonils @concept = $x @period=* ]
       $large = [nonils @concept = $x @period=* ]
