@@ -263,3 +263,5 @@ constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role
 constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
 
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $us-gaap returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
