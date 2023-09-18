@@ -34,7 +34,10 @@ else
     skip
 
 message
-"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reonciliation."
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reonciliation.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
 
 SEVERITY error
 status $status
@@ -63,7 +66,10 @@ else
     skip
 
 message
-"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reonciliation."
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reonciliation.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
 
 SEVERITY error
 status $status
@@ -84,7 +90,10 @@ for $relationship in $percentage_calc
 
 
 message
-"The calculation weight between the concept {$relationship[1]} and {$relationship[2]} is {$relationship[3]} in the extension taxonomy.  This weight does not match the weight between these two concepts defined in the US GAAP taxonomy which is {$expectedWeight}. The calculation weight for this relationship should be updated to match the US GAAP taxonomy."
+"The calculation weight between the concept {$relationship[1]} and {$relationship[2]} is {$relationship[3]} in the extension taxonomy.  This weight does not match the weight between these two concepts defined in the US GAAP taxonomy which is {$expectedWeight}. The calculation weight for this relationship should be updated to match the US GAAP taxonomy.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
 
 SEVERITY error
 status $status

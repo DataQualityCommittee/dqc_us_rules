@@ -14,7 +14,7 @@ Check no calculation in the parenthertical that includes Assets, CurrentAssets C
 https://www.sec.gov/Archives/edgar/data/1447028/000144702823000025/0001447028-23-000025-index.html
 https://www.sec.gov/Archives/edgar/data/12208/000001220823000047/0000012208-23-000047-index.html **/
 
-ASSERT US.0169.10100 SATISFIED
+ASSERT US.0169.10101 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
@@ -23,10 +23,13 @@ for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
 
 
 message
-"The parenthetical network  {$network.role.description} contains calculations. The calculation uses the following concepts:
+"The parenthetical network {$network.role.description} contains calculations. The calculation uses the following concepts:
 {$concepts.join(' /n')}
 
-These monetary concepts should not be defined in the parenthetical section of the filing and should be included in the statement calculation."
+These monetary concepts should not be defined in the parenthetical section of the filing and should be included in the statement calculation.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
 
 SEVERITY error
 status $status
