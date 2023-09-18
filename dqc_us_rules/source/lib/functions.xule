@@ -710,7 +710,7 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $
 												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
 												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
-													and $member == RelatedPartyMember 
+													and $member.local-name == 'RelatedPartyMember' 
 													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
 												else
@@ -820,7 +820,7 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept, 
 												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
 												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
-													and $member == RelatedPartyMember 
+													and $member.local-name == 'RelatedPartyMember'
 													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
 												else
