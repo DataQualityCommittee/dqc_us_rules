@@ -707,7 +707,14 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
 											else
-												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
+												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
+												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
+												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
+													and $member.local-name == 'RelatedPartyMember'
+													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
+												else
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
 
 												/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 						/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
@@ -810,7 +817,15 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept, 
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
 											else
-												{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
+												// This was added for those cases whenever companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
+												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
+												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
+													and $member.local-name == 'RelatedPartyMember'
+													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
+												else
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
+
 
 												/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 						/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
