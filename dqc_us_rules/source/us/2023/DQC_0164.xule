@@ -15,17 +15,31 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Balance SHeet location and others should not be in any statement cubes role **/
 
-for $cube in $STATEMENT_CUBES
-    $dimensionsSet = filter $cube.dimensions returns $item.concept.name 
-    for $abstract in set(BalanceSheetLocationAxis, IncomeStatementLocationAxis, OtherComprehensiveIncomeLocationAxis)
-        if $dimensionsSet.contains($abstract)
-            true
+/**Sometimes companies have a section at the bottom of the income statement that gives an alternative representation of the allocation of expense
+In these cases companies include the supplemental section showing where those amounts appear in the financials. This means that the location axis gets added
+to the financial statement.  The excluded concepts set below lists those elements that can have the location axis on the financials. These facts will be excluded
+from the execution of the rule. **/
+
+$excluded_concepts = set(AllocatedShareBasedCompensationExpense)
+
+for $cube in $STATEMENT_CUBES  // ANALYZE EACH OF THE STATEMENT CUBES
+    $dimensionsSet = filter $cube.dimensions returns $item.concept.name //GET THE DIMENSIONS ON THE CUBE
+    for $abstract in set(BalanceSheetLocationAxis, IncomeStatementLocationAxis, OtherComprehensiveIncomeLocationAxis) //LOOP THROUGH EACH LOCATION AXIS AND COMPARE TO THE CUBES DIMS
+        if $dimensionsSet.contains($abstract) //IF THE CUBE DOES NOT HAVE A LOCATION AXIS EXIT THE RULE ELSE CONTINUE
+            $facts_with_excluded_concept = list({covered @cube=$cube @$abstract = * where $fact.concept.name in $excluded_concepts}) //GET FACTS WITH ELEMENTS THAT ARE OK TO USE WITH AXIS
+            $facts_with_bad_axis = list({covered @cube=$cube @$abstract = * where $fact.concept.name not in $excluded_concepts}) // GET FACTS THAT ARE NOT OK TO USE
+            if $facts_with_bad_axis.length == 0 and $facts_with_excluded_concept.length == 0 //REPORT ERROR IF NO FACTS ARE PRESENT
+                $concepts_with_facts = "";
+                true
+            else 
+                $concepts_with_facts = "The following concepts were used with the axis" + $abstract.local-name + " : " + ((filter $facts_with_bad_axis returns $item.name.local-name).to-set).join(', ') + "."
+                $facts_with_bad_axis.length > 0 //REPORT AN ERROR IF BAD FACTS ARE USED IN THE FILING.
         else
             false
 
 message
 "The filer has used the axis {$abstract} in the financial statement presentation cube {$cube.drs-role.description}. The axis {$abstract}  should not be used in a financial statement.
-
+{$concepts_with_facts}
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
@@ -133,3 +147,7 @@ status $status
 effectiveDate $effective_dates[$ruleId]
 
 **/
+
+/* TODO 
+Add rule that lloks at income statement and checks all facts do not have incomestatement location axis 
+*/
