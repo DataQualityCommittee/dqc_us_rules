@@ -227,7 +227,7 @@ constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
 
 constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
 
-constant  $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
 	where $item.role.description.contains('148410 - Statement -') 
