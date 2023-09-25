@@ -23,7 +23,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 				
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) or ($networkPresRole.length == 0)
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
@@ -40,7 +40,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $us-gaap returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
                     $root_string = "The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing, which should appear as calculation descendants of "+ $root.local-name + ". These sibling elements are defined as calculation descendants in the US GAAP taxonomy.";
                     
@@ -63,7 +63,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(IncomeStatementAbstract) or $item.role.uri.lower-case.contains('incomestatement')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 				
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) or ($networkPresRole.length == 0)
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
@@ -80,7 +80,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $us-gaap returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
                     $root_string = "The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing, which should appear as calculation descendants of "+ $root.local-name + ". These sibling elements are defined as calculation descendants in the US GAAP taxonomy.";
                      
@@ -104,7 +104,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfIncomeAndComprehensiveIncomeAbstract) or $item.role.uri.lower-case.contains('comprehensiveincome')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') and not $item.role.uri.lower-case.contains('incomestatement') returns $item.role;
 				
-if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $report_type_exclusions})))) or ($networkPresRole.length == 0)
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
@@ -121,7 +121,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $us-gaap returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
                     $root_string = "The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing, which should appear as calculation descendants of "+ $root.local-name + ". These sibling elements are defined as calculation descendants in the US GAAP taxonomy.";
                      
