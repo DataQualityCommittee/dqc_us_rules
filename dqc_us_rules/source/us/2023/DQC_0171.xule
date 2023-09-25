@@ -9,7 +9,7 @@ Taxonomy: US GAAP 2023
 
 
 /**
-Check that buy or sell shares as insiders with none for the period tag boolean flags as false. **/
+Check that transition elemnts are not used 2023 taxonomy and above.**/
 
 ASSERT US.0171.10104 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
@@ -21,7 +21,7 @@ $ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividu
 exists({@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}#TransFact)
 
 message
-"The element {$TransFact.concept.name} with a value of  {$TransFact} has been used in the filing.  This element was transitioned as part of ASU201613. Replace this element with a valid element from the US GAAP taxonomy .
+"The element {$TransFact.concept.name} with a value of  {$TransFact} has been used in the filing.  This element was transitioned as part of ASU201613. Replace this element with a valid element from the US GAAP taxonomy.
 
 The properties of this {$TransFact.concept.name} fact are:
 
