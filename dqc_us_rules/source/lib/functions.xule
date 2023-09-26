@@ -709,10 +709,10 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $
 											else
 												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
-												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
-													and $member.local-name == 'RelatedPartyMember'
+												if $dim.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[1] 
+													and $member.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[2]  
 													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
-													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$COUNTERPARTY_DIMENSION @@period = $sum2.period}
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
 
@@ -776,14 +776,14 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $
 ** @return list - Returns a numerical value.
 **/
 
-function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept, $sum2)
+function getDimensionNames($concept, $cube, $dimensions_of_sum, $sum2)
 			/** Identify Non Added dimensions **/
 			$nonAddedDimensions = set('LegalEntityAxis','StatementScenarioAxis')
 
 			/** Get the parent dimensions **/
 
 			/**These have to be removed from any of the tests as we are already in that dimension **/
-			$parentDimensions = sum(set({covered nonils @concept = $parentConcept @cube.drs-role = $cube.drs-role  where $fact.dimensions.keys.count == ($dimensions_of_sum - 1)}.dimensions.keys))
+			$parentDimensions = sum(set({covered nonils @concept = $sum2.name @cube.drs-role = $cube.drs-role  where $fact.dimensions.keys.count == ($dimensions_of_sum - 1)}.dimensions.keys))
 
 			/** Get the dimensions in the cube **/
 			
@@ -819,10 +819,10 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $parentConcept, 
 											else
 												// This was added for those cases whenever companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
-												if $dim == RelatedPartyTransactionsByRelatedPartyAxis 
-													and $member.local-name == 'RelatedPartyMember'
+												if $dim.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[1] 
+													and $member.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[2] 
 													and missing([nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period])
-													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @srt:CounterpartyNameAxis @@period = $sum2.period}
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$COUNTERPARTY_DIMENSION @@period = $sum2.period}
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
 
@@ -922,7 +922,7 @@ function calculationExplananation($addendComponents, $cube, $concept_item, $fs_d
 													$DefaultMessage =  if exists({nonils @concept = $targetElement @cube.drs-role = $cube.drs-role @@period=$sum2.period})
 																			"" 
 																		else 
-																			$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item, $sum2), getDimensionNames($targetElement , $cube, 2, $concept_item, $sum2)))
+																			$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $sum2), getDimensionNames($targetElement , $cube, 2, $sum2)))
 																			$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 																			$DimString2 = $DimString.join(' | ');
 																			" (" + $DimString2 + ")"
