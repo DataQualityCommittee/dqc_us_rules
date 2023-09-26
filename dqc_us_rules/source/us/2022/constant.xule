@@ -523,3 +523,7 @@ and ($item.drs-role.uri.lower-case.contains('segment')) and not ($item.drs-role.
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
 
 constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
