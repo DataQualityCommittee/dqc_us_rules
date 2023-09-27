@@ -190,6 +190,10 @@ constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
 
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
 	or $item.role.description.contains('148411 - Statement -') 
 	or $item.role.description.contains('148412 - Statement -')
@@ -484,3 +488,7 @@ and ($item.drs-role.uri.lower-case.contains('segment'))
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
 
 constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
