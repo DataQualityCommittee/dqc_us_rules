@@ -10,7 +10,7 @@ Taxonomy: US GAAP 2023
 RULE-NAME-PREFIX DQC
 
 
-Assert US.0166.10092 satisfied
+Assert US.0166.10090 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $conceptsInCube = set({covered @cube=*}.concept)
@@ -20,7 +20,7 @@ $factsNotIncubes = list({covered @ where $fact.dimensions.length > 0 and $fact.c
 for $fact2 in $factsNotIncubes
    $IncludesTypedDim = $fact2.dimensions.keys.name intersect set(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)
    $IncludesECDDimension = $fact2.dimensions.keys.name.namespace-uri intersect set('http://xbrl.sec.gov/ecd/2023');
-   $IncludesTypedDim.length == 0 or $IncludesECDDimension == 0
+   $IncludesTypedDim.length == 0 and $IncludesECDDimension == 0
 message
 "A value of {$fact2} was reported for the concept {$fact2.concept.name}.  This value has dimensions of  {$fact2.dimensions.join(', ','=')} but this fact is not included in a dimensional table ( hypercube). All dimensional facts should be included in a hypercube.
 
