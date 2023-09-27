@@ -81,7 +81,10 @@ $percentage_calc = navigate summation-item  descendants from EffectiveIncomeTaxR
 
 for $relationship in $percentage_calc
     $expectedWeight = $US-GAAP.effective-weight($relationship[1],$relationship[2])
-    $relationship[3] != $expectedWeight
+    if $expectedWeight == none
+        skip
+    else
+        $relationship[3] != $expectedWeight
 
 
 message
