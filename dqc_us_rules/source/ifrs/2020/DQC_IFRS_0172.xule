@@ -7,14 +7,14 @@ Taxonomy: IFRS 2020
 
 **/
 
-
+RULE-NAME-PREFIX DQC
 /**
 If “ifrs-full_RightofuseAssets” is presented somewhere in the file but not separately reported on the Balance Sheet, then filers should use the new element “Property, plant and equipment including right-of-use assets” (rather than Property, plant and equipment) on the balance sheet.  **/
 
 ASSERT IFRS.0172.10113 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
+$networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item;
 
 $BSConcepts = $networkPresRole.concepts
 $ROUAssets = {@concept = RightofuseAssets}

@@ -7,7 +7,7 @@ Taxonomy: US GAAP 2023
 
 **/
 
-
+RULE-NAME-PREFIX DQC
 /**
 Check no calculation in the parenthertical that includes Assets, CurrentAssets CurrentLiabilites, Liabilities etc 
 https://www.sec.gov/Archives/edgar/data/1447028/000144702823000025/0001447028-23-000025-index.html
@@ -23,7 +23,7 @@ for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
 
 message
 "The parenthetical network {$network.role.description} contains calculations. The calculation uses the following concepts:
-{$concepts.join(' /n')}
+{$concepts.join(', ')}
 
 These monetary concepts should not be defined in the parenthetical section of the filing and should be included in the statement calculation.
 
