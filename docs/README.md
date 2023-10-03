@@ -83,16 +83,50 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Approved | 15 |
 | [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Approved | 15 |
 | [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Approved | 15 |
-| [DQC_US_0117](DQC_US_0117/DQC_0117.md) | Financial Statement Tables Dimensional Cross Check | Public Exposure for Comment | 16 | |
-| [DQC_US_0118](DQC_US_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | Public Exposure for Comment | 16 | |
-| [DQC_US_0119](DQC_US_0119/DQC_0119.md) | Income Before Tax Equity Method | Public Exposure for Comment | 16 | |
-| [DQC_US_0120](DQC_US_0120/DQC_0120.md) | Incorrect Line Item Reference | Public Exposure for Comment | 16 | |
-| [DQC_US_0121](DQC_US_0121/DQC_0121.md) | Incorrect Transition Elements Used | Public Exposure for Comment | 16 | |
-| [DQC_US_0122](DQC_US_0122/DQC_0122.md) | Components of Equity on the Balance Sheet | Public Exposure for Comment | 16 | |
-| [DQC_US_0123](DQC_US_0123/DQC_0123.md) | Missing Components of Equity Axis | Public Exposure for Comment | 16 | |
-| [DQC_US_0124](DQC_US_0124/DQC_0124.md) | Breakdown of Lease Liabilities & Assets Across Financial Statement Lines Items | Public Exposure for Comment | 16 | |
+| [DQC_US_0117](DQC_US_0117/DQC_0117.md) | Financial Statement Tables Dimensional Cross Check | Approved | 16 |
+| [DQC_US_0118](DQC_US_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | Approved | 16 |
+| [DQC_US_0119](DQC_US_0119/DQC_0119.md) | Income Before Tax Equity Method | Approved | 16 |
+| [DQC_US_0120](DQC_US_0120/DQC_0120.md) | Incorrect Line Item Reference | Approved | 16 |
+| [DQC_US_0121](DQC_US_0121/DQC_0121.md) | Incorrect Transition Elements Used | Approved | 16 |
+| [DQC_US_0122](DQC_US_0122/DQC_0122.md) | Components of Equity on the Balance Sheet | Approved | 16 |
+| [DQC_US_0123](DQC_US_0123/DQC_0123.md) | Missing Components of Equity Axis | Approved | 16 |
+| [DQC_US_0124](DQC_US_0124/DQC_0124.md) | Breakdown of Lease Liabilities & Assets Across Financial Statement Lines Items | Approved | 16 |
+| [DQC_US_0125](DQC_US_0125/DQC_0125.md) | Lease Cost Cannot be Negative | Approved | 17 |
+| [DQC_US_0126](DQC_US_0126/DQC_0126.md) | FS Calculation Check with Non-Dimensional Data | Approved | 17 |
+| [DQC_US_0127](DQC_US_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | Approved | 17 |
+| [DQC_US_0128](DQC_US_0128/DQC_0128.md) | Dimensional Values Larger than the Default | Approved | 17 |
+| [DQC_US_0129](DQC_US_0129/DQC_0129.md) | Dimensional Equivalents IFRS | Approved | 17 |
+| [DQC_US_0130](DQC_US_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
+| [DQC_US_0131](DQC_US_0131/DQC_0131.md) | Lease Allocation in Balance Sheet | Approved | 17 |
+| [DQC_US_0132](DQC_US_0132/DQC_0132.md) | Operating Lease Amortization | Approved | 17 |
+| [DQC_US_0133](DQC_US_0133/DQC_0133.md) | Equity Method Investment Reporting | Approved | 18 |
+| [DQC_US_0134](DQC_US_0134/DQC_0134.md) | Investment Schedule - Financial Instrument Axis | Approved | 18 |
+| [DQC_US_0135](DQC_US_0135/DQC_0135.md) | Extensible Enumerations for Financial Statement Captions | Approved | 18 |
+| [DQC_US_0136](DQC_US_0136/DQC_0136.md) | Caption Value Matches Financial Statements | Approved | 18 |
+| [DQC_US_0137](DQC_US_0137/DQC_0137.md) | Location Axis with a Single Member | Approved | 18 |
+| [DQC_US_0139](DQC_US_0139/DQC_0139.md) | Bank Ratios - Scale Issues | Approved | 19 |
+| [DQC_US_0140](DQC_US_0140/DQC_0140.md) | Investment Schedule Cross Calc | Approved | 19 |
+| [DQC_US_0141](DQC_US_0141/DQC_0141.md) | Inconsistent Accrued Interest Elements | Approved | 19 |
+| [DQC_US_0142](DQC_US_0142/DQC_0142.md) | Typed Dimension Axis Restriction | Approved | 20 |
+| [DQC_US_0143](DQC_US_0143/DQC_0143.md) | Derivative Position Extensible Enumeration | Approved | 20 |
+| [DQC_US_0144](DQC_US_0144/DQC_0144.md) | No Balance Attribute in Financial Statements | Approved | 20 |
+| [DQC_US_0145](DQC_US_0145/DQC_0145.md) | Inappropriate Cash Flow Presentation | Approved | 20 |
+| [DQC_US_0146](DQC_US_0146/DQC_0146.md) | Incorrect Period Reported | Approved | 20 |
+| [DQC_US_0147](DQC_US_0147/DQC_0147.md) | Incorrect Sign of Elimination | Approved | 20 |
+| [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
+| [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Approved | 21 |
+| [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Approved | 21 |
+| [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Approved | 21 |
+| [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
+| [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
+| [DQC_US_0156](DQC_US_0156/DQC_0156.md) | Basic and Diluted Extension Elements | Approved | 21 |
+| [DQC_US_0156](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
+| [DQC_US_0156](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
 
 ## Guidance 
+
+### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/) - approved 9/21/2022
+
 ### [Tagging Axis and Members Using the IFRS Taxonomy](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/tagging-ifrs.md) - approved 01/20/2021
 
 ### [Variable Interest Entities](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/VariableInterestEntities.md) - public review March 16 - April 30, 2020 
@@ -107,6 +141,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2021 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2023 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
