@@ -56,7 +56,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Approved | 11 |
 | [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Approved | 11 |
 | [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Approved | 11 |
-| DQC_US_0088 | Operating Lease Cost And Expense | Removed from Review July 2023 |  |
+| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Public Review | 22 |
 | [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
 | [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
 | [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Approved | 12 |
@@ -127,8 +127,9 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0161](DQC_US_0161/DQC_0161.md) | Single Member Disaggregation | Public Review | 22 |
 | [DQC_US_0162](DQC_US_0162/DQC_0162.md) | Trading Symbol | Public Review | 22 |
 | [DQC_US_0163](DQC_US_0163/DQC_0163.md) | Segment Expenditure Addition To Long Lived Assets | Public Review | 22 |
-| DQC_US_0164 | Use of Location Axis | Removed from Review August 2023 |  |
+| [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Public Review | 22 |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Public Review | 22 |
+| [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Public Review | 22 |
 
 ## Guidance 
 
