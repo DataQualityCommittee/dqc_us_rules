@@ -88,7 +88,7 @@ for $cube in $statementCubes.sort
 																		false;
 													
 
-													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $concept_item, $sum2), getDimensionNames($targetElement , $cube, 2, $concept_item, $sum2)))
+													$DimStringList = list(first-value(getDimensionNames($targetElement , $cube, 1, $sum2), getDimensionNames($targetElement , $cube, 2, $sum2)))
 													$DimString = filter $DimStringList returns $item[1].string + " Dim Facts: " + $item[3].join(' + ');
 													$DimString2 = $DimString.join(' | ');
 													$DefaultMessage =  if $defaultFact "" else " (" + $DimString2 + ")";

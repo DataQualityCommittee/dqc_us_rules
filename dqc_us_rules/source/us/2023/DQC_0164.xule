@@ -44,7 +44,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -69,7 +69,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -94,60 +94,5 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
-
-/**REMOVED RULES BASED ON FILER FEEDBACK Sometimes this is a valid case See Shelly Wavrin email**/
-
-/**
-Assert US.0164.10089 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-
-$assetsElements = navigate parent-child descendants from FairValueAssetsMeasuredOnRecurringBasisUnobservableInputReconciliationLineItems returns target 
-
-
-exists({@concept in $assetsElements @BalanceSheetLocationAxis = *}#fact2)
-message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityAssetClassAxis should be used with the member  {$fact2.dimension(BalanceSheetLocationAxis)}. 
-
-The properties of this {$fact2.concept.name} fact are:
-
-Period :{$fact2.period}
-Dimensions : {$fact2.dimensions.join(', ','=')}
-Unit : {$fact2.unit}
-
-Rule Element Id:{$ruleId}
-Rule version: {$ruleVersion}"
-
-severity error
-status $status
-effectiveDate $effective_dates[$ruleId]
-
-
-Assert US.0164.10090 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-
-$assetsElements = navigate parent-child descendants from FairValueLiabilitiesMeasuredOnRecurringBasisUnobservableInputReconciliationLineItems returns target 
-
-exists({@concept in $assetsElements @BalanceSheetLocationAxis = *}#fact2)
-message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept should not be disaggregated using the BalanceSheetLocationAxis. Instead the FairValueByLiabilityClassAxis should be used with the member  {$fact2.dimension(BalanceSheetLocationAxis)}. 
-
-The properties of this {$fact2.concept.name} fact are:
-
-Period :{$fact2.period}
-Dimensions : {$fact2.dimensions.join(', ','=')}
-Unit : {$fact2.unit}
-
-Rule Element Id:{$ruleId}
-Rule version: {$ruleVersion}"
-
-severity error
-status $status
-effectiveDate $effective_dates[$ruleId]
-
-**/
-
-/* TODO 
-Add rule that lloks at income statement and checks all facts do not have incomestatement location axis 
-*/
