@@ -138,3 +138,11 @@ constant $MONETARY_NON_NEGS = filter $non_neg_ifrs_items.keys where taxonomy().c
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
+
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('CategoriesOfRelatedPartiesAxis','RelatedPartiesMember')
+
+constant $COUNTERPARTY_DIMENSION = CounterpartiesAxis
