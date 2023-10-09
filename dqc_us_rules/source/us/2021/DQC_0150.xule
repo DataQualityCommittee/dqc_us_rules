@@ -65,7 +65,9 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease')
+                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname
                             skip
                         else
                          $dimensionTotalDecimals = if $dimensionTotal.decimals == inf
