@@ -68,7 +68,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $taxonomyChangeInOperatingCapital = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $us-gaap returns set (target-name) 
 
-$filinComponentsOfNetIncomeLoss = navigate parent-child descendants from IncomeStatementAbstract where $relationship.target.is-monetary == true returns set (target-name)
+$filinComponentsOfNetIncomeLoss = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
 
 $misplacedConcepts = $filinComponentsOfNetIncomeLoss.intersect($taxonomyChangeInOperatingCapital)
 
@@ -76,7 +76,7 @@ for $invalidConcept in $misplacedConcepts
 	true
 
 message
-"The company has reported the concept {$invalidConcept} as a child of the presentation concept IncomeStatementAbstract.  This concept is  a component of the cash flow statement and should not be presented within the income statement.
+"The company has reported the concept {$invalidConcept} as a child of the presentation concept IncomeStatementAbstract or StatementOfIncomeAndComprehensiveIncomeAbstract.  This concept is  a component of the cash flow statement and should not be presented within the income statement.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"

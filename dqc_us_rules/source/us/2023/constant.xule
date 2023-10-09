@@ -300,6 +300,8 @@ and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
 and (not $item.drs-role.description.lower-case.contains('schedule iii'))
 and (not $item.drs-role.description.lower-case.contains('schedule iv'))
 
+constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
+
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
@@ -515,3 +517,9 @@ constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-rol
 and ($item.drs-role.uri.lower-case.contains('segment')) 
 
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis

@@ -251,6 +251,8 @@ and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'))
 
+
+constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical')) 
 /*  
 *	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
 *	value or the context end date on the fact, whichever is later.
@@ -261,3 +263,9 @@ and (not $item.role.uri.lower-case.contains('highlights'))
 constant $document_period_end_value =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
 
 constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $us-gaap returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
