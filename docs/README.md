@@ -130,6 +130,13 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Approved | 22 |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Approved | 22 |
 | [DQC_US_0166](DQC_US_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
+| [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Public Exposure | 23 |
+| [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Public Exposure | 23 |
+| [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Public Exposure | 23 |
+| [DQC_US_0170](DQC_US_0170/DQC_0170.md) | ECD Rule 10b51 Flag Disclosures | Public Exposure | 23 |
+| [DQC_US_0171](DQC_US_0171/DQC_0171.md) | ASU 201613 Transition Elements | Public Exposure | 23 |
+| [DQC_US_0172](DQC_US_0172/DQC_0172.md) | Reporting Right of use Assets | Public Exposure | 23 |
+| [DQC_US_0173](DQC_US_0173/DQC_0173.md) | IFRS Transition Elements | Public Exposure | 23 |
 | [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Approved | 22 |
 
 ## Guidance 
