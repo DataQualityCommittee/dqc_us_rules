@@ -10,6 +10,10 @@ Taxonomy: IFRS 2023
 
 RULE-NAME-PREFIX DQC
 
+constant $MONETARY_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from IncomeTaxExpenseContinuingOperations returns set target-name).contains(TaxExpenseIncomeAtApplicableTaxRate)
+
+constant $PERCENTAGE_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from AverageEffectiveTaxRate returns set target-name).contains(ApplicableTaxRate)
+
 /*
 Add rules to ensure taxo reconcilation calculations have been reported for percentage items
 */
@@ -25,6 +29,8 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = TaxExpenseIncomeAtApplicableTaxRate]#stat)
         and
         exists([@concept = IncomeTaxExpenseContinuingOperations]#effective)
+        and 
+        not $PERCENTAGE_TAX_RECONCILIATION_DEFINED
 
 else
     skip
@@ -57,6 +63,8 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = ApplicableTaxRate]#stat)
         and
         exists([@concept = AverageEffectiveTaxRate]#effective)
+        and 
+        not $MONETARY_TAX_RECONCILIATION_DEFINED
 
 else
     skip
