@@ -17,8 +17,13 @@ ASSERT US.0169.10102 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
-    $concepts = filter $network.concepts where $item.is-monetary
-    $concepts.length > 0
+    if $network.role.uri.lower-case.contains('cashflow')
+        /* Added this if statement for those cases where filers put the instant reconcilaition between the cash balance in the REC and IS as a supplemental disclosure at the bottom of the cashflow.*/
+        $concepts = filter $network.concepts where $item.is-monetary and $item.period-type == duration
+        $concepts.length > 0
+    else
+        $concepts = filter $network.concepts where $item.is-monetary
+        $concepts.length > 0
 
 
 message
