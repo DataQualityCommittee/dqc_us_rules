@@ -27,7 +27,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a statement of Financial Position it is expected that a calculation is defined in this role.";
+        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a statement of Financial Position it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
         $network_role = $networkPresRole.join(', ');
         true
     else
@@ -66,7 +66,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a Statement of Income it is expected that a calculation is defined in this role.";
+        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a Statement of Income it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
         $network_role = $networkPresRole.join(', ');
         true
     else
@@ -106,7 +106,7 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a Statement of Comprehensive Income it is expected that a calculation is defined in this role.";
+        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a Statement of Comprehensive Income it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
         $network_role = $networkPresRole.join(', ');
         true
     else

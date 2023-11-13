@@ -9,6 +9,10 @@ Taxonomy: US GAAP 2023
 
 RULE-NAME-PREFIX DQC
 
+constant $MONETARY_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from IncomeTaxExpenseBenefit returns set target-name).contains(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate)
+
+constant $PERCENTAGE_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from EffectiveIncomeTaxRateContinuingOperations returns set target-name).contains(EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate)
+
 /*
 Add rules to ensure taxo reconcilation calculations have been reported for percentage items
 */
@@ -24,6 +28,8 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate]#stat)
         and
         exists([@concept = EffectiveIncomeTaxRateContinuingOperations]#effective)
+        and
+        not $MONETARY_TAX_RECONCILIATION_DEFINED
 
 else
     skip
@@ -56,6 +62,8 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#stat)
         and
         exists([@concept = IncomeTaxExpenseBenefit]#effective)
+        and
+        not $PERCENTAGE_TAX_RECONCILIATION_DEFINED
 
 else
     skip

@@ -31,8 +31,11 @@ else
                 else
                     false
             else
-                if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
-                    true
+                 if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
+                    if $header == StatementOfCashFlowsAbstract and set( '10-Q', '10-Q/A').contains([covered @concept.local-name ='DocumentType'])
+                        false 
+                    else
+                        true
                 else
                     false
 
