@@ -50,15 +50,51 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag == true})
             false
         else 
+            $message = 'The filing has used the element TrdArrTerminationDate. This element should only be used when either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
             true
     else
-        false
+         if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag == true})
+         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate'
+            true
+        else 
+            false
     
 else
     skip
 
 message
-"The filing has used the element TrdArrTerminationDate. This element should only be used when either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true.
+"The filing has either used the element TrdArrTerminationDate without a corresponding flag for  either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+status $status
+effectiveDate $effective_dates[$ruleId]
+
+ASSERT US.0170.10131 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] > date('2023-12-31'))
+
+    if exists({ @concept.local-name = 'TrdArrAdoptionDate'})
+        if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag == true})
+            false
+        else 
+            $message = 'The filing has used the element TrdArrAdoptionDate. This element should only be used when either the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
+            true
+    else
+         if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag == true})
+            $message = 'The filing has not used the element TrdArrAdoptionDate. But has reported a value of true for one of the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag. Please update the filing to include a value for TrdArrAdoptionDate';
+            true
+        else 
+            false
+    
+else
+    skip
+
+message
+"{$message}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
