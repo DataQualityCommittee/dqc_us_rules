@@ -1,0 +1,57 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2020
+
+**/
+
+RULE-NAME-PREFIX DQC
+/**
+This rule checks that the filer has not used a Us-GAAP element in their filing for IFRS." **/
+
+ASSERT IFRS.0176.10118 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$us-gaap-concepts = taxonomy().concepts().namespace-uri.contains('http://fasb.org/us-gaap/')
+
+$invalidFact = {@concept in $us-gaap-concepts}
+
+true
+message
+"The filer has used the concept {$invalidFact.concept} with a value of {$invalidFact} in the filing.  This is a us-gaap element and shoul dbe replaced with an IFRS element.
+
+The properties of this {$invalidFact.concept.name} fact are:
+Period :{$invalidFact.period}
+Dimensions : {$invalidFact.dimensions.join(', ','=')}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+status $status
+effectiveDate $effective_dates[$ruleId]
+
+
+ASSERT IFRS.0176.10119 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$us-gaap-concepts = taxonomy().concepts().namespace-uri.contains('http://fasb.org/us-gaap/')
+
+$invalidPresentationConcept = networks(parent-child).concepts
+
+$us-gaap_concepts = $invalidPresentationConcept.intersect($us-gaap-concepts)
+
+for $concept in $us-gaap_concepts 
+    true
+
+message
+"The filer has used the US GAAP concept {$concept.name} in the presentation tree of the filing please choose an IFRS concept as a replacement.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+status $status
+effectiveDate $effective_dates[$ruleId]

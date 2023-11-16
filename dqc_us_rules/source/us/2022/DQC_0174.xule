@@ -7,7 +7,7 @@ Taxonomy: US GAAP 2023
 
 **/
 
-
+RULE-NAME-PREFIX DQC
 
 /** Add rule for FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1 being negative but does not flag if FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment exceeds the negative value.  See JPM case where they have neeting between th classes https://www.sec.gov/ix?doc=/Archives/edgar/data/19617/000001961723000432/jpm-20230630.htm **/
 
@@ -17,7 +17,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $individualLoss = {@concept = FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1 where $fact < 0}
 
-$CollectiveLoss =  first-value-or-none({@concept = FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1}, {@concept = FinancingReceivableAllowanceForCreditLossExcludingAccruedInterest}, 0)
+$CollectiveLoss =  first-value({@concept = FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment}, {@concept = FinancingReceivableAllowanceForCreditLossExcludingAccruedInterest}, 0)
 
 abs($individualLoss) > $CollectiveLoss
 
