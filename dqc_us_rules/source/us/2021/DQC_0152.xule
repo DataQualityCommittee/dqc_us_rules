@@ -16,14 +16,14 @@ assert US.0152.10116  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-$GYearListElements = filter ($US-GAAP.concepts) where $item.data-type == dtr-types:gYearListItemType
+$GYearListElements = filter ($US-GAAP.concepts) where $item.data-type.name == dtr-types:gYearListItemType
 
 $factsWithGYearList = {@concept in $GYearListElements @TaxPeriodAxis = *};
 
 exists($factsWithGYearList)
 
 message
-"The concept {$factsWithGYearList.name} has been reported with a value of {$factsWithGYearList.join(',')} and has used the Tax Period [AXIS].  This fact should not be used with this axis.  If there are multiple tax years to be reported they should all be included in the concept {$factsWithGYearList}.
+"The concept {$factsWithGYearList.name} has been reported with a value of {$factsWithGYearList} and has used the Tax Period [AXIS].  This fact should not be used with this axis.  If there are multiple tax years to be reported they should all be included in the concept {$factsWithGYearList}.
 
 Concept Name : {$factsWithGYearList.name}
 Period : {$factsWithGYearList.period} 
