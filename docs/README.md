@@ -139,6 +139,9 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_IFRS_0172](DQC_US_0172/DQC_0172.md) | Reporting Right of use Assets | Public Exposure | 23 |
 | [DQC_IFRS_0173](DQC_US_0173/DQC_0173.md) | IFRS Transition Elements | Public Exposure | 23 |
 | [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Approved | 22 |
+| [DQC_IFRS_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Public Exposure | 23 |
+| [DQC_IFRS_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Public Exposure | 23 |
+| [DQC_IFRS_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Public Exposure | 23 |
 
 ## Guidance 
 
