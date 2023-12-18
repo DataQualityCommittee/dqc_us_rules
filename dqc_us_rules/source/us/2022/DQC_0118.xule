@@ -54,8 +54,11 @@ for $cube in $STATEMENT_CUBES.sort
 							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 
 
-				/** first value is used to eliminate none value **/
-				$TotalsWithAxisNotToCheckFlag = (first-value(sum(set($sum2.dimensions.keys.name)),set()) intersect $AxisNotToCheck).length > 0 
+					/** first value is used to eliminate none value **/
+				$xyz = sum(set($sum2.dimensions.keys.name))
+				$getSet = if $xyz.length > 0 $xyz else none
+				
+				$TotalsWithAxisNotToCheckFlag = if $getSet == none false else  ($xyz intersect $AxisNotToCheck).length > 0 
 
 				if $concept_item == none  or $sum2 == none or $TotalsWithAxisNotToCheckFlag
 					skip
