@@ -1,0 +1,100 @@
+@startuml rule_0009_db_plans
+title "Rule DQC 0009 DB Plans Comparison"
+!pragma useVerticalIf on
+start
+
+repeat : Go through each context in the filing;
+ 
+ split
+   :Run rule 0009.40;
+   :Get DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligations
+   InExcessOfPlanAssetsAggregateAccumulated
+   BenefitObligation;
+   :Get DefinedBenefitPlanAccumulatedBenefitObligation;
+   if (Are both values present?) then (yes)
+    if (DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligations
+   InExcessOfPlanAssetsAggregateAccumulated
+   BenefitObligation > 
+            DefinedBenefitPlanAccumulatedBenefitObligation) then (yes)
+        #tomato:Show error;
+    else (no)
+        endif
+   else (no)
+    endif
+split again
+   :Run rule 0009.41;
+   :Get DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligationsIn
+   ExcessOfPlanAssetsAggregate
+   FairValueOfPlanAssets;
+   :Get DefinedBenefitPlanFairValueOfPlanAssets;
+   if (Are both values present?) then (yes)
+        if (DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligationsIn
+   ExcessOfPlanAssetsAggregate
+   FairValueOfPlanAssets > 
+                DefinedBenefitPlanFairValueOfPlanAssets) then (yes)
+            #tomato:Show error;
+        else (no)
+        endif
+    else (no)
+    endif
+split again
+   :Run rule 0009.42;
+   :Get DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligations
+   InExcessOfPlanAssetsAggregate
+   ProjectedBenefitObligation;
+   :Get DefinedBenefitPlanBenefitObligation;
+   if (Are both values present?) then (yes)
+   if (DefinedBenefitPlanPensionPlans
+   WithAccumulatedBenefitObligations
+   InExcessOfPlanAssetsAggregate
+   ProjectedBenefitObligation > 
+        DefinedBenefitPlanBenefitObligation) then (yes)
+     #tomato:Show error;
+   else (no)
+  endif
+  else (no)
+    endif
+    
+split again
+   :Run rule 0009.45;
+   :Get DefinedBenefitPlanExpectedFutureEmployer
+   ContributionsRemainderOfFiscalYear;
+   :Get DefinedBenefitPlanExpectedFutureEmployer
+   ContributionsCurrentFiscalYear;
+    if (Are both values present?) then (yes)
+   if ( DefinedBenefitPlanExpectedFutureEmployer
+   ContributionsRemainderOfFiscalYear > 
+        DefinedBenefitPlanExpectedFutureEmployer
+   ContributionsCurrentFiscalYear) then (yes)
+     #tomato:Show error;
+   else (no)
+  endif
+  else (no)
+    endif
+
+  split again
+   :Run rule 0009.46;
+   :Get DefinedBenefitPlanAccumulatedBenefitObligation;
+   :Get DefinedBenefitPlanBenefitObligation;
+  if (Are both values present?) then (yes)
+    if (DefinedBenefitPlanAccumulatedBenefitObligation > 
+          DefinedBenefitPlanBenefitObligation) then (yes)
+      #tomato:Show error;
+      else (no)
+      endif
+   else (no)
+    endif
+    
+end split
+
+    repeat while (Is there another context in the filing) is (yes)
+    ->no;
+    
+end
+
+@enduml
