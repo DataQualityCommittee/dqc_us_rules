@@ -48,30 +48,30 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0077](DQC_US_0077/DQC_0077.md) | Satisfaction Period With No Satisfaction Start Date Axis | Approved | 7 |
 | [DQC_US_0078](DQC_US_0078/DQC_0078.md) | Ownership Interest With No Ownership Axis | Approved | 7 |
 | [DQC_US_0079](DQC_US_0079/DQC_0079.md) | Extension Members | Approved for IFRS &amp; US GAAP | 8 |
-| [DQC_US_0080](DQC_US_0080/DQC_0080.md) | Negative Values | Approved for IFRS only | 11 |
-| [DQC_US_0081](DQC_US_0081/DQC_0081.md) | Sibling Child Relationships | Approved | 9 |
+| [DQC_IFRS_0080](DQC_IFRS_0080/DQC_0080.md) | Negative Values | Approved for IFRS only | 11 |
+| [DQC_US_0081](DQC_US_0081/DQC_0081.md) | Sibling and Child Relationships | Approved | 9 |
 | [DQC_US_0082](DQC_US_0082/DQC_0082.md) | Disaggregation by Variable Interest Elements (VIE) | Approved | 10 |
 | [DQC_US_0083](DQC_US_0083/DQC_0083.md) | Consolidated Variable Interest Entities (VIE) | Approved | 10 |
 | [DQC_US_0084](DQC_US_0084/DQC_0084.md) | Durational Aggregation | Approved | 10 |
 | [DQC_US_0085](DQC_US_0085/DQC_0085.md) | Deferred Tax Assets and Liabilities | Approved | 11 |
 | [DQC_US_0086](DQC_US_0086/DQC_0086.md) | Transition Tax Elements | Approved | 11 |
 | [DQC_US_0087](DQC_US_0087/DQC_0087.md) | Breakdown of Operating Lease liabilities across Financial Statement Lines Items | Approved | 11 |
-| DQC_US_0088 | Operating Lease Cost And Expense | Removed from Public Review |  |
+| [DQC_US_0088](DQC_US_0088/DQC_0088.md) | Operating Lease Cost And Expense | Approved | 22 |
 | [DQC_US_0089](DQC_US_0089/DQC_0089.md) | Invalid Elements Used On Range Axis | Approved | 11 |
 | [DQC_US_0090](DQC_US_0090/DQC_0090.md) | Incorrect Calculation of Lease Liability Payments Due | Approved | 11 |
 | [DQC_US_0091](DQC_US_0091/DQC_0091.md) | Invalid Value for Percentage Items | Approved | 12 |
-| [DQC_US_0092](DQC_US_0092/DQC_0092.md) | IFRS Non Positive Items | Approved for IFRS only | 12 |
-| [DQC_US_0093](DQC_US_0093/DQC_0093.md) | Durational Aggregation for IFRS | Approved | 12 |
+| [DQC_IFRS_0092](DQC_IFRS_0092/DQC_0092.md) | IFRS Non Positive Items | Approved for IFRS only | 12 |
+| [DQC_IFRS_0093](DQC_IFRS_0093/DQC_0093.md) | Durational Aggregation for IFRS | Approved | 12 |
 | [DQC_US_0094](DQC_US_0094/DQC_0094.md) | US Maturity Schedules | Approved | 12 |
 | [DQC_US_0095](DQC_US_0095/DQC_0095.md) | Scale - Common Stock Outstanding | Approved | 12 |
 | [DQC_US_0098](DQC_US_0098/DQC_0098.md) | Liability Revenue Recognized | Approved | 13 |
 | [DQC_US_0099](DQC_US_0099/DQC_0099.md) | FS with No Associated Calculation | Approved | 13 |
 | [DQC_US_0100](DQC_US_0100/DQC_0100.md) | Invalid Consolidation Axis | Approved | 13 |
-| [DQC_US_0101](DQC_US_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees (IFRS) | Approved for IFRS | 14 |
-| [DQC_US_0102](DQC_US_0102/DQC_0102.md) | Element Values Are Equal (IFRS) | Approved for IFRS | 14 |
-| [DQC_US_0103](DQC_US_0103/DQC_0103.md) | Invalid Value for Percentage Items (IFRS) | Approved for IFRS | 14 |
-| [DQC_US_0104](DQC_US_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | Approved for IFRS | 14 |
-| [DQC_US_0105](DQC_US_0105/DQC_0105.md) | FS with No Associated Calculation | Approved | 14 |
+| [DQC_IFRS_0101](DQC_IFRS_0101/DQC_0101.md) | Movement of Concepts between Calculation Trees (IFRS) | Approved for IFRS | 14 |
+| [DQC_IFRS_0102](DQC_IFRS_0102/DQC_0102.md) | Element Values Are Equal (IFRS) | Approved for IFRS | 14 |
+| [DQC_IFRS_0103](DQC_IFRS_0103/DQC_0103.md) | Invalid Value for Percentage Items (IFRS) | Approved for IFRS | 14 |
+| [DQC_IFRS_0104](DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members (IFRS) | Approved for IFRS | 14 |
+| [DQC_IFRS_0105](DQC_IFRS_0105/DQC_0105.md) | FS with No Associated Calculation | Approved | 14 |
 | DQC_US_0106 | Assets and Liabilities Classified as Held-For-Sale using Duration Element | Removed from Public Review |  |
 | [DQC_US_0107](DQC_US_0107/DQC_0107.md) | General Text Block | Approved | 15 |
 | [DQC_US_0108](DQC_US_0108/DQC_0108.md) | Fact Value Consistency Over Time | Approved | 15 |
@@ -81,7 +81,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0112](DQC_US_0112/DQC_0112.md) | Line Items Requiring the Business Acquisition Axis | Approved | 15 |
 | [DQC_US_0113](DQC_US_0113/DQC_0113.md) | Gross Acquisition Less Than Net Acquisition | Approved | 15 |
 | [DQC_US_0114](DQC_US_0114/DQC_0114.md) | Assets Acquired Net of Goodwill | Approved | 15 |
-| [DQC_US_0115](DQC_US_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Approved | 15 |
+| [DQC_IFRS_0115](DQC_IFRS_0115/DQC_0115.md) | Fact Value Consistency Over Time (IFRS) | Approved | 15 |
 | [DQC_US_0116](DQC_US_0116/DQC_0116.md) | Line Items Requiring the Asset Acquisition Axis | Approved | 15 |
 | [DQC_US_0117](DQC_US_0117/DQC_0117.md) | Financial Statement Tables Dimensional Cross Check | Approved | 16 |
 | [DQC_US_0118](DQC_US_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | Approved | 16 |
@@ -95,8 +95,8 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0126](DQC_US_0126/DQC_0126.md) | FS Calculation Check with Non-Dimensional Data | Approved | 17 |
 | [DQC_US_0127](DQC_US_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | Approved | 17 |
 | [DQC_US_0128](DQC_US_0128/DQC_0128.md) | Dimensional Values Larger than the Default | Approved | 17 |
-| [DQC_US_0129](DQC_US_0129/DQC_0129.md) | Dimensional Equivalents IFRS | Approved | 17 |
-| [DQC_US_0130](DQC_US_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
+| [DQC_IFRS_0129](DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents IFRS | Approved | 17 |
+| [DQC_IFRS_0130](DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
 | [DQC_US_0131](DQC_US_0131/DQC_0131.md) | Lease Allocation in Balance Sheet | Approved | 17 |
 | [DQC_US_0132](DQC_US_0132/DQC_0132.md) | Operating Lease Amortization | Approved | 17 |
 | [DQC_US_0133](DQC_US_0133/DQC_0133.md) | Equity Method Investment Reporting | Approved | 18 |
@@ -116,12 +116,32 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
 | [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Approved | 21 |
 | [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Approved | 21 |
+| [DQC_US_0152](DQC_US_0152/DQC_0152.md) | Year List Items Used with Tax Period Axis | Public Exposure | 23 |
 | [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Approved | 21 |
 | [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
 | [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
 | [DQC_US_0156](DQC_US_0156/DQC_0156.md) | Basic and Diluted Extension Elements | Approved | 21 |
-| [DQC_US_0156](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
-| [DQC_US_0156](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
+| [DQC_US_0157](DQC_US_0157/DQC_0157.md) | Bank Measures Less than One Percent | Approved | 21 |
+| [DQC_US_0158](DQC_US_0158/DQC_0158.md) | Related and Nonrelated Party Axis and Extensible Enumerations | Approved | 21 |
+| [DQC_US_0159](DQC_US_0159/DQC_0159.md) | Financial Statement Abstract Concepts | Approved | 22 |
+| [DQC_US_0160](DQC_US_0160/DQC_0160.md) | Descendants of NonrelatedPartyMember | Approved | 22 |
+| [DQC_US_0161](DQC_US_0161/DQC_0161.md) | Single Member Disaggregation | Approved | 22 |
+| [DQC_US_0162](DQC_US_0162/DQC_0162.md) | Trading Symbol | Approved | 22 |
+| [DQC_US_0163](DQC_US_0163/DQC_0163.md) | Segment Expenditure Addition To Long Lived Assets | Approved | 22 |
+| [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Approved | 22 |
+| [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Approved | 22 |
+| [DQC_US_0166](DQC_US_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
+| [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Public Exposure | 23 |
+| [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Public Exposure | 23 |
+| [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Public Exposure | 23 |
+| [DQC_US_0170](DQC_US_0170/DQC_0170.md) | ECD Rule 10b51 Flag Disclosures | Public Exposure | 23 |
+| [DQC_US_0171](DQC_US_0171/DQC_0171.md) | ASU 201613 Transition Elements | Public Exposure | 23 |
+| [DQC_IFRS_0172](DQC_US_0172/DQC_0172.md) | Reporting Right of use Assets | Public Exposure | 23 |
+| [DQC_IFRS_0173](DQC_US_0173/DQC_0173.md) | IFRS Transition Elements | Public Exposure | 23 |
+| [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Approved | 22 |
+| [DQC_IFRS_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Public Exposure | 23 |
+| [DQC_IFRS_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Public Exposure | 23 |
+| [DQC_IFRS_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Public Exposure | 23 |
 
 ## Guidance 
 

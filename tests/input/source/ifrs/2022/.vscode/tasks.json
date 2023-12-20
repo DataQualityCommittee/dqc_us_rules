@@ -1,0 +1,17 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile 2022 IFRS Rules",
+            "type": "shell",
+            "command": "python3.9 ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/source/ifrs/2022 --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/dqc-ifrs-2022-V21-test-ruleset.zip --xule-crash"
+        },
+        {
+            "label": "Gen Test Files 2022 Rules",
+            "type": "shell",
+            "command":"python3.9 ~/arelle/Arelle-master/arellecmdline.py --plugins 'xule|xince|transforms/SEC|validate/EFM|inlineXbrlDocumentSet' -f /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/testfiles/2022/TestCo-2022-NonNeg-IFRS-base.xml --xule-time .005 --xule-debug --noCertificateCheck --logFile /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/testfiles/2022/Testco-ifrs-log-2022.xml --xule-rule-set  /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/dqc-ifrs-2022-V21-test-ruleset.zip --xule-run-only createInstance,new-instance-values --logNoRefObjectProperties --xince-location /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/testfiles/2022 --xince-show-xule-log --xince-file-type=xml"
+        }
+    ]
+}
