@@ -303,6 +303,7 @@ and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
 and (not $item.drs-role.description.lower-case.contains('schedule iii'))
 and (not $item.drs-role.description.lower-case.contains('schedule iv'))
+and (not $item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))
 
 constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
 
