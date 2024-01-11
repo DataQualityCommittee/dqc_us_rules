@@ -9,7 +9,7 @@ Taxonomy: US GAAP 2023
 
 RULE-NAME-PREFIX DQC
 
-/** This rule checks that when dividends are reported in the statement of sharholders equity that the appropriate signs are used and that values are reported with the correct members on the StatementEquityComponentsAxis.  
+/** This rule checks that when dividends are reported in the statement of shareholders equity that the appropriate signs are used and that values are reported with the correct members on the StatementEquityComponentsAxis.  
 
 It has been observed that filers have used the elements used for the issuance of dividends as stock to represent a payment in actual cash.**/
 
@@ -169,6 +169,7 @@ ASSERT US.0178.10139 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $dividendEventConcepts = list(DividendsPayableAmountPerShare,DividendsPayableDateOfRecordDayMonthAndYear,DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear,CommonStockDividendsPerShareDeclared)
+
 $badDividendAxis = list(srt:StatementScenarioAxis,
                         qname($EXTENSION_NS,'DividendDeclarationDateAxis'),
                         qname($EXTENSION_NS,'DividendDeclaredAxis'),
@@ -205,6 +206,38 @@ severity error
 rule-focus $divFact
 status $status
 effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0178.10140 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dividendDateConcepts = list(
+                            list(DividendsPayableDateDeclaredDayMonthAndYear,DividendsPayableDateOfRecordDayMonthAndYear),
+                            list(DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear),
+                            list(DividendsPayableDateOfRecordDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear)
+                            )
+
+for $date in $dividendDateConcepts 
+    $firstDate = {@concept = $date[1] @period=*} 
+    $secondDate = {@concept = $date[2] @period=*}
+    $firstDate > $secondDate
+
+message
+"The date reported for {$firstDate.concept.name} of {$firstDate} is greater than the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}.
+
+The properties of this  fact are:
+Period :{$firstDate.period}
+Dimensions : {$firstDate.dimensions.join(', ','=')}
+Unit : {$firstDate.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $firstDate
+status $status
+effectiveDate $effective_dates[$rule_id]
+
 /**
 TODO 
 
