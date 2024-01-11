@@ -1,0 +1,213 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** This rule checks that when dividends are reported in the statement of sharholders equity that the appropriate signs are used and that values are reported with the correct members on the StatementEquityComponentsAxis.  
+
+It has been observed that filers have used the elements used for the issuance of dividends as stock to represent a payment in actual cash.**/
+
+constant $DIVIDEND_CONCEPTS = list(DividendsCommonStock, DividendsCommonStockStock, DividendsCommonStockCash, DividendsCommonStock, DividendsCommonStockPaidinkind, DividendsPreferredStockCash, DividendsPreferredStock, DividendsPreferredStockStock, DividendsPreferredStockPaidinkind, Dividends, DividendsCash, DividendsStock, DividendsPaidinkind, DividendsShareBasedCompensationCash, DividendsSharebasedCompensationStock)
+
+constant $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER = dict(
+                                                list(RetainedEarningsAppropriatedMember,$DIVIDEND_CONCEPTS),
+                                                list(CommonStockMember,list(DividendsPreferredStockCash, DividendsPreferredStock, DividendsPreferredStockStock, DividendsPreferredStockPaidinkind, DividendsCash, DividendsCommonStockCash)),
+                                                list(CommonStockIncludingAdditionalPaidInCapitalMember,list(DividendsPreferredStockCash, DividendsPreferredStock, DividendsPreferredStockStock, DividendsPreferredStockPaidinkind)),
+                                                list(PreferredStockMember,list(DividendsCommonStock, DividendsCommonStockStock, DividendsCommonStockCash, DividendsCommonStock, DividendsCommonStockPaidinkind, DividendsPreferredStockCash, DividendsCash)),
+                                                list(PreferredStockIncludingAdditionalPaidInCapitalMember,list(DividendsCommonStock, DividendsCommonStockStock, DividendsCommonStockCash, DividendsCommonStock, DividendsCommonStockPaidinkind)),
+                                                list(TreasuryStockPreferredMember,$DIVIDEND_CONCEPTS),
+                                                list(TreasuryStockCommonMember,$DIVIDEND_CONCEPTS),
+                                                list(AccumulatedOtherComprehensiveIncomeMember,$DIVIDEND_CONCEPTS),
+                                                list(ComprehensiveIncomeMember,$DIVIDEND_CONCEPTS),
+                                            )
+
+/**--NONNEG Dividend Items Impact on Retained earnings - This should never increase retained earnings**/
+
+
+ASSERT US.0178.10134 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
+
+$negativeDividends = {@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact < 0}
+
+$negativeDividends
+
+message
+"The filing includes a value for dividends using the concept {$negativeDividends.concept.name} and the retained earnings member with a value of {$negativeDividends}. Dividends must be deducted from retained earnings.  Please check that the sign of the dividends value is positive.
+
+The properties of this  fact are:
+Period :{$negativeDividends.period}
+Dimensions : {$negativeDividends.dimensions.join(', ','=')}
+Unit : {$negativeDividends.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $negativeDividends
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+
+
+/** AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings **/
+ASSERT US.0178.10135 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
+
+$dividendsInAPIC = {@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $additionPaidInCapital where $fact > 0}
+
+$dividendsInAPIC
+
+message
+"The filing includes a value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. Dividends should generally be deducted from retained earnings and not deducted from additional paid in capital. In certain cases dividends can be deducted from paid in capital, but in these cases the element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings defined in the taxonomy should be used.  Please update the filing to reflect this.
+
+The properties of this  fact are:
+Period :{$dividendsInAPIC.period}
+Dimensions : {$dividendsInAPIC.dimensions.join(', ','=')}
+Unit : {$dividendsInAPIC.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsInAPIC
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0178.10136 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
+
+$dividendsInAPIC = {@concept in list(DividendsCommonStockCash,DividendsPreferredStockCash) @StatementEquityComponentsAxis in $additionPaidInCapital where $fact < 0}
+
+$dividendsInAPIC
+
+message
+"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. If APIC is increasing due to the declaration of dividends this indicates that the filer is doing issuance of stock as a dividend.  This has the impact of increasing APIC and reducing retained earnings. In these cases the elements DividendsCommonStockStock, or DividendsCommonStock should be used.
+
+The properties of this  fact are:
+Period :{$dividendsInAPIC.period}
+Dimensions : {$dividendsInAPIC.dimensions.join(', ','=')}
+Unit : {$dividendsInAPIC.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsInAPIC
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+/** DividendsCommonStockStock used instead of DividendsCommonStockCash**/
+ASSERT US.0178.10137 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
+$InvalidValue = list({@concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}).length > 0
+$misingAPIC = list({@concept = DividendsCommonStockStock  @StatementEquityComponentsAxis in $additionPaidInCapital }).length == 0
+
+$InvalidValue and $misingAPIC
+
+message
+"The filing includes a value for dividends using the concept {$InvalidValue.concept.name} with a value of {$InvalidValue}. This value represents a dividened paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
+
+The properties of this  fact are:
+Period :{$InvalidValue.period}
+Dimensions : {$InvalidValue.dimensions.join(', ','=')}
+Unit : {$InvalidValue.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $InvalidValue
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+/** Inappropriate use of members and dividend concepts**/
+ASSERT US.0178.10138 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $memberToCheck in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER.keys
+           $divFact = {@concept in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER[$memberToCheck] @StatementEquityComponentsAxis = $memberToCheck where $fact != 0}
+           $divFact
+
+message
+"The filing includes a value for dividends using the concept {$divFact.concept.name} with a value of {$divFact}. This value is reported with the dimension member {$memberToCheck}.  This member should not be used with the concept {$divFact.concept.name}.  Please check the filing and select a more appropriate concept.
+
+The properties of this  fact are:
+Period :{$divFact.period}
+Dimensions : {$divFact.dimensions.join(', ','=')}
+Unit : {$divFact.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $divFact
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0178.10139 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dividendEventConcepts = list(DividendsPayableAmountPerShare,DividendsPayableDateOfRecordDayMonthAndYear,DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear,CommonStockDividendsPerShareDeclared)
+$badDividendAxis = list(srt:StatementScenarioAxis,
+                        qname($EXTENSION_NS,'DividendDeclarationDateAxis'),
+                        qname($EXTENSION_NS,'DividendDeclaredAxis'),
+                        AwardTypeAxis,
+                        srt:TitleOfIndividualAxis,
+                        srt:CurrencyAxis,
+                        srt:RangeAxis,
+                        qname($EXTENSION_NS,'DividendsDeclaredTypeAxis'),
+                        qname($EXTENSION_NS,'DistributionsPaymentDateAxis'),
+                        AwardDateAxis,
+                        StatementEquityComponentsAxis,
+                        FairValueByAssetClassAxis,
+                        RelatedPartyTransactionsByRelatedPartyAxis,
+                        SubsidiarySaleOfStockAxis,
+                        DebtInstrumentAxis,
+                        LongtermDebtTypeAxis)
+
+for $axis in $badDividendAxis
+           $divFact = {@concept in $dividendEventConcepts @$axis = * }
+           $divFact
+
+message
+"The filing includes a value for dividends using the concept {$divFact.concept.name} with a value of {$divFact}. This value is reported with the dimension  {$axis}.  This dimension should not be used with the concept {$divFact.concept.name}.  Please check the filing and use the DividendsAxis with this value.
+
+The properties of this  fact are:
+Period :{$divFact.period}
+Dimensions : {$divFact.dimensions.join(', ','=')}
+Unit : {$divFact.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $divFact
+status $status
+effectiveDate $effective_dates[$rule_id]
+/**
+TODO 
+
+Add rules to support dividends axis
+SHould the element DividendsPayableAmountPerShare be replaced with CommonStockDividendsPerShareDeclared
+**/
