@@ -220,15 +220,18 @@ $dividendDateConcepts = list(
 for $date in $dividendDateConcepts 
     $firstDate = {@concept = $date[1] @period=*} 
     $secondDate = {@concept = $date[2] @period=*}
-    $firstDate > $secondDate
+    $firstDate >= $secondDate
 
 message
-"The date reported for {$firstDate.concept.name} of {$firstDate} is greater than the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}.
+"The date reported for {$firstDate.concept.name} of {$firstDate} is greater than or equal to the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}.
 
-The properties of this  fact are:
+The properties of  {$firstDate.concept.name} with a date of {$firstDate} are:
 Period :{$firstDate.period}
 Dimensions : {$firstDate.dimensions.join(', ','=')}
-Unit : {$firstDate.unit}
+
+The properties of  {$secondDate.concept.name} with a date of {$secondDate}are:
+Period :{$secondDate.period}
+Dimensions : {$secondDate.dimensions.join(', ','=')}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
