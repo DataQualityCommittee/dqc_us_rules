@@ -241,9 +241,68 @@ rule-focus $firstDate
 status $status
 effectiveDate $effective_dates[$rule_id]
 
+
+ASSERT US.0178.10141 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$perShare = {@CommonStockDividendsPerShareDeclared where $fact.decimals < 0}
+$perShare
+
+message
+"The concept CommonStockDividendsPerShareDeclared has been reported with a value of {$perShare}, with a decimal of {$fact.decimals}. Generally the amount per share are not scaled when reported. This means the value in the XBRL report is overstated by the scale factor of {$fact.decimals}.
+
+The properties of  {$perShare.concept.name} are:
+Period :{$perShare.period}
+Dimensions : {$perShare.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $perShare
+status $status
+effectiveDate $effective_dates[$rule_id]
 /**
 TODO 
+.inline-scale}
+Add rules to support dividends axis.
 
-Add rules to support dividends axis
+Values before year end should be represeneted using the period it applies to for CommonStockDividendsPerShareDeclared.  DIvidend declared amount represents an expense and should be allocated to a period so that it can be compared to EPS which has periods. Really about getting the accounting alignment.  Identify reporting periods used in the filing and check dividends declared falls into one of them. Look for period durations with more than 10.
+
 SHould the element DividendsPayableAmountPerShare be replaced with CommonStockDividendsPerShareDeclared
 **/
+
+constant $dict_of_durations = (filter list({covered @concept.period-type = duration}) returns list($item.period.start, $item.period.end)).agg-to-dict(1,2)
+constant $dict_of_duration_frequency =   dict(
+        for $key in $dict_of_durations.keys
+            list($key, $dict_of_durations[$key].length)
+    )
+
+ASSERT US.0178.10142 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$periodEnd = [covered @dei:DocumentPeriodEndDate]
+
+$perShare = {@CommonStockDividendsPerShareDeclared where $fact.period.end < $periodEnd}
+$start = $perShare.period.start;
+$end = $perShare.period.end;
+$frequencyOfDuration = $dict_of_duration_frequency[list($start,$end)]
+
+$frequencyOfDuration < 5
+
+message
+"The concept {$perShare.concept.name} has been reported with a value of {$perShare}.  This value is reported with a duaration starting on {$start} and ending on {$end}.  This period does not align with the reporting periods of the report.  Adjust the reporting period 
+
+The properties of  {$perShare.concept.name} are:
+Period :{$perShare.period}
+Dimensions : {$perShare.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $perShare
+status $status
+effectiveDate $effective_dates[$rule_id]
