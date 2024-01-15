@@ -280,7 +280,7 @@ ASSERT US.0178.10142 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$periodEnd = [covered @dei:DocumentPeriodEndDate]
+$periodEnd = [covered @concept.local-name = 'DocumentPeriodEndDate']
 
 $perShare = {@CommonStockDividendsPerShareDeclared where $fact.period.end < $periodEnd}
 $start = $perShare.period.start;
