@@ -250,7 +250,7 @@ ASSERT US.0178.10141 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$perShare = {@concept = CommonStockDividendsPerShareDeclared where $fact.inline-scale > 0}
+$perShare = {@concept = CommonStockDividendsPerShareDeclared where $fact.inline-scale != none and $fact.inline-scale > 0}
 true
 
 message
