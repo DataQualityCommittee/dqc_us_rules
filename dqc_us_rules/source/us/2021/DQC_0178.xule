@@ -294,7 +294,12 @@ $validDurations = set(for $key in $dict_of_durations.keys
 
 $frequencyOfDuration = $dict_of_duration_frequency[$perShare.period]
 
-$frequencyOfDuration < 5 and $validDurations.length > 0
+$perShareQuarterlyCheck = if $perShare.period.days > 85 and $perShare.period.days < 95
+                                false
+                          else
+                                true
+
+$frequencyOfDuration < 5 and $validDurations.length > 0  and $perShareQuarterlyCheck
 
 message
 "The concept {$perShare.concept.name} has been reported with a value of {$perShare}.  This value is reported with a duration starting on {$start + time-span('P1D')} and ending on {$end}.  This period does not align with the reporting periods of the report.  Adjust the reporting period to reflect one of the following reporting durations {$validDurations.join(', ')}. This rule is flagging because the value reported for {$perShare.concept.name} is prior to the report year end and should have been expensed for a period. This period should be associated with this fact.  This makes it possible to compare the value with similar metrics such as earnings per share. If the dates are used to seperate two dividends within the same reporting period then the DividendsAxis should be used to seperate the values.
