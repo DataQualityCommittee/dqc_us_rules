@@ -56,7 +56,7 @@ for $cube in $STATEMENT_CUBES.sort
 							{nonils @concept = $concept_item @cube.drs-role = $cube.drs-role @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals};
 
 
-				/** first value is used to eliminate none value **/
+				/** We need to get an iteration if there are no dimensions so we have else none. The intersect must have a set if there is none it will fail. SO have if getset == none check **/
 				$xyz = sum(set($sum2.dimensions.keys.name))
 				$getSet = if $xyz.length > 0 $xyz else none
 				

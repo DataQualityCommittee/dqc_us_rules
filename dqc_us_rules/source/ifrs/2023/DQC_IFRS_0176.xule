@@ -14,7 +14,7 @@ This rule checks that the filer has not used a Us-GAAP element in their filing f
 ASSERT IFRS.0176.10118 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$us-gaap-concepts = taxonomy().concepts().namespace-uri.contains('http://fasb.org/us-gaap/')
+$us-gaap-concepts = filter taxonomy().concepts where $item.namespace-uri.contains('http://fasb.org/us-gaap/') returns $item
 
 $invalidFact = {@concept in $us-gaap-concepts}
 
@@ -38,11 +38,13 @@ effectiveDate $effective_dates[$ruleId]
 ASSERT IFRS.0176.10119 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$us-gaap-concepts = taxonomy().concepts().namespace-uri.contains('http://fasb.org/us-gaap/')
+$us-gaap-concepts = filter taxonomy().concepts where $item.namespace-uri.contains('http://fasb.org/us-gaap/') returns $item
 
-$invalidPresentationConcept = networks(parent-child).concepts
+$presentationNetworks = taxonomy().networks(parent-child)
 
-$us-gaap_concepts = $invalidPresentationConcept.intersect($us-gaap-concepts)
+$PresentationConcepts = sum(filter $presentationNetworks returns $item.concepts)
+
+$us-gaap_concepts = $PresentationConcepts.intersect($us-gaap-concepts)
 
 for $concept in $us-gaap_concepts 
     true
