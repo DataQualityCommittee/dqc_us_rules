@@ -16,7 +16,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $ASU201613_TransitionELements = navigate parent-child descendants from Asu201613TransitionAbstract taxonomy $US-GAAP returns set (target-name)
 
-$ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment, ImpairedFinancingReceivableAverageRecordedInvestment, ImpairedFinancingReceivableWithNoRelatedAllowanceAverageRecordedInvestment, HeldToMaturitySecuritiesInUnrealizedLossPositionsQualitativeDisclosureNumberOfPositions);
+$ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment);
 
 exists({@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}#TransFact)
 
