@@ -117,9 +117,9 @@ ASSERT US.0178.10137 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember);
-$InvalidValue = {@concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}
+$InvalidValue = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}
 $InvalidValueExists = exists($InvalidValue);
-$misingAPIC = list({@concept = DividendsCommonStockStock  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
+$misingAPIC = list({nonils @concept = DividendsCommonStockStock  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
 
 $InvalidValueExists and $misingAPIC
 
@@ -145,7 +145,7 @@ ASSERT US.0178.10138 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $memberToCheck in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER.keys
-           $divFact = {@concept in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER[$memberToCheck] @StatementEquityComponentsAxis = $memberToCheck where $fact != 0}
+           $divFact = {nonils @concept in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER[$memberToCheck] @StatementEquityComponentsAxis = $memberToCheck where $fact != 0}
            exists($divFact)
 
 message
