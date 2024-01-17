@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -196,6 +196,10 @@ constant $DISCONTINUED_INCOME_ITEMS = set(IncomeLossFromDiscontinuedOperationsNe
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $CALC_NETWORKS = $us-gaap.networks(summation-item)
+
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
 	or $item.role.description.contains('148411 - Statement -') 
