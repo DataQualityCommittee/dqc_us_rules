@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2023
@@ -42,7 +42,7 @@ else
                 if $otherRoots.length > 0
                     $root_descendants = navigate summation-item descendants from $root taxonomy $ifrs-gaap returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
-                    $root_string = "In the statement  " + $networkPresRole.description + " the filer has defined multiple roots calculation elements that do not have a valid calculation tree defined. The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". This sibling element(s) are defined as calculation descendants in the US GAAP taxonomy.";
+                    $root_string = "In the statement  " + $calcNetwork.description + " the filer has defined multiple roots calculation elements that do not have a valid calculation tree defined. The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". This sibling element(s) are defined as calculation descendants in the IFRS taxonomy.";
                     
                     $inappropriateRoots.length > 0
                 else
@@ -54,7 +54,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 Assert IFRS.0167.10106 satisfied
@@ -94,7 +94,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -135,6 +135,6 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 

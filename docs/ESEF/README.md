@@ -51,6 +51,6 @@ The following entry points define the _base taxonomy_ for each version of the ru
 A reference implementation of the ESEF DQR rules is also available.  The reference implementation is defined using the [XULE language](https://xbrl.us/home/use/what-is-xule) developed by XBRL US.  The language is free to use, and an open source [XULE engine](https://github.com/xbrlus/xule/releases/latest) is available for the [Arelle](https://arelle.org/pub) XBRL processor.   
 
 
-© Copyright 2015 - 2023 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2024 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

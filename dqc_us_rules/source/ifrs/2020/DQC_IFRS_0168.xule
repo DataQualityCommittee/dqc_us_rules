@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2023
@@ -37,13 +37,13 @@ else
     skip
 
 message
-"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation.
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation.  A calculation should be provided even if some items in the calculation are represented using dimension members.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 rule-focus $stat
@@ -77,7 +77,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 rule-focus $stat
@@ -104,7 +104,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-status $status
+
 effectiveDate $effective_dates[$ruleId]
 
 rule-focus taxonomy().concept($relationship[1])
