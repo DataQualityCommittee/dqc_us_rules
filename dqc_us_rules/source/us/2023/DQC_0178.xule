@@ -116,26 +116,29 @@ ASSERT US.0178.10137 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
+
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember);
-$InvalidValue = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}
-$InvalidValueExists = exists($InvalidValue);
+$DivdedndImpactRE = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact != 0}
+$DivdedndImpactSH = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}
+$InvalidValueExists = ($DivdedndImpactRE == $DivdedndImpactSH );
 $misingAPIC = list({nonils @concept = DividendsCommonStockStock  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
 
 $InvalidValueExists and $misingAPIC
 
 message
-"The filing includes a value for dividends using the concept DividendsCommonStockStock with a value of {$InvalidValue}. This value represents a dividened paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
+"The filing includes a value for dividends using the concept DividendsCommonStockStock with a value of {$DivdedndImpactSH}. This value represents a dividened paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
 
 The properties of this  fact are:
-Period :{$InvalidValue.period}
-Dimensions : {$InvalidValue.dimensions.join(', ','=')}
-Unit : {$InvalidValue.unit}
+Period :{$DivdedndImpactSH.period}
+Dimensions : {$DivdedndImpactSH.dimensions.join(', ','=')}
+Unit : {$DivdedndImpactSH.unit}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $InvalidValue
+rule-focus $DivdedndImpactSH
 status $status
 effectiveDate $effective_dates[$rule_id]
 
