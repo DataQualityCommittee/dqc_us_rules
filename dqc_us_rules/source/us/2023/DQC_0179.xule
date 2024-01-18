@@ -1,0 +1,39 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** This rule checks that when dividends are reported in the statement of shareholders equity that the appropriate signs are used and that values are reported with the correct members on the StatementEquityComponentsAxis.  
+
+It has been observed that filers have used the elements used for the issuance of dividends as stock to represent a payment in actual cash.**/
+/**
+
+ASSERT US.0179.10150 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+true
+
+message
+"message
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+status $status
+effectiveDate $effective_dates[$rule_id]
+**/
+/**
+TODO 
+.inline-scale}
+Add rules to support dividends axis.
+
+SHould the element DividendsPayableAmountPerShare be replaced with CommonStockDividendsPerShareDeclared
+**/
