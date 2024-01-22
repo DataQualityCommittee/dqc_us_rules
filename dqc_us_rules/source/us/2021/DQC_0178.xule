@@ -541,6 +541,31 @@ severity error
 rule-focus $dividendsPayments
 status $status
 effectiveDate $effective_dates[$rule_id]
+
+/** -----------------------------_RULE DQC.US.0178.10150 ------------------------------------------------**/
+ASSERT US.0178.10150 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$StockWithInconsistentClass = {nonils @concept in list(CommonStockDividendsPerShareDeclared, PreferredStockDividendsPerShareDeclared) @StatementClassOfStockAxis in list(CommonStockMember, PreferredStockMember)}
+
+exists($StockWithInconsistentClass)
+
+message
+"The filing includes a  value of {$StockWithInconsistentClass} for  dividends declared using the concept {$StockWithInconsistentClass.concept.name} and the the the dimension member of {$StockWithInconsistentClass.dimension(StatementClassOfStockAxis).name} on the axis StatementClassOfStockAxis. This member should not be used with this concept as the type of stock declared is already communicated with the concept name, and the dimensions provides no additional disaggregation. 
+
+The properties of this  fact are:
+Period :{$StockWithInconsistentClass.period}
+Dimensions : {$StockWithInconsistentClass.dimensions.join(', ','=')}
+Unit : {$StockWithInconsistentClass.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $StockWithInconsistentClass
+status $status
+effectiveDate $effective_dates[$rule_id]
 /**
 TODO 
 .inline-scale}
