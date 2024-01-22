@@ -127,7 +127,7 @@ $misingAPIC = list({nonils @concept = DividendsCommonStockStock  @StatementEquit
 $InvalidValueExists and $misingAPIC
 
 message
-"The filing includes a value for dividends using the concept DividendsCommonStockStock with a value of {$DivdedndImpactSH}. This value represents a dividened paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
+"The filing includes a value for dividends using the concept DividendsCommonStockStock with a value of {$DivdedndImpactSH}. This value represents a dividend paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
 
 The properties of this  fact are:
 Period :{$DivdedndImpactSH.period}
@@ -172,7 +172,7 @@ ASSERT US.0178.10139 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$dividendEventConcepts = list(DividendsPayableAmountPerShare,DividendsPayableDateOfRecordDayMonthAndYear,DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear,CommonStockDividendsPerShareDeclared)
+$dividendEventConcepts = list(DividendsPayableAmountPerShare,DividendsPayableDateOfRecordDayMonthAndYear,DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear,CommonStockDividendsPerShareDeclared, PreferredStockDividendsPerShareDeclared)
 
 $badDividendAxis = list(
                         qname($EXTENSION_NS,'DividendDeclarationDateAxis'),
@@ -307,7 +307,7 @@ $perShareQuarterlyCheck = if $perShare.period.days > 85 and $perShare.period.day
 $frequencyOfDuration < 5 and $validDurations.length > 0  and $perShareQuarterlyCheck
 
 message
-"The concept {$perShare.concept.name} has been reported with a value of {$perShare}.  This value is reported with a duration starting on {$start + time-span('P1D')} and ending on {$end}.  This period does not align with the reporting periods of the report.  Adjust the reporting period to reflect one of the following reporting durations {$validDurations.join(', ')}. This rule is flagging because the value reported for {$perShare.concept.name} is prior to the report year end and should have been expensed for a period. This period should be associated with this fact.  This makes it possible to compare the value with similar metrics such as earnings per share. If the dates are used to seperate two dividends within the same reporting period then the DividendsAxis should be used to seperate the values.
+"The concept {$perShare.concept.name} has been reported with a value of {$perShare}.  This value is reported with a duration starting on {$start} and ending on {$end}.  This period does not align with the reporting periods of the report.  Adjust the reporting period to reflect one of the following reporting durations {$validDurations.join(', ')}. This rule is flagging because the value reported for {$perShare.concept.name} is prior to the report year end and should have been expensed for a period. This period should be associated with this fact.  This makes it possible to compare the value with similar metrics such as earnings per share. If the dates are used to seperate two dividends within the same reporting period then the DividendsAxis should be used to seperate the values.
 
 The properties of  {$perShare.concept.name} are:
 Period :{$perShare.period}
@@ -346,6 +346,199 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $factValues.first
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0178.10144 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+$divPerShareDeclared = {nonils @DividendsPayableAmountPerShare @period=* @unit=*}
+
+$divPayDate = {nonils @DividendPayableDateToBePaidDayMonthAndYear @period=* @unit}
+
+$divPayMonth = {nonils @DividendsPayableDateToBePaidMonthAndYear @period=* @unit} + '-01'
+
+$divPayMonthEnd = if $divPayMonth  == '-01' 
+                            skip 
+                    else 
+                        date($divPayMonth) + time-span('P1M')
+
+$dividendPayDate = first-value($divPayDate, $divPayMonthEnd) 
+
+$divPerShareDeclared.period.end > $dividendPayDate
+
+message
+"The element DividendsPayableAmountPerShare has a value of {$divPerShareDeclared} at {$divPerShareDeclared.period.end}. This represents the amount of dividends that are payable per share at {$divPerShareDeclared.period.end}. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is {$dividendPayDate}. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of {$dividendPayDate} should be reported using the DividendsAxis.
+
+The properties of  {$divPerShareDeclared.concept.name} are:
+Period :{$divPerShareDeclared.period}
+Dimensions : {$divPerShareDeclared.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $divPerShareDeclared
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+/**------------ The following rules address issues in AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings ----------------------**/
+ASSERT US.0178.10145 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
+
+$dividendsInAPIC = {@concept = AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings @StatementEquityComponentsAxis in $additionPaidInCapital where $fact < 0}
+
+exists($dividendsInAPIC)
+
+message
+"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. The element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings should not be reported with a negative value.  Check the disclosure and determine if the element DividendsCommonStockStock is more appropriate as this element is expected to increase APIC when a dividend distribution is made.
+
+The properties of this  fact are:
+Period :{$dividendsInAPIC.period}
+Dimensions : {$dividendsInAPIC.dimensions.join(', ','=')}
+Unit : {$dividendsInAPIC.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsInAPIC
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+/** 
+**
+** This specifically picks up the best buy case :
+** https://www.sec.gov/Archives/edgar/data/764478/000076447823000041/bby-20230729x10q.htm 
+** where they have used the incorrect sign
+ **/
+
+ASSERT US.0178.10146 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dividendsInAPIC = {@concept = AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings @StatementEquityComponentsAxis = none where $fact < 0}
+
+exists($dividendsInAPIC)
+
+message
+"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} in the default. The element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings should not be reported with a negative value. 
+
+The properties of this  fact are:
+Period :{$dividendsInAPIC.period}
+Dimensions : {$dividendsInAPIC.dimensions.join(', ','=')}
+Unit : {$dividendsInAPIC.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsInAPIC
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0178.10147 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+		
+		$presConceptItems = $presNetwork.concept-names;
+
+		// Income Statement Processing 
+		if $presConceptItems.contains(IncomeStatementAbstract) and $presConceptItems.contains(DividendsPayableAmountPerShare)
+            set({covered @DividendsPayableAmountPerShare}).length > 0
+		else 
+			skip
+
+
+message
+"The company has included the concept DividendsPayableAmountPerShare as a component of the Income Statement using the group {$presNetwork.role.description}.  This is a an instant item and does not reflect the dividends applicable for the reporting period.  Filers should use the element CommonStockDividendsPerShareDeclared with the appropriate reporting period instead of the concept DividendsPayableAmountPerShare. The rule will only report an error if a value has been reported for the element DividendsPayableAmountPerShare.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$rule_id]
+
+
+
+/** This rule looks for dividends expense and dividends payment and if they are different checks that dividends declared per share is reported.  If dividends paid per share is reported this should be changed. **/
+
+ASSERT US.0178.10148 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dividendsPayments = {nonils @concept = PaymentsOfDividendsCommonStock @unit = *  where $fact < 0}
+
+$dividendsExpense = {nonils @concept = DividendsCommonStockCash @unit = * where $fact < 0}
+
+if $dividendsPayments != $dividendsExpense
+    $divPaidElement  = {nonils @concept = CommonStockDividendsPerShareCashPaid @unit=*}
+    $divPaidElementUsed = exists($divPaidElement)
+    $messageIfDivPaidElementUsed = if $divPaidElementUsed
+                                        "The filer has reported a value for CommonStockDividendsPerShareCashPaid of " + $divPaidElement  + ", but has not reported a value for CommonStockDividendsPerShareDeclared. If the cash paid amount and expense are different the value for  CommonStockDividendsPerShareDeclared should also be reported."
+                                    else 
+                                        ""
+    not exists({nonils @concept = CommonStockDividendsPerShareDeclared @unit=*})
+else
+    skip
+
+
+message
+"The filing has reported a value for PaymentsOfDividendsCommonStock with a value of  {$dividendsPayments} and a value for  DividendsCommonStockCash with a value of {$dividendsExpense}. Given these values are not the same the value of CommonStockDividendsPerShareDeclared should be reported for the period.  If the values were the same the element CommonStockDividendsPerShareCashPaid could be used.  {$messageIfDivPaidElementUsed}
+
+The properties of the PaymentsOfDividendsCommonStock fact are:
+Period :{$dividendsPayments.period}
+Dimensions : {$dividendsPayments.dimensions.join(', ','=')}
+Unit : {$dividendsPayments.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsPayments
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0178.10149 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dividendsPayments = {nonils @concept = PaymentsOfDividendsPreferredStockAndPreferenceStock @unit = *  where $fact < 0}
+
+$dividendsExpense = {nonils @concept = DividendsPreferredStockCash @unit = * where $fact < 0}
+
+if $dividendsPayments != $dividendsExpense
+    $divPaidElement  = {nonils @concept = PreferredStockDividendsPerShareCashPaid @unit=*}
+    $divPaidElementUsed = exists($divPaidElement)
+    $messageIfDivPaidElementUsed = if $divPaidElementUsed
+                                        "The filer has reported a value for PreferredStockDividendsPerShareDeclared of " + $divPaidElement  + ", but has not reported a value for PreferredStockDividendsPerShareDeclared. If the cash paid amount and expense are different the value for  PreferredStockDividendsPerShareDeclared should also be reported."
+                                    else 
+                                        ""
+    not exists({nonils @concept = PreferredStockDividendsPerShareDeclared @unit=*})
+else
+    skip
+
+
+message
+"The filing has reported a value for PaymentsOfDividendsPreferredStockAndPreferenceStock with a value of  {$dividendsPayments} and a value for  DividendsPreferredStockCash with a value of {$dividendsExpense}. Given these values are not the same the value of PreferredStockDividendsPerShareDeclared should be reported for the period.  If the values were the same the element PreferredStockDividendsPerShareCashPaid could be used.  {$messageIfDivPaidElementUsed}
+
+The properties of the PaymentsOfDividendsPreferredStockAndPreferenceStock fact are:
+Period :{$dividendsPayments.period}
+Dimensions : {$dividendsPayments.dimensions.join(', ','=')}
+Unit : {$dividendsPayments.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $dividendsPayments
 status $status
 effectiveDate $effective_dates[$rule_id]
 /**
