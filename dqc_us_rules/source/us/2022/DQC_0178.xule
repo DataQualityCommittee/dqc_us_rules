@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2023
+Taxonomy: US GAAP 2022
 
 **/
 
@@ -70,7 +70,7 @@ $dividendsInAPIC = {@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxi
 exists($dividendsInAPIC)
 
 message
-"The filing includes a value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. Dividends should generally be deducted from retained earnings and not deducted from additional paid in capital. In certain cases dividends can be deducted from paid in capital, but in these cases the element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings defined in the taxonomy should be used.  Please update the filing to reflect this.
+"The filing includes a value for dividends using the concept {$dividendsInAPIC.concept.name} and the additional paid in capital member with a value of {$dividendsInAPIC}. Dividends should generally be deducted from retained earnings and not deducted from additional paid in capital. In certain cases dividends can be deducted from paid in capital, but in these cases the element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings defined in the taxonomy should be used.  Please update the filing to reflect this.
 
 The properties of this  fact are:
 Period :{$dividendsInAPIC.period}
@@ -96,7 +96,7 @@ $dividendsInAPIC = {@concept in list(DividendsCommonStockCash,DividendsPreferred
 exists($dividendsInAPIC)
 
 message
-"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. If APIC is increasing due to the declaration of dividends this indicates that the filer is doing issuance of stock as a dividend.  This has the impact of increasing APIC and reducing retained earnings. In these cases the elements DividendsCommonStockStock, or DividendsCommonStock should be used.
+"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the additional paid in capital member with a value of {$dividendsInAPIC}. If APIC is increasing due to the declaration of dividends this indicates that the filer is doing issuance of stock as a dividend.  This has the impact of increasing APIC and reducing retained earnings. In these cases the elements DividendsCommonStockStock, or DividendsCommonStock should be used.
 
 The properties of this  fact are:
 Period :{$dividendsInAPIC.period}
@@ -119,15 +119,15 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember);
-$DivdedndImpactRE = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact != 0}
-$DivdedndImpactSH = {nonils @concept = DividendsCommonStockStock @StatementEquityComponentsAxis = none where $fact != 0}
+$DivdedndImpactRE = {nonils @@concept = list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact != 0}
+$DivdedndImpactSH = {nonils @@concept =list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis = none where $fact != 0}
 $InvalidValueExists = ($DivdedndImpactRE == $DivdedndImpactSH );
-$misingAPIC = list({nonils @concept = DividendsCommonStockStock  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
+$misingAPIC = list({nonils @@concept = list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend)  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
 
 $InvalidValueExists and $misingAPIC
 
 message
-"The filing includes a value for dividends using the concept DividendsCommonStockStock with a value of {$DivdedndImpactSH}. This value represents a dividend paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
+"The filing includes a value for dividends using the concept {$DivdedndImpactSH.concept.name} with a value of {$DivdedndImpactSH}. This value represents a dividend paid in stock, but no impact has been reported on the value of APIC. If this is an actual dividend paid in stock it should  include the retained earnings member and not have a value in the default. If it is a dividend paid fully in cash then the element DividendsCommonStockCash should be used.  If it is partial stock and cash then the element DividendsCommonStock should be used.
 
 The properties of this  fact are:
 Period :{$DivdedndImpactSH.period}
@@ -321,6 +321,7 @@ rule-focus $perShare
 status $status
 effectiveDate $effective_dates[$rule_id]
 
+
 ASSERT US.0178.10143 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -395,7 +396,7 @@ $dividendsInAPIC = {@concept = AdjustmentsToAdditionalPaidInCapitalDividendsInEx
 exists($dividendsInAPIC)
 
 message
-"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the the additional paid in capital member with a value of {$dividendsInAPIC}. The element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings should not be reported with a negative value.  Check the disclosure and determine if the element DividendsCommonStockStock is more appropriate as this element is expected to increase APIC when a dividend distribution is made.
+"The filing includes a negative value for dividends using the concept {$dividendsInAPIC.concept.name} and the additional paid in capital member with a value of {$dividendsInAPIC}. The element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings should not be reported with a negative value.  Check the disclosure and determine if the element DividendsCommonStockStock is more appropriate as this element is expected to increase APIC when a dividend distribution is made.
 
 The properties of this  fact are:
 Period :{$dividendsInAPIC.period}
@@ -505,9 +506,6 @@ rule-focus $dividendsPayments
 status $status
 effectiveDate $effective_dates[$rule_id]
 
-
-/** -----------------------------_RULE DQC.US.0178.10149 ------------------------------------------------**/
-
 ASSERT US.0178.10149 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -554,7 +552,7 @@ $StockWithInconsistentClass = {nonils @concept in list(CommonStockDividendsPerSh
 exists($StockWithInconsistentClass)
 
 message
-"The filing includes a  value of {$StockWithInconsistentClass} for  dividends declared using the concept {$StockWithInconsistentClass.concept.name} and the the the dimension member of {$StockWithInconsistentClass.dimension(StatementClassOfStockAxis).name} on the axis StatementClassOfStockAxis. This member should not be used with this concept as the type of stock declared is already communicated with the concept name, and the dimensions provides no additional disaggregation. 
+"The filing includes a  value of {$StockWithInconsistentClass} for  dividends declared using the concept {$StockWithInconsistentClass.concept.name} and the dimension member of {$StockWithInconsistentClass.dimension(StatementClassOfStockAxis).name} on the axis StatementClassOfStockAxis. This member should not be used with this concept as the type of stock declared is already communicated with the concept name, and the dimensions provides no additional disaggregation. 
 
 The properties of this  fact are:
 Period :{$StockWithInconsistentClass.period}
@@ -568,10 +566,61 @@ severity error
 rule-focus $StockWithInconsistentClass
 status $status
 effectiveDate $effective_dates[$rule_id]
+
+/** -----------------------------_RULE DQC.US.0178.10151 ------------------------------------------------**/
+ASSERT US.0178.10151 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$RetainedEarningsIsZero = {@concept in list(DividendsCommonStockCash,DividendsPreferredStockCash,DividendsCash, DividendsShareBasedCompensationCash) @StatementEquityComponentsAxis = RetainedEarningsMember where $fact == 0}
+
+$positiveRetainedEarnings = {@concept = RetainedEarningsAccumulatedDeficit where $fact > 0}
+
+$cumDivs = list({@concept in list(CumulativeDividends, AccumulatedDistributionsInExcessOfNetIncome, CumulativeEarningsDeficit) where $fact > 0})
+
+exists($RetainedEarningsIsZero) and (exists($positiveRetainedEarnings) or $cumDivs.length == 0)
+
+message
+"The filing includes a  value of 0 for {$RetainedEarningsIsZero.concept.name}, but the value for {$positiveRetainedEarnings.concept.name} is {$positiveRetainedEarnings}.  Any dividends paid should reduce retained earnings if the retained earnings is positive. Either change the element, update the value for retained earnings or correct the balance for retained earnings.  If this is dividends paid out of APIC then use the element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings.
+
+The properties of this  fact are:
+Period :{$RetainedEarningsIsZero.period}
+Dimensions : {$RetainedEarningsIsZero.dimensions.join(', ','=')}
+Unit : {$RetainedEarningsIsZero.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $RetainedEarningsIsZero
+status $status
+effectiveDate $effective_dates[$rule_id]
+
+
+/** -----------------------------_RULE DQC.US.0178.10152 ------------------------------------------------**/
+ASSERT US.0178.10152 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$StockDivsIsPositive = {@concept in list (StockIssuedDuringPeriodValueDividendReinvestmentPlan, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis = RetainedEarningsMember where $fact > 0}
+
+exists($StockDivsIsPositive) 
+message
+"The filing includes a  value of {$StockDivsIsPositive} for {$StockDivsIsPositive.concept.name} using the RetainedEarningsMember. This element is a credit element so, the value must be entered as a negative amount to reduce retained earnings.
+
+The properties of this  fact are:
+Period :{$StockDivsIsPositive.period}
+Dimensions : {$StockDivsIsPositive.dimensions.join(', ','=')}
+Unit : {$StockDivsIsPositive.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $StockDivsIsPositive
+status $status
+effectiveDate $effective_dates[$rule_id]
 /**
 TODO 
-.inline-scale}
-Add rules to support dividends axis.
-
-
+Pickup missing dividends declared.
 **/
