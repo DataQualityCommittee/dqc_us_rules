@@ -119,10 +119,10 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember);
-$DivdedndImpactRE = {nonils @@concept = list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact != 0}
-$DivdedndImpactSH = {nonils @@concept =list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis = none where $fact != 0}
+$DivdedndImpactRE = {nonils @@concept in list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact != 0}
+$DivdedndImpactSH = {nonils @@concept in list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis = none where $fact != 0}
 $InvalidValueExists = ($DivdedndImpactRE == $DivdedndImpactSH );
-$misingAPIC = list({nonils @@concept = list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend)  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
+$misingAPIC = list({nonils @@concept in list(DividendsCommonStockStock, StockIssuedDuringPeriodValueStockDividend)  @StatementEquityComponentsAxis in $additionPaidInCapital where $fact != 0}).length == 0
 
 $InvalidValueExists and $misingAPIC
 
