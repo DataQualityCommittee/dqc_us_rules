@@ -29,19 +29,19 @@ for $key in $lookupDict.keys
                         1)
     
     $base = {@concept = $key};
-    $dim = ({@concept = $lineItem @$axis = $member} * $multiplier)
+    $dim = ({@concept = $lineItem @$axis = $member}#dimfact * $multiplier)
     $base != $dim 
    
    message
 "It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
 
-The properties of this {$base.name} fact are:
+The properties of this {$base.concept.name} fact are:
 
 Period : {$base.period}
 Dimensions : {$base.dimensions.join(', ',' = ')}
 Unit : {$base.unit}
-Decimals of {$base.name.local-name} : {$base.decimals}
-Decimals of {$dim.name.local-name} : {$dim.decimals}
+Decimals of {$dimfact.name.local-name} : {$base.decimals}
+Decimals of {$dimfact.name.local-name} : {$dimfact.decimals}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
