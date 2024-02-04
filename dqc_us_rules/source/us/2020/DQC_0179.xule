@@ -129,7 +129,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $periodEnd = [covered @concept.local-name = 'DocumentPeriodEndDate']
 
-$perShare = {@CommonStockDividendsPerShareDeclared @DividendsAxis = none where $fact.period.end < $periodEnd}
+$perShare = {@concept in list(CommonStockDividendsPerShareDeclared, PreferredStockDividendsPerShareDeclared) where $fact.period.end < $periodEnd}
 $start = $perShare.period.start;
 $end = $perShare.period.end;
 
