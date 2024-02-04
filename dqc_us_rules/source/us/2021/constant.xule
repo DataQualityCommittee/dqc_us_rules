@@ -194,6 +194,8 @@ constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
 
 constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
+constant $PARENTHETICAL_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS where $item.role.description.contains('148410 - Statement -') 
 	or $item.role.description.contains('148411 - Statement -') 
 	or $item.role.description.contains('148412 - Statement -')

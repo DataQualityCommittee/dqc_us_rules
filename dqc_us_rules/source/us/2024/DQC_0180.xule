@@ -108,3 +108,33 @@ severity error
 rule-focus $dividendsPayments
 status $status
 effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0180.10152 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $presNetwork in $PARENTHETICAL_STATEMENT_PRES_NETWORKS.sort
+		
+		$presConceptItems = $presNetwork.concept-names;
+
+		// Income Statement Processing 
+		if $presConceptItems.contains(DividendsPayableAmountPerShare) 
+            $factsReported = list({covered @DividendsPayableAmountPerShare})
+            $factsReported.length > 0
+		else 
+			skip
+
+
+message
+"The company has included the concept DividendsPayableAmountPerShare as a parenthetical disclosure using the group {$presNetwork.role.description}.  This is a an instant item and does not reflect the dividends applicable for the reporting period.  Filers should use the element CommonStockDividendsPerShareDeclared with the appropriate reporting period instead of the concept DividendsPayableAmountPerShare. The rule will only report an error if a value has been reported for the element DividendsPayableAmountPerShare.
+
+The value(s) reported are {$factsReported.join(', ')}
+
+Period :{first($factsReported).period}
+Unit : {first($factsReported).unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$rule_id]
