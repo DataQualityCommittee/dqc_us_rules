@@ -1,0 +1,41 @@
+@startuml dividends_Per_Share
+title "When to use CommonStockDividendsPerShareDeclared versus DividendsPayableAmountPerShare"
+!pragma useVerticalIf on
+start
+
+ 
+ if (   Is the dividend 
+    announcement after
+    the period end
+    of the report?) then (no)
+    if (Can the dividend be associated with a reporting period?) then (yes)
+       : Use CommonStockDividendsPerShareDeclared;
+       end                     
+    else (no)
+        
+    if (Are there multiple dividends reported?) then (yes)
+        :Use the RetainedAxis to seperate dividends;
+        :Use CommonStockDividendsPerShareDeclared 
+        with the report period for the context of
+        the reporting period that the dividends
+        expense is applicable to.;
+        end 
+    else (no)
+    endif
+                        
+    endif
+
+     
+ else (yes)
+    endif 
+
+                :Use DividendsPayableAmountPerShare ;
+               
+                
+                
+
+            
+    
+end
+
+@enduml
