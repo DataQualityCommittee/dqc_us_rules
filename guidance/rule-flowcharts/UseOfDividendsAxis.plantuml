@@ -1,0 +1,48 @@
+@startuml dividends_Per_Share
+title "When to use the Dividends Axis"
+!pragma useVerticalIf on
+start
+
+ 
+ if (Has the filer reported the payment, 
+   record and declaration dates
+  associated with each Dividend?) then (no)
+
+   if (Are multiple dividends reported 
+   in the same reporting period?) then (no)
+
+      if (   Is it possible to determine the 
+   reporting period for the element 
+   Common Stock Dividends Per Share 
+   Declared for the dividend?) then (yes)
+      
+      if (   Is the dividend declared after
+      the Reporting Period end?) then (no)
+      
+      : Do not use the DividendsAxis;
+      end
+      
+ else (yes)
+
+    endif 
+      
+ else (no)
+
+    endif 
+      
+ else (yes)
+
+    endif 
+      
+      
+ else (yes)
+
+    endif 
+
+                 : Use DividendsAxis;
+               
+                        
+    
+end
+
+@enduml
