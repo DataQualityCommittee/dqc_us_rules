@@ -9,7 +9,7 @@ Taxonomy: US GAAP 2024
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.0097.10161 satisfied
+ASSERT US.00183.10161 satisfied
 
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -34,3 +34,31 @@ rule-focus $BSLocationFact
 
 effectiveDate $effective_dates[$rule_id]
 
+
+/** TODO **/
+/** Add rule that checks that StatementOfFinancialPositionLocationActivityAccrualAxis is only used with income statemet item based on roll into retained earnings. ALlow extensions **/
+
+ASSERT US.00183.10162 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$Income_Statement_Items = $INCOME_STATEMENT_CONCEPTS + set()
+
+exists({@concept not in $Income_Statement_Items @StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.name not in $EXTENSION_QNAME}#BSLocationFact)
+
+message
+"The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityAccrualAxis and the member {$BSLocationFact.dimension(StatementOfFinancialPositionLocationActivityAccrualAxis).name}. This  axis should be used when a filer needs to disclose where a revenue or expense item has been reported as an effect on a statement of position line item. The concept reported is not a a concept that is an accrual concept that can be allocated to a Financial Statement account. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+
+The properties of this {$BSLocationFact.concept.name} fact are:
+Period :{$BSLocationFact.period}
+Dimensions : {$BSLocationFact.dimensions.join(', ','=')}
+Unit : {$BSLocationFact.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $BSLocationFact
+
+effectiveDate $effective_dates[$rule_id]
