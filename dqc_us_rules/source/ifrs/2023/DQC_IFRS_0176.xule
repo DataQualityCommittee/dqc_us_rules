@@ -42,7 +42,15 @@ $us-gaap-concepts = filter taxonomy().concepts where $item.namespace-uri.contain
 
 $presentationNetworks = taxonomy().networks(parent-child)
 
-$PresentationConcepts = sum(filter $presentationNetworks returns $item.concepts)
+/** Exclude ECD networks as these pull n US GAAP elements and cannot be changed **/
+
+$ECD_Presentation = $ECD.networks(parent-child)
+
+$ECD_Presentation_Role_URI = filter $ECD_Presentation returns $item.role.uri
+
+$presentationNetworksExcludingECDNetworks = filter $presentationNetworks where $item.role.uri not in $ECD_Presentation_Role_URI 
+
+$PresentationConcepts = sum(filter $presentationNetworksExcludingECDNetworks returns $item.concepts)
 
 $us-gaap_concepts = $PresentationConcepts.intersect($us-gaap-concepts)
 
