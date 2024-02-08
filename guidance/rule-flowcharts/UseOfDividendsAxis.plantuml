@@ -11,10 +11,6 @@ start
    if (Are multiple dividends reported 
    in the same reporting period?) then (no)
 
-      if (   Is it possible to determine the 
-   reporting period for the element 
-   Common Stock Dividends Per Share 
-   Declared for the dividend?) then (yes)
       
       if (   Is the dividend declared after
       the Reporting Period end?) then (no)
@@ -23,12 +19,18 @@ start
       end
       
  else (yes)
+   if (  Is the dividend associated 
+   with a given reporting period 
+   (Not the sum of individual dividends)) then (no)
+   : Do not use the DividendsAxis;
+   end 
+      
+   else (yes)
+   endif
 
     endif 
       
- else (no)
 
-    endif 
       
  else (yes)
 
