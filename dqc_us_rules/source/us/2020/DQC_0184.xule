@@ -17,10 +17,10 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $excluded_OCI = set(OciLiabilityForFuturePolicyBenefitGainLossAfterReclassificationAdjustmentAndTax, OciMarketRiskBenefitInstrumentSpecificCreditRiskGainLossAfterAdjustmentsAndTax)
 
-$oci_tax_parents = navigate summation-item children from OtherComprehensiveIncomeLossNetOfTax role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $US-GAAP where $relationship.target.name not in $excluded_OCI returns target-name
+$oci_tax_parents = navigate summation-item children from OtherComprehensiveIncomeLossNetOfTax role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $us-gaap where $relationship.target.name not in $excluded_OCI returns target-name
 
 for $oci_tax_parent in $oci_tax_parents
-        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $US-GAAP returns list target-name) + list($oci_tax_parent)
+        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $us-gaap returns list target-name) + list($oci_tax_parent)
         $SignValueComponents = list(for $child in $components
                                         {@concept = $child}
                                     )
@@ -79,7 +79,7 @@ $oci_tax_parents = set(
 )
 
 for $oci_tax_parent in $oci_tax_parents
-        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeFouthAlternative' taxonomy $US-GAAP returns list target-name) + list($oci_tax_parent)
+        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeFouthAlternative' taxonomy $us-gaap returns list target-name) + list($oci_tax_parent)
         $SignValueComponents = list(for $child in $components
                                         {@concept = $child}
                                     )
