@@ -161,7 +161,7 @@ for $cube in $STATEMENT_CUBES.sort
 												false
 										
 					/** END ***/
-					$calc_decimals = min(list($sum2.decimals,$min_addend_Decimals))
+					$calc_decimals = if $sum2.decimals <= $min_addend_Decimals $sum2.decimals else $min_addend_Decimals
 
 					if $addend == none or $DefaultCheckflag or not tolerance_for_decimals_comp($sum2, $addend, $calc_decimals, 2)
 						skip
@@ -186,7 +186,8 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
-Decimals : {$sum2.decimals} 
+Decimals of Total : {$sum2.decimals} 
+Decimals Used for Comparison: {$calc_decimals}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
