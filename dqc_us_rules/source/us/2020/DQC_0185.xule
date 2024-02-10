@@ -32,13 +32,16 @@ $tax_increase_decrease_elements = set(
 for $tax_item in $tax_increase_decrease_elements
 
         $taxFact = {@concept = $tax_item}
-        $ancestors = $taxFact.inline-ancestors.concept.name
-        if SummaryOfIncomeTaxContingenciesTextBlock in $ancestors
+        $ancestors = $taxFact.inline-ancestors
+        if $ancestors == none
+            skip 
+        else
+        $ancestorConcepts = filter $ancestors returns $item.concept.name 
+        if SummaryOfIncomeTaxContingenciesTextBlock in $ancestorConcepts
             true
         else
             false
        
-
 message
 "The concept {$tax_item} with a value of {$taxFact} is reported in the disclosure within the text block item  SummaryOfIncomeTaxContingenciesTextBlock. The element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead.
 
