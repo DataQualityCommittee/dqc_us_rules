@@ -3,7 +3,10 @@ DQC Rules
  (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2023
+Taxonomy: US GAAP All
+
+WARNING : THIS IS A SINGLE FILE ON CHANGE TO THIS AFFECTS 5 files 2024, 2023, 2022, 2021, 2020
+This was created using a hardlink ln {original} {new}
 
 **/
 
@@ -30,12 +33,14 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = EffectiveIncomeTaxRateContinuingOperations]#effective)
         and
         not $MONETARY_TAX_RECONCILIATION_DEFINED
+        and 
+        not exists({covered @concept = qname($EXTENSION_NS, 'TaxReconciliationNotRequired')})
 
 else
     skip
 
 message
-"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation.
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -64,12 +69,14 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
         exists([@concept = IncomeTaxExpenseBenefit]#effective)
         and
         not $PERCENTAGE_TAX_RECONCILIATION_DEFINED
+        and
+        not exists({covered @concept = qname($EXTENSION_NS, 'TaxReconciliationNotRequired')})
 
 else
     skip
 
 message
-"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation.
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
