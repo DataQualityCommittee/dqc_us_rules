@@ -1,6 +1,6 @@
 /** 
 DQC Rules
- (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
  Shared Function Library IFRS & US
@@ -705,7 +705,7 @@ function getDimensionSums($concept, $cube, $dimensions_of_sum, $parentConcept, $
 												if  list({ nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim in $ancestors_list}).length > 0
 													skip
 												else
-													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
+													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member  @@period = $sum2.period}
 											else
 												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
@@ -817,7 +817,7 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $sum2)
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period}
 											else
-												// This was added for those cases whenever companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
+												// This was added for those cases whener companies use a two dimensional breakdown of related party by counterpartyNameAxis. This caused
 												// an issue when we added the period of sum2 that then forced alignment of the sum period which excluded CounterpartyNameAxis.
 												if $dim.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[1] 
 													and $member.local-name == $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR[2] 
@@ -825,7 +825,6 @@ function getDimensionNames($concept, $cube, $dimensions_of_sum, $sum2)
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @$COUNTERPARTY_DIMENSION @@period = $sum2.period}
 												else
 													{nonils @concept = $concept @cube.drs-role = $cube.drs-role @$dim = $member @@period = $sum2.period});
-
 
 												/** where  not $fact.dimensions().keys.name.local-name.contains('LegalEntityAxis') **/
 						/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/

@@ -1,0 +1,99 @@
+{
+	"folders": [
+		{
+			"path": "source/us/2024",
+			"name": "US-2024"
+		},
+		{
+			"path": "source/us/2023",
+			"name": "US-2023"
+		},
+		{
+			"path": "source/us/2022",
+			"name": "US-2022"
+		},
+		{
+			"path": "source/us/2021",
+			"name": "US-2021"
+		},
+		{
+			"path": "source/us/2020",
+			"name": "US-2020"
+		},
+		{
+			"path": "source/ifrs/2023",
+			"name": "ifrs-2023"
+		},
+		{
+			"path": "source/ifrs/2022",
+			"name": "ifrs-2022"
+		},
+		{
+			"path": "source/ifrs/2021",
+			"name": "ifrs-2021"
+		},
+		{
+			"path": "source/ifrs/2020",
+			"name": "ifrs-2020"
+		},
+		{
+			"path": "source/esef/esef-2022",
+			"name": "esef-2022"
+		},
+		{
+			"path": "source/esef/esef-2021"
+		},
+		{
+			"path": "source/esef/esef-2020"
+		},
+		{
+			"path": "resources"
+		},
+		{
+			"path": "../guidance"
+		}
+	],
+	"tasks": {
+		"version": "2.0.0",
+		"tasks": [
+			{
+				"label": "build",
+				"type": "shell",
+				"command": "msbuild",
+				"args": [
+					"/property:GenerateFullPaths=true",
+					"/t:build",
+					"/consoleloggerparameters:NoSummary"
+				],
+				"group": "build",
+				"presentation": {
+					"reveal": "silent"
+				},
+				"problemMatcher": "$msCompile"
+			},
+			
+				{
+					"label": "Compile all Rules",
+					"type": "shell",
+					"command": "/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc_compile_p39.sh $
+				},
+				{
+					"label": "Compile all Rules V3.12",
+					"type": "shell",
+					"command": "/Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc_compile_all.sh ${input:version_num}"
+				}
+			
+		],
+		"inputs": [
+			{
+				"id":"version_num",
+				"description":"Rule Release Version",
+				"default":"24",
+				"type":"promptString"
+			}
+		]
+	},
+	"settings": {
+		"todo-tree.tree.scanMode": "workspace only"
+	}
+}

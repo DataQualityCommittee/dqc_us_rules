@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2023, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2023
@@ -32,10 +32,13 @@ for $header in $Required_Abstracts
             else
                 false
         else
-            if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
-                true
-            else
-                false
+                if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
+                    if $header == StatementOfCashFlowsAbstract and set( '10-Q', '10-Q/A').contains([covered @concept.local-name ='DocumentType'])
+                        false 
+                    else
+                        true
+                else
+                    false
 
 message
 "The concept {$header} does not appear in the financial statements of the filer.  This element needs to be included as a component of the financial statements.  Please add the element  {$header}  to the presentation of the filing.

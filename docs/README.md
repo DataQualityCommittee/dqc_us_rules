@@ -1,6 +1,6 @@
 # Data Quality Committee Rules &amp; Guidance
 
-The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are _functionally revised_. Rules for which the _scope of coverage_ changes (ie. DQC_0015, Negative Values) will not be incremented. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
+Approved rules listed below will increment with each major release in which they are _functionally revised_. Rules for which the _scope of coverage_ changes (ie. DQC_0015, Negative Values) will not be incremented. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
@@ -116,6 +116,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
 | [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Approved | 21 |
 | [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Approved | 21 |
+| [DQC_US_0152](DQC_US_0152/DQC_0152.md) | Year List Items Used with Tax Period Axis | Approved | 23 |
 | [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Approved | 21 |
 | [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
 | [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
@@ -130,7 +131,17 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Approved | 22 |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Approved | 22 |
 | [DQC_US_0166](DQC_US_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
+| [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Approved | 23 |
+| [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Approved | 23 |
+| [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Approved | 23 |
+| [DQC_US_0170](DQC_US_0170/DQC_0170.md) | ECD Rule 10b51 Flag Disclosures | Approved | 23 |
+| [DQC_US_0171](DQC_US_0171/DQC_0171.md) | ASU 201613 Transition Elements | Approved | 23 |
+| [DQC_IFRS_0172](DQC_US_0172/DQC_0172.md) | Reporting Right of use Assets | Approved | 23 |
+| [DQC_IFRS_0173](DQC_US_0173/DQC_0173.md) | IFRS Transition Elements | Approved | 23 |
 | [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Approved | 22 |
+| [DQC_IFRS_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Approved | 23 |
+| [DQC_IFRS_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Approved | 23 |
+| [DQC_IFRS_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Approved | 23 |
 
 ## Guidance 
 
@@ -150,6 +161,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2023 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2024 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
