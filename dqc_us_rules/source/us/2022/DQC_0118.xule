@@ -4,9 +4,11 @@ DQC Rules
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2022
-Release Version 18
+
 **/
 
+
+/* TODO  Need to check if liquidation accounting is used. If yes then do not check the balance sheet containing Equity. Look if the element LiquidationBasisOfAccountingTextBlock is used to determine if liquidation accounting is used.  It may be best to define a contant to determine if the filer has used liquidation accounting. **/
 RULE-NAME-PREFIX DQC
 
 ASSERT US.0118.9575 SATISFIED
@@ -108,6 +110,15 @@ for $cube in $STATEMENT_CUBES.sort
 									)
 									);
 
+					/** WHen checking if items add we need to know the decimals of the calc components **/
+					$min_addend_Decimals =  min(list(for $x in $addendComponents
+											if $x[5] == none
+												0
+											else
+												$x[5] 
+									)
+									);
+
 					/** REMOVE DEFAULT FROM CALCULATION TEST **/
 					
 					$sum2Dimensions = $sum2.dimensions.keys.name
@@ -150,17 +161,18 @@ for $cube in $STATEMENT_CUBES.sort
 												false
 										
 					/** END ***/
+					$calc_decimals = if $sum2.decimals <= $min_addend_Decimals $sum2.decimals else $min_addend_Decimals
 
-					if $addend == none or $DefaultCheckflag or not tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
+					if $addend == none or $DefaultCheckflag or not tolerance_for_decimals_comp($sum2, $addend, $calc_decimals, 2)
 						skip
 					else
 						$addend_string = calculationExplananation($addendComponents, $cube, $concept_item, $fs_decimals, $sum2)
 						$calcComponentConcepts = (filter $calcComponents returns $item[1]).to-set
 						/** Deals with FASB Guidance **/
 						if $concept_item in list(NoninterestIncome) and length($calcComponentConcepts intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax))> 0
-							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2) and $sum2 > $addend
+							tolerance_for_decimals_comp($sum2, $addend, $calc_decimals, 2) and $sum2 > $addend
 						else			
-							tolerance_for_decimals_comp($sum2, $addend, $sum2.decimals, 2)
+							tolerance_for_decimals_comp($sum2, $addend, $calc_decimals, 2)
 
 message
 "The statement {$cube.drs-role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2} {if length($sum2.dimensions.values) > 0 'for ' + $sum2.dimensions.values.join(',') else "in the default"} should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts with a decimal value of {$fs_decimals.string}. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
@@ -174,7 +186,8 @@ Total Element : {$concept_item}
 Total Value : {$sum2} 
 Total period : {$sum2.period} 
 Dimensions : {$sum2.dimensions.join(', ','=')}
-Decimals : {$sum2.decimals} 
+Decimals of Total : {$sum2.decimals} 
+Decimals Used for Comparison: {$calc_decimals}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 

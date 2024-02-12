@@ -33,3 +33,5 @@ constant $all_ifrs_base_taxonomies = list($ifrs-gaap, $exchange, $state_province
 /** DEI HANDLING **/
 
 constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
+
+constant $ECD = taxonomy('https://xbrl.sec.gov/ecd/2023/ecd-entire-2023.xsd')
