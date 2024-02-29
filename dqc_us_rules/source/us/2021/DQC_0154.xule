@@ -28,7 +28,7 @@ for $incomeTaxNetwork in $incomeTaxNetworks.sort
     for $x in (filter $incomeTaxConcepts where $item.is-numeric returns $item.name)
         for $labelRole in $preferredLabels
             $label = taxonomy().concept($x).label($labelRole).text
-            if ($label.lower-case.contains('foreign') and $label.lower-case.contains('rate') and $label.lower-case.contains('differential')) and ($x not in list(IncomeTaxReconciliationForeignIncomeTaxRateDifferential, EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential)) and not ($label.lower-case.contains('fdii') or $label.lower-case.contains('other') or $label.lower-case.contains('gilti') or $label.lower-case.contains('beat') or $label.lower-case.contains('and'))
+            if ($label.lower-case.contains('foreign') and $label.lower-case.contains('rate') and $label.lower-case.contains('differential')) and ($x not in list(IncomeTaxReconciliationForeignIncomeTaxRateDifferential, EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential)) and not ($label.lower-case.contains('fdii') or $label.lower-case.contains('other') or $label.lower-case.contains('gilti') or $label.lower-case.contains('beat') or $label.lower-case.contains('and') or $label.lower-case.contains(' net of'))
                 true
             else
                 false
