@@ -37,13 +37,13 @@ for $tax_item in $tax_increase_decrease_elements
             skip 
         else
         $ancestorConcepts = filter $ancestors returns $item.concept.name 
-        if SummaryOfIncomeTaxContingenciesTextBlock in $ancestorConcepts
-            true
-        else
+        if ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock in $ancestorConcepts
             false
+        else
+            true
 
 message
-"The concept {$tax_item} with a value of {$taxFact} is reported in the disclosure within the text block item  SummaryOfIncomeTaxContingenciesTextBlock. The element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead.
+"The concept {$tax_item} with a value of {$taxFact} is reported in the disclosure within the text blocks item {$ancestorConcepts.join(', ')}. The element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead.
 
 The properties of this {$taxFact} fact are:
 Period :{$taxFact.period}
