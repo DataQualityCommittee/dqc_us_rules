@@ -14,10 +14,13 @@ assert US.0009.15 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$less_fact = {@CommonStockSharesOutstanding};
-$greater_fact = {@CommonStockSharesAuthorized};
+if count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
+    skip
+else
+    $less_fact = {@CommonStockSharesOutstanding};
+    $greater_fact = {@CommonStockSharesAuthorized};
 
-tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+    tolerance_for_decimals_greater($less_fact,$greater_fact,0)
 
 message
 
