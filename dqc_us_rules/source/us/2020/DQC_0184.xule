@@ -28,8 +28,11 @@ for $oci_tax_parent in $oci_tax_parents
         if $SignValueComponents.contains(none) or length($SignValueComponents) != 3 or $SignValueComponents.contains(0) 
             false
         else
-            abs(sum(list(for $x in $SignValueComponents
+             if abs(sum(list(for $x in $SignValueComponents
                 $x.signum))) != 3
+                ($SignValueComponents[1] - $SignValueComponents[2]) != $SignValueComponents[3]
+            else
+                false
 
 message
 "The following elements have the following values. All of these values should have the same sign of either negative or positive:
@@ -87,8 +90,11 @@ for $oci_tax_parent in $oci_tax_parents
         if $SignValueComponents.contains(none) or length($SignValueComponents) != 3 or $SignValueComponents.contains(0) 
             false
         else
-            abs(sum(list(for $x in $SignValueComponents
+             if abs(sum(list(for $x in $SignValueComponents
                 $x.signum))) != 3
+                ($SignValueComponents[1] - $SignValueComponents[2]) != $SignValueComponents[3]
+            else
+                false
 
 message
 "The following elements have the following values. All of these values should have the same sign of either negative or positive:
