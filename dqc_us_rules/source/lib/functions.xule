@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
- Shared Function Library IFRS & US
+ Shared Function Library IFRS & US & esef
 **/
 
 /** 
@@ -893,7 +893,8 @@ function most_frequent($list_of_items)
             $index[$max_occurence]
 
 /**
- * 
+ * tolerance_for_decimals_sign_flip
+ *
  * @param factset - $left - Passes a factset value to compare to a second parameter called $right
  * @param factset - $right - Passes a factset value to compare to the first parameter called $left
  * @param integer - $decimal_tolerance_factor - Integer value that defines how different the values can be
@@ -941,3 +942,21 @@ function calculationExplananation($addendComponents, $cube, $concept_item, $fs_d
 											"" + $weight + "  \t" + $targetElement.local-name.string + $DefaultMessage + $pad + $factAmt  +  (if $factDecimals < $fs_decimals " (Inconsistent decimals: " +  $factDecimals.string + " )" else skip)  + "\n"
 													)
 									)
+/**
+ * duration_contained 
+ *
+ * @param duration - $smallDate - Passes a duration to check if it is in the larger duration
+ * @param duration - $largeDate- Passes a duration to check if a smaller duration is contained within.
+ 
+ * @return boolean - Returns true if the one duration is contained within another duration.
+ *
+**/
+function duration_contained($smallDate,$largeDate)
+		
+		if $smallDate.start >= $largeDate.start and $smallDate.end <= $largeDate.end
+			if $smallDate.start == $largeDate.start and $smallDate.end == $largeDate.end
+				false
+			else
+				true
+		else
+			false
