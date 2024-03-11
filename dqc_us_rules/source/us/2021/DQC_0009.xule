@@ -13,11 +13,13 @@ rule-name-prefix DQC
 assert US.0009.15 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+if count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
+    skip
+else
+    $less_fact = {@CommonStockSharesOutstanding};
+    $greater_fact = {@CommonStockSharesAuthorized};
 
-$less_fact = {@CommonStockSharesOutstanding};
-$greater_fact = {@CommonStockSharesAuthorized};
-
-tolerance_for_decimals_greater($less_fact,$greater_fact,0)
+    tolerance_for_decimals_greater($less_fact,$greater_fact,0)
 
 message
 
