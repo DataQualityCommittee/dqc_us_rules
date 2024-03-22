@@ -150,8 +150,8 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0183](DQC_US_0183/DQC_0183.md) | Face Financial Statement Location using the Accrual Axis | Public Review | 24 |
 | [DQC_US_0184](DQC_US_0184/DQC_0184.md) | OCI Reconciliation of Before Tax and Net of Tax OCI | Public Review | 24 |
 | [DQC_US_0185](DQC_US_0185/DQC_0185.md) | Reconciliation in Schedule Of Unrecognized Tax Benefits Roll Forward Table Text  | Public Review | 24 |
-| [DQC_IFRS_0186](DQC_US_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Public Review | 24 |
-| [DQC_IUS_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Public Review | 24 |
+| [DQC_IFRS_0186](DQC_IFRS_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Public Review | 24 |
+| [DQC_US_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Public Review | 24 |
 
 ## Guidance 
 
