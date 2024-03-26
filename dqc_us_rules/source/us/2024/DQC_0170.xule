@@ -54,7 +54,7 @@ if set('10-K','10-KT','10-Q','20-F').contains([covered @concept.local-name ='Doc
             true
     else
          if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag == true})
-         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate'
+         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate';
             true
         else 
             false
@@ -63,7 +63,7 @@ else
     skip
 
 message
-"The filing has either used the element TrdArrTerminationDate without a corresponding flag for  either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true.
+"{$message}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
