@@ -33,7 +33,12 @@ else
                         false
             else
                 if $All_statement_abstract_elements.length > 0 and not $All_statement_abstract_elements.contains($header)
-                    if $header == StatementOfCashFlowsAbstract and set( '10-Q', '10-Q/A').contains([covered @concept.local-name ='DocumentType'])
+                    if $header == StatementOfCashFlowsAbstract and (
+                                set( '10-Q', '10-Q/A').contains([covered @concept.local-name ='DocumentType']) or 
+                                /** ASC 230  Allows no CF if statement of Investment and No level 3 Assets and No debt**/
+                                ($All_statement_abstract_elements.contains(ScheduleOfInvestmentsAbstract) and
+                                list({covered nonils @FairValueByFairValueHierarchyLevelAxis = FairValueInputsLevel3Member where $fact > 0}).length == 0
+                                ))
                         false 
                     else
                         true
