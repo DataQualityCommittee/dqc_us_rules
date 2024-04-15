@@ -47,14 +47,14 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 if set('10-K','10-KT','10-Q','20-F').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 
     if exists({ @concept.local-name = 'TrdArrTerminationDate'})
-        if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag == true})
+        if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag where $fact == true})
             false
         else 
             $message = 'The filing has used the element TrdArrTerminationDate. This element should only be used when either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
             true
     else
-         if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag == true})
-         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate'
+         if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag where $fact == true})
+         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate.';
             true
         else 
             false
@@ -63,7 +63,7 @@ else
     skip
 
 message
-"The filing has either used the element TrdArrTerminationDate without a corresponding flag for  either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true.
+"{$message}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -78,13 +78,13 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 if set('10-K','10-KT','10-Q','20-F').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 
     if exists({ @concept.local-name = 'TrdArrAdoptionDate'})
-        if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag == true})
+        if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
             false
         else 
             $message = 'The filing has used the element TrdArrAdoptionDate. This element should only be used when either the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
             true
     else
-         if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag == true})
+         if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
             $message = 'The filing has not used the element TrdArrAdoptionDate. But has reported a value of true for one of the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag. Please update the filing to include a value for TrdArrAdoptionDate';
             true
         else 
