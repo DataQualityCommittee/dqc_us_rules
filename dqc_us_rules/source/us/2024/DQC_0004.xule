@@ -366,6 +366,8 @@ effectiveDate $effective_dates[$rule_id]
 CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect = NetCashProvidedByUsedInOperatingActivities + NetCashProvidedByUsedInInvestingActivities + NetCashProvidedByUsedInFinancingActivities
 **/
 
+/** TODO Fix the tolerance so that the ag tolerance is used see Shelly example where it pulss in value from the notes. **/
+
 assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -375,10 +377,18 @@ $base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashE
 $agg = {nonils @NetCashProvidedByUsedInOperatingActivities}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivities}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
 
+$component_facts = list({@concept in list(NetCashProvidedByUsedInOperatingActivities,NetCashProvidedByUsedInInvestingActivities,NetCashProvidedByUsedInFinancingActivities)})
+
+$min_decimals = min(list(for $z in $component_facts
+				if $z == none 
+					skip
+				else
+					$z.decimals));
+
 if $base == none
 	skip
 else
-	tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+	tolerance_for_decimals_comp($base, $agg, $min_decimals, $decimal_tolerance_factor)
 
 message
 
