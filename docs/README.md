@@ -155,7 +155,7 @@ Approved rules listed below will increment with each major release in which they
 
 ## Guidance 
 
-### [Reporting US GAAP Dividend Disclosures in XBRL - FAQ](https://github.com/DataQualityCommittee/documentation/raw/master/meetings/mar_2024/DividendGuidanceDRAFT.docx) - public review
+### [Reporting US GAAP Dividend Disclosures in XBRL - FAQ](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/guid-dividend.pdf) - public review April 15 - May 31, 2024
 
 ### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/) - approved 9/21/2022
 
