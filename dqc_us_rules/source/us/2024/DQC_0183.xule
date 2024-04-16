@@ -62,3 +62,47 @@ severity error
 rule-focus $BSLocationFact
 
 effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0183.10177 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+exists({@StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.period-type == instant }#AccrualAxisFact)
+
+message
+"The value {$AccrualAxisFact} for {$AccrualAxisFact.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityAccrualAxis and the member {$AccrualAxisFact.dimension(StatementOfFinancialPositionLocationActivityAccrualAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+
+The properties of this {$AccrualAxisFact.concept.name} fact are:
+Period :{$AccrualAxisFact.period}
+Dimensions : {$AccrualAxisFact.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $AccrualAxisFact
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0183.10178 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+exists({@StatementOfFinancialPositionLocationActivityCapitalizationAxis = * where $fact.concept.period-type == instant }#CapitalizationAxis)
+
+message
+"The value {$CapitalizationAxis} for {$CapitalizationAxis.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityCapitalizationAxis and the member {$CapitalizationAxis.dimension(StatementOfFinancialPositionLocationActivityCapitalizationAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+
+The properties of this {$CapitalizationAxis.concept.name} fact are:
+Period :{$CapitalizationAxis.period}
+Dimensions : {$CapitalizationAxis.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $CapitalizationAxis
+
+effectiveDate $effective_dates[$rule_id]
