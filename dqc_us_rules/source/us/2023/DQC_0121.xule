@@ -60,12 +60,7 @@ else
 	$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
 	$document_period_end = $document_period.period.end;
 
-	$EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
-					first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
-				else 
-					false
-
-	/** Added for situation when an EGC goes non EGC.  Prior elements included in presentation group with text priortoadoptionoftopic842 will be excluded from the rule. **/
+	/** Prior elements included in presentation group with text priortoadoptionoftopic842 will be excluded from the rule. **/
 	$presDisclosureNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Disclosure -') 
 	and ($item.role.uri.lower-case.contains('priortoadoptionoftopic842'))
 
@@ -74,7 +69,7 @@ else
 								)
 							)
 					
-	if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) OR $EGCFlag
+	if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
 		skip
 	else
 		$transitionElements = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name);
