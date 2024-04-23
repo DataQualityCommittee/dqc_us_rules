@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP All
@@ -19,7 +19,10 @@ $ppe_gross = {nonils @concept=PropertyPlantAndEquipmentGross};
 $ppe_Gross_dim_components = list({nonils @concept=PropertyPlantAndEquipmentGross @PropertyPlantAndEquipmentByTypeAxis=*});
 $ppe_Gross_dim_components_sum = sum($ppe_Gross_dim_components)
 
-$ppe_gross < $ppe_Gross_dim_components_sum
+if $ppe_Gross_dim_components_sum == none
+    skip
+else
+    $ppe_gross < $ppe_Gross_dim_components_sum
 
 message
 "The value of PropertyPlantAndEquipmentGross is reported as {$ppe_gross}. The dimensional breakdown of PropertyPlantAndEquipmentGross using the axis PropertyPlantAndEquipmentByTypeAxis aggregates to a total of {$ppe_Gross_dim_components_sum}.  This is more than the value of PropertyPlantAndEquipmentGross.
@@ -104,8 +107,10 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $ppe_gross = {nonils @concept=PropertyPlantAndEquipmentGross};
 $ppe_Gross_dim_components = list({nonils @concept=PropertyPlantAndEquipmentGross @PublicUtilityAxis=*});
 $ppe_Gross_dim_components_sum = sum($ppe_Gross_dim_components)
-
-$ppe_gross < $ppe_Gross_dim_components_sum
+if $ppe_Gross_dim_components_sum == none
+    skip
+else
+    $ppe_gross < $ppe_Gross_dim_components_sum
 
 message
 "The value of PropertyPlantAndEquipmentGross is reported as {$ppe_gross}. The dimensional breakdown of PropertyPlantAndEquipmentGross using the axis PublicUtilityAxis aggregates to a total of {$ppe_Gross_dim_components_sum}.  This is more than the value of PropertyPlantAndEquipmentGross.
