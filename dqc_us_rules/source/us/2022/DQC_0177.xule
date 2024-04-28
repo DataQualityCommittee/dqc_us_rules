@@ -23,10 +23,17 @@ $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
                                 false
                                     ));
 
-if $ecdtaxonomy
+$ruleExclusionIfUseMembers = set('PensionValueAndEquityAwardsValueInCompensationTableForTheApplicableYearMember', 'ChangeInPensionValueAndEquityAwardValueMember', 'NetAdjustmentsForPensionMember', 'EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfVestedAwardsDuringCurrentYearMember')
 
-	/** Get a list of the members **/
-	$member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set
+if $ecdtaxonomy
+    /** Get a list of the members **/
+    $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set
+
+    /** Check if exclusions apply **/
+
+    if ($member_descendants.name.local-name intersect  $ruleExclusionIfUseMembers).length > 0
+        skip
+    else
 
 	/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 	$member_facts = list(for $member in $member_descendants
