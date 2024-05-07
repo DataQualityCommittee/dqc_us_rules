@@ -6,42 +6,23 @@ start
  
  if (Has the filer reported the payment, 
    record and declaration dates
-  associated with each Dividend?) then (no)
+  associated with each Dividend? 
+  (Reporting a dividend event)) then (no)
 
    if (Are multiple dividends reported 
-   in the same reporting period?) then (no)
-
-      
-      if (   Is the dividend declared after
-      the Reporting Period end?) then (no)
-      
-      : Do not use the DividendsAxis;
+   in the same reporting period?
+   (Reporting summary divdend 
+   information)) then (no)
+      : Do NOT use the DividendsAxis;
       end
-      
- else (yes)
-   if (  Is the dividend associated 
-   with a given reporting period 
-   (Not the sum of individual dividends)) then (no)
-   : Do not use the DividendsAxis;
-   end 
-      
+         
    else (yes)
+
    endif
-
+else (yes)
     endif 
       
-
-      
- else (yes)
-
-    endif 
-      
-      
- else (yes)
-
-    endif 
-
-                 : Use DividendsAxis;
+: Use DividendsAxis;
                
                         
     
