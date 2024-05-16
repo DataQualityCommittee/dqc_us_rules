@@ -24,7 +24,7 @@ $document_period_end_date = $document_period.period.end;
 /** The  first part of the expession checks if the document period end date is within three days if not the rule does not execute as rule DQC.US.0036 will have executed**/
 not($document_period > ($document_period_end_date + (time-span("P4D"))) or $document_period < ($document_period_end_date - (time-span("P4D"))))
 and 
-exists({@concept.namespace-uri = $dei_namespace @period  where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
+exists({@concept.namespace-uri = $dei_namespace @period  @SubsequentEventTypeAxis = none where $fact.concept.name not in $exceptions_to_dei and  $fact.period.end != $document_period_end_date}#fact1)
 and 
 /** The rule will not run if it is an 8-K that has the amendment flag flagged as true**/
 not (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in set('8-K')}))) and (exists({covered @concept.local-name ='AmendmentFlag' where $fact == true})))
