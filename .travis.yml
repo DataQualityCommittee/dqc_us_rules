@@ -1,6 +1,6 @@
 language: python
 dist: focal
-python: "3.10"
+python: "3.11"
 branches:
   only:
   - master
@@ -9,8 +9,8 @@ env:
   global:
     - EXPECTED=./tests/output
     - CURDIR=$(pwd)
-    - PYTHON_VERSION=python3.10
-    - XULE_VERSION=23750.1
+    - PYTHON_VERSION=python3.11
+    - XULE_VERSION=main
     - GH_SLUG=https://github.com/${TRAVIS_REPO_SLUG}
     - PR_BR=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
