@@ -397,12 +397,19 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Use nested navigation as the Currency Axis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 /** UPDATED FOR SRT **/
-$member_USGAAP = navigate domain-member descendants include start
+$member_USGAAP_pre_currency = navigate domain-member descendants include start
      from (navigate dimension-domain children
            from srt:CurrencyAxis
            taxonomy $US-GAAP returns set)
      taxonomy $US-GAAP
      returns set (target-name);
+
+$member_Currency = navigate domain-member descendants include start
+     from currency:AllCurrenciesDomain
+     taxonomy $CURRENCY
+     returns set (target-name);
+
+$member_USGAAP = $member_USGAAP_pre_currency + $member_Currency;
 
 $member_extension = navigate dimensions dimension-member descendants from srt:CurrencyAxis returns set (target-name);
 
