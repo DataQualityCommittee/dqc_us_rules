@@ -39,8 +39,8 @@ $badDividendAxis = list(
 $validAxis = filter taxonomy().concepts where $item.name in $badDividendAxis returns $item.name;
 
 for $axis in $validAxis
-           
-           $divFact = {@concept in $dividendEventConcepts @$axis = * }
+           /* TODO - Exculde those facts where the range axis is used with the Legal entity  axis. */
+           $divFact = {@concept in $dividendEventConcepts @$axis = *}
            exists($divFact)
 
 message

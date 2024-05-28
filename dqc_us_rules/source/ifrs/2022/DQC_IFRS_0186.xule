@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2022
@@ -12,7 +12,7 @@ RULE-NAME-PREFIX DQC
 constant $DIVIDEND_CONCEPTS = list(DividendsPaid, DividendsPaidOrdinaryShares, DividendsPaidOtherShares, DividendsRecognisedAsDistributionsToOwnersOfParentRelatingToPriorYears, DividendsRecognisedAsDistributionsToOwnersOfParentRelatingToCurrentYear, DividendsRecognisedAsDistributionsToOwnersOfParent, DividendsRecognisedAsDistributionsToNoncontrollingInterests)
 
 constant $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER = dict(
-                                                list(TreasurySharesMember,$DIVIDEND_CONCEPTS),
+                                                /** list(TreasurySharesMember,$DIVIDEND_CONCEPTS),  Removed as example of neg amount against treasury shares **/
                                                 list(AccumulatedOtherComprehensiveIncomeMember,$DIVIDEND_CONCEPTS),
                                                 list(ReserveOfSharebasedPaymentsMember,$DIVIDEND_CONCEPTS)
                                             )
@@ -76,12 +76,12 @@ ASSERT IFRS.0186.10172 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$StockWithInconsistentClass = {nonils @concept in list(DividendsPaidOrdinarySharesPerShare, DividendsPaidOtherSharesPerShare) @ClassesOfShareCapitalAxis in list(OrdinarySharesMember, PreferenceSharesMember)}
+$StockWithInconsistentClass = {nonils @concept in list(DividendsPaidOrdinarySharesPerShare) @ClassesOfShareCapitalAxis in list(OrdinarySharesMember, PreferenceSharesMember)}
 
 exists($StockWithInconsistentClass)
 
 message
-"The filing includes a  value of {$StockWithInconsistentClass} for  dividends declared using the concept {$StockWithInconsistentClass.concept.name} and the dimension member of {$StockWithInconsistentClass.dimension(ClassesOfShareCapitalAxis).name} on the axis StatementClassOfStockAxis. This member should not be used with this concept as the type of stock declared is already communicated with the concept name, and the dimensions provides no additional disaggregation. 
+"The filing includes a  value of {$StockWithInconsistentClass} for  dividends declared using the concept {$StockWithInconsistentClass.concept.name} and the dimension member of {$StockWithInconsistentClass.dimension(ClassesOfShareCapitalAxis).name} on the axis ClassesOfShareCapitalAxis. This member should not be used with this concept as the type of stock declared is already communicated with the concept name, and the dimensions provides no additional disaggregation. 
 
 The properties of this  fact are:
 Period :{$StockWithInconsistentClass.period}
