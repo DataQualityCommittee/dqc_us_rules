@@ -8,6 +8,8 @@ Taxonomy: IFRS 2022
 
 **/
 
+constant $US-GAAP = taxonomy('https://xbrl.fasb.org/us-gaap/2022/entire/us-gaap-entryPoint-std-2022.xsd')
+
 constant $ifrs-gaap = taxonomy('http://xbrl.ifrs.org/taxonomy/2022-03-24/full_ifrs_entry_point_2022-03-24.xsd')
 
 constant $ifrs-gaap-dep = taxonomy('http://xbrl.ifrs.org/taxonomy/2022-03-24/depr_entry_point_2022-03-24.xsd')
@@ -36,3 +38,5 @@ constant $ext_enum_links = taxonomy('https://xbrl.fasb.org/us-gaap/2022/elts/us-
 /** DEI HANDLING **/
 
 constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
+
+constant $ECD = taxonomy('https://xbrl.sec.gov/ecd/2023/ecd-entire-2023.xsd')
