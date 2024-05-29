@@ -130,3 +130,31 @@ constant $TAXONOMY_DEFAULTS = navigate dimension-default descendants taxonomy $i
 constant $MONETARY_NON_NEGS = filter $NON_NEG_IFRS_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
 
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
+
+constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
+
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('CategoriesOfRelatedPartiesAxis','RelatedPartiesMember')
+
+constant $COUNTERPARTY_DIMENSION = CounterpartiesAxis
+
+
+constant $US-GAAP-PRES_NETWORKS = $US-GAAP.networks(parent-child)
+
+constant $LISTS_OF_USGAAP_ALLOWED_CONCEPTS = FILTER $US-GAAP-PRES_NETWORKS where ( $item.role.description.lower-case.contains('991000'))
+or ( $item.role.description.lower-case.contains('993000'))
+or ( $item.role.description.lower-case.contains('993200'))
+or ( $item.role.description.lower-case.contains('993400'))
+or ( $item.role.description.lower-case.contains('993600'))
+or ( $item.role.description.lower-case.contains('993800'))
+or ( $item.role.description.lower-case.contains('994000'))
+or ( $item.role.description.lower-case.contains('994200'))
+or ( $item.role.description.lower-case.contains('965000'))
+returns $item.concepts
+
+constant $USGAAP_ALLOWED_CONCEPTS = sum($LISTS_OF_USGAAP_ALLOWED_CONCEPTS)
+
+constant $USGAAP_ALLOWED_LOCAL-NAME = $USGAAP_ALLOWED_CONCEPTS.name.local-name

@@ -132,6 +132,48 @@ constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
 **/
 constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis)
 
+/** Rule DQC.US.0014 **/
+constant $NON_DIMENSIONAL_NON_NEGS = list(
+				list('2786',DerivativeFairValueOfDerivativeLiability),
+				list('2787',DerivativeLiabilities),
+				list('2788',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue),
+				list('2789',FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue),
+				list('2790',LiabilitiesFairValueDisclosure),
+				list('2791',AmortizationOfIntangibleAssets),
+				list('2792',DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral),
+				list('2793',DerivativeAssets),
+				list('2794',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetTransfersOutOfLevel3),
+				list('2795',DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral),
+				list('2796',DerivativeFairValueOfDerivativeLiabilityAmountOffsetAgainstCollateral),
+				list('2797',DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral),
+				list('2798',DerivativeLiabilityFairValueGrossAsset),
+				list('2799',FinancialInstrumentsOwnedAtFairValue),
+				list('2800',DerivativeAssetFairValueGrossLiability),
+				list('2801',CashDividendsPaidToParentCompany),
+				list('2802',DerivativeFairValueOfDerivativeAsset),
+				list('2803',DerivativeLiabilitiesCurrent),
+				list('2804',InvestmentsFairValueDisclosure),
+				list('2805',CashDividendsPaidToParentCompanyByConsolidatedSubsidiaries),
+				list('2806',DerivativeCollateralObligationToReturnCash),
+				list('2807',Goodwill),
+				list('2808',LoansAndLeasesReceivableAllowance),
+				list('2809',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetTransfersIntoLevel3),
+				list('3003',PriceRiskDerivativeLiabilitiesAtFairValue),
+				list('3004',DerivativeAssetsNoncurrent),
+				list('3005',ConversionOfStockSharesConverted1),
+				list('3006',ConversionOfStockAmountConverted1),
+				list('3007',OtherLiabilitiesNoncurrent),
+				/** Rule 3008 was removed as the element was deprecated **/
+				list('3009',ConversionOfStockSharesIssued1),
+				list('3096',FairValueMeasurementWithUnobservableInputsReconciliationLiabilityTransfersOutOfLevel3),
+				list('7651',RevenueFromContractWithCustomerIncludingAssessedTax),
+				list('7652',RevenueFromContractWithCustomerExcludingAssessedTax),
+				list('2695',CostOfGoodsAndServicesSold),
+				list('2697',CostOfRevenue),
+				list('9093',CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization)
+				)
+
+
 /** Rule DQC.US.0084 **/
 
 constant $NON_ADDITIVE_DURATION_CONCEPTS = set()
@@ -143,7 +185,7 @@ constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descen
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equityMethod') returns $item.name
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
 
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
@@ -182,6 +224,10 @@ constant $DISCONTINUED_INCOME_ITEMS = set(IncomeLossFromDiscontinuedOperationsNe
 constant $PRES_NETWORKS = taxonomy().networks(parent-child)
 
 constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
+
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
 	where $item.role.description.contains('148410 - Statement -') 
@@ -257,6 +303,7 @@ and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
 and (not $item.drs-role.description.lower-case.contains('schedule iii'))
 and (not $item.drs-role.description.lower-case.contains('schedule iv'))
+and (not $item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))
 
 constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
 
@@ -473,3 +520,11 @@ constant $CASH_FLOW_ROLE = if $CASH_FLOW_ROLES.length > 0
 
 constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
 and ($item.drs-role.uri.lower-case.contains('segment')) 
+
+constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
