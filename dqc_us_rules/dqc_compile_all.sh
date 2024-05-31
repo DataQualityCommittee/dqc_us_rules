@@ -38,6 +38,8 @@ python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Us
 
 python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/source/ifrs/2023/ --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-ifrs-2023-V$1-ruleset.zip --xule-crash --xule-stack-size=20 --xule-compile-workers=0
 
+python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/source/ifrs/2023/ --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-ifrs-2024-V$1-ruleset.zip --xule-crash --xule-stack-size=20 --xule-compile-workers=0
+
 # Add Packages IFRS ---
 
 python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-add-packages /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/resources.zip --xule-rule-set  /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-ifrs-2020-V$1-ruleset.zip
