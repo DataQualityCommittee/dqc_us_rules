@@ -16,7 +16,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $TransitionElements = filter ($ifrs-gaap.concepts) where (filter ($item.all-labels) where $item.text.contains('This element should be used to tag non-restated comparative information only.') returns $item).length > 0 
 
-$TranstionFact = {@concept in $TransitionElements where $fact.period.end > '2023-01-01'}
+$TranstionFact = {@concept in $TransitionElements where $fact.period.end > date('2023-01-01')}
 
 exists($TranstionFact)
 
