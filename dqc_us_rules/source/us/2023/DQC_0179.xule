@@ -257,7 +257,6 @@ status $status
 effectiveDate $effective_dates[$rule_id]
 
 /** CHECK FORMAT OF DIVIDEND MEMBER  of yearperiodMember**/
-/** COMMENT OUT
 ASSERT US.0179.10153 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -268,27 +267,26 @@ $DividendsAxisMembers = filter $divValues returns $item.dimension(DividendsAxis)
 
 for $member in $DividendsAxisMembers
 
-**/
     /**REGEX 
-    * FIRST character must be R or S to represent regular or special dividend 
+    * FIRST character must be O or S to represent regular or special dividend 
     * Second 4 characters must be a year
     * Then values can be either Q1, Q2, Q3, Q4 or H1, H2 or M1 - M13 or A for an annual dividend represented by ? for optional.
     * Finally we allow either a through z and A through Z if the div needs to be further disaggregated for what ever reason such as class of stock
-    *
-    
-       $matchDict = $member.regex-match('^[RS][2-9][0-9][0-9][0-9]((Q[1-4])|(H[1-2])|(M[1-9])|(M10)|(M11)|(M12)|(M13)|A)[a-zA-Z]*Member$|^[S][2-9][0-9][0-9][0-9][a-zA-Z]*Member$')
+    **/
+   
+    $matchDict = $member.regex-match('^[OS][2-9][0-9][0-9][0-9]((Q[1-4])|(H[1-2])|(M[1-9])|(M10)|(M11)|(M12)|(M13)|A)[a-zA-Z]*Member$|^[S][2-9][0-9][0-9][0-9][a-zA-Z]*DividendsMember$')
     $matchDict['match-count'] == 0
 
 
 message
 "The filing includes a member on the dividends axis called  {$member}. The DividendsAxis member should confirm to the following syntax.  
-- The first character should be either an R or an S to represent a regular or special  dividend.
+- The first character should be either an O or an S to represent an ordinary or special  dividend.
 - The next 4 characters should represent the year that the dividend is applicable. i.e. 2025
 - The next one to two characters should represent the period the dividend applies to, such as Q1 for quarterly dividends, H2 for half year dividend or M3 for the 3rd monthly dividend.  Allowable values are either Q1, Q2, Q3, Q4, H1, H2, M1, M2, M3 to M13. If it is an annual divided then the character A is required.
-- If further disaggregation is needed addition alphabetic can be added after the period such as PreferredA
-- The member name must conclude with the string Member.
-The form is as follows [R or S],YEAR,PERIOD,Optional alpha characters, the string Member. So regular quarterly dividesd for Q3 in 2025 would be as follows:
-R2025Q3Member. An annual dividend for 2026 would be R2026AMember. The dividend for the 3rd month of 2027 for pref stock G would be R2027M3PrefGMember.
+- If further disaggregation is needed addition alphabetic can be added after the period such as PartialPayment
+- The member name must conclude with the string DividendsMember.
+The form is as follows [O or S],YEAR,PERIOD,Optional alpha characters, the string Member. So ordinary quarterly dividends for Q3 in 2025 would be as follows:
+O2025Q3DividendsMember. An annual dividend for 2026 would be O2026ADividendsMember.
 
 The label of the member can include any additional details.
 
@@ -298,4 +296,3 @@ Rule version: {$ruleVersion}"
 severity error
 status $status
 effectiveDate $effective_dates[$rule_id]
-**/
