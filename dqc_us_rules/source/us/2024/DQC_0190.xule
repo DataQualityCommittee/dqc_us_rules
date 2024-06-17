@@ -352,7 +352,7 @@ $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name
 if $EBPReports
         
         
-        $InvalidConcepts = {@InvestmentIdentifierAxis = * where $fact.dimensions.length > 1 and not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')};
+        $InvalidConcepts = {@InvestmentIdentifierAxis = * where $fact.dimensions > 2 and not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')};
 
         exists($InvalidConcepts)
 
@@ -422,7 +422,7 @@ ASSERT US.0190.10616 satisfied
 /** CORRESPONDS TO FASB RULE 16 
 
 /** DQC Rule 16 (Example 7a/Note 1a) (Example 7b/Note 1a)
-No report-wide values are expected in the XBRL data when “Legal Entity [Axis]” (A10[LegalEntityAxis]) is used.
+No report-wide values are expected in the XBRL data.
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -432,9 +432,8 @@ $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name
 
 if $EBPReports
         
-        $LegalEntityFactsExist = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')}).length > 0
-        $defaultFactsExist = list([covered @]).length > 0
-        $LegalEntityFactsExist and  $defaultFactsExist
+    $defaultFactsExist = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2024' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')}).length > 0   
+    $defaultFactsExist
 
 else
     skip
@@ -450,4 +449,40 @@ Rule version: {$ruleVersion}"
 
 severity error
 
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0190.10617 satisfied
+
+/** Possible DQC Rule 17 (Example 7b/Note 2)
+The members to be used with the “Legal Entity [Axis]” (A10) are intended to be plan specific members. To help facilitate data consumption, plan-specific members are to be created using a format that starts with “EBP” followed by the nine-digit Employer Identification Number with a dash after the first two digits, a space, and the Plan Number (i.e., EBP 12-3456789 001 [Member]).
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$LegalEntityValues = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')})
+
+$LegalEntityAxisMembers = filter $LegalEntityValues returns $item.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')).name.local-name
+
+for $member in $LegalEntityAxisMembers
+   
+    $matchDict = $member.regex-match('^EBP[0-9]{2}-[0-9]{7}-[0-9]{3}Member$')
+    $matchDict['match-count'] == 0
+
+
+message
+"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represnt a EBP plan identifier comprised of the EBP EIN and Plan number.  The element name shouuld following the structure below:  
+- The first 3 alpha characters should be EBP.
+- The next 7 digis should be the EIN number in the format xx-xxxxxxx
+- The plan number represented using 3 digits seperated from the EIN number with a dash.  i.e. -xxx
+- The member name must conclude with the string Member.
+The form is as follows EBPxx-xxxxxxx-xxxMember. i.e. EBP11-1111111-011Member
+
+The label of the member does not need to follow this format.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+status $status
 effectiveDate $effective_dates[$rule_id]
