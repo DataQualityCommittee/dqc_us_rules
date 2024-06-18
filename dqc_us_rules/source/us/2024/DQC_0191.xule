@@ -22,13 +22,13 @@ $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
 
 if $ecdtaxonomy
 
-            $PEOElement =  list();
-            exists({nonils @concept= $PEOElement  @ecd:ExecutiveCategoryAxis = *}#CompAmount)
+            $PEOElement =  list(ecd:PeoName, ecd:PeoTotalCompAmt, ecd:PeoActuallyPaidCompAmt);
+            exists({nonils @concept= $PEOElement  @ecd:ExecutiveCategoryAxis = ecd:NonPeoNeoMember}#CompAmount)
 else
     false
 
 message
-"
+"The filing uses an NEO member with a PEO element. The element {$CompAmount.concept.name} is reported with a value of {$CompAmount} and a member of NonPeoNeoMember. Update either the element name or the member to PeoMember.
 
 The properties of this  fact are:
 Period :{$CompAmount.period}

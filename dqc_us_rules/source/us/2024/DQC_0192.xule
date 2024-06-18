@@ -1,0 +1,40 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP All
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** THIS rule tries to identify scaling issues in filings. Spcifically where the scale on an entire financial statement has gone wrong
+To do this we look at the size of the company and look at the balance sheet and check that there is at least one number in the default is greater than 1 million dollars.
+
+What can occur is that companies forget to add the sacale when preparing so the numbers are understated.
+
+The other issue appears in the nots where the scale is not applied pro
+**/
+
+ASSERT US.0192.10620 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+true
+
+message
+"
+
+The properties of this  fact are:
+Period :{$CompAmount.period}
+Dimensions : {$CompAmount.dimensions.join(', ','=')}
+Unit : {$CompAmount.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
