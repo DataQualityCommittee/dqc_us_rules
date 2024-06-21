@@ -432,7 +432,8 @@ $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name
 
 if $EBPReports
         
-    $defaultFactsExist = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2024' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')}).length > 0   
+    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2024' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+    $defaultFactsExist  = $defaultFacts.length > 0
     $defaultFactsExist
 
 else
@@ -440,9 +441,7 @@ else
    
 
 message
-"
-
-
+"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis.  All facts in the instance must include the LegalEntityAxis.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -471,7 +470,7 @@ for $member in $LegalEntityAxisMembers
 
 
 message
-"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represnt a EBP plan identifier comprised of the EBP EIN and Plan number.  The element name shouuld following the structure below:  
+"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP EIN and Plan number.  The element name shouuld following the structure below:  
 - The first 3 alpha characters should be EBP.
 - The next 7 digis should be the EIN number in the format xx-xxxxxxx
 - The plan number represented using 3 digits seperated from the EIN number with a dash.  i.e. -xxx
