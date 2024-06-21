@@ -125,3 +125,32 @@ Rule version: {$ruleVersion}
 severity error
 rule-focus $ppe_gross
 effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0187.10179 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$net = {nonils @MineralPropertiesNet};
+$gross = {nonils @MineralPropertiesGross}#a1 + {nonils @MineralRights}#a2;
+$decimal_tolerance_factor = 2;
+
+$gross < $net
+
+message
+
+"{$net.concept.label.text} with a value of {$net} is greater than the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$gross}. 
+
+These values should be equal.
+The properties of this {$net.concept} fact are:
+Period :{$net.period}
+Dimensions :  {$net.dimensions.join(', ','=')}
+Unit : {$net.unit}
+Decimals of {$net.concept.label.text} : {$net.decimals}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
