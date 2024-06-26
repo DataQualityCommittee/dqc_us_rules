@@ -178,8 +178,11 @@ $dictOfConceptsUsedOnDivididendAxis = (filter $factsPerDividendAxis returns list
 
 for $key in $dictOfConceptsUsedOnDivididendAxis.keys
             if $dictOfConceptsUsedOnDivididendAxis[$key].length > 1
-                $factValues = list({@concept = $key[1] @DividendsAxis=$key[2] @period=*});
-                true
+                $factValues = list({@concept = $key[1] @DividendsAxis=$key[2] @period=* @StatementClassOfStockAxis = none});
+                if $factValues.length > 0
+                    true
+                else
+                    false
             else
                 false
 
