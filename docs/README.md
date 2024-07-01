@@ -142,20 +142,22 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Approved | 23 |
 | [DQC_US_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Approved | 23 |
 | [DQC_US_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Approved | 23 |
-| [DQC_US_0178](DQC_US_0178/DQC_0178.md) | Dividend Disclosures in the Statement of Changes in Shareholders Equity | Public Review | 24 |
-| [DQC_US_0179](DQC_US_0179/DQC_0179.md) | Dividend Event Disclosures  | Public Review | 24 |
-| [DQC_US_0180](DQC_US_0180/DQC_0180.md) | Dividend Financial Statement Disclosures | Public Review | 24 |
-| [DQC_US_0181](DQC_US_0181/DQC_0181.md) | Interest Expense Operating and Nonoperating | Public Review | 24 |
-| [DQC_US_0182](DQC_US_0182/DQC_0182.md) | Dimensional Equivalents Using the Meta Taxonomy  | Public Review | 24 |
-| [DQC_US_0183](DQC_US_0183/DQC_0183.md) | Face Financial Statement Location using the Accrual Axis | Public Review | 24 |
-| [DQC_US_0184](DQC_US_0184/DQC_0184.md) | OCI Reconciliation of Before Tax and Net of Tax OCI | Public Review | 24 |
-| [DQC_US_0185](DQC_US_0185/DQC_0185.md) | Reconciliation in Schedule Of Unrecognized Tax Benefits Roll Forward Table Text  | Public Review | 24 |
-| [DQC_IFRS_0186](DQC_IFRS_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Public Review | 24 |
-| [DQC_US_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Public Review | 24 |
+| [DQC_US_0178](DQC_US_0178/DQC_0178.md) | Dividend Disclosures in the Statement of Changes in Shareholders Equity | Approved | 24 |
+| [DQC_US_0179](DQC_US_0179/DQC_0179.md) | Dividend Event Disclosures  | Approved | 24 |
+| [DQC_US_0180](DQC_US_0180/DQC_0180.md) | Dividend Financial Statement Disclosures | Approved | 24 |
+| [DQC_US_0181](DQC_US_0181/DQC_0181.md) | Interest Expense Operating and Nonoperating | Approved | 24 |
+| [DQC_US_0182](DQC_US_0182/DQC_0182.md) | Dimensional Equivalents Using the Meta Taxonomy  | Approved | 24 |
+| [DQC_US_0183](DQC_US_0183/DQC_0183.md) | Face Financial Statement Location using the Accrual Axis | Approved | 24 |
+| [DQC_US_0184](DQC_US_0184/DQC_0184.md) | OCI Reconciliation of Before Tax and Net of Tax OCI | Approved | 24 |
+| [DQC_US_0185](DQC_US_0185/DQC_0185.md) | Reconciliation in Schedule Of Unrecognized Tax Benefits Roll Forward Table Text  | Approved | 24 |
+| [DQC_IFRS_0186](DQC_IFRS_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Approved | 24 |
+| [DQC_US_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Approved | 24 |
+| [DQC_US_0188](DQC_US_0188/DQC_0188.md) | ECD Adjustment Member Check | Approved | 24 |
+| [DQC_US_0193](DQC_US_0193/DQC_0193.md) | Standard Dividend Member Name | Approved | 24 |
 
 ## Guidance 
 
-### [Reporting US GAAP Dividend Disclosures in XBRL - FAQ](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/guid-dividend.pdf) - public review April 15 - May 31, 2024
+### [Reporting US GAAP Dividend Disclosures in XBRL - FAQ](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/guid-dividend.pdf) - approved 06/27/2024
 
 ### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/) - approved 9/21/2022
 
