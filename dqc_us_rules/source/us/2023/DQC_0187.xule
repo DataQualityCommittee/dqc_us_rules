@@ -43,9 +43,23 @@ assert US.0187.10174 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$children_of_netPPE = navigate summation-item children from PropertyPlantAndEquipmentNet returns set target-name;
+
+$reconciling_items_other_than_depr = $children_of_netPPE - set(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentGross)
+
+$decimal_tolerance_factor = if $reconciling_items_other_than_depr.length > 0
+                            $value_of_DR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == debit})),0);
+                            $value_of_CR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == credit})),0);
+                            $value_ext = sum(list({ @concept in $reconciling_items_other_than_depr}))
+                            $difference = $value_of_DR_reconciling_items - $value_of_CR_reconciling_items
+
+                            $difference.abs + 2
+                            
+                        else
+                            2
+
 $base = {nonils @PropertyPlantAndEquipmentGross};
 $agg = {nonils @PropertyPlantAndEquipmentNet}#a1 <+> {nonils @AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment}#a2;
-$decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
 
@@ -53,6 +67,8 @@ message
 
 "{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
 
+
+Value of tolerance {$decimal_tolerance_factor}
 These values should be equal.
 The properties of this {$base.concept} fact are:
 Period :{$base.period}
