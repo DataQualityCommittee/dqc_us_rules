@@ -56,6 +56,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $divFact
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0179.10140 satisfied
@@ -71,7 +72,7 @@ $dividendDateConcepts = list(
 for $date in $dividendDateConcepts 
     $firstDate = {@concept = $date[1] @period=*} 
     $secondDate = {@concept = $date[2] @period=*}
-    $firstDate >= $secondDate
+    $firstDate > $secondDate
 
 message
 "The date reported for {$firstDate.concept.name} of {$firstDate} is greater than or equal to the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}. If this error occurs because seperate dividend events and associated values are distinguished by the context date, then each distinct dividend event should be identifed using the DividendsAxis and a discrete member for each dividend such as RegularDividendQ1Y2024Member.
@@ -89,6 +90,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $firstDate
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -111,6 +113,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 /** Values before year end should be represeneted using the period it applies to for CommonStockDividendsPerShareDeclared.  DIvidend declared amount represents an expense and should be allocated to a period so that it can be compared to EPS which has periods. Really about getting the accounting alignment.  Identify reporting periods used in the filing and check dividends declared falls into one of them. Look for period durations with more than 4 durations as represntative.
@@ -160,6 +163,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $perShare
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -190,6 +194,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $factValues.first
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0179.10144 satisfied
@@ -224,6 +229,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $divPerShareDeclared
+status $status
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -250,4 +256,5 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $divDate
+status $status
 effectiveDate $effective_dates[$rule_id]
