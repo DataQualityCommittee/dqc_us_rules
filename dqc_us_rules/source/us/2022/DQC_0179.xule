@@ -72,7 +72,7 @@ $dividendDateConcepts = list(
 for $date in $dividendDateConcepts 
     $firstDate = {@concept = $date[1] @period=*} 
     $secondDate = {@concept = $date[2] @period=*}
-    $firstDate >= $secondDate
+    $firstDate > $secondDate
 
 message
 "The date reported for {$firstDate.concept.name} of {$firstDate} is greater than or equal to the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}. If this error occurs because seperate dividend events and associated values are distinguished by the context date, then each distinct dividend event should be identifed using the DividendsAxis and a discrete member for each dividend such as RegularDividendQ1Y2024Member.
