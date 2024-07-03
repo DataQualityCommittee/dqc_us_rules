@@ -67,9 +67,13 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
 
-$dividendsInAPIC = {@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $additionPaidInCapital where $fact > 0}
+$retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
 
-exists($dividendsInAPIC)
+$dividendsInAPIC = {@@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $additionPaidInCapital where $fact > 0}
+
+$dividendsInRE = {@@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact > 0}
+
+exists($dividendsInAPIC) and not exists($dividendsInRE)
 
 message
 "The filing includes a value for dividends using the concept {$dividendsInAPIC.concept.name} and the additional paid in capital member with a value of {$dividendsInAPIC}. Dividends should generally be deducted from retained earnings and not deducted from additional paid in capital. In certain cases dividends can be deducted from paid in capital, but in these cases the element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings defined in the taxonomy should be used.  Please update the filing to reflect this.

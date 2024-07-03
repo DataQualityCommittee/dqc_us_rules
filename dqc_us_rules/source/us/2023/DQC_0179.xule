@@ -55,8 +55,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $divFact
-status $status
+rule-focus $divFact 
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0179.10140 satisfied
@@ -72,7 +71,7 @@ $dividendDateConcepts = list(
 for $date in $dividendDateConcepts 
     $firstDate = {@concept = $date[1] @period=*} 
     $secondDate = {@concept = $date[2] @period=*}
-    $firstDate >= $secondDate
+    $firstDate > $secondDate
 
 message
 "The date reported for {$firstDate.concept.name} of {$firstDate} is greater than or equal to the date reported for {$secondDate.concept.name} of {$secondDate}. The value of {$firstDate.concept.name} must be earlier than the date reported for {$secondDate.concept.name}. If this error occurs because seperate dividend events and associated values are distinguished by the context date, then each distinct dividend event should be identifed using the DividendsAxis and a discrete member for each dividend such as RegularDividendQ1Y2024Member.
@@ -89,8 +88,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $firstDate
-status $status
+rule-focus $firstDate 
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -112,8 +110,7 @@ Scale: {$perShare.inline-scale }
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error
-status $status
+severity error 
 effectiveDate $effective_dates[$rule_id]
 
 /** Values before year end should be represeneted using the period it applies to for CommonStockDividendsPerShareDeclared.  DIvidend declared amount represents an expense and should be allocated to a period so that it can be compared to EPS which has periods. Really about getting the accounting alignment.  Identify reporting periods used in the filing and check dividends declared falls into one of them. Look for period durations with more than 4 durations as represntative.
@@ -162,8 +159,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $perShare
-status $status
+rule-focus $perShare 
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -178,8 +174,11 @@ $dictOfConceptsUsedOnDivididendAxis = (filter $factsPerDividendAxis returns list
 
 for $key in $dictOfConceptsUsedOnDivididendAxis.keys
             if $dictOfConceptsUsedOnDivididendAxis[$key].length > 1
-                $factValues = list({@concept = $key[1] @DividendsAxis=$key[2] @period=*});
-                true
+                $factValues = list({@concept = $key[1] @DividendsAxis=$key[2] @period=* @StatementClassOfStockAxis = none});
+                if $factValues.length > 0
+                    true
+                else
+                    false
             else
                 false
 
@@ -190,8 +189,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $factValues.first
-status $status
+rule-focus $factValues.first 
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0179.10144 satisfied
@@ -225,8 +223,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $divPerShareDeclared
-status $status
+rule-focus $divPerShareDeclared 
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -252,50 +249,5 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $divDate
-status $status
+rule-focus $divDate 
 effectiveDate $effective_dates[$rule_id]
-
-/** CHECK FORMAT OF DIVIDEND MEMBER  of yearperiodMember**/
-/** COMMENT OUT
-ASSERT US.0179.10153 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$divValues = list({covered @DividendsAxis = *})
-
-$DividendsAxisMembers = filter $divValues returns $item.dimension(DividendsAxis).name.local-name
-
-for $member in $DividendsAxisMembers
-
-**/
-    /**REGEX 
-    * FIRST character must be R or S to represent regular or special dividend 
-    * Second 4 characters must be a year
-    * Then values can be either Q1, Q2, Q3, Q4 or H1, H2 or M1 - M13 or A for an annual dividend represented by ? for optional.
-    * Finally we allow either a through z and A through Z if the div needs to be further disaggregated for what ever reason such as class of stock
-    *
-    
-       $matchDict = $member.regex-match('^[RS][2-9][0-9][0-9][0-9]((Q[1-4])|(H[1-2])|(M[1-9])|(M10)|(M11)|(M12)|(M13)|A)[a-zA-Z]*Member$|^[S][2-9][0-9][0-9][0-9][a-zA-Z]*Member$')
-    $matchDict['match-count'] == 0
-
-
-message
-"The filing includes a member on the dividends axis called  {$member}. The DividendsAxis member should confirm to the following syntax.  
-- The first character should be either an R or an S to represent a regular or special  dividend.
-- The next 4 characters should represent the year that the dividend is applicable. i.e. 2025
-- The next one to two characters should represent the period the dividend applies to, such as Q1 for quarterly dividends, H2 for half year dividend or M3 for the 3rd monthly dividend.  Allowable values are either Q1, Q2, Q3, Q4, H1, H2, M1, M2, M3 to M13. If it is an annual divided then the character A is required.
-- If further disaggregation is needed addition alphabetic can be added after the period such as PreferredA
-- The member name must conclude with the string Member.
-The form is as follows [R or S],YEAR,PERIOD,Optional alpha characters, the string Member. So regular quarterly dividesd for Q3 in 2025 would be as follows:
-R2025Q3Member. An annual dividend for 2026 would be R2026AMember. The dividend for the 3rd month of 2027 for pref stock G would be R2027M3PrefGMember.
-
-The label of the member can include any additional details.
-
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-status $status
-effectiveDate $effective_dates[$rule_id]
-**/

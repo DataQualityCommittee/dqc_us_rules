@@ -43,17 +43,31 @@ assert US.0187.10174 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+$children_of_netPPE = navigate summation-item children from PropertyPlantAndEquipmentNet returns set target-name;
+
+$reconciling_items_other_than_depr = $children_of_netPPE - set(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentGross)
+
+$decimal_tolerance_factor = if $reconciling_items_other_than_depr.length > 0 and $children_of_netPPE.contains(PropertyPlantAndEquipmentGross)
+                            $value_of_DR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == debit})),0);
+                            $value_of_CR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == credit})),0);
+                            $value_ext = sum(list({ @concept in $reconciling_items_other_than_depr}))
+                            $difference = $value_of_DR_reconciling_items - $value_of_CR_reconciling_items
+
+                            $difference.abs + 2
+                            
+                        else
+                            2
+
 $base = {nonils @PropertyPlantAndEquipmentGross};
 $agg = {nonils @PropertyPlantAndEquipmentNet}#a1 <+> {nonils @AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment}#a2;
-$decimal_tolerance_factor = 2;
 
 tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
 
 message
 
 "{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
-
 These values should be equal.
+
 The properties of this {$base.concept} fact are:
 Period :{$base.period}
 Dimensions :  {$base.dimensions.join(', ','=')}
@@ -124,4 +138,33 @@ Rule version: {$ruleVersion}
 
 severity error
 rule-focus $ppe_gross
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0187.10179 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$net = {nonils @MineralPropertiesNet};
+$gross = {nonils @MineralPropertiesGross}#a1 + {nonils @MineralRights}#a2;
+$decimal_tolerance_factor = 2;
+
+$gross < $net
+
+message
+
+"{$net.concept.label.text} with a value of {$net} is greater than the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$gross}. 
+
+These values should be equal.
+The properties of this {$net.concept} fact are:
+Period :{$net.period}
+Dimensions :  {$net.dimensions.join(', ','=')}
+Unit : {$net.unit}
+Decimals of {$net.concept.label.text} : {$net.decimals}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
 effectiveDate $effective_dates[$rule_id]
