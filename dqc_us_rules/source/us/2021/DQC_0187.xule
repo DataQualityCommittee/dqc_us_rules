@@ -46,7 +46,7 @@ $children_of_netPPE = navigate summation-item children from PropertyPlantAndEqui
 
 $reconciling_items_other_than_depr = $children_of_netPPE - set(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentGross)
 
-$decimal_tolerance_factor = if $reconciling_items_other_than_depr.length > 0
+$decimal_tolerance_factor = if $reconciling_items_other_than_depr.length > 0 and $children_of_netPPE.contains(PropertyPlantAndEquipmentGross)
                             $value_of_DR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == debit})),0);
                             $value_of_CR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == credit})),0);
 
