@@ -96,7 +96,7 @@ if $EBPReports
     for $x in $HypercubesToCheck
         $EBP_non_master_FV = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue)  @cube.name = $x });
 
-        $EBP_master_and_non_Master_FV = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValue}
+        $EBP_master_and_non_Master_FV = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValue @cube.name = $x}
 
         if exists($EBP_master_and_non_Master_FV) and $EBP_non_master_FV.length == 0
             true
@@ -139,7 +139,7 @@ if $EBPReports
     for $x in $HypercubesToCheck
         $EBP_non_master_contract = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue)  @cube.name = $x });
 
-        $EBP_master_and_non_Master_contract = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentContractValue}
+        $EBP_master_and_non_Master_contract = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentContractValue @cube.name = $x}
 
         if exists($EBP_master_and_non_Master_contract) and $EBP_non_master_contract.length == 0
             true
@@ -225,7 +225,7 @@ else
     skip
 
 message
-"The filer has reported a value of {$EBP_InterestInMasterTrust} for the concept EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue.  One of these values shpuld be reported if EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue is reported.
+"The filer has reported a value of {$EBP_InterestInMasterTrust} for the concept EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue.  One of these values should be reported if EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue is reported.
 
 The properties of this  fact are:
 Concept : EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue
@@ -265,7 +265,7 @@ else
     skip
 
 message
-"The filer has reported a value of {$EBP_InvestmentMasterTrust} for the concept EmployeeBenefitPlanInvestmentFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentFairValue or EmployeeBenefitPlanInvestmentContractValue.  One of these values shpuld be reported if EmployeeBenefitPlanInvestmentFairAndContractValue is reported.
+"The filer has reported a value of {$EBP_InvestmentMasterTrust} for the concept EmployeeBenefitPlanInvestmentFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentFairValue or EmployeeBenefitPlanInvestmentContractValue.  One of these values should be reported if EmployeeBenefitPlanInvestmentFairAndContractValue is reported.
 
 The properties of this fact are:
 Concept : EmployeeBenefitPlanInvestmentFairAndContractValue
@@ -361,7 +361,7 @@ else
    
 
 message
-"The filer has reported a value of {$InvalidConcepts} for the concept {$InvalidConcepts.concept.name} in the filing, with the axis InvestmentIdentifierAxis should not be used with any other axis.  See FASB EBP guidance Example 5b/Note 3a and Example 6b/Note 3a and example 5a/Note 2a and example 5b/Note 2a.
+"The filer has reported a value of {$InvalidConcepts} for the concept {$InvalidConcepts.concept.name} in the filing. A fact reported with the axis InvestmentIdentifierAxis should not be used with any other axis.  See FASB EBP guidance Example 5b/Note 3a and Example 6b/Note 3a and example 5a/Note 2a and example 5b/Note 2a.
 
 The properties of this fact are:
 Concept : {$InvalidConcepts.concept.name}
