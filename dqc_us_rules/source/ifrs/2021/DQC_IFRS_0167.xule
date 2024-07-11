@@ -107,9 +107,14 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
-        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
-        $network_role = $networkPresRole.join(', ');
-        true
+        $Pres_Network = first(filter taxonomy().networks(parent-child) where $item.role in $networkPresRole)
+        $Number_Monetary_Concepts_In_Presentation = length(filter $Pres_Network.concepts where $item.is-monetary)
+        if  $Number_Monetary_Concepts_In_Presentation < 2
+            false
+        else
+            $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ');
+            $network_role = $networkPresRole.join(', ');
+            true
     else
         /** Go through the calc network and look for the root items **/
         for ($calcNetwork in  filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
