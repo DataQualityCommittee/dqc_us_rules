@@ -173,7 +173,7 @@ ASSERT US.0179.10143 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-$factsPerDividendAxis = list({covered @DividendsAxis=*})
+$factsPerDividendAxis = list({covered-dims @concept=* @DividendsAxis=* @period=*})
 
 $dictOfConceptsUsedOnDivididendAxis = (filter $factsPerDividendAxis returns list(list($item.concept.name, $item.dimension(DividendsAxis).name))).agg-to-dict(1)
 
