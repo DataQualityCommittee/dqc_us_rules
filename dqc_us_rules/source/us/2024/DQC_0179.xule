@@ -39,8 +39,9 @@ $badDividendAxis = list(
 $validAxis = filter taxonomy().concepts where $item.name in $badDividendAxis returns $item.name;
 
 for $axis in $validAxis
-           /* TODO - Exculde those facts where the range axis is used with the Legal entity  axis. */
-           $divFact = {@concept in $dividendEventConcepts @$axis = *}
+           /** Where clause added to make exception if range axis is used where have multiple subs with different dividend rates.  If have should have legal entities paying each dividend and range of values
+           Have to have both range axis and legal entity axis**/
+           $divFact = {@concept in $dividendEventConcepts @$axis = * where not ($fact.dimension(srt:RangeAxis) != none and $fact.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')) != none) }
            exists($divFact)
 
 message
