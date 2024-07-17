@@ -174,14 +174,14 @@ ASSERT US.0179.10143 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-$factsPerDividendAxis = list({covered-dims @concept=* @DividendsAxis=* @period=*})
+$factsPerDividendAxis = list({covered @DividendsAxis=* })
 
 $dictOfConceptsUsedOnDivididendAxis = (filter $factsPerDividendAxis returns list(list($item.concept.name, $item.dimension(DividendsAxis).name))).agg-to-dict(1)
 
 for $key in $dictOfConceptsUsedOnDivididendAxis.keys
             if $dictOfConceptsUsedOnDivididendAxis[$key].length > 1
                 $factValues = list({@concept = $key[1] @DividendsAxis=$key[2] @period=* @StatementClassOfStockAxis = none});
-                if $factValues.length > 0
+                if $factValues.length > 1
                     true
                 else
                     false
