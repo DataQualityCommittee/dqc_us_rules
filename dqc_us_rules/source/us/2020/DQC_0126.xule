@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -79,10 +79,14 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 							else
 								[nonils @concept = $concept_item @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals];
 					
-					if $addend == none
+					if $addend == none 
 						skip 
 					else
-					tolerance_for_decimals($sum2, $addend, $addendNumber + 1)
+						if  (filter $calcComponents where $item[1] == LiabilitiesSubjectToCompromise returns $item).length > 0 and
+							list({covered @concept=ReorganizationUnderChapter11OfUSBankruptcyCodeDisclosureTextBlock}).length > 0
+							skip
+						else
+							tolerance_for_decimals($sum2, $addend, $addendNumber + 1)
 
 message
 "The statement {$presNetwork.role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2}  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts.  The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:

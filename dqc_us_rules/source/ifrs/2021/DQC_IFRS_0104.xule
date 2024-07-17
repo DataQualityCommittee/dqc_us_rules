@@ -1,7 +1,7 @@
 
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2021
@@ -94,9 +94,11 @@ $ChildExtensions1 = navigate dimensions domain-member descendants from Discontin
 
 $ChildExtensions2 = navigate dimensions domain-member descendants from DisposalGroupsClassifiedAsHeldForSaleMember returns set (target-name);
 
+$ChildExtensions3 = navigate dimensions domain-member descendants from AggregateContinuingAndDiscontinuedOperationsMember returns set (target-name);
+
 /** Union the sets**/
 
-$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1;
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2  + $ChildExtensions1 + $ChildExtensions3;
 
 $unallowed_members = $member_extension - $allowed_members;
 

@@ -1,9 +1,9 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2022
+Taxonomy: US GAAP 2023
 Release Version 18
 **/
 
@@ -16,8 +16,10 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Check Components of Shareholders Equity is  used with class of stock **/
 
-$equityFactNoEquityComponent = [nonils @concept in list(StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest, StockholdersEquity) @StatementClassOfStockAxis=*];
-exists($equityFactNoEquityComponent)
+$equityFactNoEquityComponent = [nonils @concept in list(StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest, StockholdersEquity) @@StatementClassOfStockAxis=* @unit=*];
+$ReportNetAssetsAsBDC = [nonils @concept = NetAssetValuePerShare @@StatementClassOfStockAxis=* @unit=*]
+
+exists($equityFactNoEquityComponent) and not exists($ReportNetAssetsAsBDC)
 
 message
 

@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2019
@@ -146,3 +146,21 @@ constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS whe
 constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('CategoriesOfRelatedPartiesAxis','RelatedPartiesMember')
 
 constant $COUNTERPARTY_DIMENSION = CounterpartiesAxis
+
+
+constant $US-GAAP-PRES_NETWORKS = $US-GAAP.networks(parent-child)
+
+constant $LISTS_OF_USGAAP_ALLOWED_CONCEPTS = FILTER $US-GAAP-PRES_NETWORKS where ( $item.role.description.lower-case.contains('991000'))
+or ( $item.role.description.lower-case.contains('993000'))
+or ( $item.role.description.lower-case.contains('993200'))
+or ( $item.role.description.lower-case.contains('993400'))
+or ( $item.role.description.lower-case.contains('993600'))
+or ( $item.role.description.lower-case.contains('993800'))
+or ( $item.role.description.lower-case.contains('994000'))
+or ( $item.role.description.lower-case.contains('994200'))
+or ( $item.role.description.lower-case.contains('965000'))
+returns $item.concepts
+
+constant $USGAAP_ALLOWED_CONCEPTS = sum($LISTS_OF_USGAAP_ALLOWED_CONCEPTS)
+
+constant $USGAAP_ALLOWED_LOCAL-NAME = $USGAAP_ALLOWED_CONCEPTS.name.local-name

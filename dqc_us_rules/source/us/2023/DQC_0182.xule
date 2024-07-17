@@ -1,0 +1,52 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0182.10160 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$dimEquivs = navigate 'http://www.xbrl.org/2023/arcrole/concept-dimensional-equivalent' descendants  taxonomy $META returns list (source, target)
+
+$lookupDict = $dimEquivs.agg-to-dict(1)
+for $key in $lookupDict.keys
+    /**$valueOfKey = {@concept = $key}**/
+    $keyValues = filter $lookupDict[$key] returns $item;
+    $axis = (filter $keyValues where $item[2].substitution == xbrldt:dimensionItem returns $item[2].name).first;
+    $member = (filter $keyValues where $item[2].data-type.name == dtr-types:domainItemType returns $item[2]).first;
+    $lineItem = (filter $keyValues where $item[2].data-type.name != dtr-types:domainItemType and  $item[2].substitution != xbrldt:dimensionItem returns $item[2]).first;
+    
+    $multiplier = (if $lineItem.balance != $key.balance
+                       0 -1 
+                    else 
+                        1)
+    
+    $base = {@concept = $key};
+    $dim = ({@concept = $lineItem @$axis = $member}#dimfact * $multiplier)
+    $base != $dim 
+   
+   message
+"It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this {$base.concept.name} fact are:
+
+Period : {$base.period}
+Dimensions : {$base.dimensions.join(', ',' = ')}
+Unit : {$base.unit}
+Decimals of {$base.name.local-name} : {$base.decimals}
+Decimals of {$dimfact.name.local-name} : {$dimfact.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $base
+status $status
+effectiveDate $effective_dates[$rule_id]

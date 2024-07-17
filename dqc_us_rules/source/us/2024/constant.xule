@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2024
@@ -187,6 +187,13 @@ constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehen
 
 constant $INCOME_LOSS_EXTENSION_ITEMS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
 
+
+constant $INCOME_STATEMENT_OUTFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-outflow' descendants from RetainedEarningsAccumulatedDeficit taxonomy $META returns set (target-name)
+
+constant $INCOME_STATEMENT_INFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-inflow' descendants from RetainedEarningsAccumulatedDeficit taxonomy $META returns set (target-name)
+
+constant $INCOME_STATEMENT_CONCEPTS = $INCOME_STATEMENT_OUTFLOWS  + $INCOME_STATEMENT_INFLOWS
+
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
 					ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,
@@ -228,6 +235,8 @@ constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
 constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
 
 constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
+constant $PARENTHETICAL_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
 	where $item.role.description.contains('148410 - Statement -') 
