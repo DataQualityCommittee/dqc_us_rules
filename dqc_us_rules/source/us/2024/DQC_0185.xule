@@ -33,7 +33,7 @@ for $tax_item in $tax_increase_decrease_elements
 
         $taxFact = {@concept = $tax_item}
         $ancestors = $taxFact.inline-ancestors
-        if $ancestors == none
+        if $ancestors.length == 0
             skip 
         else
         $ancestorConcepts = filter $ancestors returns $item.concept.name 
