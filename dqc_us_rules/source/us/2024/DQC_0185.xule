@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP All
@@ -33,14 +33,15 @@ for $tax_item in $tax_increase_decrease_elements
 
         $taxFact = {@concept = $tax_item}
         $ancestors = $taxFact.inline-ancestors
-        if $ancestors == none
+        $ancestorConcepts = filter $ancestors returns $item.concept.name 
+        /** Pick up those cases where the value is reported as text in income tax disclosure text block without the reconciliation.**/
+        if $ancestors.length == 0 or ((IncomeTaxDisclosureTextBlock in $ancestorConcepts) and $ancestorConcepts.length == 1)
             skip 
         else
-        $ancestorConcepts = filter $ancestors returns $item.concept.name 
-        if ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock in $ancestorConcepts
-            false
-        else
-            true
+            if ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock in $ancestorConcepts
+                false
+            else
+                true
 
 message
 "The concept {$tax_item} with a value of {$taxFact} is reported in the disclosure within the text blocks item {$ancestorConcepts.join(', ')}. The element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead.
