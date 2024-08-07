@@ -67,7 +67,8 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                         $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
 
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname
+                        /** Added to only run when there were more than 2 members to add. If there is only one this indicates its a disclosure and probably not a reconciliation **/
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname or $factsToAdd.length < 2
                             skip
                         else
                          $dimensionTotalDecimals = if $dimensionTotal.decimals == inf
