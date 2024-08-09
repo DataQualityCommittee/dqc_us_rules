@@ -51,8 +51,6 @@ DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Exampl
 "Employee Benefit Plan, Investment, Fair Value" [ EmployeeBenefitPlanInvestmentFairValue] is only expected to be used when"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Fair Value" (L2[EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue]) or"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue] are also used to tag amounts in the same plan year in the same statement or note. Should the rule restrict to specific hypercube? (EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, EmployeeBenefitPlanInvestmentFairValueAndNavTable, EmployeeBenefitPlanMasterTrustTable, EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable)
 **/
 
-$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
-
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $invalidConcepts = list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue )
@@ -454,20 +452,25 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0190.10617 satisfied
 
 /** Possible DQC Rule 17 (Example 7b/Note 2)
-The members to be used with the “Legal Entity [Axis]” (A10) are intended to be plan specific members. To help facilitate data consumption, plan-specific members are to be created using a format that starts with “EBP” followed by the nine-digit Employer Identification Number with a dash after the first two digits, a space, and the Plan Number (i.e., EBP 12-3456789 001 [Member]).
+The members to be used with the "Legal Entity [Axis]" (A10) are intended to be plan specific members. To help facilitate data consumption, plan-specific members are to be created using a format that starts with "EBP" followed by the nine-digit Employer Identification Number with a dash after the first two digits, a space, and the Plan Number (i.e., EBP 12-3456789 001 [Member]).
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$LegalEntityValues = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')})
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
-$LegalEntityAxisMembers = filter $LegalEntityValues returns $item.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')).name.local-name
+if $EBPReports
 
-for $member in $LegalEntityAxisMembers
-   
-    $matchDict = $member.regex-match('^EBP[0-9]{2}-[0-9]{7}-[0-9]{3}Member$')
-    $matchDict['match-count'] == 0
+    $LegalEntityValues = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')})
 
+    $LegalEntityAxisMembers = filter $LegalEntityValues returns $item.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')).name.local-name
+
+    for $member in $LegalEntityAxisMembers
+    
+        $matchDict = $member.regex-match('^EBP[0-9]{2}-[0-9]{7}-[0-9]{3}Member$')
+        $matchDict['match-count'] == 0
+else
+    skip
 
 message
 "The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP EIN and Plan number.  The element name shouuld following the structure below:  
