@@ -14,29 +14,35 @@ ASSERT US.0161.10083 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$axisExtensibleEnumDict = dict(
-                                list(RetirementPlanFundingStatusAxis, "DefinedBenefitPlanFundingStatusExtensibleList"),
-                                list(InvestmentTypeAxis, "InvestmentTypeExtensibleEnumeration"),
-                                list(RetirementPlanTaxStatusAxis,"DefinedBenefitPlanTaxStatusExtensibleList or DefinedContributionPlanTaxStatusExtensibleList" )
-                                )
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
-$all_cubes = filter taxonomy().cubes;
+if $EBPReports
+    skip
+else
+    $axisExtensibleEnumDict = dict(
+                                    list(VariableRateAxis, "InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration"),
+                                    list(RetirementPlanFundingStatusAxis, "DefinedBenefitPlanFundingStatusExtensibleList"),
+                                    list(InvestmentTypeAxis, "InvestmentTypeExtensibleEnumeration"),
+                                    list(RetirementPlanTaxStatusAxis,"DefinedBenefitPlanTaxStatusExtensibleList or DefinedContributionPlanTaxStatusExtensibleList" )
+                                    )
 
-for $cube in $all_cubes
-	if $cube.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
-		skip
-	else
-        for $dim in $axisExtensibleEnumDict.keys
-            if $cube.dimensions().concept().name.contains($dim)
-                    $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
-                    if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
-                        $count_values = count(list({@cube = $cube @$dim = *}#PrimaryConcept));
-                    
-                        $count_values == 1 and (not exists({@$dim = none}))
-                    else
+    $all_cubes = filter taxonomy().cubes;
+
+    for $cube in $all_cubes
+        if $cube.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
+            skip
+        else
+            for $dim in $axisExtensibleEnumDict.keys
+                if $cube.dimensions().concept().name.contains($dim)
+                        $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
+                        if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
+                            $count_values = count(list({@cube = $cube @$dim = *}#PrimaryConcept));
+                        
+                            $count_values == 1 and (not exists({@$dim = none}))
+                        else
+                            skip
+                else
                         skip
-            else
-                    skip
 
 
 message
