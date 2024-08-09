@@ -54,8 +54,12 @@ for $drs_role in $drs_roles
 										))
 								else
 									true
+				/** Identify if facts exist for the dimension and concept in a parenthetical hypercube **/
+			    $factsInParenthetical = list([nonils @cube in $STATEMENT_PARENTHETICAL_CUBES  @$dim = *]) 
 
-			/** Identify if facts exist for the dimension and concept in a notes hypercube **/
+				$NoFactsInParentheticalFlag = $factsInParenthetical.length == 0
+
+				/** Identify if facts exist for the dimension and concept in a notes hypercube **/
 				$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = *])
 
 				/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
@@ -71,7 +75,7 @@ for $drs_role in $drs_roles
 				/** Get a set  of the unique members **/
 				$member_descendants = $members.to-set - $domain;
 				
-			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal)
+			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal) and $NoFactsInParentheticalFlag
 				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 				$member_facts = list(for $member in $member_descendants
 									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
