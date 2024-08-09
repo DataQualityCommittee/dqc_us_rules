@@ -234,6 +234,9 @@ and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
 and (not $item.drs-role.description.lower-case.contains('schedule iii'))
 and (not $item.drs-role.description.lower-case.contains('schedule iv'))
 
+constant $STATEMENT_PARENTHETICAL_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and ($item.drs-role.uri.lower-case.contains('parenthetical')) 
+
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
 
 constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
