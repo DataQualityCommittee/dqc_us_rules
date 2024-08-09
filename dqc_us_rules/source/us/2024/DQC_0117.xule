@@ -11,6 +11,8 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0117.9574 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/*TODO In some cases have a parenthetical disclosure for related parties showing the related party amont for a line item, but the line item is also on the main schedule with the total. The issue occurs if another line item is used with the related party axis.*/
+
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $STATEMENT_CUBES 
 					list($y.drs-role, $y.dimensions, $y));
@@ -53,6 +55,12 @@ for $drs_role in $drs_roles
 										))
 								else
 									true
+									
+			/** Identify if facts exist for the dimension and concept in a parenthetical hypercube **/
+			    $factsInParenthetical = list([nonils @cube in $STATEMENT_PARENTHETICAL_CUBES  @$dim = *]) 
+
+				$NoFactsInParentheticalFlag = $factsInParenthetical.length == 0
+
 
 			/** Identify if facts exist for the dimension and concept in a notes hypercube **/
 				$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = *])
@@ -70,7 +78,7 @@ for $drs_role in $drs_roles
 				/** Get a set  of the unique members **/
 				$member_descendants = $members.to-set - $domain;
 				
-			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal)
+			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal) and $NoFactsInParentheticalFlag
 				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
 				$member_facts = list(for $member in $member_descendants
 									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
