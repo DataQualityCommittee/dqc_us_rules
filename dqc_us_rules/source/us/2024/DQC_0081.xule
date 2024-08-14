@@ -33,13 +33,14 @@ for ($network in $extCalcRelationship1.keys)
 			$extCalcSourceName == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities or 
 			$extCalcSourceName in $ELEMENTS_EXCLUDED_FROM_RULE or
 			$extCalcRelationship.target.name in $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING_OF_PARENT_ELEMENT or
-			$extCalcRelationship.target.name in $CASH_FLOW_EXCEPTIONS
+			$extCalcRelationship.target.name in $CASH_FLOW_EXCEPTIONS or
+			$extCalcSourceName == LongTermInvestments /*FASB NEED TO CHANGE BACK */
 			)
 			skip
 		else
 		
 			/**Identify the siblings of the parent element that were defined in the US gaap taxonomy**/
-			$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $US-GAAP returns (target-name);
+			$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $US-GAAP returns set (target-name) - set(LongTermInvestments);
 			
 			/** Generate a list of $sibling_items that includes descendants of the siblings in the US GAAP taxonomy, but excludes the cash flow adjustment items as they are add backs and can be legitimate  children. **/
 			$sibling_items = navigate summation-item descendants include start from ($s1) stop when ($relationship.source.name == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities) taxonomy $US-GAAP returns (target-name);
@@ -99,7 +100,6 @@ SEVERITY error
 
 
 effectiveDate $effective_dates[$rule_id]
-
 
 ASSERT US.0081.9278 satisfied
 
