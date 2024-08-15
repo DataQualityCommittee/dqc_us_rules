@@ -14,7 +14,7 @@ Transition ELements using  "This element should be used to tag non-restated comp
 ASSERT IFRS.0173.10114 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$TransitionElements = filter ($ifrs-gaap.concepts) where (filter ($item.all-references) where $item.parts.part-value.contains('This element should be used to tag non-restated comparative information only.') returns $item).length > 0 
+$TransitionElements = filter ($ifrs-gaap.concepts) where (filter ($item.all-labels) where $item.text.contains('This element should be used to tag non-restated comparative information only.') returns $item).length > 0 
 
 $TranstionFact = {@concept in $TransitionElements where $fact.period.end > date('2023-01-01')}
 
