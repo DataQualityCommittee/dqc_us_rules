@@ -1,0 +1,127 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+/** CHECK FORMAT OF DIVIDEND MEMBER  of yearperiodMember**/
+
+ASSERT US.0194.10621 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** LOok at allowable values for common stock **/
+
+$element_Common_stock_positive = list(SharesOutstanding, 
+                                    CommonStockSharesOutstanding, 
+                                    StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                                    StockIssuedDuringPeriodValueNewIssues,
+                                    StockIssuedDuringPeriodSharesNewIssues,
+                                    StockIssuedDuringPeriodValueIssuedForServices,
+                                    StockIssuedDuringPeriodSharesIssuedForServices,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationGross,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationForfeited,
+                                    StockGrantedDuringPeriodValueSharebasedCompensation,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresInPeriod,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriod,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodValueShareBasedCompensation,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensation,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodValueStockOptionsExercised,
+                                    StockIssuedDuringPeriodSharesStockOptionsExercised,
+                                    StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodValueEmployeeStockPurchasePlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockPurchasePlans,
+                                    StockIssuedDuringPeriodValueEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodValueAcquisitions,
+                                    StockIssuedDuringPeriodSharesAcquisitions,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
+                                    StockIssuedDuringPeriodValueConversionOfUnits,
+                                    StockIssuedDuringPeriodSharesConversionOfUnits,
+                                    StockIssuedDuringPeriodValueStockDividend,
+                                    CommonStockDividendsShares,
+                                    StockDividendsShares,
+                                    StockIssuedDuringPeriodValueDividendReinvestmentPlan,
+                                    StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
+                                    StockIssuedDuringPeriodValuePurchaseOfAssets,
+                                    StockIssuedDuringPeriodSharesPurchaseOfAssets,
+                                    StockIssuedDuringPeriodValueOther,
+                                    StockIssuedDuringPeriodSharesOther,
+                                    StockIssuedDuringPeriodSharesStockSplits,
+                                    StockIssuedDuringPeriodSharesReverseStockSplits, /** Assume use calc to negate **/
+                                    StockRepurchasedAndRetiredDuringPeriodValue,
+                                    StockRepurchasedAndRetiredDuringPeriodShares,
+                                    StockRepurchasedDuringPeriodValue,
+                                    StockRepurchasedDuringPeriodShares,
+                                    StockRedeemedOrCalledDuringPeriodValue,
+                                    StockRedeemedOrCalledDuringPeriodShares,
+                                    TreasuryStockRetiredParValueMethodAmount,
+                                    TreasuryStockRetiredCostMethodAmount,
+                                    TreasuryStockSharesRetired,
+                                    AmortizationOfESOPAward
+                                    )
+
+
+$APIC_Adjustments = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns list (target-name)
+
+$element_Common_stock_empty = list(PreferredStockSharesOutstanding, 
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
+                                    PreferredStockDividendsShares,
+                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
+                                    TreasuryStockCommonValue,
+                                    TreasuryStockPreferredValue,
+                                    TreasuryStockValue,
+                                    TreasuryStockValueAcquiredParValueMethod,
+                                    TreasuryStockValueAcquiredCostMethod,
+                                    TreasuryStockReissuedAtLowerThanRepurchasePrice,
+                                    TreasuryStockCarryingBasis,
+                                    ProfitLoss,
+                                    NetIncomeLossAttributableToRedeemableNoncontrollingInterest,
+                                    NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest,
+                                    OtherComprehensiveIncomeLossNetOfTax,
+                                    PreferredStockRedemptionPremium,
+                                    PreferredStockRedemptionDiscount,
+                                    PreferredStockAccretionOfRedemptionDiscount,
+                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
+                                    PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,
+                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                                    NoncontrollingInterestIncreaseFromBusinessCombination,
+                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
+                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                                    MinorityInterestDecreaseFromRedemptions,
+                                    NoncontrollingInterestDecreaseFromDeconsolidation
+                                    ) + $APIC_Adjustments
+
+true
+
+
+message
+"
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
