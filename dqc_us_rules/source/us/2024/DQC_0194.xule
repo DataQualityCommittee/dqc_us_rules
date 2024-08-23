@@ -113,14 +113,26 @@ $element_Common_stock_empty = list(PreferredStockSharesOutstanding,
                                     NoncontrollingInterestDecreaseFromDeconsolidation
                                     ) + $APIC_Adjustments
 
+
+$fact1 =
+	{nonils @concept in $element_Common_stock_positive @StatementEquityComponentsAxis=CommonStockMember @unit=* where $fact < 0 and ($fact.dimensions.length == 1 or 
+		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
+		and ($fact.dimensions.keys.name intersect (($EXCLUDE_NON_NEG_AXIS + set(StatementClassOfStockAxis)) - set(StatementEquityComponentsAxis))).length == 0
+		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+		};  /** Included class of stock axis for transfers between classes of stock which can make a value negative**/
 true
 
-
 message
-"
+"{$fact1.concept} has a value of {$fact1} which is less than zero. This element should not have a negative value when used with the common stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
 
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
 
 severity error
 
