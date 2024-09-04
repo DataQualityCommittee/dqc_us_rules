@@ -82,6 +82,7 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 
                                         else 
                                             /** Balance Sheet Processing **/
+                                            /** Need to check if the item assets has a value of zero or has no children in the calculation **/
                                             if $presConceptItems.contains(StatementOfFinancialPositionAbstract)
 
                                                 $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == instant;
@@ -91,8 +92,18 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
                                                                     else
                                                                         skip);
                                                 $calcItems = sum($calcspresentSet);
+
+                                                /* Check if Assets has any monetary descendants in the presentation tree. If there are no Assets in the presentation tree don't look for Assets in the calculation tree. */
+                                                $AssetTypes = (navigate parent-child descendants from list(AssetsAbstract) taxonomy $US-GAAP where ($relationship.target.is-monetary == true ) returns set (target-name));
+
+                                                $AssetsComponents  =  $presConceptItems.to-set intersect ($AssetTypes - set(Assets))
+
+                                                $AssetExclusion = if  $AssetsComponents.length > 0
+                                                                    set()
+                                                                else
+                                                                    set(Assets);
                                             
-                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures)
+                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $AssetExclusion)
                                                 
                                             else 
                                                 /** CATCH ALL FOR ALL OTHER STATEMENTS WHERE ABSTRACTS ARE NOT USED TO IDENTIFY STATEMENT**/
@@ -103,6 +114,7 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
                                                                         else
                                                                             skip);
                                                 $calcItems = sum($calcspresentSet);
+
                                                 
                                                 $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $SSHExceptions + $ebp_Exclusions)
     
