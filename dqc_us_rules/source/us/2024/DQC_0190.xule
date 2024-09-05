@@ -26,7 +26,7 @@ if $EBPReports
     skip
 else 
    $filingQnames = filter  taxonomy().concepts returns $item.name
-   $EBPElementsInFiling =  ($filingQnames intersect $EBPQNames)
+   $EBPElementsInFiling =  ($filingQnames intersect $EBPQNames).to-list
     $EBPTop10 = for $x in range(1,min(list(10,$EBPElementsInFiling.length) ))
                     $EBPElementsInFiling[$x]
     

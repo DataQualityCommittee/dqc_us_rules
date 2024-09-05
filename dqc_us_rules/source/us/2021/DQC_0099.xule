@@ -89,8 +89,19 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
                                                                     else
                                                                         skip);
                                                 $calcItems = sum($calcspresentSet);
+
+                                                 /* Check if Assets has any monetary descendants in the presentation tree. If there are no Assets in the presentation tree don't look for Assets in the calculation tree. */
+                                                $AssetTypes = (navigate parent-child descendants from list(AssetsAbstract) taxonomy $US-GAAP where ($relationship.target.is-monetary == true ) returns set (target-name));
+
+                                                $AssetsComponents  =  $presConceptItems.to-set intersect ($AssetTypes - set(Assets))
+
+                                                $AssetExclusion = if  $AssetsComponents.length > 0
+                                                                    set()
+                                                                else
+                                                                    set(Assets);
                                             
-                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures)
+                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $AssetExclusion)
+                                            
                                                 
                                             else 
                                                 /** CATCH ALL FOR ALL OTHER STATEMENTS WHERE ABSTRACTS ARE NOT USED TO IDENTIFY STATEMENT**/
