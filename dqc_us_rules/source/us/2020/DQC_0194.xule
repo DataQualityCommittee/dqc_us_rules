@@ -83,10 +83,10 @@ $Common_Stock_Positive = list(SharesOutstanding,
 
 $fact1 =
 	{nonils @concept in $Common_Stock_Positive @StatementEquityComponentsAxis=CommonStockMember @unit=* where $fact < 0 and ($fact.dimensions.length == 1 or 
-		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
-		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
-		and ($fact.dimensions.keys.name intersect (($EXCLUDE_NON_NEG_AXIS + set(StatementClassOfStockAxis)) - set(StatementEquityComponentsAxis))).length == 0
-		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+		(not match_set_substring($fact, $exclude_non_neg_string_members)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0
+		and ($fact.dimensions.keys.name intersect (($exclude_non_neg_axis + set(StatementClassOfStockAxis)) - set(StatementEquityComponentsAxis))).length == 0
+		and not_elim_adjust($fact, $exclude_non_neg_axis_members)))
 		};  /** Included class of stock axis for transfers between classes of stock which can make a value negative**/
 true
 
@@ -106,7 +106,7 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
-constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns list (target-name)
+constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $us-gaap where $relationship.target.is-monetary == true returns list (target-name)
 
 constant $ELEMENT_COMMON_STOCK_EMPTY = list(PreferredStockSharesOutstanding, 
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
@@ -122,7 +122,6 @@ constant $ELEMENT_COMMON_STOCK_EMPTY = list(PreferredStockSharesOutstanding,
                                     PreferredStockRedemptionDiscount,
                                     PreferredStockAccretionOfRedemptionDiscount,
                                     IncreaseInCarryingAmountOfRedeemablePreferredStock,
-                                    PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,
                                     NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
                                     NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
                                     NoncontrollingInterestIncreaseFromBusinessCombination,
@@ -171,7 +170,7 @@ ASSERT US.0194.10623 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $US-GAAP returns set (target-name));
+$NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $us-gaap returns set (target-name));
 
 $fact1 = {@concept = StockholdersEquity @StatementEquityComponentsAxis in $NCI  @unit=*}
 
