@@ -269,7 +269,7 @@ else
 
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as {$fact1.concept} should not impact common stock. Change the opening balance share element {$fact1.concept} to {if $COMMON_STOCK_SHARES_ISSUED_METHOD 'SharesIssued' else 'SharesOutstanding' }.
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as {$fact1.concept} should not impact common stock. Change the opening balance share element {$fact1.concept} to {if $fact1.concept.name.local-name == 'SharesOutstanding' 'SharesIssued' else 'SharesOutstanding'}.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
