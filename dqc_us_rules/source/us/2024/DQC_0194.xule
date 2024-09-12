@@ -18,7 +18,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** LOok at allowable values for common stock **/
 
-$Common_Stock_Positive = list(SharesOutstanding, 
+$Common_Stock_Positive = set(SharesOutstanding, 
                                     CommonStockSharesOutstanding, 
                                     StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
                                     StockIssuedDuringPeriodValueNewIssues,
@@ -106,9 +106,9 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
-constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns list (target-name)
+constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 
-constant $ELEMENT_COMMON_STOCK_EMPTY = list(PreferredStockSharesOutstanding, 
+constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding, 
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
                                     PreferredStockDividendsShares,
@@ -130,9 +130,9 @@ constant $ELEMENT_COMMON_STOCK_EMPTY = list(PreferredStockSharesOutstanding,
                                     MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
                                     MinorityInterestDecreaseFromRedemptions,
                                     NoncontrollingInterestDecreaseFromDeconsolidation
-                                    ) + $APIC_ADJUSTMENTS
+                                    ) + ($APIC_ADJUSTMENTS - set(AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts))
 
-constant $TREASURY_STOCK_MONETARY_ELEMENTS = list(TreasuryStockCommonValue,
+constant $TREASURY_STOCK_MONETARY_ELEMENTS = set(TreasuryStockCommonValue,
                                     TreasuryStockPreferredValue,
                                     TreasuryStockValue,
                                     TreasuryStockValueAcquiredParValueMethod,
@@ -150,7 +150,7 @@ $fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityCompone
 true
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock [Member]. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock Member. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -199,12 +199,12 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $treasury =  set(TreasuryStockCommonMember, TreasuryStockPreferredMember);
 
-$fact1 = {@concept in list(SharesOutstanding,CommonStockSharesOutstanding,PreferredStockSharesOutstanding) @StatementEquityComponentsAxis in $treasury  @unit=*}
+$fact1 = {@concept in list(SharesOutstanding,CommonStockSharesOutstanding, PreferredStockSharesOutstanding, SharesIssued, CommonStockSharesIssued, PreferredStockSharesIssued ) @StatementEquityComponentsAxis in $treasury  @unit=*}
 
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with treasury stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as {$fact1.concept} does not include treasury stock shares. Change the element {$fact1.concept} to SharesIssued.
+"{$fact1.concept} has a value of {$fact1} and has been used with Treasury Stock Member on the StatementEquityComponentsAxis. This element should not have a value when used with Treasury Stock Member.  FASB FAQ guidance (https://xbrl.fasb.org/resources/taxonomyfaq.pdf) 2.16 requires that specifc line item elements are used for treasury shares such as TreasuryStockCommonShares and TreasuryStockPreferredShares rather than {$fact1.concept.name}.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -243,6 +243,7 @@ constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept = Sha
                                                 else
                                                     false
 
+/** IF TREASURURY IS ZERO SHOULD RULE FLAG **/
 ASSERT US.0194.10625 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -311,5 +312,4 @@ Rule version: {$ruleVersion}"
 severity error
 
 effectiveDate $effective_dates[$rule_id]
-
-                                         
+                                      
