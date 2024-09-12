@@ -17,13 +17,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
 
-/** Get the dimesnios defaults from the US GAPP Taxonomy **/
-
-$taxonomy_defaults = navigate dimension-default descendants taxonomy $US-GAAP returns  set (source-name, target-name);
-
 /** Get relationships in filing not in taxonomy **/
 
-$default_in_filing_not_in_taxonomy = $filing_defaults - $taxonomy_defaults;
+$default_in_filing_not_in_taxonomy = $filing_defaults - $TAXONOMY_DEFAULTS;
 
 $filing_details_defaults = navigate dimension-default descendants include start returns  (source-name, target-name, source, role) as dictionary;
 
