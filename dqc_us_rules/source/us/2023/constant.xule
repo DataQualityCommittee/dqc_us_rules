@@ -533,3 +533,16 @@ constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from Li
 constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
 
 constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
+
+/** Get the dimesnios defaults from the US GAPP Taxonomy **/
+
+constant $TAXONOMY_DEFAULTS = navigate dimension-default descendants taxonomy $US-GAAP returns  set (source-name, target-name)
+
+constant $NONALLOWED_ROOT_ELEMENTS_CASHFLOW = filter (navigate summation-item descendants from CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect
+ taxonomy $US-GAAP returns set (target-name)) returns $item.local-name
+
+constant $NETWORK_730000_TARGET_NON_ABSTRACT_QNAMES = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/CompensationRelatedCostsRetirementBenefits' taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name)
+
+constant $ASU201517_TRANSITION_ELEMENTS = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
+
+constant $FINANCIAL_DATA_EQUITY_METHOD_INVESTMENTS = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
