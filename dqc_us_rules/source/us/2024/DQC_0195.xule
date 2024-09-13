@@ -106,7 +106,7 @@ ASSERT US.0195.10631 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
-if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2024-12-15')) 
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
         exists({@concept =  $concept[2]}#concept-value) and exists({@concept =  $concept[1]})
 else
