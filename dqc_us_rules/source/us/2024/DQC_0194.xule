@@ -312,4 +312,115 @@ Rule version: {$ruleVersion}"
 severity error
 
 effectiveDate $effective_dates[$rule_id]
+
+
+
+ASSERT US.0194.10627 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** LOok at allowable values for common stock **/
+
+$Element_Retained_Earnings_empty = set(SharesOutstanding, 
+                                    CommonStockSharesOutstanding, 
+                                    StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                                    StockIssuedDuringPeriodValueNewIssues,
+                                    StockIssuedDuringPeriodSharesNewIssues,
+                                    StockIssuedDuringPeriodValueIssuedForServices,
+                                    StockIssuedDuringPeriodSharesIssuedForServices,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationGross,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationForfeited,
+                                    StockGrantedDuringPeriodValueSharebasedCompensation,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresInPeriod,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriod,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodValueShareBasedCompensation,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensation,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodValueStockOptionsExercised,
+                                    StockIssuedDuringPeriodSharesStockOptionsExercised,
+                                    StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodValueEmployeeStockPurchasePlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockPurchasePlans,
+                                    StockIssuedDuringPeriodValueEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodValueAcquisitions,
+                                    StockIssuedDuringPeriodSharesAcquisitions,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
+                                    StockIssuedDuringPeriodValueConversionOfUnits,
+                                    StockIssuedDuringPeriodSharesConversionOfUnits,
+                                    StockIssuedDuringPeriodValueStockDividend,
+                                    CommonStockDividendsShares,
+                                    StockDividendsShares,
+                                    StockIssuedDuringPeriodValueDividendReinvestmentPlan,
+                                    StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
+                                    StockIssuedDuringPeriodValuePurchaseOfAssets,
+                                    StockIssuedDuringPeriodSharesPurchaseOfAssets,
+                                    StockIssuedDuringPeriodValueOther,
+                                    StockIssuedDuringPeriodSharesOther,
+                                    StockIssuedDuringPeriodSharesStockSplits,
+                                    StockIssuedDuringPeriodSharesReverseStockSplits, /** Assume use calc to negate **/
+                                    StockRepurchasedAndRetiredDuringPeriodValue,
+                                    StockRepurchasedAndRetiredDuringPeriodShares,
+                                    StockRepurchasedDuringPeriodValue,
+                                    StockRepurchasedDuringPeriodShares,
+                                    StockRedeemedOrCalledDuringPeriodValue,
+                                    StockRedeemedOrCalledDuringPeriodShares,
+                                    TreasuryStockRetiredParValueMethodAmount,
+                                    TreasuryStockRetiredCostMethodAmount,
+                                    TreasuryStockSharesRetired,
+                                    AmortizationOfESOPAward,
+                                    PreferredStockSharesOutstanding, 
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
+                                    PreferredStockDividendsShares,
+                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
+                                    TreasuryStockPreferredValue,
+                                    PreferredStockRedemptionPremium,
+                                    PreferredStockRedemptionDiscount,
+                                    PreferredStockAccretionOfRedemptionDiscount,
+                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
+                                    PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,
+                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                                    NoncontrollingInterestIncreaseFromBusinessCombination,
+                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
+                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                                    MinorityInterestDecreaseFromRedemptions,
+                                    NoncontrollingInterestDecreaseFromDeconsolidation,
+                                    TreasuryStockCommonValue,
+                                    TreasuryStockPreferredValue,
+                                    TreasuryStockValue,
+                                    TreasuryStockValueAcquiredParValueMethod,
+                                    TreasuryStockValueAcquiredCostMethod,
+                                    TreasuryStockReissuedAtLowerThanRepurchasePrice,
+                                    TreasuryStockCarryingBasis
+                                    )
+
+$fact1 = {nonils @concept in $Element_Retained_Earnings_empty @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) @unit=* where $fact != 0}
+
+true
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
                                       
