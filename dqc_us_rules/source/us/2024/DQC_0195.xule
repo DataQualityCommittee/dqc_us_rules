@@ -73,7 +73,7 @@ constant $EQUIVALENT_TAX_RATES = list(list(IncomeTaxReconciliationIncomeTaxExpen
                                     list(IncomeTaxReconciliationOtherReconcilingItems, EffectiveIncomeTaxRateReconciliationOtherReconcilingItemsPercent),
                                     list(IncomeTaxExpenseBenefit, EffectiveIncomeTaxRateContinuingOperations))
 
-ASSERT US.0195.10630 satisfied
+ASSERT US.0195.10650 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -101,7 +101,7 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
-ASSERT US.0195.10631 satisfied
+ASSERT US.0195.10651 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -129,7 +129,32 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
-/** Check if the domestic and foreign member are used.**/
-
-
 /** Check the calculation as well **/
+
+ASSERT US.0195.10652 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
+
+$base_Income = {@concept=IncomeTaxExpenseBenefit @unit=*} / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=*}
+
+if exists($base_Income)
+    for $concept in $EQUIVALENT_TAX_RATES
+        $calc_value = {@concept =  $concept[1]}#num / $base_Income
+        $calc_value != {@concept =  $concept[2]}#percentage-value
+else
+    skip
+
+message
+"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of netincome of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.  The value for net income should be calculated as the value of IncomeTaxExpenseBenefit divided by the value of EffectiveIncomeTaxRateContinuingOperations. 
+
+The properties of this {$percentage-value.concept} fact are:
+Period :{$percentage-value.period}
+Dimensions : {$percentage-value.dimensions.join(', ','=')}
+Unit : {$percentage-value.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+/** Check if the domestic and foreign member are used.**/

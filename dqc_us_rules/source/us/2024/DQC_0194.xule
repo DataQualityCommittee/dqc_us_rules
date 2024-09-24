@@ -102,7 +102,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -159,9 +159,8 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -189,7 +188,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -213,17 +212,9 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
-
-
-constant $TREASURY_STOCK_SHARE_ELEMENTS = list(TreasuryStockSharesAcquired,
-                                    StockIssuedDuringPeriodSharesTreasuryStockReissued,
-                                    TreasuryStockSharesRetired,
-                                    StockRepurchasedDuringPeriodShares
-                                    )
 
 
 /** THis can be super confusingin terms of multiple meanings.  WHats the difference between treasuryStockSharesAqcuired and StockRepurchasedDuringPeriodShares and the treasury stock member
@@ -280,9 +271,8 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -308,9 +298,8 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -423,6 +412,10 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
                                       
 ASSERT US.0194.10628 satisfied
 
@@ -465,6 +458,10 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
 ASSERT US.0194.10629 satisfied
 
 /** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
@@ -504,6 +501,10 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
 ASSERT US.0194.10630 satisfied
 
 /** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
@@ -535,6 +536,10 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0194.10631 satisfied
 
@@ -571,6 +576,10 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
 
 ASSERT US.0194.10632 satisfied
 
@@ -604,6 +613,9 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0194.10634 satisfied
@@ -612,12 +624,14 @@ ASSERT US.0194.10634 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$income_statement_items = $INCOME_STATEMENT_CONCEPTS
+$Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP returns set (target-name)
+
+$income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss)
 
 $members_to_check = $NCI + set(CommonStockMember, PreferredStockMember, TreasuryStockCommonMember, TreasuryStockPreferredMember, CapitalUnitsMember, MemberUnitsMember, AdditionalPaidInCapitalMember, DeferredCompensationShareBasedPaymentsMember)
 
 
-$fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis in $members_to_check}
+$fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = *}
 exists($fact1)
 
 message
@@ -629,6 +643,10 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
 
 
 
