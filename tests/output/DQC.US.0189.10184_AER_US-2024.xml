@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30024 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.17 secs at 2024-09-13T16:56:37 - http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm"/></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm" severity="error" effectiveDate="2024-08-31" cid="2164047888304">[DQC.US.0189.10184] The filing has  reported a value for the element us-gaap:DebtInstrumentRedemptionPricePercentage with a value of 1 using the axis VariableRateAxis in the role 9954539 - Disclosure - Debt - Junior Subordinated Notes (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for us-gaap:DebtInstrumentRedemptionPricePercentage was the member us-gaap:UsTreasuryUstInterestRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:UsTreasuryUstInterestRateMember.  The member us-gaap:UsTreasuryUstInterestRateMember should be removed from the value as it represents the aggregate value of us-gaap:DebtInstrumentRedemptionPricePercentage.
+ 
+2. Tag the aggregate value of us-gaap:DebtInstrumentRedemptionPricePercentage with a value of 1 without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DebtInstrumentRedemptionPricePercentage is reported.
+
+The properties of this us-gaap:DebtInstrumentRedemptionPricePercentage fact are:
+Period :2019-10-01 to 2019-10-31
+Dimensions : us-gaap:DebtInstrumentAxis=aer:A2079JuniorSubordinatedNotesMember, us-gaap:LongtermDebtTypeAxis=us-gaap:SubordinatedDebtMember, us-gaap:VariableRateAxis=us-gaap:UsTreasuryUstInterestRateMember
+Unit : pure
+
+Rule Element Id:10184
+Rule version: 25.0.0
+ - http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm 8</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm#f-1023" sourceLine="8">
+  <property name="file" value="aer-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Debt Instrument, Redemption Price, Percentage"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentRedemptionPricePercentage"/>
+  <property name="QName" value="us-gaap:DebtInstrumentRedemptionPricePercentage"/>
+  <property name="contextRef" value="c-224">
+   <property name="entity" value="0001378789">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2019-10-01"/>
+   <property name="endDate" value="2019-10-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DebtInstrumentAxis" value="aer:A2079JuniorSubordinatedNotesMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SubordinatedDebtMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:UsTreasuryUstInterestRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1.00"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="100"/>
+ </ref></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm" severity="error" effectiveDate="2024-08-31" cid="2164047888304">[DQC.US.0189.10184] The filing has  reported a value for the element us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0454 (rounded 4d) using the axis VariableRateAxis in the role 9954539 - Disclosure - Debt - Junior Subordinated Notes (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 was the member us-gaap:UsTreasuryUstInterestRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:UsTreasuryUstInterestRateMember.  The member us-gaap:UsTreasuryUstInterestRateMember should be removed from the value as it represents the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1.
+ 
+2. Tag the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0454 (rounded 4d) without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 is reported.
+
+The properties of this us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 fact are:
+Period :2019-10-01 to 2019-10-31
+Dimensions : us-gaap:DebtInstrumentAxis=aer:A2079JuniorSubordinatedNotesMember, us-gaap:LongtermDebtTypeAxis=us-gaap:SubordinatedDebtMember, us-gaap:VariableRateAxis=us-gaap:UsTreasuryUstInterestRateMember
+Unit : pure
+
+Rule Element Id:10184
+Rule version: 25.0.0
+ - http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm 8</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm#f-1020" sourceLine="8">
+  <property name="file" value="aer-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Debt Instrument, Basis Spread on Variable Rate"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="QName" value="us-gaap:DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="contextRef" value="c-224">
+   <property name="entity" value="0001378789">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2019-10-01"/>
+   <property name="endDate" value="2019-10-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DebtInstrumentAxis" value="aer:A2079JuniorSubordinatedNotesMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SubordinatedDebtMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:UsTreasuryUstInterestRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.04535"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="4.535"/>
+ </ref></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm" severity="error" effectiveDate="2024-08-31" cid="2164047888304">[DQC.US.0189.10184] The filing has  reported a value for the element aer:LongTermDebtFloatingRateDuration with a value of P5Y using the axis VariableRateAxis in the role 9954539 - Disclosure - Debt - Junior Subordinated Notes (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for aer:LongTermDebtFloatingRateDuration was the member us-gaap:UsTreasuryUstInterestRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:UsTreasuryUstInterestRateMember.  The member us-gaap:UsTreasuryUstInterestRateMember should be removed from the value as it represents the aggregate value of aer:LongTermDebtFloatingRateDuration.
+ 
+2. Tag the aggregate value of aer:LongTermDebtFloatingRateDuration with a value of P5Y without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of aer:LongTermDebtFloatingRateDuration is reported.
+
+The properties of this aer:LongTermDebtFloatingRateDuration fact are:
+Period :2019-10-01 to 2019-10-31
+Dimensions : us-gaap:DebtInstrumentAxis=aer:A2079JuniorSubordinatedNotesMember, us-gaap:LongtermDebtTypeAxis=us-gaap:SubordinatedDebtMember, us-gaap:VariableRateAxis=us-gaap:UsTreasuryUstInterestRateMember
+Unit : None
+
+Rule Element Id:10184
+Rule version: 25.0.0
+ - http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm 8</message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm#f-1019" sourceLine="8">
+  <property name="file" value="aer-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Long-Term Debt, Floating Rate, Duration"/>
+  <property name="namespace" value="http://www.aercap.com/20231231"/>
+  <property name="name" value="LongTermDebtFloatingRateDuration"/>
+  <property name="QName" value="aer:LongTermDebtFloatingRateDuration"/>
+  <property name="contextRef" value="c-224">
+   <property name="entity" value="0001378789">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2019-10-01"/>
+   <property name="endDate" value="2019-10-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DebtInstrumentAxis" value="aer:A2079JuniorSubordinatedNotesMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SubordinatedDebtMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:UsTreasuryUstInterestRateMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P5Y"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 3.15 secs - http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1378789/000137878924000030/aer-20231231.htm"/></entry>
+</log>

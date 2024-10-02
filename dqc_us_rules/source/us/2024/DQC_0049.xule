@@ -15,9 +15,6 @@ assert US.0049.7483 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $must_be_present_concepts = set('CashAndCashEquivalentsPeriodIncreaseDecrease','CashPeriodIncreaseDecrease','CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')
 
-$nonallowed_root_elements = filter (navigate summation-item descendants from CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect
- taxonomy $US-GAAP returns set (target-name)) returns $item.local-name
-
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 
 		
@@ -35,7 +32,7 @@ for ($calcNetwork in
 	$root_string	= $roots.join(', ');
 
 	($roots intersect $must_be_present_concepts).length > 0 and
-	($roots intersect $nonallowed_root_elements).length > 0 
+	($roots intersect $NONALLOWED_ROOT_ELEMENTS_CASHFLOW).length > 0 
 
 
 		
