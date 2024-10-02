@@ -153,6 +153,9 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_IFRS_0186](DQC_IFRS_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Approved | 24 |
 | [DQC_US_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Approved | 24 |
 | [DQC_US_0188](DQC_US_0188/DQC_0188.md) | ECD Adjustment Member Check | Approved | 24 |
+| [DQC_US_0190](DQC_US_0190/DQC_0190.md) | Employee Benefit Reporting | Approved | 25 |
+| [DQC_US_0191](DQC_US_0191/DQC_0191.md) | Proxy - PEO Concepts Recorded with NEO Member | Approved | 25 |
+| [DQC_US_0192](DQC_US_0192/DQC_0192.md) | Balance Sheet Numerical Scaling | Approved | 25 |
 | [DQC_US_0193](DQC_US_0193/DQC_0193.md) | Standard Dividend Member Name | Approved | 24 |
 
 ## Guidance 
