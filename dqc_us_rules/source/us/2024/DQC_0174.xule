@@ -11,7 +11,7 @@ RULE-NAME-PREFIX DQC
 
 /** Add rule for FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1 being negative but does not flag if FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment exceeds the negative value.  See JPM case where they have neeting between th classes https://www.sec.gov/ix?doc=/Archives/edgar/data/19617/000001961723000432/jpm-20230630.htm **/
 
-ASSERT DQC.US.0174.10115 satisfied
+ASSERT US.0174.10115 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
