@@ -37,7 +37,7 @@ else
                         if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
                             $count_values = count(list({@cube = $cube @$dim = *}#PrimaryConcept));
                         
-                            $count_values == 1 and (not exists({@$dim = none}))
+                            $count_values == 1 and (not exists({@cube = $cube @$dim = none}))
                         else
                             skip
                 else
