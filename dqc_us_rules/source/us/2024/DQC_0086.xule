@@ -13,9 +13,7 @@ assert US.0086.9368 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$transition_elements = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name);
-
-for $transition_element in $transition_elements
+for $transition_element in $ASU201517_TRANSITION_ELEMENTS
 
 	$fact1 = {@concept = $transition_element}
 	
@@ -23,8 +21,6 @@ for $transition_element in $transition_elements
 		true
 	else
 		skip
-
-
 
 message
 
