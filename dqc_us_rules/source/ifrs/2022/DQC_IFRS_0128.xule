@@ -35,7 +35,7 @@ $collective_dimensions = if $srttaxonomy
 
 for $dimension in $collective_dimensions
                 $dimension_fact =[nonils @@concept in $MONETARY_NON_NEGS @$dimension = *]
-                $default_value_of_dimension = [nonils];
+                $default_value_of_dimension = [nonils @@concept in $MONETARY_NON_NEGS];
                 $dimension_fact > $default_value_of_dimension
                 and $dimension_fact.decimals ==  $default_value_of_dimension.decimals
 
