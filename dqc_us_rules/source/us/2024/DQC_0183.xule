@@ -41,7 +41,7 @@ ASSERT US.0183.10162 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Income_Statement_Items = $INCOME_STATEMENT_CONCEPTS + set()
+$Income_Statement_Items = $INCOME_STATEMENT_CONCEPTS + set(ContractWithCustomerLiabilityRevenueRecognized)
 
 exists({@concept not in $Income_Statement_Items @StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.name not in $EXTENSION_QNAME}#BSLocationFact)
 
