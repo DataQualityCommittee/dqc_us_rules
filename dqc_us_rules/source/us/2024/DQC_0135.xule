@@ -9,6 +9,8 @@ Taxonomy: US GAAP 2024
 
 rule-name-prefix DQC
 
+constant $EXT_ENUM_DICT = $EXT_ENUM.agg-to-dict(1) 
+
 assert US.0135.9835 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
@@ -94,8 +96,19 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 												else
 													list()
 
+						/** Government Assistance element GovernmentAssistanceAmount has ext enum of GovernmentAssistanceStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration which is used as a catch all for government assistance items of GovernmentAssistanceNonoperatingIncome with GovernmentAssistanceNonoperatingIncomeStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration and GovernmentAssistanceOperatingIncome with GovernmentAssistanceOperatingIncomeStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration **/
+
+						/** Get the children of the FS concept to see if any of these are in the ext enum list. We do this because the total amount reported could be broken up and allocated to different FS accounts.  So a total without an extensible enum is OK if its children have an ext enum showing the accounts in the FS they are allocated to. **/
+
+						$children = navigate summation-item descendants from $FS_concept returns set (target-name)
+						$related_ext_enum_item_list	 =	list(for $child in $children
+																if $EXT_ENUM_DICT[$child]== none
+																	skip
+																else
+																	$EXT_ENUM_DICT[$child][1][2])
+
 						/** This determines the allowable enum items that can be used for this concept **/
-						$related_ext_enum_list = list($related_ext_enum) + $related_pension_item_list + $ancestor_ext_enum
+						$related_ext_enum_list = list($related_ext_enum) + $related_pension_item_list + $ancestor_ext_enum + $related_ext_enum_item_list
 
 						/** Generate pension specific message **/
 						$pension_message = if $related_pension_item_list.length > 0
