@@ -7,16 +7,13 @@ Taxonomy: US GAAP ALL
 
 **/
 
+
 RULE-NAME-PREFIX DQC
-
-
-/** CHECK FORMAT OF DIVIDEND MEMBER  of yearperiodMember**/
 
 ASSERT US.0194.10621 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** LOok at allowable values for common stock **/
 
 $Common_Stock_Positive = set(SharesOutstanding, 
                                     CommonStockSharesOutstanding, 
@@ -105,212 +102,14 @@ severity error
 rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
-
-constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $us-gaap where $relationship.target.is-monetary == true returns set (target-name)
-
-constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding, 
-                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
-                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
-                                    PreferredStockDividendsShares,
-                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
-                                    TreasuryStockPreferredValue,
-                                    ProfitLoss,
-                                    NetIncomeLossAttributableToRedeemableNoncontrollingInterest,
-                                    NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest,
-                                    OtherComprehensiveIncomeLossNetOfTax,
-                                    PreferredStockRedemptionPremium,
-                                    PreferredStockRedemptionDiscount,
-                                    PreferredStockAccretionOfRedemptionDiscount,
-                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
-                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
-                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
-                                    NoncontrollingInterestIncreaseFromBusinessCombination,
-                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
-                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
-                                    MinorityInterestDecreaseFromRedemptions,
-                                    NoncontrollingInterestDecreaseFromDeconsolidation
-                                    ) + ($APIC_ADJUSTMENTS - set(AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts))
-
-constant $TREASURY_STOCK_MONETARY_ELEMENTS = set(TreasuryStockCommonValue,
-                                    TreasuryStockPreferredValue,
-                                    TreasuryStockValue,
-                                    TreasuryStockValueAcquiredParValueMethod,
-                                    TreasuryStockValueAcquiredCostMethod,
-                                    TreasuryStockReissuedAtLowerThanRepurchasePrice,
-                                    TreasuryStockCarryingBasis
-                                    )
-
 ASSERT US.0194.10622 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityComponentsAxis = CommonStockMember @unit=* where $fact != 0}
 
-true
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock Member. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-constant $NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $us-gaap returns set (target-name))
-
-/** Check STockholders Equity for the correct opening balance element.**/
-
-ASSERT US.0194.10623 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$fact1 = {nonils @concept = StockholdersEquity @StatementEquityComponentsAxis in $NCI  @unit=* where $fact != 0}
-
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with an Non Controlling Interest member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as {$fact1.concept} does not include non controlling interest. Change the element {$fact1.concept} to StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-ASSERT US.0194.10624 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$treasury =  set(TreasuryStockCommonMember, TreasuryStockPreferredMember);
-
-$fact1 = {nonils @concept in list(SharesOutstanding,CommonStockSharesOutstanding, PreferredStockSharesOutstanding, SharesIssued, CommonStockSharesIssued, PreferredStockSharesIssued ) @StatementEquityComponentsAxis in $treasury  @unit=* where $fact != 0}
-
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with Treasury Stock Member on the StatementEquityComponentsAxis. This element should not have a value when used with Treasury Stock Member.  FASB FAQ guidance (https://xbrl.fasb.org/resources/taxonomyfaq.pdf) 2.16 requires that specific line item elements are used for treasury shares such as TreasuryStockCommonShares and TreasuryStockPreferredShares rather than {$fact1.concept.name}.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-/** THis can be super confusingin terms of multiple meanings.  WHats the difference between treasuryStockSharesAqcuired and StockRepurchasedDuringPeriodShares and the treasury stock member
-
-The issue is further complicated by the fact that common stock for shares can be either outstanding or issued where as the value amount for common stock is not netted for tresury. 
-
-In the notes if you see treasuryStockSharesAqcuired with common stock member then this implies the shares colum is outstanding in the SHE. 
-
-It seems to me none of the treasury share elements should be used if the changes in she uses the shares outstanding rather than the shares issued
-
-An example of this is here : https://www.sec.gov/ix?doc=/Archives/edgar/data/846475/000155837024010200/zyxi-20240630x10q.htm
-
-This filing has treasury but for the shares colum uses shares outstanding and not issued.  In the notes they disclose share buybacks going into treasury.  SHouldnt the elemnts be consistent with the statement of SHE.**/
-
-constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept = SharesIssued  @StatementEquityComponentsAxis = CommonStockMember  @period=*])
-                                                    true
-                                                else
-                                                    false
-
-/** IF TREASURURY IS ZERO SHOULD RULE FLAG **/
-ASSERT US.0194.10625 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-
-
-if  $COMMON_STOCK_SHARES_ISSUED_METHOD
-
-    $treasury =  set(TreasuryStockSharesAcquired,
-                StockIssuedDuringPeriodSharesTreasuryStockReissued,
-                StockRepurchasedDuringPeriodShares
-                )
-
-    $fact1 = {nonils @concept in $treasury  @StatementEquityComponentsAxis = CommonStockMember  @unit=*}
-
-    exists($fact1)
-
-else
-
-    $treasury2 =  set(TreasuryStockSharesRetired)
-
-    $fact1 = {nonils @concept in $treasury2  @StatementEquityComponentsAxis = CommonStockMember  @unit=*}
-
-    exists($fact1)
-
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. Change the opening balance share element to {if $fact1.concept.name.local-name == 'TreasuryStockSharesRetired' 'SharesIssued' else 'SharesOutstanding'}.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-/** Add rule to check cannot have stock issued and  stock outstanding with the common stock member **/
-
-ASSERT US.0194.10626 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$fact1 = {nonils @concept = SharesIssued  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
-
-$fact2 = {nonils @concept = SharesOutstanding  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
-
-exists($fact1) and exists($fact2)
-
-message
-"The filer has used the concept {$fact1.concept} with a value of {$fact1} and has also used the value {$fact2.concept} with a value of {$fact2} both using the common stock member. The filer should report one or the other but not both when using the common stock member. If the column representing shares in the Changes in equity represents issued shares then the SharesOutstanding elememnt should not be used with the common stock member. If the column representing shares in the Changes in equity represents outstanding shares then the SharesIssued element should not be used with the common stock member.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-
-ASSERT US.0194.10627 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-/** LOok at allowable values for common stock **/
-
-$Element_Retained_Earnings_empty = set(SharesOutstanding, 
-                                    CommonStockSharesOutstanding,
+$Preferred_Stock_Positive = set(SharesOutstanding, 
+                                    PreferredStockSharesOutstanding, 
+                                    StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
                                     StockIssuedDuringPeriodValueNewIssues,
                                     StockIssuedDuringPeriodSharesNewIssues,
                                     StockIssuedDuringPeriodValueIssuedForServices,
@@ -349,7 +148,7 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,
-                                    CommonStockDividendsShares,
+                                    PreferredStockDividendsShares,
                                     StockDividendsShares,
                                     StockIssuedDuringPeriodValueDividendReinvestmentPlan,
                                     StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
@@ -368,39 +167,20 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     TreasuryStockRetiredParValueMethodAmount,
                                     TreasuryStockRetiredCostMethodAmount,
                                     TreasuryStockSharesRetired,
-                                    AmortizationOfESOPAward,
-                                    PreferredStockSharesOutstanding, 
-                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
-                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
-                                    PreferredStockDividendsShares,
-                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
-                                    TreasuryStockPreferredValue,
-                                    PreferredStockRedemptionPremium,
-                                    PreferredStockRedemptionDiscount,
-                                    PreferredStockAccretionOfRedemptionDiscount,
-                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
-                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
-                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
-                                    NoncontrollingInterestIncreaseFromBusinessCombination,
-                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
-                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
-                                    MinorityInterestDecreaseFromRedemptions,
-                                    NoncontrollingInterestDecreaseFromDeconsolidation,
-                                    TreasuryStockCommonValue,
-                                    TreasuryStockPreferredValue,
-                                    TreasuryStockValue,
-                                    TreasuryStockValueAcquiredParValueMethod,
-                                    TreasuryStockValueAcquiredCostMethod,
-                                    TreasuryStockReissuedAtLowerThanRepurchasePrice,
-                                    TreasuryStockCarryingBasis
+                                    AmortizationOfESOPAward
                                     )
 
-$fact1 = {nonils @concept in $Element_Retained_Earnings_empty @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) @unit=* where $fact != 0}
-
+$fact1 =
+	{nonils @concept in $Preferred_Stock_Positive @StatementEquityComponentsAxis=PreferredStockMember @unit=* where $fact < 0 and ($fact.dimensions.length == 1 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0
+		and ($fact.dimensions.keys.name intersect (($exclude_non_neg_axis + set(StatementClassOfStockAxis)) - set(StatementEquityComponentsAxis))).length == 0
+		and not_elim_adjust($fact, $exclude_non_neg_axis_members)))
+		};  /** Included class of stock axis for transfers between classes of stock which can make a value negative**/
 true
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+"{$fact1.concept} has a value of {$fact1} which is less than zero. This element should not have a negative value when used with the preferred stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -409,278 +189,6 @@ Unit : {$fact1.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-                                      
-ASSERT US.0194.10628 satisfied
-
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$exclusionList = list(StockholdersEquity,
-                    SharesOutstanding,
-					PartnersCapitalAccountUnits,
-                    PartnersCapital,
-                    CapitalUnits,
-                    CommonUnitIssued,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-					SharesIssued,
-					CommonStockSharesOutstanding,
-					CommonStockSharesIssued,
-					CommonStockSharesAuthorized,
-                    TemporaryEquitySharesOutstanding,
-                    TemporaryEquitySharesIssued,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest,
-                    LimitedPartnersCapitalAccountUnitsOutstanding)
-
-
-$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Common Stock.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-ASSERT US.0194.10629 satisfied
-
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$exclusionList = list(StockholdersEquity,
-                    SharesOutstanding,
-					PartnersCapitalAccountUnits,
-                    PartnersCapital,
-                    CapitalUnits,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-					SharesIssued,
-					PreferredStockSharesOutstanding,
-					PreferredStockSharesIssued,
-					PreferredStockSharesAuthorized,
-                    TemporaryEquitySharesOutstanding,
-                    TemporaryEquitySharesIssued,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Preferred Stock.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-ASSERT US.0194.10630 satisfied
-
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$exclusionList = list(StockholdersEquity,
-                    PartnersCapital,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-                    PreferredStockValue,
-                    PreferredStockValueOutstanding,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Retained Earnings.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-ASSERT US.0194.10631 satisfied
-
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$exclusionList = list(StockholdersEquity,
-					PartnersCapitalAccountUnits,
-                    PartnersCapital,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-					TreasuryStockCommonShares,
-                    TreasuryStockPreferredShares,
-                    TreasuryStockShares,
-                    PreferredStockValue,
-                    PreferredStockValueOutstanding,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Treasury.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-
-ASSERT US.0194.10632 satisfied
-
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$exclusionList = list(StockholdersEquity,
-                    PartnersCapital,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-                    PreferredStockValue,
-                    PreferredStockValueOutstanding,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of APIC.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-ASSERT US.0194.10633 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-$AOCI-Members = (navigate parent-child descendants include start from list(AccumulatedOtherComprehensiveIncomeMember) taxonomy $us-gaap returns set (target-name))
-
-$exclusionList = list(StockholdersEquity,
-                    PartnersCapital,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-                    PreferredStockValue,
-                    PreferredStockValueOutstanding,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of AOCI.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
-
-severity error
-rule-focus $fact1
-effectiveDate $effective_dates[$rule_id]
-
-ASSERT US.0194.10635 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-
-$exclusionList = list(StockholdersEquity,
-                    PartnersCapital,
-                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
-					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
-                    PreferredStockValue,
-                    PreferredStockValueOutstanding,
-                    TemporaryEquityCarryingAmountAttributableToParent,
-                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
-                    MembersEquity,
-                    MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
-
-
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $NCI where $fact.concept.period-type == instant and $fact != 0}
-exists($fact1)
-
-message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of NCI.
-
-The properties of this {$fact1.concept} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $fact1

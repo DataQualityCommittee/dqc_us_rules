@@ -278,3 +278,5 @@ constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from Li
 constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
 
 constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
+
+constant $NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $us-gaap returns set (target-name))

@@ -546,3 +546,5 @@ constant $NETWORK_730000_TARGET_NON_ABSTRACT_QNAMES = navigate parent-child DESC
 constant $ASU201517_TRANSITION_ELEMENTS = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
 
 constant $FINANCIAL_DATA_EQUITY_METHOD_INVESTMENTS = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+constant $NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $US-GAAP returns set (target-name))
