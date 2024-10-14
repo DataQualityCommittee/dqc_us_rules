@@ -20,9 +20,6 @@ $Pref_stock_items = navigate summation-item descendants from PreferredStockDivid
 
 $income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss)
 
-$members_to_check = $NCI + set(CommonStockMember, PreferredStockMember, TreasuryStockCommonMember, TreasuryStockPreferredMember, CapitalUnitsMember, MemberUnitsMember, AdditionalPaidInCapitalMember, DeferredCompensationShareBasedPaymentsMember)
-
-
 $fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = *}
 exists($fact1)
 
