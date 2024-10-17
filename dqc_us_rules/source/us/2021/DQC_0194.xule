@@ -14,7 +14,6 @@ ASSERT US.0194.10621 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-
 $Common_Stock_Positive = set(SharesOutstanding, 
                                     CommonStockSharesOutstanding, 
                                     StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
@@ -36,10 +35,8 @@ $Common_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesShareBasedCompensation,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
-                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
-                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodValueStockOptionsExercised,
                                     StockIssuedDuringPeriodSharesStockOptionsExercised,
                                     StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
@@ -52,7 +49,6 @@ $Common_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesAcquisitions,
                                     StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,
@@ -102,7 +98,7 @@ severity error
 rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
-ASSERT US.0194.10622 satisfied
+ASSERT US.0194.10636 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -128,10 +124,8 @@ $Preferred_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesShareBasedCompensation,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
-                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
-                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodValueStockOptionsExercised,
                                     StockIssuedDuringPeriodSharesStockOptionsExercised,
                                     StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
@@ -144,7 +138,6 @@ $Preferred_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesAcquisitions,
                                     StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,

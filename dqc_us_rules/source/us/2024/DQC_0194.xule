@@ -22,7 +22,8 @@ The rule applies the non negative rule exceptions that allows negative values to
 ## Problem Solved by the Rule
  The purpose of the rule is to identify those cases where filers have used an incorrect sign.  This can  occur when the movement is a debit and the filer enters it as a negative amount. The standard non negative rule does not run when the  StatementEquityComponentsAxis is used with members on this axis. This rule is designed to catch those cases where the filer has entered a negative value for a movement in shareholders equity concepts.
 
-## Example Rule Message: The concept CommonStockSharesOutstanding with a value of -1000 which is less than zero. This element should not have a negative value when used with the common stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+## Example Rule Message
+The concept CommonStockSharesOutstanding with a value of -1000 which is less than zero. This element should not have a negative value when used with the common stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
 
 Rule Element Id: 10621
 Rule version: 26.0.0
@@ -70,10 +71,8 @@ $Common_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesShareBasedCompensation,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
-                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
-                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodValueStockOptionsExercised,
                                     StockIssuedDuringPeriodSharesStockOptionsExercised,
                                     StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
@@ -86,7 +85,6 @@ $Common_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesAcquisitions,
                                     StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,
@@ -136,7 +134,7 @@ severity error
 rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
-ASSERT US.0194.10622 satisfied
+ASSERT US.0194.10636 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -162,10 +160,8 @@ $Preferred_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesShareBasedCompensation,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
-                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
                                     StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
-                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
                                     StockIssuedDuringPeriodValueStockOptionsExercised,
                                     StockIssuedDuringPeriodSharesStockOptionsExercised,
                                     StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
@@ -178,7 +174,6 @@ $Preferred_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesAcquisitions,
                                     StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,

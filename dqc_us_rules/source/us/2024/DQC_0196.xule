@@ -146,7 +146,11 @@ $fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Common Stock.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Common Stock.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -189,7 +193,11 @@ $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxi
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Preferred Stock.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Preferred Stock.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -225,7 +233,12 @@ $fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Retained Earnings.
+"{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Retained Earnings.
+
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -265,7 +278,11 @@ $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxi
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Treasury.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Treasury.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -302,7 +319,11 @@ $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxi
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of APIC.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of APIC.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -339,7 +360,11 @@ $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxi
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of AOCI.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of AOCI.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -374,7 +399,11 @@ $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxi
 exists($fact1)
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of NCI.
+"{$fact1.concept} has a value of {$fact1} and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member Member. This element is an instant element which is typically used to represent the opening and closing balance in the changes of equity. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of NCI.
+{if is_extension($fact1.concept, $US-GAAP)
+"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+else
+        ""}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}

@@ -134,7 +134,7 @@ constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding,
                                     MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
                                     MinorityInterestDecreaseFromRedemptions,
                                     NoncontrollingInterestDecreaseFromDeconsolidation
-                                    ) + ($APIC_ADJUSTMENTS - set(AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts))
+                                    ) + ($APIC_ADJUSTMENTS)
 
 ASSERT US.0195.10622 satisfied
 
@@ -142,7 +142,21 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityComponentsAxis = CommonStockMember @unit=* where $fact != 0}
 
-exists($fact1)
+/** Check if have no par value tagged and if they do then AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts should be ok to use with CommonstockMember 
+
+If No Par value is tagged with 0 or nil and the cocept is AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts then the rule will pass. The case Shelly sent should still have an error.**/
+
+if $fact1.concept.name == 'AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts'
+
+    $fact2 = {covered @concept = CommonStockNoParValue  where $fact == 0 or $fact == none}
+
+    if exists($fact2)
+        false
+    else
+        exists($fact1)
+else
+    exists($fact1)
+
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the common stock Member. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
