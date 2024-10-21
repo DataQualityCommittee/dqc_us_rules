@@ -37,7 +37,7 @@ $exclusionList = list(StockholdersEquity,
                     LimitedPartnersCapitalAccountUnitsOutstanding)
 
 
-$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact != 0}
+$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
 exists($fact1)
 
 message
@@ -84,7 +84,7 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
 exists($fact1)
 
 message
@@ -169,7 +169,7 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
 exists($fact1)
 
 message
