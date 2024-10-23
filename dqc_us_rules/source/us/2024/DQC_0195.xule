@@ -16,7 +16,7 @@ Release date: Oct 15, 2024
 Effective date: Nov 30, 2024
 
 ## Rule Function
-The rule checks that movements in shareholders equity element are represented with the appropriate member and line item combination.  Specifally the rule checks where values are reported with line items and members that are not appropriate. The rule covers the folloowing situations:
+The rule checks that movements in shareholders equity element are represented with the appropriate member and line item combination.  Specifally the rule checks where values are reported with line items and members that are not appropriate. The rule covers the following situations:
 1. Where the CommonStockMember is used with an inappropriate line item.
 2. Where the StockholdersEquity line item is reported with a Noncontrolling Interest member.
 3. Where line items representing Shares Outstanding and Shares Issued are used with Treasury Stock Members.
@@ -400,7 +400,11 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     TreasuryStockValueAcquiredParValueMethod,
                                     TreasuryStockValueAcquiredCostMethod,
                                     TreasuryStockReissuedAtLowerThanRepurchasePrice,
-                                    TreasuryStockCarryingBasis
+                                    TreasuryStockCarryingBasis,
+                                    OtherComprehensiveIncomeLossNetOfTax,
+                                    OtherComprehensiveIncomeLossBeforeTax,
+                                    OtherComprehensiveIncomeLossTax,
+                                    ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest
                                     )
 
 $fact1 = {nonils @concept in $Element_Retained_Earnings_empty @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) @unit=* where $fact != 0}
