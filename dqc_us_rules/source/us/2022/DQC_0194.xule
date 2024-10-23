@@ -48,8 +48,6 @@ $Common_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesEmployeeBenefitPlan,
                                     StockIssuedDuringPeriodValueAcquisitions,
                                     StockIssuedDuringPeriodSharesAcquisitions,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,
@@ -137,8 +135,6 @@ $Preferred_Stock_Positive = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesEmployeeBenefitPlan,
                                     StockIssuedDuringPeriodValueAcquisitions,
                                     StockIssuedDuringPeriodSharesAcquisitions,
-                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
-                                    StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
                                     StockIssuedDuringPeriodValueConversionOfUnits,
                                     StockIssuedDuringPeriodSharesConversionOfUnits,
                                     StockIssuedDuringPeriodValueStockDividend,
@@ -175,6 +171,44 @@ true
 
 message
 "{$fact1.concept} has a value of {$fact1} which is less than zero. This element should not have a negative value when used with the preferred stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0194.10623 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+$NCI_Positive = set(
+                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                    NoncontrollingInterestIncreaseFromBusinessCombination,
+                    NoncontrollingInterestDecreaseFromDeconsolidation,
+                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                    MinorityInterestDecreaseFromRedemptions
+                                    )
+
+$fact1 =
+	{nonils @concept in $NCI_Positive @StatementEquityComponentsAxis in $NCI @unit=* where $fact < 0 and ($fact.dimensions.length == 1 or 
+		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
+		and ($fact.dimensions.keys.name intersect (($EXCLUDE_NON_NEG_AXIS + set(StatementClassOfStockAxis)) - set(StatementEquityComponentsAxis))).length == 0
+		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+		};  /** Included class of stock axis for transfers between classes of stock which can make a value negative**/
+true
+
+message
+"{$fact1.concept} has a value of {$fact1} which is less than zero. This element should not have a negative value when used with a non controlling interest [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
