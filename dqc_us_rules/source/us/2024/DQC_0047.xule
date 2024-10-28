@@ -22,7 +22,7 @@ for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuing
     and $relationship.target.name  != NetCashProvidedByUsedInOperatingActivitiesContinuingOperations
 	and $relationship.target.name  != InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease
 	/** DOes not flag an error if the element is an extension element **/
-	and is_base($relationship.target, $ALL_BASE_TAXONOMIES);
+	and is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS);
 
 	for $x in $misplaced_concept.to-set 
 		true
