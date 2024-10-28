@@ -1,0 +1,93 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+/*  Rules requiring constants from us-gaap-entire
+
+  Rule 0001 descendants for 42 elements
+  Rule 0041 build dim-defaults list ($TAXONOMY_DEFAULTS)
+  Rule 0045 build summation-item descendants lists for 4 specific elements in constants ($SUMMATION_DESCENDANTS_*)
+  Rule 0068 list for 730000 network
+  Rule 0086 descendants for 1 element
+  Rule 0081 dict by summation item of list of descendant names or siblings
+  Rule 0121 descendants for 2 elements
+  Rule 0133 descendants for 1 elements
+
+*/
+
+constant $ACCRUAL_ITEMS =
+				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
+				NetIncomeLoss, 
+				NetIncomeLossAvailableToCommonStockholdersBasic,
+				NetIncomeLossAvailableToCommonStockholdersDiluted,
+				IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+				IncomeLossAttributableToParent,
+				NetIncomeLossAllocatedToGeneralPartners,
+				NetIncomeLossAllocatedToLimitedPartners,
+				StockholdersEquityPeriodIncreaseDecrease,
+				PartnersCapitalAccountPeriodIncreaseDecrease,
+				DistributedEarnings)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+				+
+				navigate parent-child descendants from list(IncomeStatementAbstract,
+				StatementOfIncomeAndComprehensiveIncomeAbstract,
+				StatementOfStockholdersEquityAbstract,
+				StatementOfPartnersCapitalAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+constant $OCI_SECURITY_RELATED_ITEMS = navigate summation-item descendants include start from $OCI_PARENT_ITEMS taxonomy $US-GAAP returns set (target-name)
+
+constant $CALC_RELATIONSHIPS = set(for ($rel in navigate summation-item descendants taxonomy $US-GAAP returns (relationship))
+                                        set($rel.source.name.namespace-uri + ':' + $rel.source.name.local-name + ':' + $rel.target.name.namespace-uri + ':' + $rel.target.name.local-name,$rel.weight))
+
+constant $CALC_TREE_DICT = dict(for ($rel in navigate summation-item descendants taxonomy $US-GAAP returns (relationship))
+                                list($rel.source.name, $rel.target.name))
+				
+constant $MEMBER_USGAAP_FAIR_VALUE = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis taxonomy $US-GAAP returns set (target-name)
+										
+constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
+
+constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)
+
+constant $DEFINED_BENEFIT_COST_EXT_ENUM = navigate parent-child descendants include start from DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList taxonomy $US-GAAP returns set (target-name)
+
+constant $DEFINED_BENEFIT_COST_FS_LINE_ITEMS = navigate summation-item descendants from NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent taxonomy $US-GAAP returns set (target-name)
+
+constant $DERIVATIVE_LIABILITIES_FS_LINE_ITEMS = navigate summation-item descendants from DerivativeLiabilities taxonomy $US-GAAP returns set (target-name)
+constant $DERIVATIVE_ASSETS_FS_LINE_ITEMS = navigate summation-item descendants from DerivativeAssets taxonomy $US-GAAP returns set (target-name)
+
+constant $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE = navigate parent-child descendants from list(RiskBasedRatiosAbstract, LeverageRatiosAbstract, BankingRegulationTangibleEquityRatioAbstract, BankingRegulationCapitalConservationBufferAbstract, BankingRegulationLeverageBufferAbstract, BankingRegulationMaximumPayoutRatioAndAmountAbstract, BankingRegulationMaximumLeveragePayoutRatioAndAmountAbstract) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:pureItemType returns set (target-name)
+
+constant $LIQUIDATION_BASIS_CONCEPTS = navigate parent-child descendants from LiquidationBasisOfAccountingTextBlock taxonomy $US-GAAP returns set (target-name) + set(LiquidationBasisOfAccountingTextBlock, LiquidationDate1)
+
+constant $TAXONOMY_DEFAULTS = navigate dimension-default descendants taxonomy $US-GAAP returns  set (source-name, target-name)
+
+constant $NONALLOWED_ROOT_ELEMENTS_CASHFLOW = filter (navigate summation-item descendants from CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect
+ taxonomy $US-GAAP returns set (target-name)) returns $item.local-name
+
+constant $NETWORK_730000_TARGET_NON_ABSTRACT_QNAMES = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/CompensationRelatedCostsRetirementBenefits' taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name)
+
+constant $ASU201517_TRANSITION_ELEMENTS = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
+
+constant $FINANCIAL_DATA_EQUITY_METHOD_INVESTMENTS = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+constant $NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $US-GAAP returns set (target-name))
+
+/* DQC_0045 */
+
+constant $SUMMATION_DESCENDANTS_NET_CSH_OP = navigate summation-item descendants from NetCashProvidedByUsedInOperatingActivitiesContinuingOperations taxonomy $US-GAAP returns set (target-name)
+
+constant $SUMMATION_DESCENDANTS_NET_CSH_FIN = navigate summation-item descendants from NetCashProvidedByUsedInFinancingActivitiesContinuingOperations taxonomy $US-GAAP returns set (target-name)
+
+constant $SUMMATION_DESCENDANTS_NET_CSH_INV = navigate summation-item descendants from NetCashProvidedByUsedInInvestingActivitiesContinuingOperations taxonomy $US-GAAP returns set (target-name)
+
+/* DQC_0121 */
+constant $TRANSITION_ELEMENTS_1 = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract) taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
+
+constant $TRANSITION_ELEMENTS_2 = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract) taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name)
+
+/* DQC_0133 */
+constant $NON_FINANCIAL_DATA_EMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target)
