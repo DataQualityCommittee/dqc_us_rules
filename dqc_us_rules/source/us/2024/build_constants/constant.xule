@@ -251,10 +251,6 @@ constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_P
 
 constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
 
-constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibleEnumerationLineItemLocation' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
-
-constant $IDENTIFICATION = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
-
 constant $LEASE_ITEMS = list(FinanceLeaseLiability, FinanceLeaseLiabilityCurrent, FinanceLeaseLiabilityNoncurrent, FinanceLeaseRightOfUseAsset, OperatingLeaseRightOfUseAsset, OperatingLeaseLiability, OperatingLeaseLiabilityCurrent, OperatingLeaseLiabilityNoncurrent)
 
 constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, RestrictedCash, RestrictedCashAndCashEquivalents, RestrictedCashAndCashEquivalentsAtCarryingValue, RestrictedCashAndCashEquivalentsNoncurrent, RestrictedCashCurrent, RestrictedCashEquivalents, RestrictedCashEquivalentsCurrent, RestrictedCashEquivalentsNoncurrent, RestrictedCashNoncurrent)
