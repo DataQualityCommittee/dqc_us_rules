@@ -18,8 +18,9 @@ DQC Rules
  * @return set - Returns a set of target qnames.
  **/
 
-function compare_baseCalc_to_extensionCalc($base_descendants, $extension_concept, $exceptions)
-	navigate summation-item descendants from $extension_concept where $relationship.target.name in $base_descendants and not ($relationship.target.name in $exceptions) returns set (target-name) 
+function compare_baseCalc_to_extensionCalc($base_concept, $base_taxonomy, $extension_concept, $exceptions)
+	$extensionNames = navigate summation-item descendants from $extension_concept returns set (target-name) 
+	navigate summation-item descendants from $base_concept taxonomy $base_taxonomy  where $relationship.target.name in $extensionNames and not ($relationship.target.name in $exceptions) returns set (target-name) 
 
 /** 
  * is_extension
