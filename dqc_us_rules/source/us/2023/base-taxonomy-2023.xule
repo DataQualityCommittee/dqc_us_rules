@@ -8,25 +8,24 @@ Taxonomy: US GAAP 2023
 
 **/
 
-constant $US-GAAP = taxonomy('https://xbrl.fasb.org/us-gaap/2023/entire/us-gaap-entryPoint-std-2023.xsd')
+/* Use US-GAAP elements and calc where all separate calc are merged to single .xsd file */
 
-constant $EXCHANGE = taxonomy('https://xbrl.sec.gov/exch/2023/exch-entire-2023.xsd')
+constant $RESOURCES_DIR = '/Users/hermf/temp/plugin/DQC/'
+constant $US-GAAP_ELTS_CALCS = taxonomy($RESOURCES_DIR + 'us-gaap-cal-2023-all.xsd')
 
-constant $STATE_PROVINCE = taxonomy('https://xbrl.sec.gov/stpr/2023/stpr-entire-2023.xsd')
+constant $EXCHANGE_ELTS = taxonomy('https://xbrl.sec.gov/exch/2023/exch-2023.xsd')
 
-constant $NAICS = taxonomy('https://xbrl.sec.gov/naics/2023/naics-entire-2023.xsd')
+constant $STATE_PROVINCE_ELTS = taxonomy('https://xbrl.sec.gov/stpr/2023/stpr-2023.xsd')
 
-constant $SIC = taxonomy('https://xbrl.sec.gov/sic/2023/sic-entire-2023.xsd')
+constant $NAICS_ELTS = taxonomy('https://xbrl.sec.gov/naics/2023/naics-2023.xsd')
+
+constant $SIC_ELTS = taxonomy('https://xbrl.sec.gov/sic/2023/sic-2023.xsd')
+
+constant $ALL_BASE_TAXONOMIES_ELTS = list($US-GAAP_ELTS_CALCS, $EXCHANGE_ELTS, $STATE_PROVINCE_ELTS, $NAICS_ELTS, $SIC_ELTS)
 
 constant $DQC_RULES = taxonomy('https://xbrl.fasb.org/us-gaap/2023/dqcrules/dqcrules-entire-2023.xsd')
 
-constant $EXT_ENUM_LINKS = taxonomy('https://xbrl.fasb.org/us-gaap/2023/elts/us-gaap-tin-def-2023.xml')
-
-constant $META = taxonomy('https://raw.githubusercontent.com/xbrlus/xule/main/unitTests/output/meta/Meta-2023/us-gaap-metaModel-entire-2023.xsd')
-
-/**constant $META = taxonomy('https://taxonomies.xbrl.us/us-gaap/2023/meta/us-gaap-metaModel-entire-2023.xsd')**/
-
-constant $ALL_BASE_TAXONOMIES = list($US-GAAP, $EXCHANGE, $STATE_PROVINCE, $NAICS, $SIC)
+constant $META = taxonomy('https://xbrl.fasb.org/us-gaap/2023/meta/us-gaap-metaModel-entire-2023.xsd')
 
 /** DEI HANDLING**/
 
