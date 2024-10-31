@@ -48,69 +48,6 @@ constant $TAX_ITEMS = set(IncomeTaxExpenseBenefit,
 				)
 
 
-/** Constants Used for Nonneg Rules
-**
-
-Replaced the Hard coded string and read from dqc rules taxonomy.								 
-constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(
-				'adjust',
-				'consolidat',
-				'eliminat',
-				'netting',
-				'reconcili',
-				'reclass'
-				)
-**/
-
-constant $NON_NEG_STRING_REF = filter ($DQC_RULES.concept(dqcrules15:Dqc_0015_ExcludeNonNegMemberStringsAbstract).references("http://fasb.org/us-gaap/role/dqc/ruleExclusions")) where ($item.part-by-name(dqcrules:allowableSubString).part-value != none) 
-
-constant $EXCLUDE_NON_NEG_STRING_MEMBERS = set(for $ref in $NON_NEG_STRING_REF 
-                                for $x in $ref.part-by-name(dqcrules:allowableSubString).part-value.split(" ") $x ) + set('basisswap','unfunded')
-								
-
-/**
-constant $EXCLUDE_NON_NEG_MEMBERS = set(
-				CorporateNonSegmentMember,
-				FairValueConcentrationOfRiskMarketRiskManagementEffectsOnIncomeOrNetAssetsMember,
-				AccumulatedNetGainLossFromDesignatedOrQualifyingCashFlowHedgesMember,
-				AccumulatedNetUnrealizedInvestmentGainLossMember,
-				DeferredDerivativeGainLossMember,
-				AboveMarketLeasesMember,
-				NewAccountingPronouncementEarlyAdoptionEffectMember,
-				UnallocatedFinancingReceivablesMember,
-				DifferenceBetweenRevenueGuidanceInEffectBeforeAndAfterTopic606Member
-				)
-**/
-
-constant $EXCLUDE_NON_NEG_MEMBERS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegMembersAbstract)  taxonomy $DQC_RULES returns set (target-name)	
-
-/**
-constant  $EXCLUDE_NON_NEG_AXIS_MEMBERS = list(
-				list(StatementBusinessSegmentsAxis, set(CorporateAndOtherMember, CorporateMember, AllOtherSegmentsMember)),
-				list(srt:ConsolidatedEntitiesAxis, set(srt:ParentCompanyMember, srt:SubsidiariesMember, srt:GuarantorSubsidiariesMember, srt:NonGuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember)),
-				list(FairValueByMeasurementBasisAxis, set(ChangeDuringPeriodFairValueDisclosureMember))
-				)
-**/ 
-constant  $EXCLUDE_NON_NEG_AXIS_MEMBERS_PRE = navigate rule-concept children from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisMembersAbstract) taxonomy $DQC_RULES returns set (target-name)
-
-constant $EXCLUDE_NON_NEG_AXIS_MEMBERS = list(for $axis in $EXCLUDE_NON_NEG_AXIS_MEMBERS_PRE
-												list($axis, navigate rule-concept children from $axis taxonomy $DQC_RULES returns set (target-name)))
-
-/**
-constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
-				ErrorCorrectionsAndPriorPeriodAdjustmentsRestatementByRestatementPeriodAndAmountAxis,
-				AdjustmentsForChangeInAccountingPrincipleAxis,
-				AdjustmentsForNewAccountingPronouncementsAxis,
-				ProspectiveAdoptionOfNewAccountingPronouncementsAxis,
-				QuantifyingMisstatementInCurrentYearFinancialStatementsByNatureOfErrorAxis,
-				PartnerCapitalComponentsAxis,
-				ChangeInAccountingEstimateByTypeAxis,
-				PartnerTypeOfPartnersCapitalAccountAxis,
-				StatementBusinessSegmentsAxis
-				)
-**/
-constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis)
-
 /** Rule DQC.US.0014 **/
 constant $NON_DIMENSIONAL_NON_NEGS = list(
 				list('2786',DerivativeFairValueOfDerivativeLiability),
