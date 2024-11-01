@@ -252,14 +252,14 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     StockIssuedDuringPeriodSharesOther,
                                     StockIssuedDuringPeriodSharesStockSplits,
                                     StockIssuedDuringPeriodSharesReverseStockSplits, /** Assume use calc to negate **/
-                                    StockRepurchasedAndRetiredDuringPeriodValue,
+                                    /**StockRepurchasedAndRetiredDuringPeriodValue,**/ /** Can impact retained earnings if no treasury stock **/
                                     StockRepurchasedAndRetiredDuringPeriodShares,
-                                    StockRepurchasedDuringPeriodValue,
+                                    StockRepurchasedDuringPeriodValue, /** If no treasury stock this element should not be used as it would be retired use StockRepurchasedAndRetiredDuringPeriodValue **/
                                     StockRepurchasedDuringPeriodShares,
-                                    StockRedeemedOrCalledDuringPeriodValue,
+                                    /**StockRedeemedOrCalledDuringPeriodValue,**/ 
                                     StockRedeemedOrCalledDuringPeriodShares,
                                     TreasuryStockRetiredParValueMethodAmount,
-                                    TreasuryStockRetiredCostMethodAmount,
+                                    /**TreasuryStockRetiredCostMethodAmount,**/ /** Can impact retained earnings if no APIC is avialble **/
                                     TreasuryStockSharesRetired,
                                     AmortizationOfESOPAward,
                                     PreferredStockSharesOutstanding, 
@@ -272,7 +272,7 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     PreferredStockRedemptionDiscount,
                                     PreferredStockAccretionOfRedemptionDiscount,
                                     IncreaseInCarryingAmountOfRedeemablePreferredStock,
-                                    PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,
+                                    /**PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,**/ /** Round down can impact retained earnings if no APIC to cover the round down.**/
                                     NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
                                     NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
                                     NoncontrollingInterestIncreaseFromBusinessCombination,
@@ -283,9 +283,9 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     TreasuryStockCommonValue,
                                     TreasuryStockPreferredValue,
                                     TreasuryStockValue,
-                                    TreasuryStockValueAcquiredParValueMethod,
-                                    TreasuryStockValueAcquiredCostMethod,
-                                    TreasuryStockReissuedAtLowerThanRepurchasePrice,
+                                    /**TreasuryStockValueAcquiredParValueMethod,**/ /** Can impact retained earnings if no treasury stock **/
+                                    /**TreasuryStockValueAcquiredCostMethod, **/ /** Can impact retained earnings if no treasury stock and retire the stock as the diff has to go somewhere if no APIC.**/
+                                    /**TreasuryStockReissuedAtLowerThanRepurchasePrice, **/ /** If issue at lowe than repurchase price then and there is no APIC then diff goes to retained earnings **/
                                     TreasuryStockCarryingBasis,
                                     OtherComprehensiveIncomeLossNetOfTax,
                                     OtherComprehensiveIncomeLossBeforeTax,
@@ -299,6 +299,7 @@ true
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+{if $fact1.concept.name == StockRepurchasedDuringPeriodValue "If the company has no treasury stock then the element StockRepurchasedDuringPeriodValue should not be used as the stock would be retired and the value should be reported using StockRepurchasedAndRetiredDuringPeriodValue." else ''}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
