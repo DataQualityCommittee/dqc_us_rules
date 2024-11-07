@@ -27,15 +27,16 @@ $exclusionList = list(StockholdersEquity,
                     )
 
 
-$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
-exists($fact1)
+$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+            else
+                "";
+exists($fact1) and ($fact1 in sum($STATEMENT_SHE_CUBES.facts))
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Common Stock.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -65,15 +66,16 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
-exists($fact1)
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+exists($fact1) and ($fact1 in sum($STATEMENT_SHE_CUBES.facts))
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Preferred Stock.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message }
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -105,16 +107,17 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact.concept.period-type == instant and $fact != 0}
+$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact.concept.period-type == instant and $fact != 0};
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
 exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Retained Earnings.
 
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -147,15 +150,16 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
 exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Treasury.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -188,15 +192,18 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0};
+
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+
 exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of APIC.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -229,15 +236,17 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0};
+
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
 exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of AOCI.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
@@ -268,15 +277,16 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 
-$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $NCI where $fact.concept.period-type == instant and $fact != 0}
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $NCI where $fact.concept.period-type == instant and $fact != 0};
+$message = if is_extension($fact1.concept, list($us-gaap))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
 exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of NCI.
-{if is_extension($fact1.concept, list($us-gaap))
-"If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
-else
-        ""}
+{$message}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
