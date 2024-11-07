@@ -1,0 +1,139 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+Release Version 18
+**/
+
+/** Effective Dates **/
+
+		/** 
+		**	The effective dates is a list of each rule and the date the rule becomes effective.
+		**  The list is in a csv format, with the rule id and the effective date.
+		**  
+		**/
+
+		constant $effective_dates = dict()
+
+/** DQC.US.0015 **/
+
+		/** 
+		**	The following constant builds up a list of non-negative items that should be checked against the US - GAAP taxonomy 1. US-GAAP items, dei items
+		**  and SRT items.
+		**/
+
+		constant $NON_NEG_ITEMS = dict()
+
+/** DQC.US.0011 **/
+
+		constant $DIM_EQUIVALENTS = list()
+
+/** DQC.US.0079 **/
+
+		constant $EXTENSION_ITEMS = dict()
+
+		
+
+/** DQC.US.0081 **/
+		
+		/** 
+		*	Elements excluded from the rule
+		*
+		*	This is a list of elements (focus element) that can have their siblings appear as children or their children appear as siblings. 
+		* 	This does not mean the inconsistency is appropriate, but just that it will not be reported as an error. This includes elements 
+		* 	like  OperatingCostsAndExpenses which do not have a distinct categorization defined in GAAP or elements like 
+		*	GainLossOnSaleOfStockInSubsidiaryOrEquityMethodInvestee which could appear in a number of places in the financial statements. 
+		*	This list excludes the focus element.
+		**/
+		
+		constant $ELEMENTS_EXCLUDED_FROM_RULE = list()
+		
+		/** 
+		* Child elements promotable to sibling of parent element and vice versa
+		*
+		*	This identifies a list of child elements that can be promoted
+		*	in the companys filing to be a sibling of their parent. In addition these same elements can be moved to children of their siblings 
+		*	as defined in the US GAAP taxonomy. This list excludes the child element of a calculation relationship.
+		**/
+
+		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING_OF_PARENT_ELEMENT = list()
+
+		/**
+		*	Siblings demotable to child
+		*
+		*	This is a list  with two components.  The first component is the focus element. 
+		*	The second element is defined as a sibling of the focus element in the US GAAP taxonomy. This list indicates that the second 
+		*	element can be represented as a child of the focus element in the company's filing. In addition, any descendents of the second 
+		*	element can also be defined as a child of the focus element in the companys filing. In the US GAAP taxonomy DerivativeAssets is 
+		*	a sibling of  Investments. This list represents that DerivativeAssets can also be represented as a child of Investments. It 
+		*	also means that any descendants of DerivativeAssets can also legitimately appear as a descendant of Investments in the companies filing.
+		**/
+
+		constant $SIBLINGS_DEMOTABLE_TO_CHILD = set()
+
+		/**
+		*	Child elements promotable to sibling
+		*
+		*	This is a list with two components.  The first component is the parent 
+		*	element and the second element is the child element in the US GAAP taxonomy that can be promoted to a sibling of the parent.   
+		*	i.e. GainLossOnDispositionOfAssets can be promoted to a sibling of OperatingExpenses. In addition, any descendents of the second 
+		*	element can also be defined as a sibling of the parent element in the companys filing.
+		**/
+		
+		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING = set()
+		
+		/**
+		*	Parent elements with children promotable to sibling
+		*
+		*	This is a list with two components.  The first component 
+		*	is the focus element. Any of the focus elements children in the US GAAP taxonomy can be promoted to be a sibling of the focus 
+		*	element in the company's extension taxonomy. The second component is a list of elements that are children of the focus element 
+		*	in the US GAAP taxonomy  that can never be promoted to a sibling of the focus element. 
+		**/
+
+		constant $PARENT_ELEMENTS_WITH_CHILDREN_PROMOTABLE_TO_SIBLING = set()
+		
+		/**
+		*	Sibling elements with siblings demotable to descendant
+		*	
+		*	This is a list  with two components.  The first component 
+		*	is the focus element. Any of the focus elements siblings in the US GAAP taxonomy can be demoted to a child or descendant of the 
+		*	focus element in the company's extension taxonomy. The second component is a list of elements that are siblings of the focus 
+		*	element that can never be demoted.
+		**/
+
+		constant $SIBLING_ELEMENTS_WITH_SIBLINGS_DEMOTABLE_TO_DESCENDANT = set()
+
+		/**
+		*	Maturity Schedule elements
+		*
+		*	This is a list three components.  The first component is the amount for the remainder of the fiscal Year
+		*	element. The second element is the amount representing the next 12 months.  The Third element is the amount expected in the second year.
+		*	
+		**/
+		
+		constant $MATURITY_SCHEDULE_ELEMENTS = set()
+
+		/**
+		*	Inappropriate Children elements that should be a sibling
+		*
+		*	This is a list three components.  The first component is the focus element that is the child of what should be its sibling.
+		*	The second component is the actual ancestor of the element that should be its sibling.  The third item is the message to present to the user with a suggested *	*	*	improvement
+		*	
+		**/
+		
+		constant $MESSAGE_FOR_RULE_9277 = set()
+
+		/**
+		*	Inappropriate sibling elements that should be a child
+		*
+		*	This is a list with three components.  The first component is the focus element that is the sibling of what should be the child.
+		*	The second component is the actual sibling of the element that should be its ancestor.  The third item is the message to present to the user with a suggested
+		*	improvement
+		*	
+		**/
+		
+		constant $MESSAGE_FOR_RULE_9278 = set()
