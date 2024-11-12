@@ -23,7 +23,7 @@ $message = if is_extension($fact1.concept, list($ifrs-gaap))
 "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard elements of either {$exclusionList.join(' or ')} should be used instead."
 else
         ""
-exists($fact1) and ($fact1 in sum($STATEMENT_SHE_CUBES.facts))
+exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid))
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the {$fact1.dimension(ComponentsOfEquityAxis).name}. This fact value has been used with the ComponentsOfEquityAxis and {$fact1.dimension(ComponentsOfEquityAxis).name}. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of {$fact1.dimension(ComponentsOfEquityAxis).name}.
