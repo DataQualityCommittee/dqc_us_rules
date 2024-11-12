@@ -141,8 +141,8 @@ $base_Income = {@concept=IncomeTaxExpenseBenefit @unit=*} / {@concept=EffectiveI
 
 if exists($base_Income)
     for $concept in $EQUIVALENT_TAX_RATES
-        $calc_value = {@concept =  $concept[1]}#num / $base_Income
-        $calc_value != {@concept =  $concept[2]}#percentage-value
+        $calc_value = {@concept =  $concept[1]  @unit=*}#num / $base_Income
+        $calc_value != {@concept =  $concept[2]  @unit=*}#percentage-value
 else
     skip
 
