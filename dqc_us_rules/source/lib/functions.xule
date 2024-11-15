@@ -364,6 +364,26 @@ function division_intervals($numerator, $denominator)
 								)
 
 	list(min($list_of_intervals), max($list_of_intervals))
+
+/** 
+ * division_of_intervals
+ * 
+ * This function returns a list of two intervals, the first being the lower bound and the second being the upperbound
+ * of possible values for the result of the divisor. The function uses the provided intervals of the numerator and divisor
+ * 
+ * @param factset - $numerator - Passes interval of the numerator
+ * @param factset - $denominator - Passes interval values as the denominator
+ * @return list - Returns a list of the minimum value and the maximum value of the division.
+**/
+
+function division_of_intervals($numerator_intervals, $denominator_intervals)
+
+	$list_of_intervals = list(for $x in $numerator_intervals
+								for $y in $denominator_intervals
+								$x / $y
+								)
+
+	list(min($list_of_intervals), max($list_of_intervals))
 			
 /** 
  * fact intervals
@@ -391,6 +411,36 @@ function fact_intervals($factItem)
 	
 
 	$fact_intervals = list(($factItem - $fact_interval_factor),($factItem + $fact_interval_factor));
+
+	$fact_intervals
+
+/** 
+ * numerical intervals
+ * 
+ * This function returns a list of two intervals, the first being the lower bound and the second being the upperbound
+ * of possible values for the result of a non fact value. The function uses the decimals of another fact to determien the interval
+ * 
+  *@param numericalValue - $number - Passes a numerical value 
+ * @param fact_base - $factItem - Passes a factset value 
+ * @return list - Returns a list of the minimum value and the maximum value of the fact.
+**/
+
+function numerical_intervals($numericalValue, $factBase)
+
+	$fact_decimals =  if $factBase.decimals == inf
+								10
+							else
+								if $factBase.decimals == none
+									0
+								else
+									$factBase.decimals
+
+	
+
+	$fact_interval_factor = (10.power(-1 * $fact_decimals))/2;
+	
+
+	$fact_intervals = list(($numericalValue - $fact_interval_factor),($numericalValue + $fact_interval_factor));
 
 	$fact_intervals
 
