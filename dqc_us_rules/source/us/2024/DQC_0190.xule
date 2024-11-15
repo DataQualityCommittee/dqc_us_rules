@@ -53,12 +53,19 @@ DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Exampl
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$invalidConcepts = list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue )
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
-for $x in $invalidConcepts
-    $EBP_non_master_FV = {covered @concept = $x  @cube.name = us-gaap-ebp:EmployeeBenefitPlanMasterTrustTable}
+if $EBPReports
 
-    exists($EBP_non_master_FV)
+    $invalidConcepts = list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue )
+
+    for $x in $invalidConcepts
+        $EBP_non_master_FV = {covered @concept = $x  @cube.name = us-gaap-ebp:EmployeeBenefitPlanMasterTrustTable}
+
+        exists($EBP_non_master_FV)
+
+else
+    skip
 
 message
 "The filer has used the concept {$x} with a fact value of  {$EBP_non_master_FV } in the hypercube 'Employee Benefit Plan, Master Trust [Table]'. This element should not be used in this table and should be replaced with EmployeeBenefitPlanInvestmentFairValue.
