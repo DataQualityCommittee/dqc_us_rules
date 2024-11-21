@@ -9,6 +9,8 @@ Taxonomy: US GAAP 2024
 
 rule-name-prefix DQC
 
+constant $EXT_ENUM_DICT = $EXT_ENUM.agg-to-dict(1) 
+
 assert US.0135.9835 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
@@ -94,8 +96,19 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 												else
 													list()
 
+						/** Government Assistance element GovernmentAssistanceAmount has ext enum of GovernmentAssistanceStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration which is used as a catch all for government assistance items of GovernmentAssistanceNonoperatingIncome with GovernmentAssistanceNonoperatingIncomeStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration and GovernmentAssistanceOperatingIncome with GovernmentAssistanceOperatingIncomeStatementOfIncomeOrComprehensiveIncomeExtensibleEnumeration **/
+
+						/** Get the children of the FS concept to see if any of these are in the ext enum list. We do this because the total amount reported could be broken up and allocated to different FS accounts.  So a total without an extensible enum is OK if its children have an ext enum showing the accounts in the FS they are allocated to. **/
+
+						$children = navigate summation-item descendants from $FS_concept returns set (target-name)
+						$related_ext_enum_item_list	 =	list(for $child in $children
+																if $EXT_ENUM_DICT[$child]== none
+																	skip
+																else
+																	$EXT_ENUM_DICT[$child][1][2])
+
 						/** This determines the allowable enum items that can be used for this concept **/
-						$related_ext_enum_list = list($related_ext_enum) + $related_pension_item_list + $ancestor_ext_enum
+						$related_ext_enum_list = list($related_ext_enum) + $related_pension_item_list + $ancestor_ext_enum + $related_ext_enum_item_list
 
 						/** Generate pension specific message **/
 						$pension_message = if $related_pension_item_list.length > 0
@@ -208,7 +221,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 					* TO DO At some point we may want to update to check if there is a total and if not then check the detail.
 					***/
 
-					$FS_Concept_Item = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
 				    
 				
 				/** Determine if any the extensible list element has been used with a value 
@@ -222,7 +235,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 						
 							true
 				else
-					$FS_Concept_Item = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 or ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
 					
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
@@ -239,15 +252,15 @@ else
  
 message
 
-"The element {$FS_concept} with a value of {$FS_Concept_Item} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the element {$related_ext_enum} should be used to identify the account where the element {$FS_concept} is included.  Because this value uses a statement location axis the enumerated value should also include the appropriate statement location axis. If there is only one statement location axis value the location axis does not have to be used.
+"The element {$FS_concept} with a value of {$FS_Concept_Item1} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the element {$related_ext_enum} should be used to identify the account where the element {$FS_concept} is included.  Because this value uses a statement location axis the enumerated value should also include the appropriate statement location axis. If there is only one statement location axis value the location axis does not have to be used.
 
 If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.
 
 Concept : {$FS_concept}
-Period :{$FS_Concept_Item.period}
-Dimensions : {$FS_Concept_Item.dimensions.join(', ','=')}
-Unit : {$FS_Concept_Item.unit}
-Decimals: {$FS_Concept_Item.decimals}
+Period :{$FS_Concept_Item1.period}
+Dimensions : {$FS_Concept_Item1.dimensions.join(', ','=')}
+Unit : {$FS_Concept_Item1.unit}
+Decimals: {$FS_Concept_Item1.decimals}
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
@@ -255,6 +268,6 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
-rule-focus $FS_Concept_Item 
+rule-focus $FS_Concept_Item1
 
 
