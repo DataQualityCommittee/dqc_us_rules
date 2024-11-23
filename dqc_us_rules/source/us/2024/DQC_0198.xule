@@ -137,7 +137,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
-$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=*}
+$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=* where $fact != 0}
 $base_Income = $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
 
 $base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
@@ -150,19 +150,25 @@ if exists($base_Income)
         $denominator_Intervals = $base_Income_intervals
         $intervalsList = division_of_intervals($numerator_Intervals, $denominator_Intervals)
         $percentage-value = {@concept =  $concept[2]  @unit=*}
+        $percentage-message = if  $percentage-value.decimals != inf "" else "Consider changing the decimal values of the percentage from inf to a decimal value that reflects the rounding used or 2 decimal places."
         $result_intervals = fact_intervals($percentage-value)
-        if $intervalsList[1] <= $result_intervals[2] and $intervalsList[2] >= $result_intervals[1]
+        if $intervalsList.first <= $result_intervals.last and $intervalsList.last >= $result_intervals.first
                     false
                 else
-                    true
+                    if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
+                        true
+                    else
+                        false
 else
     skip
 
 message
-"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of netincome of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.  The value for net income should be calculated as the value of IncomeTaxExpenseBenefit divided by the value of EffectiveIncomeTaxRateContinuingOperations. 
+"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of netincome of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.  The value for net income should be calculated as the value of IncomeTaxExpenseBenefit divided by the value of EffectiveIncomeTaxRateContinuingOperations.
+{$percentage-message}
 
 The properties of this {$percentage-value.concept} fact are:
 Period :{$percentage-value.period}
+Decimals : {$percentage-value.decimals}
 Dimensions : {$percentage-value.dimensions.join(', ','=')}
 Unit : {$percentage-value.unit}
 
