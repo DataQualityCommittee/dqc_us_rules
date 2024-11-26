@@ -15,6 +15,8 @@ Taxonomy: US GAAP 2024
   Rule 0068 list for 730000 network
   Rule 0086 descendants for 1 element
   Rule 0081 dict by summation item of list of descendant names or siblings
+  Rule 0099 descendants
+  Rule 0109 descendants
   Rule 0121 descendants for 2 elements
   Rule 0133 descendants for 1 elements
 
@@ -252,6 +254,25 @@ constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
 **/
 constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis)
 
+/* DQC_0099 */
+
+constant $NON_CF_ITEMS = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+/** Defines a set of CF Abstracts that if used on the CF any children will be excluded from the rules **/
+constant $SET_NON_CF_ABSTRACTS1 = (navigate parent-child descendants from list(CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract) taxonomy $US-GAAP where ($relationship.target.is-abstract == true and $relationship.target-name.local-name.contains("Abstract") ) returns set (target-name))
+
+/** This generates a list of items in the SHE that would not be included in the IS calculation. If these are reported in the presentation of the IS they will be ignored **/
+constant $SSH_EXCEPTIONS =  navigate parent-child descendants from IncreaseDecreaseInStockholdersEquityRollForward taxonomy $US-GAAP where $relationship.target.is-monetary == true and $relationship.target.period-type == duration returns set (target-name)
+                        
+/* Check if Assets has any monetary descendants in the presentation tree. If there are no Assets in the presentation tree don't look for Assets in the calculation tree. */
+constant $ASSET_TYPES = (navigate parent-child descendants from list(AssetsAbstract) taxonomy $US-GAAP where ($relationship.target.is-monetary == true ) returns set (target-name))
+
+/* DQC_0109 */
+
+constant $SET_CONCENTRATION_RISK_ITEMS = (navigate parent-child descendants from list(ConcentrationRiskByTypeAxis) taxonomy $US-GAAP returns set (target-name))
+
+constant $SET_BENCHMARK_ITEMS = (navigate parent-child descendants from list(ConcentrationRiskByBenchmarkAxis) taxonomy $US-GAAP returns set (target-name))
+
 /* DQC_0133 */
 constant $NON_FINANCIAL_DATA_EMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name)
 
@@ -260,3 +281,4 @@ constant $NON_FINANCIAL_DATA_EMI = navigate parent-child descendants from list(S
 constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibleEnumerationLineItemLocation' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
 
 constant $IDENTIFICATION = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
+
