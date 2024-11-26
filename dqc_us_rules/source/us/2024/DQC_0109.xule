@@ -220,7 +220,7 @@ $benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
 $risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
 
 
-if ($benchmark.name not in $BENCHMARK_WITH_RISK_TYPE.keys) or (is_extension($risk, $ALL_BASE_TAXONOMIES))
+if ($benchmark.name not in $BENCHMARK_WITH_RISK_TYPE.keys) or (is_extension($risk, $ALL_BASE_TAXONOMIES_ELTS))
     skip
 else
     $allowableRisks = $BENCHMARK_WITH_RISK_TYPE[$benchmark.name];
@@ -251,7 +251,7 @@ ASSERT US.0109.9571 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$set_concentration_risk_items = (navigate parent-child descendants from list(ConcentrationRiskByTypeAxis) taxonomy $US-GAAP returns set (target-name));
+$set_concentration_risk_items = $SET_CONCENTRATION_RISK_ITEMS;
 
 exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis in $set_concentration_risk_items}#badbenchmark)
 
@@ -277,7 +277,7 @@ ASSERT US.0109.9572 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$set_benchmark_items = (navigate parent-child descendants from list(ConcentrationRiskByBenchmarkAxis) taxonomy $US-GAAP returns set (target-name));
+$set_benchmark_items = $SET_BENCHMARK_ITEMS;
 
 exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByTypeAxis in $set_benchmark_items}#badRiskType)
 
