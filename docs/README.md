@@ -157,13 +157,13 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0191](DQC_US_0191/DQC_0191.md) | Proxy - PEO Concepts Recorded with NEO Member | Approved | 25 |
 | [DQC_US_0192](DQC_US_0192/DQC_0192.md) | Balance Sheet Numerical Scaling | Approved | 25 |
 | [DQC_US_0193](DQC_US_0193/DQC_0193.md) | Standard Dividend Member Name | Approved | 24 |
-| [DQC_US_0193](DQC_US_0194/DQC_0194.md) | Negative Values for Members on the Statement of Equity Components Axis | Public Exposure | 26 |
-| [DQC_US_0193](DQC_US_0195/DQC_0195.md) | Facts using an invalid member with the Equity Components Axis | 26 |
-| [DQC_US_0193](DQC_US_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | 26 |
-| [DQC_US_0193](DQC_US_0197/DQC_0197.md) | Income Statement Items used on The Changes in Shareholders Equity | 26 |
-| [DQC_US_0193](DQC_US_0198/DQC_0198.md) | Income Tax Reconciliation Percentages | 26 |
-| [DQC_US_0193](DQC_US_0199/DQC_0199.md) | Rate Basis Reported on Investment Schedules | 26 |
-| [DQC_US_0193](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Public Exposure | 26 |
+| [DQC_US_0194](DQC_US_0194/DQC_0194.md) | Negative Values for Members on the Statement of Equity Components Axis | Public Exposure | 26 |
+| [DQC_US_0195](DQC_US_0195/DQC_0195.md) | Facts using an invalid member with the Equity Components Axis | 26 |
+| [DQC_US_0196](DQC_US_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | 26 |
+| [DQC_US_0197](DQC_US_0197/DQC_0197.md) | Income Statement Items used on The Changes in Shareholders Equity | 26 |
+| [DQC_US_0198](DQC_US_0198/DQC_0198.md) | Income Tax Reconciliation Percentages | 26 |
+| [DQC_US_0199](DQC_US_0199/DQC_0199.md) | Rate Basis Reported on Investment Schedules | 26 |
+| [DQC_US_0200](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Public Exposure | 26 |
 
 ## Guidance 
 
