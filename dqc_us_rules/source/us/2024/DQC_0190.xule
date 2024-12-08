@@ -495,3 +495,34 @@ Rule version: {$ruleVersion}"
 severity error
 status $status
 effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10619 satisfied
+
+/* Check cover page for EBP filers has legal entity axis for default facts */
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+/* Identify DEI facts */
+$defaultFacts = list([covered @concept.namespace-uri = $DEI_NAMESPACE])
+
+for $fact in $defaultFacts
+        $ebpDEIFact = list({covered @concept= $fact.concept where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+        exists($ebpDEIFact)
+
+else
+    skip
+   
+
+message
+"The filing contains a DEI fact without a LegalEntityAxis member.  All DEI facts in the instance must include the LegalEntityAxis for 11-K filings.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

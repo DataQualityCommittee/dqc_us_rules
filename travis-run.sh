@@ -6,6 +6,7 @@ set -x
 mkdir $CURDIR/temp
 git clone --depth=1 --branch $XULE_VERSION --single-branch https://github.com/xbrlus/xule.git $CURDIR/temp/xule
 mv $CURDIR/temp/xule/plugin/xule $VIRTUAL_ENV/lib/$PYTHON_VERSION/site-packages/arelle/plugin
+mv $CURDIR/temp/xule/plugin/semanticHash.py $VIRTUAL_ENV/lib/$PYTHON_VERSION/site-packages/arelle/plugin
 mv $CURDIR/temp/xule/plugin/validate/DQC.py $VIRTUAL_ENV/lib/$PYTHON_VERSION/site-packages/arelle/plugin/validate
 rm -fR $CURDIR/temp
 
