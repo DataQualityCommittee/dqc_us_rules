@@ -23,7 +23,7 @@ $divValues = list({covered @DividendsAxis = *})
 
 $DividendsAxisMembers = filter $divValues returns $item.dimension(DividendsAxis).name.local-name
 
-for $member in $DividendsAxisMembers
+for $member in $DividendsAxisMembers.to-set
 
     /**REGEX 
     * FIRST character must be O or S to represent regular or special dividend 
