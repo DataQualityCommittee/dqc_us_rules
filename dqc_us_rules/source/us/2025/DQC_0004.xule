@@ -372,7 +372,7 @@ assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {nonils @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
+$base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
 
 $agg = {nonils @NetCashProvidedByUsedInOperatingActivities}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivities}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivities}#a3;
 $decimal_tolerance_factor = 2;
