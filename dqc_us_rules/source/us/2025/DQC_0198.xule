@@ -187,7 +187,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     if exists([covered @IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#IncomeTax) and missing([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
         $factsUsingIncomeTaxAuthorityAxis = list({covered @IncomeTaxAuthorityAxis = *});
-        if count($factsUsingIncomeTaxAuthorityAxis) > 1   /** Change to check if have used two members on the axis **/
+        if count($factsUsingIncomeTaxAuthorityAxis) > 0   /** Change to check if have used two members on the axis **/
             false
         else
             true
@@ -224,11 +224,15 @@ else
     skip
 
 message
-" The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
+"The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
 
-
-ASSERT US.0198.10662 satisfied
+/** Complete as part of V27 rules **/
 
 /** If do report by IncomeTaxAuthorityAxis that they add to the total , Individual jurisdction should be greater than 5%.  ANy thing less than than 5% is reported as a componet of ForeignTaxJurisdictionOtherMember**/
+
+/**
+ASSERT US.0198.10662 satisfied
+
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 false
+**/
