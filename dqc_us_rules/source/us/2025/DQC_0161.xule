@@ -28,9 +28,6 @@ else
     $all_cubes = filter taxonomy().cubes;
 
     for $cube in $all_cubes
-        if $cube.dimensions().concept().name.contains(InitialApplicationPeriodCumulativeEffectTransitionAxis)
-            skip
-        else
             for $dim in $axisExtensibleEnumDict.keys
                 if $cube.dimensions().concept().name.contains($dim)
                         $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;

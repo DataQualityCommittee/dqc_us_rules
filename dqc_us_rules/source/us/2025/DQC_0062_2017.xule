@@ -20,25 +20,17 @@ $network.count > 0
  AND
  count(list({COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect})) == 0 AND
  count(list({COVERED @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
- count(list({COVERED @CashAndCashEquivalentsPeriodIncreaseDecrease})) == 0 AND
- count(list({COVERED @CashPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
- count(list({COVERED @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect})) == 0 AND
  count(list({COVERED @concept = CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations})) == 0 AND
  count(list({COVERED @concept = CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations})) == 0 AND
- count(list({COVERED @NetCashProvidedByUsedInContinuingOperations})) == 0 AND
- count(list({COVERED @CashPeriodIncreaseDecrease})) == 0
+ count(list({COVERED @NetCashProvidedByUsedInContinuingOperations})) == 0
 
 MESSAGE
 "The filing includes a cash flow statement in the role {$network.role.description.join(",")}, but does not report a value for the change in cash using any of the following elements:
 
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect (After adoption of ASU-2016-18)  
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (After adoption of ASU-2016-18)  
-CashPeriodIncreaseDecrease (Prior to adoption of ASU-2016-18)
-CashPeriodIncreaseDecreaseExcludingExchangeRateEffect (Prior to adoption of ASU-2016-18)
-CashAndCashEquivalentsPeriodIncreaseDecrease  (Prior to adoption of ASU-2016-18)
 CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectContinuingOperations, 
-CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations,
-CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect (Prior to adoption of ASU-2016-18) or 
+CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffectDisposalGroupIncludingDiscontinuedOperations or 
 NetCashProvidedByUsedInContinuingOperations (As long as the element NetCashProvidedByUsedInDiscontinuedOperations is also included the reconciliation between opening and closing cash)
 
 If you have disclosed a change in cash for the period, one of the above elements should be used.  Please update your filing if one of the following has occurred:
