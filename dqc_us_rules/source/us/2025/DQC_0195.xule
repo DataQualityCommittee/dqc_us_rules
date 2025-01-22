@@ -407,14 +407,31 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest
                                     )
 
-$fact1 = {nonils @concept in $Element_Retained_Earnings_empty @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) @unit=* where $fact != 0}
+for $concept in $Element_Retained_Earnings_empty
+   
+    $fact1 = {nonils @concept = $concept @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact != 0}
 
-true
+    /** Get total **/
+
+    $defaultTotal = {nonils @concept = $concept @StatementEquityComponentsAxis = none }
+
+/** Use 10% of total as a threshold for the error  as these items have extra stuff which is considered OK as it is not material **/
+
+    if missing($defaultTotal)
+        $customMessage = "";
+        true
+    else
+        if abs($defaultTotal * 0.1) < abs($fact1)
+             $customMessage = "This rule will not report an error if the Retained Earnings value is less than 10% of the total impacting shareholders equity. The total compared to determine materiality is 10% of " + $defaultTotal.string + " or " + ($defaultTotal * 0.1).string + ".";
+            true
+        else
+            false
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
 {if $fact1.concept.name == StockRepurchasedDuringPeriodValue "If the company has no treasury stock then the element StockRepurchasedDuringPeriodValue should not be used as the stock would be retired and the value should be reported using StockRepurchasedAndRetiredDuringPeriodValue." else ''}
 
+{$customMessage}
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
