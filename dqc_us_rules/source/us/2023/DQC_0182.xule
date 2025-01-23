@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024 XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2023
@@ -30,7 +30,7 @@ for $key in $lookupDict.keys
     
     $base = {@concept = $key};
     $dim = ({@concept = $lineItem @$axis = $member}#dimfact * $multiplier)
-    $base != $dim 
+    tolerance_for_decimals($base, $dim, 2)
    
    message
 "It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.

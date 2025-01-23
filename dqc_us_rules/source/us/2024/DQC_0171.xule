@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2024
@@ -16,34 +16,35 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 $ASU201613_TransitionELements = navigate parent-child descendants from Asu201613TransitionAbstract taxonomy $US-GAAP returns set (target-name)
 
-$ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment,
+$ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, 
+FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionTwelveMonthsOrLongerFairValue,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionLessThanTwelveMonthsFairValue,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPosition12MonthsOrLongerAccumulatedLoss,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionLessThan12MonthsAccumulatedLoss,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionFairValue,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionAccumulatedLoss,
-ImpairedFinancingReceivableRelatedAllowance,
+HeldToMaturitySecuritiesInUnrealizedLossPositionsQualitativeDisclosureNumberOfPositions,
+FinancingReceivableModificationsNumberOfContracts2,
+/** ImpairedFinancingReceivableRelatedAllowance,
 ImpairedFinancingReceivableRecordedInvestment,
 ImpairedFinancingReceivableWithRelatedAllowanceRecordedInvestment,
 ImpairedFinancingReceivableWithNoRelatedAllowanceRecordedInvestment,
-ImpairedFinancingReceivableUnpaidPrincipalBalance,
+ImpairedFinancingReceivableUnpaidPrincipalBalance,  FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
 ImpairedFinancingReceivableWithNoRelatedAllowanceUnpaidPrincipalBalance,
-ImpairedFinancingReceivableWithNoRelatedAllowanceAverageRecordedInvestment,
-ImpairedFinancingReceivableWithRelatedAllowanceAverageRecordedInvestment,
+ImpairedFinancingReceivableWithNoRelatedAllowanceAverageRecordedInvestment,   FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
+ImpairedFinancingReceivableWithRelatedAllowanceAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
 ImpairedFinancingReceivableWithRelatedAllowanceUnpaidPrincipalBalance,
-FinancingReceivableModificationsNumberOfContracts2,
 ImpairedFinancingReceivableInterestIncomeCashBasisMethod,
-HeldToMaturitySecuritiesInUnrealizedLossPositionsQualitativeDisclosureNumberOfPositions,
 ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeCashBasisMethod,
-ImpairedFinancingReceivableAverageRecordedInvestment,
+ImpairedFinancingReceivableAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
 ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeCashBasisMethod,
-ScheduleOfUnrealizedLossOnInvestmentsTableTextBlock,
 ImpairedFinancingReceivableInterestIncomeAccrualMethod,
-ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeAccrualMethod,
+ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeAccrualMethod,**/
+ScheduleOfUnrealizedLossOnInvestmentsTableTextBlock,
 UnamortizedLoanCommitmentAndOriginationFeesAndUnamortizedDiscountsOrPremiums,
-ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeAccrualMethod,
-ImpairedFinancingReceivablesTableTextBlock);
+/**ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeAccrualMethod,
+ImpairedFinancingReceivablesTableTextBlock**/);
 
 exists({@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}#TransFact)
 
