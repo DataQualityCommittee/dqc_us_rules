@@ -57,7 +57,7 @@ $Pref_stock_items = navigate summation-item descendants from PreferredStockDivid
 
 $income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss)
 
-$fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = *}
+$fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = * @ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis = none}
 exists($fact1)
 
 message
