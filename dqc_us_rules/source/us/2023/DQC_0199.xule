@@ -37,3 +37,30 @@ severity error
 
 effectiveDate $effective_dates[$rule_id]
 
+ASSERT US.0199.10654 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$InvestmentIdentifierAxisConcept = list(InvestmentBasisSpreadVariableRate, InvestmentVariableInterestRateTypeExtensibleEnumeration, InvestmentMaturityDate, InvestmentAcquisitionDate)
+
+$maturity = [@concept in InvestmentMaturityDate @unit=*]
+
+$rate = [@concept in list(InvestmentBasisSpreadVariableRate,InvestmentInterestRate,InvestmentInterestRatePaidInKind,InvestmentInterestRatePaidInCash)  @unit=*]
+
+exists($rate) and not exists($maturity)
+    
+message
+"The filer has reported a value for the concept {$rate.concept.name} with a value of {$rate}. This concept is used to interest rate of a debt investment. The filer has not reported the maturity date for the investment. Please ensure that the InvestmentMaturityDate concept is reported for this investment.
+
+The properties of this {$rate.concept} fact are:
+Period :{$rate.period}
+Dimensions : {$rate.dimensions.join(', ','=')}
+Unit : {$rate.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
