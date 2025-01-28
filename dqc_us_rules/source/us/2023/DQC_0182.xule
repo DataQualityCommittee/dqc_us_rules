@@ -29,8 +29,18 @@ for $key in $lookupDict.keys
                         1)
     
     $base = {@concept = $key};
-    $dim = ({@concept = $lineItem @$axis = $member}#dimfact * $multiplier)
-    tolerance_for_decimals($base, $dim, 2)
+    $dimfact = ({@concept = $lineItem @$axis = $member})
+    $dim = ($dimfact * $multiplier)
+    $fact_decimals = list($base.decimals, $dimfact.decimals)
+    $min_decimals = min(list(for $z in $fact_decimals
+					if $z == none 
+						skip
+					else
+						$z));
+    if $multiplier == 1
+         tolerance_for_decimals($base, $dimfact, 2)
+    else
+         tolerance_for_decimals_comp($base, $dim, $min_decimals, 2)
    
    message
 "It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
