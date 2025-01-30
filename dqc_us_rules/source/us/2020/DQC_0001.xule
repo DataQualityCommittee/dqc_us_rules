@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2020
@@ -700,7 +700,7 @@ $member_extension = navigate dimensions dimension-member descendants from srt:Co
 
 /** Define allowable extensions with the qname function **/
 
-$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'), qname($extension_ns,'OtherOperatingSegmentsAndIntersegmentEliminationsMember'));
+$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'), qname($extension_ns,'OtherOperatingSegmentsAndIntersegmentEliminationsMember'), qname($extension_ns,'OperatingSegmentsAfterReconcilingItemsAndEliminationsMember'));
 
 /** Limit these to extensions filter out base taxonomy elements**/
 $ChildExtensions1 = navigate dimensions domain-member descendants from MaterialReconcilingItemsMember returns set (target-name); 
