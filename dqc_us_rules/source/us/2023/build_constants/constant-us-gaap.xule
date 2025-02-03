@@ -94,7 +94,7 @@ navigate domain-member descendants include start
 */
 constant $MEM_LEG_ENT_AXS = navigate domain-member descendants include start
      from (navigate dimension-domain children
-           from dei:LegalEntityAxis  /* HF change here */
+           from qname('http://xbrl.sec.gov/dei/2023','LegalEntityAxis')  /* HF change here */
            taxonomy $US-GAAP returns set)
      taxonomy $US-GAAP
      returns set (target-name)
