@@ -41,8 +41,6 @@ ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$InvestmentIdentifierAxisConcept = list(InvestmentBasisSpreadVariableRate, InvestmentVariableInterestRateTypeExtensibleEnumeration, InvestmentMaturityDate, InvestmentAcquisitionDate)
-
 $maturity = [@concept in InvestmentMaturityDate @unit=*]
 
 $rate = [@concept in list(InvestmentBasisSpreadVariableRate,InvestmentInterestRate,InvestmentInterestRatePaidInKind,InvestmentInterestRatePaidInCash)  @unit=*]
