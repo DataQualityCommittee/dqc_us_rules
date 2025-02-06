@@ -10,12 +10,13 @@ This was created using a hardlink ln {original} {new}
 **/
 
 RULE-NAME-PREFIX DQC
-
+/**
 ASSERT US.0185.10165 satisfied
 
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length]; **/
 
 /** REQUESTED BY FASB (See Github repo https://github.com/TaxonomyFASB/Proposed-DQC-Rules/issues/37)**/
+/**
 $tax_increase_decrease_elements = set(
     UnrecognizedTaxBenefitsDecreasesResultingFromCurrentPeriodTaxPositions,
     UnrecognizedTaxBenefitsDecreasesResultingFromForeignCurrencyTranslation,
@@ -33,9 +34,9 @@ for $tax_item in $tax_increase_decrease_elements
 
         $taxFact = {@concept = $tax_item}
         $ancestors = $taxFact.inline-ancestors
-        $ancestorConcepts = filter $ancestors returns $item.concept.name 
+        $ancestorConcepts = filter $ancestors returns $item.concept.name **/
         /** Pick up those cases where the value is reported as text in income tax disclosure text block without the reconciliation.**/
-        if $ancestors.length == 0 or ((IncomeTaxDisclosureTextBlock in $ancestorConcepts) and $ancestorConcepts.length == 1)
+        /**if $ancestors.length == 0 or ((IncomeTaxDisclosureTextBlock in $ancestorConcepts) and $ancestorConcepts.length == 1)
             skip 
         else
             if ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock in $ancestorConcepts
@@ -56,4 +57,52 @@ Rule version: {$ruleVersion}
 
 severity error
 rule-focus $taxFact
+effectiveDate $effective_dates[$rule_id]**/
+
+
+ASSERT US.0185.10165 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$tax_increase_decrease_elements = set(
+    UnrecognizedTaxBenefitsDecreasesResultingFromCurrentPeriodTaxPositions,
+    UnrecognizedTaxBenefitsDecreasesResultingFromForeignCurrencyTranslation,
+    UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions,
+    UnrecognizedTaxBenefitsDecreasesResultingFromSettlementsWithTaxingAuthorities,
+    UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions,
+    UnrecognizedTaxBenefitsIncreasesResultingFromForeignCurrencyTranslation,
+    UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions,
+    UnrecognizedTaxBenefitsIncreasesResultingFromSettlementsWithTaxingAuthorities,
+    UnrecognizedTaxBenefitsPeriodIncreaseDecrease,
+    UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations
+)
+
+for $tax_item in $tax_increase_decrease_elements
+    
+        $taxFact = list({covered @concept = $tax_item})#taxFactValue.length > 0
+        $taxContingencyTextBlock = {@SummaryOfIncomeTaxContingenciesTextBlock}
+        $taxRollForward = list({covered @ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock}).length == 0
+
+        $descendants = $taxContingencyTextBlock.inline-descendants
+        $descendantConcepts = filter $descendants returns $item.concept.name 
+        
+        if $tax_item in $descendantConcepts and $taxRollForward and $taxFact
+            true
+        else
+            false
+
+
+message
+"The concept {$tax_item} with a value of {$taxFactValue.first} is reported but is not included in the ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock.  The  element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead of SummaryOfIncomeTaxContingenciesTextBlock.
+
+The properties of this {$tax_item} fact are:
+Period :{$taxFactValue.first.period}
+Dimensions : {$taxFactValue.first.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $taxFactValue.first
 effectiveDate $effective_dates[$rule_id]
