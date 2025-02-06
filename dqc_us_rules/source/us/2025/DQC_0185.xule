@@ -30,11 +30,39 @@ $tax_increase_decrease_elements = set(
 )
 
 for $tax_item in $tax_increase_decrease_elements
+    
+        $taxFact = list({covered @concept = $tax_item})#taxFactValue.length > 0
+        $taxContingencyTextBlock = {@SummaryOfIncomeTaxContingenciesTextBlock}
+        $taxRollForward = list({covered @ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock}).length == 0
 
-        $taxFact = {@concept = $tax_item}
+        $descendants = $taxContingencyTextBlock.inline-descendants
+        $descendantConcepts = filter $descendants returns $item.concept.name 
+        
+        if $tax_item in $descendantConcepts and $taxRollForward and $taxFact
+            true
+        else
+            false
+
+
+message
+"The concept {$tax_item} with a value of {$taxFactValue.first} is reported but is not included in the ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock.  The  element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead of SummaryOfIncomeTaxContingenciesTextBlock.
+
+The properties of this {$tax_item} fact are:
+Period :{$taxFactValue.first.period}
+Dimensions : {$taxFactValue.first.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $taxFactValue.first
+effectiveDate $effective_dates[$rule_id]
+
+    /**
         $ancestors = $taxFact.inline-ancestors
         $ancestorConcepts = filter $ancestors returns $item.concept.name 
-        /** Pick up those cases where the value is reported as text in income tax disclosure text block without the reconciliation.**/
+        
         if $ancestors.length == 0 or ((IncomeTaxDisclosureTextBlock in $ancestorConcepts) and $ancestorConcepts.length == 1)
             skip 
         else
@@ -42,6 +70,7 @@ for $tax_item in $tax_increase_decrease_elements
                 false
             else
                 true
+    **
 
 message
 "The concept {$tax_item} with a value of {$taxFact} is reported in the disclosure within the text blocks item {$ancestorConcepts.join(', ')}. The element {$tax_item} should be included in the text block disclosure ScheduleOfUnrecognizedTaxBenefitsRollForwardTableTextBlock instead.
@@ -57,3 +86,5 @@ Rule version: {$ruleVersion}
 severity error
 rule-focus $taxFact
 effectiveDate $effective_dates[$rule_id]
+
+**/
