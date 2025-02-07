@@ -26,7 +26,7 @@ if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) a
     ecd:NonRule10b51ArrTrmntdFlag)
 
     if list({covered @concept in $ecdFlags where $fact == true}).length == 0
-        if list({covered @concept in $ecdFlags where $fact == false}).length != 4
+        if list({covered @concept in $ecdFlags where $fact == false}).length >= 4
             if exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == false}) and
                 exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == false}) and
                 exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == false}) and
@@ -35,7 +35,7 @@ if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) a
             else    
                 true
         else    
-            false
+            true
     else
         false
 else
