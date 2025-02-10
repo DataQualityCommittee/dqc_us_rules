@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2023
@@ -14,7 +14,7 @@ This rule checks that the filer has not used a Us-GAAP element in their filing f
 ASSERT IFRS.0176.10118 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-if set('F-1').contains([covered @concept.local-name ='DocumentType']) 
+if set('F-1','F-4', 'F-4/A').contains([covered @concept.local-name ='DocumentType']) 
     skip
 else
     $us-gaap-concepts = filter taxonomy().concepts where $item.namespace-uri.contains('http://fasb.org/us-gaap/') and $item.name.local-name not in $USGAAP_ALLOWED_LOCAL-NAME returns $item
@@ -40,7 +40,7 @@ effectiveDate $effective_dates[$ruleId]
 ASSERT IFRS.0176.10119 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-if set('F-1').contains([covered @concept.local-name ='DocumentType']) 
+if set('F-1','F-4', 'F-4/A').contains([covered @concept.local-name ='DocumentType']) 
     skip
 else
     $us-gaap-concepts = filter taxonomy().concepts where $item.namespace-uri.contains('http://fasb.org/us-gaap/') and $item.name.local-name not in $USGAAP_ALLOWED_LOCAL-NAME returns $item
