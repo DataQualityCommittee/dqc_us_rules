@@ -185,6 +185,6 @@ Approved rules listed below will increment with each major release in which they
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2024 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2025, XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  

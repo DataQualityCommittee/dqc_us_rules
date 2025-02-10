@@ -1,0 +1,18 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile 2024 Rules",
+            "type": "shell",
+            "command": "python3.9 ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/source/us/2024/ --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2024-V24-ruleset.zip --xule-crash --xule-stack-size=20"
+        },
+        {
+            "label": "Compile 2024 Rules - 3.12",
+            "type": "shell",
+            "command": "workon xule-3.12; python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/source/us/2024/ --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2024-V26-ruleset.zip --xule-crash --xule-stack-size=20 --xule-compile-workers=0"
+        }
+        
+    ]
+}
