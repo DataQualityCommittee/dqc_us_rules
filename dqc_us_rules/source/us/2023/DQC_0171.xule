@@ -46,10 +46,13 @@ UnamortizedLoanCommitmentAndOriginationFeesAndUnamortizedDiscountsOrPremiums,
 /**ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeAccrualMethod,
 ImpairedFinancingReceivablesTableTextBlock**/);
 
-exists({@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}#TransFact)
+$TransFact = {@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}
+$factIsTextBlock = $TransFact.is-type(nonnum:textBlockItemType);
+
+exists($TransFact)
 
 message
-"The element {$TransFact.concept.name} with a value of  {$TransFact} has been used in the filing.  This element was transitioned as part of ASU201613. Replace this element with a valid element from the US GAAP taxonomy.
+"The element {$TransFact.concept.name} with a value of  {$TransFact} {if $factIsTextBlock $TransFact.string.substring(600) + '....' else $TransFact}  has been used in the filing.  This element was transitioned as part of ASU201613. Replace this element with a valid element from the US GAAP taxonomy.
 
 The properties of this {$TransFact.concept.name} fact are:
 
