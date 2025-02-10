@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: IFRS 2019
@@ -166,4 +166,4 @@ constant $USGAAP_ALLOWED_CONCEPTS = sum($LISTS_OF_USGAAP_ALLOWED_CONCEPTS)
 constant $USGAAP_ALLOWED_LOCAL-NAME = $USGAAP_ALLOWED_CONCEPTS.name.local-name
 
 constant $STATEMENT_SHE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
-and $item.dimensions.concept.name.contains(ComponentsOfEquityAxis)
+and $item.dimensions.concept.name.contains(ComponentsOfEquityAxis) and ($item.drs-role.description.lower-case.contains('equity'))
