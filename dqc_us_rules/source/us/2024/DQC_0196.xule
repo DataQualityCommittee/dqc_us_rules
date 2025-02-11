@@ -284,7 +284,7 @@ effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0196.10632 satisfied
 
-/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+/** The rule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -298,7 +298,8 @@ $exclusionList = list(StockholdersEquity,
                     TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
                     MembersEquity,
                     MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest
+                    )
 
 
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0};
@@ -342,7 +343,12 @@ $exclusionList = list(StockholdersEquity,
                     TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
                     MembersEquity,
                     MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    /** Added for AOCI rollforward before tax disclosure **/
+                    AccumulatedOtherComprehensiveIncomeLossBeforeTax1,
+                    AociIncludingPortionAttributableToNoncontrollingInterestTax,
+                    AociBeforeTaxAttributableToParent,
+                    AociTaxAttributableToParent)
 
 
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0};
