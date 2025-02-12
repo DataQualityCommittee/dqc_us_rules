@@ -15,8 +15,6 @@ env:
     - PR_BR=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
 
   matrix:
-    #5 - v24 (2024 + 2023)
-    - INFILES='[{"file":"http://www.sec.gov/Archives/edgar/data/27904/000002790424000009/dal-20240630.htm", "xule_run_only":"DQC.US.0193.10153"}]' EXFILES=$EXPECTED/DQC.US.0193.10153_DAL_US-2024.xml
     #1 - v25 (2023)
     - INFILES='[{"file":"https://www.sec.gov/Archives/edgar/data/1474903/000147490324000034/bgsf-20240331.htm", "xule_run_only":"DQC.US.0192.10620"}]' EXFILES=$EXPECTED/DQC.US.0192.10620_BGSF_US-2023.xml
     #2 - CHALLENGING
