@@ -21,7 +21,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		$min_range = $period_range[1][2];
 		$max_range = $period_range[1][3];
 
-		exists({@ where ($fact.is-type(dtr-types:textBlockItemType) or $fact.concept.name in $DEI_DQC0006_ITEMS) and ($fact.period.days > $max_range or $fact.period.days < $min_range) and $fact.concept.name.namespace-uri != 'http://xbrl.sec.gov/ecd/2024'}#fact1)
+		exists({@ where ($fact.is-type(dtr-types:textBlockItemType) or $fact.concept.name in $DEI_DQC0006_ITEMS) and ($fact.period.days > $max_range or $fact.period.days < $min_range) and $fact.concept.name.namespace-uri != 'http://xbrl.sec.gov/ecd/2025'}#fact1)
 		and not(list({covered @concept.local-name ='DocumentType'}).length > 1)
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact.contains('T')}))
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))
