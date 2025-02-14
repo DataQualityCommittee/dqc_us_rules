@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2024
@@ -26,15 +26,21 @@ $filing_details_defaults = navigate dimension-default descendants include start 
 for ($x in $default_in_filing_not_in_taxonomy)
 	$default_details_list = filter $filing_details_defaults where $item['source-name'] == $x[1];
 	$default_details = $default_details_list[1]
-	if (not is_extension($default_details['source'],$ALL_BASE_TAXONOMIES))
+	if (not is_extension($default_details['source'],$ALL_BASE_TAXONOMIES_ELTS))
 		$dim_name = $default_details['source-name'];
 		$dim_role = $default_details['role'].description;
+/* HF replacement, please check
 		$dim_base_names = navigate dimension-default descendants from $default_details['source-name'] taxonomy $US-GAAP returns (target-name);
 		if ($dim_base_names.length == 0) 
 			false
 		else 
 			$dim_base_name = $dim_base_names[1];
-			$mem_name = $default_details['target-name'];
+*/
+	        $dim_base_name = $x[2]
+		$mem_name = $default_details['target-name'];
+		if ($dim_base_name == $mem_name) 
+			false
+		else 
 			true
 	else
 		false

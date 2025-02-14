@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2024
@@ -40,10 +40,10 @@ for ($network in $extCalcRelationship1.keys)
 		else
 		
 			/**Identify the siblings of the parent element that were defined in the US gaap taxonomy**/
-			$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $US-GAAP returns set (target-name) - set(LongTermInvestments);
+			$s1 = navigate summation-item siblings from $extCalcSourceName taxonomy $US-GAAP_ELTS_CALCS returns set (target-name) - set(LongTermInvestments);
 			
 			/** Generate a list of $sibling_items that includes descendants of the siblings in the US GAAP taxonomy, but excludes the cash flow adjustment items as they are add backs and can be legitimate  children. **/
-			$sibling_items = navigate summation-item descendants include start from ($s1) stop when ($relationship.source.name == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities) taxonomy $US-GAAP returns (target-name);
+			$sibling_items = navigate summation-item descendants include start from ($s1) stop when ($relationship.source.name == AdjustmentsToReconcileNetIncomeLossToCashProvidedByUsedInOperatingActivities) taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 			
 			/** convert sibling items from a list of concepts to a set of qnames so they can be compared to the extension taxonomy. This must be a set to use intersect**/
 			$sibling_items_names = filter $sibling_items.to-set returns $item.local-name;
@@ -72,7 +72,7 @@ for ($network in $extCalcRelationship1.keys)
 				/** This takes any descendants of siblings demotable to child and allows them also be demoted. **/
 				all(set(for ($pair in $SIBLINGS_DEMOTABLE_TO_CHILD)
 					if ($extCalcSourceName == $pair[1])
-						$descendants_of_demotable_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
+						$descendants_of_demotable_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 						not $extCalcRelationship.target.name in $descendants_of_demotable_child
 					else
 						true))
@@ -131,7 +131,7 @@ else
 					
 					skip
 				else
-					$child_items = navigate summation-item descendants from $value-con taxonomy $US-GAAP returns (target-name);
+					$child_items = navigate summation-item descendants from $value-con taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 					$child_items_names = filter $child_items.to-set returns $item.local-name;
 					$inconsistencies = $extCalcTargetName.intersect($child_items_names);
 					
@@ -153,7 +153,7 @@ else
 						/** This takes any descendants of siblings demotable to child and allows them also be demoted. **/
 						all(set(for ($pair in $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING)
 							if ($value-con == $pair[1])
-								$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
+								$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 								not $extCalcRelationship.target.name in $descendants_of_promoted_child
 							else
 								true))
@@ -203,7 +203,7 @@ for ($value-con in $value-concepts)
 				
 				skip
 			else
-				$child_items = navigate summation-item descendants from $value-con taxonomy $US-GAAP returns (target-name);
+				$child_items = navigate summation-item descendants from $value-con taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 				$child_items_names = filter $child_items.to-set returns $item.local-name;
 				$inconsistencies = $extCalcTargetName.intersect($child_items_names);
 				
@@ -225,7 +225,7 @@ for ($value-con in $value-concepts)
 					/** This takes any descendants of siblings demotable to child and allows them also be demoted. **/
 					all(set(for ($pair in $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING)
 						if ($value-con == $pair[1])
-							$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP returns (target-name);
+							$descendants_of_promoted_child = navigate summation-item descendants from $pair[2] taxonomy $US-GAAP_ELTS_CALCS returns (target-name);
 							not $extCalcRelationship.target.name in $descendants_of_promoted_child
 						else
 							true))

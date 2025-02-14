@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2024
@@ -30,18 +30,17 @@ $CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndR
 
 $ebp_Exclusions = set(us-gaap-ebp:EmployeeBenefitPlanChangeInNetAssetAvailableForBenefitTransferToFromFundWithinEsop, us-gaap-ebp:EmployeeBenefitPlanChangeInNetAssetAvailableForBenefitTransferToFromExternalPlan)
 
-$Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
+$Non_CF_Items = $NON_CF_ITEMS;
+
+$Set_Non_CF_Abstracts1 = $SET_NON_CF_ABSTRACTS1;
 
 /** Defines a set of CF Abstracts that if used on the CF any children will be excluded from the rules **/
-$Set_Non_CF_Abstracts1 = (navigate parent-child descendants from list(CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract) taxonomy $US-GAAP where ($relationship.target.is-abstract == true and $relationship.target-name.local-name.contains("Abstract") ) returns set (target-name));
-
 $Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract, qname($EXTENSION_NS,'NoncashInvestingItemsAbstract'), qname($EXTENSION_NS,'NoncashFinancingItemsAbstract'), qname($EXTENSION_NS,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($EXTENSION_NS,'NonCashOperatingAndInvestingActivitiesAbstract'));
 
 $Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
 
-/** This generates a list of items in the SHE that would not be included in the IS calculation. If these are reported in the presentation of the IS they will be ignored **/
-$SSHExceptions =  navigate parent-child descendants from IncreaseDecreaseInStockholdersEquityRollForward taxonomy $US-GAAP where $relationship.target.is-monetary == true and $relationship.target.period-type == duration returns set (target-name);
-                        
+$SSHExceptions = $SSH_EXCEPTIONS;
+
 for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
     $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
                                         $presConceptItems = $presNetwork.concept-names;
@@ -91,8 +90,7 @@ for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
                                                                         skip);
                                                 $calcItems = sum($calcspresentSet);
 
-                                                /* Check if Assets has any monetary descendants in the presentation tree. If there are no Assets in the presentation tree don't look for Assets in the calculation tree. */
-                                                $AssetTypes = (navigate parent-child descendants from list(AssetsAbstract) taxonomy $US-GAAP where ($relationship.target.is-monetary == true ) returns set (target-name));
+                                                $AssetTypes = $ASSET_TYPES;
 
                                                 $AssetsComponents  =  $presConceptItems.to-set intersect ($AssetTypes - set(Assets))
 
