@@ -212,7 +212,7 @@ and (not $item.drs-role.description.lower-case.contains('schedule iv'))
 and (not $item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))
 
 constant $STATEMENT_PARENTHETICAL_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
-and ($item.drs-role.uri.lower-case.contains('parenthetical')) 
+and ($item.drs-role.uri.lower-case.contains('parenthetical'))
 
 constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
 

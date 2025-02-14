@@ -342,7 +342,12 @@ $exclusionList = list(StockholdersEquity,
                     TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
                     MembersEquity,
                     MembersCapital,
-                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    /** Added for AOCI rollforward before tax disclosure **/
+                    AccumulatedOtherComprehensiveIncomeLossBeforeTax1,
+                    AociIncludingPortionAttributableToNoncontrollingInterestTax,
+                    AociBeforeTaxAttributableToParent,
+                    AociTaxAttributableToParent)
 
 
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0};

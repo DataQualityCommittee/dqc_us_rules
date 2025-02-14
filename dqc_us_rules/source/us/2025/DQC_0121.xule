@@ -15,7 +15,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 $document_period = first(list({covered @concept.local-name = 'DocumentType'}));
 $document_period_end = $document_period.period.end;
 
-$transitionElements = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract) taxonomy $US-GAAP_ELTS_CALCS where not $relationship.target.is-abstract returns (target-name);
+$transitionElements = navigate parent-child descendants from set(Asu201601TransitionAbstract) taxonomy $US-GAAP_ELTS_CALCS where not $relationship.target.is-abstract returns (target-name);
 
 for $transitionElement in $transitionElements
 
