@@ -74,7 +74,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 					/** But exclude some member items not to check **/
 					$FairValueBreakdownItemsNotChecked = list(FairValueInputsLevel2Member, FairValueInputsLevel1Member, FairValueMeasuredAtNetAssetValuePerShareMember, FairValueInputsLevel12And3Member, srt:ScenarioForecastMember)
 
-					$FS_Concept_Item = list({nonils covered @concept = $FS_concept @FairValueByAssetClassAxis != * @FairValueByLiabilityClassAxis != * @FinancialInstrumentAxis != * @RetirementPlanNameAxis != * @RetirementPlanTypeAxis != * @RetirementPlanSponsorLocationAxis !=* @DerivativeInstrumentRiskAxis != * @DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @EnvironmentalRemediationSiteAxis != * @HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)}).sort;
+					$FS_Concept_Item = list({nonils covered @concept = $FS_concept @FairValueByAssetClassAxis != * @FairValueByLiabilityClassAxis != * @FinancialInstrumentAxis != * @RetirementPlanNameAxis != * @RetirementPlanTypeAxis != * @RetirementPlanSponsorLocationAxis !=* @DerivativeInstrumentRiskAxis != * @DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @EnvironmentalRemediationSiteAxis != * @HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)}).sort;
 					
 					if $FS_Concept_Item.length > 0
 
@@ -221,7 +221,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 					* TO DO At some point we may want to update to check if there is a total and if not then check the detail.
 					***/
 
-					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
 				    
 				
 				/** Determine if any the extensible list element has been used with a value 
@@ -235,7 +235,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 						
 							true
 				else
-					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
 					
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
