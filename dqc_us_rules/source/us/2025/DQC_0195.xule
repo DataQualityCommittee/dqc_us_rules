@@ -235,7 +235,7 @@ An example of this is here : https://www.sec.gov/ix?doc=/Archives/edgar/data/846
 
 This filing has treasury but for the shares colum uses shares outstanding and not issued.  In the notes they disclose share buybacks going into treasury.  SHouldnt the elemnts be consistent with the statement of SHE.**/
 
-constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept = SharesIssued  @StatementEquityComponentsAxis = CommonStockMember  @period=*])
+constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @period=*])
                                                     true
                                                 else
                                                     false
@@ -268,7 +268,7 @@ else
 
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. Change the opening balance share element to {if $fact1.concept.name.local-name == 'TreasuryStockSharesRetired' 'SharesIssued' else 'SharesOutstanding'}.
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. Change the opening balance share element to {if $fact1.concept.name.local-name == 'TreasuryStockSharesRetired' 'SharesIssued or CommonStockSharesIssued' else 'SharesOutstanding'}.
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
