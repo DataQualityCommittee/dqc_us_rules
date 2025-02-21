@@ -55,7 +55,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP returns set (target-name)
 
-$income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss)
+$income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest)
 
 $fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = * @ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis = none}
 exists($fact1)
