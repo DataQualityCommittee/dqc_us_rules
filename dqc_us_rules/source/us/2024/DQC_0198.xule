@@ -137,14 +137,14 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
-$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=* where $fact != 0}
+$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
 $base_Income = $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
 
 $base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
 
 if exists($base_Income)
     for $concept in $EQUIVALENT_TAX_RATES
-        $num = {@concept =  $concept[1]  @unit=*}
+        $num = {@concept =  $concept[1]  @unit=iso4217:USD}
         $calc_value = $num / $base_Income
         $numerator_Intervals = fact_intervals($num)
         $denominator_Intervals = $base_Income_intervals
