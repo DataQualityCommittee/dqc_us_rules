@@ -158,12 +158,15 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0192](DQC_US_0192/DQC_0192.md) | Balance Sheet Numerical Scaling | Approved | 25 |
 | [DQC_US_0193](DQC_US_0193/DQC_0193.md) | Standard Dividend Member Name | Approved | 24 |
 | [DQC_US_0194](DQC_US_0194/DQC_0194.md) | Negative Values for Members on the Statement of Equity Components Axis | Public Exposure | 26 |
-| [DQC_US_0195](DQC_US_0195/DQC_0195.md) | Facts using an invalid member with the Equity Components Axis | 26 |
-| [DQC_US_0196](DQC_US_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | 26 |
-| [DQC_US_0197](DQC_US_0197/DQC_0197.md) | Income Statement Items used on The Changes in Shareholders Equity | 26 |
-| [DQC_US_0198](DQC_US_0198/DQC_0198.md) | Income Tax Reconciliation Percentages | 26 |
-| [DQC_US_0199](DQC_US_0199/DQC_0199.md) | Rate Basis Reported on Investment Schedules | 26 |
+| [DQC_US_0195](DQC_US_0195/DQC_0195.md) | Facts using an invalid member with the Equity Components Axis | Public Exposure | 26 |
+| [DQC_US_0196](DQC_US_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | Public Exposure | 26 |
+| [DQC_IFRS_0196](DQC_IFRS_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | Public Exposure | 26 |
+| [DQC_US_0197](DQC_US_0197/DQC_0197.md) | Income Statement Items used on The Changes in Shareholders Equity | Public Exposure | 26 |
+| [DQC_US_0198](DQC_US_0198/DQC_0198.md) | Income Tax Reconciliation Percentages | Public Exposure | 26 |
+| [DQC_US_0199](DQC_US_0199/DQC_0199.md) | Rate Basis Reported on Investment Schedules | Public Exposure | 26 |
 | [DQC_US_0200](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Public Exposure | 26 |
+| [DQC_US_0201](DQC_US_0201/DQC_0201.md) | Private Company Concepts | Public Exposure | 26 |
+| [DQC_US_0202](DQC_US_0202/DQC_0202.md) | Cyber Taxonomy Disclosures | Public Exposure | 26 |
 
 ## Guidance 
 
@@ -185,6 +188,6 @@ Approved rules listed below will increment with each major release in which they
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2025, XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2025 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
