@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -380,12 +380,12 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
                                     PreferredStockDividendsShares,
-                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
+                                    /**StockIssuedDuringPeriodValueTreasuryStockReissued,**/ /** Is not included because if buy treasury back at a higher cost than you reissue it the difference needs to go to APIC.  If APIC is insufficient then goes against retained earnings. **/
                                     TreasuryStockPreferredValue,
                                     PreferredStockRedemptionPremium,
                                     PreferredStockRedemptionDiscount,
                                     PreferredStockAccretionOfRedemptionDiscount,
-                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
+                                    /**IncreaseInCarryingAmountOfRedeemablePreferredStock, **/ /** Definition or element states it impacts RE **/
                                     /**PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,**/ /** Round down can impact retained earnings if no APIC to cover the round down.**/
                                     NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
                                     NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
