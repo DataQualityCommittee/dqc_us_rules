@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -43,12 +43,15 @@ ASSERT US.0199.10654 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $maturity = [@concept in InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit=*]
+$maturity = [@concept in InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit=*]
 
+$rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
 $rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
 
 exists($rate) and not exists($maturity)
     
 message
+"The filer has reported a value for the concept {$rate.concept.name} with a value of {$rate}. This concept is used to report the interest rate of a debt investment. For debt investments the filer should also report the maturity date of the investment. Please ensure that the InvestmentMaturityDate concept is also reported for this investment.
 "The filer has reported a value for the concept {$rate.concept.name} with a value of {$rate}. This concept is used to report the interest rate of a debt investment. For debt investments the filer should also report the maturity date of the investment. Please ensure that the InvestmentMaturityDate concept is also reported for this investment.
 
 The properties of this {$rate.concept} fact are:

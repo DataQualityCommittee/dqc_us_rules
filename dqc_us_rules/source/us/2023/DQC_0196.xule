@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -30,11 +30,13 @@ else
 
     $SHE_Name = (filter $STATEMENT_SHE_CUBES  returns $item.drs-role.description).to-list;
     $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember @cube in $STATEMENT_SHE_CUBES}).length > 0;
+    $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember @cube in $STATEMENT_SHE_CUBES}).length > 0;
     $fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
     $message = if is_extension($fact1.concept, list($US-GAAP))
                     "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
                 else
                     "";
+    exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
     exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
@@ -71,11 +73,13 @@ else
                         LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
     $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(PreferredStockMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+    $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(PreferredStockMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
     $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
     $message = if is_extension($fact1.concept, list($US-GAAP))
                     "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
                     else
                 "";
+    exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
     exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
@@ -118,6 +122,7 @@ $message = if is_extension($fact1.concept, list($US-GAAP))
                 else
             "";
 exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Retained Earnings.
@@ -155,11 +160,13 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
 $message = if is_extension($fact1.concept, list($US-GAAP))
                 "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
                 else
             "";
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
@@ -181,6 +188,7 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0196.10632 satisfied
 
 /** The rule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+/** The rule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -196,7 +204,10 @@ $exclusionList = list(StockholdersEquity,
                     MembersCapital,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest
                     )
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest
+                    )
 
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
 $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0};
 
@@ -205,6 +216,7 @@ $message = if is_extension($fact1.concept, list($US-GAAP))
                 else
             "";
 
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
@@ -247,12 +259,14 @@ $exclusionList = list(StockholdersEquity,
                     AociTaxAttributableToParent)
 
 $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members @cube in $STATEMENT_SHE_CUBES}).length > 0;
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0};
 
 $message = if is_extension($fact1.concept, list($US-GAAP))
                 "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
                 else
             "";
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message
@@ -288,11 +302,13 @@ $exclusionList = list(StockholdersEquity,
                     LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
 $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $NCI @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $NCI @cube in $STATEMENT_SHE_CUBES}).length > 0;
 $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $NCI where $fact.concept.period-type == instant and $fact != 0};
 $message = if is_extension($fact1.concept, list($US-GAAP))
                 "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
                 else
             "";
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP)))
 
 message

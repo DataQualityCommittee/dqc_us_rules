@@ -1,9 +1,9 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2023
+Taxonomy: US GAAP 2024
 **/
 
 
@@ -56,7 +56,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				 or ($FS_concept in ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities)) and ($fsConceptsQname intersect ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities))).length > 0)
 				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
                     
-				/** If the concept is in the FSor its equivalent is then stop the rule **/
+				/** If the concept is in the FS or its equivalent is then stop the rule **/
 				false
 			else
 
@@ -74,6 +74,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 					/** But exclude some member items not to check **/
 					$FairValueBreakdownItemsNotChecked = list(FairValueInputsLevel2Member, FairValueInputsLevel1Member, FairValueMeasuredAtNetAssetValuePerShareMember, FairValueInputsLevel12And3Member, srt:ScenarioForecastMember)
 
+					$FS_Concept_Item = list({nonils covered @concept = $FS_concept @FairValueByAssetClassAxis != * @FairValueByLiabilityClassAxis != * @FinancialInstrumentAxis != * @RetirementPlanNameAxis != * @RetirementPlanTypeAxis != * @RetirementPlanSponsorLocationAxis !=* @DerivativeInstrumentRiskAxis != * @DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @EnvironmentalRemediationSiteAxis != * @HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)}).sort;
 					$FS_Concept_Item = list({nonils covered @concept = $FS_concept @FairValueByAssetClassAxis != * @FairValueByLiabilityClassAxis != * @FinancialInstrumentAxis != * @RetirementPlanNameAxis != * @RetirementPlanTypeAxis != * @RetirementPlanSponsorLocationAxis !=* @DerivativeInstrumentRiskAxis != * @DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @EnvironmentalRemediationSiteAxis != * @HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)}).sort;
 					
 					if $FS_Concept_Item.length > 0
@@ -269,6 +270,5 @@ Rule version: {$ruleVersion}"
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
 
-rule-focus $FS_Concept_Item1 
-
+rule-focus $FS_Concept_Item1
 
