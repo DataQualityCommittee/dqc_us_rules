@@ -8,31 +8,24 @@ Taxonomy: US GAAP 2024
 
 **/
 
-constant $US-GAAP = taxonomy('https://xbrl.fasb.org/us-gaap/2024/entire/us-gaap-entryPoint-std-2024.xsd')
+/* Use US-GAAP elements and calc where all separate calc are merged to single .xsd file */
 
-constant $EXCHANGE = taxonomy('https://xbrl.sec.gov/exch/2024/exch-entire-2024.xsd')
+/* '/__xule_resources_dir__' is mapped by disclosureSystem mappings */
+constant $US-GAAP_ELTS_CALCS = $US-GAAP /**taxonomy('/__xule_resources_dir__/us-gaap-cal-2024-all.xsd')**/
 
-constant $CURRENCY = taxonomy('https://xbrl.sec.gov/currency/2024/currency-entire-2024.xsd')
+constant $EXCHANGE_ELTS = taxonomy('https://xbrl.sec.gov/exch/2024/exch-2024.xsd')
 
-constant $STATE_PROVINCE = taxonomy('https://xbrl.sec.gov/stpr/2024/stpr-entire-2024.xsd')
+constant $STATE_PROVINCE_ELTS = taxonomy('https://xbrl.sec.gov/stpr/2024/stpr-2024.xsd')
 
-constant $NAICS = taxonomy('https://xbrl.sec.gov/naics/2024/naics-entire-2024.xsd')
+constant $NAICS_ELTS = taxonomy('https://xbrl.sec.gov/naics/2024/naics-2024.xsd')
 
-constant $SIC = taxonomy('https://xbrl.sec.gov/sic/2024/sic-entire-2024.xsd')
+constant $SIC_ELTS = taxonomy('https://xbrl.sec.gov/sic/2024/sic-2024.xsd')
 
-constant $DQC_RULES = taxonomy('https://xbrl.fasb.org/us-gaap/2024/dqcrules/dqcrules-entire-2024.xsd')
+constant $ECD_ELTS = taxonomy('https://xbrl.sec.gov/ecd/2024/ecd-2024.xsd')
 
-constant $ECD = taxonomy('https://xbrl.sec.gov/ecd/2024/ecd-entire-2024.xsd')
+constant $ALL_BASE_TAXONOMIES_ELTS = list($US-GAAP_ELTS_CALCS, $EXCHANGE_ELTS, $STATE_PROVINCE_ELTS, $NAICS_ELTS, $SIC_ELTS, $ECD_ELTS)
 
-constant $EXT_ENUM_LINKS = taxonomy('https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-tin-def-2024.xml')
-
-constant $META = taxonomy('https://xbrl.fasb.org/us-gaap/2024/meta/us-gaap-metaModel-entire-2024.xsd')
-
-constant $EBP = taxonomy('https://xbrl.fasb.org/us-gaap/2024/ebp/entire/us-gaap-ebp-entryPoint-all-2024.xsd')
-
-constant $CYD = taxonomy('https://xbrl.sec.gov/cyd/2024/cyd-entire-2024.xsd')
-
-constant $ALL_BASE_TAXONOMIES = list($US-GAAP, $EXCHANGE, $STATE_PROVINCE, $NAICS, $SIC, $ECD, $CYD)
+constant $CYD_ELTS = taxonomy('https://xbrl.sec.gov/cyd/2024/cyd-2024.xsd')
 
 /** DEI HANDLING**/
 
