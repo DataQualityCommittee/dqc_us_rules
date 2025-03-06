@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in XBRL rule processor (xule) successful, version Check version using Tools->Xule->Version on the GUI or --xule-version on the command line. - xule </message>
+ <ref href="xule"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - transforms/SEC </message>
+ <ref href="transforms/SEC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Validate EFM successful, version 1.23.4. - validate/EFM </message>
+ <ref href="validate/EFM"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30043 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.02 secs at 2025-03-06T11:47:11 - /Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS </message>
+ <ref href="/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS#?#/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/wb-20231231x20f.htm"/></entry>
+<entry code="xule:error" level="error">
+ <message cid="4412808544" edgarMessageNumericId="60000000">[xule:error] rule DQC.US.0118.9575: Rule: DQC.US.0118.9575 - The value for a line item or dimension must be a qname or concept, found 'set'. - IXDS wb-20231231x20f.htm </message>
+ <ref href="IXDS wb-20231231x20f.htm"/></entry>
+<entry code="DQC.US.0179.10142" level="error">
+ <message filing_url="/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS" severity="error" effectiveDate="2024-08-31" cid="4412808544" edgarMessageNumericId="60000000">[DQC.US.0179.10142] The concept us-gaap:CommonStockDividendsPerShareDeclared has been reported with a value of 0.85.  This value is reported with a duration starting on 2023-04-30 and ending on 2023-05-31.  This period does not align with the reporting periods of the report.  Adjust the reporting period to reflect one of the following reporting durations 2023-01-01 to 2023-06-30, 2023-01-01 to 2023-12-31. This rule is flagging because the value reported for us-gaap:CommonStockDividendsPerShareDeclared is prior to the report year end and should have been expensed for a period. This period should be associated with this fact.  This makes it possible to compare the value with similar metrics such as earnings per share. If the dates are used to seperate two dividends within the same reporting period then the DividendsAxis should be used to seperate the values.
+
+The properties of  us-gaap:CommonStockDividendsPerShareDeclared are:
+Period :2023-05-01 to 2023-05-31
+Dimensions : 
+
+Rule Element Id:10142
+Rule version: 27.0.0RC1 - wb-20231231x20f.htm 242</message>
+ <ref href="wb-20231231x20f.htm#Narr_L4KEBxese0yXzrbRmS8Mhw" sourceLine="242">
+  <property name="file" value="wb-20231231x20f.htm"/>
+  <property name="line" value="242"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Declared"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="CommonStockDividendsPerShareDeclared"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareDeclared"/>
+  <property name="contextRef" value="Duration_5_1_2023_To_5_31_2023_JM8IYpl1nk2rYt457vKjfg">
+   <property name="entity" value="0001595761">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-05-01"/>
+   <property name="endDate" value="2023-05-31"/>
+  </property>
+  <property name="unitRef" value="Unit_Divide_USD_shares_jT0KhbnmF06YPV8ZBmySZg ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.85"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.85"/>
+ </ref></entry>
+<entry code="DQC.US.0194.10637" level="error">
+ <message filing_url="/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS" severity="error" effectiveDate="None" cid="4412808544" edgarMessageNumericId="60000000">[DQC.US.0194.10637] us-gaap:NoncontrollingInterestDecreaseFromDeconsolidation has a value of -12,000 which is less than zero. This element should not have a negative value when used with a non controlling interest [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this us-gaap:NoncontrollingInterestDecreaseFromDeconsolidation fact are:
+Period :2021-01-01 to 2021-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:NoncontrollingInterestMember
+Unit : USD
+Rule Element Id:10637
+Rule version: 27.0.0RC1 - wb-20231231x20f.htm 196</message>
+ <ref href="wb-20231231x20f.htm#Tc_KLmZD51inUqZiWLSyRzriw_11_24" sourceLine="196">
+  <property name="file" value="wb-20231231x20f.htm"/>
+  <property name="line" value="196"/>
+  <property name="label" value="Noncontrolling Interest, Decrease from Deconsolidation"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="NoncontrollingInterestDecreaseFromDeconsolidation"/>
+  <property name="QName" value="us-gaap:NoncontrollingInterestDecreaseFromDeconsolidation"/>
+  <property name="contextRef" value="Duration_1_1_2021_To_12_31_2021_us-gaap_StatementEquityComponentsAxis_us-gaap_NoncontrollingInterestMember_GYFQPcSMXEKenN-am37AqQ">
+   <property name="entity" value="0001595761">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-01-01"/>
+   <property name="endDate" value="2021-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:NoncontrollingInterestMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_Standard_USD_zagRz5ohYEK2MLZg7LLJRg ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-12,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="12"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 37.39 secs - /Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS </message>
+ <ref href="/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/_IXDS#?#/Users/campbellpryde/Downloads/0001104659-24-051442-xbrl.zip/wb-20231231x20f.htm"/></entry>
+</log>
