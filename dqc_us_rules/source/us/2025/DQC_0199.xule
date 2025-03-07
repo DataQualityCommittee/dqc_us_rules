@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -42,7 +42,7 @@ ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$maturity = [@concept in InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit=*]
+$maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit=*]
 
 $rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
 
