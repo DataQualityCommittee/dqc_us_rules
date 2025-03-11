@@ -16,9 +16,9 @@ ASSERT US.0199.10653 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit=*]
+$spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
-$ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit=*]
+$ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
 
 exists($spread) and not exists($ratebasis)
     
