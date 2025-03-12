@@ -41,6 +41,10 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 		/** Get the list of items to check **/
 		for $ext_pairs in $EXT_ENUM
 			$FS_concept = $ext_pairs[1]
+			/** Skip Interest and Penalties as these are not required as they were added to the taxonomy in error. **/
+			if $FS_concept in set(IncomeTaxExaminationInterestExpense, IncomeTaxExaminationPenaltiesExpense)
+				skip
+			else
 			$related_ext_enum = $ext_pairs[2]
 			$NotDisclosedAsImmaterial = $related_ext_enum.local-name + 'NotDisclosedFlag'
 
