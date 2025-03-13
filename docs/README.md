@@ -1,6 +1,6 @@
 # Data Quality Committee Rules &amp; Guidance
 
-The following Rules &amp; Guidance have been approved by the DQC. Starting with the v6 release, Approved rules listed below will increment with each major release in which they are _functionally revised_. Rules for which the _scope of coverage_ changes (ie. DQC_0015, Negative Values) will not be incremented. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
+Approved rules listed below will increment with each major release in which they are _functionally revised_. Rules for which the _scope of coverage_ changes (ie. DQC_0015, Negative Values) will not be incremented. To review human-readable versions of the validations in this release, click any of the files linked in the "Number" column below. Changes for any of these files is available through the 'blame' option on GitHub for the [corresponding release](https://github.com/DataQualityCommittee/dqc_us_rules/releases).  
 
 | Number | Short name | Status | Rule version (see [Versioning](../README.md#versioning)) |
 | ----- | ----- | ----- | ----- |
@@ -116,7 +116,7 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0148](DQC_US_0148/DQC_0148.md) | OCI Items in Income | Approved | 20 |
 | [DQC_US_0149](DQC_US_0149/DQC_0149.md) | Use of Noncurrent Assets | Approved | 21 |
 | [DQC_US_0150](DQC_US_0150/DQC_0150.md) | Segment Reporting Inconsistencies | Approved | 21 |
-| [DQC_US_0152](DQC_US_0152/DQC_0152.md) | Year List Items Used with Tax Period Axis | Public Exposure | 23 |
+| [DQC_US_0152](DQC_US_0152/DQC_0152.md) | Year List Items Used with Tax Period Axis | Approved | 23 |
 | [DQC_US_0153](DQC_US_0153/DQC_0153.md) | Financial Statements Table Placement | Approved | 21 |
 | [DQC_US_0154](DQC_US_0154/DQC_0154.md) | Tax Reconciliation Items | Approved | 21 |
 | [DQC_US_0155](DQC_US_0155/DQC_0155.md) | Exchange Rate Effect Inconsistency | Approved | 21 |
@@ -131,19 +131,46 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 | [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Approved | 22 |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Approved | 22 |
 | [DQC_US_0166](DQC_US_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
-| [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Public Exposure | 23 |
-| [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Public Exposure | 23 |
-| [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Public Exposure | 23 |
-| [DQC_US_0170](DQC_US_0170/DQC_0170.md) | ECD Rule 10b51 Flag Disclosures | Public Exposure | 23 |
-| [DQC_US_0171](DQC_US_0171/DQC_0171.md) | ASU 201613 Transition Elements | Public Exposure | 23 |
-| [DQC_IFRS_0172](DQC_US_0172/DQC_0172.md) | Reporting Right of use Assets | Public Exposure | 23 |
-| [DQC_IFRS_0173](DQC_US_0173/DQC_0173.md) | IFRS Transition Elements | Public Exposure | 23 |
+| [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Approved | 23 |
+| [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Approved | 23 |
+| [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Approved | 23 |
+| [DQC_US_0170](DQC_US_0170/DQC_0170.md) | ECD Rule 10b51 Flag Disclosures | Approved | 23 |
+| [DQC_US_0171](DQC_US_0171/DQC_0171.md) | ASU 201613 Transition Elements | Approved | 23 |
+| [DQC_IFRS_0172](DQC_IFRS_0172/DQC_0172.md) | Reporting Right of use Assets | Approved | 23 |
+| [DQC_IFRS_0173](DQC_IFRS_0173/DQC_0173.md) | IFRS Transition Elements | Approved | 23 |
 | [DQC_US_0174](DQC_US_0174/DQC_0174.md) | Conditional NonNegs | Approved | 22 |
-| [DQC_IFRS_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Public Exposure | 23 |
-| [DQC_IFRS_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Public Exposure | 23 |
-| [DQC_IFRS_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Public Exposure | 23 |
+| [DQC_US_0175](DQC_US_0175/DQC_0175.md) | Litigation Settlement Roll Forward Elements | Approved | 23 |
+| [DQC_US_0176](DQC_US_0176/DQC_0176.md) | US-GAAP Elements used in IFRS Filings | Approved | 23 |
+| [DQC_US_0177](DQC_US_0177/DQC_0177.md) | Addition of PEO and Nonpeo Compensation Adjustments | Approved | 23 |
+| [DQC_US_0178](DQC_US_0178/DQC_0178.md) | Dividend Disclosures in the Statement of Changes in Shareholders Equity | Approved | 24 |
+| [DQC_US_0179](DQC_US_0179/DQC_0179.md) | Dividend Event Disclosures  | Approved | 24 |
+| [DQC_US_0180](DQC_US_0180/DQC_0180.md) | Dividend Financial Statement Disclosures | Approved | 24 |
+| [DQC_US_0181](DQC_US_0181/DQC_0181.md) | Interest Expense Operating and Nonoperating | Approved | 24 |
+| [DQC_US_0182](DQC_US_0182/DQC_0182.md) | Dimensional Equivalents Using the Meta Taxonomy  | Approved | 24 |
+| [DQC_US_0183](DQC_US_0183/DQC_0183.md) | Face Financial Statement Location using the Accrual Axis | Approved | 24 |
+| [DQC_US_0184](DQC_US_0184/DQC_0184.md) | OCI Reconciliation of Before Tax and Net of Tax OCI | Approved | 24 |
+| [DQC_US_0185](DQC_US_0185/DQC_0185.md) | Reconciliation in Schedule Of Unrecognized Tax Benefits Roll Forward Table Text  | Approved | 24 |
+| [DQC_IFRS_0186](DQC_IFRS_0186/DQC_0186.md) | Dividend Disclosures in the Components of Equity (IFRS) | Approved | 24 |
+| [DQC_US_0187](DQC_US_0187/DQC_0187.md) | Property Plant and Equipment Calculation | Approved | 24 |
+| [DQC_US_0188](DQC_US_0188/DQC_0188.md) | ECD Adjustment Member Check | Approved | 24 |
+| [DQC_US_0190](DQC_US_0190/DQC_0190.md) | Employee Benefit Reporting | Approved | 25 |
+| [DQC_US_0191](DQC_US_0191/DQC_0191.md) | Proxy - PEO Concepts Recorded with NEO Member | Approved | 25 |
+| [DQC_US_0192](DQC_US_0192/DQC_0192.md) | Balance Sheet Numerical Scaling | Approved | 25 |
+| [DQC_US_0193](DQC_US_0193/DQC_0193.md) | Standard Dividend Member Name | Approved | 24 |
+| [DQC_US_0194](DQC_US_0194/DQC_0194.md) | Negative Values for Members on the Statement of Equity Components Axis | Approved | 26 |
+| [DQC_US_0195](DQC_US_0195/DQC_0195.md) | Facts using an invalid member with the Equity Components Axis | Approved | 26 |
+| [DQC_US_0196](DQC_US_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | Approved | 26 |
+| [DQC_IFRS_0196](DQC_IFRS_0196/DQC_0196.md) | Opening and Closing Balances on the Statement of Shareholders Equity | Approved | 26 |
+| [DQC_US_0197](DQC_US_0197/DQC_0197.md) | Income Statement Items used on The Changes in Shareholders Equity | Approved | 26 |
+| [DQC_US_0198](DQC_US_0198/DQC_0198.md) | Income Tax Reconciliation Percentages | Approved | 26 |
+| [DQC_US_0199](DQC_US_0199/DQC_0199.md) | Rate Basis Reported on Investment Schedules | Approved | 26 |
+| [DQC_US_0200](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Approved | 26 |
+| [DQC_US_0201](DQC_US_0201/DQC_0201.md) | Private Company Concepts | Approved | 26 |
+| [DQC_US_0202](DQC_US_0202/DQC_0202.md) | Cyber Taxonomy Disclosures | Approved | 26 |
 
 ## Guidance 
+
+### [Reporting US GAAP Dividend Disclosures in XBRL - FAQ](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/guid-dividend.pdf) - approved 06/27/2024
 
 ### [Investment Guidance FAQ](https://xbrl.us/guid-investment-faq/) - approved 9/21/2022
 
@@ -161,6 +188,6 @@ The following Rules &amp; Guidance have been approved by the DQC. Starting with 
 
 ### [Revenue Guidance](https://github.com/DataQualityCommittee/documentation/blob/master/guidance/RevenueRecognition.md) - approved 10/10/2018
 
-© Copyright 2015 - 2023 XBRL US, Inc. All rights reserved.   
+© Copyright 2015 - 2025 XBRL US, Inc. All rights reserved.   
 See [License](https://xbrl.us/dqc-license) for license information.  
 See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice.  
