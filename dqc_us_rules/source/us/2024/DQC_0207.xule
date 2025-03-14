@@ -1,0 +1,45 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0207.10722 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair value of dimensions is appropriate when compared to facts with less or more dimensions.**/
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** select facts with the BDC subtotals **/
+$BDC_INDUSTRY = [@concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
+
+$BDC_INDUSTRY_AND_MORE = {@concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_INDUSTRY < $BDC_INDUSTRY_AND_MORE
+
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_INDUSTRY}. This concept is used to report the fair value of investments for the {$BDC_INDUSTRY.dimension(EquitySecuritiesByIndustryAxis)} industry. The filer has  reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_INDUSTRY_AND_MORE}. This value is used to report the fair value of investments for the following dimensions {$BDC_INDUSTRY_AND_MORE.dimensions.join(', ','=')}. The value reported for all of the {$BDC_INDUSTRY.dimension(EquitySecuritiesByIndustryAxis)} industry is less than the value reported for the value {$BDC_INDUSTRY_AND_MORE} which is disaggregated by additional dimensions. This is unexpected as the value reported for the the less detailed value should be more than or equal to the value reported for the for the dimensions {$BDC_INDUSTRY.dimensions.join(', ','=')}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_INDUSTRY_AND_MORE.name}
+Value : {$BDC_INDUSTRY_AND_MORE}
+Period : {$BDC_INDUSTRY_AND_MORE.period}
+Dimensions : {$BDC_INDUSTRY_AND_MORE.dimensions.join(', ','=')}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
