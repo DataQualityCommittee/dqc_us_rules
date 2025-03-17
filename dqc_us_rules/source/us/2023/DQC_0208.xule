@@ -22,18 +22,20 @@ $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('
 and $item.cube-concept.name in set(ScheduleOfInvestmentsTable)
 
 $subTotal = list({covered @concept = InvestmentOwnedAtFairValue @InvestmentTypeAxis = * })
+if $subTotal.length == 0
+    skip
+else
+    $members = sum(filter  $subTotal returns set($item.dimension(InvestmentTypeAxis)))
 
-$members = sum(filter  $subTotal returns set($item.dimension(InvestmentTypeAxis)))
+    $Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
 
-$Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
+    $BDC_Ext_enum = sum(list([covered @concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-$BDC_Ext_enum = sum(list([covered @concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = *]))
+    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
 
-$intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
 
-$NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
-
-$NoTotalForInvestmentType.length > 0
+    $NoTotalForInvestmentType.length > 0
 
 
 message
@@ -65,19 +67,20 @@ $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('
 and $item.cube-concept.name in set(ScheduleOfInvestmentsTable)
 
 $subTotal = list({covered @concept = InvestmentOwnedAtFairValue @EquitySecuritiesByIndustryAxis = * })
+if $subTotal.length == 0
+    skip
+else
+    $members = sum(filter  $subTotal returns set($item.dimension(EquitySecuritiesByIndustryAxis)))
 
-$members = sum(filter  $subTotal returns set($item.dimension(EquitySecuritiesByIndustryAxis)))
+    $Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
 
-$Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
+    $BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-$BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
+    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
 
-$intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
 
-$NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
-
-$NoTotalForInvestmentType.length > 0
-
+    $NoTotalForInvestmentType.length > 0
 
 message
 "The filer has reported a schedule of investments and has provided subtotals for the EquitySecuritiesByIndustryAxis.  The filer has also reported values for the InvestmentIndustrySectorExtensibleEnumeration concept.  The values reported for the InvestmentIndustrySectorExtensibleEnumeration concept should be used as members on the EquitySecuritiesByIndustryAxis or should roll up in a domain-member hierarchy to the member used as a subtotal.  The following extensible enumeration values have been reported but are not being used as members on the EquitySecuritiesByIndustryAxis or can be reconciled to this axis. 

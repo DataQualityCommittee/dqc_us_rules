@@ -23,17 +23,21 @@ and $item.cube-concept.name in set(ScheduleOfInvestmentsTable)
 
 $subTotal = list({covered @concept = InvestmentOwnedAtFairValue @InvestmentTypeAxis = * })
 
-$members = sum(filter  $subTotal returns set($item.dimension(InvestmentTypeAxis)))
+if $subTotal.length == 0
+    skip
+else
 
-$Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
+    $members = sum(filter  $subTotal returns set($item.dimension(InvestmentTypeAxis)))
 
-$BDC_Ext_enum = sum(list([covered @concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = *]))
+    $Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
 
-$intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+    $BDC_Ext_enum = sum(list([covered @concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-$NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
+    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
 
-$NoTotalForInvestmentType.length > 0
+    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
+
+    $NoTotalForInvestmentType.length > 0
 
 
 message
@@ -65,18 +69,20 @@ $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('
 and $item.cube-concept.name in set(ScheduleOfInvestmentsTable)
 
 $subTotal = list({covered @concept = InvestmentOwnedAtFairValue @EquitySecuritiesByIndustryAxis = * })
+if $subTotal.length == 0
+    skip
+else
+    $members = sum(filter  $subTotal returns set($item.dimension(EquitySecuritiesByIndustryAxis)))
 
-$members = sum(filter  $subTotal returns set($item.dimension(EquitySecuritiesByIndustryAxis)))
+    $Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
 
-$Get_Domain_Members = navigate domain-member descendants from $members returns set(target-name) + $members.name ;
+    $BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-$BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
+    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
 
-$intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
 
-$NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
-
-$NoTotalForInvestmentType.length > 0
+    $NoTotalForInvestmentType.length > 0
 
 
 message
