@@ -167,6 +167,13 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0200](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Approved | 26 |
 | [DQC_US_0201](DQC_US_0201/DQC_0201.md) | Private Company Concepts | Approved | 26 |
 | [DQC_US_0202](DQC_US_0202/DQC_0202.md) | Cyber Taxonomy Disclosures | Approved | 26 |
+| [DQC_US_0203](DQC_US_0203/DQC_0203.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0204](DQC_US_0204/DQC_0204.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0205](DQC_US_0205/DQC_0205.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0206](DQC_US_0206/DQC_0206.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Cyber Taxonomy Disclosures | Public Exposure | 27 |
+| [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Public Exposure | 27 |
 
 ## Guidance 
 
