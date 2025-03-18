@@ -278,3 +278,21 @@ constant $EXT_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/concept-extensibl
 
 constant $IDENTIFICATION = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants taxonomy $EXT_ENUM_LINKS returns set (source-name, target-name)
 
+constant $PPE_MEMBERS = navigate domain-member descendants 
+     from PropertyPlantAndEquipmentTypeDomain
+     taxonomy $US-GAAP
+     returns set (target-name)
+
+constant $INTANGIBLE_FINITE_ASSETS_MEMBERS = navigate domain-member descendants 
+     from FiniteLivedIntangibleAssetsMajorClassNameDomain
+     taxonomy $US-GAAP
+     returns set (target-name)
+
+constant $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS = navigate domain-member descendants 
+     from IndefiniteLivedIntangibleAssetsMajorClassNameDomain
+     taxonomy $US-GAAP
+     returns set (target-name)
+
+constant $INTANGIBLE_MONETARY_ITEMS = navigate parent-child descendants from list(IntangibleAssetsDisclosureTextBlock) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+constant $INTANGIBLE_DURATION_ITEMS = navigate parent-child descendants from list(IntangibleAssetsDisclosureTextBlock) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:durationItemType  returns set (target-name)
