@@ -305,6 +305,7 @@ constant $NON_FINANCING_DESCENDANTS = navigate parent-child descendants from $No
 constant $NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract)
 constant $NON_INVESTING_DESCENDANTS = navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)
 constant $FILIN_COMPONENTS_OF_NET_INC_LOSS = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
+constant $CHG_IN_OP_CAPTL = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name)
 
 /* DQC_0148 */
 constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
@@ -324,6 +325,9 @@ constant $NI_CONCEPTS = sum(set(for $calcNetwork in $NI_CONCEPT_NETWORKS.sort
 $calcNetwork.concept-names
 ))
 
+/* DQC_0158 */
+constant $REL_PTY_STATUS_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants from RelatedAndNonrelatedPartyStatusAxis taxonomy $EXT_ENUM_LINKS returns set (target-name)
+
 /* DQC_0171 */
 constant $ASU201613_TRANSITION_ELEMENTS = navigate parent-child descendants from Asu201613TransitionAbstract taxonomy $US-GAAP returns set (target-name)
 
@@ -338,6 +342,9 @@ constant $INCOME_STATEMENT_OUTFLOWS = navigate 'http://www.xbrl.org/2021/arcrole
 constant $INCOME_STATEMENT_INFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-inflow' descendants from RetainedEarningsAccumulatedDeficit taxonomy $META returns set (target-name)
 
 constant $INCOME_STATEMENT_CONCEPTS = $INCOME_STATEMENT_OUTFLOWS  + $INCOME_STATEMENT_INFLOWS
+
+/* DQC_0188 */
+constant $ECD_ADJ_TO_COMP_MBRS = navigate dimensions descendants from ecd:AdjToCompAxis taxonomy $ECD_ELTS returns set (target-name)
 
 /* DQC_0195 */
 constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)

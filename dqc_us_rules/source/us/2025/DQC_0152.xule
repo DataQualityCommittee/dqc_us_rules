@@ -12,7 +12,7 @@ assert US.0152.10116  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 
-$GYearListElements = filter ($US-GAAP.concepts) where $item.data-type.name == dtr-types:gYearListItemType
+$GYearListElements = filter ($US-GAAP_ELTS_CALCS.concepts) where $item.data-type.name == dtr-types:gYearListItemType
 
 $factsWithGYearList = {@concept in $GYearListElements @TaxPeriodAxis = *};
 

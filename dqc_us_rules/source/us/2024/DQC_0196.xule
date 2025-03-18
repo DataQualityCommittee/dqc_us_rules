@@ -332,7 +332,7 @@ ASSERT US.0196.10633 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$AOCI-Members = (navigate parent-child descendants include start from list(AccumulatedOtherComprehensiveIncomeMember) taxonomy $US-GAAP returns set (target-name))
+$AOCI-Members = $AOCI_MEMBERS
 
 $exclusionList = list(StockholdersEquity,
                     PartnersCapital,

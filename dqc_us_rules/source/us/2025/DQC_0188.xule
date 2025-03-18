@@ -24,7 +24,7 @@ if $ecdtaxonomy
     /** Get a list of the members **/
     $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set - set(ecd:AllAdjToCompMember)
 
-    $member_descendants_in_taxonomy = (navigate dimensions descendants from ecd:AdjToCompAxis taxonomy $ECD ).to-set
+    $member_descendants_in_taxonomy = set(for $to in $ECD_ADJ_TO_COMP_MBRS $ECD_ELTS.concept($to) );
 
     $commonMembers = $member_descendants_in_taxonomy intersect $member_descendants
 
