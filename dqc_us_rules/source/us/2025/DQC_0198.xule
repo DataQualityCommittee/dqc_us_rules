@@ -108,12 +108,12 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
-        exists({@concept =  $concept[2]}#concept-value) and exists({@concept =  $concept[1]})
+        exists({@concept =  $concept[2]}#concept-value) and missing({@concept =  $concept[1]})
 else
     skip
 
 message
-"The filer has reported a value for the concept {$concept[2]} with a value of {$concept-value}. This concept should have an equivalent monetary amount. Please provide the equivalent monetary amount for this concept of {$concept[2]}.  See the FASB implementation guide at https://xbrl.fasb.org/impguidance/IT_TIG/incometaxes.pdf for more information.
+"The filer has reported a value for the concept {$concept[2]} with a value of {$concept-value}. This concept should have an equivalent monetary amount. Please provide the equivalent monetary amount for this concept of {$concept[1]}.  See the FASB implementation guide at https://xbrl.fasb.org/impguidance/IT_TIG/incometaxes.pdf for more information.
 
 The properties of this {$concept-value.concept} fact are:
 Period :{$concept-value.period}
@@ -169,7 +169,7 @@ else
     skip
 
 message
-"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.  The value for net income should be calculated as the value of IncomeTaxExpenseBenefit divided by the value of EffectiveIncomeTaxRateContinuingOperations.
+"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.
 {$percentage-message}
 
 The properties of this {$percentage-value.concept} fact are:
