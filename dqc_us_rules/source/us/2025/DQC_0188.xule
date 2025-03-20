@@ -22,9 +22,9 @@ $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
 
 if $ecdtaxonomy
     /** Get a list of the members **/
-    $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set - set(ecd:AllAdjToCompMember)
+    $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis returns set (target-name)).to-set - set(ecd:AllAdjToCompMember)
 
-    $member_descendants_in_taxonomy = set(for $to in $ECD_ADJ_TO_COMP_MBRS $ECD_ELTS.concept($to) );
+    $member_descendants_in_taxonomy = $ECD_ADJ_TO_COMP_MBRS
 
     $commonMembers = $member_descendants_in_taxonomy intersect $member_descendants
 

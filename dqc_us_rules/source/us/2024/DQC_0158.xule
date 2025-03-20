@@ -16,7 +16,7 @@ exists({covered @RelatedAndNonrelatedPartyStatusAxis = *}#invalid_fact)
 
 message
 "
-The instance contains a fact value using the concept {$invalid_fact.concept.name} with a value of {if $invalid_fact.is-type(nonnum:textBlockItemType) $invalid_fact.string.substring(1,200) + '....' else $invalid_fact} which uses the axis RelatedAndNonrelatedPartyS58tusAxis. This axis will be deprecated in the 2024 taxonomy and should not be used in 2023 filings. The filer should use the RelatedPartyTransactionsByRelatedPartyAxis axis as a replacement. See FASB FAQ 2.19. (https://xbrl.fasb.org/resources/taxonomyfaq.pdf)
+The instance contains a fact value using the concept {$invalid_fact.concept.name} with a value of {if $invalid_fact.is-type(nonnum:textBlockItemType) $invalid_fact.string.substring(1,200) + '....' else $invalid_fact} which uses the axis RelatedAndNonrelatedPartyStatusAxis. This axis will be deprecated in the 2024 taxonomy and should not be used in 2023 filings. The filer should use the RelatedPartyTransactionsByRelatedPartyAxis axis as a replacement. See FASB FAQ 2.19. (https://xbrl.fasb.org/resources/taxonomyfaq.pdf)
 
 The properties of this {$invalid_fact.concept.name} fact are:
 Period :{$invalid_fact.period}
