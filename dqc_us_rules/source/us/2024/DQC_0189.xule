@@ -28,9 +28,13 @@ for $cube in $all_cubes
             if $cube.dimensions().concept().name.contains($dim)
                     $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
                     if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
-                        $count_values = count(list({@cube = $cube @$dim = *}#PrimaryConcept));
-                    
-                        $count_values == 1 and (not exists({@$dim = none}))
+                        $PrimaryConcepts = list({@cube = $cube @$dim = *});
+                        $count_values = count($PrimaryConcepts);
+                        if $count_values == 1 and (not exists({@concept = $PrimaryConcepts[1].concept @$dim = none}))
+                            $PrimaryConcept = $PrimaryConcepts[1]
+                            true
+                        else
+                            false
                     else
                         skip
             else
