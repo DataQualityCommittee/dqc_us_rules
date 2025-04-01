@@ -26,6 +26,7 @@ if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact.contains('T')}))
 		and not(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))
 		and not(exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
+		and not(exists({covered @concept = qname($EXTENSION_NS,'InceptionDate')}))
 		and not(exists({covered @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
 		and not $DOCUMENT_PERIOD_END_VALUE.length > 1
 	else
@@ -38,7 +39,7 @@ message
 
 If this filing is for a Foreign Private Issuer and is a transitional report then create a boolean extension element called TransitionReport with a value of true. (This extension element is needed as the dei taxonomy does not include an element that indicates if the report is for a transitional period).
 
-If the company has a shorter operating period because the period of inception of the company is later than the start of the reporting period then the extension element called TransitionReport should also be used, to indicate that the Fiscal Period Focus is longer than the actual period of operations.
+If the company has a shorter operating period because the period of inception of the company is later than the start of the reporting period then the extension element called InceptionDate should be used, to indicate that the Fiscal Period Focus is longer than the actual period of operations.
 
 The properties of this {$fact1.concept.name} fact are:
 Period :{$fact1.period}
