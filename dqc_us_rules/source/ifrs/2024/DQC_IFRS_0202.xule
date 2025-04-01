@@ -15,7 +15,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify if a cyber element has been used, applies to the 2024 taxonomy only. Need to confirm if 10-Q is required or 8-K incident is OK**/
 
-$concepts = filter taxonomy().concepts where $item.name.uri == 'http://xbrl.sec.gov/cyd/2024'returns $item.name
+$concepts = filter taxonomy().concepts where $item.name.namespace-uri == 'http://xbrl.sec.gov/cyd/2024'returns $item.name
 
 if set('10-K','20-F').contains([covered @concept.local-name ='DocumentType'])
     list({covered @concept in $concepts}).length == 0
