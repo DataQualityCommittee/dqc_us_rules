@@ -20,13 +20,13 @@ THis rule checks that the fair value of a fact  using the EquitySecuritiesByIndu
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
-$BDC_Industry = [@concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
+$BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
 
-$BDC_Industry_And_More = {covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
+$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
-$BDC_Industry < $BDC_Industry_And_More
+    $BDC_Industry < $BDC_Industry_And_More
 
 
 message
@@ -54,9 +54,9 @@ THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is g
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
-$BDC_InvestmentType= [@concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
+$BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
-$BDC_InvestmentType_And_More = {covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
+$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -88,9 +88,9 @@ THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffilia
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
-$BDC_Affiliation= [@concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
+$BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
 
-$BDC_Affiliation_And_More = {covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
+$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -123,9 +123,9 @@ THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAx
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
-$BDC_Name= [@concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
+$BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
-$BDC_Name_And_More = {covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
+$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -158,9 +158,9 @@ THis rule checks that the fair value of a fact  using the srt:StatementGeographi
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
-$BDC_Geo= [@concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
+$BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
 
-$BDC_Geo_And_More = {covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
+$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
