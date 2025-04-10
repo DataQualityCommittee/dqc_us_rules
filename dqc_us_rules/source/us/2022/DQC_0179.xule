@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -72,8 +72,8 @@ $dividendDateConcepts = list(
                             )
 
 for $date in $dividendDateConcepts 
-    $firstDate = {@concept = $date[1] @period=*} 
-    $secondDate = {@concept = $date[2] @period=*}
+    $firstDate = {nonils @concept = $date[1] @period=*} 
+    $secondDate = {nonils @concept = $date[2] @period=*}
     $firstDate > $secondDate
 
 message

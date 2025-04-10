@@ -1,6 +1,6 @@
 /** 
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2024, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
  Shared Function Library IFRS & US & esef
@@ -1010,3 +1010,9 @@ function duration_contained($smallDate,$largeDate)
 				true
 		else
 			false
+
+/** used in DQC 00182 **/
+
+function concept_pair_from_name_pair($pair)
+
+	list(taxonomy().concept($pair[1]),taxonomy().concept($pair[2]))

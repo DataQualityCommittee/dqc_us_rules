@@ -252,6 +252,24 @@ constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
 **/
 constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis)
 
+/* DQC_0067 */
+constant $NETWORK440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $US-GAAP where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
+or $relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' 
+or $relationship.target.name.local-name == 'DeferredRevenue' 
+or $relationship.target.name.local-name == 'DeferredRevenueCurrent' 
+or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent' 
+or $relationship.target.name.local-name == 'IncreaseDecreaseInDeferredRevenue' 
+or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' 
+or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock'
+or $relationship.target.name.local-name == 'DeferredRevenueAdditions'
+or $relationship.target.name.local-name == 'DeferredRevenueRevenueRecognized1'
+or $relationship.target.name.local-name == 'DeferredRevenueRefundPayments1'
+or $relationship.target.name.local-name == 'DeferredRevenuePeriodIncreaseDecrease'
+or $relationship.target.name.local-name == 'DeferredRevenueByArrangementDisclosureTextBlock') returns set (target-name)
+constant $NETWORK606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $US-GAAP where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
+returns set (target-name)
+
+
 /* DQC_0099 */
 
 constant $NON_CF_ITEMS = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
@@ -273,6 +291,62 @@ constant $SET_BENCHMARK_ITEMS = (navigate parent-child descendants from list(Con
 
 /* DQC_0133 */
 constant $NON_FINANCIAL_DATA_EMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name)
+
+/* DQC_0121 */
+constant $TRANSITION_ELTS_1 = navigate parent-child descendants from set(Asu201601TransitionAbstract, Asu201618TransitionAbstract) taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
+constant $TRANSITION_ELTS_2 = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name)
+
+/* DQC_0145 */
+constant $ALLOWABLE_FINANCING_ITEMS = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) + set(ProceedsFromAdvancesForConstruction, RepaymentsOfAdvancesForConstruction, ProceedsFromContributionInAidOfConstruction)
+constant $NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract)
+constant $NON_FINANCING_DESCENDANTS = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name)
+constant $NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract)
+constant $NON_INVESTING_DESCENDANTS = navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)
+constant $FILIN_COMPONENTS_OF_NET_INC_LOSS = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
+constant $CHG_IN_OP_CAPTL = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name)
+
+/* DQC_0148 */
+constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
+where $item.role.description.contains('148410 - Statement -') 
+or $item.role.description.contains('148411 - Statement -') 
+or $item.role.description.contains('148412 - Statement -')
+or $item.role.description.contains('148413 - Statement -')
+
+constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
+$calcNetwork.concept-names
+))
+
+constant $NI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
+where $item.role.description.contains('124000 - Statement -') 
+
+constant $NI_CONCEPTS = sum(set(for $calcNetwork in $NI_CONCEPT_NETWORKS.sort
+$calcNetwork.concept-names
+))
+
+/* DQC_0158 */
+constant $REL_PTY_STATUS_ENUM = navigate 'http://fasb.org/us-gaap/arcrole/identification' descendants from RelatedAndNonrelatedPartyStatusAxis taxonomy $EXT_ENUM_LINKS returns set (target-name)
+
+
+/* DQC_0171 */
+constant $ASU201613_TRANSITION_ELEMENTS = navigate parent-child descendants from Asu201613TransitionAbstract taxonomy $US-GAAP returns set (target-name)
+
+/* DQC_0182 */
+
+constant $DIM_EQUIV_NAMES = navigate 'http://www.xbrl.org/2023/arcrole/concept-dimensional-equivalent' descendants  taxonomy $META returns list (source-name, target-name)
+
+/* DQC_0183 not available for 2023, dummy variable for build shell script */
+
+constant $INCOME_STATEMENT_CONCEPTS = set()
+
+/* DQC_0188 not available for 2023, dummy variable for build shell script */
+
+constant $ECD_ADJ_TO_COMP_MBRS = set()
+
+/* DQC_0195 */
+constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+/* DQC_0196 */
+constant $AOCI_MEMBERS = (navigate parent-child descendants include start from list(AccumulatedOtherComprehensiveIncomeMember) taxonomy $US-GAAP returns set (target-name))
 
 /* Extensible enumerations */
 

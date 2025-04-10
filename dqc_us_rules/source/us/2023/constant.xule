@@ -143,23 +143,6 @@ constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS whe
 
 constant $PARENTHETICAL_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
 
-constant $OCI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
-	where $item.role.description.contains('148410 - Statement -') 
-	or $item.role.description.contains('148411 - Statement -') 
-	or $item.role.description.contains('148412 - Statement -')
-	or $item.role.description.contains('148413 - Statement -')
-
-constant $OCI_CONCEPTS = sum(set(for $calcNetwork in $OCI_CONCEPT_NETWORKS.sort
-						$calcNetwork.concept-names
-					))
-
-constant $NI_CONCEPT_NETWORKS = FILTER $CALC_NETWORKS 
-	where $item.role.description.contains('124000 - Statement -') 
-
-constant $NI_CONCEPTS = sum(set(for $calcNetwork in $NI_CONCEPT_NETWORKS.sort
-						$calcNetwork.concept-names
-					))
-
 /*  
 *	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
 *	value or the context end date on the fact, whichever is later.

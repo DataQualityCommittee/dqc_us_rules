@@ -53,7 +53,7 @@ ASSERT US.0197.10634 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP returns set (target-name)
+$Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
 
 $income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest)
 

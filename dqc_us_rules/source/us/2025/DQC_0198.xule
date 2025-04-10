@@ -242,3 +242,27 @@ ASSERT US.0198.10662 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 false
 **/
+
+
+/** Determine the children of the concept to check **/
+
+
+ASSERT US.0198.10663 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$calcComponents = navigate summation-item children from EffectiveIncomeTaxRateContinuingOperations returns  (target-name, weight);
+
+$addendComponents = (list(for $x in $calcComponents
+                        $targetElement = $x[1];
+                        $targetWeight = $x[2];
+                        $factInfo = list({nonils @concept = $targetElement})
+
+                        $factValue = first-value(first(filter $factInfo where $item.decimals == $fs_decimals), first(filter $factInfo where $item.decimals >= $fs_decimals),  max(list(getDimensionSums($targetElement, $cube, 1, $concept_item, $sum2))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item, $sum2))), first(filter $factInfo where $item.decimals < $fs_decimals));
+                        
+                        if exists($factValue)
+                            list($factValue, $targetWeight, $targetElement, $factValue.string, $factValue.decimals)	
+                        else
+                            skip	
+                )
+                );	

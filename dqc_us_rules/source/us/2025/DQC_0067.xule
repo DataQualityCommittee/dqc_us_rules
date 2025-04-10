@@ -14,25 +14,12 @@ assert US.0067.7644 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$network440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $US-GAAP where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
-or $relationship.target.name.local-name == 'DirectCostsOfLeasedAndRentedPropertyOrEquipment' 
-or $relationship.target.name.local-name == 'DeferredRevenue' 
-or $relationship.target.name.local-name == 'DeferredRevenueCurrent' 
-or $relationship.target.name.local-name == 'DeferredRevenueNoncurrent' 
-or $relationship.target.name.local-name == 'IncreaseDecreaseInDeferredRevenue' 
-or $relationship.target.name.local-name == 'RevenueRecognitionPolicyTextBlock' 
-or $relationship.target.name.local-name == 'CostOfSalesPolicyTextBlock'
-or $relationship.target.name.local-name == 'DeferredRevenueAdditions'
-or $relationship.target.name.local-name == 'DeferredRevenueRevenueRecognized1'
-or $relationship.target.name.local-name == 'DeferredRevenueRefundPayments1'
-or $relationship.target.name.local-name == 'DeferredRevenuePeriodIncreaseDecrease'
-or $relationship.target.name.local-name == 'DeferredRevenueByArrangementDisclosureTextBlock') returns set (target-name);
+$network440000 = $NETWORK440000;
 
 $PriorStandard = $network440000; 
 
 
-$network606000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/RevenuefromContractswithCustomers' taxonomy $US-GAAP where $relationship.target.is-abstract == false  and  not($relationship.target.name.local-name == 'ExciseAndSalesTaxes')
-returns set (target-name);
+$network606000 = $NETWORK606000;
 
 /** Identifies a list of all the facts used that apply to 606. The existence of these facts determines if they have adopted the 606 revenue standard **/
 
