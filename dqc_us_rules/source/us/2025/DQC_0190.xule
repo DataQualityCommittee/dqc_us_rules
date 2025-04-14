@@ -475,7 +475,11 @@ if $EBPReports
     for $member in $LegalEntityAxisMembers
     
         $matchDict = $member.regex-match('^EBP[0-9][0-9][0-9]Member$')
-        $matchDict['match-count'] == 0
+        if $matchDict['match-count'] == 0
+            $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
+            $matchDict['match-count'] == 0
+        else
+            false
 else
     skip
 
