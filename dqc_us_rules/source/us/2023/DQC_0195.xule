@@ -10,8 +10,6 @@ Taxonomy: US GAAP ALL
 
 RULE-NAME-PREFIX DQC
 
-constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
-
 constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding, 
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
@@ -289,8 +287,8 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     TreasuryStockCarryingBasis,
                                     OtherComprehensiveIncomeLossNetOfTax,
                                     OtherComprehensiveIncomeLossBeforeTax,
-                                    OtherComprehensiveIncomeLossTax,
-                                    ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest
+                                    OtherComprehensiveIncomeLossTax
+                                    /**ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest**/
                                     )
 
 for $concept in $Element_Retained_Earnings_empty

@@ -18,7 +18,7 @@ New EBP elements are from the employee benefit plan's perspective and not from t
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$EBPQNames = filter $EBP.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
+$EBPQNames = filter $EBP_ELTS.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -474,18 +474,21 @@ if $EBPReports
 
     for $member in $LegalEntityAxisMembers
     
-        $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
-        $matchDict['match-count'] == 0
+        $matchDict = $member.regex-match('^EBP[0-9][0-9][0-9]Member$')
+        if $matchDict['match-count'] == 0
+            $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
+            $matchDict['match-count'] == 0
+        else
+            false
 else
     skip
 
 message
-"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP EIN and Plan number.  The element name should following the structure below:  
+"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP  and Plan number.  The element name should following the structure below:  
 - The first 3 alpha characters should be EBP.
-- The next 7 digis should be the EIN number in the format xx-xxxxxxx
-- The plan number represented using 3 digits separated from the EIN number with a dash.  i.e. -xxx
+- The plan number represented using 3 digits
 - The member name must conclude with the string Member.
-The form is as follows EBPxx-xxxxxxx-xxxMember. i.e. EBP11-1111111-011Member
+The form is as follows EBPxxxMember. i.e. EBP011Member
 
 The label of the member does not need to follow this format.
 

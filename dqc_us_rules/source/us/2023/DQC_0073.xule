@@ -54,7 +54,7 @@ FairValueInvestmentsEntitiesThatCalculateNetAssetValuePerShareRedemptionRestrict
 
 
 
-exists({@concept not in $allowable_line_items @DefinedBenefitPlanByPlanAssetCategoriesAxis = * where is_base($fact.concept, $ALL_BASE_TAXONOMIES)}#bad_fact)
+exists({@concept not in $allowable_line_items @DefinedBenefitPlanByPlanAssetCategoriesAxis = * where is_base($fact.concept, $ALL_BASE_TAXONOMIES_ELTS)}#bad_fact)
 
 message
 "The concept {$bad_fact.concept} with a value of {$bad_fact} is used with the DefinedBenefitPlanByPlanAssetCategoriesAxis. This element cannot be used with this axis. The allowable list of elements that can be used are as follows:

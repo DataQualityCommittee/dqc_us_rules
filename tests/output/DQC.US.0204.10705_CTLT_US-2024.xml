@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.76 secs at 2025-04-14T17:08:41 - http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm"/></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm" severity="error" effectiveDate="None" cid="2102871256256">[DQC.US.0204.10705] The concept  us-gaap:FiniteLivedIntangibleAssetUsefulLife with a value of P3Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:SoftwareAndSoftwareDevelopmentCostsMember. The member  us-gaap:SoftwareAndSoftwareDevelopmentCostsMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:FiniteLivedIntangibleAssetUsefulLife
+Value : P3Y
+Period : 2024-06-30
+Dimensions : us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:SoftwareAndSoftwareDevelopmentCostsMember, srt:RangeAxis=srt:MinimumMember
+
+Rule Element Id:10705
+Rule version: 27.0.0RC1 - ctlt-20240630.htm 8</message>
+ <ref href="ctlt-20240630.htm#f-419" sourceLine="8">
+  <property name="file" value="ctlt-20240630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Finite-Lived Intangible Asset, Useful Life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="FiniteLivedIntangibleAssetUsefulLife"/>
+  <property name="QName" value="us-gaap:FiniteLivedIntangibleAssetUsefulLife"/>
+  <property name="contextRef" value="c-50">
+   <property name="entity" value="0001596783">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-06-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MinimumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:SoftwareAndSoftwareDevelopmentCostsMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P3Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm" severity="error" effectiveDate="None" cid="2102871256256">[DQC.US.0204.10705] The concept  us-gaap:FiniteLivedIntangibleAssetUsefulLife with a value of P5Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:SoftwareAndSoftwareDevelopmentCostsMember. The member  us-gaap:SoftwareAndSoftwareDevelopmentCostsMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:FiniteLivedIntangibleAssetUsefulLife
+Value : P5Y
+Period : 2024-06-30
+Dimensions : srt:RangeAxis=srt:MaximumMember, us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:SoftwareAndSoftwareDevelopmentCostsMember
+
+Rule Element Id:10705
+Rule version: 27.0.0RC1 - ctlt-20240630.htm 8</message>
+ <ref href="ctlt-20240630.htm#f-420" sourceLine="8">
+  <property name="file" value="ctlt-20240630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Finite-Lived Intangible Asset, Useful Life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="FiniteLivedIntangibleAssetUsefulLife"/>
+  <property name="QName" value="us-gaap:FiniteLivedIntangibleAssetUsefulLife"/>
+  <property name="contextRef" value="c-51">
+   <property name="entity" value="0001596783">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-06-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MaximumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:SoftwareAndSoftwareDevelopmentCostsMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P5Y"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 68.33 secs - http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1596783/000159678324000087/ctlt-20240630.htm"/></entry>
+</log>

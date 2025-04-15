@@ -14,11 +14,10 @@ assert US.0145.9867 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
-$allowableFinancingItems = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) + set(ProceedsFromAdvancesForConstruction, RepaymentsOfAdvancesForConstruction, ProceedsFromContributionInAidOfConstruction)
+$allowableFinancingItems = $ALLOWABLE_FINANCING_ITEMS
 
-$taxonomyItemsNotInExtensions = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name) - $allowableFinancingItems
+$taxonomyItemsNotInExtensions = $NON_FINANCING_DESCENDANTS - $allowableFinancingItems
 
 $extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
 
@@ -41,9 +40,8 @@ assert US.0145.9868 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
-$taxonomyItemsNotInExtensions = (navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments, ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase) 
+$taxonomyItemsNotInExtensions = ($NON_INVESTING_DESCENDANTS) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments, ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase) 
 
 $extensionNames = navigate parent-child descendants from NetCashProvidedByUsedInInvestingActivitiesAbstract where $relationship.target.name in $taxonomyItemsNotInExtensions returns set (target-name)
 
@@ -66,9 +64,9 @@ rule-focus taxonomy().concept($invalidConcept)
 assert US.0145.9869  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$taxonomyChangeInOperatingCapital = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name) 
+$taxonomyChangeInOperatingCapital = $CHG_IN_OP_CAPTL 
 
-$filinComponentsOfNetIncomeLoss = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
+$filinComponentsOfNetIncomeLoss = $FILIN_COMPONENTS_OF_NET_INC_LOSS
 
 $misplacedConcepts = $filinComponentsOfNetIncomeLoss.intersect($taxonomyChangeInOperatingCapital)
 
