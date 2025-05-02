@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.79 secs at 2025-05-01T15:32:00 - http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm"/></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="1224002282240">[DQC.US.0189.10184] The filing has  reported a value for the element us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.015 using the axis VariableRateAxis in the role 995935 - Disclosure - Senior Debt and Other Debt - Details of Long-term Debt (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 was the member us-gaap:PrimeRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:PrimeRateMember.  The member us-gaap:PrimeRateMember should be removed from the value as it represents the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1.
+ 
+2. Tag the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.015 without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 is reported.
+
+The properties of this us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 fact are:
+Period :2024-01-01 to 2024-06-30
+Dimensions : us-gaap:VariableRateAxis=us-gaap:PrimeRateMember, us-gaap:LineOfCreditFacilityAxis=rhe:CadenceBankNAMember, us-gaap:DebtInstrumentAxis=rhe:SeniorDebtUSDAMember, us-gaap:LongtermDebtTypeAxis=us-gaap:SeniorDebtObligationsMember, srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis=rhe:SouthlandHealthcareMember
+Unit : pure
+
+Rule Element Id:10184
+Rule version: 26.0.9
+ - rhe-20240630.htm 4411</message>
+ <ref href="rhe-20240630.htm#F_b60ad1db-c72e-404c-84b1-5fbf378e0b29" sourceLine="4411">
+  <property name="file" value="rhe-20240630.htm"/>
+  <property name="line" value="4411"/>
+  <property name="label" value="Debt Instrument Basis Spread On Variable Rate1"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="QName" value="us-gaap:DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="contextRef" value="C_d1ba6279-8cf3-453c-af71-740c0ad5e22d">
+   <property name="entity" value="0001004724">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+   <property name="dimensions" value="(5)">
+    <property name="srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis" value="rhe:SouthlandHealthcareMember"/>
+    <property name="us-gaap:DebtInstrumentAxis" value="rhe:SeniorDebtUSDAMember"/>
+    <property name="us-gaap:LineOfCreditFacilityAxis" value="rhe:CadenceBankNAMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SeniorDebtObligationsMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:PrimeRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_pure (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.0150"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="1.50"/>
+ </ref></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="1224002282240">[DQC.US.0189.10184] The filing has  reported a value for the element us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0175 using the axis VariableRateAxis in the role 995935 - Disclosure - Senior Debt and Other Debt - Details of Long-term Debt (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 was the member us-gaap:PrimeRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:PrimeRateMember.  The member us-gaap:PrimeRateMember should be removed from the value as it represents the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1.
+ 
+2. Tag the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0175 without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 is reported.
+
+The properties of this us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 fact are:
+Period :2024-01-01 to 2024-06-30
+Dimensions : srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis=rhe:MountainTraceRehabMember, us-gaap:LongtermDebtTypeAxis=us-gaap:SeniorDebtObligationsMember, us-gaap:VariableRateAxis=us-gaap:PrimeRateMember, us-gaap:LineOfCreditFacilityAxis=rhe:CommunityBankMember, us-gaap:DebtInstrumentAxis=rhe:SeniorDebtUSDAMember
+Unit : pure
+
+Rule Element Id:10184
+Rule version: 26.0.9
+ - rhe-20240630.htm 4390</message>
+ <ref href="rhe-20240630.htm#F_965625ab-b300-40ac-956a-371bc9f45ec8" sourceLine="4390">
+  <property name="file" value="rhe-20240630.htm"/>
+  <property name="line" value="4390"/>
+  <property name="label" value="Debt Instrument Basis Spread On Variable Rate1"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="QName" value="us-gaap:DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="contextRef" value="C_d71ca8c2-a9ef-402e-bb7b-7193ae55117f">
+   <property name="entity" value="0001004724">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+   <property name="dimensions" value="(5)">
+    <property name="srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis" value="rhe:MountainTraceRehabMember"/>
+    <property name="us-gaap:DebtInstrumentAxis" value="rhe:SeniorDebtUSDAMember"/>
+    <property name="us-gaap:LineOfCreditFacilityAxis" value="rhe:CommunityBankMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SeniorDebtObligationsMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:PrimeRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_pure (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.0175"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="1.75"/>
+ </ref></entry>
+<entry code="DQC.US.0189.10184" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="1224002282240">[DQC.US.0189.10184] The filing has  reported a value for the element us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0225 using the axis VariableRateAxis in the role 995935 - Disclosure - Senior Debt and Other Debt - Details of Long-term Debt (Details) on the table us-gaap:DebtInstrumentTable. However, the only member used to disaggregate the total for us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 was the member us-gaap:PrimeRateMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration with a value of us-gaap:PrimeRateMember.  The member us-gaap:PrimeRateMember should be removed from the value as it represents the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1.
+ 
+2. Tag the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 with a value of 0.0225 without the VariableRateAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 is reported.
+
+The properties of this us-gaap:DebtInstrumentBasisSpreadOnVariableRate1 fact are:
+Period :2024-01-01 to 2024-06-30
+Dimensions : us-gaap:LongtermDebtTypeAxis=us-gaap:SeniorDebtObligationsMember, srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis=rhe:SouthlandHealthcareMember, us-gaap:VariableRateAxis=us-gaap:PrimeRateMember, us-gaap:LineOfCreditFacilityAxis=rhe:CadenceBankNAMember, us-gaap:DebtInstrumentAxis=rhe:SeniorDebtSBAMember
+Unit : pure
+
+Rule Element Id:10184
+Rule version: 26.0.9
+ - rhe-20240630.htm 4470</message>
+ <ref href="rhe-20240630.htm#F_067b72bc-4abd-4198-b310-3cd1f95797f3" sourceLine="4470">
+  <property name="file" value="rhe-20240630.htm"/>
+  <property name="line" value="4470"/>
+  <property name="label" value="Debt Instrument Basis Spread On Variable Rate1"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="QName" value="us-gaap:DebtInstrumentBasisSpreadOnVariableRate1"/>
+  <property name="contextRef" value="C_f5e4c48b-5ed4-44a9-9aee-2a8ee15ede3a">
+   <property name="entity" value="0001004724">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+   <property name="dimensions" value="(5)">
+    <property name="srt:RealEstateAndAccumulatedDepreciationDescriptionOfPropertyAxis" value="rhe:SouthlandHealthcareMember"/>
+    <property name="us-gaap:DebtInstrumentAxis" value="rhe:SeniorDebtSBAMember"/>
+    <property name="us-gaap:LineOfCreditFacilityAxis" value="rhe:CadenceBankNAMember"/>
+    <property name="us-gaap:LongtermDebtTypeAxis" value="us-gaap:SeniorDebtObligationsMember"/>
+    <property name="us-gaap:VariableRateAxis" value="us-gaap:PrimeRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_pure (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.0225"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="2.25"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.85 secs - http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1004724/000095017024096210/rhe-20240630.htm"/></entry>
+</log>

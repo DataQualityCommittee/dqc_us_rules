@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.44 secs at 2025-05-01T13:15:17 - http://www.sec.gov/Archives/edgar/data/1831868/000095017025057332/icu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1831868/000095017025057332/icu-20241231.htm"/></entry>
+<entry code="DQC.US.0005.17" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1831868/000095017025057332/icu-20241231.htm" severity="error" effectiveDate="2016-01-01" cid="2713060487296">[DQC.US.0005.17] The element Entity Common Stock Shares Outstanding with a value of 9,803,074 is used to report the Entity Common Stock Shares Outstanding as stated on the cover sheet of the entity's filing. However, the value reported is not as of the latest practicable date, as required. In this case, dei:EntityCommonStockSharesOutstanding with a value of 9,803,074 is reported as of 2024-04-16. This is earlier than the actual reporting date of the filing.
+
+Update the date context on this fact, so that the date is at least later than 2024-12-31, which is the reporting [end] date of the filing based on the defined dates of the Document Type element.
+
+The properties of this dei:EntityCommonStockSharesOutstanding fact are:
+Period: 2024-04-16
+Dimensions: 
+Unit: shares
+Rule version: 26.0.9 - icu-20241231.htm 138</message>
+ <ref href="icu-20241231.htm#F_27c32456-628b-413d-a64e-19ea16136f48" sourceLine="138">
+  <property name="file" value="icu-20241231.htm"/>
+  <property name="line" value="138"/>
+  <property name="label" value="Entity Common Stock, Shares Outstanding"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2024"/>
+  <property name="name" value="EntityCommonStockSharesOutstanding"/>
+  <property name="QName" value="dei:EntityCommonStockSharesOutstanding"/>
+  <property name="contextRef" value="C_28dc1001-36fa-49e8-b58e-225425c4fb8f">
+   <property name="entity" value="0001831868">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-04-16"/>
+  </property>
+  <property name="unitRef" value="U_shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="9,803,074"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="9,803,074"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 10.22 secs - http://www.sec.gov/Archives/edgar/data/1831868/000095017025057332/icu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1831868/000095017025057332/icu-20241231.htm"/></entry>
+</log>
