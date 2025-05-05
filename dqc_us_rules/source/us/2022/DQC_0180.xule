@@ -128,7 +128,7 @@ for $presNetwork in $PARENTHETICAL_STATEMENT_PRES_NETWORKS.sort
 
 		// Income Statement Processing 
 		if $presConceptItems.contains(DividendsPayableAmountPerShare) 
-            $factsReported = list({covered @DividendsPayableAmountPerShare})
+            $factsReported = list({covered @DividendsPayableAmountPerShare}).sort
             $factsReported.length > 0
 		else 
 			skip
