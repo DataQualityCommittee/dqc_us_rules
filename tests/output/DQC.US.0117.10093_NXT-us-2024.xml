@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 24.24 secs at 2025-05-05T10:45:46 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm"/></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm" severity="error" effectiveDate="2023-08-31" cid="2251721351936">[DQC.US.0117.10093] In the statement 00000007 - Statement - Consolidated Statements of Cash Flows the concept us-gaap:ProceedsFromNotesPayable with a value of 1,250,000 and dimension of us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and member of us-gaap:RelatedPartyMember is not equal to the dimensional breakdown of 1,365,000 using the dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and the second dimension srt:ConsolidatedEntitiesAxis:
+	RelatedPartyMember 	 --> 1,365,000 	 --> us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember, srt:ConsolidatedEntitiesAxis=EZFL:NextNRGHoldingCorpMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:ProceedsFromNotesPayable fact are:
+Period :2024-01-01 to 2024-03-31
+Unit : USD
+Dimensions : us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember
+Rule Element Id:10093
+Rule version: 26.0.10 - forms-1a.htm 23638</message>
+ <ref href="forms-1a.htm#Fact000577" sourceLine="23638">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="23638"/>
+  <property name="label" value="Proceeds from notes payable - related party"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProceedsFromNotesPayable"/>
+  <property name="QName" value="us-gaap:ProceedsFromNotesPayable"/>
+  <property name="contextRef" value="From2024-01-012024-03-31_us-gaap_RelatedPartyMember">
+   <property name="entity" value="0001817004">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:RelatedPartyTransactionsByRelatedPartyAxis" value="us-gaap:RelatedPartyMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,250,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,250,000"/>
+ </ref></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm" severity="error" effectiveDate="2023-08-31" cid="2251721351936">[DQC.US.0117.10093] In the statement 00000002 - Statement - Consolidated Balance Sheets the concept us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 845,275 and dimension of us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and member of us-gaap:NonrelatedPartyMember is not equal to the dimensional breakdown of 72,441 using the dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and the second dimension srt:ConsolidatedEntitiesAxis:
+	NonrelatedPartyMember 	 --> 72,441 	 --> us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:NonrelatedPartyMember, srt:ConsolidatedEntitiesAxis=EZFL:NextNRGHoldingCorpMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent fact are:
+Period :2023-12-31
+Unit : USD
+Dimensions : us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:NonrelatedPartyMember
+Rule Element Id:10093
+Rule version: 26.0.10 - forms-1a.htm 22664</message>
+ <ref href="forms-1a.htm#Fact000096" sourceLine="22664">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="22664"/>
+  <property name="label" value="Accounts payable and accrued expenses"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="AccountsPayableAndAccruedLiabilitiesCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent"/>
+  <property name="contextRef" value="AsOf2023-12-31_us-gaap_NonrelatedPartyMember">
+   <property name="entity" value="0001817004">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:RelatedPartyTransactionsByRelatedPartyAxis" value="us-gaap:NonrelatedPartyMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="845,275"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="845,275"/>
+ </ref></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm" severity="error" effectiveDate="2023-08-31" cid="2251721351936">[DQC.US.0117.10093] In the statement 00000002 - Statement - Consolidated Balance Sheets the concept us-gaap:NotesPayableCurrent with a value of 6,237,234 and dimension of us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and member of us-gaap:RelatedPartyMember is not equal to the dimensional breakdown of 5,234,650 using the dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and the second dimension srt:ConsolidatedEntitiesAxis:
+	RelatedPartyMember 	 --> 5,234,650 	 --> srt:ConsolidatedEntitiesAxis=EZFL:NextNRGHoldingCorpMember, us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:NotesPayableCurrent fact are:
+Period :2024-03-31
+Unit : USD
+Dimensions : us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember
+Rule Element Id:10093
+Rule version: 26.0.10 - forms-1a.htm 22684</message>
+ <ref href="forms-1a.htm#Fact000110" sourceLine="22684">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="22684"/>
+  <property name="label" value="Notes payable – related party"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="NotesPayableCurrent"/>
+  <property name="QName" value="us-gaap:NotesPayableCurrent"/>
+  <property name="contextRef" value="AsOf2024-03-31_us-gaap_RelatedPartyMember">
+   <property name="entity" value="0001817004">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:RelatedPartyTransactionsByRelatedPartyAxis" value="us-gaap:RelatedPartyMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="6,237,234"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="6,237,234"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 33.81 secs - http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm"/></entry>
+</log>

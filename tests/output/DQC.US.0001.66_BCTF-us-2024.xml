@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 13.70 secs at 2025-05-01T12:53:17 - http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm"/></entry>
+<entry code="DQC.US.0001.66" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm" severity="error" effectiveDate="2017-01-01" cid="2114119086208">[DQC.US.0001.66] The concept AvailableForSaleSecuritiesDebtSecurities with a value of 51,168,000 is dimensionally qualified with the HedgingDesignationAxis and the unallowable member HedgedAssetsMember. 
+The properties of the fact for AvailableForSaleSecuritiesDebtSecurities are:
+Period: 2024-12-31
+Dimensions: us-gaap:HedgingDesignationAxis=bctf:HedgedAssetsMember, us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis=us-gaap:FairValueHedgingMember 
+Unit: USD
+
+Rule Element Id:66
+Rule version: 26.0.9 - e25055_bctf-10k.htm 20432</message>
+ <ref href="e25055_bctf-10k.htm#Fact002606" sourceLine="20432">
+  <property name="file" value="e25055_bctf-10k.htm"/>
+  <property name="line" value="20432"/>
+  <property name="label" value="Available-for-sale securities, at fair value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="AvailableForSaleSecuritiesDebtSecurities"/>
+  <property name="QName" value="us-gaap:AvailableForSaleSecuritiesDebtSecurities"/>
+  <property name="contextRef" value="AsOf2024-12-31_us-gaap_FairValueHedgingMember_custom_HedgedAssetsMember">
+   <property name="entity" value="0001668340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis" value="us-gaap:FairValueHedgingMember"/>
+    <property name="us-gaap:HedgingDesignationAxis" value="bctf:HedgedAssetsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="51,168,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="51,168"/>
+ </ref></entry>
+<entry code="DQC.US.0001.66" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm" severity="error" effectiveDate="2017-01-01" cid="2114119086208">[DQC.US.0001.66] The concept InterestExpense with a value of 0 is dimensionally qualified with the HedgingDesignationAxis and the unallowable member HedgeItemMember. 
+The properties of the fact for InterestExpense are:
+Period: 2024-01-01 to 2024-12-31
+Dimensions: us-gaap:DerivativeInstrumentRiskAxis=us-gaap:InterestRateSwapMember, us-gaap:HedgingDesignationAxis=bctf:HedgeItemMember, us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis=us-gaap:FairValueHedgingMember 
+Unit: USD
+
+Rule Element Id:66
+Rule version: 26.0.9 - e25055_bctf-10k.htm 20370</message>
+ <ref href="e25055_bctf-10k.htm#Fact002596" sourceLine="20370">
+  <property name="file" value="e25055_bctf-10k.htm"/>
+  <property name="line" value="20370"/>
+  <property name="label" value="Interest Expense, Operating and Nonoperating"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InterestExpense"/>
+  <property name="QName" value="us-gaap:InterestExpense"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_us-gaap_FairValueHedgingMember_us-gaap_InterestRateSwapMember_custom_HedgeItemMember">
+   <property name="entity" value="0001668340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:InterestRateSwapMember"/>
+    <property name="us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis" value="us-gaap:FairValueHedgingMember"/>
+    <property name="us-gaap:HedgingDesignationAxis" value="bctf:HedgeItemMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0001.66" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm" severity="error" effectiveDate="2017-01-01" cid="2114119086208">[DQC.US.0001.66] The concept InterestAndDividendIncomeSecurities with a value of -356,000 is dimensionally qualified with the HedgingDesignationAxis and the unallowable member HedgeItemMember. 
+The properties of the fact for InterestAndDividendIncomeSecurities are:
+Period: 2024-01-01 to 2024-12-31
+Dimensions: us-gaap:DerivativeInstrumentRiskAxis=us-gaap:InterestRateSwapMember, us-gaap:HedgingDesignationAxis=bctf:HedgeItemMember, us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis=us-gaap:FairValueHedgingMember 
+Unit: USD
+
+Rule Element Id:66
+Rule version: 26.0.9 - e25055_bctf-10k.htm 20369</message>
+ <ref href="e25055_bctf-10k.htm#Fact002595" sourceLine="20369">
+  <property name="file" value="e25055_bctf-10k.htm"/>
+  <property name="line" value="20369"/>
+  <property name="label" value="Interest on securities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InterestAndDividendIncomeSecurities"/>
+  <property name="QName" value="us-gaap:InterestAndDividendIncomeSecurities"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_us-gaap_FairValueHedgingMember_us-gaap_InterestRateSwapMember_custom_HedgeItemMember">
+   <property name="entity" value="0001668340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:InterestRateSwapMember"/>
+    <property name="us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis" value="us-gaap:FairValueHedgingMember"/>
+    <property name="us-gaap:HedgingDesignationAxis" value="bctf:HedgeItemMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-356,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="356"/>
+ </ref></entry>
+<entry code="DQC.US.0001.66" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm" severity="error" effectiveDate="2017-01-01" cid="2114119086208">[DQC.US.0001.66] The concept InterestAndDividendIncomeSecurities with a value of 0 is dimensionally qualified with the HedgingDesignationAxis and the unallowable member HedgeItemMember. 
+The properties of the fact for InterestAndDividendIncomeSecurities are:
+Period: 2023-01-01 to 2023-12-31
+Dimensions: us-gaap:DerivativeInstrumentRiskAxis=us-gaap:InterestRateSwapMember, us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis=us-gaap:FairValueHedgingMember, us-gaap:HedgingDesignationAxis=bctf:HedgeItemMember 
+Unit: USD
+
+Rule Element Id:66
+Rule version: 26.0.9 - e25055_bctf-10k.htm 20371</message>
+ <ref href="e25055_bctf-10k.htm#Fact002597" sourceLine="20371">
+  <property name="file" value="e25055_bctf-10k.htm"/>
+  <property name="line" value="20371"/>
+  <property name="label" value="Interest on securities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InterestAndDividendIncomeSecurities"/>
+  <property name="QName" value="us-gaap:InterestAndDividendIncomeSecurities"/>
+  <property name="contextRef" value="From2023-01-012023-12-31_us-gaap_FairValueHedgingMember_us-gaap_InterestRateSwapMember_custom_HedgeItemMember">
+   <property name="entity" value="0001668340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:InterestRateSwapMember"/>
+    <property name="us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis" value="us-gaap:FairValueHedgingMember"/>
+    <property name="us-gaap:HedgingDesignationAxis" value="bctf:HedgeItemMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="0"/>
+ </ref></entry>
+<entry code="DQC.US.0001.66" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm" severity="error" effectiveDate="2017-01-01" cid="2114119086208">[DQC.US.0001.66] The concept InterestExpense with a value of 0 is dimensionally qualified with the HedgingDesignationAxis and the unallowable member HedgeItemMember. 
+The properties of the fact for InterestExpense are:
+Period: 2023-01-01 to 2023-12-31
+Dimensions: us-gaap:DerivativeInstrumentRiskAxis=us-gaap:InterestRateSwapMember, us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis=us-gaap:FairValueHedgingMember, us-gaap:HedgingDesignationAxis=bctf:HedgeItemMember 
+Unit: USD
+
+Rule Element Id:66
+Rule version: 26.0.9 - e25055_bctf-10k.htm 20372</message>
+ <ref href="e25055_bctf-10k.htm#Fact002598" sourceLine="20372">
+  <property name="file" value="e25055_bctf-10k.htm"/>
+  <property name="line" value="20372"/>
+  <property name="label" value="Interest Expense, Operating and Nonoperating"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InterestExpense"/>
+  <property name="QName" value="us-gaap:InterestExpense"/>
+  <property name="contextRef" value="From2023-01-012023-12-31_us-gaap_FairValueHedgingMember_us-gaap_InterestRateSwapMember_custom_HedgeItemMember">
+   <property name="entity" value="0001668340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="us-gaap:InterestRateSwapMember"/>
+    <property name="us-gaap:DerivativeInstrumentsGainLossByHedgingRelationshipAxis" value="us-gaap:FairValueHedgingMember"/>
+    <property name="us-gaap:HedgingDesignationAxis" value="bctf:HedgeItemMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="0"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 55.13 secs - http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1668340/000155278125000058/e25055_bctf-10k.htm"/></entry>
+</log>

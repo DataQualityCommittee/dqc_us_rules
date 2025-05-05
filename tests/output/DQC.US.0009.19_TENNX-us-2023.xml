@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.12 secs at 2025-05-01T16:42:57 - http://www.sec.gov/Archives/edgar/data/34956/000165495423010758/tenx_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/34956/000165495423010758/tenx_10q.htm"/></entry>
+<entry code="DQC.US.0009.19" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/34956/000165495423010758/tenx_10q.htm" severity="error" effectiveDate="2016-01-01" cid="1815161676544">[DQC.US.0009.19] The value of Prefered Stock ,Shares Outstanding, 5,181,346, should be less than or equal to Prefered Stock, Shares Issued, 259,068.
+
+The properties of this us-gaap:PreferredStockSharesOutstanding fact are:
+
+Period: 2023-06-30
+Dimensions: us-gaap:StatementClassOfStockAxis=us-gaap:SeriesAPreferredStockMember
+Unit: shares
+Rule version: 26.0.9 - tenx_10q.htm 1</message>
+ <ref href="tenx_10q.htm#element(XBRLDIV/1/1/11)" sourceLine="1">
+  <property name="file" value="tenx_10q.htm"/>
+  <property name="line" value="1"/>
+  <property name="label" value="Prefered Stock ,Shares Outstanding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="PreferredStockSharesOutstanding"/>
+  <property name="QName" value="us-gaap:PreferredStockSharesOutstanding"/>
+  <property name="contextRef" value="AsOf2023-06-30_us-gaap_SeriesAPreferredStockMember">
+   <property name="entity" value="0000034956">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesAPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,181,346"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5181346"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 15.54 secs - http://www.sec.gov/Archives/edgar/data/34956/000165495423010758/tenx_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/34956/000165495423010758/tenx_10q.htm"/></entry>
+</log>

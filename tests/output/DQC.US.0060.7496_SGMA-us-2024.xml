@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 10.66 secs at 2025-05-01T13:51:09 - http://www.sec.gov/Archives/edgar/data/915358/000091535824000010/sgma-20240430x10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/915358/000091535824000010/sgma-20240430x10k.htm"/></entry>
+<entry code="DQC.US.0060.7496" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/915358/000091535824000010/sgma-20240430x10k.htm" severity="error" effectiveDate="2018-06-01" cid="1572594757760">[DQC.US.0060.7496] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+ The element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  has been reported with a value of 117,112. However no value has been reported for either the element(s) NetCashProvidedByUsedInInvestingActivities and CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of 117,112 represents the value of NetCashProvidedByUsedInInvestingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations fact are:
+Period :2023-05-01 to 2024-04-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7496
+Rule version: 26.0.9 - sgma-20240430x10k.htm 121</message>
+ <ref href="sgma-20240430x10k.htm#ct-nonFraction-88ed8131-2259-4aed-b282-332435c620c7" sourceLine="121">
+  <property name="file" value="sgma-20240430x10k.htm"/>
+  <property name="line" value="121"/>
+  <property name="label" value="Net Cash Provided by (Used in) Investing Activities, Continuing Operations"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="QName" value="us-gaap:NetCashProvidedByUsedInInvestingActivitiesContinuingOperations"/>
+  <property name="contextRef" value="Duration_5_1_2023_To_4_30_2024">
+   <property name="entity" value="0000915358">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-05-01"/>
+   <property name="endDate" value="2024-04-30"/>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="117,112"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="117,112"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 13.92 secs - http://www.sec.gov/Archives/edgar/data/915358/000091535824000010/sgma-20240430x10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/915358/000091535824000010/sgma-20240430x10k.htm"/></entry>
+</log>

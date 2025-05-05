@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.75 secs at 2025-05-01T21:44:16 - http://www.sec.gov/Archives/edgar/data/1077688/000118518525000321/hoft10k020225.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1077688/000118518525000321/hoft10k020225.htm"/></entry>
+<entry code="arelle:info.preferredLabelEmpty" level="info">
+ <message source="us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsDeferredRent" target="us-gaap:DeferredTaxAssetsLiabilitiesNet" linkrole="http://www.hookerfurniture.com/role/ScheduleofDeferredTaxAssetsandLiabilitiesTable" preferredLabel="http://www.xbrl.org/2003/role/totalLabel">[arelle:info.preferredLabelEmpty] (Info xbrl.5.2.4.2.1) Presentation relationship from us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsDeferredRent to us-gaap:DeferredTaxAssetsLiabilitiesNet in link role http://www.hookerfurniture.com/role/ScheduleofDeferredTaxAssetsandLiabilitiesTable has empty preferredLabel http://www.xbrl.org/2003/role/totalLabel - hoft-20250202_pre.xml 1282</message>
+ <ref href="hoft-20250202_pre.xml#element(/1/162/23)" sourceLine="1282">
+  <property name="label" value="Deferred Tax Assets, Net">
+   <property name="label (en-US)" value="Deferred Tax Assets, Net"/>
+   <property name="totalLabel (en-US)" value=""/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DeferredTaxAssetsLiabilitiesNet"/>
+  <property name="QName" value="us-gaap:DeferredTaxAssetsLiabilitiesNet"/>
+  <property name="id" value="us-gaap_DeferredTaxAssetsLiabilitiesNet"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="debit"/>
+  <property name="arcrole" value="http://www.xbrl.org/2003/arcrole/parent-child"/>
+  <property name="preferredLabel" value="http://www.xbrl.org/2003/role/totalLabel"/>
+  <property name="order" value="2.0"/>
+  <property name="priority" value="0"/>
+  <property name="from" value="us-gaap:DeferredTaxAssetsTaxDeferredExpenseReservesAndAccrualsDeferredRent"/>
+ </ref></entry>
+<entry code="DQC.US.0013.2780" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1077688/000118518525000321/hoft10k020225.htm" rule-suffix="2780" severity="error" effectiveDate="2017-01-01" cid="3185896764384">[DQC.US.0013.2780] It is expected that us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance with a value of -0.017 will be reported with a value equal to or greater than zero if net income before tax is positive. In this case net income before tax is 12,438,000. The value reported for the tax rate reconciliation item is less than zero. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label, if desired, for rendering purposes. 
+
+The properties of this us-gaap:EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance fact are:
+Period :2023-01-30 to 2024-01-28
+Dimensions : 
+Unit : pure
+Rule version: 26.0.9 - hoft10k020225.htm 5831</message>
+ <ref href="hoft10k020225.htm#ixv-17742" sourceLine="5831">
+  <property name="file" value="hoft10k020225.htm"/>
+  <property name="line" value="5831"/>
+  <property name="label" value="Income (Loss) from Continuing Operations before Income Taxes, Noncontrolling Interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest"/>
+  <property name="contextRef" value="c5">
+   <property name="entity" value="0001077688">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-30"/>
+   <property name="endDate" value="2024-01-28"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="12,438,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="12,438"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 38.54 secs - http://www.sec.gov/Archives/edgar/data/1077688/000118518525000321/hoft10k020225.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1077688/000118518525000321/hoft10k020225.htm"/></entry>
+</log>

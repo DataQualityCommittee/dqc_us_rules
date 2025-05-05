@@ -145,13 +145,15 @@ def write_table_report(report, args):
         # Fix long strings in the table. Tabulate does not wrap text in a cell. So the long text is pre split with newlines
         # using split_string()
         tab_report = []
-        for row in report:
-            tab_row = copy.copy(row)
-            tab_row[2] = split_string(tab_row[2], 30)
-            tab_row[7] = split_string(tab_row[7], 30)
+        for row in report[1:]:  # Skip the headers row
+            # Exclude the "severity" (index 1) and "test file" (index 3) columns
+            tab_row = copy.copy([row[0], row[2], row[4], row[5], row[6]])  # Keep only relevant columns
+            tab_row[1] = split_string(tab_row[1], 30)  # Wrap the "message" column
             tab_report.append(tab_row)
 
-        report_table = tabulate.tabulate(tab_report, headers='firstrow', tablefmt='grid')
+        # Exclude the "severity" and "test file" columns from headers
+        headers = [report[0][0], report[0][2], report[0][4], report[0][5], report[0][6]]
+        report_table = tabulate.tabulate(tab_report, headers=headers, tablefmt='grid')
         if args.compare_file is None:
             print(report_table)
         else:
@@ -175,18 +177,14 @@ def write_html_report(report, args):
             html_end = '</table></body></html>'
 
             table = ''
-            # First row has headers
-            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in report[0]]) + '</tr>'
+            # First row has headers, excluding the "key message" column
+            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in report[0][:-1]]) + '</tr>'
             for row in report[1:]:
                 table += '<tr>'
-                for i in range(len(row)):
-                    if i == 7:
-                        val = html.escape(split_string(row[i], 30))
-                    else:
-                        val = html.escape(str(row[i]))
-                    table += "<td valign='top'>" +  val + "</td>" 
+                for i in range(len(row) - 1):  # Exclude the last column (index 7)
+                    val = html.escape(str(row[i]))
+                    table += "<td valign='top'>" + val + "</td>"
                 table += '</tr>'
-
 
             with open(args.html_file.strip(), 'w') as h:
                 h.write(html_start + table + html_end)

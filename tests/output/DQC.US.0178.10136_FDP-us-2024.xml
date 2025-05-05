@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.02 secs at 2025-05-01T15:16:32 - http://www.sec.gov/Archives/edgar/data/1047340/000104734024000202/fdp-20240628.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1047340/000104734024000202/fdp-20240628.htm"/></entry>
+<entry code="DQC.US.0178.10136" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1047340/000104734024000202/fdp-20240628.htm" severity="error" effectiveDate="2024-08-31" cid="2161076519136">[DQC.US.0178.10136] The filing includes a negative value for dividends using the concept us-gaap:DividendsCommonStockCash and the additional paid in capital member with a value of -400,000. If APIC is increasing due to the declaration of dividends this indicates that the filer is doing issuance of stock as a dividend.  This has the impact of increasing APIC and reducing retained earnings. In these cases the elements DividendsCommonStockStock, or DividendsCommonStock should be used.
+
+The properties of this  fact are:
+Period :2023-12-30 to 2024-03-29
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AdditionalPaidInCapitalMember
+Unit : USD
+
+Rule Element Id:10136
+Rule version: 26.0.9 - fdp-20240628.htm 8</message>
+ <ref href="fdp-20240628.htm#f-325" sourceLine="8">
+  <property name="file" value="fdp-20240628.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends, Common Stock, Cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsCommonStockCash"/>
+  <property name="QName" value="us-gaap:DividendsCommonStockCash"/>
+  <property name="contextRef" value="c-19">
+   <property name="entity" value="0001047340">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-12-30"/>
+   <property name="endDate" value="2024-03-29"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AdditionalPaidInCapitalMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-5"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-400,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="0.4"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 12.33 secs - http://www.sec.gov/Archives/edgar/data/1047340/000104734024000202/fdp-20240628.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1047340/000104734024000202/fdp-20240628.htm"/></entry>
+</log>

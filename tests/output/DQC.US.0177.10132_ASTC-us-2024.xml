@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.99 secs at 2025-05-01T15:15:31 - http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm"/></entry>
+<entry code="DQC.US.0177.10132" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm" severity="error" effectiveDate="2024-05-16" cid="1225047573952">[DQC.US.0177.10132] The value of the difference between PeoActuallyPaidCompAmt and PeoTotalCompAmt has a value of -1,464,491, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -368,377 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EqtyAwrdsAdjsMember --> -368,377 --> ecd:AdjToCompAxis=ecd:EqtyAwrdsAdjsMember, ecd:ExecutiveCategoryAxis=ecd:PeoMember 
+
+
+The value of the difference between PeoTotalCompAmt and PeoActuallyPaidCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2021-07-01 to 2022-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10132
+Rule version: 26.0.9 - astc20241017_def14a.htm 3962</message>
+ <ref href="astc20241017_def14a.htm#c36" sourceLine="3962">
+  <property name="file" value="astc20241017_def14a.htm"/>
+  <property name="line" value="3962"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2024"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="d_2021-07-01_2022-06-30_AdjToCompAxis-EqtyAwrdsAdjsMember_ExecutiveCategoryAxis-PeoMember">
+   <property name="entity" value="0001001907">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-07-01"/>
+   <property name="endDate" value="2022-06-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="ecd:EqtyAwrdsAdjsMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:PeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-368,377"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="368,377"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10132" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm" severity="error" effectiveDate="2024-05-16" cid="1225047573952">[DQC.US.0177.10132] The value of the difference between PeoActuallyPaidCompAmt and PeoTotalCompAmt has a value of -357,377, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 105,782 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EqtyAwrdsAdjsMember --> 105,782 --> ecd:ExecutiveCategoryAxis=ecd:PeoMember, ecd:AdjToCompAxis=ecd:EqtyAwrdsAdjsMember 
+
+
+The value of the difference between PeoTotalCompAmt and PeoActuallyPaidCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2023-07-01 to 2024-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10132
+Rule version: 26.0.9 - astc20241017_def14a.htm 3920</message>
+ <ref href="astc20241017_def14a.htm#c28" sourceLine="3920">
+  <property name="file" value="astc20241017_def14a.htm"/>
+  <property name="line" value="3920"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2024"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="d_2023-07-01_2024-06-30_AdjToCompAxis-EqtyAwrdsAdjsMember_ExecutiveCategoryAxis-PeoMember">
+   <property name="entity" value="0001001907">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-07-01"/>
+   <property name="endDate" value="2024-06-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="ecd:EqtyAwrdsAdjsMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:PeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="105,782"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="105,782"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 7.90 secs - http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1001907/000143774924032014/astc20241017_def14a.htm"/></entry>
+</log>

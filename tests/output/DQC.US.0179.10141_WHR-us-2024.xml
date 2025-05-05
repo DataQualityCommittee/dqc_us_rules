@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.37 secs at 2025-05-01T15:20:52 - http://www.sec.gov/Archives/edgar/data/106640/000010664024000125/whr-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/106640/000010664024000125/whr-20240630.htm"/></entry>
+<entry code="DQC.US.0179.10141" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/106640/000010664024000125/whr-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="2267586477184">[DQC.US.0179.10141] The concept CommonStockDividendsPerShareDeclared has been reported with a value of 1,750,000, with a inline-scale of 6. Generally the amount per share are not scaled when reported. This means the value in the XBRL report is overstated by the scale factor of 6.
+
+The properties of  us-gaap:CommonStockDividendsPerShareDeclared are:
+Period :2023-04-01 to 2023-06-30
+Dimensions : 
+Scale: 6
+
+Rule Element Id:10141
+Rule version: 26.0.9 - whr-20240630.htm 8</message>
+ <ref href="whr-20240630.htm#f-106" sourceLine="8">
+  <property name="file" value="whr-20240630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Declared"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CommonStockDividendsPerShareDeclared"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareDeclared"/>
+  <property name="contextRef" value="c-6">
+   <property name="entity" value="0000106640">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-04-01"/>
+   <property name="endDate" value="2023-06-30"/>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,750,000.00"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="1.75"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.93 secs - http://www.sec.gov/Archives/edgar/data/106640/000010664024000125/whr-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/106640/000010664024000125/whr-20240630.htm"/></entry>
+</log>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 18.38 secs at 2025-05-01T21:37:26 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm"/></entry>
+<entry code="DQC.US.0011.6824" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm" severity="error" rule-suffix="6824" effectiveDate="2018-01-01" cid="1958575485056">[DQC.US.0011.6824] It is expected that CommonStockValue with a value of 451 reported in the network role http://ezfl.com/role/BalanceSheets should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:CommonStockMember and a reported value of 477 multiplied by 1. This value appears in the network role http://ezfl.com/role/StatementsOfChangesInStockholdersDeficit. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:CommonStockValue fact are:
+
+Period : 2023-12-31
+Dimensions : 
+Unit : USD
+Decimals of CommonStockValue : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 26.0.9
+ - forms-1a.htm 22772</message>
+ <ref href="forms-1a.htm#Fact000175" sourceLine="22772">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="22772"/>
+  <property name="label" value="Common stock, par value $0.001: authorized 100,000 shares, 100,000 issued and outstanding as of December 31, 2023 and December 31, 2022, respectively"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CommonStockValue"/>
+  <property name="QName" value="us-gaap:CommonStockValue"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001817004">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="451"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="451"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 35.34 secs - http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm"/></entry>
+</log>
