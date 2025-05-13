@@ -1,0 +1,61 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2022
+**/
+
+rule-name-prefix DQC
+
+assert IFRS.0130.9725 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $x in $SHARE_PERCENTAGES.keys
+	$result = {nonils @concept = $x @unit = * };
+	$currency = $result.unit.numerator;
+	$numerator = {nonils @concept = $SHARE_PERCENTAGES[$x][1] @unit=* where $fact.unit == unit($currency)};
+	$denominator = {nonils @concept = $SHARE_PERCENTAGES[$x][2] @unit=* where $fact != 0};
+	if $result == none or $numerator == none or $denominator == none 
+		skip 
+	else
+		$calcResult = ($numerator / $denominator);
+		$intervalsList = division_intervals($numerator, $denominator);
+		$result_intervals = fact_intervals($result);
+
+		/** Check if there is an intersection of the intervals **/
+		if $intervalsList[1] <= $result_intervals[2] and $intervalsList[2] >= $result_intervals[1]
+			false
+		else
+			true
+
+message
+"The calculated earnings or loss per share does not equal the actual value reported for the concept {$x} for the period {$result.period}. The value reported is {$result}. The calculated value is calculated by dividing the concept {$SHARE_PERCENTAGES[$x][1]} with a value of {$numerator}  by the denominator {$SHARE_PERCENTAGES[$x][2]} with a value of {$denominator}. This equals {$calcResult} which differs from the reported value of {$result}. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : {$x}
+Period : {$result.period} 
+Dimensions : {$result.dimensions.join(', ','=')}
+Decimals : {$result.decimals}
+Unit : {$result.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+constant $SHARE_PERCENTAGES = dict(list(BasicEarningsLossPerShareFromContinuingOperations, list(ProfitLossFromContinuingOperationsAttributableToOrdinaryEquityHoldersOfParentEntity, WeightedAverageShares)),
+								list(BasicEarningsLossPerShareFromDiscontinuedOperations, list(ProfitLossFromDiscontinuedOperationsAttributableToOrdinaryEquityHoldersOfParentEntity, WeightedAverageShares)),
+								list(BasicEarningsLossPerShare, list(ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntity, WeightedAverageShares)),
+								list(DilutedEarningsLossPerShareFromContinuingOperations, list(ProfitLossFromContinuingOperationsAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects, AdjustedWeightedAverageShares)),
+								list(DilutedEarningsLossPerShareFromDiscontinuedOperations, list(ProfitLossFromDiscontinuedOperationsAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects, AdjustedWeightedAverageShares)),
+								list(DilutedEarningsLossPerShare, list(ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects, AdjustedWeightedAverageShares)),
+								list(BasicEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingBasicEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingBasicEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)),
+								list(BasicEarningsLossPerInstrumentFromContinuingOperationsParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossFromContinuingOperationsAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingBasicEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingBasicEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)),
+								list(BasicEarningsLossPerInstrumentFromDiscontinuedOperationsParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossFromDiscontinuedOperationsAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingBasicEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingBasicEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)),
+								list(DilutedEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingDilutedEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingDilutedEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)),
+								list(DilutedEarningsLossPerInstrumentFromContinuingOperationsParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossFromContinuingOperationsAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingDilutedEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingDilutedEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)),
+								list(DilutedEarningsLossPerInstrumentFromDiscontinuedOperationsParticipatingEquityInstrumentsOtherThanOrdinaryShares, list(ProfitLossFromDiscontinuedOperationsAttributableToParticipatingEquityInstrumentsOtherThanOrdinarySharesUsedInCalculatingDilutedEarningsLossPerInstrument, WeightedAverageNumberOfInstrumentsUsedInCalculatingDilutedEarningsLossPerInstrumentParticipatingEquityInstrumentsOtherThanOrdinaryShares)
+								))

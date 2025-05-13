@@ -1,0 +1,82 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2022
+**/
+
+
+rule-name-prefix DQC
+
+assert IFRS.0092.9523 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$fact1 =
+	{@concept in $NON_NEG_IFRS_ITEMS.keys @unit=* @SegmentConsolidationItemsAxis = EliminationOfIntersegmentAmountsMember where $fact > 0  and ($fact.dimensions.length < 2 or 
+		(not match_set_substring($fact, $exclude_non_pos_string_members)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_axis_members.to-set).length == 0
+		and (to-set($fact.dimensions.keys.name) intersect $exclude_non_neg_axis.to-set).length == 0
+		and not_elim_adjust($fact, $exclude_non_pos_axis_members)))
+		};
+
+true
+
+message
+
+"{$fact1.concept.name} has a value of {$fact1} which is more than zero. This element should not have a positive value when used with the EliminationOfIntersegmentAmountsMember. 
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+
+rule-focus $fact1
+
+severity error
+
+
+
+effectiveDate $effective_dates[$rule_id]
+
+assert IFRS.0092.9524 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$fact1 =
+	{@concept in $non_pos_asset_ifrs_items.keys @unit=* @CarryingAmountAccumulatedDepreciationAmortisationAndImpairmentAndGrossCarryingAmountAxis in list(AccumulatedImpairmentMember, AccumulatedDepreciationAmortisationAndImpairmentMember, AccumulatedDepreciationAndAmortisationMember) where $fact > 0  and ($fact.dimensions.length < 2 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_pos_asset_axis_members.to-set).length == 0
+		and (to-set($fact.dimensions.keys.name) intersect $exclude_non_neg_axis.to-set).length == 0
+		and not_elim_adjust($fact, $exclude_non_pos_asset_axis_members)))
+		};
+
+true
+
+message
+
+"{$fact1.concept.name} has a value of {$fact1} which is more than zero. This element should not have a positive value when used with the dimensions {$fact1.dimensions.join(', ','=')}. 
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+
+rule-focus $fact1
+
+severity error
+
+
+
+effectiveDate $effective_dates[$rule_id]
