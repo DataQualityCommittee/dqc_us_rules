@@ -30,5 +30,26 @@ severity error
 effectiveDate $effective_dates[$rule_id]
 
 
+assert US.0018.35 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$presentation_concepts = navigate parent-child descendants include start returns set (target-name);
+
+$deprecatedItems = $presentation_concepts intersect $DEP_EBP_CONCEPTS
+
+for ($deprecatedItem in $deprecatedItems)
+		true
+
+message
+"The element {$deprecatedItem} is a deprecated item.
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
 
 
