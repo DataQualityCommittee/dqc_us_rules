@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 17.38 secs at 2025-05-01T16:55:48 - http://www.sec.gov/Archives/edgar/data/1176948/000162828023026962/ares-20230630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1176948/000162828023026962/ares-20230630.htm"/></entry>
+<entry code="DQC.US.0147.9871" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1176948/000162828023026962/ares-20230630.htm" severity="error" effectiveDate="2023-03-31" cid="2089033570480">[DQC.US.0147.9871] The concept us-gaap:OtherInvestments with an elimination value of 3,859,000 has a sign which is the same as the defaulted value for us-gaap:OtherInvestments of 12,191,251,000. It is expected that the defaulted value and eliminations for the line item us-gaap:OtherInvestments would be the opposite of each other.
+Review the elimination amount to determine that the sign is correct.
+
+The properties of this us-gaap:OtherInvestments fact are:
+
+Period :2022-12-31
+Dimensions : dei:LegalEntityAxis=ares:ConsolidatedFundsMember, srt:ConsolidationItemsAxis=srt:ConsolidationEliminationsMember
+Unit : USD
+
+Rule Element Id:9871
+Rule version: 26.0.9 - ares-20230630.htm 4</message>
+ <ref href="ares-20230630.htm#f-2739" sourceLine="4">
+  <property name="file" value="ares-20230630.htm"/>
+  <property name="line" value="4"/>
+  <property name="label" value="Other Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="OtherInvestments"/>
+  <property name="QName" value="us-gaap:OtherInvestments"/>
+  <property name="contextRef" value="c-837">
+   <property name="entity" value="0001176948">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:ConsolidationItemsAxis" value="srt:ConsolidationEliminationsMember"/>
+    <property name="dei:LegalEntityAxis" value="ares:ConsolidatedFundsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,859,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="3,859"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 40.38 secs - http://www.sec.gov/Archives/edgar/data/1176948/000162828023026962/ares-20230630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1176948/000162828023026962/ares-20230630.htm"/></entry>
+</log>

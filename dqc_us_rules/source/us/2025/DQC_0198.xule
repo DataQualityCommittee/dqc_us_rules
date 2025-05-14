@@ -144,6 +144,12 @@ $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncom
                 if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
                     {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
                 else
+                    if exists({@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                else
+                     if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                else
                     $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
 
 $base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)

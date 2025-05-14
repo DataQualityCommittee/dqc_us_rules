@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 39.40 secs at 2025-05-01T12:29:54 - http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm"/></entry>
+<entry code="DQC.IFRS.0130.9725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="1309458105600">[DQC.IFRS.0130.9725] The calculated earnings or loss per share does not equal the actual value reported for the concept BasicEarningsLossPerShare for the period 2022-01-01 to 2022-12-31. The value reported is 2.37. The calculated value is calculated by dividing the concept ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntity with a value of 4,940,000,000  by the denominator WeightedAverageShares with a value of 2,084,900,000. This equals 2.3694 (rounded 4d) which differs from the reported value of 2.37. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : BasicEarningsLossPerShare
+Period : 2022-01-01 to 2022-12-31 
+Dimensions : dei:LegalEntityAxis=db:consolidatedBankEntityMember
+Decimals : 4
+Unit : EUR/shares
+
+Rule Element Id:9725
+Rule version: 26.0.9
+ - deutschebankag-20241231.htm 154822</message>
+ <ref href="deutschebankag-20241231.htm#fact-7935" sourceLine="154822">
+  <property name="file" value="deutschebankag-20241231.htm"/>
+  <property name="line" value="154822"/>
+  <property name="label" value="Basic"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="BasicEarningsLossPerShare"/>
+  <property name="QName" value="ifrs-full:BasicEarningsLossPerShare"/>
+  <property name="contextRef" value="c-1016">
+   <property name="entity" value="0001159508">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="dei:LegalEntityAxis" value="db:consolidatedBankEntityMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="u-5 (€ / shares)">
+   <property name="mul" value="iso4217:EUR"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2.3700"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2.37"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0130.9725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="1309458105600">[DQC.IFRS.0130.9725] The calculated earnings or loss per share does not equal the actual value reported for the concept DilutedEarningsLossPerShare for the period 2022-01-01 to 2022-12-31. The value reported is 2.32. The calculated value is calculated by dividing the concept ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects with a value of 4,940,000,000  by the denominator AdjustedWeightedAverageShares with a value of 2,125,600,000. This equals 2.324 (rounded 4d) which differs from the reported value of 2.32. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : DilutedEarningsLossPerShare
+Period : 2022-01-01 to 2022-12-31 
+Dimensions : dei:LegalEntityAxis=db:consolidatedBankEntityMember
+Decimals : 4
+Unit : EUR/shares
+
+Rule Element Id:9725
+Rule version: 26.0.9
+ - deutschebankag-20241231.htm 154845</message>
+ <ref href="deutschebankag-20241231.htm#fact-7938" sourceLine="154845">
+  <property name="file" value="deutschebankag-20241231.htm"/>
+  <property name="line" value="154845"/>
+  <property name="label" value="Diluted"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="DilutedEarningsLossPerShare"/>
+  <property name="QName" value="ifrs-full:DilutedEarningsLossPerShare"/>
+  <property name="contextRef" value="c-1016">
+   <property name="entity" value="0001159508">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="dei:LegalEntityAxis" value="db:consolidatedBankEntityMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="u-5 (€ / shares)">
+   <property name="mul" value="iso4217:EUR"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2.3200"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2.32"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0130.9725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="1309458105600">[DQC.IFRS.0130.9725] The calculated earnings or loss per share does not equal the actual value reported for the concept BasicEarningsLossPerShare for the period 2023-01-01 to 2023-12-31. The value reported is 2.83. The calculated value is calculated by dividing the concept ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntity with a value of 5,834,000,000  by the denominator WeightedAverageShares with a value of 2,064,100,000. This equals 2.8264 (rounded 4d) which differs from the reported value of 2.83. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : BasicEarningsLossPerShare
+Period : 2023-01-01 to 2023-12-31 
+Dimensions : dei:LegalEntityAxis=db:consolidatedBankEntityMember
+Decimals : 4
+Unit : EUR/shares
+
+Rule Element Id:9725
+Rule version: 26.0.9
+ - deutschebankag-20241231.htm 154816</message>
+ <ref href="deutschebankag-20241231.htm#fact-7934" sourceLine="154816">
+  <property name="file" value="deutschebankag-20241231.htm"/>
+  <property name="line" value="154816"/>
+  <property name="label" value="Basic"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="BasicEarningsLossPerShare"/>
+  <property name="QName" value="ifrs-full:BasicEarningsLossPerShare"/>
+  <property name="contextRef" value="c-1015">
+   <property name="entity" value="0001159508">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="dei:LegalEntityAxis" value="db:consolidatedBankEntityMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="u-5 (€ / shares)">
+   <property name="mul" value="iso4217:EUR"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2.8300"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2.83"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0130.9725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="1309458105600">[DQC.IFRS.0130.9725] The calculated earnings or loss per share does not equal the actual value reported for the concept DilutedEarningsLossPerShare for the period 2023-01-01 to 2023-12-31. The value reported is 2.77. The calculated value is calculated by dividing the concept ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects with a value of 5,834,000,000  by the denominator AdjustedWeightedAverageShares with a value of 2,104,000,000. This equals 2.7728 (rounded 4d) which differs from the reported value of 2.77. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : DilutedEarningsLossPerShare
+Period : 2023-01-01 to 2023-12-31 
+Dimensions : dei:LegalEntityAxis=db:consolidatedBankEntityMember
+Decimals : 4
+Unit : EUR/shares
+
+Rule Element Id:9725
+Rule version: 26.0.9
+ - deutschebankag-20241231.htm 154839</message>
+ <ref href="deutschebankag-20241231.htm#fact-7937" sourceLine="154839">
+  <property name="file" value="deutschebankag-20241231.htm"/>
+  <property name="line" value="154839"/>
+  <property name="label" value="Diluted"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="DilutedEarningsLossPerShare"/>
+  <property name="QName" value="ifrs-full:DilutedEarningsLossPerShare"/>
+  <property name="contextRef" value="c-1015">
+   <property name="entity" value="0001159508">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="dei:LegalEntityAxis" value="db:consolidatedBankEntityMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="u-5 (€ / shares)">
+   <property name="mul" value="iso4217:EUR"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2.7700"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2.77"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0130.9725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="1309458105600">[DQC.IFRS.0130.9725] The calculated earnings or loss per share does not equal the actual value reported for the concept DilutedEarningsLossPerShare for the period 2024-01-01 to 2024-12-31. The value reported is 1.85. The calculated value is calculated by dividing the concept ProfitLossAttributableToOrdinaryEquityHoldersOfParentEntityIncludingDilutiveEffects with a value of 3,768,000,000  by the denominator AdjustedWeightedAverageShares with a value of 2,039,300,000. This equals 1.8477 (rounded 4d) which differs from the reported value of 1.85. Please check that the calculation is correct or that the correct elements have been used.
+
+Element : DilutedEarningsLossPerShare
+Period : 2024-01-01 to 2024-12-31 
+Dimensions : dei:LegalEntityAxis=db:consolidatedBankEntityMember
+Decimals : 4
+Unit : EUR/shares
+
+Rule Element Id:9725
+Rule version: 26.0.9
+ - deutschebankag-20241231.htm 154833</message>
+ <ref href="deutschebankag-20241231.htm#fact-7936" sourceLine="154833">
+  <property name="file" value="deutschebankag-20241231.htm"/>
+  <property name="line" value="154833"/>
+  <property name="label" value="Diluted"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="DilutedEarningsLossPerShare"/>
+  <property name="QName" value="ifrs-full:DilutedEarningsLossPerShare"/>
+  <property name="contextRef" value="c-49">
+   <property name="entity" value="0001159508">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="dei:LegalEntityAxis" value="db:consolidatedBankEntityMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="u-5 (€ / shares)">
+   <property name="mul" value="iso4217:EUR"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1.8500"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1.85"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 42.57 secs - http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1159508/000115950825000020/deutschebankag-20241231.htm"/></entry>
+</log>

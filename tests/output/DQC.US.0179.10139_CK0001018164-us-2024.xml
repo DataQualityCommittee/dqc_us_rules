@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.25 secs at 2025-05-01T15:19:55 - http://www.sec.gov/Archives/edgar/data/1018164/000101816424000066/wlfc-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1018164/000101816424000066/wlfc-20240630.htm"/></entry>
+<entry code="DQC.US.0179.10139" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1018164/000101816424000066/wlfc-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="1432671939200">[DQC.US.0179.10139] The filing includes a value for dividends using the concept us-gaap:DividendsPayableAmountPerShare with a value of 0.25. This value is reported with the dimension  us-gaap:StatementEquityComponentsAxis.  This dimension should not be used with the concept us-gaap:DividendsPayableAmountPerShare.  Please check the filing and use the DividendsAxis with this value.
+
+The properties of this  fact are:
+Period :2024-07-29
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember, us-gaap:SubsequentEventTypeAxis=us-gaap:SubsequentEventMember
+Unit : USD/shares
+
+Rule Element Id:10139
+Rule version: 26.0.9 - wlfc-20240630.htm 8</message>
+ <ref href="wlfc-20240630.htm#f-1169" sourceLine="8">
+  <property name="file" value="wlfc-20240630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="c-281">
+   <property name="entity" value="0001018164">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-07-29"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+    <property name="us-gaap:SubsequentEventTypeAxis" value="us-gaap:SubsequentEventMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.25"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.25"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 17.31 secs - http://www.sec.gov/Archives/edgar/data/1018164/000101816424000066/wlfc-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1018164/000101816424000066/wlfc-20240630.htm"/></entry>
+</log>
