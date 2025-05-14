@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 61.55 secs at 2025-05-01T12:10:59 - http://www.sec.gov/Archives/edgar/data/1004156/000157587225000261/cik0001004156-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1004156/000157587225000261/cik0001004156-20241231.htm"/></entry>
+<entry code="DQC.IFRS.0115.9565" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1004156/000157587225000261/cik0001004156-20241231.htm" severity="error" effectiveDate="2021-08-01" cid="2003715339232">[DQC.IFRS.0115.9565] The concept ifrs-full:DividendsPaid with a period duration starting on 2023-05-09 and ending on 2023-05-10 or 1 days with a reported value of 279,622,000 has a value greater than the value of the same element with a longer or equivalent period duration that starts on 2022-12-31 and ends on 2023-12-31 with a value of 92,923,000.
+The value  279,622,000 for the period of 1 days should be less or the same as the value  92,923,000 with a duration of 365 days assuming that the concept ifrs-full:DividendsPaid cannot have a negative value.
+The properties of this ifrs-full:DividendsPaid fact are:
+Period :2023-05-10 to 2023-05-10
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9565
+Rule version: 26.0.9 - cik0001004156-20241231.htm 48047</message>
+ <ref href="cik0001004156-20241231.htm#ixv-276923" sourceLine="48047">
+  <property name="file" value="cik0001004156-20241231.htm"/>
+  <property name="line" value="48047"/>
+  <property name="label" value="Dividends recognised as distributions to owners"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="DividendsPaid"/>
+  <property name="QName" value="ifrs-full:DividendsPaid"/>
+  <property name="contextRef" value="P05_10_2023To05_10_2023">
+   <property name="entity" value="0001004156">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-05-10"/>
+   <property name="endDate" value="2023-05-10"/>
+  </property>
+  <property name="unitRef" value="Unit_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="279,622,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="279,622"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 75.95 secs - http://www.sec.gov/Archives/edgar/data/1004156/000157587225000261/cik0001004156-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1004156/000157587225000261/cik0001004156-20241231.htm"/></entry>
+</log>

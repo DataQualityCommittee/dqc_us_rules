@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.56 secs at 2025-05-01T14:12:51 - http://www.sec.gov/Archives/edgar/data/100493/000010049324000103/tsn-20240629.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/100493/000010049324000103/tsn-20240629.htm"/></entry>
+<entry code="DQC.US.0099.9533" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/100493/000010049324000103/tsn-20240629.htm" severity="error" effectiveDate="2021-01-01" cid="2949485790176">[DQC.US.0099.9533] 
+The following elements are in the presentation linkbase of 9952159 - Statement - Other Comprehensive Income (Loss) (Components Of Other Comprehensive Income (Loss)) (Details) but are not included in any calculation relationship in the filing.
+us-gaap:ReclassificationFromAociCurrentPeriodTax, 
+us-gaap:OtherComprehensiveIncomeLossBeforeReclassificationsBeforeTax, 
+us-gaap:OtherComprehensiveIncomeLossBeforeTax, 
+us-gaap:OtherComprehensiveIncomeLossBeforeReclassificationsTax, 
+us-gaap:ReclassificationFromAccumulatedOtherComprehensiveIncomeCurrentPeriodBeforeTax, 
+us-gaap:OtherComprehensiveIncomeLossTax
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. Items not included in the financial statement calculations but included in the presentation are referred to as parenthetical items. These usually appear as a referenced item, or as a value in parenthesis describing that the value reported includes another specific amount.  These values should be reported in a seperate link role for parenthetical items.
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+If the item is an additional disclosure in the income statement statement then make sure that is included as a child of one of the following abstract items:
+ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, 
+SupplementalIncomeStatementElementsAbstract
+
+Rule Element Id:9533
+Rule version: 26.0.9 - </message></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 40.33 secs - http://www.sec.gov/Archives/edgar/data/100493/000010049324000103/tsn-20240629.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/100493/000010049324000103/tsn-20240629.htm"/></entry>
+</log>

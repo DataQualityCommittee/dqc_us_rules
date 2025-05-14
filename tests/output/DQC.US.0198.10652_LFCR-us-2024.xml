@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.81 secs at 2025-05-01T15:50:52 - http://www.sec.gov/Archives/edgar/data/1005286/000100528625000055/lfcr-20250223.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1005286/000100528625000055/lfcr-20250223.htm"/></entry>
+<entry code="DQC.US.0198.10652" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1005286/000100528625000055/lfcr-20250223.htm" severity="error" cid="2566395729280">[DQC.US.0198.10652] The filer has reported a value for the concept us-gaap:EffectiveIncomeTaxRateContinuingOperations with a value of 0.01. This value should be calculated by taking the value of us-gaap:IncomeTaxExpenseBenefit with a value of 10,000 divided by the value of net income before tax of -37,560,000. This equals -0.0003 (rounded 4d). Please provide the equivalent percentage amount for this concept of 0.01. 
+
+
+The properties of this us-gaap:EffectiveIncomeTaxRateContinuingOperations fact are:
+Period :2024-05-27 to 2025-02-23
+Decimals : 2
+Dimensions : 
+Unit : pure
+
+Rule Element Id:10652
+Rule version: 26.0.9 - lfcr-20250223.htm 8</message>
+ <ref href="lfcr-20250223.htm#f-178" sourceLine="8">
+  <property name="file" value="lfcr-20250223.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Income Tax Expense (Benefit)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="IncomeTaxExpenseBenefit"/>
+  <property name="QName" value="us-gaap:IncomeTaxExpenseBenefit"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001005286">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-05-27"/>
+   <property name="endDate" value="2025-02-23"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="10"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 13.13 secs - http://www.sec.gov/Archives/edgar/data/1005286/000100528625000055/lfcr-20250223.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1005286/000100528625000055/lfcr-20250223.htm"/></entry>
+</log>

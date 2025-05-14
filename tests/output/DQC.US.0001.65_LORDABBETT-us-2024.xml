@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.44 secs at 2025-05-01T12:52:02 - http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm"/></entry>
+<entry code="arelle:info.preferredLabelEmpty" level="info">
+ <message source="us-gaap:CommitmentsAndContingenciesDisclosureAbstract" target="lordabbett:UnfundedLoanCommitment" linkrole="http://www.lordabbett.com/role/COMMITMENTSANDCONTINGENCIESDetails" preferredLabel="http://www.xbrl.org/2003/role/verboseLabel">[arelle:info.preferredLabelEmpty] (Info xbrl.5.2.4.2.1) Presentation relationship from us-gaap:CommitmentsAndContingenciesDisclosureAbstract to lordabbett:UnfundedLoanCommitment in link role http://www.lordabbett.com/role/COMMITMENTSANDCONTINGENCIESDetails has empty preferredLabel http://www.xbrl.org/2003/role/verboseLabel - lordabbett-20241231_pre.xml 1438</message>
+ <ref href="lordabbett-20241231_pre.xml#element(/1/108/3)" sourceLine="1438">
+  <property name="label" value="Unfunded Loan Commitment">
+   <property name="documentation (en-US)" value="Unfunded loan commitment."/>
+   <property name="label (en-US)" value="Unfunded Loan Commitment"/>
+   <property name="terseLabel (en-US)" value="Unfunded"/>
+   <property name="verboseLabel (en-US)" value=""/>
+  </property>
+  <property name="namespace" value="http://www.lordabbett.com/20241231"/>
+  <property name="name" value="UnfundedLoanCommitment"/>
+  <property name="QName" value="lordabbett:UnfundedLoanCommitment"/>
+  <property name="id" value="lordabbett_UnfundedLoanCommitment"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="credit"/>
+  <property name="arcrole" value="http://www.xbrl.org/2003/arcrole/parent-child"/>
+  <property name="preferredLabel" value="http://www.xbrl.org/2003/role/verboseLabel"/>
+  <property name="order" value="0.0"/>
+  <property name="priority" value="0"/>
+  <property name="from" value="us-gaap:CommitmentsAndContingenciesDisclosureAbstract"/>
+ </ref></entry>
+<entry code="DQC.US.0001.65" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm" severity="error" effectiveDate="2017-01-01" cid="1380303134864">[DQC.US.0001.65] The concept InvestmentOwnedAtFairValue with a value of 439,367,000 is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member FairValueAsOfDecember31stMember.  
+
+The properties of the fact for InvestmentOwnedAtFairValue are:
+Period: 2024-02-22
+Dimensions: us-gaap:FairValueByMeasurementBasisAxis=lordabbett:FairValueAsOfDecember31stMember, us-gaap:InvestmentTypeAxis=lordabbett:FirstLienSecuredDebtMember 
+Unit: USD
+
+Rule Element Id:65
+Rule version: 26.0.9 - c111957_10k-ixbrl.htm 11410</message>
+ <ref href="c111957_10k-ixbrl.htm#ixv-17933" sourceLine="11410">
+  <property name="file" value="c111957_10k-ixbrl.htm"/>
+  <property name="line" value="11410"/>
+  <property name="label" value="Fair Market Value of Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="c177">
+   <property name="entity" value="0002008748">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-02-22"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:FairValueByMeasurementBasisAxis" value="lordabbett:FairValueAsOfDecember31stMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lordabbett:FirstLienSecuredDebtMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="439,367,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="439,367"/>
+ </ref></entry>
+<entry code="DQC.US.0001.65" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm" severity="error" effectiveDate="2017-01-01" cid="1380303134864">[DQC.US.0001.65] The concept InvestmentOwnedAtFairValue with a value of None is dimensionally qualified with the FairValueByMeasurementBasisAxis and the unallowable member FairValueAsOfFebruary23rdMember.  
+
+The properties of the fact for InvestmentOwnedAtFairValue are:
+Period: 2024-02-22
+Dimensions: us-gaap:FairValueByMeasurementBasisAxis=lordabbett:FairValueAsOfFebruary23rdMember, us-gaap:InvestmentTypeAxis=lordabbett:FirstLienSecuredDebtMember 
+Unit: USD
+
+Rule Element Id:65
+Rule version: 26.0.9 - c111957_10k-ixbrl.htm 14396</message>
+ <ref href="c111957_10k-ixbrl.htm#hidden-fact-62" sourceLine="14396">
+  <property name="file" value="c111957_10k-ixbrl.htm"/>
+  <property name="line" value="14396"/>
+  <property name="label" value="Fair Market Value of Investments"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="c175">
+   <property name="entity" value="0002008748">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-02-22"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:FairValueByMeasurementBasisAxis" value="lordabbett:FairValueAsOfFebruary23rdMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lordabbett:FirstLienSecuredDebtMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="true"/>
+  <property name="value" value="(nil)"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value=""/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 50.69 secs - http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/2008748/000093041325000900/c111957_10k-ixbrl.htm"/></entry>
+</log>

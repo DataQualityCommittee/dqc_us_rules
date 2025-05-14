@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.31 secs at 2025-05-01T14:54:22 - http://www.sec.gov/Archives/edgar/data/1850391/000121465925004851/wtb3242510k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1850391/000121465925004851/wtb3242510k.htm"/></entry>
+<entry code="DQC.US.0146.9870" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1850391/000121465925004851/wtb3242510k.htm" severity="error" effectiveDate="2023-03-31" cid="2435015389312">[DQC.US.0146.9870] The company has reported a 10K but the majority of the values reported on the Income Statement are for a period other than a year. The document period for the report starts on 2024-01-01 and ends on 2024-12-31. Facts reported for this duration were 11 and the total for non years were 22. Please check that the values used on the Income Statement represent a full year for the required reporting period.
+
+Facts with values not reported for a year are as follows: 196,769 | -196,769 | 110,040,724 | 127,561,373 | 196,769 | None | None | 290,625 | None | 75,748 | -290,625 | -34,622 | 110,237,493 | 128,475,984 | 366,373 | None | -34,970 | 196,769 | 366,373 | 1,170,266 | 110,202,871 | 128,766,609
+
+Facts with values reported for a year are as follows: 366,373 | 290,625 | None | -34,970 | 1,170,266 | 127,561,373 | 128,766,609 | -290,625 | 128,475,984 | 366,373 | 75,748
+
+If this is a transition report  use the DocumentTransitionReport element. If this is a successor company then ensure the element FinancialDesignationPredecessorAndSuccessorFixedList has been tagged. If this is the Year of Inception then define an extension element called YearOfInception with a nil value to indicate this fact.
+
+Rule Element Id:9870
+Rule version: 26.0.9 - wtb3242510k.htm 10495</message>
+ <ref href="wtb3242510k.htm#Fact000406" sourceLine="10495">
+  <property name="file" value="wtb3242510k.htm"/>
+  <property name="line" value="10495"/>
+  <property name="label" value="Net investment loss"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="NetInvestmentIncome"/>
+  <property name="QName" value="us-gaap:NetInvestmentIncome"/>
+  <property name="contextRef" value="From2024-10-012024-12-31">
+   <property name="entity" value="0001850391">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-10-01"/>
+   <property name="endDate" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-196,769"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="196,769"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 8.22 secs - http://www.sec.gov/Archives/edgar/data/1850391/000121465925004851/wtb3242510k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1850391/000121465925004851/wtb3242510k.htm"/></entry>
+</log>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.00 secs at 2025-05-01T16:49:59 - http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm"/></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm" severity="error" effectiveDate="2019-01-01" cid="2277368672384">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 176,000 using the ProductOrServiceAxis in the role 003 - Statement - Consolidated Statements of Income and Comprehensive Income on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ShippingAndHandlingMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ShippingAndHandlingMember and the member us-gaap:ShippingAndHandlingMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 176,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2021-01-01 to 2021-12-31
+Dimensions : srt:MajorCustomersAxis=ff:RelatedPartiesMember, srt:ProductOrServiceAxis=us-gaap:ShippingAndHandlingMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 26.0.9
+ - ff20231231_10k.htm 4921</message>
+ <ref href="ff20231231_10k.htm#c108555492" sourceLine="4921">
+  <property name="file" value="ff20231231_10k.htm"/>
+  <property name="line" value="4921"/>
+  <property name="label" value="Cost of goods sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="d_2021-01-01_2021-12-31_MajorCustomersAxis-RelatedPartiesMember_ProductOrServiceAxis-ShippingAndHandlingMember">
+   <property name="entity" value="0001337298">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-01-01"/>
+   <property name="endDate" value="2021-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:MajorCustomersAxis" value="ff:RelatedPartiesMember"/>
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ShippingAndHandlingMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="176,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="176"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm" severity="error" effectiveDate="2019-01-01" cid="2277368672384">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 174,000 using the ProductOrServiceAxis in the role 003 - Statement - Consolidated Statements of Income and Comprehensive Income on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ShippingAndHandlingMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ShippingAndHandlingMember and the member us-gaap:ShippingAndHandlingMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 174,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2022-01-01 to 2022-12-31
+Dimensions : srt:ProductOrServiceAxis=us-gaap:ShippingAndHandlingMember, srt:MajorCustomersAxis=ff:RelatedPartiesMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 26.0.9
+ - ff20231231_10k.htm 4921</message>
+ <ref href="ff20231231_10k.htm#c108555491" sourceLine="4921">
+  <property name="file" value="ff20231231_10k.htm"/>
+  <property name="line" value="4921"/>
+  <property name="label" value="Cost of goods sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="d_2022-01-01_2022-12-31_MajorCustomersAxis-RelatedPartiesMember_ProductOrServiceAxis-ShippingAndHandlingMember">
+   <property name="entity" value="0001337298">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:MajorCustomersAxis" value="ff:RelatedPartiesMember"/>
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ShippingAndHandlingMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="174,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="174"/>
+ </ref></entry>
+<entry code="DQC.US.0071.7646" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm" severity="error" effectiveDate="2019-01-01" cid="2277368672384">[DQC.US.0071.7646] The filing has  reported a value for the element us-gaap:CostOfGoodsAndServicesSold with a value of 176,000 using the ProductOrServiceAxis in the role 003 - Statement - Consolidated Statements of Income and Comprehensive Income on the table us-gaap:StatementTable. However, the only member used to disaggregate the total for us-gaap:CostOfGoodsAndServicesSold was the member us-gaap:ShippingAndHandlingMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element TypeOfRevenueExtensibleList/TypeOfCostGoodOrServiceExtensibleList with a value of us-gaap:ShippingAndHandlingMember and the member us-gaap:ShippingAndHandlingMember should be removed from the value as it represents the aggregate value of us-gaap:CostOfGoodsAndServicesSold.
+ 
+2. Tag the aggregate value of us-gaap:CostOfGoodsAndServicesSold with a value of 176,000 without the product of service axis. This rule will not generate an error if the aggregate value of us-gaap:CostOfGoodsAndServicesSold is reported.
+
+The properties of this us-gaap:CostOfGoodsAndServicesSold fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : srt:MajorCustomersAxis=ff:RelatedPartiesMember, srt:ProductOrServiceAxis=us-gaap:ShippingAndHandlingMember
+Unit : USD
+
+Rule Element Id:7646
+Rule version: 26.0.9
+ - ff20231231_10k.htm 4921</message>
+ <ref href="ff20231231_10k.htm#c108555490" sourceLine="4921">
+  <property name="file" value="ff20231231_10k.htm"/>
+  <property name="line" value="4921"/>
+  <property name="label" value="Cost of goods sold"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="CostOfGoodsAndServicesSold"/>
+  <property name="QName" value="us-gaap:CostOfGoodsAndServicesSold"/>
+  <property name="contextRef" value="d_2023-01-01_2023-12-31_MajorCustomersAxis-RelatedPartiesMember_ProductOrServiceAxis-ShippingAndHandlingMember">
+   <property name="entity" value="0001337298">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:MajorCustomersAxis" value="ff:RelatedPartiesMember"/>
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:ShippingAndHandlingMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="176,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="176"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 19.55 secs - http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1337298/000143774924007873/ff20231231_10k.htm"/></entry>
+</log>

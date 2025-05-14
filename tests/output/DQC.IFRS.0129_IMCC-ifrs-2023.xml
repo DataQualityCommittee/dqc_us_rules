@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 0.64 secs at 2025-05-01T17:04:38 - http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm"/></entry>
+<entry code="DQC.IFRS.0129.9607" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm" severity="error" rule-suffix="9607" effectiveDate="2022-05-01" cid="3173296976000">[DQC.IFRS.0129.9607] It is expected that NoncontrollingInterests with a value of -769,000 reported in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFFINANCIALPOSITION, http://www.imcannabis.com/role/DISCONTINUEDOPERATIONSANDDECONSOLIDATIONDetails should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:NoncontrollingInterestsMember and a reported value of 769,000 multiplied by 1. This value appears in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFCHANGESINEQUITY. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this ifrs-full:NoncontrollingInterests fact are:
+
+Period : 2023-12-31
+Dimensions : 
+Unit : CAD
+Decimals of NoncontrollingInterests : -3
+Decimals of Equity : -3
+Rule version: 26.0.9
+ - exhibit_99-2.htm 1630</message>
+ <ref href="exhibit_99-2.htm#Fxbrl_20220331115313117_xbrl_20210427033953741_xbrl_20210426233933872" sourceLine="1630">
+  <property name="file" value="exhibit_99-2.htm"/>
+  <property name="line" value="1630"/>
+  <property name="label" value="Non-controlling interests"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2023-03-23/ifrs-full"/>
+  <property name="name" value="NoncontrollingInterests"/>
+  <property name="QName" value="ifrs-full:NoncontrollingInterests"/>
+  <property name="contextRef" value="C_20231231">
+   <property name="entity" value="0001792030">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="CAD ($)">
+   <property name="measure" value="iso4217:CAD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-769,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="769"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0129.9626" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm" severity="error" rule-suffix="9626" effectiveDate="2022-05-01" cid="3173296976000">[DQC.IFRS.0129.9626] It is expected that ComprehensiveIncomeAttributableToOwnersOfParent with a value of 4,209,000 reported in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFPROFITORLOSSANDOTHERCOMPREHENSIVEINCOME should be equal to the dimensionally qualified concept, ComprehensiveIncome with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:EquityAttributableToOwnersOfParentMember and a reported value of -4,209,000 multiplied by 1. This value appears in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFCHANGESINEQUITY. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this ifrs-full:ComprehensiveIncomeAttributableToOwnersOfParent fact are:
+
+Period : 2023-01-01 to 2023-06-30
+Dimensions : 
+Unit : CAD
+Decimals of ComprehensiveIncomeAttributableToOwnersOfParent : -3
+Decimals of ComprehensiveIncome : -3
+Rule version: 26.0.9
+ - exhibit_99-2.htm 3289</message>
+ <ref href="exhibit_99-2.htm#Fxbrl_20230308135623278" sourceLine="3289">
+  <property name="file" value="exhibit_99-2.htm"/>
+  <property name="line" value="3289"/>
+  <property name="label" value="Comprehensive income, attributable to owners of parent"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2023-03-23/ifrs-full"/>
+  <property name="name" value="ComprehensiveIncomeAttributableToOwnersOfParent"/>
+  <property name="QName" value="ifrs-full:ComprehensiveIncomeAttributableToOwnersOfParent"/>
+  <property name="contextRef" value="C_20230101to20230630">
+   <property name="entity" value="0001792030">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-06-30"/>
+  </property>
+  <property name="unitRef" value="CAD ($)">
+   <property name="measure" value="iso4217:CAD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,209,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="4,209"/>
+ </ref></entry>
+<entry code="DQC.IFRS.0129.9628" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm" severity="error" rule-suffix="9628" effectiveDate="2022-05-01" cid="3173296976000">[DQC.IFRS.0129.9628] It is expected that ComprehensiveIncomeAttributableToNoncontrollingInterests with a value of 522,000 reported in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFPROFITORLOSSANDOTHERCOMPREHENSIVEINCOME should be equal to the dimensionally qualified concept, ComprehensiveIncome with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:NoncontrollingInterestsMember and a reported value of -522,000 multiplied by 1. This value appears in the network role http://www.imcannabis.com/role/CONSOLIDATEDSTATEMENTSOFCHANGESINEQUITY. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this ifrs-full:ComprehensiveIncomeAttributableToNoncontrollingInterests fact are:
+
+Period : 2023-01-01 to 2023-06-30
+Dimensions : 
+Unit : CAD
+Decimals of ComprehensiveIncomeAttributableToNoncontrollingInterests : -3
+Decimals of ComprehensiveIncome : -3
+Rule version: 26.0.9
+ - exhibit_99-2.htm 3333</message>
+ <ref href="exhibit_99-2.htm#Fxbrl_20230308135629810" sourceLine="3333">
+  <property name="file" value="exhibit_99-2.htm"/>
+  <property name="line" value="3333"/>
+  <property name="label" value="Comprehensive income, attributable to non-controlling interests"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2023-03-23/ifrs-full"/>
+  <property name="name" value="ComprehensiveIncomeAttributableToNoncontrollingInterests"/>
+  <property name="QName" value="ifrs-full:ComprehensiveIncomeAttributableToNoncontrollingInterests"/>
+  <property name="contextRef" value="C_20230101to20230630">
+   <property name="entity" value="0001792030">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-06-30"/>
+  </property>
+  <property name="unitRef" value="CAD ($)">
+   <property name="measure" value="iso4217:CAD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="522,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="522"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 22.11 secs - http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm"/></entry>
+</log>

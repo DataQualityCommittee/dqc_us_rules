@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 10.92 secs at 2025-05-01T13:51:38 - http://www.sec.gov/Archives/edgar/data/1389545/000143774925010730/nby20241231_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1389545/000143774925010730/nby20241231_10k.htm"/></entry>
+<entry code="DQC.US.0060.7497" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1389545/000143774925010730/nby20241231_10k.htm" severity="error" effectiveDate="2018-06-01" cid="2159418486912">[DQC.US.0060.7497] This rule reflects updated guidance from the Data Quality Committee which contradicts with historical rules. This is a change based on the changes in the cashflow ASU published by FASB.
+
+ The element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  has been reported with a value of -4,261,000. However no value has been reported for either the element(s) NetCashProvidedByUsedInOperatingActivities and CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations. 
+It is expected that if the element us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations  is reported then values would be reported for these corresponding elements. If the value of -4,261,000 represents the value of NetCashProvidedByUsedInOperatingActivities then this more general element should be used as it is a required disclosure.
+
+The properties of this us-gaap:NetCashProvidedByUsedInOperatingActivitiesContinuingOperations fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:7497
+Rule version: 26.0.9 - nby20241231_10k.htm 5080</message>
+ <ref href="nby20241231_10k.htm#c194" sourceLine="5080">
+  <property name="file" value="nby20241231_10k.htm"/>
+  <property name="line" value="5080"/>
+  <property name="label" value="Net loss from discontinued operations (Note 21)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity"/>
+  <property name="QName" value="us-gaap:IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity"/>
+  <property name="contextRef" value="d_2023-01-01_2023-12-31">
+   <property name="entity" value="0001389545">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-3,899,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="3,899"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 20.92 secs - http://www.sec.gov/Archives/edgar/data/1389545/000143774925010730/nby20241231_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1389545/000143774925010730/nby20241231_10k.htm"/></entry>
+</log>
