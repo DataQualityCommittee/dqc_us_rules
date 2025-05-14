@@ -244,8 +244,8 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     StockIssuedDuringPeriodValueStockDividend,
                                     CommonStockDividendsShares,
                                     StockDividendsShares,
-                                    StockIssuedDuringPeriodValueDividendReinvestmentPlan,
-                                    StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
+                                    /**StockIssuedDuringPeriodValueDividendReinvestmentPlan, /** Removed as some companies book the dividends against the retained earnings same as DividendsCommonStockStock**/
+                                   StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
                                     StockIssuedDuringPeriodValuePurchaseOfAssets,
                                     StockIssuedDuringPeriodSharesPurchaseOfAssets,
                                     StockIssuedDuringPeriodValueOther,
@@ -268,7 +268,7 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     PreferredStockDividendsShares,
                                     /**StockIssuedDuringPeriodValueTreasuryStockReissued,**/ /** Is not included because if buy treasury back at a higher cost than you reissue it the difference needs to go to APIC.  If APIC is insufficient then goes against retained earnings. **/
                                     TreasuryStockPreferredValue,
-                                    PreferredStockRedemptionPremium,
+                                    /**PreferredStockRedemptionPremium,**/ /** The Premium is first charged against APIC (But is specific to the original issuance of the same class of preferred stock being redeemed, then is allowed to hit retained earnings.) **/
                                     PreferredStockRedemptionDiscount,
                                     PreferredStockAccretionOfRedemptionDiscount,
                                      /**IncreaseInCarryingAmountOfRedeemablePreferredStock, **/ /** Definition or element states it impacts RE **/

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 10.03 secs at 2025-05-01T16:35:07 - http://www.sec.gov/Archives/edgar/data/894081/000089408124000016/atsg-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/894081/000089408124000016/atsg-20231231.htm"/></entry>
+<entry code="DQC.US.0001.78" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/894081/000089408124000016/atsg-20231231.htm" severity="error" effectiveDate="2019-01-01" cid="2365562630272">[DQC.US.0001.78] The concept ReclassificationFromAociCurrentPeriodBeforeTaxAttributableToParent with a value of -24,145,000 is dimensionally qualified with the RetirementPlanNameAxis and the base taxonomy member CashSettlementMember. Only extension members should be used with the axis RetirementPlanNameAxis.
+The properties of the fact for ReclassificationFromAociCurrentPeriodBeforeTaxAttributableToParent are:
+Period: 2023-01-01 to 2023-12-31
+Dimensions: us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedDefinedBenefitPlansAdjustmentMember, us-gaap:RetirementPlanNameAxis=us-gaap:CashSettlementMember 
+Unit: USD
+
+Rule Element Id:78
+Rule version: 26.0.9 - atsg-20231231.htm 5</message>
+ <ref href="atsg-20231231.htm#f-1278" sourceLine="5">
+  <property name="file" value="atsg-20231231.htm"/>
+  <property name="line" value="5"/>
+  <property name="label" value="Reclassification from AOCI, Current Period, before Tax, Attributable to Parent"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2023"/>
+  <property name="name" value="ReclassificationFromAociCurrentPeriodBeforeTaxAttributableToParent"/>
+  <property name="QName" value="us-gaap:ReclassificationFromAociCurrentPeriodBeforeTaxAttributableToParent"/>
+  <property name="contextRef" value="c-337">
+   <property name="entity" value="0000894081">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:RetirementPlanNameAxis" value="us-gaap:CashSettlementMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedDefinedBenefitPlansAdjustmentMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-24,145,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="24,145"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 90.32 secs - http://www.sec.gov/Archives/edgar/data/894081/000089408124000016/atsg-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/894081/000089408124000016/atsg-20231231.htm"/></entry>
+</log>

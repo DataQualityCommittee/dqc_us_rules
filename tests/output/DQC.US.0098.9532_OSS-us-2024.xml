@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.51 secs at 2025-05-01T14:12:29 - http://www.sec.gov/Archives/edgar/data/1394056/000095017024121839/oss-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1394056/000095017024121839/oss-20240930.htm"/></entry>
+<entry code="DQC.US.0098.9532" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1394056/000095017024121839/oss-20240930.htm" severity="error" effectiveDate="2021-01-01" cid="1826833809632">[DQC.US.0098.9532] The element ContractWithCustomerLiabilityRevenueRecognized with a value of 473,652 is greater than the opening balances of ContractWithCustomerLiabilityCurrent and ContractWithCustomerLiabilityNoncurrent combined which have an aggregate opening balance of 461,696 on 2022-12-31. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
+
+The properties of this us-gaap:ContractWithCustomerLiabilityRevenueRecognized fact are:
+Period :2023-01-01 to 2023-09-30
+Dimensions : us-gaap:FinancialInstrumentAxis=oss:CustomerDepositsMember
+Unit : USD
+
+
+Rule Element Id:9532
+Rule version: 26.0.9 - oss-20240930.htm 5755</message>
+ <ref href="oss-20240930.htm#F_9304918d-8d7e-4cf1-8799-4366684d2b52" sourceLine="5755">
+  <property name="file" value="oss-20240930.htm"/>
+  <property name="line" value="5755"/>
+  <property name="label" value="Contract with Customer, Liability, Revenue Recognized"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ContractWithCustomerLiabilityRevenueRecognized"/>
+  <property name="QName" value="us-gaap:ContractWithCustomerLiabilityRevenueRecognized"/>
+  <property name="contextRef" value="C_ab154ada-996e-40e5-b412-cbcf977f7868">
+   <property name="entity" value="0001394056">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:FinancialInstrumentAxis" value="oss:CustomerDepositsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="473,652"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="473,652"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 10.90 secs - http://www.sec.gov/Archives/edgar/data/1394056/000095017024121839/oss-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1394056/000095017024121839/oss-20240930.htm"/></entry>
+</log>

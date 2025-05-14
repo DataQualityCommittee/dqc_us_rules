@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.08 secs at 2025-05-01T13:41:51 - http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm"/></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of 66,000 is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : 
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 3869</message>
+ <ref href="skvi10k123124.htm#Fact000227" sourceLine="3869">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="3869"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2024-01-01to2024-12-31">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="66,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="66,000"/>
+ </ref></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of None is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:RetainedEarningsMember
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 44</message>
+ <ref href="skvi10k123124.htm#xdx2ixbrl0226" sourceLine="44">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="44"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_us-gaap_RetainedEarningsMember">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:RetainedEarningsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="true"/>
+  <property name="value" value="(nil)"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value=""/>
+ </ref></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of None is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 52</message>
+ <ref href="skvi10k123124.htm#xdx2ixbrl0305" sourceLine="52">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="52"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2023-01-012023-12-31">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="true"/>
+  <property name="value" value="(nil)"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value=""/>
+ </ref></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of 402 is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 3865</message>
+ <ref href="skvi10k123124.htm#Fact000223" sourceLine="3865">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="3865"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_us-gaap_CommonStockMember">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="402"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="402"/>
+ </ref></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of 10,000 is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=SKVI:StockPayableMember
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 3867</message>
+ <ref href="skvi10k123124.htm#Fact000225" sourceLine="3867">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="3867"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_custom_StockPayableMember">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="SKVI:StockPayableMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="10,000"/>
+ </ref></entry>
+<entry code="DQC.US.0044.6834" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm" severity="error" effectiveDate="2018-06-01" cid="2344619976384">[DQC.US.0044.6834] The concept us-gaap:StockIssuedDuringPeriodValueOther with a value of 55,598 is an accrual-based item in the US GAAP taxonomy that is included in the sum of cash provided by (used in) financing activities in the cash flows of the extension taxonomy.
+
+Accrual-based concepts do not belong and should not be included in the financing section of the cash flows statement of the extension taxonomy.  We have seen this problem occur for a couple of reasons. 
+1. The company has used an item that is an accrual item that would normally be in the income statement or shareholders equity and has used it as a replacement for a financing cashflow element.  These are different concepts and should not be interchanged.  This can occur for operating cashflow items where a reconciliation to net income is presented.
+2. In other cases we have seen the filer use the sum of financing cash flows to represent operating cash flows.  This is an element selection error that sometime occurs and is easily addressed by replacing either the element NetCashProvidedByUsedInFinancingActivitiesContinuingOperations or NetCashProvidedByUsedInFinancingActivities with the operating cash flow item.
+
+If case one above applies replace us-gaap:StockIssuedDuringPeriodValueOther with an appropriate US GAAP taxonomy cash flows item, if available or, if not, consider extending a concept. Alternatively if case two applies then replace the investing activities parent with the operating activities parent.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueOther fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AdditionalPaidInCapitalMember
+Unit : USD
+Entity : http://www.sec.gov/CIK=0001085277
+
+Rule Element Id:6834
+Rule version: 26.0.9 - skvi10k123124.htm 3866</message>
+ <ref href="skvi10k123124.htm#Fact000224" sourceLine="3866">
+  <property name="file" value="skvi10k123124.htm"/>
+  <property name="line" value="3866"/>
+  <property name="label" value=" Units  issued for cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockIssuedDuringPeriodValueOther"/>
+  <property name="QName" value="us-gaap:StockIssuedDuringPeriodValueOther"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_us-gaap_AdditionalPaidInCapitalMember">
+   <property name="entity" value="0001085277">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AdditionalPaidInCapitalMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="55,598"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="55,598"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 43.36 secs - http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1085277/000166357725000110/skvi10k123124.htm"/></entry>
+</log>

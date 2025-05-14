@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.19 secs at 2025-05-01T14:29:36 - http://www.sec.gov/Archives/edgar/data/100517/000010051725000091/ual-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/100517/000010051725000091/ual-20250331.htm"/></entry>
+<entry code="DQC.US.0118.9575" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/100517/000010051725000091/ual-20250331.htm" severity="error" effectiveDate="2021-11-30" cid="2457709539792">[DQC.US.0118.9575] The statement 9952151 - Statement - STATEMENTS OF CONSOLIDATED OPERATIONS (UNAUDITED) (UAH) includes an inconsistent calculation. The value of the concept us-gaap:CostsAndExpenses of 12,605,000,000 in the default should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is 12,602,000,000. The values of the addends is determined by adding the values of the child concepts with a decimal value of -6. All values in the financial statements should use the same decimal value. If a value is not available then the values associated with the members of the dimension  are used to complete the calculation. The values reported in the financial statement in the current reporting period of 2025-01-01 to 2025-03-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of us-gaap:CostsAndExpenses that should add to 12,605,000,000 are comprised of the following:
+
++  	LaborAndRelatedExpense                                                                                     4,155,000,000
++  	FuelCosts                                                                                                  2,701,000,000
++  	LandingFeesAndOtherRentals                                                                                   873,000,000
++  	AircraftMaintenanceMaterialsAndRepairs                                                                       731,000,000
++  	DepreciationDepletionAndAmortization                                                                         727,000,000
++  	AirlineCapacityPurchaseArrangements                                                                          650,000,000
++  	SellingExpense                                                                                               496,000,000
++  	AircraftRental                                                                                                51,000,000
++  	RestructuringSettlementAndImpairmentProvisions                                                              -108,000,000
++  	OtherCostAndExpenseOperating                                                                               2,326,000,000
+
+
+The addends are calculated based on the calculation linkbase defined for 9952151 - Statement - STATEMENTS OF CONSOLIDATED OPERATIONS (UNAUDITED) (UAH). If addends are missing then the calculation tree should be amended. The rule will add dimension components as well, so if the calculation is correct and the breakdown is a dimension, then check to ensure that the dimensions are defined correctly. Values calculated by adding a dimension member are shown in the calculation.
+
+
+Total Element : us-gaap:CostsAndExpenses
+Total Value : 12,605,000,000 
+Total period : 2025-01-01 to 2025-03-31 
+Dimensions : 
+Decimals of Total : -6 
+Decimals Used for Comparison: -6
+Rule Element Id:9575
+Rule version: 26.0.9 - ual-20250331.htm 8</message>
+ <ref href="ual-20250331.htm#f-78" sourceLine="8">
+  <property name="file" value="ual-20250331.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Costs and Expenses"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CostsAndExpenses"/>
+  <property name="QName" value="us-gaap:CostsAndExpenses"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0000100517">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-03-31"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="12,605,000,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="12,605"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 18.99 secs - http://www.sec.gov/Archives/edgar/data/100517/000010051725000091/ual-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/100517/000010051725000091/ual-20250331.htm"/></entry>
+</log>
