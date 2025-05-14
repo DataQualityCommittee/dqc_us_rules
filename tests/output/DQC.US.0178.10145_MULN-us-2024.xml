@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.08 secs at 2025-05-01T15:17:58 - http://www.sec.gov/Archives/edgar/data/1499961/000182912624007343/mullenautomotive_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1499961/000182912624007343/mullenautomotive_s1a.htm"/></entry>
+<entry code="DQC.US.0178.10145" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1499961/000182912624007343/mullenautomotive_s1a.htm" severity="error" effectiveDate="2024-08-31" cid="1631448406144">[DQC.US.0178.10145] The filing includes a negative value for dividends using the concept us-gaap:AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings and the additional paid in capital member with a value of -40,516,440. The element AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings should not be reported with a negative value.  Check the disclosure and determine if the element DividendsCommonStockStock is more appropriate as this element is expected to increase APIC when a dividend distribution is made.
+
+The properties of this  fact are:
+Period :2021-10-01 to 2022-09-30
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AdditionalPaidInCapitalMember
+Unit : USD
+
+Rule Element Id:10145
+Rule version: 26.0.9 - mullenautomotive_s1a.htm 32723</message>
+ <ref href="mullenautomotive_s1a.htm#Fact003373" sourceLine="32723">
+  <property name="file" value="mullenautomotive_s1a.htm"/>
+  <property name="line" value="32723"/>
+  <property name="label" value="Dividends deemed and accrued on preferred stock"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings"/>
+  <property name="QName" value="us-gaap:AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings"/>
+  <property name="contextRef" value="From2021-10-012022-09-30_us-gaap_AdditionalPaidInCapitalMember">
+   <property name="entity" value="0001499961">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-10-01"/>
+   <property name="endDate" value="2022-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AdditionalPaidInCapitalMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-40,516,440"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="40,516,440"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.93 secs - http://www.sec.gov/Archives/edgar/data/1499961/000182912624007343/mullenautomotive_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1499961/000182912624007343/mullenautomotive_s1a.htm"/></entry>
+</log>

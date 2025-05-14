@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.01 secs at 2025-05-01T21:40:18 - http://www.sec.gov/Archives/edgar/data/716634/000071663425000006/rdi-20240930x10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/716634/000071663425000006/rdi-20240930x10qa.htm"/></entry>
+<entry code="DQC.US.0011.9292" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/716634/000071663425000006/rdi-20240930x10qa.htm" severity="error" rule-suffix="9292" effectiveDate="2019-09-30" cid="2554014894320">[DQC.US.0011.9292] It is expected that TreasuryStockCommonValue with a value of 0 reported in the network role http://www.readingrdi.com/role/DisclosureStockBasedCompensationAndStockRepurchasesNarrativeDetails should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:TreasuryStockCommonMember and a reported value of -40,407,000 multiplied by -1. This value appears in the network role http://www.readingrdi.com/role/DisclosureNonControllingInterestsSummaryOfChangesInControllingAndNonControllingStockholdersEquityDetails. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:TreasuryStockCommonValue fact are:
+
+Period : 2024-09-30
+Dimensions : 
+Unit : USD
+Decimals of TreasuryStockCommonValue : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : -3
+Rule version: 26.0.9
+ - rdi-20240930x10qa.htm 59</message>
+ <ref href="rdi-20240930x10qa.htm#ct-nonFraction-248e82ed-0dbb-4e53-b088-4cef80074364" sourceLine="59">
+  <property name="file" value="rdi-20240930x10qa.htm"/>
+  <property name="line" value="59"/>
+  <property name="label" value="Treasury Stock, Common, Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="TreasuryStockCommonValue"/>
+  <property name="QName" value="us-gaap:TreasuryStockCommonValue"/>
+  <property name="contextRef" value="As_Of_9_30_2024">
+   <property name="entity" value="0000716634">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+  </property>
+  <property name="unitRef" value="Unit12 ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt-sec:numwordsen"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="No"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 28.06 secs - http://www.sec.gov/Archives/edgar/data/716634/000071663425000006/rdi-20240930x10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/716634/000071663425000006/rdi-20240930x10qa.htm"/></entry>
+</log>

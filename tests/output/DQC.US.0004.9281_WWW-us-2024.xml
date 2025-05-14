@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.11 secs at 2025-05-01T13:10:27 - http://www.sec.gov/Archives/edgar/data/110471/000011047124000176/www-20240928.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/110471/000011047124000176/www-20240928.htm"/></entry>
+<entry code="DQC.US.0004.9281" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/110471/000011047124000176/www-20240928.htm" severity="error" effectiveDate="2019-09-30" cid="3054629830336">[DQC.US.0004.9281] Liabilities with a value of 15,400,000 is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( 0 + 0 ) with a value of 0. 
+
+These values should be equal.
+The properties of this us-gaap:Liabilities fact are:
+Period :2023-12-30
+Dimensions :  srt:ConsolidatedEntitiesAxis=us-gaap:VariableInterestEntityPrimaryBeneficiaryMember
+Unit : USD
+Decimals of Liabilities : -5
+Decimals of Current Liabilities : -5
+Decimals of Non Current Liabilities : -5
+
+Rule Element Id:9281
+Rule version: 26.0.9 - www-20240928.htm 8</message>
+ <ref href="www-20240928.htm#f-1061" sourceLine="8">
+  <property name="file" value="www-20240928.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Liabilities"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="Liabilities"/>
+  <property name="QName" value="us-gaap:Liabilities"/>
+  <property name="contextRef" value="c-219">
+   <property name="entity" value="0000110471">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:ConsolidatedEntitiesAxis" value="us-gaap:VariableInterestEntityPrimaryBeneficiaryMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-5"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="15,400,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="15.4"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.78 secs - http://www.sec.gov/Archives/edgar/data/110471/000011047124000176/www-20240928.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/110471/000011047124000176/www-20240928.htm"/></entry>
+</log>

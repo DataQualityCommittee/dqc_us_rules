@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.35 secs at 2025-05-01T21:22:38 - http://www.sec.gov/Archives/edgar/data/1470683/000149315224038803/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1470683/000149315224038803/ex99-1.htm"/></entry>
+<entry code="DQC.IFRS.0129.9607" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1470683/000149315224038803/ex99-1.htm" severity="error" rule-suffix="9607" effectiveDate="2022-05-01" cid="2060225276064">[DQC.IFRS.0129.9607] It is expected that NoncontrollingInterests with a value of 416,000 reported in the network role http://aehltd.com/role/StatementsOfFinancialPosition should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:NoncontrollingInterestsMember and a reported value of 780,000 multiplied by 1. This value appears in the network role http://aehltd.com/role/StatementsOfChangesInEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this ifrs-full:NoncontrollingInterests fact are:
+
+Period : 2023-12-31
+Dimensions : 
+Unit : USD
+Decimals of NoncontrollingInterests : -3
+Decimals of Equity : -3
+Rule version: 26.0.9
+ - ex99-1.htm 3823</message>
+ <ref href="ex99-1.htm#Fact000136" sourceLine="3823">
+  <property name="file" value="ex99-1.htm"/>
+  <property name="line" value="3823"/>
+  <property name="label" value="Noncontrolling interest"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2024-03-27/ifrs-full"/>
+  <property name="name" value="NoncontrollingInterests"/>
+  <property name="QName" value="ifrs-full:NoncontrollingInterests"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001470683">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="416,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="416"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 26.14 secs - http://www.sec.gov/Archives/edgar/data/1470683/000149315224038803/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1470683/000149315224038803/ex99-1.htm"/></entry>
+</log>

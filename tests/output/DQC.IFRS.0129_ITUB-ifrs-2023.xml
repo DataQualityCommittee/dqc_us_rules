@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 33.68 secs at 2025-05-01T17:01:04 - http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm"/></entry>
+<entry code="DQC.IFRS.0129.9603" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm" severity="error" rule-suffix="9603" effectiveDate="2022-05-01" cid="2404683493504">[DQC.IFRS.0129.9603] It is expected that TreasuryShares with a value of 528,000,000 reported in the network role http://itacunibanco.com/role/BalanceSheet, http://itacunibanco.com/role/StockholdersEquityDetails should be equal to the dimensionally qualified concept, Equity with the dimension ifrs-full:ComponentsOfEquityAxis = ifrs-full:TreasurySharesMember and a reported value of -907,000,000 multiplied by -1. This value appears in the network role http://itacunibanco.com/role/StatementOfChangesInStockholdersEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this ifrs-full:TreasuryShares fact are:
+
+Period : 2020-12-31
+Dimensions : 
+Unit : BRL
+Decimals of TreasuryShares : -6
+Decimals of Equity : -6
+Rule version: 26.0.9
+ - itubform20f_2023.htm 87345</message>
+ <ref href="itubform20f_2023.htm#Fact010667" sourceLine="87345">
+  <property name="file" value="itubform20f_2023.htm"/>
+  <property name="line" value="87345"/>
+  <property name="label" value="Treasury shares [Default Label]"/>
+  <property name="namespace" value="https://xbrl.ifrs.org/taxonomy/2023-03-23/ifrs-full"/>
+  <property name="name" value="TreasuryShares"/>
+  <property name="QName" value="ifrs-full:TreasuryShares"/>
+  <property name="contextRef" value="AsOf2020-12-31">
+   <property name="entity" value="0001132597">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2020-12-31"/>
+  </property>
+  <property name="unitRef" value="BRL (R$)">
+   <property name="measure" value="iso4217:BRL"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="528,000,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="528"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 64.46 secs - http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm"/></entry>
+</log>

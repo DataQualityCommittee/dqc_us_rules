@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.54 secs at 2025-05-01T14:29:05 - http://www.sec.gov/Archives/edgar/data/1022652/000168316824008826/inseego_s1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1022652/000168316824008826/inseego_s1.htm"/></entry>
+<entry code="DQC.US.0117.9574" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1022652/000168316824008826/inseego_s1.htm" severity="error" effectiveDate="2021-11-30" cid="2959078787840">[DQC.US.0117.9574] In the statement 00000004 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF OPERATIONS AND COMPREHENSIVE LOSS the concept us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 143,157,000 is not equal to the dimensional breakdown of 253,810,000 using the dimension srt:ProductOrServiceAxis which is comprised of the members us-gaap:ProductMember, INSG:MobileSolutionsMember, INSG:FixedWirelessAccessSolutionsMember, INSG:ServicesAndOtherMember:
+	ProductMember 	 --> 110,653,000 	 --> srt:ProductOrServiceAxis=us-gaap:ProductMember 
+	MobileSolutionsMember 	 --> 73,431,000 	 --> srt:ProductOrServiceAxis=INSG:MobileSolutionsMember 
+	FixedWirelessAccessSolutionsMember 	 --> 37,222,000 	 --> srt:ProductOrServiceAxis=INSG:FixedWirelessAccessSolutionsMember 
+	ServicesAndOtherMember 	 --> 32,504,000 	 --> srt:ProductOrServiceAxis=INSG:ServicesAndOtherMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases.
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2024-01-01 to 2024-09-30
+Unit : USD
+Dimensions : 
+Rule Element Id:9574
+Rule version: 26.0.9 - inseego_s1.htm 13976</message>
+ <ref href="inseego_s1.htm#Fact000240" sourceLine="13976">
+  <property name="file" value="inseego_s1.htm"/>
+  <property name="line" value="13976"/>
+  <property name="label" value="Total revenues"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="From2024-01-01to2024-09-30">
+   <property name="entity" value="0001022652">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="143,157,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="143,157"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 16.20 secs - http://www.sec.gov/Archives/edgar/data/1022652/000168316824008826/inseego_s1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1022652/000168316824008826/inseego_s1.htm"/></entry>
+</log>
