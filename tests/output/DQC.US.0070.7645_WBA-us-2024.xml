@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 13.01 secs at 2025-05-01T13:54:39 - http://www.sec.gov/Archives/edgar/data/1618921/000161892124000084/wba-20240831.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1618921/000161892124000084/wba-20240831.htm"/></entry>
+<entry code="DQC.US.0070.7645" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1618921/000161892124000084/wba-20240831.htm" severity="error" effectiveDate="2019-01-01" cid="2235309861936">[DQC.US.0070.7645] The concept DefinedBenefitPlanFairValueOfPlanAssets with a defaulted value of 1,228,000,000 is not equal to the aggregated value of the dimensionally qualified components on the axis DefinedBenefitPlanByPlanAssetCategoriesAxis which has an aggregate value of 1,275,000,000 based on the data in the filing. 
+The aggregated value is calculated by adding the members in the network 9954529 - Disclosure - Retirement benefits - fair value hierarchy (Details) with the uri http://walgreensbootsalliance.com/role/RetirementbenefitsfairvaluehierarchyDetails. The values of the calculation components are as follows:
+	OtherInvestmentsMember --> 761,000,000 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:OtherInvestmentsMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember 
+	DefinedBenefitPlanFixedInterestGovernmentBondsMember --> 0 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=wba:DefinedBenefitPlanFixedInterestGovernmentBondsMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember 
+	DefinedBenefitPlanIndexLinkedGovernmentBondsMember --> 0 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=wba:DefinedBenefitPlanIndexLinkedGovernmentBondsMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember 
+	DefinedBenefitPlanEquitySecuritiesMember --> 0 --> us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:DefinedBenefitPlanEquitySecuritiesMember, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+	DefinedBenefitPlanAnnuityMember --> 48,000,000 --> us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=wba:DefinedBenefitPlanAnnuityMember, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember 
+	CorporateDebtSecuritiesMember --> 0 --> us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember, us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:CorporateDebtSecuritiesMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+	DefinedBenefitPlanRealEstateMember --> 466,000,000 --> us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember, us-gaap:DefinedBenefitPlanByPlanAssetCategoriesAxis=us-gaap:DefinedBenefitPlanRealEstateMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member 
+
+
+The value of a concept broken down by its components along the DefinedBenefitPlanByPlanAssetCategoriesAxis axis should  be equal to its component pieces. An error could occur for one of the following reasons:
+
+1. The values of the plan assets by category have been further disaggregated by additional dimensions such as geography. Plan Asset categories should not be dimensionally disaggregated and members should be defined for each security class reported. i.e. Equity Securities in the US should be represented as a single member.
+
+2. The  default value of 1,228,000,000 is incorrectly totaled for DefinedBenefitPlanFairValueOfPlanAssets 
+
+3. Not all dimension members or additional dimensions have been defined on the category axis DefinedBenefitPlanByPlanAssetCategoriesAxis. 
+
+4. The filer has reported a sub component of plan assets that does not represent a complete breakdown of the total. In these cases the element DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount should be used instead of the element DefinedBenefitPlanFairValueOfPlanAssets.
+
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this us-gaap:DefinedBenefitPlanFairValueOfPlanAssets fact are:
+Period :2023-08-31
+Dimensions : us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel3Member, us-gaap:RetirementPlanTypeAxis=us-gaap:PensionPlansDefinedBenefitMember
+Unit : USD
+
+Rule Element Id:7645
+Rule version: 26.0.9 - wba-20240831.htm 8</message>
+ <ref href="wba-20240831.htm#f-1800" sourceLine="8">
+  <property name="file" value="wba-20240831.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Defined Benefit Plan, Plan Assets, Amount"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="QName" value="us-gaap:DefinedBenefitPlanFairValueOfPlanAssets"/>
+  <property name="contextRef" value="c-593">
+   <property name="entity" value="0001618921">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-08-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:FairValueByFairValueHierarchyLevelAxis" value="us-gaap:FairValueInputsLevel3Member"/>
+    <property name="us-gaap:RetirementPlanTypeAxis" value="us-gaap:PensionPlansDefinedBenefitMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,228,000,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="1,228"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 20.70 secs - http://www.sec.gov/Archives/edgar/data/1618921/000161892124000084/wba-20240831.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1618921/000161892124000084/wba-20240831.htm"/></entry>
+</log>

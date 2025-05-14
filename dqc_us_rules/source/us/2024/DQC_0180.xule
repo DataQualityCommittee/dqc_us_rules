@@ -79,7 +79,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $dividendsPayments
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0180.10149 satisfied
@@ -117,7 +117,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $dividendsPayments
-status $status
+
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0180.10154 satisfied
@@ -130,7 +130,7 @@ for $presNetwork in $PARENTHETICAL_STATEMENT_PRES_NETWORKS.sort
 
 		// Income Statement Processing 
 		if $presConceptItems.contains(DividendsPayableAmountPerShare) 
-            $factsReported = list({covered @DividendsPayableAmountPerShare})
+            $factsReported = list({covered @DividendsPayableAmountPerShare}).sort
             $factsReported.length > 0
 		else 
 			skip

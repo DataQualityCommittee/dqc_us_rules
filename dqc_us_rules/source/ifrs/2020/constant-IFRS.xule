@@ -146,3 +146,6 @@ constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS whe
 constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('CategoriesOfRelatedPartiesAxis','RelatedPartiesMember')
 
 constant $COUNTERPARTY_DIMENSION = CounterpartiesAxis
+
+constant $STATEMENT_SHE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and $item.dimensions.concept.name.contains(ComponentsOfEquityAxis) and ($item.drs-role.description.lower-case.contains('equity'))

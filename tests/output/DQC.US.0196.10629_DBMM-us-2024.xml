@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.36 secs at 2025-05-01T15:42:38 - http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm"/></entry>
+<entry code="arelle:info.preferredLabelEmpty" level="info">
+ <message source="us-gaap:LiabilitiesCurrentAbstract" target="us-gaap:LiabilitiesCurrent" linkrole="http://www.dbmmgroup.com/role/ConsolidatedBalanceSheet" preferredLabel="http://www.xbrl.org/2003/role/totalLabel">[arelle:info.preferredLabelEmpty] (Info xbrl.5.2.4.2.1) Presentation relationship from us-gaap:LiabilitiesCurrentAbstract to us-gaap:LiabilitiesCurrent in link role http://www.dbmmgroup.com/role/ConsolidatedBalanceSheet has empty preferredLabel http://www.xbrl.org/2003/role/totalLabel - dbmm-20250228_pre.xml 87</message>
+ <ref href="dbmm-20250228_pre.xml#element(/1/42/41)" sourceLine="87">
+  <property name="label" value="Liabilities, Current">
+   <property name="label (en-US)" value="Liabilities, Current"/>
+   <property name="totalLabel (en-US)" value=""/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="LiabilitiesCurrent"/>
+  <property name="QName" value="us-gaap:LiabilitiesCurrent"/>
+  <property name="id" value="us-gaap_LiabilitiesCurrent"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="credit"/>
+  <property name="arcrole" value="http://www.xbrl.org/2003/arcrole/parent-child"/>
+  <property name="preferredLabel" value="http://www.xbrl.org/2003/role/totalLabel"/>
+  <property name="order" value="7.0"/>
+  <property name="priority" value="0"/>
+  <property name="from" value="us-gaap:LiabilitiesCurrentAbstract"/>
+ </ref></entry>
+<entry code="DQC.US.0196.10629" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm" severity="error" effectiveDate="None" cid="2765978313472">[DQC.US.0196.10629] us-gaap:PreferredStockValue has a value of 1,995 and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  us-gaap:PreferredStockValue  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used StockholdersEquity,PartnersCapital,PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,TemporaryEquityCarryingAmountAttributableToParent,TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,MembersEquity,MembersCapital,LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Preferred Stock.
+
+
+The properties of this us-gaap:PreferredStockValue fact are:
+Period :2025-02-28
+Dimensions : us-gaap:StatementClassOfStockAxis=dbmm:PreferredStockSeries1Member, us-gaap:StatementEquityComponentsAxis=us-gaap:PreferredStockMember
+Unit : USD
+Rule Element Id:10629
+Rule version: 26.0.9 - dbmm10q022825.htm 770</message>
+ <ref href="dbmm10q022825.htm#ixv-7621" sourceLine="770">
+  <property name="file" value="dbmm10q022825.htm"/>
+  <property name="line" value="770"/>
+  <property name="label" value="Preferred Stock, Value, Issued"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="PreferredStockValue"/>
+  <property name="QName" value="us-gaap:PreferredStockValue"/>
+  <property name="contextRef" value="c11">
+   <property name="entity" value="0001127475">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-02-28"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="dbmm:PreferredStockSeries1Member"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:PreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,995"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,995"/>
+ </ref></entry>
+<entry code="DQC.US.0196.10629" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm" severity="error" effectiveDate="None" cid="2765978313472">[DQC.US.0196.10629] us-gaap:PreferredStockValue has a value of 1,995 and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  us-gaap:PreferredStockValue  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used StockholdersEquity,PartnersCapital,PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,TemporaryEquityCarryingAmountAttributableToParent,TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,MembersEquity,MembersCapital,LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Preferred Stock.
+
+
+The properties of this us-gaap:PreferredStockValue fact are:
+Period :2024-02-29
+Dimensions : us-gaap:StatementClassOfStockAxis=dbmm:PreferredStockSeries1Member, us-gaap:StatementEquityComponentsAxis=us-gaap:PreferredStockMember
+Unit : USD
+Rule Element Id:10629
+Rule version: 26.0.9 - dbmm10q022825.htm 771</message>
+ <ref href="dbmm10q022825.htm#ixv-7622" sourceLine="771">
+  <property name="file" value="dbmm10q022825.htm"/>
+  <property name="line" value="771"/>
+  <property name="label" value="Preferred Stock, Value, Issued"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="PreferredStockValue"/>
+  <property name="QName" value="us-gaap:PreferredStockValue"/>
+  <property name="contextRef" value="c12">
+   <property name="entity" value="0001127475">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-02-29"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="dbmm:PreferredStockSeries1Member"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:PreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,995"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,995"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 52.04 secs - http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1127475/000118518525000304/dbmm10q022825.htm"/></entry>
+</log>

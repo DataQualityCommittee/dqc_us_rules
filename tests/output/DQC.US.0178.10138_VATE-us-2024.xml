@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 11.20 secs at 2025-05-01T15:17:25 - http://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/vate-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/vate-20240630.htm"/></entry>
+<entry code="DQC.US.0178.10138" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/vate-20240630.htm" severity="error" effectiveDate="2024-08-31" cid="2840769540224">[DQC.US.0178.10138] The filing includes a value for dividends using the concept us-gaap:DividendsPreferredStockCash with a value of 300,000. This value is reported with the dimension member PreferredStockMember.  This member should not be used with the concept us-gaap:DividendsPreferredStockCash.  Please check the filing and select a more appropriate concept.
+
+The properties of this  fact are:
+Period :2023-06-30 to 2023-06-30
+Dimensions : us-gaap:StatementClassOfStockAxis=vate:SeriesA3AndA4PreferredStockMember, us-gaap:StatementEquityComponentsAxis=us-gaap:PreferredStockMember
+Unit : USD
+
+Rule Element Id:10138
+Rule version: 26.0.9 - vate-20240630.htm 8</message>
+ <ref href="vate-20240630.htm#f-1421" sourceLine="8">
+  <property name="file" value="vate-20240630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends, Preferred Stock, Cash"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPreferredStockCash"/>
+  <property name="QName" value="us-gaap:DividendsPreferredStockCash"/>
+  <property name="contextRef" value="c-415">
+   <property name="entity" value="0001006837">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-06-30"/>
+   <property name="endDate" value="2023-06-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="vate:SeriesA3AndA4PreferredStockMember"/>
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:PreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-5"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="300,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="0.3"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 16.88 secs - http://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/vate-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1006837/000100683724000122/vate-20240630.htm"/></entry>
+</log>

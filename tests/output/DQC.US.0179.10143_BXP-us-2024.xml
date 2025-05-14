@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 11.32 secs at 2025-05-01T15:21:53 - http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm"/></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:ReturnOfCapitalMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposes multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposes has been used mutiple times to capture the values 0 and 0 and 0.4 for the periods 2023-01-01 to 2023-12-31 and 2022-01-01 to 2022-12-31 and 2024-01-01 to 2024-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:ReturnOfCapitalMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1530" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends treatment for federal tax purposes."/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="contextRef" value="c-201">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:ReturnOfCapitalMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.00"/>
+  <property name="format" value="ixt:fixed-zero"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="—"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:CapitalGainIncomeMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposes multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposes has been used mutiple times to capture the values 0.53 and 1.12 and 0.03 for the periods 2022-01-01 to 2022-12-31 and 2023-01-01 to 2023-12-31 and 2024-01-01 to 2024-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:CapitalGainIncomeMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1526" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends treatment for federal tax purposes."/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="contextRef" value="c-199">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:CapitalGainIncomeMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.53"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.53"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member us-gaap:DividendPaidMember, but has used the concept us-gaap:CommonStockDividendsPerShareCashPaid multiple times on this axis with different period contexts. The concept us-gaap:CommonStockDividendsPerShareCashPaid has been used mutiple times to capture the values 0.98 and 0.98 for the periods 2022-10-01 to 2022-12-31 and 2023-10-01 to 2023-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member us-gaap:DividendPaidMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1544" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Cash Paid"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CommonStockDividendsPerShareCashPaid"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareCashPaid"/>
+  <property name="contextRef" value="c-207">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-10-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="us-gaap:DividendPaidMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.98"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.98"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:OrdinaryIncomeMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposes multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposes has been used mutiple times to capture the values 3.42 and 3.22 and 3.04 for the periods 2022-01-01 to 2022-12-31 and 2024-01-01 to 2024-12-31 and 2023-01-01 to 2023-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:OrdinaryIncomeMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1520" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends treatment for federal tax purposes."/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposes"/>
+  <property name="contextRef" value="c-196">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:OrdinaryIncomeMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3.42"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="3.42"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:ReturnOfCapitalMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage has been used mutiple times to capture the values 0 and 0.1092 and 0 for the periods 2022-01-01 to 2022-12-31 and 2024-01-01 to 2024-12-31 and 2023-01-01 to 2023-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:ReturnOfCapitalMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1533" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends Treatment For Federal Tax Purposes, Percentage"/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="contextRef" value="c-202">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:ReturnOfCapitalMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.0000"/>
+  <property name="format" value="ixt:fixed-zero"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="—"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:OrdinaryIncomeMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage has been used mutiple times to capture the values 0.8829 and 0.866 and 0.7298 for the periods 2024-01-01 to 2024-12-31 and 2022-01-01 to 2022-12-31 and 2023-01-01 to 2023-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:OrdinaryIncomeMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1517" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends Treatment For Federal Tax Purposes, Percentage"/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="contextRef" value="c-194">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:OrdinaryIncomeMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.8829"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="88.29"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member bxp:CapitalGainIncomeMember, but has used the concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage multiple times on this axis with different period contexts. The concept bxp:DividendsTreatmentForFederalTaxPurposesPercentage has been used mutiple times to capture the values 0.2702 and 0.134 and 0.0079 for the periods 2023-01-01 to 2023-12-31 and 2022-01-01 to 2022-12-31 and 2024-01-01 to 2024-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member bxp:CapitalGainIncomeMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1525" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends Treatment For Federal Tax Purposes, Percentage"/>
+  <property name="namespace" value="http://www.bxp.com/20241231"/>
+  <property name="name" value="DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="QName" value="bxp:DividendsTreatmentForFederalTaxPurposesPercentage"/>
+  <property name="contextRef" value="c-198">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="bxp:CapitalGainIncomeMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="number (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="4"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.2702"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="-2"/>
+  <property name="html value" value="27.02"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2526395021312">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member us-gaap:DividendPaidMember, but has used the concept us-gaap:CommonStockDividendsPerShareCashPaid multiple times on this axis with different period contexts. The concept us-gaap:CommonStockDividendsPerShareCashPaid has been used mutiple times to capture the values 0.27 and 0.95 for the periods 2023-10-01 to 2023-12-31 and 2022-10-01 to 2022-12-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member us-gaap:DividendPaidMember.
+
+Rule Element Id:10143
+Rule version: 26.0.9 - bxp-20241231.htm 8</message>
+ <ref href="bxp-20241231.htm#f-1542" sourceLine="8">
+  <property name="file" value="bxp-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Cash Paid"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CommonStockDividendsPerShareCashPaid"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareCashPaid"/>
+  <property name="contextRef" value="c-205">
+   <property name="entity" value="0001037540">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-10-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:DividendsAxis" value="us-gaap:DividendPaidMember"/>
+    <property name="us-gaap:TaxPeriodAxis" value="us-gaap:TaxYear2023Member"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.27"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.27"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 24.87 secs - http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1037540/000165642325000009/bxp-20241231.htm"/></entry>
+</log>

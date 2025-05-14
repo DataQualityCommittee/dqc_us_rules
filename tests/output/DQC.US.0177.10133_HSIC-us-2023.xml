@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.99 secs at 2025-05-01T17:00:44 - http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm"/></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm" severity="error" effectiveDate="2024-05-16" cid="2485151477888">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of 3,714,599, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 9,603,627 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember --> -34,646 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsMember --> 5,889,029 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsValueInCompensationTableForTheApplicableYearMember --> -2,174,430 --> ecd:AdjToCompAxis=hsic:EquityAwardsValueInCompensationTableForTheApplicableYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember --> 2,805,529 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember --> 3,118,145 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2020-12-27 to 2021-12-25
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.9 - d19133ddef14a.htm 6164</message>
+ <ref href="d19133ddef14a.htm#ixv-11498" sourceLine="6164">
+  <property name="file" value="d19133ddef14a.htm"/>
+  <property name="line" value="6164"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="P12_27_2020To12_25_2021_EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMemberecdAdjToCompAxis_NonPeoNeoMemberecdExecutiveCategoryAxis">
+   <property name="entity" value="0001000228">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2020-12-27"/>
+   <property name="endDate" value="2021-12-25"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-34,646"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="34,646"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm" severity="error" effectiveDate="2024-05-16" cid="2485151477888">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -1,102,105, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -638,712 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember --> -44,784 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsMember --> 463,394 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsValueInCompensationTableForTheApplicableYearMember --> -1,565,500 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=hsic:EquityAwardsValueInCompensationTableForTheApplicableYearMember 
+	EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember --> 1,063,479 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember 
+	EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember --> -555,301 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2023-01-01 to 2023-12-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.9 - d19133ddef14a.htm 6104</message>
+ <ref href="d19133ddef14a.htm#ixv-11484" sourceLine="6104">
+  <property name="file" value="d19133ddef14a.htm"/>
+  <property name="line" value="6104"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="P01_01_2023To12_30_2023_EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMemberecdAdjToCompAxis_NonPeoNeoMemberecdExecutiveCategoryAxis">
+   <property name="entity" value="0001000228">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-44,784"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="44,784"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm" severity="error" effectiveDate="2024-05-16" cid="2485151477888">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of 456,756, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 2,354,944 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember --> 365,601 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsMember --> 1,898,189 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsValueInCompensationTableForTheApplicableYearMember --> -1,441,433 --> ecd:AdjToCompAxis=hsic:EquityAwardsValueInCompensationTableForTheApplicableYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember --> 1,179,477 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember --> 353,110 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2021-12-26 to 2022-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.9 - d19133ddef14a.htm 6134</message>
+ <ref href="d19133ddef14a.htm#ixv-11491" sourceLine="6134">
+  <property name="file" value="d19133ddef14a.htm"/>
+  <property name="line" value="6134"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="P12_26_2021To12_31_2022_EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMemberecdAdjToCompAxis_NonPeoNeoMemberecdExecutiveCategoryAxis">
+   <property name="entity" value="0001000228">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-12-26"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="365,601"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="365,601"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm" severity="error" effectiveDate="2024-05-16" cid="2485151477888">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -3,460,893, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -5,448,535 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember --> -146,591 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardsAdjustmentsMember --> -1,987,643 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsMember 
+	EquityAwardsValueInCompensationTableForTheApplicableYearMember --> -1,473,250 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=hsic:EquityAwardsValueInCompensationTableForTheApplicableYearMember 
+	EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember --> 560,510 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsYearEndFairValueOfAwardsGrantedInCurrentYearMember 
+	EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember --> -2,401,561 --> ecd:AdjToCompAxis=hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfYearEndOfOutstandingAndUnvestedAwardsGrantedInPriorYearsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2019-12-29 to 2020-12-26
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.9 - d19133ddef14a.htm 6194</message>
+ <ref href="d19133ddef14a.htm#ixv-11505" sourceLine="6194">
+  <property name="file" value="d19133ddef14a.htm"/>
+  <property name="line" value="6194"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="P12_29_2019To12_26_2020_EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMemberecdAdjToCompAxis_NonPeoNeoMemberecdExecutiveCategoryAxis">
+   <property name="entity" value="0001000228">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2019-12-29"/>
+   <property name="endDate" value="2020-12-26"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="hsic:EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfPriorYearAwardsVestedDuringCurrentYearMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-146,591"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="146,591"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 13.16 secs - http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1000228/000119312524091374/d19133ddef14a.htm"/></entry>
+</log>

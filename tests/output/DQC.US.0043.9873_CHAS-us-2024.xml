@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.60 secs at 2025-05-01T13:41:21 - http://www.sec.gov/Archives/edgar/data/1025771/000147793224004433/cpka_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1025771/000147793224004433/cpka_10q.htm"/></entry>
+<entry code="DQC.US.0043.9873" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1025771/000147793224004433/cpka_10q.htm" severity="error" effectiveDate="2023-03-31" cid="2505413232832">[DQC.US.0043.9873] The company has reported the concept ProfitLoss as part of the cash flow statement. This income item is being deducted from the value of operating cash flows in the calculation defined by the filer.  This implies that the resulting operating cash flow calculation excludes this income item from cash flow from operations.  If  ProfitLoss represents income from discontinued operations then the element NetCashProvidedByUsedInOperatingActivitiesContinuingOperations should be used as the total rather than the current total element of NetCashProvidedByUsedInOperatingActivities. If the item is an income item and is being deducted because the value is negative then consider changing the sign and weight of the element.
+
+Rule Element Id:9873
+Rule version: 26.0.9 - https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-2024.xsd 9402</message>
+ <ref href="https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-2024.xsd#us-gaap_ProfitLoss" sourceLine="9402">
+  <property name="label" value="Net loss">
+   <property name="label (en-US)" value="Net loss"/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProfitLoss"/>
+  <property name="QName" value="us-gaap:ProfitLoss"/>
+  <property name="id" value="us-gaap_ProfitLoss"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="duration"/>
+  <property name="balance" value="credit"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 17.44 secs - http://www.sec.gov/Archives/edgar/data/1025771/000147793224004433/cpka_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1025771/000147793224004433/cpka_10q.htm"/></entry>
+</log>

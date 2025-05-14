@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.58 secs at 2025-05-01T14:46:34 - http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm"/></entry>
+<entry code="DQC.US.0137.9838" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2091048122176">[DQC.US.0137.9838] The element us-gaap:DerivativeAssetsNoncurrent with a value of 2,000 has been used in the filing with the axis BalanceSheetLocationAxis.  This is the only fact reported with this element.  Rather than using the BalanceSheetLocationAxis the filer should use the extensible enumeration element to indicate the location of the item in the financial statements. In this case the element us-gaap:DerivativeAssetNoncurrentStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the element us-gaap:DerivativeAssetsNoncurrent is included. 
+
+ 
+Period :2024-09-30
+Dimensions : us-gaap:DerivativeInstrumentRiskAxis=sgu:SubjectToMasterNettingArrangementMember, us-gaap:BalanceSheetLocationAxis=sgu:LongTermDerivativeAssetsMember
+Unit : USD
+Decimals: -3
+
+Rule Element Id:9838
+Rule version: 26.0.9 - sgu-20241231.htm 3440</message>
+ <ref href="sgu-20241231.htm#F_dc861e3a-e51f-453d-b687-4075740bed1f" sourceLine="3440">
+  <property name="file" value="sgu-20241231.htm"/>
+  <property name="line" value="3440"/>
+  <property name="label" value="Derivative Asset, Noncurrent"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DerivativeAssetsNoncurrent"/>
+  <property name="QName" value="us-gaap:DerivativeAssetsNoncurrent"/>
+  <property name="contextRef" value="C_099b0608-0d2e-4205-b56f-79d831dbb344">
+   <property name="entity" value="0001002590">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:BalanceSheetLocationAxis" value="sgu:LongTermDerivativeAssetsMember"/>
+    <property name="us-gaap:DerivativeInstrumentRiskAxis" value="sgu:SubjectToMasterNettingArrangementMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="2"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 16.88 secs - http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm"/></entry>
+</log>

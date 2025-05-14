@@ -310,6 +310,9 @@ and (not $item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInve
 constant $STATEMENT_PARENTHETICAL_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
 and ($item.drs-role.uri.lower-case.contains('parenthetical')) 
 
+constant $STATEMENT_SHE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and $item.dimensions.concept.name.contains(StatementEquityComponentsAxis)
+
 constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
 
 constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
@@ -331,6 +334,7 @@ and (not $item.role.uri.lower-case.contains('temporaryequity'))
 and (not $item.role.uri.lower-case.contains('redeemable'))
 and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
 and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('membershipinterest'))
 and (not $item.role.description.lower-case.contains('schedule iii'))
 and (not $item.role.description.lower-case.contains('schedule iv'))
 and (not $item.role.uri.lower-case.contains('highlights'))
@@ -546,3 +550,5 @@ constant $NETWORK_730000_TARGET_NON_ABSTRACT_QNAMES = navigate parent-child DESC
 constant $ASU201517_TRANSITION_ELEMENTS = navigate parent-child descendants from ASU201517TransitionAbstract taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
 
 constant $FINANCIAL_DATA_EQUITY_METHOD_INVESTMENTS = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+constant $NCI = (navigate parent-child descendants include start from list(NoncontrollingInterestMember, AociIncludingPortionAttributableToNoncontrollingInterestMember) taxonomy $US-GAAP returns set (target-name))

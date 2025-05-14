@@ -20,11 +20,15 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 
 /** Identifies that the concept LesseeOperatingLeaseLiabilityPaymentsDue is the sum of components OperatingLeaseLiability and LesseeOperatingLeaseLiabilityUndiscountedExcessAmount if either one is used. **/
 
-	$ReconciliationOptIn = length(list({covered @concept = qname($EXTENSION_NS,'LesseeOperatingLeaseLiabilityUndiscountedExcessAmountNotDisclosed')})) == 0
+	$ReconciliationOptIn = length(list({covered @concept in list(qname($EXTENSION_NS,'LesseeOperatingLeaseLiabilityUndiscountedExcessAmountNotDisclosed'))})) == 0
 
 	$sum1 = [@LesseeOperatingLeaseLiabilityPaymentsDue];
 
-	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount];
+	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] + [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = OperatingLeaseLeaseNotYetCommencedMember];
+
+	$difference = $addend - $sum1;
+
+	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = OperatingLeaseLeaseNotYetCommencedMember]
 
 	$Decimals = list([nonils @LesseeOperatingLeaseLiabilityPaymentsDue], [nonils @OperatingLeaseLiability], [nonils @LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] )
 
@@ -41,7 +45,11 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 		if $extInCalc.length > 0 and $liabilityInCalcBool
 			false
 		else
-			true
+			/** Handles situation where payment elements exclude the unrecorded purchase obligation. The maturity payment schedule should maybe have elements that exclude this. **/
+			if $difference == $unrecordedPurchaseObligation
+				false
+			else
+				true
 	else
 		false
 else
@@ -51,7 +59,7 @@ message
 
 "The element {$sum1.concept.name} with a value of {$sum1} should be equal to the sum of OperatingLeaseLiability plus LesseeOperatingLeaseLiabilityUndiscountedExcessAmount. The value of these adds to {$addend}.  A difference of {$sum1 - $addend}. In an annual filing this reconciliation is required and all elements should have a value in the current reporting period.
 
-If the difference is due to an extension reconciliation item, then the filer should add a calculation relationship. The calculation tree should show the parent element as LesseeOperatingLeaseLiabilityPaymentsDue with children of LesseeOperatingLeaseLiabilityUndiscountedExcessAmount + OperatingLeaseLiability + any extension items. There should already be a calculation tree defined for the components of LesseeOperatingLeaseLiabilityPaymentsDue comprised of LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths +  LesseeOperatingLeaseLiabilityPaymentsDueYearTwo etc.  These two beakdowns of LesseeOperatingLeaseLiabilityPaymentsDue should be in seperate calculation groups. If an extension item appears as a child calculation of LesseeOperatingLeaseLiabilityPaymentsDue then no error is produced.
+If the difference is due to an extension reconciliation item, then the filer should add a calculation relationship. The calculation tree should show the parent element as LesseeOperatingLeaseLiabilityPaymentsDue with children of LesseeOperatingLeaseLiabilityUndiscountedExcessAmount + OperatingLeaseLiability + UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount for an operating lease + any extension items. There should already be a calculation tree defined for the components of LesseeOperatingLeaseLiabilityPaymentsDue comprised of LesseeOperatingLeaseLiabilityPaymentsDueNextTwelveMonths +  LesseeOperatingLeaseLiabilityPaymentsDueYearTwo etc.  These two breakdowns of LesseeOperatingLeaseLiabilityPaymentsDue should be in separate calculation groups. If an extension item appears as a child calculation of LesseeOperatingLeaseLiabilityPaymentsDue then no error is produced.
  
 Period :{$sum1.period}
 Dimensions : {$sum1.dimensions.join(', ','=')}
@@ -77,11 +85,15 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 /** Identifies that the concept FinanceLeaseLiabilityPaymentsDue is the sum of components FinanceLeaseLiability and FinanceLeaseLiabilityUndiscountedExcessAmount if either one is used **/
 /** Rule only works at the default level **/
 
-	$ReconciliationOptIn = length(list({covered @concept = qname($EXTENSION_NS,'FinanceLeaseLiabilityUndiscountedExcessAmountNotDisclosed')})) == 0
+	$ReconciliationOptIn = length(list({covered @concept in list(qname($EXTENSION_NS,'FinanceLeaseLiabilityUndiscountedExcessAmountNotDisclosed'))})) == 0
 
 	$sum1 = [@FinanceLeaseLiabilityPaymentsDue];
 
-	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount];
+	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount] +  [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = FinancingLeaseLeaseNotYetCommencedMember];
+
+	$difference = $addend - $sum1;
+
+	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = FinancingLeaseLeaseNotYetCommencedMember]
 
 	$Decimals = list([nonils @FinanceLeaseLiabilityPaymentsDue], [nonils @FinanceLeaseLiability], [nonils @FinanceLeaseLiabilityUndiscountedExcessAmount] )
 
@@ -95,7 +107,11 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 		$paymentsDueCalc =  navigate summation-item descendants from FinanceLeaseLiabilityPaymentsDue returns set (target-name);
 		$extInCalc = $paymentsDueCalc intersect $EXTENSION_QNAME
 		if $extInCalc.length == 0
-			true
+			/** Handles situation where payment elements exclude the unrecorded purchase obligation. The maturity payment schedule should maybe have elements that exclude this. **/
+			if $difference == $unrecordedPurchaseObligation
+				false
+			else
+				true
 		else
 			false
 	else
@@ -106,7 +122,7 @@ message
 
 "The element {$sum1.concept.name} with a value of {$sum1} should be equal to the sum of FinanceLeaseLiability plus FinanceLeaseLiabilityUndiscountedExcessAmount. The value of these adds to {$addend}.  A difference of {$sum1 - $addend}. In an annual filing this reconciliation is required and all elements should have a value in the current reporting period.
 
-If the difference is due to an extension reconciliation item, then the filer should add a calculation relationship. The calculation tree should show the parent element as FinanceLeaseLiabilityPaymentsDue with children of FinanceLeaseLiabilityUndiscountedExcessAmount + FinanceLeaseLiability + any extension items. There should already be a calculation tree defined for the components of FinanceLeaseLiabilityPaymentsDue comprised of FinanceLeaseLiabilityPaymentsDueNextTwelveMonths +  FinanceLeaseLiabilityPaymentsDueYearTwo etc.  These two beakdowns of FinanceLeaseLiabilityPaymentsDue should be in seperate calculation groups. If an extension item appears as a child calculation of FinanceLeaseLiabilityPaymentsDue then no error is produced.
+If the difference is due to an extension reconciliation item, then the filer should add a calculation relationship. The calculation tree should show the parent element as FinanceLeaseLiabilityPaymentsDue with children of FinanceLeaseLiabilityUndiscountedExcessAmount + FinanceLeaseLiability + UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount for financing leases and any extension items. There should already be a calculation tree defined for the components of FinanceLeaseLiabilityPaymentsDue comprised of FinanceLeaseLiabilityPaymentsDueNextTwelveMonths +  FinanceLeaseLiabilityPaymentsDueYearTwo etc.  These two breakdowns of FinanceLeaseLiabilityPaymentsDue should be in separate calculation groups. If an extension item appears as a child calculation of FinanceLeaseLiabilityPaymentsDue then no error is produced.
  
 Period :{$sum1.period}
 Unit : {$sum1.unit}
