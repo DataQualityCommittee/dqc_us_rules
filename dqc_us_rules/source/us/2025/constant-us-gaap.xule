@@ -51,6 +51,8 @@ constant $CALC_NETWORKS = $US-GAAP.networks(summation-item)
 
 constant $DEP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $US-GAAP returns set (target-name)
 
+constant $DEP_EBP_CONCEPTS = navigate parent-child descendants from DeprecatedItems taxonomy $EBP returns set (target-name)
+
 constant $DEFINED_BENEFIT_COST_EXT_ENUM = navigate parent-child descendants include start from DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList taxonomy $US-GAAP returns set (target-name)
 
 constant $DEFINED_BENEFIT_COST_FS_LINE_ITEMS = navigate summation-item descendants from NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent taxonomy $US-GAAP returns set (target-name)

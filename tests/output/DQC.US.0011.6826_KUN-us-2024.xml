@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 10.78 secs at 2025-05-02T10:50:29 - http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm"/></entry>
+<entry code="DQC.US.0011.6826" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm" severity="error" rule-suffix="6826" effectiveDate="2018-01-01" cid="2664950597008">[DQC.US.0011.6826] It is expected that MinorityInterest with a value of -315,243 reported in the network role http://kunpenginternationalltd.com/role/ScheduleOfVieAssetsAndLiabilitiesIncludedInConsolidatedBalanceSheetsDetails, http://kunpenginternationalltd.com/role/ScheduleOfVieOfBalanceSheetDetails, http://kunpenginternationalltd.com/role/BalanceSheets should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:NoncontrollingInterestMember and a reported value of 315,243 multiplied by 1. This value appears in the network role http://kunpenginternationalltd.com/role/StatementOfChangesInStockholdersDeficit. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:MinorityInterest fact are:
+
+Period : 2024-03-31
+Dimensions : 
+Unit : USD
+Decimals of MinorityInterest : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 26.0.9
+ - form10-q.htm 3989</message>
+ <ref href="form10-q.htm#Fact000189" sourceLine="3989">
+  <property name="file" value="form10-q.htm"/>
+  <property name="line" value="3989"/>
+  <property name="label" value="Non-controlling interests"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="MinorityInterest"/>
+  <property name="QName" value="us-gaap:MinorityInterest"/>
+  <property name="contextRef" value="AsOf2024-03-31">
+   <property name="entity" value="0001502557">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-03-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-315,243"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="315,243"/>
+ </ref></entry>
+<entry code="DQC.US.0011.6829" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm" severity="error" rule-suffix="6829" effectiveDate="2018-01-01" cid="2664950597008">[DQC.US.0011.6829] It is expected that StockholdersEquity with a value of -5,884,192 reported in the network role http://kunpenginternationalltd.com/role/ScheduleOfVieOfBalanceSheetDetails, http://kunpenginternationalltd.com/role/BalanceSheets, http://kunpenginternationalltd.com/role/ScheduleOfVieAssetsAndLiabilitiesIncludedInConsolidatedBalanceSheetsDetails should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:ParentMember and a reported value of -5,844,192 multiplied by 1. This value appears in the network role http://kunpenginternationalltd.com/role/StatementOfChangesInStockholdersDeficit. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:StockholdersEquity fact are:
+
+Period : 2024-03-31
+Dimensions : 
+Unit : USD
+Decimals of StockholdersEquity : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 26.0.9
+ - form10-q.htm 3984</message>
+ <ref href="form10-q.htm#Fact000186" sourceLine="3984">
+  <property name="file" value="form10-q.htm"/>
+  <property name="line" value="3984"/>
+  <property name="label" value="Total shareholders’ Equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="AsOf2024-03-31">
+   <property name="entity" value="0001502557">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-03-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-5,884,192"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,884,192"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 21.90 secs - http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1502557/000149315224019649/form10-q.htm"/></entry>
+</log>

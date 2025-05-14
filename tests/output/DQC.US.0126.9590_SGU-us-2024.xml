@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.15 secs at 2025-05-01T14:35:15 - http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm"/></entry>
+<entry code="DQC.US.0126.9590" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm" severity="error" effectiveDate="2022-05-01" cid="2228035724032">[DQC.US.0126.9590] The statement 100040 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME (LOSS) includes an inconsistent calculation. The value of the concept us-gaap:OtherComprehensiveIncomeLossNetOfTax of 740,000  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is -192,000. The values of the addends is determined by adding the values of the child concepts.  The values reported in the financial statement in the current reporting period of 2024-10-01 to 2024-12-31 should be complete if the financial statement is to be mathematically accurate and complete. The components of us-gaap:OtherComprehensiveIncomeLossNetOfTax that should add to 740,000 are comprised of the following:
+
++  	OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentBeforeTax                                                                       46,000 
+-  	OtherComprehensiveIncomeLossAvailableForSaleSecuritiesTax                                                                                        9,000 
++  	OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationBeforeTax                                                               -633,000 
+-  	OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationTax                                                                     -167,000 
+-  	OtherComprehensiveIncomeLossPensionAndOtherPostretirementBenefitPlansAdjustmentBeforeTax                                                      -432,000 
++  	OtherComprehensiveIncomeLossPensionAndOtherPostretirementBenefitPlansTax                                                                      -195,000 
+
+
+The addends are calculated based on the calculation linkbase defined for 100040 - Statement - CONDENSED CONSOLIDATED STATEMENTS OF COMPREHENSIVE INCOME (LOSS). If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
+
+
+Total Element : us-gaap:OtherComprehensiveIncomeLossNetOfTax
+Total Value : 740,000 
+Total period : 2024-10-01 to 2024-12-31 
+Dimensions : 
+Decimals of Total: -3
+Unit of Total: USD
+Rule Element Id:9590
+Rule version: 26.0.9 - sgu-20241231.htm 1090</message>
+ <ref href="sgu-20241231.htm#F_0964e458-5cf5-46a9-ac40-f32c5a809786" sourceLine="1090">
+  <property name="file" value="sgu-20241231.htm"/>
+  <property name="line" value="1090"/>
+  <property name="label" value="Other Comprehensive Income (Loss), Net of Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="OtherComprehensiveIncomeLossNetOfTax"/>
+  <property name="QName" value="us-gaap:OtherComprehensiveIncomeLossNetOfTax"/>
+  <property name="contextRef" value="C_ef063684-ae75-461b-b76d-37e2d245d3f7">
+   <property name="entity" value="0001002590">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-10-01"/>
+   <property name="endDate" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="740,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="740"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 24.24 secs - http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1002590/000095017025014482/sgu-20241231.htm"/></entry>
+</log>
