@@ -145,20 +145,34 @@ def write_table_report(report, args):
         # Fix long strings in the table. Tabulate does not wrap text in a cell. So the long text is pre split with newlines
         # using split_string()
         tab_report = []
+        # Filter headers to exclude the specified columns
+        excluded_columns = {'severity', 'test file', 'expected file', 'key message'}  # Exclude specific columns
+        headers = [col for col in report[0] if col not in excluded_columns]
         for row in report[1:]:  # Skip the headers row
-            # Exclude the "severity" (index 1) and "test file" (index 3) columns
-            tab_row = copy.copy([row[0], row[2], row[4], row[5], row[6]])  # Keep only relevant columns
-            tab_row[1] = split_string(tab_row[1], 30)  # Wrap the "message" column
-            tab_report.append(tab_row)
+            # Combine 'code' and 'expected file' into a single column
+            if row[5]:  # Check if 'expected file' exists
+                combined_code = f"{row[0]} \n\nExpected file: \n {row[5]}"
+            else:
+                combined_code = row[0]
+            tab_row = []
+            for i, col in enumerate(report[0]):
+                if col in excluded_columns:
+                    continue  # Skip excluded columns
+                if col in {'test count', 'expected count'}:  # Adjust width for these columns
+                    tab_row.append(split_string(str(row[i]), 8))  # Narrower width for counts
+                elif col == 'message':  # Adjust width for the 'message' column
+                    tab_row.append(split_string(str(row[i]), 65))  # Set width to 60
+                else:
+                    tab_row.append(split_string(str(combined_code if i == 0 else row[i]), 18))
+                tab_report.append(tab_row)
 
-        # Exclude the "severity" and "test file" columns from headers
-        headers = [report[0][0], report[0][2], report[0][4], report[0][5], report[0][6]]
+        # Generate the table and write it to the file or print it
         report_table = tabulate.tabulate(tab_report, headers=headers, tablefmt='grid')
         if args.compare_file is None:
-            print(report_table)
+            print(report_table, '\n')
         else:
             with open(args.compare_file, 'w') as o:
-                o.write(report_table)    
+                o.write(report_table + '\n')    
 
 def write_html_report(report, args):
     """Write report as an html file"""
@@ -177,12 +191,26 @@ def write_html_report(report, args):
             html_end = '</table></body></html>'
 
             table = ''
-            # First row has headers, excluding the "key message" column
-            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in report[0][:-1]]) + '</tr>'
+            # First row has headers, excluding the "severity" and "key_message" columns
+            # Filter headers to exclude the specified columns
+            excluded_columns = {'severity', 'test file', 'expected file', 'key message'}  # Exclude specific columns
+            headers = [col for col in report[0] if col not in excluded_columns]
+            table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in headers]) + '</tr>'
+            
             for row in report[1:]:
                 table += '<tr>'
-                for i in range(len(row) - 1):  # Exclude the last column (index 7)
-                    val = html.escape(str(row[i]))
+                for i, col in enumerate(report[0]):
+                    if col in excluded_columns:  
+                        continue  # Skip the excluded columns
+                    if col == 'code':  # Combine 'code' and 'expected file'
+                        expected_file = row[5]
+                        if expected_file:  # Only include if 'expected file' has a value
+                            combined_code = f'{row[0]}' + "<br /><br />Expected file: <br />" + f'{expected_file}'
+                        else:
+                            combined_code = row[0]
+                        val = html.unescape(combined_code)
+                    else:
+                        val = html.escape(str(row[i]))
                     table += "<td valign='top'>" + val + "</td>"
                 table += '</tr>'
 
