@@ -89,11 +89,11 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 
 	$sum1 = [@FinanceLeaseLiabilityPaymentsDue];
 
-	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount] +  [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = FinancingLeaseLeaseNotYetCommencedMember];
+	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = FinancingLeaseLeaseNotYetCommencedMember]
+
+	$addend = [@FinanceLeaseLiability] <+ [@FinanceLeaseLiabilityUndiscountedExcessAmount] +  $unrecordedPurchaseObligation ;
 
 	$difference = $addend - $sum1;
-
-	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = FinancingLeaseLeaseNotYetCommencedMember]
 
 	$Decimals = list([nonils @FinanceLeaseLiabilityPaymentsDue], [nonils @FinanceLeaseLiability], [nonils @FinanceLeaseLiabilityUndiscountedExcessAmount])
 
@@ -108,10 +108,13 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 		$extInCalc = $paymentsDueCalc intersect $EXTENSION_QNAME
 		if $extInCalc.length == 0
 			/** Handles situation where payment elements exclude the unrecorded purchase obligation. The maturity payment schedule should maybe have elements that exclude this. **/
-			if $difference == $unrecordedPurchaseObligation
-				false
+			if exists($unrecordedPurchaseObligation)
+				if $difference == $unrecordedPurchaseObligation
+					false
+				else
+					true
 			else
-				true
+					true
 		else
 			false
 	else
