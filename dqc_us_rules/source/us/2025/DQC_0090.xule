@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2024
+Taxonomy: US GAAP 2025
 **/
 
 
@@ -24,11 +24,13 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 
 	$sum1 = [@LesseeOperatingLeaseLiabilityPaymentsDue];
 
-	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] + [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = OperatingLeaseLeaseNotYetCommencedMember];
+	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = OperatingLeaseLeaseNotYetCommencedMember]
+
+	$addend = [@OperatingLeaseLiability] <+ [@LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] + $unrecordedPurchaseObligation;
 
 	$difference = $addend - $sum1;
 
-	$unrecordedPurchaseObligation = [@UnrecordedUnconditionalPurchaseObligationBalanceSheetAmount @UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis = OperatingLeaseLeaseNotYetCommencedMember]
+
 
 	$Decimals = list([nonils @LesseeOperatingLeaseLiabilityPaymentsDue], [nonils @OperatingLeaseLiability], [nonils @LesseeOperatingLeaseLiabilityUndiscountedExcessAmount] )
 
@@ -42,14 +44,17 @@ if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentTy
 		$paymentsDueCalc =  navigate summation-item descendants from LesseeOperatingLeaseLiabilityPaymentsDue returns set (target-name);
 		$extInCalc = $paymentsDueCalc intersect $EXTENSION_QNAME;
 		$liabilityInCalcBool = OperatingLeaseLiability in $paymentsDueCalc;
-		if $extInCalc.length > 0 and $liabilityInCalcBool
-			false
-		else
+		if $extInCalc.length == 0
 			/** Handles situation where payment elements exclude the unrecorded purchase obligation. The maturity payment schedule should maybe have elements that exclude this. **/
-			if $difference == $unrecordedPurchaseObligation
-				false
+			if exists($unrecordedPurchaseObligation)
+				if $difference == $unrecordedPurchaseObligation
+					false
+				else
+					true
 			else
-				true
+					true
+		else
+			false
 	else
 		false
 else
