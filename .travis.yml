@@ -17,6 +17,7 @@ env:
     - TRANSFORM_VERSION=25.1
 
   matrix:
+    - INFILES='[{"file":"./tests/input/testfiles/2024/fasb-us-2024.zip/abc-20241231.xsd", "xule_run_only":"DQC.US.0190.10617"}}]' EXFILES=$EXPECTED/DQC.US.0190.10617_fasb-us-2024.xml
     # CP evaluating
     #- INFILES='[{"file":"http://www.sec.gov/Archives/edgar/data/1817004/000149315224022374/forms-1a.htm", "xule_run_only":"DQC.US.0117.10093"}]' EXFILES=$EXPECTED/DQC.US.0117.10093_NXT-us-2024.xml 
     # OK as fail
