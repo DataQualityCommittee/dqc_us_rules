@@ -22,12 +22,12 @@ for $ext_pairs in $EXT_ENUM
 			else
 			$related_ext_enum = $ext_pairs[2]
 
-            exists({@concept = $related_ext_enum}#location) and missing({@concept = $FS_concept})
+            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*})
 
    
 
 message
-"The filer has reported an extensible enumeration fact value of {$location.join(", ")} using the concept {$related_ext_enum} that indicates the location of where the value for {$FS_concept} is reported on the face financial statements. If the filer has reported  a fact value for {$related_ext_enum} it should also report a fact value for {$FS_concept}. If this monetary value is not reported in the filing, the filer should remove the {$related_ext_enum} value from the filing.
+"The filer has reported an extensible enumeration fact value of {$location.join(", ")} using the concept {$related_ext_enum} that indicates the location of where the value for {$FS_concept} is reported on the face financial statements. If the filer has reported  a fact value for {$related_ext_enum} it should also report a fact value for {$FS_concept}. The extensible enumeration should have the same dimensional values and periods as the fact value. If this monetary value is not reported in the filing, the filer should remove the {$related_ext_enum} value from the filing.
 
 Period :{($location).period}
 Dimensions : {($location).dimensions.join(', ','=')}
