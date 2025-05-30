@@ -6,24 +6,24 @@ The specification of the current ESEF DQR rules can be found below:
 
 | Number | Short name | Rule version |
 | ----- | ----- | ----- |
-| [DQC_IFRS_0008](docs/DQC_IFRS_0008/DQC_0008.md) | Reversed calculation | 
-| [DQC_IFRS_0041](docs/DQC_IFRS_0041/DQC_0041.md) | Axis with a default member that differs from the IFRS Taxonomy | 
-| [DQC_IFRS_0080](docs/DQC_IFRS_0080/DQC_0080.md) | IFRS Non-Negative Items | 
-| [DQC_IFRS_0092](docs/DQC_IFRS_0092/DQC_0092.md) | IFRS Non-Positive Items | 
-| [DQC_IFRS_0093](docs/DQC_IFRS_0093/DQC_0093.md) | Durational Aggregation | 
-| [DQC_IFRS_0101](docs/DQC_IFRS_0101/DQC_0101.md) | Misapplication of Concepts between Investing, Financing and Operating Activities | 
-| [DQC_IFRS_0102](docs/DQC_IFRS_0102/DQC_0102.md) | Accounting Relationships| 
-| [DQC_IFRS_0103](docs/DQC_IFRS_0103/DQC_0103.md) | Invalid Value for Percentage Items | 
-| [DQC_IFRS_0104](docs/DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members | 
-| [DQC_IFRS_0105](docs/DQC_IFRS_0105/DQC_0105.md) | FS with No Associated Calculation | 
-| [DQC_IFRS_0115](docs/DQC_IFRS_0115/DQC_0115.md) | Fact Value Consistency Over Time | 
-| [DQC_IFRS_0118](docs/DQC_IFRS_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | 
-| [DQC_IFRS_0126](docs/DQC_IFRS_0126/DQC_0126.md) | FS Calculation Check with Non Dimensional Data | 
-| [DQC_IFRS_0127](docs/DQC_IFRS_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | 
-| [DQC_IFRS_0128](docs/DQC_IFRS_0128/DQC_0128.md) | Dimensional Values Larger than the Default | 
-| [DQC_IFRS_0129](docs/DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents | 
-| [DQC_IFRS_0130](docs/DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation | 
-| [DQC_IFRS_0138](docs/DQC_IFRS_0138/DQC_0138.md) | Missing Abstract from Financial Statements | 
+| [DQC_IFRS_0008](docs/ESEF/DQC_IFRS_0008/DQC_0008.md) | Reversed calculation | 
+| [DQC_IFRS_0041](docs/ESEF/DQC_IFRS_0041/DQC_0041.md) | Axis with a default member that differs from the IFRS Taxonomy | 
+| [DQC_IFRS_0080](docs/ESEF/DQC_IFRS_0080/DQC_0080.md) | IFRS Non-Negative Items | 
+| [DQC_IFRS_0092](docs/ESEF/DQC_IFRS_0092/DQC_0092.md) | IFRS Non-Positive Items | 
+| [DQC_IFRS_0093](docs/ESEF/DQC_IFRS_0093/DQC_0093.md) | Durational Aggregation | 
+| [DQC_IFRS_0101](docs/ESEF/DQC_IFRS_0101/DQC_0101.md) | Misapplication of Concepts between Investing, Financing and Operating Activities | 
+| [DQC_IFRS_0102](docs/ESEF/DQC_IFRS_0102/DQC_0102.md) | Accounting Relationships| 
+| [DQC_IFRS_0103](docs/ESEF/DQC_IFRS_0103/DQC_0103.md) | Invalid Value for Percentage Items | 
+| [DQC_IFRS_0104](docs/ESEF/DQC_IFRS_0104/DQC_0104.md) | Axis with Inappropriate Members | 
+| [DQC_IFRS_0105](docs/ESEF/DQC_IFRS_0105/DQC_0105.md) | FS with No Associated Calculation | 
+| [DQC_IFRS_0115](docs/ESEF/DQC_IFRS_0115/DQC_0115.md) | Fact Value Consistency Over Time | 
+| [DQC_IFRS_0118](docs/ESEF/DQC_IFRS_0118/DQC_0118.md) | Financial Statement Tables Calculation Check of Required Context | 
+| [DQC_IFRS_0126](docs/ESEF/DQC_IFRS_0126/DQC_0126.md) | FS Calculation Check with Non Dimensional Data | 
+| [DQC_IFRS_0127](docs/ESEF/DQC_IFRS_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | 
+| [DQC_IFRS_0128](docs/ESEF/DQC_IFRS_0128/DQC_0128.md) | Dimensional Values Larger than the Default | 
+| [DQC_IFRS_0129](docs/ESEF/DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents | 
+| [DQC_IFRS_0130](docs/ESEF/DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation | 
+| [DQC_IFRS_0138](docs/ESEF/DQC_IFRS_0138/DQC_0138.md) | Missing Abstract from Financial Statements | 
 
 ## Documentation definitions
 
