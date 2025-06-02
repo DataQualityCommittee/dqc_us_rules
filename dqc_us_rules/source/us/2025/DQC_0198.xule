@@ -137,6 +137,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
+
+// Calculate base income
 $TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
 $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
                 {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD}
@@ -168,7 +170,23 @@ if exists($base_Income)
                     false
                 else
                     if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
-                        true
+
+                    /** In some cases the calculated tax value includes the Equity Method investments, even though they report the amount before EMI but do not report the total including EMI. Some companies like amazon calc a tax rate excluding EMI some report it including EMI.  The next part of the rule checks if the alternative calc is used. **/
+                        if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
+                            $base_IncomeAlt = {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0} + {@concept=IncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
+                            $calc_valueAlt = $num / $base_IncomeAlt
+                            $denominator_IntervalsAlt = numerical_intervals($base_IncomeAlt, $TaxAmount)
+                            $intervalsListAlt = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt)
+                            $result_intervals = fact_intervals($percentage-value)
+                            if $intervalsListAlt.first <= $result_intervals.last and $intervalsListAlt.last >= $result_intervals.first
+                                false
+                            else
+                                if  ($calc_valueAlt - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt) > 0.01
+                                    true
+                                else
+                                    false
+                        else
+                            true
                     else
                         false
 else
