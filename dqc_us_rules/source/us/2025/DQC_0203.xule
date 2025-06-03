@@ -13,7 +13,7 @@ assert US.0203.10708 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$fact1 = {@IncomeTaxAuthorityAxis in list(DomesticCountryMember, ForeignCountryMember)};
+$fact1 = {@IncomeTaxAuthorityAxis in list(DomesticCountryMember)};
 
 exists($fact1) 
 
@@ -32,4 +32,3 @@ severity error
 status $status  
 
 effectiveDate $effective_dates[$ruleId]
-
