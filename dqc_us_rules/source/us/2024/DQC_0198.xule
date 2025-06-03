@@ -137,6 +137,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
+
+// Calculate base income
 $TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
 $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
                 {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD}
@@ -144,13 +146,19 @@ $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncom
                 if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
                     {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
                 else
+                    if exists({@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                else
+                     if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                else
                     $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
 
 $base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
 
 if exists($base_Income)
     for $concept in $EQUIVALENT_TAX_RATES
-        $num = {@concept =  $concept[1]  @unit=iso4217:USD}
+        $num = {@concept =  $concept[1]  @unit=iso4217:USD }
         $calc_value = $num / $base_Income
         $numerator_Intervals = fact_intervals($num)
         $denominator_Intervals = $base_Income_intervals
@@ -162,14 +170,30 @@ if exists($base_Income)
                     false
                 else
                     if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
-                        true
+
+                    /** In some cases the calculated tax value includes the Equity Method investments, even though they report the amount before EMI but do not report the total including EMI. Some companies like amazon calc a tax rate excluding EMI some report it including EMI.  The next part of the rule checks if the alternative calc is used. **/
+                        if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
+                            $base_IncomeAlt = {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0} + {@concept=IncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
+                            $calc_valueAlt = $num / $base_IncomeAlt
+                            $denominator_IntervalsAlt = numerical_intervals($base_IncomeAlt, $TaxAmount)
+                            $intervalsListAlt = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt)
+                            $result_intervals = fact_intervals($percentage-value)
+                            if $intervalsListAlt.first <= $result_intervals.last and $intervalsListAlt.last >= $result_intervals.first
+                                false
+                            else
+                                if  ($calc_valueAlt - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt) > 0.01
+                                    true
+                                else
+                                    false
+                        else
+                            true
                     else
                         false
 else
     skip
 
 message
-"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}. 
+"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.
 {$percentage-message}
 
 The properties of this {$percentage-value.concept} fact are:
