@@ -174,6 +174,7 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Public Exposure | 27 |
 | [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Public Exposure | 27 |
 | [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Public Exposure | 27 |
+| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Public Exposure | 27 |
 
 ## Guidance 
 
