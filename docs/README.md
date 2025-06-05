@@ -92,9 +92,9 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0123](DQC_US_0123/DQC_0123.md) | Missing Components of Equity Axis | Approved | 16 |
 | [DQC_US_0124](DQC_US_0124/DQC_0124.md) | Breakdown of Lease Liabilities & Assets Across Financial Statement Lines Items | Approved | 16 |
 | [DQC_US_0125](DQC_US_0125/DQC_0125.md) | Lease Cost Cannot be Negative | Approved | 17 |
-| [DQC_US_0126](DQC_US_0126/DQC_0126.md) | FS Calculation Check with Non-Dimensional Data | Approved | 17 |
-| [DQC_US_0127](DQC_US_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | Approved | 17 |
-| [DQC_US_0128](DQC_US_0128/DQC_0128.md) | Dimensional Values Larger than the Default | Approved | 17 |
+| [DQC_US_0126](DQC_IFRS_0126/DQC_0126.md) | FS Calculation Check with Non-Dimensional Data | Approved | 17 |
+| [DQC_US_0127](DQC_IFRS_0127/DQC_0127.md) | Incorrect Dimensional Item Used on Financial Statements | Approved | 17 |
+| [DQC_US_0128](DQC_IFRS_0128/DQC_0128.md) | Dimensional Values Larger than the Default | Approved | 17 |
 | [DQC_IFRS_0129](DQC_IFRS_0129/DQC_0129.md) | Dimensional Equivalents IFRS | Approved | 17 |
 | [DQC_IFRS_0130](DQC_IFRS_0130/DQC_0130.md) | Earnings Per Share Calculation IFRS | Approved | 17 |
 | [DQC_US_0131](DQC_US_0131/DQC_0131.md) | Lease Allocation in Balance Sheet | Approved | 17 |
@@ -130,7 +130,7 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0163](DQC_US_0163/DQC_0163.md) | Segment Expenditure Addition To Long Lived Assets | Approved | 22 |
 | [DQC_US_0164](DQC_US_0164/DQC_0164.md) | Use of Location Axis | Approved | 22 |
 | [DQC_US_0165](DQC_US_0165/DQC_0165.md) | Useful Life of Leasehold Improvements | Approved | 22 |
-| [DQC_US_0166](DQC_US_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
+| [DQC_US_0166](DQC_IFRS_0166/DQC_0166.md) | Facts without Hypercubes | Approved | 22 |
 | [DQC_US_0167](DQC_US_0167/DQC_0167.md) | Inconsistent Calculation Roots | Approved | 23 |
 | [DQC_US_0168](DQC_US_0168/DQC_0168.md) | Tax Reconciliation Calculation | Approved | 23 |
 | [DQC_US_0169](DQC_US_0169/DQC_0169.md) | Calculation in the Parenthetical Disclosure | Approved | 23 |
@@ -174,6 +174,7 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Public Exposure | 27 |
 | [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Public Exposure | 27 |
 | [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Public Exposure | 27 |
+| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Public Exposure | 27 |
 
 ## Guidance 
 
