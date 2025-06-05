@@ -21,6 +21,7 @@ constant $BS_MEMBER_LOOKUP = dict(
 							list("OtherInvestmentsMember", set("OtherInvestments")),
 							list("ContractHolderFundsMember", set("ContractHolderFunds")),
 							list("AccountsPayableAndAccruedLiabilitiesMember", set("AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent")),
+							list("AccountsPayableMember", set("AccountsPayableCurrentAndNoncurrent")), 
 							list("CashAndCashEquivalents", set("CashAndCashEquivalentsAtCarryingValue")),
 							list("CashMember", set("Cash")),
 							list("CashEquivalentsMember", set("CashEquivalentsAtCarryingValue")),
@@ -84,6 +85,8 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 	Rule Element Id:{$ruleId}
 	Rule version: {$ruleVersion}"
 
-	severity error
+	severity error  
+status $status  
+
 	effectiveDate $effective_dates[$ruleId]
 
