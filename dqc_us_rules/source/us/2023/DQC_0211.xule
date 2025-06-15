@@ -20,9 +20,15 @@ for $ext_pairs in $EXT_ENUM
 			if $FS_concept in set(IncomeTaxExaminationInterestExpense, IncomeTaxExaminationPenaltiesExpense)
 				skip
 			else
-			$related_ext_enum = $ext_pairs[2]
 
-            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*})
+				/** Get calculation descendants of $FS_concept as the extensible enumeration may be defined at a high level but the related facts are reported.**/
+
+				$fsConceptsDescendants = navigate summation-item descendants include start from $FS_concept  taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
+				
+				$related_ext_enum = $ext_pairs[2]
+
+
+            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*}) and missing({@concept in $fsConceptsDescendants @unit=*})
 
    
 
