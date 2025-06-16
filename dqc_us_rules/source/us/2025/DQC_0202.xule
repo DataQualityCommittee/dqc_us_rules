@@ -18,9 +18,12 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $concepts = filter taxonomy().concepts where $item.name.namespace-uri == 'http://xbrl.sec.gov/cyd/2025' returns $item.name
 
 if set('10-K','20-F').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2024-12-15')) 
-    list({covered @concept in $concepts}).length == 0
-else
-    skip
+    if (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
+            skip
+        else
+            list({covered @concept in $concepts}).length == 0
+    else
+        skip
 
 message
 "The filing has not made any cyber security disclosures. At least one element related to cyber security should be used to report the cyber security disclosures in the filing. Please  add cyber security disclosures to the filing.  The following elements are available for cyber security disclosures:
