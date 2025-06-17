@@ -16,28 +16,32 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 /** Identify the roles that are the balance sheet **/
 $balance_sheet_roles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or  $item.role.description.lower-case.contains('balance sheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical')) returns $item.role).to-list;
 
-/** Sort so we always get the first  statement as this is most likely to be the actual BS**/
-$bs_roles_sorted = (filter $balance_sheet_roles returns list($item.description, $item.uri, $item )).sort;
-   
-/** Get the first balance sheet role  and return the role object at 3**/
-$balance_sheet_role = $bs_roles_sorted[1][3]
+if ($balance_sheet_roles.length == 0)
+	skip
+else
+	
+	/** Sort so we always get the first  statement as this is most likely to be the actual BS**/
+	$bs_roles_sorted = (filter $balance_sheet_roles returns list($item.description, $item.uri, $item )).sort;
+	
+	/** Get the first balance sheet role  and return the role object at 3**/
+	$balance_sheet_role = $bs_roles_sorted[1][3]
 
-/** Get the balance sheet calculation target items**/
-$balance_sheet_calc_target_items = navigate summation-item descendants role $balance_sheet_role returns set (target-name)
+	/** Get the balance sheet calculation target items**/
+	$balance_sheet_calc_target_items = navigate summation-item descendants role $balance_sheet_role returns set (target-name)
 
-/** Get the balance sheet calculation source items**/
-$balance_sheet_calc_source_items = navigate summation-item descendants role $balance_sheet_role returns set (source-name)
+	/** Get the balance sheet calculation source items**/
+	$balance_sheet_calc_source_items = navigate summation-item descendants role $balance_sheet_role returns set (source-name)
 
-/** Determine the Leaf Items in the balance sheet calculation by subtracting the source concepts from the target concepts.**/
-$balance_sheet_leaf_items = $balance_sheet_calc_target_items - $balance_sheet_calc_source_items
+	/** Determine the Leaf Items in the balance sheet calculation by subtracting the source concepts from the target concepts.**/
+	$balance_sheet_leaf_items = $balance_sheet_calc_target_items - $balance_sheet_calc_source_items
 
-/** Identify Items that cannot be leaf items **/
-$non_leaf_items = set(Assets, AssetsCurrent, NoncurrentAssets, Liabilities, LiabilitiesCurrent ,LiabilitiesNoncurrent, StockholdersEquity)
+	/** Identify Items that cannot be leaf items **/
+	$non_leaf_items = set(Assets, AssetsCurrent, NoncurrentAssets, Liabilities, LiabilitiesCurrent ,LiabilitiesNoncurrent, StockholdersEquity)
 
-/** Identify the leaf items that are not in the non-leaf items list **/
+	/** Identify the leaf items that are not in the non-leaf items list **/
 
-for ($item in $non_leaf_items.intersect($balance_sheet_leaf_items))
-	 true
+	for ($item in $non_leaf_items.intersect($balance_sheet_leaf_items))
+		true
 
 message
 "The item {$item} in the balance sheet does not include calculation children in the role {$balance_sheet_role.description}.  The concept {$item} should contain calculation children if it is included in the balance sheet.  If the calculation children are defined in another role then include them in the calculation role so that the balance sheet calculations are complete.
