@@ -1,0 +1,53 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2022
+Release Version 18
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT IFRS.0115.9565 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
+	skip
+else
+
+$cut_down_list = filter $NON_NEG_IFRS_ITEMS.keys where taxonomy().concept($item).is-type(xbrli:monetaryItemType)  and taxonomy().concept($item).period-type == duration and not ($item.local-name.lower-case.contains('average') or $item.local-name.lower-case.contains('maximum') or $item.local-name.lower-case.contains('minimum'))
+
+for ($x in ($cut_down_list - set(FinanceIncome, FinanceCosts, MiscellaneousOtherOperatingIncome, MiscellaneousOtherOperatingExpense, InvestmentIncome, InterestExpense, InterestIncomeOnFinancialAssetsDesignatedAtFairValueThroughProfitOrLoss, InterestExpenseOnFinancialLiabilitiesDesignatedAtFairValueThroughProfitOrLoss, NetForeignExchangeLoss, NetForeignExchangeGain, LossesOnChangeInFairValueOfDerivatives, GainsOnChangeInFairValueOfDerivatives, AdjustmentsForFinanceIncome, AdjustmentsForFinanceCosts)))
+
+      $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
+
+      $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or 
+		(not match_set_substring($fact, $exclude_non_neg_string_members) and (to-set($fact.dimensions-explicit.values.name) intersect $exclude_non_neg_members).length == 0 and ($fact.dimensions.keys.name intersect $exclude_non_neg_axis).length == 0 and not_elim_adjust($fact, $exclude_non_neg_axis_members))}
+
+      if ($fact1.period.start >= $large.period.start
+         and $fact1.period.end <= $large.period.end 
+         and $fact1.abs > $large.abs
+         and $fact1 > 0
+         and $fact1.period.days <= $large.period.days
+         and exists($fact1) and exists($large)
+         )
+            tolerance_for_decimals($fact1, $large, 2 ) 
+         else
+            skip
+message
+"The concept {$fact1.concept.name} with a period duration starting on {$fact1.period.start} and ending on {$fact1.period.end} or {$fact1.period.days} days with a reported value of {$fact1} has a value greater than the value of the same element with a longer or equivalent period duration that starts on {$large.period.start} and ends on {$large.period.end} with a value of {$large}.
+The value  {$fact1} for the period of {$fact1.period.days} days should be less or the same as the value  {$large} with a duration of {$large.period.days} days assuming that the concept {$fact1.concept.name} cannot have a negative value.
+The properties of this {$fact1.concept.name} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
