@@ -38,7 +38,7 @@ assert US.0204.10705 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in $PPE_MEMBERS };
+$fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in ($PPE_MEMBERS - set(SoftwareDevelopmentMember,SoftwareAndSoftwareDevelopmentCostsMember)) where $fact  != 0};
 
 exists($fact1) 
 
