@@ -7,85 +7,57 @@
  <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
  <ref href="EDGAR/transform"/></entry>
 <entry code="info" level="info">
- <message>[info] Xule version: 3.0.30044 - </message>
+ <message>[info] Xule version: 3.0.30045 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 15.68 secs at 2025-05-01T14:43:19 - http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm </message>
+ <message>[info] loaded in 9.07 secs at 2025-06-13T13:18:20 - http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.974458. - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0135.9835 - 13:18:50.598454 - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:04.525766 from 'https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-tin-def-2024.xml' - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:28.085855 from 'https://xbrl.fasb.org/us-gaap/2024/entire/us-gaap-entryPoint-std-2024.xsd' - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
 <entry code="DQC.US.0135.9835" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2404592005248">[DQC.US.0135.9835] The element us-gaap:DerivativeLiabilities has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:DerivativeLiabilityStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:DerivativeLiabilities is included. 
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2385633874608">[DQC.US.0135.9835] The element us-gaap:DerivativeAssets has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:DerivativeAssetStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:DerivativeAssets is included. 
 
 
-If the filing does not disclose the financial statement captions where the amounts appear, an extension element DerivativeLiabilityStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.
-
-The following is an example of a fact that does not have an extensible list.
- 
-Concept : us-gaap:DerivativeLiabilities
-Value : 451,000,000
-Period : 2024-12-31
-Dimensions : us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember
-Unit : USD
-Decimals: -6
-
-Rule Element Id:9835
-Rule version: 26.0.9 - rtx-20241231.htm 8</message>
- <ref href="rtx-20241231.htm#f-1709" sourceLine="8">
-  <property name="file" value="rtx-20241231.htm"/>
-  <property name="line" value="8"/>
-  <property name="label" value="Derivative Liability"/>
-  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
-  <property name="name" value="DerivativeLiabilities"/>
-  <property name="QName" value="us-gaap:DerivativeLiabilities"/>
-  <property name="contextRef" value="c-486">
-   <property name="entity" value="0000101829">
-    <property name="scheme" value="http://www.sec.gov/CIK"/>
-   </property>
-   <property name="instant" value="2024-12-31"/>
-   <property name="dimensions" value="(1)">
-    <property name="us-gaap:FairValueByMeasurementBasisAxis" value="us-gaap:EstimateOfFairValueFairValueDisclosureMember"/>
-   </property>
-  </property>
-  <property name="unitRef" value="usd ($)">
-   <property name="measure" value="iso4217:USD"/>
-  </property>
-  <property name="decimals" value="-6"/>
-  <property name="precision" value="None"/>
-  <property name="xsi:nil" value="false"/>
-  <property name="value" value="451,000,000"/>
-  <property name="format" value="None"/>
-  <property name="scale" value="6"/>
-  <property name="html value" value="451"/>
- </ref></entry>
-<entry code="DQC.US.0135.9835" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2404592005248">[DQC.US.0135.9835] The element us-gaap:DerivativeAssets has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:DerivativeAssetStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:DerivativeAssets is included. 
-
-
-If the filing does not disclose the financial statement captions where the amounts appear, an extension element DerivativeAssetStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element DerivativeAssetStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
 
 The following is an example of a fact that does not have an extensible list.
  
 Concept : us-gaap:DerivativeAssets
 Value : 308,000,000
 Period : 2023-12-31
-Dimensions : us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember
+Dimensions : us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel2Member, us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember
 Unit : USD
 Decimals: -6
 
 Rule Element Id:9835
-Rule version: 26.0.9 - rtx-20241231.htm 8</message>
- <ref href="rtx-20241231.htm#f-1717" sourceLine="8">
+Rule version: 26.0.12 - rtx-20241231.htm 8</message>
+ <ref href="rtx-20241231.htm#f-1719" sourceLine="8">
   <property name="file" value="rtx-20241231.htm"/>
   <property name="line" value="8"/>
   <property name="label" value="Derivative Asset"/>
   <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
   <property name="name" value="DerivativeAssets"/>
   <property name="QName" value="us-gaap:DerivativeAssets"/>
-  <property name="contextRef" value="c-490">
+  <property name="contextRef" value="c-492">
    <property name="entity" value="0000101829">
     <property name="scheme" value="http://www.sec.gov/CIK"/>
    </property>
    <property name="instant" value="2023-12-31"/>
-   <property name="dimensions" value="(1)">
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:FairValueByFairValueHierarchyLevelAxis" value="us-gaap:FairValueInputsLevel2Member"/>
     <property name="us-gaap:FairValueByMeasurementBasisAxis" value="us-gaap:EstimateOfFairValueFairValueDisclosureMember"/>
    </property>
   </property>
@@ -101,34 +73,79 @@ Rule version: 26.0.9 - rtx-20241231.htm 8</message>
   <property name="html value" value="308"/>
  </ref></entry>
 <entry code="DQC.US.0135.9835" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2404592005248">[DQC.US.0135.9835] The element us-gaap:AccrualForEnvironmentalLossContingencies has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:EnvironmentalLossContingencyStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:AccrualForEnvironmentalLossContingencies is included. 
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2385633874608">[DQC.US.0135.9835] The element us-gaap:DerivativeLiabilities has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:DerivativeLiabilityStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:DerivativeLiabilities is included. 
 
 
-If the filing does not disclose the financial statement captions where the amounts appear, an extension element EnvironmentalLossContingencyStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element DerivativeLiabilityStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
+
+The following is an example of a fact that does not have an extensible list.
+ 
+Concept : us-gaap:DerivativeLiabilities
+Value : 451,000,000
+Period : 2024-12-31
+Dimensions : us-gaap:FairValueByMeasurementBasisAxis=us-gaap:EstimateOfFairValueFairValueDisclosureMember, us-gaap:FairValueByFairValueHierarchyLevelAxis=us-gaap:FairValueInputsLevel2Member
+Unit : USD
+Decimals: -6
+
+Rule Element Id:9835
+Rule version: 26.0.12 - rtx-20241231.htm 8</message>
+ <ref href="rtx-20241231.htm#f-1711" sourceLine="8">
+  <property name="file" value="rtx-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Derivative Liability"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DerivativeLiabilities"/>
+  <property name="QName" value="us-gaap:DerivativeLiabilities"/>
+  <property name="contextRef" value="c-488">
+   <property name="entity" value="0000101829">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:FairValueByFairValueHierarchyLevelAxis" value="us-gaap:FairValueInputsLevel2Member"/>
+    <property name="us-gaap:FairValueByMeasurementBasisAxis" value="us-gaap:EstimateOfFairValueFairValueDisclosureMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="451,000,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="451"/>
+ </ref></entry>
+<entry code="DQC.US.0135.9835" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm" severity="error" effectiveDate="2022-09-01" cid="2385633874608">[DQC.US.0135.9835] The element us-gaap:AccrualForEnvironmentalLossContingencies has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:EnvironmentalLossContingencyStatementOfFinancialPositionExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:AccrualForEnvironmentalLossContingencies is included. 
+
+
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element EnvironmentalLossContingencyStatementOfFinancialPositionExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
 
 The following is an example of a fact that does not have an extensible list.
  
 Concept : us-gaap:AccrualForEnvironmentalLossContingencies
 Value : 800,000,000
-Period : 2024-12-31
+Period : 2023-12-31
 Dimensions : 
 Unit : USD
 Decimals: -8
 
 Rule Element Id:9835
-Rule version: 26.0.9 - rtx-20241231.htm 8</message>
- <ref href="rtx-20241231.htm#f-1790" sourceLine="8">
+Rule version: 26.0.12 - rtx-20241231.htm 8</message>
+ <ref href="rtx-20241231.htm#f-1789" sourceLine="8">
   <property name="file" value="rtx-20241231.htm"/>
   <property name="line" value="8"/>
   <property name="label" value="Accrual for Environmental Loss Contingencies"/>
   <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
   <property name="name" value="AccrualForEnvironmentalLossContingencies"/>
   <property name="QName" value="us-gaap:AccrualForEnvironmentalLossContingencies"/>
-  <property name="contextRef" value="c-5">
+  <property name="contextRef" value="c-14">
    <property name="entity" value="0000101829">
     <property name="scheme" value="http://www.sec.gov/CIK"/>
    </property>
-   <property name="instant" value="2024-12-31"/>
+   <property name="instant" value="2023-12-31"/>
   </property>
   <property name="unitRef" value="usd ($)">
    <property name="measure" value="iso4217:USD"/>
@@ -141,7 +158,22 @@ Rule version: 26.0.9 - rtx-20241231.htm 8</message>
   <property name="scale" value="9"/>
   <property name="html value" value="0.8"/>
  </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0135.9835 time took: 50.800376 - 13:19:41.399828  - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0135.9835 end. Took 0:00:50.800376 - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:51.778832. - rtx-20241231.htm </message>
+ <ref href="rtx-20241231.htm"/></entry>
 <entry code="info" level="info">
- <message>[info] validated in 66.28 secs - http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm </message>
+ <message>[info] validated in 72.03 secs - http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/101829/000010182925000005/rtx-20241231.htm"/></entry>
 </log>
