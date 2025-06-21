@@ -167,14 +167,14 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0200](DQC_US_0200/DQC_0200.md) | Instant Items Used on the Income Statement Location Axis | Approved | 26 |
 | [DQC_US_0201](DQC_US_0201/DQC_0201.md) | Private Company Concepts | Approved | 26 |
 | [DQC_US_0202](DQC_US_0202/DQC_0202.md) | Cyber Taxonomy Disclosures | Approved | 26 |
-| [DQC_US_0203](DQC_US_0203/DQC_0203.md) | Income Tax Authority Axis with Invalid Members | Public Exposure | 27 |
-| [DQC_US_0204](DQC_US_0204/DQC_0204.md) | Invalid Axis used for Tangible and Intangible Assets  | Public Exposure | 27 |
-| [DQC_US_0205](DQC_US_0205/DQC_0205.md) | Invalid Member used on Balance Sheet Location Axis  | Public Exposure | 27 |
-| [DQC_US_0206](DQC_US_0206/DQC_0206.md) | Invalid Member used on Disaggregation Of Income Statement Expense Caption Axis | Public Exposure | 27 |
-| [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Public Exposure | 27 |
-| [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Public Exposure | 27 |
-| [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Public Exposure | 27 |
-| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Public Exposure | 27 |
+| [DQC_US_0203](DQC_US_0203/DQC_0203.md) | Income Tax Authority Axis with Invalid Members | Removed after Public Review |  |
+| [DQC_US_0204](DQC_US_0204/DQC_0204.md) | Invalid Axis used for Tangible and Intangible Assets  | Approved | 27 |
+| [DQC_US_0205](DQC_US_0205/DQC_0205.md) | Invalid Member used on Balance Sheet Location Axis  | Removed after Public Review |  |
+| [DQC_US_0206](DQC_US_0206/DQC_0206.md) | Invalid Member used on Disaggregation Of Income Statement Expense Caption Axis | Approved | 27 |
+| [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Approved | 27 |
+| [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Removed after Public Review |  |
+| [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Removed after Public Review |  |
+| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Approved | 27 |
 
 ## Guidance 
 
