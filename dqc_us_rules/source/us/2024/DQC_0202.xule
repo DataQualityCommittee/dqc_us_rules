@@ -18,7 +18,10 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $concepts = filter taxonomy().concepts where $item.name.namespace-uri == 'http://xbrl.sec.gov/cyd/2024' returns $item.name
 
 if set('10-K','20-F').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2024-12-15')) 
-    list({covered @concept in $concepts}).length == 0
+        if (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
+            skip
+        else
+            list({covered @concept in $concepts}).length == 0
 else
     skip
 

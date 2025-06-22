@@ -13,7 +13,12 @@ assert US.0084.9298 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+
+if set('N-CSR').contains([covered @concept.local-name ='DocumentType'])
+	skip
+else
 $decimal_tolerance_factor = 3
+
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
 	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average') 
@@ -41,7 +46,7 @@ $sub-periods =
 					;
 					
 if not exists($sub-periods)
-	false
+	skip
 else
 	$sum-periods = sum(list(for ($x in $sub-periods) $x));
 	$all-decimals = set(for ($y in $sub-periods) $y.decimals);
@@ -64,7 +69,7 @@ else
 				($fact1 - $sum-periods).abs > $tolerance;
 	if $it-does-not-sum
 		$period-message = (filter $sub-periods returns " \t" + $item.period.string +" \t" + $item.string +" \t Decimals: " + $item.decimals.string).join("\n");
-		if (is_base($fact1.concept, $ALL_BASE_TAXONOMIES))
+		if (is_base($fact1.concept, $ALL_BASE_TAXONOMIES_ELTS))
 			true
 		else
 			false

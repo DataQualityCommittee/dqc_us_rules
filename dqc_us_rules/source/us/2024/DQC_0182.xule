@@ -13,7 +13,9 @@ ASSERT US.0182.10160 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$dimEquivs = navigate 'http://www.xbrl.org/2021/arcrole/concept-dimensional-equivalent' descendants  taxonomy $META returns list (source, target)
+/** $dimEquivs = navigate 'http://www.xbrl.org/2021/arcrole/concept-dimensional-equivalent' descendants  taxonomy $META returns list (source, target) **/
+
+$dimEquivs = list(for $pair in $DIM_EQUIV_NAMES concept_pair_from_name_pair($pair));
 
 $lookupDict = $dimEquivs.agg-to-dict(1)
 for $key in $lookupDict.keys
@@ -58,5 +60,4 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $base
-
 effectiveDate $effective_dates[$rule_id]

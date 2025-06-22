@@ -19,7 +19,7 @@ $signIssueElements = list(LitigationSettlementAmountAwardedFromOtherParty, Litig
 
 $incomeStatementAncestors = navigate summation-item ancestors from $signIssueElements  returns set target-name
 
-$allPossileIncomeStatementItems =  navigate dimensions summation-item descendants from list(NetIncomeLoss, ProfitLoss) taxonomy $US-GAAP returns set (target-name);
+$allPossileIncomeStatementItems =  navigate dimensions summation-item descendants from list(NetIncomeLoss, ProfitLoss) taxonomy $US-GAAP_ELTS_CALCS returns set (target-name);
 
 $intersectionIncomeStatemt = $allPossileIncomeStatementItems.intersect($incomeStatementAncestors)
 

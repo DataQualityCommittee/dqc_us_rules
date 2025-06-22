@@ -14,7 +14,7 @@ Check that transition elemnts are not used 2023 taxonomy and above.**/
 ASSERT US.0171.10104 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-$ASU201613_TransitionELements = navigate parent-child descendants from Asu201613TransitionAbstract taxonomy $US-GAAP returns set (target-name)
+$ASU201613_TransitionELements = $ASU201613_TRANSITION_ELEMENTS;
 
 $ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, 
 FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment,
@@ -25,7 +25,7 @@ HeldToMaturitySecuritiesContinuousUnrealizedLossPositionLessThan12MonthsAccumula
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionFairValue,
 HeldToMaturitySecuritiesContinuousUnrealizedLossPositionAccumulatedLoss,
 HeldToMaturitySecuritiesInUnrealizedLossPositionsQualitativeDisclosureNumberOfPositions,
-FinancingReceivableModificationsNumberOfContracts2,
+/**FinancingReceivableModificationsNumberOfContracts2, The element has a TIN stating that: Element is intended to be used for each reported period for which amendment from Accounting Standards Update ASU 2022-02 is not applied **/
 /** ImpairedFinancingReceivableRelatedAllowance,
 ImpairedFinancingReceivableRecordedInvestment,
 ImpairedFinancingReceivableWithRelatedAllowanceRecordedInvestment,
@@ -37,11 +37,11 @@ ImpairedFinancingReceivableWithRelatedAllowanceAverageRecordedInvestment, FASB S
 ImpairedFinancingReceivableWithRelatedAllowanceUnpaidPrincipalBalance,
 ImpairedFinancingReceivableInterestIncomeCashBasisMethod,
 ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeCashBasisMethod,
-ImpairedFinancingReceivableAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
+ImpairedFinancingReceivableAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE 
 ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeCashBasisMethod,
 ImpairedFinancingReceivableInterestIncomeAccrualMethod,
 ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeAccrualMethod,**/
-ScheduleOfUnrealizedLossOnInvestmentsTableTextBlock,
+/**ScheduleOfUnrealizedLossOnInvestmentsTableTextBlock,   TALKED TO THE FASB AND THEY SAID THIS ELEMENT is OTTI and should not be an exemption. Removed  May 5th 2025**/
 UnamortizedLoanCommitmentAndOriginationFeesAndUnamortizedDiscountsOrPremiums,
 /**ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeAccrualMethod,
 ImpairedFinancingReceivablesTableTextBlock**/);

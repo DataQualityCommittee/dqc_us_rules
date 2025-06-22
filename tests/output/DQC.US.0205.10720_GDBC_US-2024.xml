@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30044 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 35.65 secs at 2025-04-14T17:16:33 - http://www.sec.gov/Archives/edgar/data/1476765/000147676524000132/gbdc-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1476765/000147676524000132/gbdc-20240930.htm"/></entry>
+<entry code="DQC.US.0205.10720" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1476765/000147676524000132/gbdc-20240930.htm" severity="error" effectiveDate="None" cid="2879735138784">[DQC.US.0205.10720] The filer has used the BalanceSheetLocationAxis member AccountsPayableAndAccruedLiabilitiesMember in the filing. This member is used to identify the location of the line item in the balance sheet. However, the concept AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent does not appear in the face financial statements. Either update the value of the BalanceSheetLocationAxis member AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent with a Member that has the same name as the line item with the suffix 'Member' or add the line item AccountsPayableAndAccruedLiabilitiesCurrentAndNoncurrent to the presentation and calculation linkbase in the balance sheet.
+
+        Rule Element Id:10720
+        Rule version: 27.0.0RC1 - gbdc-20240930.htm 8</message>
+ <ref href="gbdc-20240930.htm#f-19969" sourceLine="8">
+  <property name="file" value="gbdc-20240930.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Deferred Tax Liabilities, Net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DeferredTaxLiabilities"/>
+  <property name="QName" value="us-gaap:DeferredTaxLiabilities"/>
+  <property name="contextRef" value="c-4240">
+   <property name="entity" value="0001476765">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:BalanceSheetLocationAxis" value="us-gaap:AccountsPayableAndAccruedLiabilitiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="780,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="780"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 34.32 secs - http://www.sec.gov/Archives/edgar/data/1476765/000147676524000132/gbdc-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1476765/000147676524000132/gbdc-20240930.htm"/></entry>
+</log>

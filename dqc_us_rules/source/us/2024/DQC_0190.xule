@@ -18,7 +18,7 @@ New EBP elements are from the employee benefit plan's perspective and not from t
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$EBPQNames = filter $EBP.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
+$EBPQNames = filter $EBP_ELTS.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -496,7 +496,6 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-status $status
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0190.10619 satisfied

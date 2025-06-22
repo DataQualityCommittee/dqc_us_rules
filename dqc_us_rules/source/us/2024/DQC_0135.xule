@@ -71,7 +71,6 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 					false
 				else
 					/** Get a list of values for this element, but exclude detailed breakdowns of disclosure for financial instruments **/
-					/** Added forcasted facts as may not know the financial statement **/
 					/** But exclude some member items not to check **/
 					$FairValueBreakdownItemsNotChecked = list(FairValueInputsLevel2Member, FairValueInputsLevel1Member, FairValueMeasuredAtNetAssetValuePerShareMember, FairValueInputsLevel12And3Member, srt:ScenarioForecastMember)
 
@@ -150,7 +149,7 @@ message
 "The element {$FS_concept} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) {$related_ext_enum_list.to-set.join(",")} should be used to identify the account where the financial statement element {$FS_concept} is included. 
 {$pension_message}
 
-If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
 
 The following is an example of a fact that does not have an extensible list.
  
@@ -256,7 +255,7 @@ message
 
 "The element {$FS_concept} with a value of {$FS_Concept_Item1} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the element {$related_ext_enum} should be used to identify the account where the element {$FS_concept} is included.  Because this value uses a statement location axis the enumerated value should also include the appropriate statement location axis. If there is only one statement location axis value the location axis does not have to be used.
 
-If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element {$NotDisclosedAsImmaterial} can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
 
 Concept : {$FS_concept}
 Period :{$FS_Concept_Item1.period}
