@@ -64,8 +64,7 @@ assert US.0133.9833 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$NonFinancialDataEMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false and $relationship.target.name != EquityMethodInvestments returns set (target);
-
+$NonFinancialDataEMI = $NON_FINANCIAL_DATA_EMI
 
 exists({nonils @concept in $NonFinancialDataEMI @EquityMethodInvestmentNonconsolidatedInvesteeAxis = *}#EquityMethodFact)
 

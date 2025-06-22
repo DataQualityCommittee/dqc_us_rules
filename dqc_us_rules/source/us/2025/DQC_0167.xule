@@ -40,7 +40,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP_ELTS_CALCS returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
                    $root_string = "In the statement  " + $calcNetwork.role.description + " the filer has defined multiple root calculation elements. It is expected that the calculation tree in this disclosure is a single tree and not multiple trees. The existence of multiple tree's indicate that there is a calculation missing.   The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". To fix the issue a parent calculation element should be defined for the element(s) "+ $inappropriateRoots.join(', ') + " to create a single tree.  The element " + $inappropriateRoots.join(', ') + " is defined as calculation descendant of " + $root.local-name + " in the US GAAP taxonomy. ";
                     
@@ -79,7 +79,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP_ELTS_CALCS returns set target-name;
                     
                      /** Make an exception for double tagging NetIncomeLossAvailableToCommonStockholdersBasic and NetIncomeLossAvailableToCommonStockholdersDiluted  see https://www.sec.gov/Archives/edgar/data/895126/000089512624000055/0000895126-24-000055-index.htm **/
                     $amendedRoots = if ($root == NetIncomeLossAvailableToCommonStockholdersDiluted) and (NetIncomeLossAvailableToCommonStockholdersBasic in $roots)
@@ -132,7 +132,7 @@ else
             for $root in $roots
                 $otherRoots = $roots - set($root);
                 if $otherRoots.length > 0
-                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP_ELTS_CALCS returns set target-name;
                     $inappropriateRoots = $root_descendants.intersect($otherRoots);
                     $root_string = "In the statement  " + $calcNetwork.role.description + " the filer has defined multiple root calculation elements. It is expected that the calculation tree in this disclosure is a single tree and not multiple trees. The existence of multiple tree's indicate that there is a calculation missing.   The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". To fix the issue a parent calculation element should be defined for the element(s) "+ $inappropriateRoots.join(', ') + " to create a single tree.  The element " + $inappropriateRoots.join(', ') + " is defined as calculation descendant of " + $root.local-name + " in the US GAAP taxonomy. ";
                      
