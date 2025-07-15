@@ -9,19 +9,19 @@ You should see an activation message for the plugin:
 `  
 
 The minimum parameters that need to be passed are the following:
-* **`--plugins validate/DQC`** : Loads the DQC plugin. When running with an SEC filing, the SEC transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "validate/DQC|transforms/SEC"**. The pipe character `|` separates the plugins. Specifying the SEC transforms plugins will have no affect on traditional XBRL filings, so it can be included for all SEC filings.
+* **`--plugins validate/DQC`** : Loads the DQC plugin. When running with an SEC filing, the EDGAR transformations are also needed for Inline XBRL filings. Both plugins can be specified using **--plugins "validate/DQC|EDGAR/transform"**. The pipe character `|` separates the plugins. Specifying the EDGAR transforms plugins will have no affect on traditional XBRL filings, so it can be included for all SEC filings.
 * **`-f`** : The location of the instance file to be evaluated. This will take a zip file, XML instance or inline XBRL file.
 * **`-v`**: Instructs the processor to validate the filing including running the DQC rules.
 
 A typical command line syntax for Arelle is as follows (including optional parameters defined below:
 
 `
-arelleCmdLine --plugins "validate/DQC|transforms/SEC" -f {instance file or zip file} -v --noCertificateCheck --logFile {log file name}
+arelleCmdLine --plugins "validate/DQC|EDGAR/transform" -f {instance file or zip file} -v --noCertificateCheck --logFile {log file name}
 `
 
 **Example:**  
 `
-arelleCmdLine --plugins "validate/DQC|transforms/SEC" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  -v --noCertificateCheck --logFile DQC-output.xml
+arelleCmdLine --plugins "validate/DQC|EDGAR/transform" -f https://www.sec.gov/Archives/edgar/data/xxx-20170930.xml  -v --noCertificateCheck --logFile DQC-output.xml
 `   
 
 In addition the following optional parameters can be passed:
