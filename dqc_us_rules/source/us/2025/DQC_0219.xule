@@ -33,7 +33,7 @@ else
     // 3. For each context, check if AssetsNet has a calculation child of InvestmentOwnedAtFairValue and an extension item with a negative value
 
     $has_io_child = $calc_children.contains($calc_children);
-    $has_extension_child = filter $calc_children where $item.name.namespace-uri == $EXTENSION_NS;
+    $has_extension_child = filter $calc_children where $item.namespace-uri == $EXTENSION_NS;
     $extension_element = first($has_extension_child.to-list);
     if $has_io_child and  $has_extension_child.length > 0
         exists({@concept in $has_extension_child where $fact < 0})
