@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 11.28 secs at 2025-07-21T15:15:56 - http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.745594. - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0208.10728 - 15:16:25.399937 - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="DQC.US.0208.10728" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm" severity="error" status="PROPOSED" effectiveDate="None" cid="2223603135024">[DQC.US.0208.10728] The filer has reported a schedule of investments and has provided subtotals for the EquitySecuritiesByIndustryAxis.  The filer has also reported values for the InvestmentIndustrySectorExtensibleEnumeration concept.  The values reported for the InvestmentIndustrySectorExtensibleEnumeration concept should be used as members on the EquitySecuritiesByIndustryAxis or should roll up in a domain-member hierarchy to the member used as a subtotal.  The following extensible enumeration values have been reported but are not being used as members on the EquitySecuritiesByIndustryAxis or can be reconciled to this axis. 
+
+- TransportationSectorMember.  
+
+Please ensure that these values are used as members on the EquitySecuritiesByIndustryAxis or are descendants of one of the following members rweic:ServicesBusinessMember, rweic:EnvironmentalIndustriesSectorMember, us-gaap:TechnologySectorMember, rweic:CapitalEquipmentSectorMember, us-gaap:RetailSectorMember, rweic:HealthcareAndPharmaceuticalsMember, rweic:SoftwareMember, us-gaap:ConstructionSectorMember, rweic:HotelGamingAndLeisureMember, rweic:ServicesConsumerMember, rweic:BeverageFoodAndTobaccoMember, rweic:ConsumerGoodsNonDurableSectorMember, rweic:ChemicalsPlasticsAndRubberMember, rweic:AerospaceAndDefenseSectorMember, rweic:FireRealEstateMember, rweic:ConsumerGoodsDurableSectorMember, rweic:WholesaleMember, rweic:MetalAndMiningIndustriesMember, rweic:FireInsuranceMember, rweic:TransportationConsumerMember, that are used to define subtotals on the EquitySecuritiesByIndustryAxis.
+
+
+Rule Element Id:10728
+Rule version: 28.0.0RC1 - tmb-20240930x10q.htm 13</message>
+ <ref href="tmb-20240930x10q.htm#Tc_1DRQ1wtSrUSnpb9OylGY0A_73_18" sourceLine="13">
+  <property name="file" value="tmb-20240930x10q.htm"/>
+  <property name="line" value="13"/>
+  <property name="label" value="Investment Owned, Fair Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="As_Of_9_30_2024_us-gaap_EquitySecuritiesByIndustryAxis_us-gaap_TechnologySectorMember_us-gaap_InvestmentIssuerAffiliationAxis_us-gaap_InvestmentUnaffiliatedIssuerMember_us-gaap_InvestmentTypeAxis_rweic_FirstLienSecuredDebtMember_z410_2MZeEiqowGX_Xb8KA">
+   <property name="entity" value="0001870267">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:EquitySecuritiesByIndustryAxis" value="us-gaap:TechnologySectorMember"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="rweic:FirstLienSecuredDebtMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_Standard_USD__uZjdDX9NUu6T0sB8XxSNg ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="19,505,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="19,505"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0208.10728 time took: 3.423116 - 15:16:28.823053  - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0208.10728 end. Took 0:00:03.423116 - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:04.170833. - tmb-20240930x10q.htm </message>
+ <ref href="tmb-20240930x10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 21.45 secs - http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1870267/000155837024015521/tmb-20240930x10q.htm"/></entry>
+</log>

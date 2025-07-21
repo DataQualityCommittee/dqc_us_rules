@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 17.50 secs at 2025-07-21T15:09:48 - http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:01.766501. - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0207.10723 - 15:10:26.041029 - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="DQC.US.0207.10723" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm" severity="error" effectiveDate="None" cid="1536974805504">[DQC.US.0207.10723] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 25,911,000. This concept is used to report the fair value of investments for the us-gaap:EquitySecuritiesMember investment type. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 33,122,000 that includes the member us-gaap:EquitySecuritiesMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentTypeAxis=us-gaap:EquitySecuritiesMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentAffiliatedIssuerControlledMember. The value representing the fair value of investments in the  us-gaap:EquitySecuritiesMember investment type is less than the value reported for the value 33,122,000 which is a subset of this investment type. The value reported for the investment type in aggregate should be more than or equal to the value reported for of 33,122,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 33,122,000
+Period : 2023-12-31
+Dimensions : us-gaap:InvestmentTypeAxis=us-gaap:EquitySecuritiesMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentAffiliatedIssuerControlledMember
+
+Rule Element Id:10723
+Rule version: 28.0.0RC1 - mrcc-20241231.htm 8</message>
+ <ref href="mrcc-20241231.htm#f-4576" sourceLine="8">
+  <property name="file" value="mrcc-20241231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Investment Owned, Fair Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="c-854">
+   <property name="entity" value="0001512931">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:InvestmentTypeAxis" value="us-gaap:EquitySecuritiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="25,911,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="25,911"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0207.10723 time took: 3.806101 - 15:10:29.848228  - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0207.10723 end. Took 0:00:03.806101 - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:05.574691. - mrcc-20241231.htm </message>
+ <ref href="mrcc-20241231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 24.26 secs - http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1512931/000151293125000013/mrcc-20241231.htm"/></entry>
+</log>
