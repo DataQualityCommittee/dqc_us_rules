@@ -1,0 +1,79 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2025
+
+**/
+
+output-attribute instance-name
+output-attribute instance-taxonomy 
+output-attribute fact-value
+output-attribute fact-concept
+output-attribute fact-unit
+output-attribute fact-entity
+output-attribute fact-period
+output-attribute fact-decimals
+output-attribute fact-dimensions
+output-attribute fact-instance
+output-attribute fact-alignment
+output-attribute fact-footnote
+output-attribute fact-id
+output-attribute fact-is-nil
+
+constant $InstanceName = 'TestCo-2025-NonNeg-IFRS'
+constant $TAXONOMY_LOC = 'http://xbrl.ifrs.org/taxonomy/2025-03-27/full_ifrs_entry_point_2025-03-27.xsd'
+
+output createInstance
+true
+instance-name  $InstanceName 
+instance-taxonomy list($TAXONOMY_LOC,'https://xbrl.sec.gov/dei/2025/dei-2025.xsd','http://xbrl.fasb.org/srt/2025/elts/srt-2025.xsd').to-json
+
+
+output  create_fact_values
+{@}
+
+fact-value $rule-value
+fact-alignment alignment().to-xince
+fact-decimals  $rule-value.decimals
+
+fact-instance $InstanceName
+
+constant $CURRENT_ELEMENTS = set({covered @}.concept.name)
+constant $new-elements = ($NON_NEG_IFRS_ITEMS.keys)
+
+output new-instance-values
+for $qname in $new-elements
+    $concept = taxonomy().concept($qname);
+    $period_type = $concept.period-type;
+    $period-value = if $period_type == instant
+                        date('2022-12-31')
+                    else
+                        duration('2022-01-01','2022-12-31')
+    $decimal_value = if $concept.is-numeric
+                        0
+                    else
+                        none
+    $units = if $concept.is-monetary
+                        unit(iso4217:USD)
+                    else if $concept.data-type == xbrli:shares
+                            unit(xbrli:shares)
+                    else if $concept.is-numeric
+                        unit(xbrli:pure)
+                        else
+                            none
+    $fact_value = $qname.local-name.length * -100
+    true
+
+fact-instance $InstanceName
+fact-value $fact_value
+fact-concept $qname.to-xince
+fact-entity entity('http://xbrl.org/entity/identification/scheme', 'Testco').to-xince
+fact-period $period-value.to-xince
+fact-unit $units.to-xince
+fact-decimals $decimal_value
+            
+
+
+/** python3.9 ~/arelle/Arelle-master/arellecmdline.py --plugins 'xule|xince|transforms/SEC|validate/EFM|inlineXbrlDocumentSet' -f /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/TestCo-2022-NonNeg-2018-base.xml --xule-time .005 --xule-debug --noCertificateCheck --logFile /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/Testco-log.xml --xule-rule-set /Users/campbellpryde/Documents/GitHub/xule.dqc/dqc_us_rules/dqc-us-2022-V22-ruleset.zip --xule-run-only createInstance,create_fact_values,new-instance-values --logNoRefObjectProperties --xince-location /Users/campbellpryde/Documents/GitHub/xule.dqc/tests/input/ --xince-show-xule-log --xince-file-type=xml  **/
