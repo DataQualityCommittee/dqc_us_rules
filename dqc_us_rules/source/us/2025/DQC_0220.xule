@@ -21,13 +21,16 @@ for $cube in $NOTES_CUBES
      $tableName = $cube.cube-concept.name;
 
      if $tableName == StatementTable
+      if $cube.drs-role.description.contains("(Tables)") //Checks if the statement table is used on level 3 tagging which is deemed OK.
+         false
+      else
         true
      else  
         skip
 
 message
 
-"The filing has used the StatementTable in the notes in the role {$cube.drs-role.description}. The StatementTable is not intended to be used in the notes, it is intended to be used in the face financial statements. The filer should use the appropriate table name for the notes disclosure.
+"The filing has used the StatementTable in the notes in the role {$cube.drs-role.description}. The StatementTable is not intended to be used in the notes, it is intended to be used in the face financial statements. The filer should use the appropriate table name for the notes disclosure. If no table is appropriate for the note disclosure, the filer should create an extension table with a name that describes the information in the table.
 
 Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
