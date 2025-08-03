@@ -21,7 +21,10 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
     $Dimensions = $BDCInvestmentFact.dimensions.keys.name
 
     if InvestmentIdentifierAxis not in $Dimensions and $Dimensions.length > 0
-        true
+        if FinancialInstrumentAxis in $Dimensions
+                false
+        else
+                true
     else
         false
 
@@ -38,6 +41,6 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
+
 
 effectiveDate $effective_dates[$ruleId]
