@@ -184,6 +184,8 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0219](DQC_US_0219/DQC_0219.md) | Missing Value for NonInvestmentAssetsLessNonInvestmentLiabilities | Public Review | 28 |
 | [DQC_US_0220](DQC_US_0220/DQC_0220.md) | Improper Use of StatementTable in Notes Disclosures | Public Review | 28 |
 | [DQC_US_0221](DQC_US_0221/DQC_0221.md) | Missing NumberOfReportableSegments When Segment Facts Are Reported | Public Review | 28 |
+| [DQC_US_0222](DQC_US_0222/DQC_0222.md) | Scaling Error in EntityPublicFloat | Public Review | 28 |
+| [DQC_US_0223](DQC_US_0223/DQC_0223.md) | Extension Leaf Items on Statement of Operating Activities or Income Statement | Public Review | 28 |
 
 ## Guidance 
 
