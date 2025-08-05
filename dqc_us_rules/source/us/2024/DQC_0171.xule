@@ -47,7 +47,7 @@ UnamortizedLoanCommitmentAndOriginationFeesAndUnamortizedDiscountsOrPremiums,
 ImpairedFinancingReceivablesTableTextBlock**/);
 
 $TransFact = {@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}
-$factIsTextBlock = $TransFact.is-type(nonnum:textBlockItemType);
+$factIsTextBlock = $TransFact.is-type(dtr-types:textBlockItemType);
 
 exists($TransFact)
 
