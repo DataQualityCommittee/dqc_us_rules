@@ -10,8 +10,10 @@ Taxonomy: US GAAP ALL
 RULE-NAME-PREFIX DQC
 
 
-Assert IFRS.0212.10830 satisfied
+Assert IFRS.0223.10709 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if taxonomy().entry-point == 'https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs_18_entry_point_2025-03-27.xsd'
 
 /**Identify all concepts used on the statement of operating activities or income statement by looking at the presentation parent-child relationships in the STatement of operating activities role, which starts with the string Statement**/
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -53,6 +55,9 @@ for $presNetwork in $presNetworks
         true
     else
         false
+
+else 
+    skip
 
 
 message
