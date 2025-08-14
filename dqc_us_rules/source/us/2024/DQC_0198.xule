@@ -205,6 +205,10 @@ Unit : {$percentage-value.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
 /** Check if the domestic and foreign member are used.**/
 
 ASSERT US.0198.10660 satisfied
@@ -238,6 +242,9 @@ Unit : {$IncomeTax.unit}
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
+severity error
+
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0198.10661 satisfied
 
@@ -256,6 +263,10 @@ else
 message
 "The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
 
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
 /** Complete as part of V27 rules **/
 
 /** If do report by IncomeTaxAuthorityAxis that they add to the total , Individual jurisdction should be greater than 5%.  ANy thing less than than 5% is reported as a componet of ForeignTaxJurisdictionOtherMember**/
