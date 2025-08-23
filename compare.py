@@ -15,6 +15,7 @@ import collections
 import copy
 import csv
 import html
+import lxml
 import os
 import re
 import sys
@@ -86,16 +87,31 @@ def tuplize(node):
 def open_files(file_names):
     """
     Open list of files and create a list of XML documents.
+    Tries to repair XML if not well-formed using lxml.
     :param file_names: List of file names separated by a comma.
     :return: List of XML documents
     """
     xml_docs = []
     for file_name in file_names.split(','):
-        print("Opening file:", file_name.strip())
-        with open(file_name.strip(), 'r') as f:
-            xml_doc = ET.fromstring(f.read())
-            xml_docs.append((xml_doc, file_name.strip()))
-
+        file_name = file_name.strip()
+        print("Opening file:", file_name)
+        with open(file_name, 'r', encoding='utf-8') as f:
+            xml_content = f.read()
+        try:
+            xml_doc = ET.fromstring(xml_content)
+            xml_docs.append((xml_doc, file_name))
+        except ET.ParseError as e:
+            print(f"Warning: '{file_name}' is not well-formed XML. Attempting to repair...")
+            try:
+                from lxml import etree
+                parser = etree.XMLParser(recover=True)
+                xml_doc = etree.fromstring(xml_content.encode('utf-8'), parser=parser)
+                xml_docs.append((xml_doc, file_name))
+                print(f"'{file_name}' repaired using lxml.")
+            except ImportError:
+                print("lxml is not installed. Unable to repair XML.")
+            except Exception as e2:
+                print(f"Failed to repair '{file_name}': {e2}")
     return xml_docs
 
 def compare(test_messages, expected_messages):
