@@ -394,7 +394,7 @@ OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTaxPare
 OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTaxParent,
 OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent)
 
-constant $TYPED_DIMENSIONS = list(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis, OpenFuturesContractIdentifierAxis, OpenForwardForeignCurrencyContractIdentifierAxis, OpenOptionContractIdentifierAxis, OpenSwapContractIdentifierAxis, SecuritySoldShortIdentifierAxis, InvestmentIdentifierAxis, ReinsuranceContractAxis)
+constant $TYPED_DIMENSIONS = list(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis, OpenFuturesContractIdentifierAxis, OpenForwardForeignCurrencyContractIdentifierAxis, OpenOptionContractIdentifierAxis, OpenSwapContractIdentifierAxis, SecuritySoldShortIdentifierAxis, InvestmentIdentifierAxis, ReinsuranceContractAxis, dei:NameChangeEventDateAxis)
 
 constant $CASH_FLOW_ROLES  = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) or $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role
 
