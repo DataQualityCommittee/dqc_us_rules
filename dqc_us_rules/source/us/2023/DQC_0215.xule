@@ -15,7 +15,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify where extension elements are the same as base us-gaap elements ignoring case **/
 
-$us_gaap_ns = 'http://fasb.org/us-gaap/2024-01-31'
+$us_gaap_ns = 'http://fasb.org/us-gaap/2023-01-31'
 
 // 1. Identify extension elements in the company filing (not in us-gaap)
 $extension_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS;
