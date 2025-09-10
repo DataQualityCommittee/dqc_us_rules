@@ -291,7 +291,7 @@ constant $SET_BENCHMARK_ITEMS = (navigate parent-child descendants from list(Con
 
 /* DQC_0121 */
 constant $TRANSITION_ELTS_1 = navigate parent-child descendants from set(Asu201601TransitionAbstract) taxonomy $US-GAAP where not $relationship.target.is-abstract returns (target-name)
-constant $TRANSITION_ELTS_2 = navigate parent-child descendants from set(ASU201602TransitionAbstract, Asu201712TransitionAbstract, ASU201807TransitionAbstract)taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name)
+constant $TRANSITION_ELTS_2 = navigate parent-child descendants from set(ASU201602TransitionAbstract)taxonomy $US-GAAP where not $relationship.target.is-abstract returns set (target-name)
 
 /* DQC_0133 */
 constant $NON_FINANCIAL_DATA_EMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name)
