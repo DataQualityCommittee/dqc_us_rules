@@ -34,13 +34,13 @@ else
 
 	/** Treasury Items  https://www.sec.gov/ix?doc=/Archives/edgar/data/1874097/000121390024041350/ea0204007-10q_cyngn.htm#fact-identifier-401 **/
 
-	$TreasuryValue = [@concept = TreasuryStockValue];
-	$CommonStock = [@concept = CommonStockValue];
-	$AdditionalPaidInCapital = [@concept = AdditionalPaidInCapital];
-	$RetainedEarnings = [@concept = RetainedEarningsAccumulatedDeficit];
-	$AccumulatedOtherComprehensiveIncomeLoss = [@concept = AccumulatedOtherComprehensiveIncomeLossNetOfTax];
-	$NoncontrollingInterest = [@concept = MinorityInterest];
-	$PreferredStockValue = [@concept = PreferredStockValue];
+	$TreasuryValue = [nonils @concept = TreasuryStockValue where $fact != 0];
+	$CommonStock = [nonils @concept = CommonStockValue where $fact != 0];
+	$AdditionalPaidInCapital = [nonils @concept = AdditionalPaidInCapital where $fact != 0];
+	$RetainedEarnings = [nonils @concept = RetainedEarningsAccumulatedDeficit where $fact != 0];
+	$AccumulatedOtherComprehensiveIncomeLoss = [nonils @concept = AccumulatedOtherComprehensiveIncomeLossNetOfTax where $fact != 0];
+	$NoncontrollingInterest = [nonils @concept = MinorityInterest where $fact != 0];
+	$PreferredStockValue = [nonils @concept = PreferredStockValue where $fact != 0];
 
 
 	$items_to_check = list($TreasuryValue, $CommonStock, $AdditionalPaidInCapital, $RetainedEarnings, $AccumulatedOtherComprehensiveIncomeLoss, $NoncontrollingInterest, $PreferredStockValue);
