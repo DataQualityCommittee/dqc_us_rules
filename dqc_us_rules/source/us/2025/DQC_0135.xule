@@ -17,7 +17,7 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 $decimal_tolerance_factor = 20
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
@@ -178,7 +178,7 @@ assert US.0135.9836 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
