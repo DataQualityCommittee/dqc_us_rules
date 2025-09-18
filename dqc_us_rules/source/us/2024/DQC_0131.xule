@@ -12,6 +12,12 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0131.9729 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**  This rule identifies thos case where an extensible list item has been used and checks if the balance sheet has a suficient balance to carry the aount.**/
 
 /** 

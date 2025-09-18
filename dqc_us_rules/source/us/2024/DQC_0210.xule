@@ -11,10 +11,12 @@ rule-name-prefix DQC
 
 assert US.0210.10734 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-
-
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
     $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
    
 
@@ -37,10 +39,10 @@ If the concept  {$BDCInvestmentFact.concept.name} is used the InvestmentIdentifi
 Period :{($BDCInvestmentFact).period}
 Dimensions : {($BDCInvestmentFact).dimensions.join(', ','=')}
 Unit : {($BDCInvestmentFact).unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

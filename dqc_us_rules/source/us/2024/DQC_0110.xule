@@ -26,6 +26,12 @@ ASSERT US.0110.9559 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $basePeriod = first(list({covered @concept.local-name ='DocumentPeriodEndDate'})).period.days
 $paid = [@BusinessCombinationConsiderationTransferred1];
 $paidDuration = $paid.period.days;

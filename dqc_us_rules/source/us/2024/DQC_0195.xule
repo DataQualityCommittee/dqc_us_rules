@@ -138,6 +138,12 @@ ASSERT US.0195.10622 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityComponentsAxis = CommonStockMember @unit=* where $fact != 0}
 
 /** Check if have no par value tagged and if they do then AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts should be ok to use with CommonstockMember 
@@ -176,6 +182,12 @@ ASSERT US.0195.10623 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $fact1 = {nonils @concept = StockholdersEquity @StatementEquityComponentsAxis in $NCI  @unit=* where $fact != 0}
 
 exists($fact1)
@@ -199,6 +211,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0195.10624 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $treasury =  set(TreasuryStockCommonMember, TreasuryStockPreferredMember);
 
@@ -243,6 +261,12 @@ ASSERT US.0195.10625 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 
 
 if  $COMMON_STOCK_SHARES_ISSUED_METHOD
@@ -286,6 +310,11 @@ ASSERT US.0195.10626 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $fact1 = {nonils @concept = SharesIssued  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
 
 $fact2 = {nonils @concept = SharesOutstanding  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
@@ -311,6 +340,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0195.10627 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** LOok at allowable values for common stock **/
 

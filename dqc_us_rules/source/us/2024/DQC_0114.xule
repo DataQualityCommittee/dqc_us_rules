@@ -16,6 +16,12 @@ ASSERT US.0114.9563 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $CalcNetValueAcquired = {@BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedNet @@BusinessAcquisitionAxis=*}#nanl <+> {@Goodwill @@BusinessAcquisitionAxis=*}#Goodwill;
 $NetValueAcquired = {@BusinessCombinationRecognizedIdentifiableAssetsAcquiredGoodwillAndLiabilitiesAssumedNet @@BusinessAcquisitionAxis=*}
 

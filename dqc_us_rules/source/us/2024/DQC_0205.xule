@@ -43,7 +43,13 @@ constant $BS_MEMBER_LOOKUP = dict(
 
 ASSERT US.0205.10720 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Identify all presentation networks in the company extension **/
 
@@ -82,11 +88,11 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 	message
 	"The filer has used the BalanceSheetLocationAxis member {$member} in the filing. This member is used to identify the location of the line item in the balance sheet. However, the concept {sum($calc_local-name)} does not appear in the face financial statements. Either update the value of the BalanceSheetLocationAxis member {sum($calc_local-name)} with a Member that has the same name as the line item with the suffix 'Member' or add the line item {sum($calc_local-name)} to the presentation and calculation linkbase in the balance sheet.
 
-	Rule Element Id:{$ruleId}
+	Rule Element Id:{$rule_id}
 	Rule version: {$ruleVersion}"
 
 	severity error  
 status $status  
 
-	effectiveDate $effective_dates[$ruleId]
+	effectiveDate $effective_dates[$rule_id]
 

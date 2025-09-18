@@ -13,6 +13,12 @@ assert US.0091.9376 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 {nonils @concept.data-type = dtr-types:percentItemType where ((not $fact.concept.name.local-name.contains("EffectiveIncomeTaxRate")) or $fact.concept.name.local-name == 'EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate') and (not $fact.concept.name.local-name in list('InvestmentOwnedPercentOfNetAssets')) and is_base($fact.concept, $ALL_BASE_TAXONOMIES_ELTS)}#fact1 > 10 
 
 

@@ -11,7 +11,13 @@ rule-name-prefix DQC
 
 ASSERT US.0221.10749 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 // Identify if the number of reportable segments is used.
 
@@ -34,10 +40,10 @@ message
 
 "The filing has reported values for segment facts, but has not reported a value for NumberOfReportableSegments. The filer should report a value for NumberOfReportableSegments even if it only has one segment. If the value is not reported the error can be removed by tagging a value to an extension concept called NumberOfReportableSegmentsNotDisclosedFlag with any value in any context.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
