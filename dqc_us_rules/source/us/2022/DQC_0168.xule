@@ -22,6 +22,10 @@ Add rules to ensure taxo reconcilation calculations have been reported for perce
 ASSERT US.0168.10096 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 
         $is_statutory_taxRate_in_calc = navigate summation-item  descendants from EffectiveIncomeTaxRateContinuingOperations returns set target-name
@@ -57,6 +61,10 @@ Add rules to ensure taxo reconcilation calculations have been reported for monet
 ASSERT US.0168.10097 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 
 
@@ -89,6 +97,10 @@ rule-focus $stat
 
 ASSERT US.0168.10098 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /**Check calc weights match taxonomy **/
 

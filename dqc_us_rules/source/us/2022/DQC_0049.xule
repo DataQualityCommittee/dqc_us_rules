@@ -13,6 +13,10 @@ rule-name-prefix DQC
 assert US.0049.7483 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 $must_be_present_concepts = set('CashAndCashEquivalentsPeriodIncreaseDecrease','CashPeriodIncreaseDecrease','CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')
 
 $nonallowed_root_elements = filter (navigate summation-item descendants from CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect

@@ -16,6 +16,10 @@ Example filing: https://www.sec.gov/Archives/edgar/data/714562/00007145622300000
 assert US.0157.10077  satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 {nonils @concept in $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE where (not $fact.concept.name.local-name.lower-case.contains("basis")) and $fact.inline-scale != none}#fact1 < 0.01 
 
 message

@@ -16,6 +16,10 @@ Example filing: http://www.sec.gov/Archives/edgar/data/1132509/00014779322200604
 assert US.0156.10074  satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $BasicAndDilutedIExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.is-numeric  and $item.name.local-name.lower-case.contains('basicanddiluted') returns $item.name
 
 $invalidItem = {@concept in $BasicAndDilutedIExtensionItems}

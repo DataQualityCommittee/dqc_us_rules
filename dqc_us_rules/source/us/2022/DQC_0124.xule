@@ -13,6 +13,10 @@ assert US.0124.9584 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 /** If FinanceLeaseLiability amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
@@ -90,6 +94,10 @@ rule-focus $leaseLiability
 assert US.0124.9585 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If Finance lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -169,6 +177,10 @@ rule-focus $factItem
 assert US.0124.9586 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If Finance lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -251,6 +263,10 @@ assert US.0124.9587 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 /** If FinanceLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
@@ -324,6 +340,10 @@ rule-focus $leaseAsset
 assert US.0124.9588 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If OperatingLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 

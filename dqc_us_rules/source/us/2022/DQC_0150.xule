@@ -21,6 +21,10 @@ ASSERT US.0150.9876 SATISFIED
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
 t**/
 
@@ -109,6 +113,10 @@ ASSERT US.0150.9877 SATISFIED
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -202,6 +210,10 @@ ASSERT US.0150.9878 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
                 $dimensions = $segmentCube.dimensions;
@@ -273,6 +285,10 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0150.10076 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 $parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                  /** Get members that are a child of the domain as reportable segments should be reported at this level. **/

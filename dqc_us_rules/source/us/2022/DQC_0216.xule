@@ -13,6 +13,10 @@ assert US.0216.10743 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Identify where extension geogarphy members are used on the StatementGeographicalAxis and have only two members one with member US on the country axis and one with an extension member **/
 
 // 1. Identify the members on the StatementGeographicalAxis for each role which only have 2 members under the geography domain.
@@ -59,6 +63,10 @@ rule-focus taxonomy().concept($other_member)
 assert US.0216.10744 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 
 // 1. Identify sets of members for each role (network) where only two members exist

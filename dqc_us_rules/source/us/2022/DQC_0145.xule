@@ -14,6 +14,10 @@ assert US.0145.9867 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
 $allowableFinancingItems = navigate parent-child descendants from NetCashProvidedByUsedInFinancingActivitiesAbstract taxonomy $US-GAAP  returns set (target-name) + set(ProceedsFromAdvancesForConstruction, RepaymentsOfAdvancesForConstruction, ProceedsFromContributionInAidOfConstruction)
@@ -41,6 +45,10 @@ assert US.0145.9868 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract);
 
 $taxonomyItemsNotInExtensions = (navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments, ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase) 
@@ -65,6 +73,10 @@ rule-focus taxonomy().concept($invalidConcept)
 
 assert US.0145.9869  satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 $taxonomyChangeInOperatingCapital = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name) 
 

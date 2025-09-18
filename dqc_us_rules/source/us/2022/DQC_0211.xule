@@ -13,6 +13,10 @@ assert US.0211.10735 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Read the extensible enumeration links taxonomy **/
 for $ext_pairs in $EXT_ENUM
 			$FS_concept = $ext_pairs[1]

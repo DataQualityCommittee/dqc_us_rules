@@ -22,6 +22,10 @@ ASSERT US.0109.9565 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 exists([nonils @concept=ConcentrationRiskPercentage1 where $fact != 1]#fact1)
 message
 "The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
@@ -47,6 +51,10 @@ rule-focus $fact1
 ASSERT US.0109.9566 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 if exists([nonils @concept=ConcentrationRiskPercentage1])
     skip
@@ -77,6 +85,10 @@ ASSERT US.0109.9567 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = none @ConcentrationRiskByTypeAxis = *}#fact1)
 
 message
@@ -102,6 +114,10 @@ rule-focus $fact1
 ASSERT US.0109.9568 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = none}#fact1)
 
@@ -129,6 +145,10 @@ rule-focus $fact1
 ASSERT US.0109.9569 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 exists([nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = * where $fact != 1 and $fact.dimension(ConcentrationRiskByTypeAxis).name not in list(LaborForceConcentrationRiskMember, UnionizedEmployeesConcentrationRiskMember)]#fact1)
 
@@ -215,6 +235,10 @@ ASSERT US.0109.9570 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $concentrationRisk = {nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = *}
 $benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
 $risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
@@ -251,6 +275,10 @@ ASSERT US.0109.9571 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $set_concentration_risk_items = (navigate parent-child descendants from list(ConcentrationRiskByTypeAxis) taxonomy $US-GAAP returns set (target-name));
 
 exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis in $set_concentration_risk_items}#badbenchmark)
@@ -276,6 +304,10 @@ rule-focus $badbenchmark
 ASSERT US.0109.9572 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 $set_benchmark_items = (navigate parent-child descendants from list(ConcentrationRiskByBenchmarkAxis) taxonomy $US-GAAP returns set (target-name));
 

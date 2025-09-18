@@ -14,6 +14,10 @@ assert US.0123.9583 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Check Components of Shareholders Equity is  used with class of stock **/
 
 $equityFactNoEquityComponent = [nonils @concept in list(StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest, StockholdersEquity) @@StatementClassOfStockAxis=* @unit=*];
