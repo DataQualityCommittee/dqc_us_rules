@@ -12,6 +12,11 @@ rule-name-prefix DQC
 assert US.0149.9943  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**Noncurrent Assets used incorrectly  Rule checks that if the element appears in a statement presentation linkbase then an error is recorded.**/
 
 $invalidUseOfElement = set(NoncurrentAssets) intersect (filter $STATEMENT_PRES_NETWORKS.concepts returns $item.name)
@@ -34,6 +39,11 @@ effectiveDate $effective_dates[$ruleId]
 
 assert US.0149.10075 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**Noncurrent Assets used incorrectly  Rule checks that  the element appears as a descendant ofScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable **/
 

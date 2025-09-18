@@ -13,6 +13,11 @@ ASSERT US.0181.10180 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $children_of_nonoperating = navigate summation-item descendants  from  list(NonoperatingIncomeExpense) returns set target-name
 
 $invalid_Concepts = $children_of_nonoperating intersect set(InterestExpense,InterestExpenseOperating)
@@ -34,6 +39,11 @@ ASSERT US.0181.10181 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $children_of_nonoperating = navigate summation-item descendants  from  list(InterestIncomeExpenseNet) returns set target-name
 
 $invalid_Concepts = $children_of_nonoperating intersect set(InterestExpense,InterestExpenseNonoperating)
@@ -54,6 +64,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0181.10182 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $children_of_nonoperating = navigate summation-item descendants  from  list(OperatingExpenses) returns set target-name
 

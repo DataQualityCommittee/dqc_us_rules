@@ -13,7 +13,12 @@ RULE-NAME-PREFIX DQC
 
 assert US.0203.10708 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {@IncomeTaxAuthorityAxis in list(DomesticCountryMember)};
 
@@ -27,11 +32,12 @@ Value : {$fact1}
 Period : {$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error  
+severity error
+rule-focus $fact1  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 

@@ -13,6 +13,11 @@ assert US.0139.9855 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 {nonils @concept in $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE @srt:ConsolidatedEntitiesAxis = none}#fact1 > 1 
 
 message
@@ -35,6 +40,11 @@ assert US.0139.9856 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 {@concept=TierOneRiskBasedCapitalRequiredForCapitalAdequacy}#fact1 > {@TierOneRiskBasedCapital}#fact2
 
 message
@@ -54,6 +64,11 @@ effectiveDate $effective_dates[$ruleId]
 assert US.0139.9857 satisfied 
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $aggAssets =[covered @concept=Assets];
 $aggAssets#otherFact1 < {@concept=RiskWeightedAssets where $fact.period==$aggAssets.period and $fact.unit ==$aggAssets.unit}#fact1
@@ -76,6 +91,11 @@ effectiveDate $effective_dates[$ruleId]
 assert  US.0139.9858 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 // SHould be 6.0 percent for fact2 vs 8% for well capitalized (fact1). If greater then peraps the buffer of 2.5% is an issue //
 
@@ -114,6 +134,11 @@ effectiveDate $effective_dates[$ruleId]
 assert  US.0139.9859 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalized}
 $fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacy}

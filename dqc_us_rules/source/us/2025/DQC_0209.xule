@@ -13,7 +13,12 @@ ASSERT US.0209.10730 SATISFIED
 /** Check to make sure an extensible enumeration value for the InvestmentIndustrySectorExtensibleEnumeration is used.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Get list of all investments **/
 
@@ -34,20 +39,26 @@ Value : {$IOAC}
 Period : {$IOAC.period}
 Dimensions : {$IOAC.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error  
+severity error 
+rule-focus $IOAC 
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0209.10731 SATISFIED
 
 /** Check to make sure an extensible enumeration value for the InvestmentIssuerNameExtensibleEnumeration is used.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Get list of all investments **/
 
@@ -68,13 +79,14 @@ Value : {$IOAC}
 Period : {$IOAC.period}
 Dimensions : {$IOAC.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error  
+severity error 
+rule-focus $IOAC
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0209.10732 SATISFIED
@@ -82,7 +94,12 @@ ASSERT US.0209.10732 SATISFIED
 /** Check to make sure an extensible enumeration value for the InvestmentTypeExtensibleEnumeration is used.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Get list of all investments **/
 
@@ -103,20 +120,24 @@ Value : {$IOAC}
 Period : {$IOAC.period}
 Dimensions : {$IOAC.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
-
-effectiveDate $effective_dates[$ruleId]
+rule-focus $IOAC
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0209.10733 SATISFIED
 
 /** Check to make sure an extensible enumeration value for the InvestmentIssuerGeographicRegionExtensibleEnumeration is used.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Get list of all investments **/
 
@@ -137,10 +158,11 @@ Value : {$IOAC}
 Period : {$IOAC.period}
 Dimensions : {$IOAC.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
-severity error  
+severity error
+rule-focus $IOAC
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

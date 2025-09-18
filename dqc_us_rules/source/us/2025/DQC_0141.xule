@@ -13,6 +13,11 @@ assert US.0141.9863 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Determine if accrued Interest and excluding accrued interet are reported in the same filing. **/
 
 $AccruedInterestClasses = list("AccountsRec","DebtSecuritiesHeldToMaturity","AvailableForSaleSecuritiesDebtSecurities","DirectFinancingLeaseNet","FinancingReceivable","NetInvestmentInLease","SalesTypeLeaseNet")
