@@ -11,10 +11,13 @@ rule-name-prefix DQC
 
 assert US.0014 satisfied
 
-for ($x in $NON_DIMENSIONAL_NON_NEGS)
-	$rule_suffix_id = $x[1];
+if not applicable_form_string('0014')
+	skip
+else
+	for ($x in $NON_DIMENSIONAL_NON_NEGS)
+		$rule_suffix_id = $x[1];
 
-	exists([@concept = $x[2] where $fact < 0]#fact1)
+		exists([@concept = $x[2] where $fact < 0]#fact1)
 
 message
 "{$fact1.concept.label.text} has a value of {$fact1} which is less than zero. This element should not have a negative value. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label. 
