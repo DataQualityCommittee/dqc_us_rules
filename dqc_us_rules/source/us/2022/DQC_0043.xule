@@ -134,7 +134,7 @@ Example filing:
 **/
 
 assert US.0043.9873  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax, IncomeLossFromSubsidiariesNetOfTax))
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
@@ -160,18 +160,18 @@ for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposa
 message
 "{$messageText}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity  error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($IncomeItem)
 
 //-----------DQC.US.0043.9875 ---------------//
 
 assert US.0043.9875  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 if list({@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest where $fact != 0}).length == 0
 	$discOpsAfterNCI = {@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity where $fact != 0}
@@ -193,8 +193,8 @@ Period :{$discOpsAfterNCI.period}
 Dimensions : {$discOpsAfterNCI.dimensions.join(', ','=')}
 Unit : {$discOpsAfterNCI.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity  error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
