@@ -19,6 +19,11 @@ THis rule checks that the fair valueof a fact  using the EquitySecuritiesByIndus
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** select facts with the BDC subtotals **/
 $BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
 
@@ -55,6 +60,11 @@ THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is g
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** select facts with the BDC subtotals **/
 $BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
@@ -90,6 +100,11 @@ The less dimensions reported would indicate a higher value as more investments a
 THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffiliationAxis is greater than  facts with the mor  dimensions.**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** select facts with the BDC subtotals **/
 $BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
@@ -128,6 +143,11 @@ THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAx
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** select facts with the BDC subtotals **/
 $BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
@@ -164,6 +184,11 @@ The less dimensions reported would indicate a higher value as more investments a
 THis rule checks that the fair value of a fact  using the srt:StatementGeographicalAxis is greater than  facts with the mor  dimensions.**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** select facts with the BDC subtotals **/
 $BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];

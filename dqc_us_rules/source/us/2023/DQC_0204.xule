@@ -13,6 +13,11 @@ assert US.0204.10704 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $fact1 = {@concept in ($INTANGIBLE_MONETARY_ITEMS + $INTANGIBLE_DURATION_ITEMS) @PropertyPlantAndEquipmentByTypeAxis = *};
 
 exists($fact1) 
@@ -37,6 +42,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0204.10705 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in ($PPE_MEMBERS - set(SoftwareDevelopmentMember,SoftwareAndSoftwareDevelopmentCostsMember)) where $fact  != 0};
 
@@ -63,6 +73,11 @@ assert US.0204.10706 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $fact3= {@PropertyPlantAndEquipmentByTypeAxis in ($INTANGIBLE_FINITE_ASSETS_MEMBERS + $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS) };
 
 exists($fact3) 
@@ -87,6 +102,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0204.10707 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact4= {@concept = CapitalizedComputerSoftwareGross @PropertyPlantAndEquipmentByTypeAxis = * };
 

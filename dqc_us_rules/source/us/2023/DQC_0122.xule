@@ -14,6 +14,11 @@ assert US.0122.9582 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Check Components of Shareholders Equity is not used on the Balance Sheet **/
 
 $balanceSheetRoles = (filter $PRES_NETWORKS where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') )returns $item.role).to-list

@@ -14,6 +14,11 @@ ASSERT US.0088.9372 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $Operating_Lease_Expense = {covered-dims @concept = OperatingLeaseExpense};
 $VariableLeaseCost = {covered-dims @concept = VariableLeaseCost};
@@ -48,6 +53,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0088.10094 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $calculationChildrenOfLeaseCost = navigate summation-item descendants from LeaseCost returns target-name
 
 $calculationChildrenOfLeaseCost.contains(OperatingLeaseExpense)

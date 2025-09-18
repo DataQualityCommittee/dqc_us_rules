@@ -13,6 +13,11 @@ assert US.0215.10742 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Identify where extension elements are the same as base us-gaap elements ignoring case **/
 
 $us_gaap_ns = 'http://fasb.org/us-gaap/2023-01-31'

@@ -13,6 +13,11 @@ assert US.0087.9369 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** If operating lease liability amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
@@ -87,6 +92,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0087.9370 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If operating lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -166,6 +176,11 @@ rule-focus $fact_item
 assert US.0087.9371 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If operating lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 

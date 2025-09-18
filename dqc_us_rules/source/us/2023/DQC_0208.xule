@@ -17,6 +17,11 @@ Get the value of each extensible enumeration value and check that it is used on 
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** GEt SOI cubes **/
 $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
 and $item.cube-concept.name in set(ScheduleOfInvestmentsTable)
@@ -63,6 +68,11 @@ Get the value of each extensible enumeration value and check that it is used on 
 
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** GEt SOI cubes **/
 $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')

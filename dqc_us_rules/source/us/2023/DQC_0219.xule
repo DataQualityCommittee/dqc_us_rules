@@ -13,6 +13,11 @@ ASSERT US.0219.10747 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 // Check if the filing contains the element NonInvestmentAssetsLessNonInvestmentLiabilities with a fact value in the filing.
 
 //If no value is reported check if the filer has reported AssetsNet and InvestmentOwnedAtFairValue in the same context

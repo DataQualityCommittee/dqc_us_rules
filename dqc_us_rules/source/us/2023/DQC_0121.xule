@@ -12,6 +12,11 @@ RULE-NAME-PREFIX DQC
 assert US.0121.9580 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $document_period = first(list({covered @concept.local-name = 'DocumentType'}));
 $document_period_end = $document_period.period.end;
 
@@ -52,6 +57,11 @@ rule-focus $fact1
 assert US.0121.9581 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in set('8-K','6-K')}))))
 	skip

@@ -16,6 +16,11 @@ ASSERT US.0177.10132 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
                             if $link.contains('https://xbrl.sec.gov/ecd/2023/ecd-2023.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2022q4/ecd-2022q4.xsd')
                                 true
@@ -101,6 +106,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0177.10133 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
                             if $link.contains('https://xbrl.sec.gov/ecd/2023/ecd-2023.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2022q4/ecd-2022q4.xsd')

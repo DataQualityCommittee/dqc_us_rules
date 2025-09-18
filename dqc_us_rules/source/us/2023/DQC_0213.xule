@@ -13,6 +13,11 @@ assert US.0213.10740 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Identify the roles that are the balance sheet **/
 $balance_sheet_roles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or  $item.role.description.lower-case.contains('balance sheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical')) returns $item.role).to-list;
 

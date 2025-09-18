@@ -47,6 +47,11 @@ ASSERT US.0205.10720 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Identify all presentation networks in the company extension **/
 
 	$allNetworks = $PRES_NETWORKS;

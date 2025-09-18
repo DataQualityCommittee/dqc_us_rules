@@ -13,6 +13,11 @@ assert US.0001.51 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_extension = navigate dimensions dimension-member descendants from FairValueByFairValueHierarchyLevelAxis returns set (target-name);
@@ -65,6 +70,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.52 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = $MBR_RECL_OUT_ACCUM_CMP_INC_AXS;
@@ -102,6 +112,11 @@ assert US.0001.53 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from OtherOwnershipInterestsByNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = set(OtherOwnershipInterestsNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -134,6 +149,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.54 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 /** Use nested navigation as the LegalEntityAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
@@ -184,6 +204,11 @@ assert US.0001.56 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from NoncashOrPartNoncashDivestituresByUniqueNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = set(NoncashOrPartNoncashDivestitureNameDomain);
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -216,6 +241,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.57 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** UPDATED FOR SRT **/
 
 $base_members = navigate dimensions dimension-member descendants from srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
@@ -251,6 +281,11 @@ assert US.0001.58 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** UPDATED FOR SRT **/
 $base_members = navigate dimensions dimension-member descendants from srt:CounterpartyNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = set(srt:RepurchaseAgreementCounterpartyNameDomain, srt:AffiliatedEntityMember, InvestorMember, VariableInterestEntityNotPrimaryBeneficiaryMember, srt:ChiefFinancialOfficerMember, IndividualMember, GovernmentMember, srt:GuarantorSubsidiariesMember, srt:SubsidiaryIssuerMember, srt:DirectorMember, srt:ChiefExecutiveOfficerMember, srt:ChiefOperatingOfficerMember, GeneralPartnerMember, CorporateJointVentureMember, SubsidiaryOfCommonParentMember, IndividuallyImmaterialCounterpartiesMember);
@@ -283,6 +318,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.59 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base_members = navigate dimensions dimension-member descendants from PlanNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_PLN_NM_AXS;
@@ -351,6 +391,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.61 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 /** UPDATED FOR SRT **/
 
@@ -389,6 +434,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.62 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Use nested navigation as the Currency Axis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 /** UPDATED FOR SRT **/
@@ -443,6 +493,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.63 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = $MEM_POS_AXS;
@@ -489,6 +544,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.64 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = $MEM_FAR_VAL_MSR_FRQ_AXS;
@@ -525,6 +585,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.65 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = $MEM_FAR_VAL_MSR_BAS_AXS;
@@ -582,6 +647,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.66 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = $MEM_HDG_DSG_AXS;
@@ -628,6 +698,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.69 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 /** UPDATED FOR SRT **/
 
@@ -680,6 +755,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.70 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 /** UPDATED FOR SRT **/
 
@@ -733,6 +813,11 @@ assert US.0001.71 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /*
 $not_allowed_base_member_tree_1 = navigate dimensions dimension-member descendants from RetirementPlanTypeAxis taxonomy $US-GAAP returns set (target-name);
 $not_allowed_base_member_tree_2 = navigate dimensions dimension-member descendants from RetirementPlanSponsorLocationAxis taxonomy $US-GAAP returns set (target-name);
@@ -776,6 +861,11 @@ assert US.0001.72 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from AwardDateAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MEM_AWD_DT_AXS;
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -808,6 +898,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.74 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase **/
 
 $allowed_members = $MEM_SUB_EVT_AXS;
@@ -844,6 +939,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.75 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $allowed_base_member_tree = $MBR_STM_EQY_CMP_AXS;
 
@@ -895,6 +995,11 @@ assert US.0001.76 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Use nested navigation as the srt:StatementScenarioAxis in the US GAAP taxonomy is not a valid hypercube in all cases so the dimensions will not return all members. Specifically the 190000 group **/
 $allowed_base_member = $MBR_STM_SCN_AXS;
 	 
@@ -929,6 +1034,11 @@ assert US.0001.77 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from PreferredUnitsByNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_PRF_UNT_NM_AXS;
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -962,6 +1072,11 @@ assert US.0001.78 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from RetirementPlanNameAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_RET_PLN_NM_AXS;
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -993,6 +1108,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.79 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base_members = navigate dimensions dimension-member descendants from srt:OwnershipAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_OWNRSHP_AXS;
@@ -1027,6 +1147,11 @@ assert US.0001.80 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from srt:MajorCustomersAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_MAJ_CST_AXS;
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -1058,6 +1183,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.9366 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base_members = navigate dimensions dimension-member descendants from BusinessAcquisitionAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_BUS_ACQ_AXS;
@@ -1091,6 +1221,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.81 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
 
 $member_USGAAP = $MBR_STM_BIS_SEG_AXS;
@@ -1134,6 +1269,11 @@ assert US.0001.82 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base_members = navigate dimensions dimension-member descendants from AssetAcquisitionAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);
 $allowed_base_member = $MBR_AST_ACQ_AXS;
 $unallowed_base_members = $base_members - $allowed_base_member;
@@ -1166,6 +1306,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0001.83 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $base_members = navigate dimensions dimension-member descendants from RetirementPlanSponsorLocationAxis where is_base($relationship.target, $ALL_BASE_TAXONOMIES_ELTS) returns set (target-name);

@@ -13,6 +13,11 @@ ASSERT US.0125.9589 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $fact1 = {@concept = LeaseCost where $fact < 0 and ($fact.dimensions.length == 0 or 
 		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
 		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
