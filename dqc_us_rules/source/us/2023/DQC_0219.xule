@@ -11,7 +11,7 @@ rule-name-prefix DQC
 
 ASSERT US.0219.10747 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 // Check if the filing contains the element NonInvestmentAssetsLessNonInvestmentLiabilities with a fact value in the filing.
 
@@ -53,10 +53,10 @@ Value : { $extension_element}
 Period : { $extension_element.period}
 Dimensions : { $extension_element.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

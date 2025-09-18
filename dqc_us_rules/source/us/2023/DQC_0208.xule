@@ -15,7 +15,7 @@ ASSERT US.0208.10727 SATISFIED
 Get the value of each extensible enumeration value and check that it is used on the investment type axis if it is not used on the investment type axis then it is a violation of this rule.**/
 
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** GEt SOI cubes **/
 $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
@@ -47,13 +47,13 @@ message
 Please ensure that these values are used as members on the InvestmentTypeAxis or are descendants of one of the following members {$members.join(", ")}, that are used to define subtotals on the InvestmentTypeAxis.
 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0208.10728 SATISFIED
@@ -62,7 +62,7 @@ ASSERT US.0208.10728 SATISFIED
 Get the value of each extensible enumeration value and check that it is used on the industry  axis if it is not used on the industry axis then it is a violation of this rule.**/
 
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** GEt SOI cubes **/
 $SOI_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
@@ -93,10 +93,10 @@ message
 Please ensure that these values are used as members on the EquitySecuritiesByIndustryAxis or are descendants of one of the following members {$members.join(", ")}, that are used to define subtotals on the EquitySecuritiesByIndustryAxis.
 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

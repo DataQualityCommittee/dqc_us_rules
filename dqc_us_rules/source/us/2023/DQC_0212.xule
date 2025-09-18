@@ -14,7 +14,7 @@ CONSTANT $DOCUMENT_PERIOD_END_DATE = $DOCUMENT_PERIOD.period.end - time-span("P1
 
 assert US.0212.10736 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
     $present_fact = [@CommonStockSharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end = $DOCUMENT_PERIOD_END_DATE];
@@ -36,12 +36,12 @@ Rule version: {$ruleVersion}"
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0212.10737 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
     $present_fact = [@SharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end = $DOCUMENT_PERIOD_END_DATE];
@@ -63,12 +63,12 @@ Rule version: {$ruleVersion}"
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0212.10738 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
     $present_fact = [@CommonStockSharesOutstanding @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesAuthorized @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
@@ -89,12 +89,12 @@ Rule version: {$ruleVersion}"
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0212.10739 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
     $present_fact = [@SharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesAuthorized @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
@@ -116,4 +116,4 @@ Rule version: {$ruleVersion}"
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

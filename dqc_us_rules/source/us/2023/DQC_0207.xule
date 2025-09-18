@@ -17,7 +17,7 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair valueof a fact  using the EquitySecuritiesByIndustryAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
 $BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
@@ -37,13 +37,13 @@ Value : {$BDC_Industry_And_More}
 Period : {$BDC_Industry_And_More.period}
 Dimensions : {$BDC_Industry_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0207.10723 SATISFIED
 
@@ -53,7 +53,7 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
 $BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
@@ -73,13 +73,13 @@ Value : {$BDC_InvestmentType_And_More}
 Period : {$BDC_InvestmentType_And_More.period}
 Dimensions : {$BDC_InvestmentType_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0207.10724 SATISFIED
 
@@ -89,7 +89,7 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffiliationAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
 $BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
@@ -109,13 +109,13 @@ Value : {$BDC_Affiliation_And_More}
 Period : {$BDC_Affiliation_And_More.period}
 Dimensions : {$BDC_Affiliation_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0207.10725 SATISFIED
@@ -126,7 +126,7 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
 $BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
@@ -146,13 +146,13 @@ Value : {$BDC_Name_And_More}
 Period : {$BDC_Name_And_More.period}
 Dimensions : {$BDC_Name_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0207.10726 SATISFIED
@@ -163,7 +163,7 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair value of a fact  using the srt:StatementGeographicalAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** select facts with the BDC subtotals **/
 $BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
@@ -182,10 +182,10 @@ Value : {$BDC_Geo_And_More}
 Period : {$BDC_Geo_And_More.period}
 Dimensions : {$BDC_Geo_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
