@@ -19,7 +19,7 @@ if not applicable_form(rule-name())
 else
 
 
-if set('N-CSR').contains([covered @concept.local-name ='DocumentType'])
+if set('N-CSR','N-CSRS', 'N-CSR/A', 'N-CSRS/A').contains([covered @concept.local-name ='DocumentType'])
 	skip
 else
 $decimal_tolerance_factor = 3
