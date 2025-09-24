@@ -11,6 +11,11 @@ rule-name-prefix DQC
 assert US.0061.7498 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $descendants_of_investingCash = navigate summation-item descendants from NetCashProvidedByUsedInInvestingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_investingCash.keys)
@@ -36,6 +41,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0061.7499 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $descendants_of_operating_Cash = navigate summation-item descendants from NetCashProvidedByUsedInOperatingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_operating_Cash.keys)
@@ -62,6 +72,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0061.7500 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $descendants_of_financing_Cash = navigate summation-item descendants from NetCashProvidedByUsedInFinancingActivities returns by network set (target-name);
 
 for ($network in $descendants_of_financing_Cash.keys)

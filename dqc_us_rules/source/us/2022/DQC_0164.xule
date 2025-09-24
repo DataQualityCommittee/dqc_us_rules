@@ -11,7 +11,11 @@ RULE-NAME-PREFIX DQC
 
 
 Assert US.0164.10086 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Balance SHeet location and others should not be in any statement cubes role **/
 
@@ -40,16 +44,20 @@ for $cube in $STATEMENT_CUBES  // ANALYZE EACH OF THE STATEMENT CUBES
 message
 "The filer has used the axis {$abstract} in the financial statement presentation cube {$cube.drs-role.description}. The axis {$abstract}  should not be used in a financial statement.
 {$concepts_with_facts}
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 Assert US.0164.10087 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Balance SHeet location axis has bad elements **/
 
@@ -65,16 +73,20 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 Assert US.0164.10088 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Income STatement location axis has bad elements **/
 
@@ -90,9 +102,9 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

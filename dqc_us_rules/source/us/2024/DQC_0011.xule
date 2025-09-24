@@ -10,6 +10,9 @@ rule-name-prefix DQC
 
 assert US.0011 satisfied
 
+if not applicable_form_string('0011')
+	skip
+else
 for ($x in $DIM_EQUIVALENTS)
 	$rule_suffix_id = $x[1];
 	$line_item = [@concept = $x[2]];

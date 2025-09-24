@@ -13,6 +13,11 @@ assert US.0006.14 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if exists({covered @concept.local-name ='DocumentFiscalPeriodFocus'})
 
 	$period_focus = first(set({covered @concept.local-name ='DocumentFiscalPeriodFocus'}));

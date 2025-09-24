@@ -11,7 +11,13 @@ rule-name-prefix DQC
 
 assert US.0216.10743 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Identify where extension geogarphy members are used on the StatementGeographicalAxis and have only two members one with member US on the country axis and one with an extension member **/
 
@@ -45,21 +51,25 @@ message
 "Extension member '{$other_member}' is used on StatementGeographicalAxis in the role '{$role.uri}' with the member representing the US. Because there are only two members defined the member NonUsMember should be used instead of the extension member {$other_member}.
 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 rule-focus taxonomy().concept($other_member)
 
 
 assert US.0216.10744 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 // 1. Identify sets of members for each role (network) where only two members exist
 for ($role in taxonomy().roles)
@@ -75,12 +85,12 @@ for ($role in taxonomy().roles)
 message
 "The extension member 'DomesticMember' is used on StatementGeographicalAxis in the role '{$role.uri}'. If the domestic member represents the US then the member US from the country taxonomy should be used. If the domestic member is not the US then it should be defined based on a country in the country taxonomy.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 rule-focus taxonomy().concept(qname($EXTENSION_NS,'DomesticMember'))

@@ -21,6 +21,11 @@ ASSERT US.0180.10147 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
 		
 		$presConceptItems = $presNetwork.concept-names;
@@ -47,6 +52,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0180.10148 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $dividendsPayments = {nonils @concept = PaymentsOfDividendsCommonStock @unit = * }
 
@@ -86,6 +96,11 @@ ASSERT US.0180.10149 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $dividendsPayments = {nonils @concept = PaymentsOfDividendsPreferredStockAndPreferenceStock @unit = * }
 
 $dividendsExpense = first-value({nonils @concept = DividendsPreferredStock @unit = * },{nonils @concept = DividendsPreferredStockCash @unit = * }) 
@@ -123,6 +138,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0180.10154 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 for $presNetwork in $PARENTHETICAL_STATEMENT_PRES_NETWORKS.sort
 		

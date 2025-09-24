@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0062.7501 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $network = FILTER $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical');
 
 

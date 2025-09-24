@@ -11,6 +11,10 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
+if not applicable_form_string('0013')
+	skip
+else
+
 $IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
 							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 					else

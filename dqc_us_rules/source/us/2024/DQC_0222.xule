@@ -11,7 +11,13 @@ rule-name-prefix DQC
 
 ASSERT US.0222.10750 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 // Identify all facts for EntityPublicFloat
 $public_float_facts = [nonils @dei:EntityPublicFloat where $fact != 0];
@@ -43,10 +49,10 @@ else
 message
 "The value reported for dei:EntityPublicFloat appears to have a scaling error. The value reported is {$public_float_facts}. Please check that the value is reported in the correct units (e.g., dollars, not thousands or millions).
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

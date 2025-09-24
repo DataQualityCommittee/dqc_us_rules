@@ -14,6 +14,11 @@ assert US.0009.15 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
     skip
 else
@@ -41,6 +46,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.19 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@PreferredStockSharesOutstanding};
 $greater_fact = {@PreferredStockSharesIssued};
 
@@ -65,6 +75,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.21 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 if count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
     skip
@@ -92,6 +107,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.22 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@PreferredStockSharesIssued};
 $greater_fact = {@PreferredStockSharesAuthorized};
 
@@ -116,6 +136,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.23 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@PreferredStockSharesOutstanding};
 $greater_fact = {@PreferredStockSharesAuthorized};
 
@@ -138,6 +163,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.24 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@CommonStockSharesOutstanding};
 $greater_fact = {@CommonStockSharesIssued};
 
@@ -162,6 +192,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.47 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DeferredTaxLiabilityNotRecognizedAmountOfUnrecognizedDeferredTaxLiabilityUndistributedEarningsOfForeignSubsidiaries};
 $greater_fact = {@UndistributedEarningsOfForeignSubsidiaries};
 
@@ -191,6 +226,7 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.39 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
 $less_fact = {@DefinedBenefitPlanPlansWithBenefitObligationsInExcessOfPlanAssetsAggregateBenefitObligation};
                
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
@@ -215,6 +251,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.40 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateAccumulatedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
 
@@ -238,6 +279,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.41 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateFairValueOfPlanAssets};
 $greater_fact = {@DefinedBenefitPlanFairValueOfPlanAssets};
 
@@ -261,6 +307,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.42 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DefinedBenefitPlanPensionPlansWithAccumulatedBenefitObligationsInExcessOfPlanAssetsAggregateProjectedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
 
@@ -284,6 +335,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.45 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsRemainderOfFiscalYear};
 $greater_fact = {@DefinedBenefitPlanExpectedFutureEmployerContributionsCurrentFiscalYear};  
 
@@ -307,6 +363,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0009.46 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $less_fact = {@DefinedBenefitPlanAccumulatedBenefitObligation};
 $greater_fact = {@DefinedBenefitPlanBenefitObligation};
 

@@ -16,6 +16,11 @@ ASSERT US.0199.10653 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
 $ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
@@ -42,6 +47,11 @@ ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit]
 
 $rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
@@ -60,6 +70,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+rule-focus $rate
 
 effectiveDate $effective_dates[$rule_id]
 

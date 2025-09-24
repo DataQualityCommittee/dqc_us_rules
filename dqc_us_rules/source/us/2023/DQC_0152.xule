@@ -9,7 +9,12 @@ Taxonomy: US GAAP 2023
 rule-name-prefix DQC
 
 assert US.0152.10116  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $GYearListElements = filter ($US-GAAP_ELTS_CALCS.concepts) where $item.data-type.name == dtr-types:gYearListItemType
@@ -25,10 +30,10 @@ Concept Name : {$factsWithGYearList.name}
 Period : {$factsWithGYearList.period} 
 Dimensions : {$factsWithGYearList.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

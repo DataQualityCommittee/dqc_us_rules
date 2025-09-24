@@ -11,7 +11,7 @@ This was created using a hardlink ln {original} {new}
 
 RULE-NAME-PREFIX DQC
 /**
-ASSERT US.0185.10165 satisfied
+ASSERT US.0185.10165 satisfied 
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length]; **/
 
@@ -63,6 +63,11 @@ effectiveDate $effective_dates[$rule_id]**/
 ASSERT US.0185.10165 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $tax_increase_decrease_elements = set(
     UnrecognizedTaxBenefitsDecreasesResultingFromCurrentPeriodTaxPositions,

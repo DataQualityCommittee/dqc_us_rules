@@ -16,6 +16,11 @@ https://www.sec.gov/Archives/edgar/data/12208/000001220823000047/0000012208-23-0
 ASSERT US.0169.10102 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
     if $network.role.uri.lower-case.contains('cashflow')
         /* Added this if statement for those cases where filers put the instant reconcilaition between the cash balance in the REC and IS as a supplemental disclosure at the bottom of the cashflow.*/

@@ -14,6 +14,11 @@ Check that buy or sell shares as insiders with none for the period tag boolean f
 ASSERT US.0170.10103 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $NoDisclosureFlag = if exists([covered @concept.local-name = 'NoInsiderTradingFlag']) and [covered @concept.local-name = 'NoInsiderTradingFlag'] == true
                             true
                     else
@@ -55,6 +60,11 @@ effectiveDate $effective_dates[$ruleId]
 ASSERT US.0170.10129 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 
     if exists({ @concept.local-name = 'TrdArrTerminationDate'})
@@ -85,6 +95,11 @@ effectiveDate $effective_dates[$ruleId]
 
 ASSERT US.0170.10131 SATISFIED
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 

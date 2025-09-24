@@ -13,6 +13,11 @@ ASSERT US.0081.9277 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Get all the calculations defined in the Instance document. **/
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
 
@@ -104,6 +109,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0081.9278 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /** Get all the calculations defined in the Instance document. **/
 
 if $STATEMENT_CONCEPTS == none
@@ -182,6 +192,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0081.9872 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact_values = list([nonils covered @concept in $INCOME_ITEMS]);
 

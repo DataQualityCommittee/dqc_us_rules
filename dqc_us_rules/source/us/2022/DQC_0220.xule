@@ -11,7 +11,11 @@ rule-name-prefix DQC
 
 ASSERT US.0220.10748 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 // CIdentify the note disclosures in a filings
 
@@ -29,10 +33,10 @@ message
 
 "The filing has used the StatementTable in the notes in the role {$cube.drs-role.description}. The StatementTable is not intended to be used in the notes, it is intended to be used in the face financial statements. The filer should use the appropriate table name for the notes disclosure.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

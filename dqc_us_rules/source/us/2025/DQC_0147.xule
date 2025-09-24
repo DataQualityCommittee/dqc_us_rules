@@ -14,6 +14,11 @@ rule-name-prefix DQC
 assert US.0147.9871  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 {nonils @@concept in $NON_NEG_ITEMS.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
 		(not match_set_substring($fact, ($EXCLUDE_NON_NEG_STRING_MEMBERS - set('eliminat','consolidat')))
 		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
