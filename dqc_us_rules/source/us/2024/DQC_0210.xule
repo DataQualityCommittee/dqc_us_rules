@@ -14,7 +14,7 @@ assert US.0210.10734 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
     $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
