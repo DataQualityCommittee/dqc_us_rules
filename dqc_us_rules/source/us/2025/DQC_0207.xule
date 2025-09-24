@@ -20,7 +20,7 @@ THis rule checks that the fair value of a fact  using the EquitySecuritiesByIndu
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
@@ -47,7 +47,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $BDC_Industry_And_More
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -62,7 +61,7 @@ THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is g
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
@@ -89,7 +88,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $BDC_InvestmentType_And_More
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -104,7 +102,7 @@ THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffilia
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
@@ -131,7 +129,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $BDC_Affiliation_And_More
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -147,7 +144,7 @@ THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAx
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
@@ -174,7 +171,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $BDC_Name_And_More
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -190,7 +186,7 @@ THis rule checks that the fair value of a fact  using the srt:StatementGeographi
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name())
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
@@ -216,6 +212,5 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $BDC_Geo_And_More
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
