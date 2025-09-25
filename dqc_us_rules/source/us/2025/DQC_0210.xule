@@ -13,7 +13,9 @@ assert US.0210.10734 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
-
+if not $BDC_FLAG
+	skip
+else
 
     $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
    
