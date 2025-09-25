@@ -417,4 +417,14 @@ constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransact
 
 constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
 
+constant $DOCUMENT_TYPE = first(list([covered @concept.local-name ='DocumentType']))
 
+
+constant $STATEMENT_SOI_CUBES_FLAG = (FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and ($item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))).length > 0
+
+constant $SOI_PRES_NETWORKS_FLAG = (FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and ( $item.role.description.lower-case.contains('schedule'))
+and ( $item.role.description.lower-case.contains('investment'))).length > 0
+
+constant $BDC_FLAG = $STATEMENT_SOI_CUBES_FLAG and $SOI_PRES_NETWORKS_FLAG

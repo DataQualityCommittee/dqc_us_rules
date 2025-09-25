@@ -474,7 +474,7 @@ if $EBPReports
 
     for $member in $LegalEntityAxisMembers
     
-        $matchDict = $member.regex-match('^EBP[0-9][0-9][0-9]Member$')
+        $matchDict = $member.regex-match('^EBP[A-z0-9]\{3,8\}Member$')
         if $matchDict['match-count'] == 0
             $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
             $matchDict['match-count'] == 0
@@ -486,9 +486,9 @@ else
 message
 "The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP  and Plan number.  The element name should following the structure below:  
 - The first 3 alpha characters should be EBP.
-- The plan number represented using 3 digits
+- The plan number represented using 3 digits or up to 8 alphanumeric characters.
 - The member name must conclude with the string Member.
-The form is as follows EBPxxxMember. i.e. EBP011Member
+The form is as follows EBPxxxMember. i.e. EBP011Member or EBPFranceMember when there is no plan member.
 
 The label of the member does not need to follow this format.
 
