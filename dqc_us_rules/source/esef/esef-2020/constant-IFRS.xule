@@ -139,3 +139,5 @@ constant $COUNTERPARTY_DIMENSION = CounterpartiesAxis
 
 constant $STATEMENT_SHE_CUBES = FILTER taxonomy().cubes where $item.primary-concepts.name.contains(StatementOfChangesInEquityAbstract)
 and $item.dimensions.concept.name.contains(ComponentsOfEquityAxis)
+
+constant $DOCUMENT_TYPE = first(list([covered @concept.local-name ='DocumentType']))
