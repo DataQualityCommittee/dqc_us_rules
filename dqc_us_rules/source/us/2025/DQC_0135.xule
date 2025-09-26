@@ -13,11 +13,17 @@ constant $EXT_ENUM_DICT = $EXT_ENUM.agg-to-dict(1)
 
 assert US.0135.9835 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $decimal_tolerance_factor = 20
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
@@ -164,21 +170,26 @@ Dimensions : {$FS_Concept_Item_max.dimensions.join(', ','=')}
 Unit : {$FS_Concept_Item_max.unit}
 Decimals: {$FS_Concept_Item_max.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $FS_Concept_Item_max 
 
 assert US.0135.9836 satisfied
 
 /** THIS RULE ONLY CHECKS THOSE FACTS THAT HAVE USED THE BALANCE SHEET AND INCOME STATEMENT LOCATION AXIS **/
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
@@ -267,11 +278,11 @@ Dimensions : {$FS_Concept_Item1.dimensions.join(', ','=')}
 Unit : {$FS_Concept_Item1.unit}
 Decimals: {$FS_Concept_Item1.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $FS_Concept_Item1
 

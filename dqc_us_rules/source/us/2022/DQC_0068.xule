@@ -13,6 +13,10 @@ rule-name-prefix DQC
 assert US.0068.7641 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 $network730000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/CompensationRelatedCostsRetirementBenefits' taxonomy $US-GAAP where $relationship.target.is-abstract == false returns set (target-name);
 
 exists({@concept in ($network730000) @srt:StatementGeographicalAxis = *}#RetirementPlanItem)

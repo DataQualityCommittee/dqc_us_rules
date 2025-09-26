@@ -11,11 +11,16 @@ rule-name-prefix DQC
 
 assert US.0215.10742 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Identify where extension elements are the same as base us-gaap elements ignoring case **/
 
-$us_gaap_ns = 'http://fasb.org/us-gaap/2024-01-31'
+$us_gaap_ns = 'http://fasb.org/us-gaap/2023-01-31'
 
 // 1. Identify extension elements in the company filing (not in us-gaap)
 $extension_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS;
@@ -41,11 +46,11 @@ message
 "The filer has created an extension element {$original_name}  with a local name that matches a us-gaap element when matched using lower-case. Replace the extension element with the base us-gaap element if it is the same concept.
 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

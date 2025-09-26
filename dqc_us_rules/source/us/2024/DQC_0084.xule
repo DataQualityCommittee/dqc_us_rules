@@ -13,7 +13,13 @@ assert US.0084.9298 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-if set('N-CSR').contains([covered @concept.local-name ='DocumentType'])
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+if set('N-CSR','N-CSRS', 'N-CSR/A', 'N-CSRS/A').contains([covered @concept.local-name ='DocumentType'])
 	skip
 else
 $decimal_tolerance_factor = 3

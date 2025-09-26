@@ -18,6 +18,11 @@ ASSERT US.0113.9562 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $grossPaid = {nonils @PaymentsToAcquireBusinessesGross};
 $netPaid = {nonils @PaymentsToAcquireBusinessesNetOfCashAcquired};
 

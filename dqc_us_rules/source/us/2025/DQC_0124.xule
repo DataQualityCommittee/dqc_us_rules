@@ -11,13 +11,18 @@ rule-name-prefix DQC
 
 assert US.0124.9584 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If FinanceLeaseLiability amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -77,12 +82,12 @@ Dimensions : {$leaseLiability.dimensions.join(', ','=')}
 Unit : {$leaseLiability.unit}
 Decimals: {$leaseLiability.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseLiability 
 
@@ -91,11 +96,16 @@ assert US.0124.9585 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** If Finance lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -168,13 +178,18 @@ rule-focus $factItem
 
 assert US.0124.9586 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If Finance lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -237,25 +252,30 @@ Dimensions : {$fact_item.dimensions.join(', ','=')}
 Unit : {$fact_item.unit}
 Decimals: {$fact_item.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact_item
 
 
 assert US.0124.9587 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If FinanceLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
@@ -312,24 +332,29 @@ Dimensions : {$leaseAsset.dimensions.join(', ','=')}
 Unit : {$leaseAsset.unit}
 Decimals: {$leaseAsset.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseAsset 
 
 assert US.0124.9588 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If OperatingLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -386,11 +411,11 @@ Dimensions : {$leaseAsset.dimensions.join(', ','=')}
 Unit : {$leaseAsset.unit}
 Decimals: {$leaseAsset.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseAsset 

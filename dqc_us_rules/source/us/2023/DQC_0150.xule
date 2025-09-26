@@ -20,7 +20,12 @@ ASSERT US.0150.9876 SATISFIED
 7. If there is no value for the total or the components then the rule willk not run.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
 t**/
 
@@ -89,11 +94,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0150.9877 SATISFIED
@@ -108,7 +113,12 @@ ASSERT US.0150.9877 SATISFIED
 7. If there is no value for the total or the components then the rule will not run.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -177,11 +187,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 /**DQC 0150.9878 **/
@@ -191,7 +201,12 @@ Look at segment table and look where the consolidated items axis is used for a l
 
 ASSERT US.0150.9878 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -253,15 +268,20 @@ Total period : {first($consolidationItemsAbsent).period}
 Dimensions : {first($consolidationItemsAbsent).dimensions.join(', ','=')}
 Decimals : {first($consolidationItemsAbsent).decimals} 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0150.10076 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                  /** Get members that are parent reportable segments. **/
@@ -294,8 +314,8 @@ message
 Concept : NumberOfReportableSegments
 Value : {$NumberOfSegments.join(' and ')} 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

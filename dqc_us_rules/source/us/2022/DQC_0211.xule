@@ -11,7 +11,11 @@ rule-name-prefix DQC
 
 assert US.0211.10735 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Read the extensible enumeration links taxonomy **/
 for $ext_pairs in $EXT_ENUM
@@ -20,9 +24,14 @@ for $ext_pairs in $EXT_ENUM
 			if $FS_concept in set(IncomeTaxExaminationInterestExpense, IncomeTaxExaminationPenaltiesExpense)
 				skip
 			else
-			$related_ext_enum = $ext_pairs[2]
 
-            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*})
+				/** Get calculation descendants of $FS_concept as the extensible enumeration may be defined at a high level but the related facts are reported.**/
+				$fsConceptsDescendants = navigate summation-item descendants include start from $FS_concept  taxonomy $US-GAAP returns set (target-name)
+				
+				$related_ext_enum = $ext_pairs[2]
+
+
+            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*}) and missing({@concept in $fsConceptsDescendants @unit=*})
 
    
 
@@ -32,10 +41,9 @@ message
 Period :{($location).period}
 Dimensions : {($location).dimensions.join(', ','=')}
 Unit : {($location).unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

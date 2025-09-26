@@ -16,6 +16,12 @@ ASSERT US.0199.10653 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+
 $spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
 $ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
@@ -41,6 +47,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
 
 $maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit]
 

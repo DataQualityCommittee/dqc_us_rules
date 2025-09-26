@@ -11,7 +11,12 @@ rule-name-prefix DQC
 
 assert US.0213.10740 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Identify the roles that are the balance sheet **/
 $balance_sheet_roles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or  $item.role.description.lower-case.contains('balance sheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical')) returns $item.role).to-list;
@@ -46,11 +51,11 @@ else
 message
 "The item {$item} in the balance sheet does not include calculation children in the role {$balance_sheet_role.description}.  The concept {$item} should contain calculation children if it is included in the balance sheet.  If the calculation children are defined in another role then include them in the calculation role so that the balance sheet calculations are complete.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 status $status  
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 rule-focus taxonomy().concept($item)

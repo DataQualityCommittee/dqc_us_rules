@@ -14,7 +14,13 @@ ASSERT US.0136.9837 SATISFIED
 
 /** This rule identifies if an extended link role has a valid value. **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Identify all presentation networks in the company extension **/
 
@@ -54,9 +60,9 @@ $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 	message
 	"The extensible list item {$related_ext_enum} has a value of {$x}. This item refers to the location of this item in the financial statements.  However, the concept {$x} does not appear in the face financial statements. Either update the value of the extensible list item {$x} with the correct element or add the line item {$x} to the presentation and calculation linkbase in the appropriate statement role.
 
-	Rule Element Id:{$ruleId}
+	Rule Element Id:{$rule_id}
 	Rule version: {$ruleVersion}"
 
 	severity error
-	effectiveDate $effective_dates[$ruleId]
+	effectiveDate $effective_dates[$rule_id]
 

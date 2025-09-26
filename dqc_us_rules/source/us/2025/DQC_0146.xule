@@ -13,11 +13,16 @@ rule-name-prefix DQC
 assert US.0146.9870  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end;
 $document_period_start_date = $document_period.period.start + time-span("P0D")
 
-if  not set('10-K','20-F').contains([covered @concept.local-name ='DocumentType'])
+if  not set('10-K','20-F','40-F').contains([covered @concept.local-name ='DocumentType'])
 	or (exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
 	or (exists({covered @concept = qname($EXTENSION_NS,'YearOfInception')}))
 	or (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))

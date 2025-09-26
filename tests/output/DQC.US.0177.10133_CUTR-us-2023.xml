@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.91 secs at 2025-05-07T12:14:37 - http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.408843. - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0177.10133 - 12:15:02.670464 - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm" severity="error" effectiveDate="2024-05-16" cid="2295987174864">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -975,669, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -401,293 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsReportedValueMember --> 287,188 --> ecd:AdjToCompAxis=cutr:EquityAwardsReportedValueMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardAdjustmentsMember --> -688,481 --> ecd:AdjToCompAxis=cutr:EquityAwardAdjustmentsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.10 - cutr-20231231.htm 8</message>
+ <ref href="cutr-20231231.htm#f-1613" sourceLine="8">
+  <property name="file" value="cutr-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="c-379">
+   <property name="entity" value="0001162461">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="cutr:EquityAwardsReportedValueMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="287,188"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="287,188"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm" severity="error" effectiveDate="2024-05-16" cid="2295987174864">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -292,379, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 655,229 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsReportedValueMember --> 473,804 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=cutr:EquityAwardsReportedValueMember 
+	EquityAwardAdjustmentsMember --> 181,425 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=cutr:EquityAwardAdjustmentsMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2022-01-01 to 2022-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.10 - cutr-20231231.htm 8</message>
+ <ref href="cutr-20231231.htm#f-1629" sourceLine="8">
+  <property name="file" value="cutr-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="c-391">
+   <property name="entity" value="0001162461">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="cutr:EquityAwardsReportedValueMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="473,804"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="473,804"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm" severity="error" effectiveDate="2024-05-16" cid="2295987174864">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of 640,953, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 4,226,877 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsReportedValueMember --> 1,792,962 --> ecd:AdjToCompAxis=cutr:EquityAwardsReportedValueMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	EquityAwardAdjustmentsMember --> 2,433,915 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=cutr:EquityAwardAdjustmentsMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2021-01-01 to 2021-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.10 - cutr-20231231.htm 8</message>
+ <ref href="cutr-20231231.htm#f-1645" sourceLine="8">
+  <property name="file" value="cutr-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="c-403">
+   <property name="entity" value="0001162461">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2021-01-01"/>
+   <property name="endDate" value="2021-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="cutr:EquityAwardsReportedValueMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,792,962"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="1,792,962"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm" severity="error" effectiveDate="2024-05-16" cid="2295987174864">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -208,657, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 689,637 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardsReportedValueMember --> 449,147 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=cutr:EquityAwardsReportedValueMember 
+	EquityAwardAdjustmentsMember --> 240,490 --> ecd:AdjToCompAxis=cutr:EquityAwardAdjustmentsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2020-01-01 to 2020-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 26.0.10 - cutr-20231231.htm 8</message>
+ <ref href="cutr-20231231.htm#f-1661" sourceLine="8">
+  <property name="file" value="cutr-20231231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Adjustment to Compensation Amount"/>
+  <property name="namespace" value="http://xbrl.sec.gov/ecd/2023"/>
+  <property name="name" value="AdjToCompAmt"/>
+  <property name="QName" value="ecd:AdjToCompAmt"/>
+  <property name="contextRef" value="c-415">
+   <property name="entity" value="0001162461">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2020-01-01"/>
+   <property name="endDate" value="2020-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="ecd:AdjToCompAxis" value="cutr:EquityAwardsReportedValueMember"/>
+    <property name="ecd:ExecutiveCategoryAxis" value="ecd:NonPeoNeoMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="449,147"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="449,147"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0177.10133 time took: 3.569549 - 12:15:06.240987  - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0177.10133 end. Took 0:00:03.569549 - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.979366. - cutr-20231231.htm </message>
+ <ref href="cutr-20231231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 21.04 secs - http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1162461/000162828024022628/cutr-20231231.htm"/></entry>
+</log>

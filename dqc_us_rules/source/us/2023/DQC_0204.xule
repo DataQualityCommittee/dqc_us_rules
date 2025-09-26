@@ -11,7 +11,12 @@ RULE-NAME-PREFIX DQC
 
 assert US.0204.10704 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {@concept in ($INTANGIBLE_MONETARY_ITEMS + $INTANGIBLE_DURATION_ITEMS) @PropertyPlantAndEquipmentByTypeAxis = *};
 
@@ -25,18 +30,22 @@ Value : {$fact1}
 Period : {$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0204.10705 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in ($PPE_MEMBERS - set(SoftwareDevelopmentMember,SoftwareAndSoftwareDevelopmentCostsMember)) where $fact  != 0};
 
@@ -50,18 +59,22 @@ Value : {$fact1}
 Period : {$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0204.10706 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact3= {@PropertyPlantAndEquipmentByTypeAxis in ($INTANGIBLE_FINITE_ASSETS_MEMBERS + $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS) };
 
@@ -75,18 +88,22 @@ Value : {$fact3}
 Period : {$fact3.period}
 Dimensions : {$fact3.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0204.10707 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact4= {@concept = CapitalizedComputerSoftwareGross @PropertyPlantAndEquipmentByTypeAxis = * };
 
@@ -100,10 +117,9 @@ Value : {$fact4}
 Period : {$fact4.period}
 Dimensions : {$fact4.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

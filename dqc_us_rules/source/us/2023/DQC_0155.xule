@@ -12,7 +12,12 @@ rule-name-prefix DQC
 **/
 
 assert US.0155.10072  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 if $CASH_FLOW_ROLE == none
     false
 else
@@ -37,9 +42,9 @@ else
 message
 "The filer has reported a value for the effect of exchange on cash and cash equivalents and has used the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect. However the fiing does not include a calculation showing the value of the impact of exchange rates flowing into this element.  If the element represents the total before exchange rate adjustments then the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect should be used.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

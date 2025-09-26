@@ -11,9 +11,15 @@ This was created using a hardlink ln {original} {new}
 
 RULE-NAME-PREFIX DQC
 
-ASSERT US.00184.10163 satisfied
+ASSERT US.0184.10163 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $excluded_OCI = set(OciLiabilityForFuturePolicyBenefitGainLossAfterReclassificationAdjustmentAndTax, OciMarketRiskBenefitInstrumentSpecificCreditRiskGainLossAfterAdjustmentsAndTax)
 
@@ -57,6 +63,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.00184.10164 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $oci_tax_parents = set(
     OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax,

@@ -11,7 +11,12 @@ rule-name-prefix DQC
 
 assert US.0211.10735 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Read the extensible enumeration links taxonomy **/
 for $ext_pairs in $EXT_ENUM
@@ -38,10 +43,9 @@ message
 Period :{($location).period}
 Dimensions : {($location).dimensions.join(', ','=')}
 Unit : {($location).unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

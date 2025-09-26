@@ -13,6 +13,10 @@ rule-name-prefix DQC
 assert US.0133.9831 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 $ComponentAmount = {nonils @concept in list(EquityMethodInvestmentOwnershipPercentage, EquityMethodInvestmentDescriptionOfPrincipalActivities)};
 
 $Member = $ComponentAmount.dimension(srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis);
@@ -40,6 +44,10 @@ assert US.0133.9832 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $FinancialDataEMI = navigate parent-child descendants from list(EquityMethodInvestmentSummarizedFinancialInformationAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
 
 exists({nonils @concept in $FinancialDataEMI @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis = *}#EquityMethodFact)
@@ -65,6 +73,10 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0133.9833 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
 
 $NonFinancialDataEMI = navigate parent-child descendants from list(ScheduleOfEquityMethodInvestmentsLineItems)  stop when $relationship.target.name == EquityMethodInvestmentSummarizedFinancialInformationAbstract taxonomy $US-GAAP where $relationship.target.is-abstract == false and $relationship.target.name != EquityMethodInvestments returns set (target);
 
