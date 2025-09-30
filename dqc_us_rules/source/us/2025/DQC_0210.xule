@@ -17,15 +17,20 @@ if not $BDC_FLAG
 	skip
 else
 
-    $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
+   $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
    
+   $SOICube = filter taxonomy().cubes where $item.cube-concept.name in set(ScheduleOfInvestmentsTable,InvestmentsSoldNotYetPurchasedTable)
 
-    $Dimensions = $BDCInvestmentFact.dimensions.keys.name
-
-    if InvestmentIdentifierAxis not in $Dimensions and $Dimensions.length > 0
-        true
-    else
-        false
+   for $cube in $SOICube
+        if exists(filter $cube.facts where $item == $BDCInvestmentFact)
+                
+                $Dimensions = $BDCInvestmentFact.dimensions.keys.name
+                if InvestmentIdentifierAxis not in $Dimensions and $Dimensions.length > 0
+                        true
+                else
+                        false
+        else
+                skip
 
 
 message
