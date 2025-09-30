@@ -589,8 +589,8 @@ if $EBPReports
 /* Identify DEI facts */
 $defaultFacts = list([covered @concept.namespace-uri = $DEI_NAMESPACE])
 
-for $fact in $defaultFacts
-        $ebpDEIFact = list({covered @concept= $fact.concept where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+for $DEIfact in $defaultFacts
+        $ebpDEIFact = list({covered @concept= $DEIfact.concept where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
         exists($ebpDEIFact)
 
 else
