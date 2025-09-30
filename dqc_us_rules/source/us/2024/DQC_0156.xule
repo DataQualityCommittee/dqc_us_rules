@@ -22,9 +22,9 @@ if not applicable_form(rule-name())
 else
 
 
-$BasicAndDilutedIExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.is-numeric  and $item.name.local-name.lower-case.contains('basicanddiluted') returns $item.name
+$BasicAndDilutedIExtensionItems = filter $EXTENSION_QNAME where  $item.local-name.lower-case.contains('basicanddiluted') returns $item
 
-$invalidItem = {@concept in $BasicAndDilutedIExtensionItems}
+$invalidItem = {@concept in $BasicAndDilutedIExtensionItems where $fact.concept.is-numeric}
 
 exists($invalidItem)
 
