@@ -20,25 +20,20 @@ else
 
 /** Identify where extension elements are the same as base us-gaap elements ignoring case **/
 
-$us_gaap_ns = 'http://fasb.org/us-gaap/2023-01-31'
+// 1. Lowercase the local names of extension elements
+$extension_names_lower = $EXTENSION_CONCEPTS.name.local-name.lower-case;
 
-// 1. Identify extension elements in the company filing (not in us-gaap)
-$extension_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS;
-
-// 2. Lowercase the local names of extension elements
-$extension_names_lower = $extension_concepts.name.local-name.lower-case;
-
-// 3. Lowercase the local names of us-gaap elements
-$us_gaap_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $us_gaap_ns
+// 2. Lowercase the local names of us-gaap elements
+$us_gaap_concepts = filter $US-GAAP_ELTS_CALCS.concepts returns $item
            
 
 $us_gaap_names_lower = $us_gaap_concepts.name.local-name.lower-case;
 
-// 4. Find extension elements whose lower-case local name matches a us-gaap element
+// 3. Find extension elements whose lower-case local name matches a us-gaap element
 $matching_extensions = $extension_names_lower.intersect($us_gaap_names_lower);
 
 for $extension in $matching_extensions
-			$original_name = sum(filter $extension_concepts where $item.name.local-name.lower-case == $extension returns $item.name);
+			$original_name = sum(filter $EXTENSION_CONCEPTS where $item.name.local-name.lower-case == $extension returns $item.name);
 			true
 
 
