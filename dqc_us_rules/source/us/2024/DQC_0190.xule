@@ -512,15 +512,15 @@ if $EBPReports
 $defaultFacts = list([covered @concept.namespace-uri = $DEI_NAMESPACE])
 
 for $DEIfact in $defaultFacts
-        $ebpDEIFact = list({covered @concept= $DEIfact.concept where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
-        exists($ebpDEIFact)
+        $ebpDEIFact = list({covered @concept= $DEIfact.concept where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+        not exists($ebpDEIFact)
 
 else
     skip
    
 
 message
-"The filing contains a DEI fact without a LegalEntityAxis member.  All DEI facts in the instance must include the LegalEntityAxis for 11-K filings.
+"The filing contains a DEI fact without a LegalEntityAxis member.  All DEI facts in the instance must include the LegalEntityAxis for 11-K filings. Except for DocumentType, AmendmentFlag, AmendmentDescription, DocumentPeriodEndDate and DocumentFiscalYearFocus which must be tagged twice if they are used.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
