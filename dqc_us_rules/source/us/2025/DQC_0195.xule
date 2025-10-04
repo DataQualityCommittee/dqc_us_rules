@@ -248,7 +248,7 @@ An example of this is here : https://www.sec.gov/ix?doc=/Archives/edgar/data/846
 
 This filing has treasury but for the shares colum uses shares outstanding and not issued.  In the notes they disclose share buybacks going into treasury.  SHouldnt the elemnts be consistent with the statement of SHE.**/
 
-constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @StatementClassOfStockAxis @period=*])
+constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @period=*])
                                                     true
                                                 else
                                                     false

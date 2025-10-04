@@ -81,7 +81,7 @@ if not applicable_form(rule-name())
 	skip
 else
 
-$extensionNetIncomeItems = filter $EXTENSION_CONCEPTS where $item.is-monetary == true and $item.balance == credit and $item.name.local-name.lower-case.contains("netincome") returns $item.name;
+$extensionNetIncomeItems = filter taxonomy().concepts where $item.is-monetary == true and $item.balance == credit and $item.namespace-uri == $EXTENSION_NS and $item.name.local-name.lower-case.contains("netincome") returns $item.name;
 
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivities;
