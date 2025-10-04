@@ -17,17 +17,18 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
+    $BDCInvestmentFact = first-value({@InvestmentInterestRate}, {@InvestmentBasisSpreadVariableRate},{@InvestmentInterestRateFloor})
+   
 
-   $SOICube = filter taxonomy().cubes where $item.cube-concept.name in set(ScheduleOfInvestmentsTable,InvestmentsSoldNotYetPurchasedTable) and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+    $Dimensions = $BDCInvestmentFact.dimensions.keys.name
 
-   for $cube in $SOICube
-                $BDCInvestmentFact = first-value({@InvestmentInterestRate @cube = $cube}, {@InvestmentBasisSpreadVariableRate @cube = $cube},{@InvestmentInterestRateFloor @cube = $cube})
-                
-                $Dimensions = $BDCInvestmentFact.dimensions.keys.name
-                if InvestmentIdentifierAxis not in $Dimensions and $Dimensions.length > 0
-                        true
-                else
-                        skip
+    if InvestmentIdentifierAxis not in $Dimensions and $Dimensions.length > 0
+        if FinancialInstrumentAxis in $Dimensions
+                false
+        else
+                true
+    else
+        false
 
 
 message
