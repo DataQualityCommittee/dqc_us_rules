@@ -7,108 +7,10 @@ Taxonomy: US GAAP ALL
 
 **/
 
-/** Rule Documentation 
-
-# Facts using an invalid member with the Equity Components Axis
-Rule ID: DQC_0195
-Status: Final  
-Release date: Oct 15, 2024  
-Effective date: Nov 30, 2024
-
-## Rule Function
-The rule checks that movements in shareholders equity element are represented with the appropriate member and line item combination.  Specifally the rule checks where values are reported with line items and members that are not appropriate. The rule covers the following situations:
-1. Where the CommonStockMember is used with an inappropriate line item.
-2. Where the StockholdersEquity line item is reported with a Noncontrolling Interest member.
-3. Where line items representing Shares Outstanding and Shares Issued are used with Treasury Stock Members.
-4. Where Treasury Stock line items are used with the Common Stock Member.
-5. Where stock issued and  stock outstanding are both used with the common stock member.
-6. Where the Retained Earnings Members are used with an inappropriate line item.
-
-## Problem Solved by the Rule
- The rule helps to ensure consistency in filings when reporting the statement of stockholders equity.  It also identified where the concept StatementEquityComponentsAxis has been used in the footnotes that does not match what has been reported in the financial statements.
-
-## Example Rule Message 1
-
-us-gaap:StockIssuedDuringPeriodValueTreasuryStockReissued has a value of 31,000 and has been used with the common stock [Member]. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
-
-The properties of this us-gaap:StockIssuedDuringPeriodValueTreasuryStockReissued fact are:
-Period :2020-11-01 to 2021-10-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
-Unit : USD
-Rule Element Id:10622
-Rule version: 26.0.0RC1
-
-## Example Rule Message 2
-us-gaap:StockholdersEquity has a value of 230,000 and has been used with an Non Controlling Interest member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as us-gaap:StockholdersEquity does not include non controlling interest. Change the element us-gaap:StockholdersEquity to StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest.
-
-The properties of this us-gaap:StockholdersEquity fact are:
-Period :2022-03-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedDefinedBenefitPlansAdjustmentIncludingPortionAttributableToNoncontrollingInterestMember
-Unit : USD
-Rule Element Id:10623
-Rule version: 26.0.0RC1
-
-## Example Rule Message 3
-us-gaap:SharesOutstanding has a value of -546,658 and has been used with Treasury Stock Member on the StatementEquityComponentsAxis. This element should not have a value when used with Treasury Stock Member.  FASB FAQ guidance (https://xbrl.fasb.org/resources/taxonomyfaq.pdf) 2.16 requires that specific line item elements are used for treasury shares such as TreasuryStockCommonShares and TreasuryStockPreferredShares rather than us-gaap:SharesOutstanding
-
-The properties of this us-gaap:SharesOutstanding fact are:
-Period :2022-03-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:TreasuryStockCommonMember
-Unit : shares
-Rule Element Id:10624
-Rule version: 26.0.0RC1
-
-## Example Rule Message 4
-us-gaap:TreasuryStockSharesRetired has a value of -16,197,849 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with this Member as us-gaap:TreasuryStockSharesRetired should not impact common stock. Change the opening balance share element us-gaap:TreasuryStockSharesRetired to SharesIssued.
-
-The properties of this us-gaap:TreasuryStockSharesRetired fact are:
-Period :2020-07-01 to 2021-03-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
-Unit : shares
-Rule Element Id:10625
-Rule version: 26.0.0RC1
-
-## Example Rule Message 5
-The filer has used the concept us-gaap:SharesIssued with a value of 250,000 and has also used the value us-gaap:SharesOutstanding with a value of 142,088,039 both using the common stock member. The filer should report one or the other but not both when using the common stock member. If the column representing shares in the Changes in equity represents issued shares then the SharesOutstanding elememnt should not be used with the common stock member. If the column representing shares in the Changes in equity represents outstanding shares then the SharesIssued element should not be used with the common stock member.
-
-The properties of this us-gaap:SharesIssued fact are:
-Period :2022-02-14
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
-Unit : shares
-Rule Element Id:10626
-Rule version: 26.0.0RC1
-
-## Example Rule Message 6
-us-gaap:StockRepurchasedAndRetiredDuringPeriodValue has a value of 6,100,000 and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
-
-The properties of this us-gaap:StockRepurchasedAndRetiredDuringPeriodValue fact are:
-Period :2021-01-01 to 2021-03-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:RetainedEarningsMember
-Unit : USD
-Rule Element Id:10627
-Rule version: 26.0.0RC1 - wtm-20220331.htm 4
-
-
-## Rule element ID index  
-The rule element id is used to identify unique elements or combinations of elements tested in the rule.
-
-|Rule Element ID|Element|
-|--- |--- |
-| DQC.US.0195.10622 |StatementEquityComponentsAxis = CommonStockMember|
-| DQC.US.0195.10623 |StatementEquityComponentsAxis in Non Controlling Interest Members|
-| DQC.US.0195.10624 |StatementEquityComponentsAxis in treasury members|
-| DQC.US.0195.10625 |SharesIssued, SharesOutstanding|
-| DQC.US.0195.10626 |SharesIssued, SharesOutstanding|
-| DQC.US.0195.10627 |StatementEquityComponentsAxis = RetainedEarningsMember|
-
-
-© Copyright 2016 - 2025, XBRL US Inc. All rights reserved.   
-See [License](https://xbrl.us/dqc-license) for license information.  
-See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice. 
-
- **/
 
 RULE-NAME-PREFIX DQC
+
+constant $APIC_ADJUSTMENTS = navigate parent-child descendants from AdjustmentsToAdditionalPaidInCapitalAbstract taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 
 constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding, 
                                     AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
@@ -132,7 +34,7 @@ constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding,
                                     MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
                                     MinorityInterestDecreaseFromRedemptions,
                                     NoncontrollingInterestDecreaseFromDeconsolidation
-                                    ) + ($APIC_ADJUSTMENTS)
+                                    ) + ($APIC_ADJUSTMENTS - set(AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts))
 
 ASSERT US.0195.10622 satisfied
 
@@ -140,21 +42,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityComponentsAxis = CommonStockMember @unit=* where $fact != 0}
 
-/** Check if have no par value tagged and if they do then AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts should be ok to use with CommonstockMember 
-
-If No Par value is tagged with 0 or nil and the cocept is AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts then the rule will pass. The case Shelly sent should still have an error.**/
-
-if $fact1.concept.name == 'AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts'
-
-    $fact2 = {covered @concept = CommonStockNoParValue  where $fact == 0 or $fact == none}
-
-    if exists($fact2)
-        false
-    else
-        exists($fact1)
-else
-    exists($fact1)
-
+exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with the common stock Member. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
@@ -357,7 +245,7 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     CommonStockDividendsShares,
                                     StockDividendsShares,
                                     /**StockIssuedDuringPeriodValueDividendReinvestmentPlan, /** Removed as some companies book the dividends against the retained earnings same as DividendsCommonStockStock**/
-                                    StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
+                                   StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
                                     StockIssuedDuringPeriodValuePurchaseOfAssets,
                                     StockIssuedDuringPeriodSharesPurchaseOfAssets,
                                     StockIssuedDuringPeriodValueOther,
@@ -401,8 +289,8 @@ $Element_Retained_Earnings_empty = set(SharesOutstanding,
                                     TreasuryStockCarryingBasis,
                                     OtherComprehensiveIncomeLossNetOfTax,
                                     OtherComprehensiveIncomeLossBeforeTax,
-                                    OtherComprehensiveIncomeLossTax
-                                    /**ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest**/
+                                    OtherComprehensiveIncomeLossTax,
+                                    ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest
                                     )
 
 for $concept in $Element_Retained_Earnings_empty
@@ -430,6 +318,7 @@ message
 {if $fact1.concept.name == StockRepurchasedDuringPeriodValue "If the company has no treasury stock then the element StockRepurchasedDuringPeriodValue should not be used as the stock would be retired and the value should be reported using StockRepurchasedAndRetiredDuringPeriodValue." else ''}
 
 {$customMessage}
+
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
