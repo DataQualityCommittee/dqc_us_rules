@@ -21,7 +21,7 @@ else
 $decimal_tolerance_factor = 20
 
 /** Is this report a 10-K **/
-if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 	$fsNetworks = filter $PRES_NETWORKS where $item.role.description.contains('- Statement ');
@@ -42,10 +42,14 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 		$fsConceptsQname = navigate summation-item descendants include start from $fsConceptsQname_pre_all returns set (target-name)
 
+		$EXT_ENUM_S_DICT = $EXT_ENUM.to-dict
+
+		$facts_To_Check = list({covered @concept in $EXT_ENUM_S_DICT.keys where $fact != 0})
+		$concepts_To_check = $facts_To_Check.concept.name.to-set
+
 		/** Get the list of items to check **/
-		for $ext_pairs in $EXT_ENUM
-			$FS_concept = $ext_pairs[1]
-			$related_ext_enum = $ext_pairs[2]
+		for $FS_concept in $concepts_To_check
+			$related_ext_enum =$EXT_ENUM_S_DICT[$FS_concept]
 			$NotDisclosedAsImmaterial = $related_ext_enum.local-name + 'NotDisclosedFlag'
 
 			$FS_Concepts_With_OCI = set(FairValueAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueAssetRecurringBasisStillHeldUnrealizedGainLossOci, FairValueLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueNetDerivativeAssetLiabilityRecurringBasisStillHeldUnrealizedGainLossOci, FairValueRecurringBasisUnobservableInputReconciliationAssetLiabilityGainLossOci);
@@ -55,13 +59,13 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 			**/
 			if ($fsConceptsQname.contains($FS_concept)) or ($FS_concept in ($LEASE_ITEMS + $NON_REQUIRED_CAPTION_DISCLOSURE))
 				 or ($FS_concept in $DEFINED_BENEFIT_COST_FS_LINE_ITEMS and  NetPeriodicDefinedBenefitsExpenseReversalOfExpenseExcludingServiceCostComponent in $fsConceptsQname)
-				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0))
+				 or ($FS_concept in $FS_Concepts_With_OCI and ($OCI_SECURITY_RELATED_ITEMS.intersect($fsConceptsQname).length > 0)) 
 				 or ($FS_concept in ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets)) and ($fsConceptsQname intersect ($DERIVATIVE_ASSETS_FS_LINE_ITEMS + set(DerivativeAssets))).length > 0)
 				 or ($FS_concept in ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities)) and ($fsConceptsQname intersect ($DERIVATIVE_LIABILITIES_FS_LINE_ITEMS + set(DerivativeLiabilities))).length > 0)
 				 or (list({covered @concept.local-name = $NotDisclosedAsImmaterial}).length > 0)
                     
 				/** If the concept is in the FS or its equivalent is then stop the rule **/
-				false
+				skip
 			else
 
 				/** get set of ancestor calculation concepts and test if in financial statement items to exclude from rule as has linkage back to financials through a calculation**/
@@ -72,7 +76,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 				as it excludes service costs. **/
 				
 				if $fsConceptsQnameAncestor.intersect($fsConceptsQname).length > 0
-					false
+					skip
 				else
 					/** Get a list of values for this element, but exclude detailed breakdowns of disclosure for financial instruments **/
 					/** But exclude some member items not to check **/
@@ -84,11 +88,10 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 
 						/** Get ancestor items **/
 						$ancestor_ext_enum = list(for $ancestor in $fsConceptsQnameAncestor
-													for $ext_pairs in $EXT_ENUM
-														if $ancestor == $ext_pairs[1]
-															$ext_pairs[2]
-														else
-															skip
+													if $EXT_ENUM_S_DICT[$ancestor] == none
+														skip
+													else
+														$EXT_ENUM_S_DICT[$ancestor]
 												)
 
 						/** For pensions we allow the high level element to be used DefinedBenefitPlanNetPeriodicBenefitCostCreditExcludingServiceCostStatementOfIncomeOrComprehensiveIncomeExtensibleList if
@@ -144,7 +147,7 @@ if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='D
 							else 
 								false
 					else
-						false
+						skip
 else
  	false
  
