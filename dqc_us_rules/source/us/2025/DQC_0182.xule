@@ -29,11 +29,12 @@ for $key in $lookupDict.keys
      $base = {@concept = $key};
      if exists($base)
           $keyValues = filter $lookupDict[$key] returns taxonomy().concept($item[2]);
+          $keyConcept = taxonomy().concept($key);
           $axis = (filter $keyValues where $item.substitution == xbrldt:dimensionItem returns $item.name).first;
           $member = (filter $keyValues where $item.data-type.name == dtr-types:domainItemType returns $item).first;
           $lineItem = (filter $keyValues where $item.data-type.name != dtr-types:domainItemType and  $item.substitution != xbrldt:dimensionItem returns $item).first;
           
-          $multiplier = (if $lineItem.balance != $key.balance
+          $multiplier = (if $lineItem.balance != $keyConcept.balance
                               0 -1 
                               else 
                               1)
@@ -54,7 +55,7 @@ for $key in $lookupDict.keys
           skip
    
    message
-"It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+"It is expected that {$keyConcept.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
 
 The properties of this {$base.concept.name} fact are:
 
