@@ -29,10 +29,10 @@ $lookupDict = $dimEquivs.agg-to-dict(1)
 for $key in $lookupDict.keys
      $base = {@concept = $key};
      if exists($base)
-          $keyValues = filter $lookupDict[$key] returns $item;
-          $axis = (filter $keyValues where $item[2].substitution == xbrldt:dimensionItem returns $item[2].name).first;
-          $member = (filter $keyValues where $item[2].data-type.name == dtr-types:domainItemType returns $item[2]).first;
-          $lineItem = (filter $keyValues where $item[2].data-type.name != dtr-types:domainItemType and  $item[2].substitution != xbrldt:dimensionItem returns $item[2]).first;
+          $keyValues = filter $lookupDict[$key] returns taxonomy().concept($item[2]);
+          $axis = (filter $keyValues where $item.substitution == xbrldt:dimensionItem returns $item.name).first;
+          $member = (filter $keyValues where $item.data-type.name == dtr-types:domainItemType returns $item).first;
+          $lineItem = (filter $keyValues where $item.data-type.name != dtr-types:domainItemType and  $item.substitution != xbrldt:dimensionItem returns $item).first;
           
           $multiplier = (if $lineItem.balance != $key.balance
                               0 -1 
