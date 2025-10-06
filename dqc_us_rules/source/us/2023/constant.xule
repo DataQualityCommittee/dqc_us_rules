@@ -100,7 +100,7 @@ constant $NON_ADDITIVE_DURATION_CONCEPTS = set()
 
 constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
 
-constant $INCOME_LOSS_EXTENSION_ITEMS = filter$EXTENSION_CONCEPTS where $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter $EXTENSION_CONCEPTS where $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
 
 constant $INCOME_ITEMS = set(
 					ComprehensiveIncomeNetOfTax,
