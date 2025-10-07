@@ -7,30 +7,31 @@ Taxonomy: US GAAP 2022
 **/
 
 
-rule-name-prefix DQC
-
 assert US.0084.9298 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
 if not applicable_form(rule-name())
 	skip
 else
 
+
 if set('N-CSR','N-CSRS', 'N-CSR/A', 'N-CSRS/A').contains([covered @concept.local-name ='DocumentType'])
 	skip
 else
-
 $decimal_tolerance_factor = 3
 
 $fact1 = {nonils @period = * where $fact.concept.is-monetary and $fact.concept.period-type == duration
-	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average')
-				and $fact.dimensions-typed.keys.length == 0  /** TODO - Exclude typed dimensions as they cause a xule error as tries to recognize the typed value as a qname. XULE Processor - line 4796, in convert_value_to_qname **/
+	  	 	    and not $fact.concept.name.local-name.lower-case.contains('average') 
+				and $fact.dimensions-typed.keys.length == 0  /* TODO - Exclude typed dimensions as they cause a xule error as tries to recognize the typed value as a qname. XULE Processor - line 4796, in convert_value_to_qname */
 	  	 	    and not $NON_ADDITIVE_DURATION_CONCEPTS.contains($fact.concept.name)};
-				
 
-$sub-periods =  
-
+/** less than three as 2 period represents the original fact and one other fact so no check possible. 3 is a possible check with 2 addends = 1 sum. **/
+if list({nonils @period=* where ($fact.period.start) >= ($fact1.period.start) and $fact.period.end <= $fact1.period.end}).length < 3
+	skip
+else					
+	$sub-periods =  
 		$p1 = {nonils @period=* where ($fact.period.start + time-span("P0D")) == ($fact1.period.start + time-span("P0D")) and $fact.period.end < $fact1.period.end};
 		$p2 = {nonils @period=* where ($fact.period.start + time-span("P0D")) == ($p1.period.end + time-span("P0D"))};
 		if (($p2.period.end + time-span("P0D")) == ($fact1.period.end + time-span("P0D")))
@@ -45,39 +46,39 @@ $sub-periods =
 				if (($p4.period.end + time-span("P0D")) == ($fact1.period.end + time-span("P0D")))
 					list($p1, $p2, $p3, $p4)
 				else
-					skip
+					list()
 					;
 					
-if not exists($sub-periods)
-	false
-else
-	$sum-periods = sum(list(for ($x in $sub-periods) $x));
-	$all-decimals = set(for ($y in $sub-periods) $y.decimals);
-	$min-decimals_sub = min(filter $all-decimals where $item.decimals != INF );
-	$sum-decimals = $fact1.decimals;
-	$min-decimals = min(list($sum-decimals,$min-decimals_sub));
-	
-	$it-does-not-sum = 
-		if ($min-decimals == none)
-			$fact1 != $sum-periods
-		else
-			$componentNum = $sub-periods.length;
-			$scale = 10.power($min-decimals * - 1);
-			$tolerance = ($componentNum - 1) * $scale * $decimal_tolerance_factor;
-
-			/** Check if decimals are 0 and the diff is immaterial using a 1% threshold and used flagged as immaterial by the filer **/
-			if (($fact1 - $sum-periods).abs < $fact1.abs * 0.01) and $min-decimals == 0 and list({covered @concept.local-name = 'ImmaterialDifferenceFlag'}).length > 0
-				false
+	if $sub-periods.length == 0
+		skip
+	else
+		$sum-periods = sum(list(for ($x in $sub-periods) $x));
+		$all-decimals = set(for ($y in $sub-periods) $y.decimals);
+		$min-decimals_sub = min(filter $all-decimals where $item.decimals != INF );
+		$sum-decimals = $fact1.decimals;
+		$min-decimals = min(list($sum-decimals,$min-decimals_sub));
+		
+		$it-does-not-sum = 
+			if ($min-decimals == none)
+				$fact1 != $sum-periods
 			else
-				($fact1 - $sum-periods).abs > $tolerance;
-	if $it-does-not-sum
-		$period-message = (filter $sub-periods returns " \t" + $item.period.string +" \t" + $item.string +" \t Decimals: " + $item.decimals.string).join("\n");
-		if (is_base($fact1.concept, $ALL_BASE_TAXONOMIES))
-			true
+				$componentNum = $sub-periods.length;
+				$scale = 10.power($min-decimals * - 1);
+				$tolerance = ($componentNum - 1) * $scale * $decimal_tolerance_factor;
+
+				/** Check if decimals are 0 and the diff is immaterial using a 1% threshold and used flagged as immaterial by the filer **/
+				if (($fact1 - $sum-periods).abs < $fact1.abs * 0.01) and $min-decimals == 0 and list({covered @concept.local-name = 'ImmaterialDifferenceFlag'}).length > 0
+					false
+				else
+					($fact1 - $sum-periods).abs > $tolerance;
+		if $it-does-not-sum
+			$period-message = (filter $sub-periods returns " \t" + $item.period.string +" \t" + $item.string +" \t Decimals: " + $item.decimals.string).join("\n");
+			if (is_base($fact1.concept, $ALL_BASE_TAXONOMIES))
+				true
+			else
+				false
 		else
 			false
-	else
-		false
 message
 "Sum of the cumulative periods of {$sum-periods} for {$fact1.concept.name} does not match the reported total of {$fact1}, a difference of {abs($sum-periods - $fact1)}.
 

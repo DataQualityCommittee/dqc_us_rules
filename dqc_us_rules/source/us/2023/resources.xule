@@ -145,14 +145,3 @@ Release Version 18
 		**/
 		
 		constant $MESSAGE_FOR_RULE_9278 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/sibling_should_be_child_message-9278.csv', true, list('qname','qname','string')).to-set
-
-		/** 
-		*  Rule form lookup schedule
-		*
-		*  CSV file that links the rule number to the Forms that the rule is applicable to.  The first colum is the rule identifier. The second column is the form type. Rules may also include logic that makes them more granular than just the form type.
-		*  The form type may include the following values:
-		*  10-K, 10-K/A, 10-KT, 20-F, 20-F/A, 40-F, 40-F/A etc.
-		
-		 **/
-
-		constant $RULE-FORM-LOOKUP = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/master/dqc_us_rules/resources/rule-form-lookup/rule-form-lookup.csv', true, list('string','string')).to-dict
