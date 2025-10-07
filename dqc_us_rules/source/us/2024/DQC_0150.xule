@@ -45,7 +45,7 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                     $primaryConcepts = $segmentCube.primary-concepts
                     $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
 
-                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary and $item.name not in $non_neg_qname returns $item.name   
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary and $item.name in $non_neg_qname returns $item.name   
 
                     for $concept in $monetaryConceptsInCube
 
