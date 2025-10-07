@@ -46,10 +46,13 @@ else
 	/** Identify the leaf items that are not in the non-leaf items list **/
 
 	for ($item in $non_leaf_items.intersect($balance_sheet_leaf_items))
-		true
+		$total = [nonils @concept = $item where $fact != 0]
+		
+		exists([nonils @concept = $item where $fact != 0])
+			
 
 message
-"The item {$item} in the balance sheet does not include calculation children in the role {$balance_sheet_role.description}.  The concept {$item} should contain calculation children if it is included in the balance sheet.  If the calculation children are defined in another role then include them in the calculation role so that the balance sheet calculations are complete.
+"The item {$item} in the balance sheet with a value of {$total} does not include calculation children in the role {$balance_sheet_role.description}.  The concept {$item} should contain calculation children if it is included in the balance sheet.  If the calculation children are defined in another role then include them in the calculation role so that the balance sheet calculations are complete.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
