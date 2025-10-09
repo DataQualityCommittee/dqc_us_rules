@@ -251,7 +251,7 @@ An example of this is here : https://www.sec.gov/ix?doc=/Archives/edgar/data/846
 
 This filing has treasury but for the shares colum uses shares outstanding and not issued.  In the notes they disclose share buybacks going into treasury.  SHouldnt the elemnts be consistent with the statement of SHE.**/
 
-constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if exists([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @StatementClassOfStockAxis @period=*])
+constant  $COMMON_STOCK_SHARES_ISSUED_METHOD = if list([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @StatementClassOfStockAxis @period=*]).length > 0
                                                     true
                                                 else
                                                     false
@@ -266,8 +266,12 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
-
+$message_dict = dict(
+                    list(TreasuryStockSharesAcquired, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element TreasuryStockSharesAcquired that was used implies that the treasury shares acquired were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of TreasuryStockSharesAcquired. Alternatively change the opening balance share element to SharesOutstanding.'),
+                    list(StockIssuedDuringPeriodSharesTreasuryStockReissued, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockIssuedDuringPeriodSharesTreasuryStockReissued that was used implies that shares were issued out of treasury stock. If the roll-forward of shares is based on shares issued the element StockIssuedDuringPeriodSharesNewIssues should be used instead of StockIssuedDuringPeriodSharesTreasuryStockReissued. Alternatively change the opening balance share element to SharesOutstanding.'),
+                    list(StockRepurchasedDuringPeriodShares, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding.'),
+                    list(TreasuryStockSharesRetired, 'The Statement of Changes in Equity implies treasury stock is excluded from the opening balance of shares as the opening balance uses a shares outstanding concept. The element TreasuryStockSharesRetired that was used in the roll-forward cannot reduce the shares outstanding. If the roll-forward of shares is based on shares issued the element TreasuryStockSharesRetired can be used but the  opening balance share element should be changed to SharesIssued or CommonStockSharesIssued.')
+                    )
 
 if  $COMMON_STOCK_SHARES_ISSUED_METHOD
 
@@ -290,7 +294,9 @@ else
 
 
 message
-"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. Change the opening balance share element to {if $fact1.concept.name.local-name == 'TreasuryStockSharesRetired' 'SharesIssued or CommonStockSharesIssued' else 'SharesOutstanding'}.
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. 
+
+{$message_dict[$fact1.concept.name]}
 
 The properties of this {$fact1.concept} fact are:
 Period :{$fact1.period}
