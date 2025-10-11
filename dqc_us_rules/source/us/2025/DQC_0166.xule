@@ -27,7 +27,7 @@ else
 
    for $fact2 in $factsNotIncubes
       $IncludesTypedDim = $fact2.dimensions.keys.name intersect set(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)
-      $IncludesECDDimension = $fact2.dimensions.keys.name.namespace-uri intersect set('http://xbrl.sec.gov/ecd/2024','http://xbrl.sec.gov/spac/2025');
+      $IncludesECDDimension = $fact2.dimensions.keys.name.namespace-uri intersect set('http://xbrl.sec.gov/ecd/2025','http://xbrl.sec.gov/spac/2025');
       $conceptsExcluded = set($fact2.name) intersect set(qname($EXTENSION_NS,'TrdArrExpirationDate'));
       $IncludesTypedDim.length == 0 and $IncludesECDDimension.length == 0 and $conceptsExcluded.length == 0
 message

@@ -42,38 +42,41 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                     /**Identify all monetary primary concepts in Cubes with ConsolidationItemsAxis **/
                     $primaryConcepts = $segmentCube.primary-concepts
-                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
+                    $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary and $item.name in $non_neg_qname returns $item.name   
 
                     for $concept in $monetaryConceptsInCube
 
-                        $factsToAdd = list(for $member in $member_descendants
-									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
-									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
-										skip
-									else 
-										[nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
+                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        $decimalsAddedFacts =   if $factsToAdd.length == 0
-                                                        0
-                                                else
-                                                    min(list(for $x in $factsToAdd
-                                                        if $x == none 
-                                                            skip
-                                                        else
-                                                            $x.decimals));
+                        if $dimensionTotal == none or $dimensionTotal <= 0 
+                            skip
+                        else
 
-                        $addedDimensions = sum($factsToAdd)
+                            $factsToAdd = list(for $member in $member_descendants
+                                        $ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+                                        if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+                                            skip
+                                        else 
+                                            [nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
+
+                            $decimalsAddedFacts =   if $factsToAdd.length == 0
+                                                            0
+                                                    else
+                                                        min(list(for $x in $factsToAdd
+                                                            if $x == none 
+                                                                skip
+                                                            else
+                                                                $x.decimals));
+
+                            $addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
                        $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
-
-                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
-
-                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
-
-                        /** Added to only run when there were more than 2 members to add. If there is only one this indicates its a disclosure and probably not a reconciliation **/
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname or $factsToAdd.length < 2
+                        /** Added to only run when there were more than 1 member with facts to add. If there is only one this indicates its a disclosure and probably not a reconciliation **/
+                        if $addedDimensions == none or $factsToAdd.length < 2
                             skip
                         else
                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
