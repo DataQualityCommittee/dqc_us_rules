@@ -7,20 +7,31 @@
  <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
  <ref href="EDGAR/transform"/></entry>
 <entry code="info" level="info">
- <message>[info] Xule version: 3.0.30044 - </message>
+ <message>[info] Xule version: 3.0.30048 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 3.11 secs at 2025-05-01T15:40:01 - http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm </message>
+ <message>[info] loaded in 10.16 secs at 2025-10-11T06:45:44 - http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.110800. - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10625 - 06:46:01.577820 - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
 <entry code="DQC.US.0195.10625" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm" severity="error" effectiveDate="None" cid="2055007352448">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of 418,696 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. Change the opening balance share element to SharesOutstanding.
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm" severity="error" effectiveDate="2025-04-15" cid="1972482698896">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of 418,696 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. 
+
+The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding.
 
 The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
 Period :2023-01-01 to 2023-12-31
 Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
 Unit : shares
 Rule Element Id:10625
-Rule version: 26.0.9 - uamy_10k.htm 2</message>
+Rule version: 27.0.11 - uamy_10k.htm 2</message>
  <ref href="uamy_10k.htm#fid_1872" sourceLine="2">
   <property name="file" value="uamy_10k.htm"/>
   <property name="line" value="2"/>
@@ -49,81 +60,22 @@ Rule version: 26.0.9 - uamy_10k.htm 2</message>
   <property name="scale" value="None"/>
   <property name="html value" value="418,696"/>
  </ref></entry>
-<entry code="DQC.US.0195.10625" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm" severity="error" effectiveDate="None" cid="2055007352448">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of 418,696 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. Change the opening balance share element to SharesOutstanding.
-
-The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
-Period :2023-01-01 to 2023-12-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
-Unit : shares
-Rule Element Id:10625
-Rule version: 26.0.9 - uamy_10k.htm 2</message>
- <ref href="uamy_10k.htm#fid_1872" sourceLine="2">
-  <property name="file" value="uamy_10k.htm"/>
-  <property name="line" value="2"/>
-  <property name="label" value="Common stock buyback and retirement, shares"/>
-  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
-  <property name="name" value="StockRepurchasedDuringPeriodShares"/>
-  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodShares"/>
-  <property name="contextRef" value="From2023-01-01to2023-12-31_us-gaap_CommonStockMember">
-   <property name="entity" value="0000101538">
-    <property name="scheme" value="http://www.sec.gov/CIK"/>
-   </property>
-   <property name="startDate" value="2023-01-01"/>
-   <property name="endDate" value="2023-12-31"/>
-   <property name="dimensions" value="(1)">
-    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
-   </property>
-  </property>
-  <property name="unitRef" value="Shares (shares)">
-   <property name="measure" value="xbrli:shares"/>
-  </property>
-  <property name="decimals" value="0"/>
-  <property name="precision" value="None"/>
-  <property name="xsi:nil" value="false"/>
-  <property name="value" value="418,696"/>
-  <property name="format" value="ixt:numdotdecimal"/>
-  <property name="scale" value="None"/>
-  <property name="html value" value="418,696"/>
- </ref></entry>
-<entry code="DQC.US.0195.10625" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm" severity="error" effectiveDate="None" cid="2055007352448">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of 418,696 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. Change the opening balance share element to SharesOutstanding.
-
-The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
-Period :2023-01-01 to 2023-12-31
-Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
-Unit : shares
-Rule Element Id:10625
-Rule version: 26.0.9 - uamy_10k.htm 2</message>
- <ref href="uamy_10k.htm#fid_1872" sourceLine="2">
-  <property name="file" value="uamy_10k.htm"/>
-  <property name="line" value="2"/>
-  <property name="label" value="Common stock buyback and retirement, shares"/>
-  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
-  <property name="name" value="StockRepurchasedDuringPeriodShares"/>
-  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodShares"/>
-  <property name="contextRef" value="From2023-01-01to2023-12-31_us-gaap_CommonStockMember">
-   <property name="entity" value="0000101538">
-    <property name="scheme" value="http://www.sec.gov/CIK"/>
-   </property>
-   <property name="startDate" value="2023-01-01"/>
-   <property name="endDate" value="2023-12-31"/>
-   <property name="dimensions" value="(1)">
-    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
-   </property>
-  </property>
-  <property name="unitRef" value="Shares (shares)">
-   <property name="measure" value="xbrli:shares"/>
-  </property>
-  <property name="decimals" value="0"/>
-  <property name="precision" value="None"/>
-  <property name="xsi:nil" value="false"/>
-  <property name="value" value="418,696"/>
-  <property name="format" value="ixt:numdotdecimal"/>
-  <property name="scale" value="None"/>
-  <property name="html value" value="418,696"/>
- </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10625 time took: 2.196877 - 06:46:03.774875  - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10625 end. Took 0:00:02.196877 - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.308776. - uamy_10k.htm </message>
+ <ref href="uamy_10k.htm"/></entry>
 <entry code="info" level="info">
- <message>[info] validated in 11.96 secs - http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm </message>
+ <message>[info] validated in 9.34 secs - http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/101538/000165495425003048/uamy_10k.htm"/></entry>
 </log>
