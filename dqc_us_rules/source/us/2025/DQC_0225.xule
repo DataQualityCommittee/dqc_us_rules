@@ -13,52 +13,51 @@ ASSERT US.0225.10790 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
 if not applicable_form(rule-name())
 	skip
 else
 
-// Identify all facts for EntityPublicFloat
-$public_float_facts = [nonils @dei:EntityPublicFloat where $fact != 0];
+	// Identify income-statement related presentation roles
+	$income_roles = filter taxonomy().roles where
+		$item.description.lower-case().contains('- statement -')
+		and (
+			$item.description.lower-case().contains('income')
+			or $item.description.lower-case().contains('operations')
+			or $item.description.lower-case().contains('comprehensive')
+		)
 
-$small = [nonils @dei:EntitySmallBusiness];
+	// Collect presentation concepts from those roles
 
-// Check for scaling error: value is greater than $10 trillion or less than $1 million (likely error)
-$scaling_error_large = 
-    exists($public_float_facts) and (
-        $public_float_facts > 10000000000000 or
-        ($public_float_facts != 0 and $public_float_facts < 1000000)
-    );
+	for $r in $income_roles
+		$income_concepts = filter (taxonomy().networks(parent-child, $r).concepts) returns $item.name
 
- $scaling_error_small = 
-    exists($public_float_facts) and (
-        $public_float_facts > 250000000 or
-        ($public_float_facts != 0 and $public_float_facts < 1000)
-    );   
+        $excludedItems = $RECOGNIZE_LIST + $DERECOGNIZE_LIST
 
-if $scaling_error_large and (missing($small) or $small == false)
-    true
-else
-    if $scaling_error_small and  $small == true
-        true
-    else
-        skip
+        // Find offending concepts present in income presentation
+        $offending = $income_concepts.intersect($excludedItems.to-set)
 
+        if $offending.length > 0
+            true
+        else
+            skip
 
 message
-"The value reported for dei:EntityPublicFloat appears to have a scaling error. The value reported is {$public_float_facts}. Please check that the value is reported in the correct units (e.g., dollars, not thousands or millions).
+"The income statement presentation role {$r.description} includes elements that should not appear on the income statement.
+
+Offending elements: {$offending.join(', ')}
+
+These elements represent changes in instant balances and not changes in retained earnings and should be reported in appropriate reconciliations, not as line items on the income statement. Please review the presentation role and remove or relocate the listed elements.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-rule-focus $public_float_facts
-status $status  
 
+rule-focus first($offending)
 effectiveDate $effective_dates[$rule_id]
 
 
-constant $RecognizeList = list(PropertyPlantAndEquipmentAdditions,
+constant $RECOGNIZE_LIST = list(PropertyPlantAndEquipmentAdditions,
                                 StockIssuedDuringPeriodValueShareBasedCompensation,
                                 StockIssuedDuringPeriodValueStockOptionsExercised,
                                 PartnersCapitalAccountExchangesAndConversions,
@@ -223,7 +222,7 @@ constant $RecognizeList = list(PropertyPlantAndEquipmentAdditions,
                                 ValuationAllowanceForImpairmentOfRecognizedServicingAssetsProvisions
 )
 
-constant $DerecognizeList = list(PropertyPlantAndEquipmentDisposals,
+constant $DERECOGNIZE_LIST = list(PropertyPlantAndEquipmentDisposals,
                                 AccumulatedDepreciationDepletionAndAmortizationSaleOfPropertyPlantAndEquipment1,
                                 IndefiniteLivedIntangibleAssetsWrittenOffRelatedToSaleOfBusinessUnit,
                                 AssetRetirementObligationLiabilitiesSettled,
@@ -352,3 +351,18 @@ constant $DerecognizeList = list(PropertyPlantAndEquipmentDisposals,
                                 StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures
     
 )
+
+OUTPUT test225
+
+	$income_roles = filter taxonomy().roles where
+		$item.description.lower-case().contains('- statement -')
+		and (
+			$item.description.lower-case().contains('income')
+			or $item.description.lower-case().contains('operations')
+			or $item.description.lower-case().contains('comprehensive')
+		)
+
+        for $r in $income_roles
+		$income_concepts = filter taxonomy().networks(parent-child, $r).concepts returns $item.name
+
+        $r.description 
