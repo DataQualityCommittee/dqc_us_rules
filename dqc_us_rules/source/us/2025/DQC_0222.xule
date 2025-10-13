@@ -19,9 +19,9 @@ if not applicable_form(rule-name())
 else
 
 // Identify all facts for EntityPublicFloat
-$public_float_facts = [nonils @dei:EntityPublicFloat where $fact != 0];
+$public_float_facts = [nonils @dei:EntityPublicFloat @unit @period where $fact != 0];
 
-$small = [nonils @dei:EntitySmallBusiness];
+$small = [nonils @dei:EntitySmallBusiness @unit @period];
 
 // Check for scaling error: value is greater than $10 trillion or less than $1 million (likely error)
 $scaling_error_large = 
