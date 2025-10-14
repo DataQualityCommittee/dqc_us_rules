@@ -57,7 +57,10 @@ if set('Large Accelerated Filer','Accelerated Filer').contains([covered @concept
                             else
                                 $x))
 
-        $MaxValue < 1000000
+        if $MaxValue == none 
+            skip
+        else
+            $MaxValue < 1000000
         
 else
     false
