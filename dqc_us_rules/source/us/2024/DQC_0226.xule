@@ -1,0 +1,42 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0226.US.0225.10791 satisfied
+
+/** 
+Check and EBP filing does not use a US GAAP element
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if not $EBPReports
+    skip
+else 
+   $US-GAAPQNames = filter $US-GAAP_ELTS_CALCS.concepts where $item.namespace-uri.contains('fasb.org/us-gaap/') and (not $item.is-abstract) returns $item.name
+   $filingQnames = filter  taxonomy().concepts returns $item.name
+   $US-GAAPElementsInFiling =  ($filingQnames intersect $US-GAAPQNames).to-list
+   $GAAPTop10 = list(for $x in range(1,min(list(10,$US-GAAPElementsInFiling.length) ))
+                    $US-GAAPElementsInFiling[$x])
+    
+  $US-GAAPElementsInFiling.length > 0
+
+message
+"The filer has used US-GAAP elements in the EBP filing. These are the first 10 or less found. {$GAAPTop10.join(',')}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
