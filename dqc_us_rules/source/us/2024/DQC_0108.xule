@@ -25,14 +25,16 @@ if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $
 	skip
 else
 
-for ($x in ($CUT_DOWN_LIST - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )))
+$elements_To_Check = $CUT_DOWN_LIST - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )
 
-      $fact1 = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
-      $large = {nonils @concept = $x @period=* where $fact.dimensions.length == 0 or  (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
+      $fact1 = {nonils @@concept in $elements_To_Check @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
+      /** Is less than 2 because it will at least include the fact. If there are no other facts then dont need large**/
+      if list({nonils @@concept in $elements_To_Check  @period=* where ($fact.period.start) <= ($fact1.period.start) and $fact.period.end >= $fact1.period.end}).length < 2
+         skip
+      else
+      $large = {nonils  @@concept in $elements_To_Check @period=* where ($fact.period.start) <= ($fact1.period.start) and ($fact.period.end >= $fact1.period.end) and ($fact.dimensions.length == 0 or  (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))}
 
-      if ($fact1.period.start >= $large.period.start
-         and $fact1.period.end <= $large.period.end 
-         and $fact1.abs > $large.abs
+      if ($fact1.abs > $large.abs
          and $fact1 > 0
          and $fact1.period.days <= $large.period.days
          and exists($fact1) and exists($large)
