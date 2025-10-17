@@ -95,6 +95,10 @@ constant $NON_DIMENSIONAL_NON_NEGS = list(
 
 constant $NON_ADDITIVE_DURATION_CONCEPTS = set()
 
+/** Rule DQC.US.0108 **/
+
+constant $CUT_DOWN_LIST = (filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name)
+
 /** DQC.US.0001 **/
 
 
