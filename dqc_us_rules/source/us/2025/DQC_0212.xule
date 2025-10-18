@@ -83,7 +83,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** DQCRT RULE **/
 if not applicable_form(rule-name()) 
    or list({covered @concept.local-name ='TradingSymbol'}).length == 0
-    or any(list({covered @concept.local-name ='NoTradingSymbolFlag'}))
+    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
     or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
@@ -117,7 +117,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** DQCRT RULE **/
 if not applicable_form(rule-name())
     or list({covered @concept.local-name ='TradingSymbol'}).length == 0
-    or any(list({covered @concept.local-name ='NoTradingSymbolFlag'}))
+    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
     or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
