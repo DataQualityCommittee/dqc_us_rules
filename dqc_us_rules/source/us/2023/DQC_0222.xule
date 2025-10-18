@@ -19,9 +19,9 @@ if not applicable_form(rule-name())
 else
 
 // Identify all facts for EntityPublicFloat
-$public_float_facts = [nonils @dei:EntityPublicFloat where $fact != 0];
+$public_float_facts = [nonils @dei:EntityPublicFloat @unit @period where $fact != 0];
 
-$small = [nonils @dei:EntitySmallBusiness];
+$small = [nonils @dei:EntitySmallBusiness @unit @period];
 
 // Check for scaling error: value is greater than $10 trillion or less than $1 million (likely error)
 $scaling_error_large = 
@@ -46,12 +46,11 @@ else
 
 
 message
-"The value reported for dei:EntityPublicFloat appears to have a scaling error. The value reported is {$public_float_facts}. Please check that the value is reported in the correct units (e.g., dollars, not thousands or millions).
+"The value reported for dei:EntityPublicFloat appears to have a scaling error.  The value reported is {$public_float_facts}. Please check that the value is reported in the correct units (e.g., dollars, not thousands or millions).
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
 
 effectiveDate $effective_dates[$rule_id]

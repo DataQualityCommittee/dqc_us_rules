@@ -39,7 +39,6 @@ Unit: {$present_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -71,7 +70,6 @@ Unit: {$present_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -82,9 +80,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
 if not applicable_form(rule-name())
-    or list(covered @concept.local-name ='TradingSymbol').length == 0
-    or any(list(covered @concept.local-name ='NoTradingSymbolFlag'))
-    or list(covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed').length > 0
+    or list({covered @concept.local-name ='TradingSymbol'}).length == 0
+    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
+    or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
 
@@ -105,7 +103,6 @@ Unit: {$present_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -116,9 +113,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
 if not applicable_form(rule-name())
-    or list(covered @concept.local-name ='TradingSymbol').length == 0
-    or any(list(covered @concept.local-name ='NoTradingSymbolFlag'))
-    or list(covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed').length > 0
+    or list({covered @concept.local-name ='TradingSymbol'}).length == 0
+    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
+    or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
 
@@ -141,6 +138,5 @@ Unit: {$present_fact.unit}
 Rule version: {$ruleVersion}"
 
 severity error  
-status $status  
 
 effectiveDate $effective_dates[$rule_id]
