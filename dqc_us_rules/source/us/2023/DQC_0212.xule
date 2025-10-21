@@ -90,7 +90,7 @@ else
 
     $present_fact = [@CommonStockSharesOutstanding  @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis @unit @@period.end  = $DOCUMENT_PERIOD_END_DATE];
-	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @StatementClassOfStockAxis @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
+	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @StatementClassOfStockAxis @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 
     exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2)
 
@@ -125,7 +125,7 @@ else
 
     $present_fact = [@SharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesAuthorized @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
-	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
+	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact3 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis = * @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
 
     exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3)
