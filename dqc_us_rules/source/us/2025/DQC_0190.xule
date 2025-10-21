@@ -492,16 +492,24 @@ $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name
 
 if $EBPReports
         
-    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2024' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2025' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
     $defaultFactsExist  = $defaultFacts.length > 0
-    $defaultFactsExist
+    if $defaultFactsExist
+        $message-text = (filter $defaultFacts returns ('Concept: ' + $item.concept.name.local-name  + ' Period: ' + $item.period.string)).join('
+        ')
+        true
+    else
+        false
 
 else
     skip
    
 
 message
-"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis.  All facts in the instance must include the LegalEntityAxis.
+"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis. All facts in the instance must include the LegalEntityAxis.
+
+Facts missing LegalEntityAxis:
+{$message-text}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
