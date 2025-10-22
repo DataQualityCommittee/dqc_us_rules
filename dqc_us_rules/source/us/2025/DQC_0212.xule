@@ -82,15 +82,15 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
 if not applicable_form(rule-name()) 
-   or list({covered @concept.local-name ='TradingSymbol'}).length == 0
-    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
+    or list({covered @concept.local-name ='TradingSymbol'}).length == 0
+    or (true in list({covered @concept.local-name ='NoTradingSymbolFlag'}))
     or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
 
-    $present_fact = [@CommonStockSharesOutstanding @unit @@period.end  = $DOCUMENT_PERIOD_END_DATE];
-    $not_present_fact1 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis @unit @@period.end  = $DOCUMENT_PERIOD_END_DATE];
-	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @StatementClassOfStockAxis @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
+    $present_fact = [@CommonStockSharesOutstanding @unit @period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact1 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis @unit @period.end  = $DOCUMENT_PERIOD_END_DATE];
+	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @StatementClassOfStockAxis @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 
     exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2)
 
@@ -117,15 +117,15 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 /** DQCRT RULE **/
 if not applicable_form(rule-name())
     or list({covered @concept.local-name ='TradingSymbol'}).length == 0
-    or {covered @concept.local-name ='NoTradingSymbolFlag'} == true
+    or (true in list({covered @concept.local-name ='NoTradingSymbolFlag'}))
     or list({covered @concept.local-name ='NumberOfAuthorizedSharesNotDisclosed'}).length > 0
 	skip
 else
 
     $present_fact = [@SharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
-    $not_present_fact1 = [@CommonStockSharesAuthorized @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
-	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
-	$not_present_fact3 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis = * @unit @@period.end = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact1 = [@CommonStockSharesAuthorized @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
+	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
+	$not_present_fact3 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis = * @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 
     exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3)
 
