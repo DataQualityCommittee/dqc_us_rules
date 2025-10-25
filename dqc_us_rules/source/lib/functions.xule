@@ -1047,3 +1047,61 @@ function applicable_form($ruleName)
 function applicable_form_string($ruleNnumber)
 		$ApplicableForms = $RULE-FORM-LOOKUP[$ruleNnumber]
 		$ApplicableForms.contains($DOCUMENT_TYPE) or  $DOCUMENT_TYPE == none or $ApplicableForms == none
+
+
+
+/** THis function is intended to check that the investment identifier axis member meets a specific format
+* The function checks that the name of the identifier for the investment is standardized so that it can be used by data users if the EE is not used to identify the investments attribute.
+* The rule checks the qname of the member on the investmentIdentifier axis has the following values delimited by a _ character:
+* 1. Value of DEBT or EQUITY  or OTHER - required cannot be empty
+* 2.Issuer name (no spaces or special characters) - required cannot be empty
+* 3. If the security is Affiliated or Unaffiliated  - required cannot be empty
+* 4. The industry of the security or loan  - required can be empty but should be none
+* 5. The geography of the security or loan - required can be empty but should be none
+* 7. The security type of the security or loan (Secured or Unsecured etc.) - optional
+* 8. The maturity of the security or loan (Date) - Optional
+* 9. The interest rate of the security or loan (Rate) - Optional
+**/
+
+function investmentMemberFormat($member)
+/**
+Checks that an investment identifier member local-name follows the expected
+    underscore delimited format described in the function header.
+    Required components:
+     1. Type: DEBT | EQUITY | OTHER
+     2. Issuer: non-empty, no spaces
+     3. Affiliation: AFFILIATED | UNAFFILIATED
+    Optional components (positions shown if present):
+     4. Industry: 'none' or non-empty (no spaces)
+     5. Geography: 'none' or non-empty (no spaces)
+     6. SecurityType: optional
+     7. Maturity: optional
+     8. InterestRate: optional
+    Returns a list with boolean and message.
+    **/
+    $member_name = if $member == none "" else $member.name.local-name.string
+    $parts = $member_name.split('_')
+
+    /* must have at least 3 components */
+    if $parts.length < 3
+        list(false, "Less than 3 components cmprising the member name")
+    else
+        $primary = $parts[1].upper-case
+        $issuer = if $parts.length >= 2 $parts[2] else ""
+        $affiliation = if $parts.length >= 3 $parts[3].upper-case else ""
+        $industry = if $parts.length >= 4 $parts[4] else "none"
+        $geo = if $parts.length >= 5  $parts[5] else "none"
+
+        /* basic validations */
+        $ok_primary = $primary in set('DEBT','EQUITY','OTHER')
+        $ok_issuer = ($issuer.length > 0) and (not $issuer.contains(' '))
+        $ok_affiliation = $affiliation in set('AFFILIATED','UNAFFILIATED')
+
+        /* industry and geography may be empty signalled by 'none' or must not contain spaces */
+        $ok_industry = ($industry == "none") or (($industry.length > 0) and (not $industry.contains(' ')) and (not $industry.contains('Member')))
+        $ok_geo = ($geo == "none") or (($geo.length > 0) and (not $geo.contains(' ')))
+
+        if $ok_primary and $ok_issuer and $ok_affiliation and $ok_industry and $ok_geo
+            list(true, "All components valid")
+        else
+            list(false, "Security Type valid:" + $ok_primary.string + ", Issuer valid:" + $ok_issuer.string + ", Affiliation valid:" + $ok_affiliation.string + ", Industry valid:" + $ok_industry.string + ", Geography valid:" + $ok_geo.string)

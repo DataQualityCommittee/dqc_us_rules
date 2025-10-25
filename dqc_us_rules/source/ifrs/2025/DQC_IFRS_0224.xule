@@ -1,0 +1,68 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+assert DQC.IFRS.0224.10751 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+    skip
+else
+
+    // Target: the management-defined performance measure (MPM) fact
+    $MPM = ({@@concept.is-monetary = true @ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis = ifrs-full:ValueOfManagementdefinedPerformanceMeasureMember})
+
+    // Primary IFRS source: facts on the Reconciliation domain
+    $IFRS_fact = {@@concept.is-monetary = true}
+
+    // Adjustment facts: monetary facts on the reconciliation axis that are reconciling items (exclude the IFRS domain and the MPM member)
+    $adjustment_candidates = {@concept.is-monetary = true @ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis = *}
+    $adjustments = filter $adjustment_candidates where
+        ($item.dimension(ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis).name.local-name != 'ReconciliationOfManagementdefinedPerformanceMeasureDomain')
+        and ($item.dimension(ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis).name.local-name != 'ValueOfManagementdefinedPerformanceMeasureMember')
+        and ($item.dimension(ifrs-full:ReconciliationOfManagementdefinedPerformanceMeasureAxis).name.local-name != 'AllReconcilingItemsMember')
+        returns $item
+
+    $sum_adjustments = sum(list($adjustments))
+
+    // Only evaluate when an MPM fact exists
+    if not exists($MPM)
+        skip
+    else
+        // Compare numeric equality allowing XULE's numeric comparison semantics
+        if ($IFRS_fact + $sum_adjustments) != $MPM
+            true
+        else
+            false
+
+message
+"Management defined performance measure reconciliation mismatch.
+
+MPM fact: {$MPM}
+MPM period: {$MPM.period}
+MPM unit: {$MPM.unit}
+MPM dimensions: {($MPM).dimensions.join(', ','=')}
+
+IFRS base used: {$IFRS_fact}
+Sum of adjustments: {$sum_adjustments}
+
+Expected: IFRS base + sum(adjustments) = MPM
+
+Please review the facts used in the reconciliation: the IFRS measure facts on the Reconciliation domain and the reconciling item facts.
+
+Rule Element Id: {$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $MPM
+status $status
+
+effectiveDate $effective_dates[$rule_id]

@@ -3,6 +3,10 @@ applyTo: "*.xule"
 ---
 # Project general rule coding standards
 
+## Reference Documentation
+- Always refer to the XULE Language Syntax V1.2.1.md for proper syntax and functions
+- Located at: `/Users/campbellpryde/Documents/GitHub/xule/docs/XULE Language Syntax V1.2.1.md`
+
 ## Naming Conventions
 - Use camelCase for variables, functions, and methods
 - Use ALL_CAPS for constants

@@ -6,7 +6,12 @@
         {
             "label": "Compile 2024 Rules - 3.12",
             "type": "shell",
-            "command": "~/.virtualenvs/xule-3.12/bin/python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/dqc_us_rules/source/us/2024 --xule-rule-set /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/dqc_us_rules/dqc-us-2024-V28-ruleset.zip --xule-crash --xule-stack-size=20 --xule-compile-workers=0"
+            "command": "~/.virtualenvs/xule-3.12/bin/python ~/arelle/Arelle-master/arellecmdline.py --plugins xule --xule-compile /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/dqc_us_rules/source/us/2024 --xule-rule-set /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/dqc_us_rules/dqc-us-2024-V29-ruleset.zip --xule-crash --xule-stack-size=20 --xule-compile-workers=0"
+        },
+        {
+            "label": "DQC.US.0212.10738",
+            "type": "shell",
+            "command" :"~/.virtualenvs/xule-3.12/bin/python ~/Arelle/Arelle-master/arellecmdline.py --plugins 'xule|transforms/SEC|validate/EFM|inlineXbrlDocumentSet' -f https://www.sec.gov/Archives/edgar/data/1791706/000141057825000678/0001410578-25-000678-xbrl.zip -v --xule-time .000 --xule-debug --noCertificateCheck   --logFile  /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/tests/output/testRule.xml --xule-rule-set  /Users/campbellpryde/Documents/GitHub/dqc/dqc_us_rules/dqc_us_rules/dqc-us-2024-V29-ruleset.zip --xule-run-only DQC.US.0212.10738 --httpuseragent campbell.pryde@xbrl.us"
         }
         
     ]

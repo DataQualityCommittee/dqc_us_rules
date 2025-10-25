@@ -1,0 +1,368 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0225.10790 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+	// Identify income-statement related presentation roles
+	$income_roles = filter taxonomy().roles where
+		$item.description.lower-case().contains('- statement -')
+		and (
+			$item.description.lower-case().contains('income')
+			or $item.description.lower-case().contains('operations')
+			or $item.description.lower-case().contains('comprehensive')
+		)
+
+	// Collect presentation concepts from those roles
+
+	for $r in $income_roles
+		$income_concepts = filter (taxonomy().networks(parent-child, $r).concepts) returns $item.name
+
+        $excludedItems = $RECOGNIZE_LIST + $DERECOGNIZE_LIST
+
+        // Find offending concepts present in income presentation
+        $offending = $income_concepts.intersect($excludedItems.to-set)
+
+        if $offending.length > 0
+            true
+        else
+            skip
+
+message
+"The income statement presentation role {$r.description} includes elements that should not appear on the income statement.
+
+Offending elements: {$offending.join(', ')}
+
+These elements represent changes in instant balances and not changes in retained earnings and should be reported in appropriate reconciliations, not as line items on the income statement. Please review the presentation role and remove or relocate the listed elements.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+rule-focus first($offending)
+effectiveDate $effective_dates[$rule_id]
+
+
+constant $RECOGNIZE_LIST = list(PropertyPlantAndEquipmentAdditions,
+                                StockIssuedDuringPeriodValueShareBasedCompensation,
+                                StockIssuedDuringPeriodValueStockOptionsExercised,
+                                PartnersCapitalAccountExchangesAndConversions,
+                                TemporaryEquityOtherChanges,
+                                PartnersCapitalAccountPublicSaleOfUnits,
+                                PartnersCapitalAccountSaleOfUnits,
+                                PolicyholderAccountBalancePremiumReceived,
+                                IndefinitelivedIntangibleAssetsAcquired,
+                                ExtendedProductWarrantyAccrualWarrantiesIssued,
+                                ExtendedProductWarrantyAccrualAdditionsFromBusinessAcquisition,
+                                PresentValueOfFutureInsuranceProfitsAdditionsFromAcquisitions,
+                                ProductWarrantyAccrualWarrantiesIssued,
+                                ProductWarrantyAccrualAdditionsFromBusinessAcquisition,
+                                StandardProductWarrantyAccrualWarrantiesIssued,
+                                StandardProductWarrantyAccrualAdditionsFromBusinessAcquisition,
+                                MortgageLoansOnRealEstateNewMortgageLoans,
+                                MortgageLoansOnRealEstateOtherAdditions,
+                                DefinedBenefitPlanBenefitObligationContributionsByPlanParticipant,
+                                DefinedBenefitPlanContributionsByEmployer,
+                                DefinedBenefitPlanPlanAssetsContributionsByPlanParticipant,
+                                DefinedBenefitPlanPlanAssetsPrescriptionDrugSubsidyReceipt,
+                                DefinedBenefitPlanBusinessCombinationsAndAcquisitionsPlanAssets,
+                                RealEstateOtherAdditions,
+                                UnrecognizedTaxBenefitsIncreasesResultingFromPriorPeriodTaxPositions,
+                                UnrecognizedTaxBenefitsIncreasesResultingFromCurrentPeriodTaxPositions,
+                                UnrecognizedTaxBenefitsIncreasesResultingFromAcquisition,
+                                ServicingAssetAtAmortizedValueAdditions,
+                                ServicingAssetAtFairValueAdditions,
+                                ServicingLiabilityAtFairValueAdditions,
+                                ServicingLiabilityAtAmortizedValueAdditions,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetPurchases,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetIssues,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisLiabilityPurchases,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisLiabilityIssues,
+                                DeferredSalesInducementsAdditions,
+                                CapitalizedComputerSoftwareAdditions,
+                                InterestCreditedToPolicyholdersAccountBalances,
+                                RealEstateAcquisitionsThroughForeclosures,
+                                RealEstateOtherAcquisitions,
+                                RealEstateImprovements,
+                                OtherRealEstateCoveredAdditions,
+                                OtherRealEstateAdditions,
+                                OtherRealEstateNonCoveredAdditions,
+                                InvestmentsInAndAdvancesToAffiliatesAtFairValueGrossAdditions,
+                                CryptoAssetAddition,
+                                CryptoAssetCustomerReceipt,
+                                CryptoAssetMining,
+                                CryptoAssetPurchase,
+                                FDICIndemnificationAssetAcquisitions,
+                                FinitelivedIntangibleAssetsAcquired1,
+                                SubordinatedLiabilitiesAdditions,
+                                DeferredPolicyAcquisitionCostsAndPresentValueOfFutureProfitsAdditions,
+                                PartnersCapitalAccountAcquisitions,
+                                PartnersCapitalAccountContributions,
+                                DefinedBenefitPlanPlanAssetsLevel3ReconciliationIncreaseForPurchase,
+                                DeferredIncomeAddition,
+                                DeferredIncomeRevenueRecognized,
+                                SupplierFinanceProgramObligationIncrease,
+                                AmortizationOfESOPAward,
+                                TemporaryEquityAccretionOfDividends,
+                                TemporaryEquityAccretionToRedemptionValue,
+                                LoansReceivableHeldForSaleReconciliationToCashFlowAdditionsToHeldForSale,
+                                DeferredPolicyAcquisitionCostsAdditions,
+                                NoncontrollingInterestIncreaseFromBusinessCombination,
+                                LoansAndLeasesReceivableRelatedPartiesAdditions,
+                                LossContingencyRelatedReceivableCarryingValueAdditions,
+                                AssetRetirementObligationLiabilitiesIncurred,
+                                CapitalizedExploratoryWellCostAdditionsPendingDeterminationOfProvedReserves,
+                                FDICIndemnificationAssetAdditionalEstimatedLosses,
+                                BelowMarketLeaseAcquired,
+                                StockIssuedDuringPeriodValueDividendReinvestmentPlan,
+                                DebtSecuritiesAvailableForSaleAllowanceForCreditLossRecovery,
+                                ContractWithCustomerAssetAllowanceForCreditLossRecovery,
+                                NetInvestmentInLeaseAllowanceForCreditLossRecovery,
+                                SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossRecovery,
+                                DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossRecovery,
+                                ReinsuranceRecoverableAllowanceForCreditLossRecovery,
+                                SecuritiesPurchasedUnderAgreementsToResellAllowanceForCreditLossRecovery,
+                                SecuritiesBorrowedAllowanceForCreditLossRecovery,
+                                FinancingReceivableExcludingAccruedInterestAllowanceForCreditLossRecovery,
+                                DebtSecuritiesHeldToMaturityExcludingAccruedInterestAllowanceForCreditLossRecovery,
+                                DebtSecuritiesAvailableForSaleExcludingAccruedInterestAllowanceForCreditLossSellBeforeRecovery,
+                                DebtSecuritiesAvailableForSaleExcludingAccruedInterestAllowanceForCreditLossRecovery,
+                                DebtSecuritiesAvailableForSaleAllowanceForCreditLossPurchasedWithCreditDeteriorationIncrease,
+                                PremiumsReceivableAllowanceForDoubtfulAccountsRecoveries,
+                                RealEstateAccumulatedDepreciationOtherAdditions,
+                                ValuationAllowancesAndReservesRecoveries,
+                                RealEstateInventoryCapitalizedInterestCostsIncurred,
+                                StockIssuedDuringPeriodValueShareBasedCompensationGross,
+                                StockIssuedDuringPeriodValueEmployeeBenefitPlan,
+                                StockIssuedDuringPeriodValueAcquisitions,
+                                StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
+                                NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                                NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                                TradeReceivablesHeldForSaleReconciliationToCashFlowAdditionsToHeldForSale,
+                                TimeSharingTransactionsAllowanceForUncollectibleAccountsAdditionsForCurrentPeriodSales,
+                                ValuationAllowancesAndReservesReservesOfBusinessesAcquired,
+                                ValuationAllowancesAndReservesChargedToCostAndExpense,
+                                ValuationAllowancesAndReservesChargedToOtherAccounts,
+                                AdjustmentsToAdditionalPaidInCapitalShareBasedCompensationEmployeeStockPurchaseProgramRequisiteServicePeriodRecognition,
+                                AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationOtherLongtermIncentivePlansRequisiteServicePeriodRecognition,
+                                AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue,
+                                AdjustmentsToAdditionalPaidInCapitalShareBasedCompensationRestrictedStockUnitsRequisiteServicePeriodRecognition,
+                                AdjustmentsToAdditionalPaidInCapitalShareBasedCompensationStockOptionsRequisiteServicePeriodRecognition,
+                                AdjustmentsToAdditionalPaidInCapitalStockIssuedOwnshareLendingArrangementIssuanceCosts,
+                                AdjustmentsToAdditionalPaidInCapitalWarrantIssued,
+                                AllowanceForDoubtfulAccountsReceivableRecoveries,
+                                DebtSecuritiesHeldToMaturityAllowanceForCreditLossRecovery,
+                                FinancingReceivableAllowanceForCreditLossesRecovery,
+                                GoodwillAcquiredDuringPeriod,
+                                OtherRealEstateImprovements,
+                                OtherRealEstateNonCoveredImprovements,
+                                PolicyholderAccountBalanceIssuance,
+                                StockIssuedDuringPeriodValueOther,
+                                StockIssuedDuringPeriodValuePurchaseOfAssets,
+                                AccountsReceivablePurchase,
+                                LiabilityForFuturePolicyBenefitExpectedFuturePolicyBenefitIssuance,
+                                FinancingReceivableExcludingAccruedInterestAllowanceForCreditLossLoanPurchased,
+                                ClosedBlockAssetsAndLiabilitiesMaximumFutureEarningsToBeRecognizedOtherAdjustments,
+                                AdjustmentsToAdditionalPaidInCapitalConvertibleDebtWithConversionFeature,
+                                AdjustmentsToAdditionalPaidInCapitalOther,
+                                AdjustmentToAdditionalPaidInCapitalConvertibleDebtInstrumentIssuedAtSubstantialPremium,
+                                FDICIndemnificationAssetAccretionOfDiscount,
+                                OtherRealEstateCoveredImprovements,
+                                DebtSecuritiesAvailableForSaleExcludingAccruedInterestAllowanceForCreditLossNotPreviouslyRecorded,
+                                DebtSecuritiesHeldToMaturityAllowanceForCreditLossPurchasedWithCreditDeteriorationIncrease,
+                                DebtSecuritiesHeldToMaturityExcludingAccruedInterestPurchasedWithCreditDeteriorationAllowanceForCreditLossAtAcquisitionDate,
+                                MarketRiskBenefitIssuance,
+                                PartnersCapitalAccountTreasuryUnitsReissued,
+                                PartnersCapitalAccountUnitBasedCompensation,
+                                PartnersCapitalOther,
+                                PartnersCapitalAccountOptionExercise,
+                                PartnersCapitalAccountPrivatePlacementOfUnits,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetPurchasesSalesIssuancesSettlements,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisLiabilityPurchasesSalesIssuancesSettlements,
+                                FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisUnobservableInputsReconciliationIssues,
+                                FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisUnobservableInputsReconciliationPurchases,
+                                FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisUnobservableInputsReconciliationPurchasesSalesIssuesSettlements,
+                                TemporaryEquityInterestInSubsidiaryEarnings,
+                                TemporaryEquityNetIncome,
+                                TemporaryEquityStockIssuedDuringPeriodValueNewIssues,
+                                StockIssuedDuringPeriodValueConversionOfUnits,
+                                StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
+                                StockIssuedDuringPeriodValueEmployeeStockPurchasePlan,
+                                StockIssuedDuringPeriodValueIssuedForServices,
+                                StockIssuedDuringPeriodValueNewIssues,
+                                StockIssuedDuringPeriodValueRestrictedStockAwardGross,
+                                StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
+                                StockIssuedDuringPeriodValueTreasuryStockReissued,
+                                StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
+                                StockGrantedDuringPeriodValueSharebasedCompensation,
+                                StockGrantedDuringPeriodValueSharebasedCompensationGross,
+                                StockIssuedDuringPeriodValueStockDividend,
+                                AdditionalLiabilityLongDurationInsuranceInterestIncomeExpense,
+                                ClosedBlockOperationsNetResults,
+                                FinancingReceivableExcludingAccruedInterestPurchasedWithCreditDeteriorationAllowanceForCreditLossAtAcquisitionDate,
+                                LiabilityForFuturePolicyBenefitExpectedNetPremiumInterestIncome,
+                                LiabilityForUnpaidClaimsAndClaimsAdjustmentExpenseBusinessAcquisitions,
+                                DefinedBenefitPlanBusinessCombinationsAndAcquisitionsBenefitObligation,
+                                AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,
+                                AdditionalLiabilityLongDurationInsuranceIssuance,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsProvisions
+)
+
+constant $DERECOGNIZE_LIST = list(PropertyPlantAndEquipmentDisposals,
+                                AccumulatedDepreciationDepletionAndAmortizationSaleOfPropertyPlantAndEquipment1,
+                                IndefiniteLivedIntangibleAssetsWrittenOffRelatedToSaleOfBusinessUnit,
+                                AssetRetirementObligationLiabilitiesSettled,
+                                LoansReceivableHeldForSaleReconciliationToCashFlowDeductionsFromHeldForSale,
+                                MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                                MinorityInterestDecreaseFromRedemptions,
+                                NoncontrollingInterestDecreaseFromDeconsolidation,
+                                DeferredPolicyAcquisitionCostsDisposition,
+                                ExtendedProductWarrantyAccrualPayments,
+                                PresentValueOfFutureInsuranceProfitsDisposition,
+                                ProductWarrantyAccrualPayments,
+                                StandardProductWarrantyAccrualPayments,
+                                MortgageLoansOnRealEstateForeclosures,
+                                MortgageLoansOnRealEstateCostOfMortgagesSold,
+                                MortgageLoansOnRealEstateOtherDeductions,
+                                DefinedBenefitPlanPlanAssetsBenefitsPaid,
+                                DefinedBenefitPlanDivestituresPlanAssets,
+                                DefinedBenefitPlanSettlementsPlanAssets,
+                                RealEstateOwnedValuationAllowanceProvision1,
+                                RealEstateAccumulatedDepreciationRealEstateSold,
+                                RealEstateAccumulatedDepreciationOtherDeductions,
+                                RealEstateCostOfRealEstateSold,
+                                RealEstateOtherDeductions,
+                                UnrecognizedTaxBenefitsDecreasesResultingFromPriorPeriodTaxPositions,
+                                UnrecognizedTaxBenefitsDecreasesResultingFromCurrentPeriodTaxPositions,
+                                UnrecognizedTaxBenefitsDecreasesResultingFromAcquisition,
+                                UnrecognizedTaxBenefitsReductionsResultingFromLapseOfApplicableStatuteOfLimitations,
+                                TradeReceivablesHeldForSaleReconciliationToCashFlowDeductionsFromHeldForSale,
+                                RestructuringReserveSettledWithoutCash2,
+                                ValuationAllowancesAndReservesDeductions,
+                                ServicingAssetAtAmortizedValueDisposals,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsRecoveries,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsSales,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsDisposals,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsSalesAndDisposals,
+                                ServicingAssetAtFairValueDisposals,
+                                ServicingLiabilityAtFairValueDisposals,
+                                ServicingLiabilityAtAmortizedValueDisposals,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetSales,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisLiabilitySales,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisLiabilitySettlements,
+                                DeferredSalesInducementCostDisposition,
+                                AdjustmentsToAdditionalPaidInCapitalStockSplit,
+                                GoodwillWrittenOffRelatedToSaleOfBusinessUnit,
+                                SubordinatedLiabilitiesExtinguished,
+                                DeferredPolicyAcquisitionCostsAndPresentValueOfFutureInsuranceProfitsDisposition,
+                                FDICIndemnificationAssetCashPaymentsReceived,
+                                FDICIndemnificationAssetDisposals,
+                                OtherRealEstateCoveredDisposals,
+                                OtherRealEstateDisposals,
+                                OtherRealEstateNonCoveredDisposals,
+                                InvestmentsInAndAdvancesToAffiliatesAtFairValueGrossReductions,
+                                DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSale,
+                                DefinedBenefitPlanPlanAssetsLevel3ReconciliationDecreaseForSettlement,
+                                SeparateAccountLiabilityPolicyCharge,
+                                SeparateAccountLiabilitySurrender,
+                                SeparateAccountLiabilityWithdrawal,
+                                SeparateAccountLiabilitySurrenderAndWithdrawal,
+                                PolicyholderAccountBalancePolicyCharge,
+                                PolicyholderAccountBalanceSurrender,
+                                PolicyholderAccountBalanceWithdrawal,
+                                PolicyholderAccountBalanceSurrenderAndWithdrawal,
+                                LiabilityForFuturePolicyBenefitExpectedNetPremiumDerecognition,
+                                DebtSecuritiesAvailableForSaleAllowanceForCreditLossSecuritiesSold,
+                                FinancingReceivableExcludingAccruedInterestAllowanceForCreditLossLoanSold,
+                                DebtSecuritiesAvailableForSaleExcludingAccruedInterestAllowanceForCreditLossSecuritiesSold,
+                                SupplierFinanceProgramObligationDecreaseSettlement,
+                                CryptoAssetDisposition,
+                                CryptoAssetPaymentForService,
+                                CryptoAssetSale,
+                                PartnersCapitalAccountTreasuryUnitsPurchases,
+                                AllowanceForLoanAndLeaseLossesWriteOffs,
+                                AllowanceForLoanAndLeaseLossesWriteoffsNet,
+                                PremiumsReceivableAllowanceForDoubtfulAccountsWriteOffsAgainstAllowance,
+                                TimeSharingTransactionsDirectWriteOffsChargedAgainstAllowance,
+                                AdditionalLiabilityLongDurationInsuranceDerecognition,
+                                AllowanceForDoubtfulAccountsReceivableWriteOffs,
+                                ContractWithCustomerAssetAllowanceForCreditLossWriteoff,
+                                DebtSecuritiesAvailableForSaleAllowanceForCreditLossWriteoff,
+                                DebtSecuritiesHeldToMaturityAllowanceForCreditLossWriteoff,
+                                DebtSecuritiesHeldToMaturityExcludingAccruedInterestAllowanceForCreditLossWriteoff,
+                                DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossWriteoff,
+                                FDICIndemnificationAssetNetWriteOffs,
+                                FinancingReceivableAllowanceForCreditLossesWriteOffs,
+                                FinancingReceivableExcludingAccruedInterestAllowanceForCreditLossWriteoff,
+                                FinancingReceivableExcludingAccruedInterestAllowanceForCreditLossWriteoffAfterRecovery,
+                                NetInvestmentInLeaseAllowanceForCreditLossWriteoff,
+                                SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossWriteoff,
+                                SecuritiesPurchasedUnderAgreementToResellAllowanceForCreditLossWriteoff,
+                                ValuationAllowanceForImpairmentOfRecognizedServicingAssetsAggregateWriteDowns,
+                                AccountsReceivableSale,
+                                DebtSecuritiesAvailableForSaleExcludingAccruedInterestAllowanceForCreditLossWriteoff,
+                                AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings,
+                                AdjustmentsToAdditionalPaidInCapitalIncreaseInCarryingAmountOfRedeemablePreferredStock,
+                                DefinedBenefitPlanDivestituresBenefitObligation,
+                                GeneralPartnersCapitalAccountDistributionAmount,
+                                InvestmentCompanyDistributionLongTermCapitalGain,
+                                InvestmentCompanyDistributionOrdinaryIncome,
+                                InvestmentCompanyDividendDistribution,
+                                PartnersCapitalAccountRedemptions,
+                                PartnersCapitalAccountReturnOfCapital,
+                                PartnersCapitalAccountDeferredCompensation,
+                                PartnersCapitalAccountDistributions,
+                                RealEstateOwnedValuationAllowanceAmountsApplied,
+                                FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetSettlements,
+                                FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisUnobservableInputsReconciliationSales,
+                                FairValueNetDerivativeAssetLiabilityMeasuredOnRecurringBasisUnobservableInputsReconciliationSettlements,
+                                TreasuryStockRetiredCostMethodAmount,
+                                TreasuryStockRetiredParValueMethodAmount,
+                                StockRepurchasedDuringPeriodValue,
+                                TemporaryEquityEliminationAsPartofReorganization,
+                                TreasuryStockReissuedAtLowerThanRepurchasePrice,
+                                TreasuryStockValueAcquiredCostMethod,
+                                TreasuryStockValueAcquiredParValueMethod,
+                                StockRedeemedOrCalledDuringPeriodValue,
+                                StockRepurchasedAndRetiredDuringPeriodValue,
+                                StockholdersEquityOther,
+                                StockGrantedDuringPeriodValueSharebasedCompensationForfeited,
+                                AdditionalLiabilityLongDurationInsuranceBenefitPayment,
+                                SecuritiesBorrowedAllowanceForCreditLossWriteoff,
+                                AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts,
+                                DebtSecuritiesAvailableForSaleAllowanceForCreditLossSellBeforeRecovery,
+                                LimitedPartnersCapitalAccountDistributionAmount,
+                                IncentiveDistributionDistributionPerYear,
+                                InvestmentCompanyTaxReturnOfCapitalDistribution,
+                                StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures
+    
+)
+
+OUTPUT test225
+
+	$income_roles = filter taxonomy().roles where
+		$item.description.lower-case().contains('- statement -')
+		and (
+			$item.description.lower-case().contains('income')
+			or $item.description.lower-case().contains('operations')
+			or $item.description.lower-case().contains('comprehensive')
+		)
+
+        for $r in $income_roles
+		$income_concepts = filter taxonomy().networks(parent-child, $r).concepts returns $item.name
+
+        $r.description 

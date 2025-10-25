@@ -385,3 +385,17 @@ constant $INTANGIBLE_DURATION_ITEMS = navigate parent-child descendants from lis
 		 **/
 
 		constant $RULE-FORM-LOOKUP = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/master/dqc_us_rules/resources/rule-form-lookup/rule-form-lookup.csv', true, list('string','string')).to-dict
+
+
+constant $INCOME_STATEMENT_ITEMS = 
+				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
+				NetIncomeLoss, 
+				NetIncomeLossAvailableToCommonStockholdersBasic,
+				NetIncomeLossAvailableToCommonStockholdersDiluted,
+				IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+				IncomeLossAttributableToParent,
+				NetIncomeLossAllocatedToGeneralPartners,
+				NetIncomeLossAllocatedToLimitedPartners)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+				+
+				navigate parent-child descendants from list(IncomeStatementAbstract,
+				StatementOfIncomeAndComprehensiveIncomeAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
