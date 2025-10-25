@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0202.10702 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Identify if a cyber element has been used, applies to the 2024 taxonomy only. Need to confirm if 10-Q is required or 8-K incident is OK**/
 
 $concepts = filter taxonomy().concepts where $item.name.namespace-uri == 'http://xbrl.sec.gov/cyd/2025' returns $item.name

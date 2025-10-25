@@ -16,9 +16,11 @@ ASSERT US.0199.10653 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-if not $BDC_FLAG
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
+
 $spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
 $ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
@@ -44,14 +46,16 @@ ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-if not $BDC_FLAG
-        skip
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
 else
-	$maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit]
 
-	$rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
+$maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit]
 
-	exists($rate) and not exists($maturity)
+$rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
+
+exists($rate) and not exists($maturity)
     
 message
 "The filer has reported a value for the concept {$rate.concept.name} with a value of {$rate}. This concept is used to report the interest rate of a debt investment. For debt investments the filer should also report the maturity date of the investment. Please ensure that the InvestmentMaturityDate concept is also reported for this investment.

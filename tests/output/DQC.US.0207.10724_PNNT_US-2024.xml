@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 19.47 secs at 2025-07-21T15:11:25 - http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:02.159793. - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0207.10724 - 15:12:12.193136 - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="DQC.US.0207.10724" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm" severity="error" effectiveDate="None" cid="2213740824096">[DQC.US.0207.10724] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 270,839,000. This concept is used to report the fair value of investments for the pnnt:ControlledAndNonControlledAffiliatesMember affiliation. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 303,139,000 that includes the member pnnt:ControlledAndNonControlledAffiliatesMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentIssuerNameAxis=pnnt:TransactionsRelatedFundedInvestmentsMember, us-gaap:InvestmentIssuerAffiliationAxis=pnnt:ControlledAndNonControlledAffiliatesMember. The value representing the fair value of investments in the  pnnt:ControlledAndNonControlledAffiliatesMember affiliation is less than the value reported for the value 303,139,000 which is a subset of this affiliation. The value reported for the affiliation in aggregate should be more than or equal to the value reported for of 303,139,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 303,139,000
+Period : 2023-09-30
+Dimensions : us-gaap:InvestmentIssuerNameAxis=pnnt:TransactionsRelatedFundedInvestmentsMember, us-gaap:InvestmentIssuerAffiliationAxis=pnnt:ControlledAndNonControlledAffiliatesMember
+
+Rule Element Id:10724
+Rule version: 28.0.0RC1 - pnnt-20240930.htm 45285</message>
+ <ref href="pnnt-20240930.htm#F_676b6533-d835-43cb-8ee3-38dda67cea6a" sourceLine="45285">
+  <property name="file" value="pnnt-20240930.htm"/>
+  <property name="line" value="45285"/>
+  <property name="label" value="Investment Owned, Fair Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_25c6d0ab-798b-4c32-b409-8e3f26a9f253">
+   <property name="entity" value="0001383414">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="pnnt:ControlledAndNonControlledAffiliatesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="270,839,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="270,839"/>
+ </ref></entry>
+<entry code="DQC.US.0207.10724" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm" severity="error" effectiveDate="None" cid="2213740824096">[DQC.US.0207.10724] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 216,068,000. This concept is used to report the fair value of investments for the us-gaap:InvestmentAffiliatedIssuerControlledMember affiliation. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 257,127,000 that includes the member us-gaap:InvestmentAffiliatedIssuerControlledMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentIssuerNameAxis=pnnt:TransactionsRelatedFundedInvestmentsMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentAffiliatedIssuerControlledMember. The value representing the fair value of investments in the  us-gaap:InvestmentAffiliatedIssuerControlledMember affiliation is less than the value reported for the value 257,127,000 which is a subset of this affiliation. The value reported for the affiliation in aggregate should be more than or equal to the value reported for of 257,127,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 257,127,000
+Period : 2023-09-30
+Dimensions : us-gaap:InvestmentIssuerNameAxis=pnnt:TransactionsRelatedFundedInvestmentsMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentAffiliatedIssuerControlledMember
+
+Rule Element Id:10724
+Rule version: 28.0.0RC1 - pnnt-20240930.htm 45060</message>
+ <ref href="pnnt-20240930.htm#F_db77442e-60b3-44ed-b355-59af7415063c" sourceLine="45060">
+  <property name="file" value="pnnt-20240930.htm"/>
+  <property name="line" value="45060"/>
+  <property name="label" value="Investment Owned, Fair Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_183f0755-d09a-4b36-b786-9509e2dea32b">
+   <property name="entity" value="0001383414">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentAffiliatedIssuerControlledMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="216,068,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="216,068"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0207.10724 time took: 3.234384 - 15:12:15.427520  - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0207.10724 end. Took 0:00:03.234384 - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:05.396700. - pnnt-20240930.htm </message>
+ <ref href="pnnt-20240930.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 30.04 secs - http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1383414/000095017024130670/pnnt-20240930.htm"/></entry>
+</log>

@@ -20,7 +20,13 @@ ASSERT US.0150.9876 SATISFIED
 7. If there is no value for the total or the components then the rule willk not run.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
 t**/
 
@@ -37,38 +43,41 @@ for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
 
                     /**Identify all monetary primary concepts in Cubes with ConsolidationItemsAxis **/
                     $primaryConcepts = $segmentCube.primary-concepts
-                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
+                    $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary and $item.name in $non_neg_qname returns $item.name   
 
                     for $concept in $monetaryConceptsInCube
 
-                        $factsToAdd = list(for $member in $member_descendants
-									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
-									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
-										skip
-									else 
-										[nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
+                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
 
-                        $decimalsAddedFacts =   if $factsToAdd.length == 0
-                                                        0
-                                                else
-                                                    min(list(for $x in $factsToAdd
-                                                        if $x == none 
-                                                            skip
-                                                        else
-                                                            $x.decimals));
+                        if $dimensionTotal == none or $dimensionTotal <= 0 
+                            skip
+                        else
 
-                        $addedDimensions = sum($factsToAdd)
+                            $factsToAdd = list(for $member in $member_descendants
+                                        $ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+                                        if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+                                            skip
+                                        else 
+                                            [nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
+
+                            $decimalsAddedFacts =   if $factsToAdd.length == 0
+                                                            0
+                                                    else
+                                                        min(list(for $x in $factsToAdd
+                                                            if $x == none 
+                                                                skip
+                                                            else
+                                                                $x.decimals));
+
+                            $addedDimensions = sum($factsToAdd)
 
                         /** Capture in a string what calc was performed  above to report in the rule message. **/
                        $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
 
-
-                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
-
-                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
-
                         /** Added to only run when there were more than 1 member with facts to add. If there is only one this indicates its a disclosure and probably not a reconciliation **/
-                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname or $factsToAdd.length < 2
+                        if $addedDimensions == none or $factsToAdd.length < 2
                             skip
                         else
                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
@@ -89,11 +98,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0150.9877 SATISFIED
@@ -108,7 +117,13 @@ ASSERT US.0150.9877 SATISFIED
 7. If there is no value for the total or the components then the rule will not run.
 **/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -177,11 +192,11 @@ Total Value : {$dimensionTotal}
 Total period : {$dimensionTotal.period} 
 Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
 Decimals : {$dimensionTotal.decimals} 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 /**DQC 0150.9878 **/
@@ -191,7 +206,13 @@ Look at segment table and look where the consolidated items axis is used for a l
 
 ASSERT US.0150.9878 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                 /** Get cubes with StatementBusinessSegmentsAxis **/
@@ -253,15 +274,21 @@ Total period : {first($consolidationItemsAbsent).period}
 Dimensions : {first($consolidationItemsAbsent).dimensions.join(', ','=')}
 Decimals : {first($consolidationItemsAbsent).decimals} 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0150.10076 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
                  /** Get members that are parent reportable segments. **/
@@ -294,8 +321,8 @@ message
 Concept : NumberOfReportableSegments
 Value : {$NumberOfSegments.join(' and ')} 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

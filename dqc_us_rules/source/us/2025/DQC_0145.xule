@@ -14,6 +14,11 @@ assert US.0145.9867 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $allowableFinancingItems = $ALLOWABLE_FINANCING_ITEMS
 
@@ -40,6 +45,11 @@ assert US.0145.9868 satisfied
 
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $taxonomyItemsNotInExtensions = ($NON_INVESTING_DESCENDANTS) - set(PaymentsForProceedsFromOtherDeposits, IncreaseDecreaseOfRestrictedInvestments, ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase) 
 
@@ -63,6 +73,11 @@ rule-focus taxonomy().concept($invalidConcept)
 
 assert US.0145.9869  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $taxonomyChangeInOperatingCapital = $CHG_IN_OP_CAPTL 
 

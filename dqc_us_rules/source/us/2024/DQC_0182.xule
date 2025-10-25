@@ -13,39 +13,50 @@ ASSERT US.0182.10160 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** $dimEquivs = navigate 'http://www.xbrl.org/2021/arcrole/concept-dimensional-equivalent' descendants  taxonomy $META returns list (source, target) **/
 
-$dimEquivs = list(for $pair in $DIM_EQUIV_NAMES concept_pair_from_name_pair($pair));
+/** list(taxonomy().concept($pair[1]),taxonomy().concept($pair[2])) **/
+
+$dimEquivs = $DIM_EQUIV_NAMES;
 
 $lookupDict = $dimEquivs.agg-to-dict(1)
 for $key in $lookupDict.keys
-    /**$valueOfKey = {@concept = $key}**/
-    $keyValues = filter $lookupDict[$key] returns $item;
-    $axis = (filter $keyValues where $item[2].substitution == xbrldt:dimensionItem returns $item[2].name).first;
-    $member = (filter $keyValues where $item[2].data-type.name == dtr-types:domainItemType returns $item[2]).first;
-    $lineItem = (filter $keyValues where $item[2].data-type.name != dtr-types:domainItemType and  $item[2].substitution != xbrldt:dimensionItem returns $item[2]).first;
-    
-    $multiplier = (if $lineItem.balance != $key.balance
-                       0 -1 
-                    else 
-                        1)
-    
-    $base = {@concept = $key};
-    $dimfact = ({@concept = $lineItem @$axis = $member})
-    $dim = ($dimfact * $multiplier)
-    $fact_decimals = list($base.decimals, $dimfact.decimals)
-    $min_decimals = min(list(for $z in $fact_decimals
-					if $z == none 
-						skip
-					else
-						$z));
-    if $multiplier == 1
-         tolerance_for_decimals($base, $dimfact, 2)
-    else
-         tolerance_for_decimals_comp($base, $dim, $min_decimals, 2)
+     $base = {@concept = $key};
+     if exists($base)
+          $keyValues = filter $lookupDict[$key] returns taxonomy().concept($item[2]);
+          $keyConcept = taxonomy().concept($key);
+          $axis = (filter $keyValues where $item.substitution == xbrldt:dimensionItem returns $item.name).first;
+          $member = (filter $keyValues where $item.data-type.name == dtr-types:domainItemType returns $item).first;
+          $lineItem = (filter $keyValues where $item.data-type.name != dtr-types:domainItemType and  $item.substitution != xbrldt:dimensionItem returns $item).first;
+          
+          $multiplier = (if $lineItem.balance != $keyConcept.balance
+                              0 -1 
+                              else 
+                              1)
+          
+          $dimfact = ({@concept = $lineItem @$axis = $member})
+          $dim = ($dimfact * $multiplier)
+          $fact_decimals = list($base.decimals, $dimfact.decimals)
+          $min_decimals = min(list(for $z in $fact_decimals
+                                   if $z == none 
+                                        skip
+                                   else
+                                        $z));
+          if $multiplier == 1
+               tolerance_for_decimals($base, $dimfact, 2)
+          else
+               tolerance_for_decimals_comp($base, $dim, $min_decimals, 2)
+     else
+          skip
    
    message
-"It is expected that {$key.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+"It is expected that {$keyConcept.name} with a value of {$base}  should be equal to the dimensionally qualified concept, {$lineItem.name} with the axis {$axis} and member {$member.name} with a reported value of {$dim } multiplied by {$multiplier}. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
 
 The properties of this {$base.concept.name} fact are:
 

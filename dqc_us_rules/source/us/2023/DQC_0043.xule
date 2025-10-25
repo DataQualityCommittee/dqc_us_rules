@@ -15,6 +15,11 @@ assert US.0043.6833 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations})))) and not (any(set(exists({covered @NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations;
 	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $INCOME_ITEMS  where $relationship.target.name not in $INCOME_ITEMS returns by network set (target)	
@@ -73,7 +78,12 @@ assert US.0043.7488 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$extensionNetIncomeItems = filter taxonomy().concepts where $item.is-monetary == true and $item.balance == credit and $item.namespace-uri == $EXTENSION_NS and $item.name.local-name.lower-case.contains("netincome") returns $item.name;
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$extensionNetIncomeItems = filter $EXTENSION_CONCEPTS where $item.is-monetary == true and $item.balance == credit and $item.name.local-name.lower-case.contains("netincome") returns $item.name;
 
 if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
 	$top = NetCashProvidedByUsedInOperatingActivities;
@@ -132,7 +142,12 @@ effectiveDate $effective_dates[$rule_id]
 //-----------DQC.US.0043.9873 ---------------//
 
 assert US.0043.9873  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax, IncomeLossFromSubsidiariesNetOfTax))
 	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
@@ -158,18 +173,23 @@ for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposa
 message
 "{$messageText}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity  error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($IncomeItem)
 
 //-----------DQC.US.0043.9875 ---------------//
 
 assert US.0043.9875  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 if list({@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest where $fact != 0}).length == 0
 	$discOpsAfterNCI = {@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity where $fact != 0}
@@ -191,8 +211,8 @@ Period :{$discOpsAfterNCI.period}
 Dimensions : {$discOpsAfterNCI.dimensions.join(', ','=')}
 Unit : {$discOpsAfterNCI.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity  error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

@@ -16,7 +16,12 @@ Need to rewrite the rule to find the bank tier ratios section and find any items
 **/
 
 assert US.0157.10077  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 {nonils @concept in $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE where (not $fact.concept.name.local-name.lower-case.contains("basis")) and $fact.inline-scale != none}#fact1 < 0.01 
 
@@ -30,10 +35,10 @@ Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 Inline Scale: {$fact1.inline-scale}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.08 secs at 2025-08-01T14:32:33 - http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.316107. - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0204.10705 - 14:32:54.494299 - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:02:17.703365 from 'https://xbrl.fasb.org/us-gaap/2025/entire/us-gaap-entryPoint-std-2025.xsd' - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm" severity="error" effectiveDate="None" cid="2238493277552">[DQC.US.0204.10705] The concept  us-gaap:AssetImpairmentCharges with a value of 15,000,000 has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:BuildingMember. The member  us-gaap:BuildingMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:AssetImpairmentCharges
+Value : 15,000,000
+Period : 2025-01-01 to 2025-06-27
+Dimensions : us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:BuildingMember
+
+Rule Element Id:10705
+Rule version: 28.0.0RC1 - dhr-20250627.htm 8</message>
+ <ref href="dhr-20250627.htm#f-783" sourceLine="8">
+  <property name="file" value="dhr-20250627.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Asset Impairment Charges"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AssetImpairmentCharges"/>
+  <property name="QName" value="us-gaap:AssetImpairmentCharges"/>
+  <property name="contextRef" value="c-212">
+   <property name="entity" value="0000313616">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-06-27"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:BuildingMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="15,000,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="15"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0204.10705 time took: 145.14229 - 14:35:19.636589  - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0204.10705 end. Took 0:02:25.142290 - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:02:25.459395. - dhr-20250627.htm </message>
+ <ref href="dhr-20250627.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 159.46 secs - http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/313616/000031361625000153/dhr-20250627.htm"/></entry>
+</log>

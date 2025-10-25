@@ -20,7 +20,13 @@ constant $PERCENTAGE_TAX_RECONCILIATION_DEFINED = (navigate summation-item  desc
 Add rules to ensure taxo reconcilation calculations have been reported for percentage items
 */
 ASSERT US.0168.10096 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 
@@ -42,12 +48,12 @@ else
 message
 "The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $stat
 /*
@@ -55,7 +61,13 @@ Add rules to ensure taxo reconcilation calculations have been reported for monet
 */
 
 ASSERT US.0168.10097 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 
@@ -78,17 +90,23 @@ else
 message
 "The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $stat
 
 ASSERT US.0168.10098 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /**Check calc weights match taxonomy **/
 
@@ -105,11 +123,11 @@ for $relationship in $percentage_calc
 message
 "The calculation weight between the concept {$relationship[1]} and {$relationship[2]} is {$relationship[3]} in the extension taxonomy.  This weight does not match the weight between these two concepts defined in the US GAAP taxonomy which is {$expectedWeight}. The calculation weight for this relationship should be updated to match the US GAAP taxonomy.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($relationship[1])

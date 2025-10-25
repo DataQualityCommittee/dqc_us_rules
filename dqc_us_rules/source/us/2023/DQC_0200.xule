@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0200.10700 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Income Statement location axis cannot be used for instant monetary elements unless they are future expenses.**/
 
 /** Replace this with a metamodel reference of $META-2025.concepts-by-trait(list(us-gaap-metaModel:EstimatedFutureExpenseRevenueMember)) when approved.**/

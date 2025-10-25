@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0163.10085 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $AdditionalCapitalFact = {@SegmentExpenditureAdditionToLongLivedAssets}
 
 for $x in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions)

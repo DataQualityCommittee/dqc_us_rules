@@ -17,7 +17,12 @@ rule-name-prefix DQC
 
 assert US.0140.9861 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** This rule checks the cross calculation for interest Included **/
 
@@ -145,16 +150,21 @@ Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
 Unit : {$fairValue.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0140.9862 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** This rule checks the cross calculation **/
 
@@ -280,8 +290,8 @@ Loss on Securities of 				{$loss}
 Period :{$fairValue.period}
 Dimensions : {$fairValue.dimensions.join(', ','=')}
 Unit : {$fairValue.unit}
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

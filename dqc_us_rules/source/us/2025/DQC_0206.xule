@@ -11,37 +11,41 @@ RULE-NAME-PREFIX DQC
 
 assert US.0206.10721 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$allNetworks = $PRES_NETWORKS;
-
-/** eliminate reports with no presentations containg a statement **/
-
-$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
-
-if $fsNetworks.length == 0
-        skip
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
 else
-    /** Get all concepts in FS Networks **/
-    $fsNames = sum(set(for ($network in $fsNetworks)
-                                $concepts = $network.concepts
-                                filter $concepts where $item.period-type == duration and $item.balance == 'debit' returns $item.name));
 
-    $fact1 = list({covered @DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis = *});
-    for $DImMember in (filter $fact1 returns $item.dimension(DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis)).to-set
-        if $DImMember in $fsNames
-            false
-        else 
-            true              
+    $allNetworks = $PRES_NETWORKS;
+
+    /** eliminate reports with no presentations containg a statement **/
+
+    $fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+    if $fsNetworks.length == 0
+            skip
+    else
+        /** Get all concepts in FS Networks **/
+        $fsNames = sum(set(for ($network in $fsNetworks)
+                                    $concepts = $network.concepts
+                                    filter $concepts where $item.period-type == duration and $item.balance == 'debit' returns $item.name));
+
+        $fact1 = list({covered @DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis = *});
+        for $DImMember in (filter $fact1 returns $item.dimension(DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis)).to-set
+            if $DImMember in $fsNames
+                false
+            else 
+                true              
 
 message
 "The filing has reported a typed dimension member called {$DImMember} on the DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis. This typed dimension member does not have a corresponding expense caption included in the Income Statement. Please remove the member from the DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis or add a corresponding line item to the Income Statement.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 

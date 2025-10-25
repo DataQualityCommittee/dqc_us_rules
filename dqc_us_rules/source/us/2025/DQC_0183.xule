@@ -14,6 +14,11 @@ ASSERT US.0183.10161 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({@BalanceSheetLocationAxis=* where ($fact.concept.period-type == duration and $fact.concept.data-type.name == xbrli:monetaryItemType)}#BSLocationFact)
 message
 "The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis BalanceSheetLocationAxis. This is a duration element. Duration elements should not be used with the balance sheet location axis. The BalanceSheetLocationAxis is used to show where a value appears in a Balance Sheet. If the element represent the explanation of the balance sheet accounts to which an accrual or duration element has been applied then one of the following two axis may be more appropriate:
@@ -41,6 +46,11 @@ ASSERT US.0183.10162 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $Income_Statement_Items = $INCOME_STATEMENT_CONCEPTS + set(ContractWithCustomerLiabilityRevenueRecognized)
 
 exists({@concept not in $Income_Statement_Items @StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.name not in $EXTENSION_QNAME}#BSLocationFact)
@@ -66,6 +76,11 @@ ASSERT US.0183.10177 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({@StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.period-type == instant }#AccrualAxisFact)
 
 message
@@ -87,6 +102,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0183.10178 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 exists({@StatementOfFinancialPositionLocationActivityCapitalizationAxis = * where $fact.concept.period-type == instant }#CapitalizationAxis)
 

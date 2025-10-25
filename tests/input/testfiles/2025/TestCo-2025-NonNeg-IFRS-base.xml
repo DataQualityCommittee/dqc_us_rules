@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created by Xince -->
+<xbrli:xbrl xmlns:xbrli="http://www.xbrl.org/2003/instance" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:link="http://www.xbrl.org/2003/linkbase" xmlns:utr="http://www.xbrl.org/2009/utr" xmlns:iso4217="http://www.xbrl.org/2003/iso4217" xmlns:ifrs="http://xbrl.ifrs.org/taxonomy/2025" xmlns:srt="http://fasb.org/srt/2025" xmlns:dei="http://xbrl.sec.gov/dei/2025">
+  <link:schemaRef xlink:href="http://xbrl.ifrs.org/taxonomy/2025-03-27/full_ifrs_entry_point_2025-03-27.xsd" xlink:type="simple"/>
+  <link:schemaRef xlink:href="https://xbrl.sec.gov/dei/2025/dei-2025.xsd" xlink:type="simple"/>
+  <link:schemaRef xlink:href="http://xbrl.fasb.org/srt/2025/elts/srt-2025.xsd" xlink:type="simple"/>
+  <xbrli:context id="c">
+    <xbrli:entity>
+      <xbrli:identifier scheme="http://xbrl.org/entity/identification/scheme">Testco</xbrli:identifier>
+    </xbrli:entity>
+    <xbrli:period>
+      <xbrli:instant>2023-01-01</xbrli:instant>
+    </xbrli:period>
+  </xbrli:context>
+  <xbrli:context id="c1">
+    <xbrli:entity>
+      <xbrli:identifier scheme="http://xbrl.org/entity/identification/scheme">Testco</xbrli:identifier>
+    </xbrli:entity>
+    <xbrli:period>
+      <xbrli:startDate>2022-01-01</xbrli:startDate>
+      <xbrli:endDate>2023-01-01</xbrli:endDate>
+    </xbrli:period>
+  </xbrli:context>
+  <xbrli:unit id="usd">
+    <xbrli:measure>iso4217:USD</xbrli:measure>
+  </xbrli:unit>
+  <xbrli:unit id="pure">
+    <xbrli:measure>xbrli:pure</xbrli:measure>
+  </xbrli:unit>
+  <xbrli:unit id="shares">
+    <xbrli:measure>xbrli:shares</xbrli:measure>
+  </xbrli:unit>
+  <xbrli:unit id="usd1">
+    <xbrli:divide>
+      <xbrli:unitNumerator>
+        <xbrli:measure>iso4217:USD</xbrli:measure>
+      </xbrli:unitNumerator>
+      <xbrli:unitDenominator>
+        <xbrli:measure>xbrli:shares</xbrli:measure>
+      </xbrli:unitDenominator>
+    </xbrli:divide>
+  </xbrli:unit>
+  <dei:EntityPublicFloat id="f1212" decimals="0" contextRef="c" unitRef="usd">-703000.0</dei:EntityPublicFloat>
+  <dei:EntityListingParValuePerShare id="f5626" decimals="0" contextRef="c1" unitRef="usd1">-701000.0</dei:EntityListingParValuePerShare>
+  <dei:EntityNumberOfEmployees id="f4939" decimals="0" contextRef="c" unitRef="pure">-702000.0</dei:EntityNumberOfEmployees>
+  <dei:EntityListingDepositoryReceiptRatio id="f5272" decimals="0" contextRef="c" unitRef="pure">-700000.0</dei:EntityListingDepositoryReceiptRatio>
+  <dei:EntityCommonStockSharesOutstanding id="f1816" decimals="0" contextRef="c" unitRef="shares">-699000.0</dei:EntityCommonStockSharesOutstanding>
+</xbrli:xbrl>

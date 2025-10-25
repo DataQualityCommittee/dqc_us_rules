@@ -12,6 +12,12 @@ rule-name-prefix DQC
 assert US.0004.16 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $Assets = {nonils @Assets};
 $LiabilitiesAndStockholdersEquity = {nonils @LiabilitiesAndStockholdersEquity};
 $decimal_tolerance_factor = 2;
@@ -42,6 +48,11 @@ Assets = AssetsCurrent + AssetsNoncurrent
 assert US.0004.9280 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $Assets = {nonils @Assets};
 $CalcAssets = {nonils @AssetsCurrent}#ca <+> {nonils @AssetsNoncurrent}#nca;
@@ -88,6 +99,11 @@ assert US.0004.9281 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $Liabilities = {nonils @Liabilities};
 $CalcLiabilities = {nonils @LiabilitiesCurrent}#cl <+> {nonils @LiabilitiesNoncurrent}#ncl;
 $Decimals = list({nonils @Liabilities},{nonils @LiabilitiesCurrent},{nonils @LiabilitiesNoncurrent});
@@ -133,6 +149,11 @@ StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest = Stockho
 assert US.0004.9282 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $SEINCI = {nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
 $CalcSE = {nonils @StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {nonils @MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
@@ -182,6 +203,11 @@ class of stock axis for temporary equity.
 assert US.0004.9283 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $LSE = {nonils @LiabilitiesAndStockholdersEquity};
 
@@ -256,6 +282,11 @@ assert US.0004.9284 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
 $agg = {nonils @ProfitLoss}#a1 <+> {nonils @OtherComprehensiveIncomeLossNetOfTax}#a2;
 $Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ProfitLoss},{nonils @OtherComprehensiveIncomeLossNetOfTax});
@@ -301,8 +332,12 @@ ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest 
 
 assert US.0004.9285 satisfied
 
-
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** The first part of the if statement  was added to address the situation where additional extension items comprised the calc of ComprehensiveIncomeNetOfTax which threw the simple compare off. To address this we look at the calc to pick up any extension items or taxonomy items that could get pushed into the calculation. The if statement checks if a calc was defined and if the actual calculation works.**/
 $CalcNetworks = navigate summation-item children from (ComprehensiveIncomeNetOfTax) returns by network (target-name);
@@ -372,6 +407,11 @@ assert US.0004.9286 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
 
 $agg = {nonils @NetCashProvidedByUsedInOperatingActivities}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivities}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivities}#a3;
@@ -419,6 +459,11 @@ assert US.0004.9287 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base = {nonils @NetCashProvidedByUsedInFinancingActivities};
 $agg = {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
@@ -452,6 +497,11 @@ NetCashProvidedByUsedInInvestingActivities = NetCashProvidedByUsedInInvestingAct
 assert US.0004.9288 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base = {nonils @NetCashProvidedByUsedInInvestingActivities};
 $agg = {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2;
@@ -489,6 +539,11 @@ assert US.0004.9289 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base = {nonils @NetCashProvidedByUsedInOperatingActivities};
 $agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a2;
 $decimal_tolerance_factor = 2;
@@ -522,6 +577,11 @@ NetCashProvidedByUsedInDiscontinuedOperations = CashProvidedByUsedInOperatingAct
 assert US.0004.9290 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base = {nonils @NetCashProvidedByUsedInDiscontinuedOperations};
 $agg = {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a3;
@@ -557,6 +617,11 @@ NetCashProvidedByUsedInContinuingOperations = NetCashProvidedByUsedInOperatingAc
 assert US.0004.9291 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $base = {nonils @NetCashProvidedByUsedInContinuingOperations};
 $agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a3;

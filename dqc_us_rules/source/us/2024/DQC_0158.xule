@@ -12,6 +12,12 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0158.10078 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({covered @RelatedAndNonrelatedPartyStatusAxis = *}#invalid_fact)
 
 message
@@ -36,6 +42,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0158.10080 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Get elements that are extensible enumeration status items **/
 

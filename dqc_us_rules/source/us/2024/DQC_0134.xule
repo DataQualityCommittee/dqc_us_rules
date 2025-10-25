@@ -14,7 +14,13 @@ rule-name-prefix DQC
 
 assert US.0134.9834 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Updated for public comment by using other concepts that are used for amortized cost**/
 
@@ -57,10 +63,10 @@ Period :{$ComponentAmount.period}
 Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
 Unit : {$ComponentAmount.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
 rule-focus $ComponentAmount
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

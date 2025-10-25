@@ -12,8 +12,12 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0088.9372 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $Operating_Lease_Expense = {covered-dims @concept = OperatingLeaseExpense};
 $VariableLeaseCost = {covered-dims @concept = VariableLeaseCost};
@@ -38,16 +42,22 @@ Dimensions : {$Operating_Lease_Expense.dimensions.join(', ','=')}
 Unit : {$Operating_Lease_Expense.unit}
 Decimals: {$Operating_Lease_Expense.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id }
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id ]
 
 ASSERT US.0088.10094 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $calculationChildrenOfLeaseCost = navigate summation-item descendants from LeaseCost returns target-name
 
 $calculationChildrenOfLeaseCost.contains(OperatingLeaseExpense)
@@ -55,11 +65,11 @@ $calculationChildrenOfLeaseCost.contains(OperatingLeaseExpense)
 message
 "The calculation children of LeaseCost includes the element OperatingLeaseExpense. If the filer has operating lease expenses rolling up into LeaseCost the element OperatingLeaseCost should be used instead of OperatingLeaseExpense.  The element OperatingLeaseCost is a required disclosure and should be used to report components of LeaseCost.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id }
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
 rule-focus  taxonomy().concept(OperatingLeaseExpense)
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id ]

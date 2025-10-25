@@ -21,6 +21,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0167.10099 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 				
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
@@ -59,6 +64,11 @@ effectiveDate $effective_dates[$ruleId]
 
 Assert US.0167.10100 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(IncomeStatementAbstract) or $item.role.uri.lower-case.contains('incomestatement')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
 				
@@ -106,6 +116,11 @@ effectiveDate $effective_dates[$ruleId]
 
 Assert US.0167.10101 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfIncomeAndComprehensiveIncomeAbstract) or $item.role.uri.lower-case.contains('comprehensiveincome')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') and not $item.role.uri.lower-case.contains('incomestatement') returns $item.role;
 				

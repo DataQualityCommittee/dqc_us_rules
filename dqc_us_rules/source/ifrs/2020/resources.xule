@@ -1,0 +1,43 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2020
+Release Version 18
+**/
+
+/** Effective Dates **/
+constant $effective_dates = dict(
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/Effective_Dates/ifrs_effective_dates.csv', false, list('string','string'))
+		list($pair[1], $pair[2])
+		)
+
+/** DQC.IFRS.0080 **/
+
+/** The following constant builds up a list of non-negative items that should be checked against the against the IFRS taxonomy Items**/
+constant $non_neg_ifrs_items = dict(
+		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_IFRS_0080/dqc_0080_ifrs_2020_concepts.csv', false, list('string', 'qname')) + 						csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_concepts.csv', false, list('string', 'qname')) + 						csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')))
+				list($pair[2], $pair[1])
+)
+
+/** DQC.US.0079 **/
+
+constant $extension_items = dict(
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0079/dqc_0079.csv', true, list('string', 'qname'))
+		list($pair[1], $pair[2])
+		)
+		
+		
+/** DQC.IFRS.0092 **/
+
+/** The following constant builds up a list of non-positive items that should be checked against the IFRS taxonomy Items**/
+		constant $non_pos_asset_ifrs_items = dict(
+				for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_IFRS_0091/dqc_0091_ifrs_2019_concepts.csv', false, list('string', 'qname')))
+						list($pair[2], $pair[1])
+		)
+
+/** DQC.IFRS.0129 **/
+
+		constant $DIM_EQUIVALENTS = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_IFRS_0129/dqc_0129.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))

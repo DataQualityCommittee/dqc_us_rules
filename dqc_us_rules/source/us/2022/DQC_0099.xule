@@ -1,0 +1,149 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0099.9533 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+/**Identify relevant financial statement presentation networks **/
+    /** See the constants file that defines the variable $STATEMENT_PRES_NETWORKS **/
+
+$calcNetworks = taxonomy().networks(summation-item);
+
+$calcRelationshipItems = if $calcNetworks == set()
+                        set()
+                    else
+                        sum(set(for $network in $calcNetworks
+                                $network.relationships))                        
+
+$CF_Exclusions = set(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents,
+                        EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations,
+                        EffectOfExchangeRateOnCash,
+                        EffectOfExchangeRateOnCashAndCashEquivalents,
+                        NetCashProvidedByUsedInDiscontinuedOperations)
+
+$Non_CF_Items = navigate parent-child descendants from list(SupplementalCashFlowInformationAbstract, NoncashInvestingAndFinancingItemsAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name);
+
+/** Defines a set of CF Abstracts that if used on the CF any children will be excluded from the rules **/
+$Set_Non_CF_Abstracts1 = (navigate parent-child descendants from list(CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract) taxonomy $US-GAAP where ($relationship.target.is-abstract == true and $relationship.target-name.local-name.contains("Abstract") ) returns set (target-name));
+
+$Set_Non_CF_Abstracts2 = set(SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract, SupplementalCashFlowInformationAbstract, qname($EXTENSION_NS,'NoncashInvestingItemsAbstract'), qname($EXTENSION_NS,'NoncashFinancingItemsAbstract'), qname($EXTENSION_NS,'NonCashOperatingAndFinancingActivitiesAbstract'),qname($EXTENSION_NS,'NonCashOperatingAndInvestingActivitiesAbstract'));
+
+$Set_Non_CF_Abstracts = $Set_Non_CF_Abstracts1 + $Set_Non_CF_Abstracts2;
+
+/** This generates a list of items in the SHE that would not be included in the IS calculation. If these are reported in the presentation of the IS they will be ignored **/
+$SSHExceptions =  navigate parent-child descendants from IncreaseDecreaseInStockholdersEquityRollForward taxonomy $US-GAAP where $relationship.target.is-monetary == true and $relationship.target.period-type == duration returns set (target-name);
+                        
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+    $presConceptNoCalculation =  if $presNetwork.role.description.lower-case.contains("cash")
+                                        $presConceptItems = $presNetwork.concept-names;
+                                        $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+                                        $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                    set($calc.target-name, $calc.source-name)
+                                                                else
+                                                                    skip);
+                                        $calcItems = sum($calcspresentSet);
+                                        
+                                        $supplementalCashItems = navigate parent-child descendants from ($Set_Non_CF_Abstracts) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+
+                                        $presNumericItems - ($calcItems + $CF_Exclusions + $supplementalCashItems + $Non_CF_Items)
+                                else 
+                                        $presConceptItems = $presNetwork.concept-names;
+
+                                        /** Identifies a list of IS supplemental items which are OK if in the presentation but not the calculation **/
+                                        $IS_Supplemental_Disclosures = navigate parent-child descendants from list(ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, SupplementalIncomeStatementElementsAbstract) role $presNetwork.role where $relationship.target.is-monetary == true returns set (target-name);
+
+                                        /** Specific items seen in the presentation that can be excluded from the calc */
+                                        $BS_IS_exceptions = set(CommitmentsAndContingencies, ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest, ComprehensiveIncomeNetOfTax, AllocatedShareBasedCompensationExpense, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted, PremiumsWrittenGross);
+
+                                        /** Income Statement Processing **/
+                                        if $presConceptItems.contains(IncomeStatementAbstract)
+
+                                            $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+                                            $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                    set($calc.target-name, $calc.source-name)
+                                                                else
+                                                                    skip);
+                                            $calcItems = sum($calcspresentSet);
+                                        
+                                            $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $SSHExceptions)
+
+                                        else 
+                                            /** Balance Sheet Processing **/
+                                            if $presConceptItems.contains(StatementOfFinancialPositionAbstract)
+
+                                                $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == instant;
+                                                $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                    if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                        set($calc.target-name, $calc.source-name)
+                                                                    else
+                                                                        skip);
+                                                $calcItems = sum($calcspresentSet);
+
+                                                 /* Check if Assets has any monetary descendants in the presentation tree. If there are no Assets in the presentation tree don't look for Assets in the calculation tree. */
+                                                $AssetTypes = (navigate parent-child descendants from list(AssetsAbstract) taxonomy $US-GAAP where ($relationship.target.is-monetary == true ) returns set (target-name));
+
+                                                $AssetsComponents  =  $presConceptItems.to-set intersect ($AssetTypes - set(Assets))
+
+                                                $AssetExclusion = if  $AssetsComponents.length > 0
+                                                                    set()
+                                                                else
+                                                                    set(Assets);
+                                            
+                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $AssetExclusion)
+                                            
+                                                
+                                            else 
+                                                /** CATCH ALL FOR ALL OTHER STATEMENTS WHERE ABSTRACTS ARE NOT USED TO IDENTIFY STATEMENT**/
+                                                $presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary;
+                                                $calcspresentSet = set(for $calc in $calcRelationshipItems 
+                                                                        if $calc.target-name in $presNumericItems and $calc.source-name in $presNumericItems 
+                                                                            set($calc.target-name, $calc.source-name)
+                                                                        else
+                                                                            skip);
+                                                $calcItems = sum($calcspresentSet);
+                                                
+                                                $presNumericItems - ($calcItems + $BS_IS_exceptions + $IS_Supplemental_Disclosures + $SSHExceptions)
+    
+  $cash_flow_message =    if $presNetwork.role.description.lower-case.contains("cash")
+                                 "
+If the item is an additional disclosure in the cash flow statement then make sure that is included as a child of one of the following abstract items:
+" + $Set_Non_CF_Abstracts.join(", ") +
+ ""
+                            else
+                                "If the item is an additional disclosure in the income statement statement then make sure that is included as a child of one of the following abstract items:
+ShareBasedCompensationAllocationAndClassificationInFinancialStatementsAbstract, 
+SupplementalIncomeStatementElementsAbstract";
+
+    $presConceptNoCalculation.length > 0
+        
+MESSAGE
+"
+The following elements are in the presentation linkbase of {$presNetwork.role.description} but are not included in any calculation relationship in the filing.
+{$presConceptNoCalculation.join(", 
+")}
+All elements appearing in the face of the financial statements should be included in a calculation relationship somewhere in the filing. Items not included in the financial statement calculations but included in the presentation are referred to as parenthetical items. These usualy appear as a referenced item, or as a value in parenthesis describing that the value reported includes another specific amount.  These values should be reported in a seperate link role for parenthetical items.
+
+This rule will produce an error irrespective of a fact value being entered for the item(s) listed above.
+{$cash_flow_message}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

@@ -15,6 +15,11 @@ ASSERT US.0185.10165 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** REQUESTED BY FASB (See Github repo https://github.com/TaxonomyFASB/Proposed-DQC-Rules/issues/37)**/
 $tax_increase_decrease_elements = set(
     UnrecognizedTaxBenefitsDecreasesResultingFromCurrentPeriodTaxPositions,

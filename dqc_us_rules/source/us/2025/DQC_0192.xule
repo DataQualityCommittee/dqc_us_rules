@@ -21,6 +21,11 @@ ASSERT US.0192.10620 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**Get the filere size if accelerated or large accelerated then check if values over a milliion **/
 
 if set('Large Accelerated Filer','Accelerated Filer').contains([covered @concept.local-name ='EntityFilerCategory'])

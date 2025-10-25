@@ -1,0 +1,54 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0215.10742 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Identify where extension elements are the same as base us-gaap elements ignoring case **/
+
+$us_gaap_ns = 'http://fasb.org/us-gaap/2022-01-31'
+
+// 1. Identify extension elements in the company filing (not in us-gaap)
+$extension_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS;
+
+// 2. Lowercase the local names of extension elements
+$extension_names_lower = $extension_concepts.name.local-name.lower-case;
+
+// 3. Lowercase the local names of us-gaap elements
+$us_gaap_concepts = filter taxonomy().concepts where $item.name.namespace-uri == $us_gaap_ns
+           
+
+$us_gaap_names_lower = $us_gaap_concepts.name.local-name.lower-case;
+
+// 4. Find extension elements whose lower-case local name matches a us-gaap element
+$matching_extensions = $extension_names_lower.intersect($us_gaap_names_lower);
+
+for $extension in $matching_extensions
+			$original_name = sum(filter $extension_concepts where $item.name.local-name.lower-case == $extension returns $item.name);
+			true
+
+
+message
+"The filer has created an extension element {$original_name}  with a local name that matches a us-gaap element when matched using lower-case. Replace the extension element with the base us-gaap element if it is the same concept.
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]

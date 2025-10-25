@@ -12,6 +12,11 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0100.9534 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 exists({covered @InvestmentsByConsolidatedAndNonconsolidatedEntitiesAxis = *}#invalid_fact)
 
 message

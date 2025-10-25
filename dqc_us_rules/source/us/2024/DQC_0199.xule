@@ -15,14 +15,18 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0199.10653 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
-	$spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
-	$ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
 
-	exists($spread) and not exists($ratebasis)
+$spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
+
+$ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
+
+exists($spread) and not exists($ratebasis)
     
 message
 "The filer has reported a value for the concept {$spread.concept.name} with a value of {$spread}. This concept is used to report the spread of a variable rate investment. The filer has not reported the rate basis for this investment. Please ensure that the rate basis is reported for this investment.
@@ -43,6 +47,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0199.10654 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
 
 $maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @unit]
 

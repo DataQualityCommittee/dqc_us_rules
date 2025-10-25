@@ -13,6 +13,12 @@ assert US.0086.9368 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 for $transition_element in $ASU201517_TRANSITION_ELEMENTS
 
 	$fact1 = {@concept = $transition_element}

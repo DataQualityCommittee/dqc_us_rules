@@ -11,7 +11,12 @@ RULE-NAME-PREFIX DQC
 
 
 Assert US.0165.10091 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $ExtFactExists = list({@concept = PropertyPlantAndEquipmentUsefulLifeDescriptionOfTermExtensibleEnumeration @PropertyPlantAndEquipmentByTypeAxis = LeaseholdImprovementsMember where $fact == UsefulLifeTermOfLeaseMember})
 
@@ -29,9 +34,9 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

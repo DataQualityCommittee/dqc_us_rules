@@ -1016,3 +1016,34 @@ function duration_contained($smallDate,$largeDate)
 function concept_pair_from_name_pair($pair)
 
 	list(taxonomy().concept($pair[1]),taxonomy().concept($pair[2]))
+
+/**
+ *applicable_form()
+ *
+ * @param string - The full rule name such as DQC.0001.100
+
+ 
+ * @return boolean - Returns true if the rule should run on the applicable form type.
+ *
+**/
+
+
+function applicable_form($ruleName)
+		$rule_number = ($ruleName.split('.'))[($ruleName.split('.').length)-1];
+		$ApplicableForms = $RULE-FORM-LOOKUP[$rule_number]
+		$ApplicableForms.contains($DOCUMENT_TYPE) or  $DOCUMENT_TYPE == none or $ApplicableForms == none
+
+/**
+ *applicable_form()
+ *
+ * @param string - The rule number such as 100
+
+ 
+ * @return boolean - Returns true if the rule should run on the applicable form type.
+ *
+**/
+
+
+function applicable_form_string($ruleNnumber)
+		$ApplicableForms = $RULE-FORM-LOOKUP[$ruleNnumber]
+		$ApplicableForms.contains($DOCUMENT_TYPE) or  $DOCUMENT_TYPE == none or $ApplicableForms == none

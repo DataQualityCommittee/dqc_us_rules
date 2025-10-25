@@ -11,20 +11,24 @@ RULE-NAME-PREFIX DQC
 
 
 Assert US.0166.10090 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-if set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','DEF 14C','SD','2.01 SD','485BPOS').contains([covered @concept.local-name ='DocumentType'])
-   skip
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
 else
-   $conceptsInCube = set({covered @cube=*}.concept)
+   if set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','DEF 14C','SD','2.01 SD','485BPOS').contains([covered @concept.local-name ='DocumentType'])
+      skip
+   else
+      $conceptsInCube = set({covered @cube=*}.concept)
 
-   $factsNotIncubes = list({covered @concept not in $conceptsInCube where $fact.dimensions.length > 0})
+      $factsNotIncubes = list({covered @concept not in $conceptsInCube where $fact.dimensions.length > 0})
 
-   for $fact2 in $factsNotIncubes
-      $IncludesTypedDim = $fact2.dimensions.keys.name intersect set(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)
-      $IncludesECDDimension = $fact2.dimensions.keys.name.namespace-uri intersect set('http://xbrl.sec.gov/ecd/2024');
-      $conceptsExcluded = set($fact2.name) intersect set(qname($EXTENSION_NS,'TrdArrExpirationDate'));
-      $IncludesTypedDim.length == 0 and $IncludesECDDimension.length == 0 and $conceptsExcluded.length == 0
+      for $fact2 in $factsNotIncubes
+         $IncludesTypedDim = $fact2.dimensions.keys.name intersect set(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)
+         $IncludesECDDimension = $fact2.dimensions.keys.name.namespace-uri intersect set('http://xbrl.sec.gov/ecd/2024');
+         $conceptsExcluded = set($fact2.name) intersect set(qname($EXTENSION_NS,'TrdArrExpirationDate'));
+         $IncludesTypedDim.length == 0 and $IncludesECDDimension.length == 0 and $conceptsExcluded.length == 0
 message
 "A value of {$fact2} was reported for the concept {$fact2.concept.name}.  This value has dimensions of  {$fact2.dimensions.join(', ','=')} but this fact is not included in a dimensional table ( hypercube). All dimensional facts should be included in a hypercube.
 
@@ -34,9 +38,9 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

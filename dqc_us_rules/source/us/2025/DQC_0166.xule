@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0166.10090 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','DEF 14C','SD','2.01 SD','485BPOS').contains([covered @concept.local-name ='DocumentType'])
    skip
 else

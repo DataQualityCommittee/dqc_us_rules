@@ -15,6 +15,11 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0187.10173 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Need to run on cube where the axis is PropertyPlantAndEquipmentByTypeAxis and has line item PropertyPlantAndEquipmentGross**/
 
 /** Find the Cube **/
@@ -63,6 +68,11 @@ assert US.0187.10174 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $children_of_netPPE = navigate summation-item children from PropertyPlantAndEquipmentNet returns set target-name;
 
 $reconciling_items_other_than_depr = $children_of_netPPE - set(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentGross)
@@ -107,6 +117,11 @@ assert US.0187.10175 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $base = {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization};
 $agg = {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization}#a1 <+> {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization}#a2;
 $decimal_tolerance_factor = 2;
@@ -138,6 +153,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0187.10176 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $ppe_gross = {nonils @concept=PropertyPlantAndEquipmentGross};
 $ppe_Gross_dim_components = list({nonils @concept=PropertyPlantAndEquipmentGross @PublicUtilityAxis=*});
 $ppe_Gross_dim_components_sum = sum($ppe_Gross_dim_components)
@@ -163,6 +183,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0187.10179 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $net = {nonils @MineralPropertiesNet};
 $gross = {nonils @MineralPropertiesGross}#a1 + {nonils @MineralRights}#a2;

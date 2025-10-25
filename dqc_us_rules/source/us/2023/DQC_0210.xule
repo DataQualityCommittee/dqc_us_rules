@@ -11,11 +11,14 @@ rule-name-prefix DQC
 
 assert US.0210.10734 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
- if not $BDC_FLAG
-        skip
- else
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+
 
      $SOICube = filter taxonomy().cubes where $item.cube-concept.name in set(ScheduleOfInvestmentsTable,InvestmentsSoldNotYetPurchasedTable) and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
 
@@ -37,10 +40,9 @@ If the concept  {$BDCInvestmentFact.concept.name} is used the InvestmentIdentifi
 Period :{($BDCInvestmentFact).period}
 Dimensions : {($BDCInvestmentFact).dimensions.join(', ','=')}
 Unit : {($BDCInvestmentFact).unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

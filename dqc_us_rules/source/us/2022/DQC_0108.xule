@@ -1,0 +1,100 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+Release Version 18
+**/
+
+RULE-NAME-PREFIX DQC
+
+constant $CUT_DOWN_LIST = (filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name) 
+
+
+ASSERT US.0108.9564 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
+	skip
+else
+/* $cut_down_list = filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name */
+
+$elements_To_Check = $CUT_DOWN_LIST - set(CapitalExpendituresIncurredButNotYetPaid, ConstructionInProgressExpendituresIncurredButNotYetPaid, EquitySecuritiesFvNiUnrealizedLoss, EquitySecuritiesFvNiUnrealizedGain, LeaseCost )
+
+      $fact1 = {nonils @@concept in $elements_To_Check @period=* where $fact.dimensions.length == 0 or (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS))}
+      /** Is less than 2 because it will at least include the fact. If there are no other facts then dont need large**/
+      if list({nonils @@concept in $elements_To_Check  @period=* where ($fact.period.start) <= ($fact1.period.start) and $fact.period.end >= $fact1.period.end}).length < 2
+         skip
+      else
+      $large = {nonils  @@concept in $elements_To_Check @period=* where ($fact.period.start) <= ($fact1.period.start) and ($fact.period.end >= $fact1.period.end) and ($fact.dimensions.length == 0 or  (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0 and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))}
+
+      if ($fact1.abs > $large.abs
+         and $fact1 > 0
+         and $fact1.period.days <= $large.period.days
+         and exists($fact1) and exists($large)
+         )
+            tolerance_for_decimals($fact1, $large, 2 ) 
+         else
+            skip
+message
+"The concept {$fact1.concept.name} with a period duration starting on {$fact1.period.start} and ending on {$fact1.period.end} or {$fact1.period.days} days with a reported value of {$fact1} has a value greater than the value of the same element with a longer or equivalent period duration that starts on {$large.period.start} and ends on {$large.period.end} with a value of {$large}.
+The value  {$fact1} for the period of {$fact1.period.days} days should be less or the same as the value  {$large} with a duration of {$large.period.days} days assuming that the concept {$fact1.concept.name} cannot have a negative value. If the difference between the two numbers is insignificant, check that the decimals of the two values are appropriate. The decimal value of {$fact1} is {$fact1.decimals}, and the decimals of {$large} is {$large.decimals}.
+The properties of this {$fact1.concept.name} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0108.10095 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS}))))
+	skip
+else
+
+$non_dimensional_non_negs_monetary_duration = filter $NON_DIMENSIONAL_NON_NEGS where taxonomy().concept($item[2]).is-monetary and  taxonomy().concept($item[2]).period-type == duration returns $item[2]
+
+for ($x in $non_dimensional_non_negs_monetary_duration)
+
+      $fact1 = [nonils @concept = $x @period=* ]
+      $large = [nonils @concept = $x @period=* ]
+
+      if ($fact1.period.start >= $large.period.start
+         and $fact1.period.end <= $large.period.end 
+         and $fact1.abs > $large.abs
+         and $fact1 > 0
+         and $fact1.period.days <= $large.period.days
+         and exists($fact1) and exists($large)
+         )
+            tolerance_for_decimals($fact1, $large, 2 ) 
+         else
+            skip
+message
+"The concept {$fact1.concept.name} with a period duration starting on {$fact1.period.start} and ending on {$fact1.period.end} or {$fact1.period.days} days with a reported value of {$fact1} has a value greater than the value of the same element with a longer or equivalent period duration that starts on {$large.period.start} and ends on {$large.period.end} with a value of {$large}.
+The value  {$fact1} for the period of {$fact1.period.days} days should be less or the same as the value  {$large} with a duration of {$large.period.days} days assuming that the concept {$fact1.concept.name} cannot have a negative value. If the difference between the two numbers is insignificant, check that the decimals of the two values are appropriate. The decimal value of {$fact1} is {$fact1.decimals}, and the decimals of {$large} is {$large.decimals}.
+The properties of this {$fact1.concept.name} fact are:
+Period :{$fact1.period}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

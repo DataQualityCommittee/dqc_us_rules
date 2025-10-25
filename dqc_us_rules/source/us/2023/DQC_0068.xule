@@ -14,6 +14,11 @@ assert US.0068.7641 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({@concept in ($NETWORK_730000_TARGET_NON_ABSTRACT_QNAMES) @srt:StatementGeographicalAxis = *}#RetirementPlanItem)
 
 message

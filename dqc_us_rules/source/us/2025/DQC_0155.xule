@@ -13,26 +13,31 @@ rule-name-prefix DQC
 
 assert US.0155.10072  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if $CASH_FLOW_ROLE == none
-    false
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
 else
-    $Calc_Descendants_of_Cash_Change = sum(set(for $CFRole in $CASH_FLOW_ROLES
-        navigate summation-item descendants from list(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect) role $CFRole returns set (target-name)
-    ))
-/**
-    $Calc_Descendants_of_Cash_Change = navigate summation-item descendants from list(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect) role $CASH_FLOW_ROLE returns set (target-name);
-**/
-    $exchange_rate_elements = list(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsDisposalGroupIncludingDiscontinuedOperations)
-
-    $Fact_for_Exchange_Rate_effect = list({covered @concept in $exchange_rate_elements});
-
-    if $Fact_for_Exchange_Rate_effect.length > 0 and $Calc_Descendants_of_Cash_Change.length > 0
-        if $Calc_Descendants_of_Cash_Change.intersect($exchange_rate_elements).length > 0
-            false
-        else
-            true
-    else
+    if $CASH_FLOW_ROLE == none
         false
+    else
+        $Calc_Descendants_of_Cash_Change = sum(set(for $CFRole in $CASH_FLOW_ROLES
+            navigate summation-item descendants from list(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect) role $CFRole returns set (target-name)
+        ))
+    /**
+        $Calc_Descendants_of_Cash_Change = navigate summation-item descendants from list(CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect) role $CASH_FLOW_ROLE returns set (target-name);
+    **/
+        $exchange_rate_elements = list(EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperations, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsDisposalGroupIncludingDiscontinuedOperations)
+
+        $Fact_for_Exchange_Rate_effect = list({covered @concept in $exchange_rate_elements});
+
+        if $Fact_for_Exchange_Rate_effect.length > 0 and $Calc_Descendants_of_Cash_Change.length > 0
+            if $Calc_Descendants_of_Cash_Change.intersect($exchange_rate_elements).length > 0
+                false
+            else
+                true
+        else
+            false
 
 message
 "The filer has reported a value for the effect of exchange on cash and cash equivalents and has used the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect. However the fiing does not include a calculation showing the value of the impact of exchange rates flowing into this element.  If the element represents the total before exchange rate adjustments then the element CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect should be used.

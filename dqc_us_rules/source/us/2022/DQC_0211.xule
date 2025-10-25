@@ -1,0 +1,49 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0211.10735 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Read the extensible enumeration links taxonomy **/
+for $ext_pairs in $EXT_ENUM
+			$FS_concept = $ext_pairs[1]
+			/** Skip Interest and Penalties as these are not required as they were added to the taxonomy in error. **/
+			if $FS_concept in set(IncomeTaxExaminationInterestExpense, IncomeTaxExaminationPenaltiesExpense)
+				skip
+			else
+
+				/** Get calculation descendants of $FS_concept as the extensible enumeration may be defined at a high level but the related facts are reported.**/
+				$fsConceptsDescendants = navigate summation-item descendants include start from $FS_concept  taxonomy $US-GAAP returns set (target-name)
+				
+				$related_ext_enum = $ext_pairs[2]
+
+
+            exists({@concept = $related_ext_enum @unit}#location) and missing({@concept = $FS_concept @unit=*}) and missing({@concept in $fsConceptsDescendants @unit=*})
+
+   
+
+message
+"The filer has reported an extensible enumeration fact value of {$location.join(", ")} using the concept {$related_ext_enum} that indicates the location of where the value for {$FS_concept} is reported on the face financial statements. If the filer has reported  a fact value for {$related_ext_enum} it should also report a fact value for {$FS_concept}. The extensible enumeration should have the same dimensional values and periods as the fact value. If this monetary value is not reported in the filing, the filer should remove the {$related_ext_enum} value from the filing.
+
+Period :{($location).period}
+Dimensions : {($location).dimensions.join(', ','=')}
+Unit : {($location).unit}\n
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]

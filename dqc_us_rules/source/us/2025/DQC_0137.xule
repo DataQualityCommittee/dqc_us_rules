@@ -15,8 +15,13 @@ assert US.0137.9838 satisfied
 /** THIS RULE ONLY CHECKS THOSE FACTS THAT HAVE USED Ta single value for tHE BALANCE SHEET AND INCOME STATEMENT LOCATION AXIS **/
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Is this report a 10-K or 10-Q**/
-if set('10-K','10-KT','10-K/A','20-F', '10-Q', '10-Q/A', '20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A','10-Q','10-Q/A','10-QT', '10-QT/A').contains([covered @concept.local-name ='DocumentType'])
 
 	/** Get the list of items to check **/
 	for $extPairs in $EXT_ENUM

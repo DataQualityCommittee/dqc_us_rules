@@ -12,6 +12,12 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0128.9594 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**  This rule looks at facts on specific dimensions and makes sure that they are smaller then the value of the default.
 ** The rule identifies a list of dimensions that should not have negative values and make sure any of the dimensionalized values
 ** that are monetary are always less than the default value.

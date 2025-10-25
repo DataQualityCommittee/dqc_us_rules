@@ -119,6 +119,12 @@ ASSERT US.0196.10628 satisfied
 /** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if $STATEMENT_SHE_CUBES.length == 0
     skip
 else
@@ -162,6 +168,12 @@ ASSERT US.0196.10629 satisfied
 /** Therule check where the PreferredStockMember  is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 if $STATEMENT_SHE_CUBES.length == 0
     skip
 else
@@ -204,6 +216,12 @@ ASSERT US.0196.10630 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $exclusionList = list(StockholdersEquity,
                     PartnersCapital,
                     PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
@@ -245,6 +263,12 @@ ASSERT US.0196.10631 satisfied
 /** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $exclusionList = list(StockholdersEquity,
 					PartnersCapitalAccountUnits,
@@ -289,6 +313,11 @@ ASSERT US.0196.10632 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $exclusionList = list(StockholdersEquity,
                     PartnersCapital,
                     PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
@@ -331,6 +360,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0196.10633 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $AOCI-Members = $AOCI_MEMBERS
 
@@ -379,6 +413,10 @@ ASSERT US.0196.10635 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $exclusionList = list(StockholdersEquity,
                     PartnersCapital,

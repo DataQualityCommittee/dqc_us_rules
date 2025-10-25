@@ -1,0 +1,42 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2024
+
+**/
+
+constant $US-GAAP = taxonomy('https://xbrl.fasb.org/us-gaap/2025/entire/us-gaap-entryPoint-std-2025.xsd')
+
+constant $ifrs-gaap = taxonomy('https://xbrl.ifrs.org/taxonomy/2025-03-27/full_ifrs_entry_point_2025-03-27.xsd')
+
+constant $country = taxonomy('https://xbrl.sec.gov/country/2025/country-entire-2025.xsd')
+
+constant $currency = taxonomy('https://xbrl.sec.gov/currency/2025/currency-entire-2025.xsd')
+
+constant $exchange = taxonomy('https://xbrl.sec.gov/exch/2025/exch-entire-2025.xsd')
+
+constant $state_province = taxonomy('https://xbrl.sec.gov/stpr/2025/stpr-entire-2025.xsd')
+
+constant $naics = taxonomy('https://xbrl.sec.gov/naics/2025/naics-entire-2025.xsd')
+
+constant $sic = taxonomy('https://xbrl.sec.gov/sic/2025/sic-entire-2025.xsd')
+
+constant $srt = taxonomy('http://xbrl.fasb.org/srt/2025/elts/srt-2025.xsd')
+
+constant $dei = taxonomy('https://xbrl.sec.gov/dei/2025/dei-entire-2025.xsd')
+
+constant $CYD = taxonomy('https://xbrl.sec.gov/cyd/2025/cyd-entire-2025.xsd')
+
+constant $all_ifrs_base_taxonomies = list($ifrs-gaap, $exchange, $state_province, $naics, $sic, $dei, $srt, $country, $currency, $CYD )
+
+constant $ext_enum_links = taxonomy('https://xbrl.fasb.org/us-gaap/2025/elts/us-gaap-tin-def-2025.xml')
+
+
+/** DEI HANDLING **/
+
+constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
+
+constant $ECD = taxonomy('https://xbrl.sec.gov/ecd/2025/ecd-entire-2025.xsd')

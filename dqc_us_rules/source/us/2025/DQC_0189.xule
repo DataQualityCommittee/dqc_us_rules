@@ -14,6 +14,11 @@ ASSERT US.0189.10184 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $axisExtensibleEnumDict = dict(
                                 list(VariableRateAxis, "InvestmentVariableInterestRateTypeExtensibleEnumeration or DebtInstrumentVariableInterestRateTypeExtensibleEnumeration"),
                                 )

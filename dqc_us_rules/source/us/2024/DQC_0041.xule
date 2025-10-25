@@ -13,6 +13,12 @@ assert US.0041.73 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** Get the dimension defaults used in  the filing **/
 
 $filing_defaults = navigate dimension-default descendants returns  set (source-name, target-name) ;

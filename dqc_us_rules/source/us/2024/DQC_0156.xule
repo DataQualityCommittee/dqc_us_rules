@@ -14,11 +14,17 @@ Example filing: http://www.sec.gov/Archives/edgar/data/1132509/00014779322200604
 **/
 
 assert US.0156.10074  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-$BasicAndDilutedIExtensionItems = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS and $item.is-numeric  and $item.name.local-name.lower-case.contains('basicanddiluted') returns $item.name
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
-$invalidItem = {@concept in $BasicAndDilutedIExtensionItems}
+
+$BasicAndDilutedIExtensionItems = filter $EXTENSION_QNAME where  $item.local-name.lower-case.contains('basicanddiluted') returns $item
+
+$invalidItem = {@concept in $BasicAndDilutedIExtensionItems where $fact.concept.is-numeric}
 
 exists($invalidItem)
 
@@ -30,10 +36,10 @@ The properties of this {$invalidItem.concept.name} fact are:
 Period :{$invalidItem.period}
 Dimensions : {$invalidItem.dimensions.join(', ','=')}
 Unit : {$invalidItem.unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $invalidItem

@@ -13,6 +13,11 @@ rule-name-prefix DQC
 assert US.0133.9831 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $ComponentAmount = {nonils @concept in list(EquityMethodInvestmentOwnershipPercentage, EquityMethodInvestmentDescriptionOfPrincipalActivities)};
 
 $Member = $ComponentAmount.dimension(srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis);
@@ -40,6 +45,11 @@ assert US.0133.9832 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 exists({nonils @concept in $FINANCIAL_DATA_EQUITY_METHOD_INVESTMENTS @srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis = *}#EquityMethodFact)
 
 
@@ -63,6 +73,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0133.9833 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $NonFinancialDataEMI = $NON_FINANCIAL_DATA_EMI
 

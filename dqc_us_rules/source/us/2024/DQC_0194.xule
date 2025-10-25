@@ -49,6 +49,12 @@ ASSERT US.0194.10621 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 
 $Common_Stock_Positive = set(SharesOutstanding, 
                                     CommonStockSharesOutstanding, 
@@ -135,6 +141,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0194.10636 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 
 $Preferred_Stock_Positive = set(SharesOutstanding, 
@@ -223,6 +235,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0194.10637 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 
 $NCI_Positive = set(

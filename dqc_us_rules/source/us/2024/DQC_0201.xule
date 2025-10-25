@@ -13,6 +13,12 @@ RULE-NAME-PREFIX DQC
 Assert US.0201.10701 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** Exclude use of PrivateCompamy elements from all form types except SBSEF **/
 
 $concepts = filter taxonomy().concepts where $item.name.local-name.contains('PrivateCompany')

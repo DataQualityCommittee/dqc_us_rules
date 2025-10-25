@@ -13,6 +13,12 @@ assert US.0053.7489 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $fact1 = {@RetirementPlanSponsorLocationAxis=NonUsMember};
 
 $memberSetQname = navigate dimensions descendants from RetirementPlanSponsorLocationAxis returns set (target-name);

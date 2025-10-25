@@ -14,6 +14,11 @@ ASSERT US.0065.7502 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $networkQname = navigate parent-child DESCENDANTS FROM SupplementalCashFlowInformationAbstract returns set (target-name)
 	 
 $supplementalElements =  FILTER $networkQname returns $item.local-name
@@ -43,6 +48,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0065.9593 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $networkQname = navigate parent-child DESCENDANTS FROM list(SupplementalCashFlowInformationAbstract, SupplementalCashFlowElementsAbstract, NoncashInvestingAndFinancingItemsAbstract, AdditionalCashFlowElementsAndSupplementalCashFlowInformationAbstract, CashFlowNoncashInvestingAndFinancingActivitiesDisclosureAbstract) returns set (target-name)
 	 

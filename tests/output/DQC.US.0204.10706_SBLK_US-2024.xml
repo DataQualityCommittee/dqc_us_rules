@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 9.60 secs at 2025-07-21T15:04:52 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.494703. - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0204.10706 - 15:05:19.006534 - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:55.425450 from 'https://xbrl.fasb.org/us-gaap/2024/entire/us-gaap-entryPoint-std-2024.xsd' - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="DQC.US.0204.10706" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm" severity="error" effectiveDate="None" cid="2462556561120">[DQC.US.0204.10706] The concept  sblk:NumberOfVesselsOwned with a value of 2 has been used with the axis PropertyPlantAndEquipmentByTypeAxis and the member us-gaap:LeaseAgreementsMember. The member  us-gaap:LeaseAgreementsMember should not be used with the PropertyPlantAndEquipmentByTypeAxis as it is expected to represent an intangible asset. Please change the member to represent an tangible asset or change the axis to represent an intangible asset. i.e. FiniteLivedIntangibleAssetsByMajorClassAxis or IndefiniteLivedIntangibleAssetsByMajorClassAxis.
+
+Concept : sblk:NumberOfVesselsOwned
+Value : 2
+Period : 2024-12-31
+Dimensions : us-gaap:PropertyPlantAndEquipmentByTypeAxis=us-gaap:LeaseAgreementsMember
+
+Rule Element Id:10706
+Rule version: 28.0.0RC1 - sblk-20241231.htm 28966</message>
+ <ref href="sblk-20241231.htm#Fact001787" sourceLine="28966">
+  <property name="file" value="sblk-20241231.htm"/>
+  <property name="line" value="28966"/>
+  <property name="label" value="Number of vessels owned"/>
+  <property name="namespace" value="http://starbulk.com/20241231"/>
+  <property name="name" value="NumberOfVesselsOwned"/>
+  <property name="QName" value="sblk:NumberOfVesselsOwned"/>
+  <property name="contextRef" value="AsOf2024-12-31_us-gaap_LeaseAgreementsMember">
+   <property name="entity" value="0001386716">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:PropertyPlantAndEquipmentByTypeAxis" value="us-gaap:LeaseAgreementsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Pure (pure)">
+   <property name="measure" value="xbrli:pure"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10706" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm" severity="error" effectiveDate="None" cid="2462556561120">[DQC.US.0204.10706] The concept  us-gaap:DebtInstrumentCollateralAmount with a value of 39,739,000 has been used with the axis PropertyPlantAndEquipmentByTypeAxis and the member us-gaap:LeaseAgreementsMember. The member  us-gaap:LeaseAgreementsMember should not be used with the PropertyPlantAndEquipmentByTypeAxis as it is expected to represent an intangible asset. Please change the member to represent an tangible asset or change the axis to represent an intangible asset. i.e. FiniteLivedIntangibleAssetsByMajorClassAxis or IndefiniteLivedIntangibleAssetsByMajorClassAxis.
+
+Concept : us-gaap:DebtInstrumentCollateralAmount
+Value : 39,739,000
+Period : 2024-12-31
+Dimensions : us-gaap:PropertyPlantAndEquipmentByTypeAxis=us-gaap:LeaseAgreementsMember
+
+Rule Element Id:10706
+Rule version: 28.0.0RC1 - sblk-20241231.htm 28967</message>
+ <ref href="sblk-20241231.htm#Fact001788" sourceLine="28967">
+  <property name="file" value="sblk-20241231.htm"/>
+  <property name="line" value="28967"/>
+  <property name="label" value="Debt Instrument, Collateral Amount"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DebtInstrumentCollateralAmount"/>
+  <property name="QName" value="us-gaap:DebtInstrumentCollateralAmount"/>
+  <property name="contextRef" value="AsOf2024-12-31_us-gaap_LeaseAgreementsMember">
+   <property name="entity" value="0001386716">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:PropertyPlantAndEquipmentByTypeAxis" value="us-gaap:LeaseAgreementsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="39,739,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="39,739"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0204.10706 time took: 60.143465 - 15:06:19.151011  - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0204.10706 end. Took 0:01:00.143465 - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:01:00.639180. - sblk-20241231.htm </message>
+ <ref href="sblk-20241231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 77.39 secs - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000241/sblk-20241231.htm"/></entry>
+</log>

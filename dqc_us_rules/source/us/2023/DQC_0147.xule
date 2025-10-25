@@ -12,7 +12,12 @@ rule-name-prefix DQC
 //-----------DQC.US.0147.9871 ---------------//
 
 assert US.0147.9871  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 {nonils @@concept in $NON_NEG_ITEMS.keys @srt:ConsolidationItemsAxis = srt:ConsolidationEliminationsMember where $fact != 0 and $fact.is-numeric and
 		(not match_set_substring($fact, ($EXCLUDE_NON_NEG_STRING_MEMBERS - set('eliminat','consolidat')))
@@ -28,10 +33,10 @@ The properties of this {$fact1.concept.name} fact are:
 Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}\n
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1

@@ -54,16 +54,16 @@ ASSERT US.0197.10634 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if $BDC_FLAG
+if not applicable_form(rule-name()) or $BDC_FLAG
 	skip
 else
 
-$Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
+    $Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
 
-$income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest, InvestmentCompanyDividendDistribution)
+    $income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest, InvestmentCompanyDividendDistribution)
 
-$fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = * @ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis = none}
-exists($fact1)
+    $fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = * @ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis = none}
+    exists($fact1)
 
 message
 "{$fact1.concept} has a value of {$fact1} and has been used with an inappropriate member on the StatementEquityComponentsAxis. This fact value has been used with the StatementEquityComponentsAxis. This element should not be used to represent movements in equity.  Please remove the member from this fact or consider using a different element to represent the movement of Equity.

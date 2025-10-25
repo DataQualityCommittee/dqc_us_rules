@@ -11,7 +11,12 @@ rule-name-prefix DQC
 
 assert US.0139.9855 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 {nonils @concept in $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE @srt:ConsolidatedEntitiesAxis = none}#fact1 > 1 
 
@@ -24,16 +29,21 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0139.9856 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 {@concept=TierOneRiskBasedCapitalRequiredForCapitalAdequacy}#fact1 > {@TierOneRiskBasedCapital}#fact2
 
@@ -45,15 +55,20 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}\n
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 assert US.0139.9857 satisfied 
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $aggAssets =[covered @concept=Assets];
 $aggAssets#otherFact1 < {@concept=RiskWeightedAssets where $fact.period==$aggAssets.period and $fact.unit ==$aggAssets.unit}#fact1
@@ -66,16 +81,21 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}\n
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 //----------------9858-----------------------//
 assert  US.0139.9858 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 // SHould be 6.0 percent for fact2 vs 8% for well capitalized (fact1). If greater then peraps the buffer of 2.5% is an issue //
 
@@ -103,17 +123,22 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}\n
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 //----------------9859-----------------------//
 
 assert  US.0139.9859 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalized}
 $fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacy}
@@ -140,17 +165,17 @@ Period :{$fact2.period}
 Dimensions : {$fact2.dimensions.join(', ','=')}
 Unit : {$fact2.unit}\n
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 //----------------9860-----------------------//
 
 assert US.0139.9860 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length]
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length]
 
 {@concept=TierOneRiskBasedCapitalToRiskWeightedAssets}#otherFact1 < {@concept=TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets}#fact1
 
@@ -163,8 +188,8 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}\n
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

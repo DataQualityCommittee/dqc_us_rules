@@ -16,6 +16,12 @@ rule-name-prefix DQC
 assert US.0078.7655 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $ComponentAmount = {@concept in list(LimitedLiabilityCompanyLLCOrLimitedPartnershipLPManagingMemberOrGeneralPartnerOwnershipInterest, MinorityInterestOwnershipPercentageByParent, SubsidiaryOfLimitedLiabilityCompanyOrLimitedPartnershipOwnershipInterest, LimitedLiabilityCompanyLLCOrLimitedPartnershipLPMembersOrLimitedPartnersOwnershipInterest, MinorityInterestOwnershipPercentageByNoncontrollingOwners)};
 
 

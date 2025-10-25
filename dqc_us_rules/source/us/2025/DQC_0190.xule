@@ -18,6 +18,11 @@ New EBP elements are from the employee benefit plan's perspective and not from t
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $EBPQNames = filter $EBP_ELTS.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
@@ -52,6 +57,11 @@ DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Exampl
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -90,6 +100,11 @@ DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Exampl
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
@@ -135,6 +150,11 @@ DQC Rule 3 (Example1/Note 1b) (Example 4/Note 3b)
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
 if $EBPReports
@@ -178,6 +198,11 @@ DQC Rule 4 (Example 2a/Note 2a) (Example 2b/Note 5b) (Example 2c/Note 2b)
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
 if $EBPReports
@@ -213,6 +238,11 @@ ASSERT US.0190.10605 satisfied
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
@@ -253,6 +283,11 @@ DQC Rule 6 (Example 2b/Note 3)
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
@@ -301,6 +336,11 @@ Employee Benefit Plan, Nonconsolidated, Master Trust and Plan Interest in Master
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
@@ -351,6 +391,11 @@ DQC Rule 12 (Example 5b/Note 3a) (Example 6b/Note 3a)
 /*TODO CHECK IF WE CAN REMOVE AS IS THE SAME AS 142 */
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -392,6 +437,11 @@ DQC Rule 13 (Example 6a/Note 2b)
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -432,21 +482,34 @@ No report-wide values are expected in the XBRL data.
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
 if $EBPReports
         
-    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2024' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2025' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
     $defaultFactsExist  = $defaultFacts.length > 0
-    $defaultFactsExist
+    if $defaultFactsExist
+        $message-text = (filter $defaultFacts returns ('Concept: ' + $item.concept.name.local-name  + ' Period: ' + $item.period.string)).join('
+        ')
+        true
+    else
+        false
 
 else
     skip
    
 
 message
-"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis.  All facts in the instance must include the LegalEntityAxis.
+"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis. All facts in the instance must include the LegalEntityAxis.
+
+Facts missing LegalEntityAxis:
+{$message-text}
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -463,6 +526,11 @@ The members to be used with the "Legal Entity [Axis]" (A10) are intended to be p
 **/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
@@ -504,6 +572,11 @@ ASSERT US.0190.10619 satisfied
 /* Check cover page for EBP filers has legal entity axis for default facts */
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);

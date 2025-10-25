@@ -15,6 +15,10 @@ assert US.0082.9295 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+if not applicable_form(rule-name())
+	skip
+else
+
 $superseded_elements = list(  list(VariableInterestEntityConsolidatedAssetsCurrent, AssetsCurrent)
 							, list(VariableInterestEntityConsolidatedAssetsNoncurrent, AssetsNoncurrent)
 							, list(VariableInterestEntityConsolidatedCarryingAmountAssets, Assets)

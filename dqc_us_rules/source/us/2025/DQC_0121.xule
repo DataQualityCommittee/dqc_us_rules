@@ -11,7 +11,12 @@ RULE-NAME-PREFIX DQC
 
 assert US.0121.9580 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 $document_period = first(list({covered @concept.local-name = 'DocumentType'}));
 $document_period_end = $document_period.period.end;
 
@@ -41,17 +46,22 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 rule-focus $fact1 
 
 assert US.0121.9581 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in set('8-K','6-K')}))))
 	skip
@@ -113,14 +123,14 @@ Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 Decimals: {$fact1.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
 rule-focus $fact1 
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 

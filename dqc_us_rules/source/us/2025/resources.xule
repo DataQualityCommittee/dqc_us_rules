@@ -17,7 +17,7 @@ Release Version 18
 		**/
 
 		constant $effective_dates = dict(
-		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/Effective_Dates/effective_dates.csv', false, list('string','string'))
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/Effective_Dates/effective_dates.csv', false, list('string','string'))
 		list($pair[1], $pair[2])
 		)
 
@@ -29,18 +29,18 @@ Release Version 18
 		**/
 
 		constant $NON_NEG_ITEMS = dict(
-		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2025_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_2025_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0015/dqc_15_ebp_2025_concepts.csv', false, list('string', 'qname')))
+		for $pair in (csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0015/dqc_15_usgaap_2025_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0015/dqc_15_srt_2025_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0015/dqc_15_dei_concepts.csv', false, list('string', 'qname')) + csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0015/dqc_15_ebp_2025_concepts.csv', false, list('string', 'qname')))
 				list($pair[2], $pair[1])
 )
 
 /** DQC.US.0011 **/
 
-		constant $DIM_EQUIVALENTS = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
+		constant $DIM_EQUIVALENTS = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0011/dqc_0011.csv', true, list('string', 'qname', 'qname', 'qname', 'qname', 'int'))
 
 /** DQC.US.0079 **/
 
 		constant $EXTENSION_ITEMS = dict(
-		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0079/dqc_0079.csv', true, list('string', 'qname'))
+		for $pair in csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0079/dqc_0079.csv', true, list('string', 'qname'))
 		list($pair[1], $pair[2])
 		)
 		
@@ -57,7 +57,7 @@ Release Version 18
 		*	This list excludes the focus element.
 		**/
 		
-		constant $ELEMENTS_EXCLUDED_FROM_RULE = filter csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/elements_excluded_from_rule.csv', true, list('qname')) returns $item[1]
+		constant $ELEMENTS_EXCLUDED_FROM_RULE = filter csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/elements_excluded_from_rule.csv', true, list('qname')) returns $item[1]
 		
 		/** 
 		* Child elements promotable to sibling of parent element and vice versa
@@ -67,7 +67,7 @@ Release Version 18
 		*	as defined in the US GAAP taxonomy. This list excludes the child element of a calculation relationship.
 		**/
 
-		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING_OF_PARENT_ELEMENT = filter csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling_of_parent_element.csv', true, list('qname')) returns $item[1]
+		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING_OF_PARENT_ELEMENT = filter csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling_of_parent_element.csv', true, list('qname')) returns $item[1]
 
 		/**
 		*	Siblings demotable to child
@@ -80,7 +80,7 @@ Release Version 18
 		*	also means that any descendants of DerivativeAssets can also legitimately appear as a descendant of Investments in the companies filing.
 		**/
 
-		constant $SIBLINGS_DEMOTABLE_TO_CHILD = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/siblings_demotable_to_child.csv', true, list('qname','qname')).to-set
+		constant $SIBLINGS_DEMOTABLE_TO_CHILD = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/siblings_demotable_to_child.csv', true, list('qname','qname')).to-set
 
 		/**
 		*	Child elements promotable to sibling
@@ -91,7 +91,7 @@ Release Version 18
 		*	element can also be defined as a sibling of the parent element in the companys filing.
 		**/
 		
-		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling.csv', true, list('qname','qname')).to-set
+		constant $CHILD_ELEMENTS_PROMOTABLE_TO_SIBLING = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/child_elements_promotable_to_sibling.csv', true, list('qname','qname')).to-set
 		
 		/**
 		*	Parent elements with children promotable to sibling
@@ -102,7 +102,7 @@ Release Version 18
 		*	in the US GAAP taxonomy  that can never be promoted to a sibling of the focus element. 
 		**/
 
-		constant $PARENT_ELEMENTS_WITH_CHILDREN_PROMOTABLE_TO_SIBLING = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/parent_elements_with_children_promotable_to_sibling.json').to-set
+		constant $PARENT_ELEMENTS_WITH_CHILDREN_PROMOTABLE_TO_SIBLING = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/parent_elements_with_children_promotable_to_sibling.json').to-set
 		
 		/**
 		*	Sibling elements with siblings demotable to descendant
@@ -113,7 +113,7 @@ Release Version 18
 		*	element that can never be demoted.
 		**/
 
-		constant $SIBLING_ELEMENTS_WITH_SIBLINGS_DEMOTABLE_TO_DESCENDANT = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/sibling_elements_with_siblings_demotable_to_descendant.json').to-set
+		constant $SIBLING_ELEMENTS_WITH_SIBLINGS_DEMOTABLE_TO_DESCENDANT = json-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/sibling_elements_with_siblings_demotable_to_descendant.json').to-set
 
 		/**
 		*	Maturity Schedule elements
@@ -123,7 +123,7 @@ Release Version 18
 		*	
 		**/
 		
-		constant $MATURITY_SCHEDULE_ELEMENTS = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0094/dqc_0094.csv', false, list('int','qname','qname','qname')).to-set
+		constant $MATURITY_SCHEDULE_ELEMENTS = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0094/dqc_0094.csv', false, list('int','qname','qname','qname')).to-set
 
 		/**
 		*	Inappropriate Children elements that should be a sibling
@@ -133,7 +133,7 @@ Release Version 18
 		*	
 		**/
 		
-		constant $MESSAGE_FOR_RULE_9277 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/child_should_be_sibling_message-9277.csv', true, list('qname','qname','string')).to-set
+		constant $MESSAGE_FOR_RULE_9277 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/child_should_be_sibling_message-9277.csv', true, list('qname','qname','string')).to-set
 
 		/**
 		*	Inappropriate sibling elements that should be a child
@@ -144,4 +144,4 @@ Release Version 18
 		*	
 		**/
 		
-		constant $MESSAGE_FOR_RULE_9278 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v27/dqc_us_rules/resources/DQC_US_0081/sibling_should_be_child_message-9278.csv', true, list('qname','qname','string')).to-set
+		constant $MESSAGE_FOR_RULE_9278 = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/v28/dqc_us_rules/resources/DQC_US_0081/sibling_should_be_child_message-9278.csv', true, list('qname','qname','string')).to-set

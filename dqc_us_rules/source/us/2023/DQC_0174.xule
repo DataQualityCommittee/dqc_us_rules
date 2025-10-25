@@ -15,6 +15,11 @@ ASSERT US.0174.10115 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $individualLoss = {@concept = FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1 where $fact < 0}
 
 $CollectiveLoss =  first-value({@concept = FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment}, {@concept = FinancingReceivableAllowanceForCreditLossExcludingAccruedInterest}, 0)

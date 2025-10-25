@@ -13,6 +13,12 @@ assert US.0085.9361 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** Identify all presentation networks in the company extension **/
 
 $all_networks = $PRES_NETWORKS;
@@ -58,6 +64,12 @@ assert US.0085.9362 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 
 /** Identify if the element DeferredIncomeTaxAssetsNet is used in the filing **/
 
@@ -98,6 +110,12 @@ assert US.0085.9363 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** Identify if the element DeferredIncomeTaxLiabilitiesNet is used in the filing **/
 
 $BS_Tax_Liability = [@concept = DeferredIncomeTaxLiabilitiesNet]
@@ -135,6 +153,12 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0085.9364 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Identify if the element DeferredTaxAssetsNet is used in the filing **/
 
@@ -174,6 +198,12 @@ assert US.0085.9365 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 /** Identify if the element DeferredTaxAssetsLiabilitiesNet is used in the filing **/
 
 $fact1 = {@concept = DeferredTaxAssetsLiabilitiesNet}
@@ -211,6 +241,12 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0085.9367 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Identify if the element DeferredTaxLiabilities is used in the filing **/
 

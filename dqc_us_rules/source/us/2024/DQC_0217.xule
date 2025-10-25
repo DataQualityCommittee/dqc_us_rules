@@ -1,0 +1,49 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0217.10745 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+
+/** Identify where a company has used the elements DerivativeLiabilityNotionalAmount or DerivativeLiabilityNotionalAmount with the investmentmentIdentifierAxis **/ 
+
+
+/** The rule should identify facts with thee ither the concepts  DerivativeLiabilityNotionalAmount or DerivativeLiabilityNotionalAmount and use the axis InvestmentIdentifierAxis **/
+
+/** if get an error then should instruct the user to use a derivative axis like OpenOptionContractIdentifierAxis, OpenFuturesContractIdentifierAxis, OpenForwardForeignCurrencyContractIdentifierAxis or OpenSwapContractIdentifierAxis.  The message should also reference the guidance issued by the SEC on Jun 16th callled Incomplete and Inappropriate Tagging for Business Development Companies Schedule of Investments, located at  https://www.sec.gov/newsroom/whats-new/2506-dqreminder-inappropriate-tagging-bdc-soi  **/
+
+$BDC_FACT = ([covered @concept in list(DerivativeLiabilityNotionalAmount,DerivativeAssetNotionalAmount) @InvestmentIdentifierAxis = *])
+
+exists($BDC_FACT)
+
+message
+"The filer has reported  a value of {$BDC_FACT} for the {$BDC_FACT.name} concept.  This is for the investment {$BDC_FACT.dimension(InvestmentIdentifierAxis)}.  Given this is a notional amount the value should be reported with one of the following axis : OpenOptionContractIdentifierAxis, OpenFuturesContractIdentifierAxis, OpenForwardForeignCurrencyContractIdentifierAxis or OpenSwapContractIdentifierAxis.  
+
+Please ensure that these values are reported for each investment using on of the above derivative axis.  The SEC has issued guidance on this issue called 'Incomplete and Inappropriate Tagging for Business Development Companies' Schedule of Investments which can be found at https://www.sec.gov/newsroom/whats-new/2506-dqreminder-inappropriate-tagging-bdc-soi.
+
+Concept : {$BDC_FACT.name}
+Period :{($BDC_FACT).period}
+Dimensions : {($BDC_FACT).dimensions.join(', ','=')}
+Unit : {($BDC_FACT).unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]

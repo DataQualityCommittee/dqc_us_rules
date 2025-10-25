@@ -14,6 +14,12 @@ ASSERT US.0116.9573 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $conceptsNeedingBusinessAcquisitionAxis = set(AssetAcquisitionDateOfAcquisitionAgreement
                                             ,AssetAcquisitionEffectiveDateOfAcquisition
                                             ,AssetAcquisitionPriceOfAcquisitionExpected
@@ -46,6 +52,12 @@ rule-focus $missingMember
 ASSERT US.0116.9726 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $conceptsNotOnBusinessAcquisitionAxis = set(Goodwill,
                                         BusinessAcquisitionPlannedRestructuringActivitiesDescription,
@@ -195,6 +207,12 @@ rule-focus $invalidconcept
 ASSERT US.0116.9727 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $conceptsNotOnAssetAcquisitionAxis = set(PaymentsToAcquireProductiveAssets,
                                             AssetAcquisitionConsiderationTransferredOtherAssets,

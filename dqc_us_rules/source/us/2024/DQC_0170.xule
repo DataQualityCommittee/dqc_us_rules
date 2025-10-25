@@ -12,7 +12,13 @@ RULE-NAME-PREFIX DQC
 Check that buy or sell shares as insiders with none for the period tag boolean flags as false. **/
 
 ASSERT US.0170.10103 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $NoDisclosureFlag = if exists([covered @concept.local-name = 'NoInsiderTradingFlag']) and [covered @concept.local-name = 'NoInsiderTradingFlag'] == true
                             true
@@ -44,16 +50,22 @@ else
 message
 "The filing does not include a value of true for one of the following elements {$ecdFlags.join(', ')} or a value of false for all 4 elements. This is a required disclosure after 12/31/2023. Please report the boolean flag value of true for one of these elements or false for all of them.  If there is no insider trading disclosure in the filing create an extension boolean element called 'NoInsiderTradingFlag' with a value of true. 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0170.10129 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 
@@ -76,15 +88,21 @@ else
 message
 "{$message}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0170.10131 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
 
@@ -107,9 +125,9 @@ else
 message
 "{$message}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

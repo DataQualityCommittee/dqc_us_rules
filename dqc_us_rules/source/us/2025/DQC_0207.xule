@@ -17,18 +17,21 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair value of a fact  using the EquitySecuritiesByIndustryAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
+
 /** select facts with the BDC subtotals **/
-	$BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
+$BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
 
-	$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
+$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
 
-	/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
-		$BDC_Industry < $BDC_Industry_And_More
+    $BDC_Industry < $BDC_Industry_And_More
 
 
 message
@@ -39,13 +42,13 @@ Value : {$BDC_Industry_And_More}
 Period : {$BDC_Industry_And_More.period}
 Dimensions : {$BDC_Industry_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
+rule-focus $BDC_Industry_And_More
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0207.10723 SATISFIED
 
@@ -55,18 +58,21 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
-	/** select facts with the BDC subtotals **/
-	$BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
-	$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
+/** select facts with the BDC subtotals **/
+$BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
-	/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
 
-	$BDC_InvestmentType < $BDC_InvestmentType_And_More
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_InvestmentType < $BDC_InvestmentType_And_More
 
 
 message
@@ -77,13 +83,13 @@ Value : {$BDC_InvestmentType_And_More}
 Period : {$BDC_InvestmentType_And_More.period}
 Dimensions : {$BDC_InvestmentType_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
+rule-focus $BDC_InvestmentType_And_More
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0207.10724 SATISFIED
 
@@ -93,18 +99,21 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffiliationAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
-	/** select facts with the BDC subtotals **/
-	$BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
 
-	$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
+/** select facts with the BDC subtotals **/
+$BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
 
-	/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
 
-	$BDC_Affiliation < $BDC_Affiliation_And_More
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Affiliation < $BDC_Affiliation_And_More
 
 
 message
@@ -115,13 +124,13 @@ Value : {$BDC_Affiliation_And_More}
 Period : {$BDC_Affiliation_And_More.period}
 Dimensions : {$BDC_Affiliation_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
+rule-focus $BDC_Affiliation_And_More
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0207.10725 SATISFIED
@@ -132,18 +141,21 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
-	/** select facts with the BDC subtotals **/
-	$BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
-	$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
+/** select facts with the BDC subtotals **/
+$BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
-	/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
 
-	$BDC_Name < $BDC_Name_And_More
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Name < $BDC_Name_And_More
 
 
 message
@@ -154,13 +166,13 @@ Value : {$BDC_Name_And_More}
 Period : {$BDC_Name_And_More.period}
 Dimensions : {$BDC_Name_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
+rule-focus $BDC_Name_And_More
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0207.10726 SATISFIED
@@ -171,18 +183,21 @@ The less dimensions reported would indicate a higher value as more investments a
 
 THis rule checks that the fair value of a fact  using the srt:StatementGeographicalAxis is greater than  facts with the mor  dimensions.**/
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
-if not $BDC_FLAG
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
-	/** select facts with the BDC subtotals **/
-	$BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
 
-	$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
+/** select facts with the BDC subtotals **/
+$BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
 
-	/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
 
-	$BDC_Geo < $BDC_Geo_And_More
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Geo < $BDC_Geo_And_More
 
 message
 "The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Geo}. This concept is used to report the fair value of investments for the {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} geography. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Geo_And_More} that includes the member {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Geo_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} geography is less than the value reported for the value {$BDC_Geo_And_More} which is a subset of this geography. The value reported for the geography in aggregate should be more than or equal to the value reported for of {$BDC_Geo_And_More}. Please ensure that appropriate dimensions have been used to report these values.
@@ -192,10 +207,10 @@ Value : {$BDC_Geo_And_More}
 Period : {$BDC_Geo_And_More.period}
 Dimensions : {$BDC_Geo_And_More.dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error  
+rule-focus $BDC_Geo_And_More
 
-
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
