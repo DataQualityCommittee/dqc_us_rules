@@ -25,9 +25,17 @@ else
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact2 = {@SharesIssued @StatementClassOfStockAxis = * @@period.end  = $DOCUMENT_PERIOD_END_DATE};
 	$not_present_fact3 = [@SharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact5 = [@SharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact6 = [@CommonStockSharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
     $not_disclosed_on_purpose = list({covered @concept.local-name ='CommonStockSharesIssuedNotDisclosed'}).length > 0
 
-    exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3) and not $not_disclosed_on_purpose
+    exists($present_fact) and 
+    missing($not_present_fact1) 
+    and missing($not_present_fact2) 
+    and missing($not_present_fact3) 
+    and missing($not_present_fact5) 
+    and missing($not_present_fact6)
+    and not $not_disclosed_on_purpose
 
 message
 
@@ -61,9 +69,17 @@ else
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact2 = {@SharesIssued @StatementClassOfStockAxis = * @@period.end  = $DOCUMENT_PERIOD_END_DATE};
 	$not_present_fact3 = [@SharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact4 = [@SharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact5 = [@CommonStockSharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
     $not_disclosed_on_purpose = list({covered @concept.local-name ='SharesIssuedNotDisclosed'}).length > 0
 
-    exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3) and not $not_disclosed_on_purpose
+    exists($present_fact) 
+    and missing($not_present_fact1) 
+    and missing($not_present_fact2) 
+    and missing($not_present_fact3) 
+    and missing($not_present_fact4) 
+    and missing($not_present_fact5) 
+    and not $not_disclosed_on_purpose
 
 message
 
