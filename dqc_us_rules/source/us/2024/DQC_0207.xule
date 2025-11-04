@@ -114,9 +114,15 @@ $BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssu
 
 $BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != *};
 
+/** In some cases there may be an unafiliated investment that has a netted value on the axis of the identified fact that is higher than the subtotal. Ie.e the high dimension value has an associated negative item that actually makes it less because it is grossed up.  To check for this we need to identify the dimensions of the $BDC_Affiliation_And_More fact and check if any of the axis associated with it except  InvestmentIssuerAffiliationAxis have a member with the text netted in it.**/
+
+/** If the following returns nothing then $negative_netted_fact will be none, when added to a number the result will be the number.**/
+
+$negative_netted_fact = sum(list({nonils covered-dims  @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * where $fact < 0}));
+
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
-$BDC_Affiliation < $BDC_Affiliation_And_More
+$BDC_Affiliation < ($BDC_Affiliation_And_More + $negative_netted_fact)
 
 
 message
