@@ -27,7 +27,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
 
-$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
+$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * } ;
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -69,7 +69,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
-$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
+$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -111,7 +111,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
 
-$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
+$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -154,7 +154,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
-$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
+$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -197,7 +197,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
 
-$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
+$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
