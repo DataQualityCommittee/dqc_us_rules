@@ -11,7 +11,12 @@ rule-name-prefix DQC
 
 //-----------DQC.US.0146.9870 ---------------//
 assert US.0146.9870  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end;
@@ -51,10 +56,10 @@ Facts with values reported for a year are as follows: {if $totalYearItems == 0 "
 
 If this is a transition report  use the DocumentTransitionReport element. If this is a successor company then ensure the element FinancialDesignationPredecessorAndSuccessorFixedList has been tagged. If this is the Year of Inception then define an extension element called YearOfInception with a nil value to indicate this fact.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus first($facts.sort)

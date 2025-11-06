@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30045 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.23 secs at 2025-07-21T15:07:08 - http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.258627. - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0204.10707 - 15:07:30.007768 - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="DQC.US.0204.10707" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm" severity="error" effectiveDate="None" cid="2561262165920">[DQC.US.0204.10707] The concept  us-gaap:CapitalizedComputerSoftwareGross with a value of 313,889 has been used with the axis PropertyPlantAndEquipmentByTypeAxis and the member TRUG:SoftwareAndComputerEquipmentMember. The concept CapitalizedComputerSoftwareGross should not be disaggregated using this axis as the software in the type of PPE. Replace the concept with the concept PropertyPLantAndEquipmentGross.
+
+Concept : us-gaap:CapitalizedComputerSoftwareGross
+Value : 313,889
+Period : 2024-03-31
+Dimensions : us-gaap:PropertyPlantAndEquipmentByTypeAxis=TRUG:SoftwareAndComputerEquipmentMember
+
+Rule Element Id:10707
+Rule version: 28.0.0RC1 - form10-q.htm 5130</message>
+ <ref href="form10-q.htm#Fact000809" sourceLine="5130">
+  <property name="file" value="form10-q.htm"/>
+  <property name="line" value="5130"/>
+  <property name="label" value="Capitalized software"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CapitalizedComputerSoftwareGross"/>
+  <property name="QName" value="us-gaap:CapitalizedComputerSoftwareGross"/>
+  <property name="contextRef" value="AsOf2024-03-31_custom_SoftwareAndComputerEquipmentMember">
+   <property name="entity" value="0001857086">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:PropertyPlantAndEquipmentByTypeAxis" value="TRUG:SoftwareAndComputerEquipmentMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="313,889"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="313,889"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0204.10707 time took: 3.146647 - 15:07:33.154415  - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0204.10707 end. Took 0:00:03.146647 - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.406291. - form10-q.htm </message>
+ <ref href="form10-q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 18.18 secs - http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1857086/000149315224032270/form10-q.htm"/></entry>
+</log>

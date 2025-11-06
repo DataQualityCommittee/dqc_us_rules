@@ -36,6 +36,12 @@ ASSERT US.0178.10134 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
 
 $negativeDividends = {@concept in $DIVIDEND_CONCEPTS @StatementEquityComponentsAxis in $retainedEarningsTypes where $fact < 0}
@@ -63,6 +69,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0178.10135 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
 
@@ -93,6 +105,12 @@ ASSERT US.0178.10136 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
 
 $dividendsInAPIC = {@concept in list(DividendsCommonStockCash,DividendsPreferredStockCash) @StatementEquityComponentsAxis in $additionPaidInCapital where $fact < 0}
@@ -118,6 +136,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0178.10137 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $retainedEarningsTypes = list(RetainedEarningsMember, RetainedEarningsUnappropriatedMember)
 
@@ -149,6 +173,12 @@ ASSERT US.0178.10138 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 for $memberToCheck in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER.keys
            $divFact = {nonils @concept in $INVALID_DIVIDEND_CONCEPTS_WITH_MEMBER[$memberToCheck] @StatementEquityComponentsAxis = $memberToCheck where $fact != 0}
            exists($divFact)
@@ -174,6 +204,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0178.10145 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $additionPaidInCapital = list(AdditionalPaidInCapitalMember, OtherAdditionalCapitalMember)
 
@@ -207,6 +243,12 @@ ASSERT US.0178.10146 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $dividendsInAPIC = {@concept = AdjustmentsToAdditionalPaidInCapitalDividendsInExcessOfRetainedEarnings @StatementEquityComponentsAxis = none where $fact < 0}
 
 exists($dividendsInAPIC)
@@ -232,6 +274,12 @@ ASSERT US.0178.10150 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $StockWithInconsistentClass = {nonils @concept in list(CommonStockDividendsPerShareDeclared, PreferredStockDividendsPerShareDeclared) @StatementClassOfStockAxis in list(CommonStockMember, PreferredStockMember)}
 
 exists($StockWithInconsistentClass)
@@ -256,6 +304,12 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0178.10152 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $StockDivsIsPositive = {@concept in list(StockIssuedDuringPeriodValueDividendReinvestmentPlan, StockIssuedDuringPeriodValueStockDividend) @StatementEquityComponentsAxis = RetainedEarningsMember where $fact > 0}
 

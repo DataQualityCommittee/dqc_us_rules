@@ -61,6 +61,11 @@ assert US.0046.6841 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents 
 in 
 navigate summation-item descendants 
@@ -107,6 +112,11 @@ assert US.0046.7480 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsDisposalGroupIncludingDiscontinuedOperations 
 in 
 navigate summation-item descendants 
@@ -129,6 +139,11 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0046.9279 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 NetIncomeLoss
 in

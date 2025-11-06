@@ -19,6 +19,12 @@ ASSERT US.0193.10153 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $divValues = list({covered @DividendsAxis = *})
 
 if $divValues.length == 0

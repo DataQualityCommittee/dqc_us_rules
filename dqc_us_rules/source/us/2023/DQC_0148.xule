@@ -11,7 +11,12 @@ rule-name-prefix DQC
 //-----------DQC.US.0148.9874 ---------------//
 
 assert US.0148.9874  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $Calc_Descendants_of_NetIncome = navigate summation-item descendants from list(NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted) returns set (target-name)
 
@@ -23,11 +28,11 @@ for $invalidConcept in $invalidConcepts
 message
 "The company has reported the concept {$invalidConcept} as a descendant of Income Losss in the calculation linkbase of the filing.  This element is an OCI item and should not be included as a component of Net Income Loss.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($invalidConcept)
 
@@ -38,7 +43,12 @@ Example filing that is incorrect: http://www.sec.gov/Archives/edgar/data/1132509
 **/
 
 assert US.0148.10073  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $Calc_Descendants_of_OCI = navigate summation-item descendants from list(OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossTaxPortionAttributableToParent1, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent, OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToNoncontrollingInterest) returns set (target-name)
 
@@ -50,10 +60,10 @@ for $invalidConcept in $invalidConcepts
 message
 "The company has reported the concept {$invalidConcept} as a descendant of Other Comprehensive Income in the calculation linkbase of the filing.  This element is a Net Income item and should not be included as a component of Other Comprehensive Income.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($invalidConcept)

@@ -13,6 +13,11 @@ RULE-NAME-PREFIX DQC
 Assert US.0164.10086 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Balance SHeet location and others should not be in any statement cubes role **/
 
 /**Sometimes companies have a section at the bottom of the income statement that gives an alternative representation of the allocation of expense
@@ -51,6 +56,11 @@ effectiveDate $effective_dates[$ruleId]
 Assert US.0164.10087 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Balance SHeet location axis has bad elements **/
 
 $HighLevelElements = set(Assets, Liabilities, AssetsCurrent, AssetsNoncurrent, LiabilitiesCurrent, LiabilitiesNoncurrent, LiabilitiesAndStockholdersEquity, StockholdersEquity, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest)
@@ -75,6 +85,11 @@ effectiveDate $effective_dates[$ruleId]
 
 Assert US.0164.10088 satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Balance SHeet location axis has bad elements **/
 

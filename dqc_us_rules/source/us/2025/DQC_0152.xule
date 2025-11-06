@@ -11,6 +11,11 @@ rule-name-prefix DQC
 assert US.0152.10116  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $GYearListElements = filter ($US-GAAP_ELTS_CALCS.concepts) where $item.data-type.name == dtr-types:gYearListItemType
 

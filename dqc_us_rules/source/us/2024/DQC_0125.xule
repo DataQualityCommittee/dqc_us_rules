@@ -11,7 +11,13 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0125.9589 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $fact1 = {@concept = LeaseCost where $fact < 0 and ($fact.dimensions.length == 0 or 
 		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
@@ -31,13 +37,13 @@ Period :{$fact1.period}
 Dimensions : {$fact1.dimensions.join(', ','=')}
 Unit : {$fact1.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact1
 

@@ -14,6 +14,11 @@ rule-name-prefix DQC
 assert US.0154.10068  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $IncomeTaxElements = set(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate,
 EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate,
 IncomeTaxExpenseBenefit,
@@ -48,6 +53,11 @@ effectiveDate $effective_dates[$ruleId]
 
 assert US.0154.10069  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $IncomeTaxElements = set(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate,
 EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate,
@@ -86,6 +96,11 @@ effectiveDate $effective_dates[$ruleId]
 assert US.0154.10070  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $IncomeTaxElements = set(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate,
 EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate,
 IncomeTaxExpenseBenefit,
@@ -122,6 +137,11 @@ effectiveDate $effective_dates[$ruleId]
 
 assert US.0154.10071  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $IncomeTaxElements = set(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate,
 EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate,

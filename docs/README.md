@@ -174,7 +174,19 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Approved | 27 |
 | [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Removed after Public Review |  |
 | [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Removed after Public Review |  |
-| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Approved | 27 |
+| [DQC_US_0210](DQC_US_0210/DQC_0210.md) | Missing Investment Identifier Axis | Approved | 27 |  
+| [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Approved | 27 |  
+| [DQC_US_0212](DQC_US_0212/DQC_0212.md) | Missing Shares Issued or Authorized Facts When Shares Outstanding Reported | Approved | 28 |
+| [DQC_US_0213](DQC_US_0213/DQC_0213.md) | Missing Calculation Children for Key Balance Sheet Items | Approved | 28 |
+| [DQC_US_0214](DQC_US_0214/DQC_0214.md) | Missing Equity Concepts in Balance Sheet Calculation | Approved | 28 |
+| [DQC_US_0215](DQC_US_0215/DQC_0215.md) | Extension Element Name Matches US GAAP Element | Approved | 28 |
+| [DQC_US_0216](DQC_US_0216/DQC_0216.md) | Improper Use of Extension Geography Members on StatementGeographicalAxis | Approved | 28 |
+| [DQC_US_0217](DQC_US_0217/DQC_0217.md) | Improper Use of Notional Amount Concepts with InvestmentIdentifierAxis | Approved | 28 |
+| [DQC_US_0219](DQC_US_0219/DQC_0219.md) | Missing Value for NonInvestmentAssetsLessNonInvestmentLiabilities | Approved | 28 |
+| [DQC_US_0220](DQC_US_0220/DQC_0220.md) | Improper Use of StatementTable in Notes Disclosures | Approved | 28 |
+| [DQC_US_0221](DQC_US_0221/DQC_0221.md) | Missing NumberOfReportableSegments When Segment Facts Are Reported | Approved | 28 |
+| [DQC_US_0222](DQC_US_0222/DQC_0222.md) | Scaling Error in EntityPublicFloat | Approved | 28 |
+| [DQC_IFRS_0223](DQC_IFRS_0223/DQC_0223.md) | Extension Leaf Items on Statement of Operating Activities or Income Statement | Approved | 28 |
 
 ## Guidance 
 

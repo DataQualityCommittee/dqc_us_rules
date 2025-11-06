@@ -12,7 +12,12 @@ RULE-NAME-PREFIX DQC
 Check that transition elemnts are not used 2023 taxonomy and above.**/
 
 ASSERT US.0171.10104 SATISFIED
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $ASU201613_TransitionELements = $ASU201613_TRANSITION_ELEMENTS;
 
@@ -60,11 +65,11 @@ Period :{$TransFact.period}
 Dimensions : {$TransFact.dimensions.join(', ','=')}
 Unit : {$TransFact.unit}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

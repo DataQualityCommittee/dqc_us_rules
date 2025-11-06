@@ -13,6 +13,12 @@ assert US.0018.34 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $presentation_concepts = navigate parent-child descendants include start returns set (target-name);
 
 $deprecatedItems = $presentation_concepts intersect $DEP_CONCEPTS

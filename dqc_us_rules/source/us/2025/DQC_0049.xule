@@ -13,6 +13,12 @@ rule-name-prefix DQC
 assert US.0049.7483 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $must_be_present_concepts = set('CashAndCashEquivalentsPeriodIncreaseDecrease','CashPeriodIncreaseDecrease','CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect','CashCashEquivalentsRestrictedCashandRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect')
 
 $networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) and $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;

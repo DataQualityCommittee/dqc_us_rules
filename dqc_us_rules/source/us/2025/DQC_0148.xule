@@ -13,6 +13,11 @@ rule-name-prefix DQC
 assert US.0148.9874  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $Calc_Descendants_of_NetIncome = navigate summation-item descendants from list(NetIncomeLoss, ProfitLoss, NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLossAvailableToCommonStockholdersDiluted) returns set (target-name)
 
 $invalidConcepts = $Calc_Descendants_of_NetIncome.intersect($OCI_CONCEPTS)
@@ -39,6 +44,11 @@ Example filing that is incorrect: http://www.sec.gov/Archives/edgar/data/1132509
 
 assert US.0148.10073  satisfied
 $ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $Calc_Descendants_of_OCI = navigate summation-item descendants from list(OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossTaxPortionAttributableToParent1, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent, OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToNoncontrollingInterest) returns set (target-name)
 

@@ -11,6 +11,11 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0117.9574 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $STATEMENT_CUBES 
 					list($y.drs-role, $y.dimensions, $y));
@@ -154,6 +159,11 @@ rule-focus $TotalDefault
 
 ASSERT US.0117.10093 SATISFIED
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Get the DRS Roles and dimensions **/
 $drs_roles = set(for $y in $STATEMENT_CUBES 

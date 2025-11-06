@@ -11,6 +11,11 @@ rule-name-prefix DQC
 
 assert US.0014 satisfied
 
+/** DQCRT RULE **/
+if not applicable_form_string('0014')
+	skip
+else
+
 for ($x in $NON_DIMENSIONAL_NON_NEGS)
 	$rule_suffix_id = $x[1];
 

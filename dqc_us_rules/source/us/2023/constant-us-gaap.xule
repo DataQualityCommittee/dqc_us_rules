@@ -372,3 +372,14 @@ constant $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS = navigate domain-member descenda
 constant $INTANGIBLE_MONETARY_ITEMS = navigate parent-child descendants from list(IntangibleAssetsDisclosureTextBlock) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
 
 constant $INTANGIBLE_DURATION_ITEMS = navigate parent-child descendants from list(IntangibleAssetsDisclosureTextBlock) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:durationItemType  returns set (target-name)
+
+/** 
+		*  Rule form lookup schedule
+		*
+		*  CSV file that links the rule number to the Forms that the rule is applicable to.  The first colum is the rule identifier. The second column is the form type. Rules may also include logic that makes them more granular than just the form type.
+		*  The form type may include the following values:
+		*  10-K, 10-K/A, 10-KT, 20-F, 20-F/A, 40-F, 40-F/A etc.
+		
+		 **/
+
+constant $RULE-FORM-LOOKUP = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/master/dqc_us_rules/resources/rule-form-lookup/rule-form-lookup.csv', true, list('string','string')).to-dict

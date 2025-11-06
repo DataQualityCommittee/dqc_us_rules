@@ -17,6 +17,11 @@ ASSERT US.0179.10139 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $dividendEventConcepts = list(DividendsPayableAmountPerShare,DividendsPayableDateOfRecordDayMonthAndYear,DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear,CommonStockDividendsPerShareDeclared, PreferredStockDividendsPerShareDeclared)
 
 $badDividendAxis = list(
@@ -64,6 +69,11 @@ ASSERT US.0179.10140 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $dividendDateConcepts = list(
                             list(DividendsPayableDateDeclaredDayMonthAndYear,DividendsPayableDateOfRecordDayMonthAndYear),
                             list(DividendsPayableDateDeclaredDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear),
@@ -99,6 +109,11 @@ ASSERT US.0179.10141 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $perShare = {@concept = CommonStockDividendsPerShareDeclared where $fact.inline-scale != none and $fact.inline-scale > 0}
 true
 
@@ -130,6 +145,11 @@ constant $DICT_OF_DURATION_FREQUENCY =  dict(
 ASSERT US.0179.10142 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $periodEnd = [covered @concept.local-name = 'DocumentPeriodEndDate']
 
@@ -172,6 +192,11 @@ ASSERT US.0179.10143 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 $factsPerDividendAxis = list({covered @DividendsAxis=* })
 
@@ -201,6 +226,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0179.10144 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 
 $divPerShareDeclared = {nonils @DividendsPayableAmountPerShare @period=* @unit=*}
@@ -237,6 +267,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0179.10151 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 $DividendDates = list(DividendsPayableDateDeclaredDayMonthAndYear,DividendsPayableDateOfRecordDayMonthAndYear,DividendPayableDateToBePaidDayMonthAndYear)
 

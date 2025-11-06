@@ -11,6 +11,12 @@ rule-name-prefix DQC
 assert US.0057.7494 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 for ($networkPres in 
@@ -60,6 +66,12 @@ effectiveDate $effective_dates[$rule_id]
 assert US.0057.9728 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /* Identify the cashflow statement by StatementOfCashFlowsAbstract */
 
 for ($networkPres in 

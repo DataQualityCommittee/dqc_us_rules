@@ -1,0 +1,63 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0213.10740 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Identify the roles that are the balance sheet **/
+$balance_sheet_roles = (filter taxonomy().networks(parent-child) where (($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('balancesheet') or  $item.role.description.lower-case.contains('balance sheet')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical')) returns $item.role).to-list;
+
+if ($balance_sheet_roles.length == 0)
+	skip
+else
+	
+	/** Sort so we always get the first  statement as this is most likely to be the actual BS**/
+	$bs_roles_sorted = (filter $balance_sheet_roles returns list($item.description, $item.uri, $item )).sort;
+	
+	/** Get the first balance sheet role  and return the role object at 3**/
+	$balance_sheet_role = $bs_roles_sorted[1][3]
+
+	/** Get the balance sheet calculation target items**/
+	$balance_sheet_calc_target_items = navigate summation-item descendants role $balance_sheet_role returns set (target-name)
+
+	/** Get the balance sheet calculation source items**/
+	$balance_sheet_calc_source_items = navigate summation-item descendants role $balance_sheet_role returns set (source-name)
+
+	/** Determine the Leaf Items in the balance sheet calculation by subtracting the source concepts from the target concepts.**/
+	$balance_sheet_leaf_items = $balance_sheet_calc_target_items - $balance_sheet_calc_source_items
+
+	/** Identify Items that cannot be leaf items **/
+	$non_leaf_items = set(Assets, AssetsCurrent, NoncurrentAssets, Liabilities, LiabilitiesCurrent ,LiabilitiesNoncurrent)
+
+	/** Identify the leaf items that are not in the non-leaf items list **/
+
+	for ($item in $non_leaf_items.intersect($balance_sheet_leaf_items))
+		$total = [nonils @concept = $item where $fact != 0]
+		
+		exists([nonils @concept = $item where $fact != 0])
+			
+
+message
+"The item {$item} in the balance sheet with a value of {$total} does not include calculation children in the role {$balance_sheet_role.description}.  The concept {$item} should contain calculation children if it is included in the balance sheet.  If the calculation children are defined in another role then include them in the calculation role so that the balance sheet calculations are complete.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]
+rule-focus taxonomy().concept($item)

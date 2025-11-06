@@ -12,6 +12,11 @@ assert US.0008.6819 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 $extCalcRelationship1 = navigate summation-item descendants returns by network set (relationship);
 		
 for ($network in $extCalcRelationship1.keys)

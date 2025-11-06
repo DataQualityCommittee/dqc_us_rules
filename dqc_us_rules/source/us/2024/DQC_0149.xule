@@ -10,7 +10,13 @@ rule-name-prefix DQC
 
 /** DQC0 0149.9943 **/
 assert US.0149.9943  satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /**Noncurrent Assets used incorrectly  Rule checks that if the element appears in a statement presentation linkbase then an error is recorded.**/
 
@@ -24,16 +30,22 @@ else
 message
 "The element NoncurrentAssets should not appear in the face financial statements of a filing. This element represents long lived assets that are reported in the segment reporting section of the financial statements. Use the element AssetsNoncurrent on the Balance Sheet.
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}
 "
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0149.10075 satisfied
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /**Noncurrent Assets used incorrectly  Rule checks that  the element appears as a descendant ofScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable **/
 
@@ -58,8 +70,8 @@ Total period : {$NonCurrantAssetFact.period}
 Dimensions : {$NonCurrantAssetFact.dimensions.join(', ','=')}
 Decimals : {$NonCurrantAssetFact.decimals} 
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]

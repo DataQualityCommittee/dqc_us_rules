@@ -13,10 +13,15 @@ assert US.0090.9374 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Rule only applies to an annual filing **/
 
 
-if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 
 /** Identifies that the concept LesseeOperatingLeaseLiabilityPaymentsDue is the sum of components OperatingLeaseLiability and LesseeOperatingLeaseLiabilityUndiscountedExcessAmount if either one is used. **/
 
@@ -83,9 +88,14 @@ assert US.0090.9375 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Rule only applies to an annual filing **/
 
-if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 /** Identifies that the concept FinanceLeaseLiabilityPaymentsDue is the sum of components FinanceLeaseLiability and FinanceLeaseLiabilityUndiscountedExcessAmount if either one is used **/
 /** Rule only works at the default level **/

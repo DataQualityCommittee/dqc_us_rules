@@ -11,7 +11,13 @@ rule-name-prefix DQC
 
 assert US.0144.9866 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 
 /** Check that the all monetary concepts in the balance sheet, income statement and cash flow have a debit or credit balance. **/
 
@@ -37,10 +43,10 @@ Concept : {$no_balance_item}
 Period :{first($no_balance_item_values.sort).period}
 Dimensions : {first($no_balance_item_values.sort).dimensions.join(', ','=')}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($no_balance_item)

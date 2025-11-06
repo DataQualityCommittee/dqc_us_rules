@@ -11,32 +11,35 @@ rule-name-prefix DQC
 
 assert US.0013 satisfied
 
-$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
-							{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
-					else
-						if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
-						{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
-						{@IncomeLossFromEquityMethodInvestments}}
+if not applicable_form_string('0013')
+	skip
+else
+	$IncomeBeforeTax = {@unit=* {if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }))
+								{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest }
 						else
-							if	(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
-	  							exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}))
-								{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic} +
-								{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}  +
-								{@IncomeLossFromEquityMethodInvestments}}
+							if (exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments}))
+							{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments} + 
+							{@IncomeLossFromEquityMethodInvestments}}
 							else
-								skip}};
+								if	(exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic}) or 
+									exists({@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}))
+									{{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic} +
+									{@IncomeLossFromContinuingOperationsBeforeIncomeTaxesForeign}  +
+									{@IncomeLossFromEquityMethodInvestments}}
+								else
+									skip}};
 
-for ($x in $EFFECTIVE_TAX_RATES)
-	$rule_suffix_id = $x[1];
-	
-	$IncomeBeforeTax > 0
-	and
-	exists({@concept = $x[2] @unit=* where $fact < 0 
-		and not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) 
-		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 
-		and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
-		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)
-		}#fact1)
+	for ($x in $EFFECTIVE_TAX_RATES)
+		$rule_suffix_id = $x[1];
+		
+		$IncomeBeforeTax > 0
+		and
+		exists({@concept = $x[2] @unit=* where $fact < 0 
+			and not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS) 
+			and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0 
+			and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
+			and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)
+			}#fact1)
 
 message
 "It is expected that {$fact1.name} with a value of {$fact1} will be reported with a value equal to or greater than zero if net income before tax is positive. In this case net income before tax is {$IncomeBeforeTax}. The value reported for the tax rate reconciliation item is less than zero. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label, if desired, for rendering purposes. 

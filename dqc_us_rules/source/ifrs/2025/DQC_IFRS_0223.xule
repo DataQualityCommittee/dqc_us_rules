@@ -1,0 +1,73 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+Assert IFRS.0223.10709 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$ifrs18_Flag = dts-document-locations(taxonomy()).contains('https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs_18_entry_point_2025-03-27.xsd')
+                            
+if $ifrs18_Flag
+
+/**Identify all concepts used on the statement of operating activities or income statement by looking at the presentation parent-child relationships in the STatement of operating activities role, which starts with the string Statement**/
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -')
+and (not $item.role.description.lower-case.contains('parenthetical'))
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('highlights'))
+
+                        
+for $presNetwork in $presNetworks
+    $concepts_in_role = taxonomy().networks(parent-child, $presNetwork.role).concepts;
+
+
+    /** Of the concepts identified, identify those concepts identify those ones that are extensions**/
+    $extension_concepts = filter $concepts_in_role where $item.namespace-uri == taxonomy().entry-point-namespace;
+
+    /** Check that those extensions include one of the following string items : operating, investing, financing, incometax, or discontinuedoperation. **/
+
+    for $ext_concept in $extension_concepts
+    /** If the concept is a leaf item, i.e has no calculation children on the summation-item arcrole then the concept should be flagged as an error. **/
+    $periodType = $ext_concept.period-type;
+    $is_leaf = taxonomy().networks(summation-item).source-concepts.contains($ext_concept) == false;
+    $name_lc = $ext_concept.name.local-name.lower-case();
+    $has_required_string = $name_lc.contains("operating") or $name_lc.contains("investing") or $name_lc.contains("financing") or $name_lc.contains("incometax") or $name_lc.contains("discontinuedoperation");
+    if $is_leaf and not $has_required_string and $periodType == duration
+        true
+    else
+        false
+
+else 
+    skip
+
+
+message
+"The extension concept {$ext_concept.name} is used as a leaf item on the statement of operating activities or income statement but does not include one of the required strings: operating, investing, financing, incometax, or discontinuedoperation. Please revise the concept name to include one of these terms or ensure it is not a leaf item.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

@@ -13,6 +13,12 @@ rule-name-prefix DQC
 assert US.0047.7481 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 for ( $cashOperating in set(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations,NetCashProvidedByUsedInOperatingActivities))
 
 	$misplaced_concept = navigate summation-item descendants from ($cashOperating)

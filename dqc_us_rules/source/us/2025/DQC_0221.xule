@@ -1,0 +1,47 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0221.10749 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+// Identify if the number of reportable segments is used.
+
+// Identify if the statement table is used in the notes
+
+
+$reportableSegments = list({covered @concept = NumberOfReportableSegments});
+
+$SegmentFacts = list({covered @StatementBusinessSegmentsAxis = *})
+
+$reportableFlag = list({covered @concept.local-name = 'NumberOfReportableSegmentsNotDisclosedFlag'});
+
+if $reportableSegments.length == 0 and $SegmentFacts.length > 0 and $reportableFlag.length == 0
+    // If the NumberOfReportableSegments is not reported, but there are segment facts, then the rule is satisfied.
+    true
+else
+    skip
+
+message
+
+"The filing has reported values for segment facts, but has not reported a value for NumberOfReportableSegments. The filer should report a value for NumberOfReportableSegments even if it only has one segment. If the value is not reported the error can be removed by tagging a value to an extension concept called NumberOfReportableSegmentsNotDisclosedFlag with any value in any context.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]

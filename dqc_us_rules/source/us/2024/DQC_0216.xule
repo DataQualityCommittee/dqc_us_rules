@@ -1,0 +1,94 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0216.10743 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+/** Identify where extension geogarphy members are used on the StatementGeographicalAxis and have only two members one with member US on the country axis and one with an extension member **/
+
+// 1. Identify the members on the StatementGeographicalAxis for each role which only have 2 members under the geography domain.
+
+// 2. Identify if one of the two members is  "US" from the country taxonomy 
+
+// 3. Determine if the other member is an extension member.
+
+//4. If an extension member then report an error and indicate they should have used the memebr NonUsMember
+
+
+// 1. Identify sets of members for each role (network) where only two members exist
+for ($role in taxonomy().roles)
+    $members_in_role = navigate domain-member descendants from srt:SegmentGeographicalDomain role $role returns set(target-name)
+    if $members_in_role.length == 2
+        // 2. Check if one is USMember and the other is an extension
+        if $members_in_role.contains(country:US)
+            $other_member = first(filter $members_in_role where $item != country:US)
+            if $other_member.namespace-uri == $EXTENSION_NS
+                // 3. If extension and not NonUsMember, report error
+                true
+            else
+                skip
+        else
+            skip
+    else
+        skip
+
+message
+"Extension member '{$other_member}' is used on StatementGeographicalAxis in the role '{$role.uri}' with the member representing the US. Because there are only two members defined the member NonUsMember should be used instead of the extension member {$other_member}.
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]
+rule-focus taxonomy().concept($other_member)
+
+
+assert US.0216.10744 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+// 1. Identify sets of members for each role (network) where only two members exist
+for ($role in taxonomy().roles)
+    $members_in_role = navigate domain-member descendants from srt:SegmentGeographicalDomain role $role returns set(target-name)
+   
+        // 2. Check if one Domestic Member is used
+        if $members_in_role.contains(qname($EXTENSION_NS,'DomesticMember'))
+                true
+        else
+                skip
+
+
+message
+"The extension member 'DomesticMember' is used on StatementGeographicalAxis in the role '{$role.uri}'. If the domestic member represents the US then the member US from the country taxonomy should be used. If the domestic member is not the US then it should be defined based on a country in the country taxonomy.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error  
+
+effectiveDate $effective_dates[$rule_id]
+rule-focus taxonomy().concept(qname($EXTENSION_NS,'DomesticMember'))

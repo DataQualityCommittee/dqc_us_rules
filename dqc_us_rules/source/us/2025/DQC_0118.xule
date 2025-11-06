@@ -14,6 +14,12 @@ RULE-NAME-PREFIX DQC
 ASSERT US.0118.9575 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**  Get the latest Report Period**/
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 $document_period_end_date = $document_period.period.end - time-span("P1D");

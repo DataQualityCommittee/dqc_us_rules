@@ -6,7 +6,7 @@ DQC Rules
 Taxonomy: US GAAP 2024
 
 **/
-
+/** 
 RULE-NAME-PREFIX DQC
 
 ASSERT US.0158.10078 SATISFIED
@@ -31,13 +31,15 @@ SEVERITY error
 
 effectiveDate $effective_dates[$rule_id]
 
-
-
+**/
+/**
 ASSERT US.0158.10080 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Get elements that are extensible enumeration status items **/
+
+/**
 
 $statusAxisExtEnum = $REL_PTY_STATUS_ENUM
 
@@ -59,3 +61,4 @@ SEVERITY error
 
 
 effectiveDate $effective_dates[$rule_id]
+**/

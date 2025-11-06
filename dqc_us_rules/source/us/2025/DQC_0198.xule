@@ -77,6 +77,11 @@ ASSERT US.0198.10650 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
@@ -105,6 +110,11 @@ ASSERT US.0198.10651 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
@@ -125,7 +135,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-
+rule-focus $concept-value
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -134,6 +144,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0198.10652 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
@@ -150,7 +165,7 @@ $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncom
                     {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
                 else
                      if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
-                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD where $fact != 0}
                 else
                     $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
 
@@ -206,7 +221,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $percentage-value
 effectiveDate $effective_dates[$rule_id]
 
 /** Check if the domestic and foreign member are used.**/
@@ -214,6 +229,11 @@ effectiveDate $effective_dates[$rule_id]
 ASSERT US.0198.10660 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**If provide a value for IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate in a 10-K then should have an used the extensible enumeration element TaxJurisdictionOfDomicileExtensibleEnumeration for those comapnies that have adopted unless they have used more than 1 member on the axis IncomeTaxAuthorityAxis.**/
 
@@ -243,13 +263,18 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $IncomeTax
 effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0198.10661 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**If provide a value for EffectiveIncomeTaxRateReconciliationTable in a 10-K and TaxJurisdictionOfDomicileExtensibleEnumeration == DomesticCountryMember for those comapnies that have adopted **/
 

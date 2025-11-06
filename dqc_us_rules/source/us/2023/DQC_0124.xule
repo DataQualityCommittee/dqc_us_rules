@@ -11,7 +11,12 @@ rule-name-prefix DQC
 
 assert US.0124.9584 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If FinanceLeaseLiability amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -77,12 +82,12 @@ Dimensions : {$leaseLiability.dimensions.join(', ','=')}
 Unit : {$leaseLiability.unit}
 Decimals: {$leaseLiability.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseLiability 
 
@@ -90,6 +95,11 @@ rule-focus $leaseLiability
 assert US.0124.9585 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If Finance lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -168,7 +178,12 @@ rule-focus $factItem
 
 assert US.0124.9586 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If Finance lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -237,19 +252,24 @@ Dimensions : {$fact_item.dimensions.join(', ','=')}
 Unit : {$fact_item.unit}
 Decimals: {$fact_item.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $fact_item
 
 
 assert US.0124.9587 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If FinanceLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -312,18 +332,23 @@ Dimensions : {$leaseAsset.dimensions.join(', ','=')}
 Unit : {$leaseAsset.unit}
 Decimals: {$leaseAsset.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseAsset 
 
 assert US.0124.9588 satisfied
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** If OperatingLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
@@ -386,11 +411,11 @@ Dimensions : {$leaseAsset.dimensions.join(', ','=')}
 Unit : {$leaseAsset.unit}
 Decimals: {$leaseAsset.decimals}
 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $leaseAsset 

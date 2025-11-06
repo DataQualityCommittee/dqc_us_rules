@@ -11,7 +11,12 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0119.9576 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 exists([@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments]#beforeTax) and 
 count(list({covered @concept in list(IncomeLossFromEquityMethodInvestments, IncomeLossFromEquityMethodInvestmentsNetOfDividendsOrDistributions, IncomeLossFromAffordableHousingProjectsEquityMethodInvestments)})) == 0
@@ -22,19 +27,24 @@ message
 Element : {$beforeTax.concept.name}
 Value : {$beforeTax} 
 Period : {$beforeTax.period} 
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus $beforeTax
 
 
 ASSERT US.0119.9577 SATISFIED
 
-$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /** Equity method investments is excluded from rule 0081, so this rule addresses this **/
 
@@ -54,12 +64,12 @@ message
 "The company has included {$equityIncomeElement} as a component of the concept \"Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments\". The element {$equityIncomeElement} cannot be included as a component of \"Income Loss From Continuing Operations Before Income Taxes Minority Interest And Income Loss From Equity Method Investments\" as this element excludes equity method investments.  The filer should use the concept IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest instead.
 
 Element : {$equityIncomeElement}
-Rule Element Id:{$ruleId}
+Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
 
-effectiveDate $effective_dates[$ruleId]
+effectiveDate $effective_dates[$rule_id]
 
 rule-focus taxonomy().concept($equityIncomeElement)
 

@@ -13,6 +13,12 @@ ASSERT US.0191.10618 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
 $ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
                             if $link.contains('https://xbrl.sec.gov/ecd/2024/ecd-2024.xsd')
                                 true

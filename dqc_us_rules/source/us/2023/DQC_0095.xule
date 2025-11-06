@@ -14,6 +14,11 @@ assert US.0095.9528 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
 /** Check if any subsequent event impacted shares at the end of the period. If it did then the rule will not run **/
 if count(set({covered @concept.data-type = xbrli:sharesItemType  @SubsequentEventTypeAxis = SubsequentEventMember})) > 1
 	or count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1

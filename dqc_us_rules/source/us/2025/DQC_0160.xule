@@ -11,8 +11,12 @@ RULE-NAME-PREFIX DQC
 
 ASSERT US.0160.10082 satisfied
 
-/** 2023 TAXONOMY ONLY **/
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**Check that the non related party member has no descendants **/
 
@@ -34,8 +38,12 @@ effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0160.10092 satisfied
 
-/** 2023 TAXONOMY ONLY **/
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
 
 /**Check that the non related party member has no descendants **/
 
