@@ -60,7 +60,9 @@ else
 
     $Pref_stock_items = navigate summation-item descendants from PreferredStockDividendsAndOtherAdjustments taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
 
-    $income_statement_items = $INCOME_STATEMENT_CONCEPTS + $Pref_stock_items - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest, InvestmentCompanyDividendDistribution)
+    $Pref_stock_items_allowed = navigate summation-item descendants from StockholdersEquityPeriodIncreaseDecrease taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
+
+    $income_statement_items = $INCOME_STATEMENT_CONCEPTS + ($Pref_stock_items - $Pref_stock_items_allowed) - set(NetIncomeLoss, ProfitLoss, NetIncomeLossAttributableToNoncontrollingInterest, InvestmentCompanyDividendDistribution, OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentNetOfTaxPortionAttributableToParent)
 
     $fact1 = {nonils @concept in $income_statement_items  @StatementEquityComponentsAxis = * @ReclassificationOutOfAccumulatedOtherComprehensiveIncomeAxis = none}
     exists($fact1)

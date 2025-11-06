@@ -1,6 +1,6 @@
 language: python
 dist: jammy
-python: "3.12"
+python: "3.13"
 branches:
   only:
   - master
@@ -9,8 +9,8 @@ env:
   global:
     - EXPECTED=./tests/output
     - CURDIR=$(pwd)
-    - PYTHON_VERSION=python3.12
-    - XULE_VERSION=30048
+    - PYTHON_VERSION=python3.13
+    - XULE_VERSION=30050
     - XULE_REPO=xbrlus
     - GH_SLUG=https://github.com/${TRAVIS_REPO_SLUG}
     - PR_BR=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
@@ -41,7 +41,7 @@ env:
     - INFILES='[{"file":"./tests/input/testfiles/2023/TestCo-2023-NonNeg-IFRS.xml", "xule_run_only":"DQC.IFRS.0080"},{"file":"http://www.sec.gov/Archives/edgar/data/1045520/000119312524271105/d886456d40f.htm", "xule_run_only":"DQC.IFRS.0186.10172"},{"file":"http://www.sec.gov/Archives/edgar/data/1039765/000162828024009782/ing-20231231.htm", "xule_run_only":"DQC.IFRS.0169.10111"},{"file":"http://www.sec.gov/Archives/edgar/data/1061736/000162828024017454/fmx-20231231.htm", "xule_run_only":"DQC.IFRS.0168.10110"},{"file":"http://www.sec.gov/Archives/edgar/data/1023514/000162828023035632/hmy-20230630.htm", "xule_run_only":"DQC.IFRS.0162.10084"},{"file":"http://www.sec.gov/Archives/edgar/data/1263043/000119312524100756/d721524d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1263043/000119312524100756/d721524d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1615903/000119312524117750/d775178d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1615903/000119312524117750/d775178d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/913059/000119312524099078/d595174d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1263043/000119312524100756/d721524d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1034957/000165495424013234/cresud_20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1075124/000119312524062308/d740282d40f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1792030/000117891324002599/exhibit_99-2.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1847409/000155837024000624/hiti-20231031x40f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1129137/000119312524123257/d855868d20f.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm", "xule_run_only":"DQC.IFRS.0129"},{"file":"http://www.sec.gov/Archives/edgar/data/1132597/000129281424001692/itubform20f_2023.htm", "xule_run_only":"DQC.IFRS.0104.9555"},{"file":"http://www.sec.gov/Archives/edgar/data/1164771/000165495425003461/ndm_40f.htm", "xule_run_only":"DQC.IFRS.0104.9554"},{"file":"http://www.sec.gov/Archives/edgar/data/1463000/000182912624002918/grownrogue_20f.htm", "xule_run_only":"DQC.IFRS.0104.9553"},{"file":"http://www.sec.gov/Archives/edgar/data/1034957/000165495424013234/cresud_20f.htm", "xule_run_only":"DQC.IFRS.0104.9552"},{"file":"http://www.sec.gov/Archives/edgar/data/1627272/000106299324007371/exhibit99-2.htm", "xule_run_only":"DQC.IFRS.0102.9548"},{"file":"http://www.sec.gov/Archives/edgar/data/1122491/000129281424001448/brfform20f_2023.htm", "xule_run_only":"DQC.IFRS.0102.9546"},{"file":"http://www.sec.gov/Archives/edgar/data/1159508/000115950824000021/deutschebankag-20231231.htm", "xule_run_only":"DQC.IFRS.0102.9542"},{"file":"http://www.sec.gov/Archives/edgar/data/1034957/000165495424013234/cresud_20f.htm", "xule_run_only":"DQC.IFRS.0102.9540"},{"file":"http://www.sec.gov/Archives/edgar/data/793628/000107997324000619/chnr_20f-123123.htm", "xule_run_only":"DQC.IFRS.0101.9536"},{"file":"http://www.sec.gov/Archives/edgar/data/1173643/000117184323004507/exh_991.htm", "xule_run_only":"DQC.IFRS.0101.9535"}]' EXFILES=$EXPECTED/DQC.IFRS.0080_testco_ifrs-2023.xml,$EXPECTED/DQC.IFRS.0186.10172_CM-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0169.10111_ING32-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0168.10110_FMX50-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0162.10084_HMY-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129.9714_SHG-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129.9713_SHG-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129.9710_IFS-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129.9708_IFS-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_BBAR-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129.9703_SHG-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_CRESY-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_TRI-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_IMCC-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_HITI-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_AMX-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0129_ITUB-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0104.9555_ITUB-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0104.9554_NDM-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0104.9553_GRIN-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0104.9552_CRESY-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0102.9548_OR-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0102.9546_BRFS-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0102.9542_DZZ-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0102.9540_CRESY-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0101.9536_CHNR-ifrs-2023.xml,$EXPECTED/DQC.IFRS.0101.9535_TRX-ifrs-2023.xml
 install:
   - pip install -r requirements.txt
-  - pip install Arelle-release==2.37.6
+  - pip install Arelle-release==2.37.58
 script:
   - travis_wait bash ./travis-run.sh
 after_script:
