@@ -25,12 +25,23 @@ else
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact2 = {@SharesIssued @StatementClassOfStockAxis = * @@period.end  = $DOCUMENT_PERIOD_END_DATE};
 	$not_present_fact3 = [@SharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact5 = [@SharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact6 = [@CommonStockSharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_disclosed_on_purpose = list({covered @concept.local-name ='CommonStockSharesIssuedNotDisclosed'}).length > 0
 
-    exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3)
+    exists($present_fact) and 
+    missing($not_present_fact1) 
+    and missing($not_present_fact2) 
+    and missing($not_present_fact3) 
+    and missing($not_present_fact5) 
+    and missing($not_present_fact6)
+    and not $not_disclosed_on_purpose
 
 message
 
-"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares issued. If shares outstanding and shares issued are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesIssued.
+"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares issued. If shares outstanding and shares issued are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesIssued. 
+
+If it is not reported use the extension boolean concept called CommonStockSharesIssuedNotDisclosed with value true in any context. 
 
 The properties of this {$present_fact.name} fact are:
 
@@ -53,16 +64,27 @@ if not applicable_form(rule-name())
 	skip
 else
 
-    $present_fact = [@SharesOutstanding @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+     $present_fact = [@SharesOutstanding @@period.end  = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact2 = {@SharesIssued @StatementClassOfStockAxis = * @@period.end  = $DOCUMENT_PERIOD_END_DATE};
 	$not_present_fact3 = [@SharesIssued @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact4 = [@SharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_present_fact5 = [@CommonStockSharesIssued @StatementEquityComponentsAxis = CommonStockMember @@period.end  = $DOCUMENT_PERIOD_END_DATE];
+    $not_disclosed_on_purpose = list({covered @concept.local-name ='SharesIssuedNotDisclosed'}).length > 0
 
-    exists($present_fact) and missing($not_present_fact1) and missing($not_present_fact2) and missing($not_present_fact3)
+    exists($present_fact) 
+    and missing($not_present_fact1) 
+    and missing($not_present_fact2) 
+    and missing($not_present_fact3) 
+    and missing($not_present_fact4) 
+    and missing($not_present_fact5) 
+    and not $not_disclosed_on_purpose
 
 message
 
 "A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares issued. If shares outstanding and shares issued are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesIssued.
+
+If it is not reported use the extension boolean concept called SharesIssuedNotDisclosed with value true in any context.
 
 The properties of this {$present_fact.name} fact are:
 
@@ -96,7 +118,7 @@ else
 
 message
 
-"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with any value in any context. This can occur for companies that are not publicly listed.
+"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a boolean value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with a value of true in any context. This can occur for companies that are not publicly listed.
 
 The properties of this {$present_fact.name} fact are:
 
@@ -122,7 +144,7 @@ if not applicable_form(rule-name())
 	skip
 else
 
-    $present_fact = [@SharesOutstanding @@period.end = $DOCUMENT_PERIOD_END_DATE];
+    $present_fact = [@SharesOutstanding @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
     $not_present_fact1 = [@CommonStockSharesAuthorized @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact2 = [@CommonStockSharesAuthorizedUnlimited @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
 	$not_present_fact3 = [@CommonStockSharesAuthorized @StatementClassOfStockAxis = * @unit @period.end = $DOCUMENT_PERIOD_END_DATE];
@@ -131,7 +153,7 @@ else
 
 message
 
-"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with any value in any context. This can occur for companies that are not publicly listed.
+"A value was reported for {$present_fact.name} with a value of {$present_fact}. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept {$present_fact.name} and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a boolean value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with a value of true in any context. This can occur for companies that are not publicly listed.
 
 The properties of this {$present_fact.name} fact are:
 
