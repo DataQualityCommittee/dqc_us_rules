@@ -1,0 +1,169 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+/** We are defining a constant for this rule here for the interim (until the met model is final) which will be replaced by the metadata model later. This constant
+** is generated using the following:
+
+$NUMERATOR = navigate 'http://www.xbrl.org/2021/arcrole/concept-numerator' descendants taxonomy $META_2026 returns list (source-name, target-name)
+
+$DENOMINATOR = navigate 'http://www.xbrl.org/2021/arcrole/concept-denominator' descendants taxonomy $META_2026 returns list (source-name, target-name)
+
+$NumeratorSources = filter $NUMERATOR returns $item.first
+
+CONSTANT $NUM_DEN_FULL = dict(for $source in $NumeratorSources
+    $numerator = sum(filter $NUMERATOR where $item.first == $source returns $item.last)
+    $denominator = sum(filter $DENOMINATOR where $item.first == $source returns $item.last)
+    list($source, list($numerator, $denominator)))
+
+**/
+
+CONSTANT $NUM_DEN_FULL = dict(list(srt:FinancingReceivableAllowanceForCreditLossToNonaccrualPercent, list(FinancingReceivableAllowanceForCreditLosses, FinancingReceivableRecordedInvestmentNonaccrualStatus)),
+                    list(srt:FinancingReceivableAllowanceForCreditLossToOutstandingPercent, list(FinancingReceivableAllowanceForCreditLosses, NotesReceivableGross)),
+                    list(srt:FinancingReceivableNonaccrualToOutstandingPercent, list(FinancingReceivableRecordedInvestmentNonaccrualStatus, NotesReceivableGross)),
+                    list(srt:InterestEarningAssetsNetYield, list(InterestIncomeInterestEarningAsset, InterestEarningAssetsAverageAmountOutstanding)),
+                    list(BankingRegulationCommonEquityTierOneRiskBasedCapitalRatioCapitalAdequacyMinimum, list(CommonEquityTierOneCapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(BankingRegulationCommonEquityTierOneRiskBasedCapitalRatioWellCapitalizedMinimum, list(CommonEquityTierOneCapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(CapitalRequiredForCapitalAdequacyToRiskWeightedAssets, list(CapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(CapitalRequiredToBeWellCapitalizedToRiskWeightedAssets, list(CapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(CommonEquityTierOneCapitalRatio, list(CommonEquityTierOneCapital, RiskWeightedAssets)),
+                    list(DebtInstrumentConvertibleConversionRatio1, list(DebtInstrumentConvertibleNumberOfEquityInstruments, DebtInstrumentCarryingAmount)),
+                    list(DefinedBenefitPlanFundedPercentage, list(DefinedBenefitPlanFairValueOfPlanAssets, DefinedBenefitPlanBenefitObligation)),
+                    list(DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, list(DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, DefinedBenefitPlanFairValueOfPlanAssets)),
+                    list(DerivativeNetAssetsPercentage, list(DerivativeFairValueOfDerivativeNet, AssetsNet)),
+                    list(EarningsPerShareBasic, list(NetIncomeLossAvailableToCommonStockholdersBasic, WeightedAverageNumberOfSharesOutstandingBasic)),
+                    list(EffectiveIncomeTaxRateContinuingOperations, list(IncomeTaxExpenseBenefit, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate, list(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationBeatPercent, list(EffectiveIncomeTaxRateReconciliationBeatAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance, list(IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationChangeInEnactedTaxRate, list(IncomeTaxReconciliationChangeInEnactedTaxRate, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent, list(EffectiveIncomeTaxRateReconciliationCrossBorderOtherAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectPercent, list(EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductions, list(IncomeTaxReconciliationDeductions, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductionsDividends, list(IncomeTaxReconciliationDeductionsDividends, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends, list(IncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion, list(IncomeTaxReconciliationDeductionsExtraterritorialIncomeExclusion, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductionsMedicarePrescriptionDrugBenefit, list(IncomeTaxReconciliationDeductionsMedicarePrescriptionDrugBenefitSubsidy, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDeductionsOther, list(IncomeTaxReconciliationDeductionsOther, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDispositionOfAssets, list(IncomeTaxReconciliationDispositionOfAssets, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationDispositionOfBusiness, list(IncomeTaxReconciliationDispositionOfBusiness, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary, list(IncomeTaxReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationFdiiPercent, list(EffectiveIncomeTaxRateReconciliationFdiiAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential, list(IncomeTaxReconciliationForeignIncomeTaxRateDifferential, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationGiltiPercent, list(EffectiveIncomeTaxRateReconciliationGiltiAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationMinorityInterestIncomeExpense, list(IncomeTaxReconciliationMinorityInterestIncomeExpense, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpense, list(IncomeTaxReconciliationNondeductibleExpense, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseAmortization, list(IncomeTaxReconciliationNondeductibleExpenseAmortization, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions, list(IncomeTaxReconciliationNondeductibleExpenseCharitableContributions, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepletion, list(IncomeTaxReconciliationNondeductibleExpenseDepletion, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciation, list(IncomeTaxReconciliationNondeductibleExpenseDepreciation, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciationAndAmortization, list(IncomeTaxReconciliationNondeductibleExpenseDepreciationAndAmortization, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseImpairmentLosses, list(IncomeTaxReconciliationNondeductibleExpenseImpairmentLosses, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLeases, list(IncomeTaxReconciliationNondeductibleExpenseLeases, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance, list(IncomeTaxReconciliationNondeductibleExpenseLifeInsurance, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment, list(IncomeTaxReconciliationNondeductibleExpenseMealsAndEntertainment, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseOther, list(IncomeTaxReconciliationNondeductibleExpenseOther, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseResearchAndDevelopment, list(IncomeTaxReconciliationNondeductibleExpenseResearchAndDevelopment, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseRestructuringCharges, list(IncomeTaxReconciliationNondeductibleExpenseRestructuringCharges, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationNondeductibleExpenseShareBasedCompensationCost, list(IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationOtherAdjustments, list(IncomeTaxReconciliationOtherAdjustments, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationOtherReconcilingItemsPercent, list(IncomeTaxReconciliationOtherReconcilingItems, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationPriorYearIncomeTaxes, list(IncomeTaxReconciliationPriorYearIncomeTaxes, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings, list(IncomeTaxReconciliationRepatriationOfForeignEarnings, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitPercent, list(EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationStateAndLocalIncomeTaxes, list(IncomeTaxReconciliationStateAndLocalIncomeTaxes, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxContingencies, list(IncomeTaxReconciliationTaxContingencies, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxContingenciesDomestic, list(IncomeTaxReconciliationTaxContingenciesDomestic, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxContingenciesForeign, list(IncomeTaxReconciliationTaxContingenciesForeign, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxContingenciesOther, list(IncomeTaxReconciliationTaxContingenciesOther, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxContingenciesStateAndLocal, list(IncomeTaxReconciliationTaxContingenciesStateAndLocal, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedPercent, list(EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedAmount, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCredits, list(IncomeTaxReconciliationTaxCredits, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCreditsForeign, list(IncomeTaxReconciliationTaxCreditsForeign, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment, list(IncomeTaxReconciliationTaxCreditsInvestment, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCreditsOther, list(IncomeTaxReconciliationTaxCreditsOther, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxCreditsResearch, list(IncomeTaxReconciliationTaxCreditsResearch, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxExemptIncome, list(IncomeTaxReconciliationTaxExemptIncome, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxHolidays, list(IncomeTaxReconciliationTaxHolidays, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxSettlements, list(IncomeTaxReconciliationTaxSettlements, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxSettlementsDomestic, list(IncomeTaxReconciliationTaxSettlementsDomestic, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxSettlementsForeign, list(IncomeTaxReconciliationTaxSettlementsForeign, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxSettlementsOther, list(IncomeTaxReconciliationTaxSettlementsOther, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(EffectiveIncomeTaxRateReconciliationTaxSettlementsStateAndLocal, list(IncomeTaxReconciliationTaxSettlementsStateAndLocal, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest)),
+                    list(ExtinguishmentOfDebtGainLossPerShareNetOfTax, list(ExtinguishmentOfDebtGainLossNetOfTax, WeightedAverageNumberOfSharesOutstandingBasic)),
+                    list(FinancingReceivableExcludingAccruedInterestNonaccrualPercentPastDue, list(FinancingReceivableExcludingAccruedInterest90DaysOrMorePastDueStillAccruing, FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss)),
+                    list(FinancingReceivableModificationToTotalFinancingReceivablesExcludingAccruedInterestPercent, list(FinancingReceivableExcludingAccruedInterestModifiedPeriod, NotesReceivableGross)),
+                    list(FinancingReceivableModificationToTotalFinancingReceivablesPercent, list(FinancingReceivableModificationsPostModificationRecordedInvestment2, NotesReceivableGross)),
+                    list(FinancingReceivableNonaccrualPercentPastDue1, list(FinancingReceivableRecordedInvestment90DaysPastDueAndStillAccruing, FinancingReceivableRecordedInvestmentNonaccrualStatus)),
+                    list(FinancingReceivablePercentPastDue1, list(FinancingReceivableRecordedInvestment90DaysPastDueAndStillAccruing, NotesReceivableGross)),
+                    list(InvestmentCompanySeniorSecurityIndebtednessAssetCoverageRatio, list(NonInvestmentAssetsLessNonInvestmentLiabilities, SeniorNotes)),
+                    list(InvestmentOwnedPercentOfNetAssets, list(InvestmentOwnedAtFairValue, AssetsNet)),
+                    list(LoansAndLeasesReceivableRatioOfNonperformingLoansToAllLoans, list(LoansAndLeasesReceivableImpairedNonperformingNonaccrualOfInterest, LoansAndLeasesReceivableGrossCarryingAmount)),
+                    list(NonInvestmentAssetsLessNonInvestmentLiabilitiesPercentOfNetAssets, list(NonInvestmentAssetsLessNonInvestmentLiabilities, AssetsNet)),
+                    list(RestrictedInvestmentsPercentOfNetAssets, list(RestrictedInvestmentsAtFairValue, AssetsNet)),
+                    list(SaleOfStockPricePerShare, list(SaleOfStockConsiderationReceivedOnTransaction, SaleOfStockNumberOfSharesIssuedInTransaction)),
+                    list(TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(TierOneRiskBasedCapitalToRiskWeightedAssets, list(TierOneRiskBasedCapital, RiskWeightedAssets)),
+                    list(TreasuryStockAcquiredAverageCostPerShare, list(TreasuryStockValueAcquiredCostMethod, TreasuryStockSharesAcquired)))
+
+CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last
+
+CONSTANT $NUM-DEN = $NUM_DEN_FULL - $EXISTING_PERCENT_CHECKS
+
+ASSERT US.0227.10800 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+  for ($key in $NUM-DEN.keys)
+
+      $numerator_concept =  $NUM-DEN[$key][1]
+      $denominator_concept = $NUM-DEN[$key][2]
+
+      $calc = {nonils @concept = $key @unit = * }
+      $numerator = {nonils @concept = $numerator_concept @unit =* where $fact != 0}
+      $denominator = {nonils @concept = $denominator_concept @unit =* where $fact != 0}
+
+      if (exists($numerator) and exists($denominator) and exists($calc))
+
+          $calcResult = ($numerator / $denominator);
+      $intervalsList = division_intervals($numerator, $denominator);
+      $result_intervals = fact_intervals($calc);
+
+          $greaterThanLowerBound = $intervalsList[1] <= $result_intervals[2]
+          $lessThanUpperBound = $intervalsList[2] >= $result_intervals[1]
+
+      if $greaterThanLowerBound and $lessThanUpperBound
+        false
+      else
+        true
+
+      else
+
+          skip
+
+message
+"The value of {$key} of {$calc} is calculated by dividing  {$numerator_concept} with a value of {$numerator} by {$denominator_concept} with a value of {$denominator} which equals {$calcResult}. This does not equal the reported value of {$calc}. Check that the decimals of the components and calculated fact are appropriate.
+
+Fact Intervals {$result_intervals}
+Calculated Intervals {$intervalsList}
+Calc Decimals : {$calc.decimals}
+Numerator Decimals : {$numerator.decimals}
+Denominator Decimals : {$denominator.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
