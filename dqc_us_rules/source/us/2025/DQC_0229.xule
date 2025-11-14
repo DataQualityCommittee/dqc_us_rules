@@ -19,27 +19,26 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 if not applicable_form(rule-name())
 	skip
 else
-  $DICT_OTHER_AGGREGATE = $OTHER_AGGREGATE.agg-to-dict(1)
+    $LIST_OTHER_AGGREGATE = filter $OTHER_AGGREGATE returns $item.last;
+    $LIST_OTHER_AGGREGATE_PARENT = (filter $OTHER_AGGREGATE returns $item.first).to-set;
 
-for $item in $DICT_OTHER_AGGREGATE.keys
-    $dupTargetsAndBase = sum($DICT_OTHER_AGGREGATE[$item]).to-set
-    $dupTargets = $dupTargetsAndBase - set($item)
-    if $dupTargets.length < 2
-        skip
-    else
-        $networks-dict = navigate summation-item descendants returns by network set (target-name)
-        
+    for $item in $LIST_OTHER_AGGREGATE.to-set
+        $networks-dict = navigate summation-item siblings from $item returns by network set (target-name)
+         
         for $network in $networks-dict.keys
-            $networkValues = $networks-dict[$network]
-            $commonItems = $networkValues intersect $dupTargets
-            if  $commonItems.length > 1
-       
-                true
-            else
-                false
+                $parent_item = navigate summation-item parents from $item role $network.role returns set (target-name)
+                if $parent_item in $LIST_OTHER_AGGREGATE_PARENT
+                    $networkValues = $networks-dict[$network];
+                    $commonItems = $networkValues intersect $LIST_OTHER_AGGREGATE.to-set;
+                    if  $commonItems.length > 0
+                        true
+                    else
+                        false
+                else
+                   skip
 
 message
-"The calculation network {$network.role.description} has multiple 'other' concepts included in it: {$commonItems}. Each calculated concept should have only one 'other' concept included in it.
+"The calculation network {$network.role.description} defines the concept {$parent_item} which has multiple 'other' concepts included in it.  The calculation relationship contains the other item {$item} and the item(s) {$commonItems.join(', ')}. Each calculated concept should have only one 'other' concept included in it.
    
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
