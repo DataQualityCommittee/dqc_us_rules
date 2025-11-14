@@ -19,32 +19,35 @@ if not applicable_form(rule-name())
 else
 
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
-$document_period_end_date = $document_period.period.end;
-$document_period_start_date = $document_period.period.start + time-span("P0D")
-
-if  not set('10-K','20-F').contains([covered @concept.local-name ='DocumentType'])
-	or (exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
-	or (exists({covered @concept = qname($EXTENSION_NS,'YearOfInception')}))
-	or (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
-	or (exists({covered @concept = FinancialDesignationPredecessorAndSuccessorFixedList}))
-
+if not exists($document_period)
 	skip
 else
-	                    
-	for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
-		
-		$presConceptItems = $presNetwork.concept-names;
+	$document_period_end_date = $document_period.period.end;
+	$document_period_start_date = $document_period.period.start + time-span("P0D")
 
-		// Income Statement Processing 
-		if $presConceptItems.contains(IncomeStatementAbstract)
-			$presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
-			$periodDuration = duration($document_period_start_date, $document_period_end_date);
-			$totalYearItems = list([covered @concept in $presNumericItems @period in list($periodDuration)])#YearFacts.count
-			$totalNonYearItems = list([covered @concept in $presNumericItems @period.end = $document_period_end_date - time-span("P1D") @period.start != $document_period_start_date])#facts.count
-			$totalYearItems < $totalNonYearItems
+	if  not set('10-K','20-F').contains([covered @concept.local-name ='DocumentType'])
+		or (exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
+		or (exists({covered @concept = qname($EXTENSION_NS,'YearOfInception')}))
+		or (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
+		or (exists({covered @concept = FinancialDesignationPredecessorAndSuccessorFixedList}))
 
-		else 
-			skip
+		skip
+	else
+							
+		for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+			
+			$presConceptItems = $presNetwork.concept-names;
+
+			// Income Statement Processing 
+			if $presConceptItems.contains(IncomeStatementAbstract)
+				$presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+				$periodDuration = duration($document_period_start_date, $document_period_end_date);
+				$totalYearItems = list([covered @concept in $presNumericItems @period in list($periodDuration)])#YearFacts.count
+				$totalNonYearItems = list([covered @concept in $presNumericItems @period.end = $document_period_end_date - time-span("P1D") @period.start != $document_period_start_date])#facts.count
+				$totalYearItems < $totalNonYearItems
+
+			else 
+				skip
 
 
 message
