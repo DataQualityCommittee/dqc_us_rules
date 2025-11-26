@@ -68,15 +68,16 @@ else
       $numerator_concept =  $NUM-DEN[$key][1]
       $denominator_concept = $NUM-DEN[$key][2]
 
-      $calc = {nonils @concept = $key @unit = * }
       $numerator = {nonils @concept = $numerator_concept @unit =* where $fact != 0}
       $denominator = {nonils @concept = $denominator_concept @unit =* where $fact != 0}
+
+      $calc = {nonils @concept = $key @unit = * where $fact.unit.numerator == $numerator.unit}
 
       if (exists($numerator) and exists($denominator) and exists($calc))
 
           $calcResult = ($numerator / $denominator);
-      $intervalsList = division_intervals($numerator, $denominator);
-      $result_intervals = fact_intervals($calc);
+          $intervalsList = division_intervals($numerator, $denominator);
+          $result_intervals = fact_intervals($calc);
 
           $greaterThanLowerBound = $intervalsList[1] <= $result_intervals[2]
           $lessThanUpperBound = $intervalsList[2] >= $result_intervals[1]
