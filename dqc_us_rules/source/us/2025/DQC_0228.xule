@@ -24,8 +24,18 @@ else
       $target = $item.last
 
       if $source in $NON_NEG_ITEMS.keys
-          $sourceFact = {nonils @concept = $source }
-          $targetFact = {nonils @concept = $target  }
+          $sourceFact = {nonils @concept = $source where $fact > 0 and ($fact.dimensions.length == 0 or 
+                            (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
+                            and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
+                            and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
+                            and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+                            }
+          $targetFact = {nonils @concept = $target where $fact > 0 and ($fact.dimensions.length == 0 or 
+                            (not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
+                            and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
+                            and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
+                            and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+                            }
 
               if ($sourceFact <= $targetFact)
                   true
@@ -44,3 +54,4 @@ Rule version: {$ruleVersion}"
 severity error
 
 effectiveDate $effective_dates[$rule_id]
+
