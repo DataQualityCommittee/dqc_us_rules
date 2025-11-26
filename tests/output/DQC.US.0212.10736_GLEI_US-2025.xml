@@ -7,63 +7,73 @@
  <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
  <ref href="EDGAR/transform"/></entry>
 <entry code="info" level="info">
- <message>[info] Xule version: 3.0.30045 - </message>
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 5.11 secs at 2025-07-21T15:24:04 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <message>[info] loaded in 1.48 secs at 2025-11-05T16:50:55 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.buildIndexTime" level="debug">
- <message>[xule.buildIndexTime] Index build time 0:00:00.028005. - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.buildIndexTime] Index build time 0:00:00.004912. - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleDebug" level="debug">
- <message>[xule.ruleDebug] Processing: DQC.US.0212.10736 - 15:24:22.214285 - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleDebug] Processing: DQC.US.0212.10736 - 16:50:58.915486 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleDebug" level="debug">
- <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="DQC.US.0212.10736" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm" severity="error" status="PROPOSED" effectiveDate="None" cid="2367478505184">[DQC.US.0212.10736] A value was reported for us-gaap:CommonStockSharesOutstanding with a value of 4,170,000. A value was not reported to represent shares issued. If shares outstanding and shares issued are the same, then the value should be tagged with the concept us-gaap:CommonStockSharesOutstanding and the concept CommonStockSharesIssued.
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm" severity="error" effectiveDate="None" cid="2232018727184">[DQC.US.0212.10736] A value was reported for us-gaap:CommonStockSharesOutstanding with a value of 4,170,000. A value was not reported to represent shares issued. If shares outstanding and shares issued are the same, then the value should be tagged with the concept us-gaap:CommonStockSharesOutstanding and the concept CommonStockSharesIssued. 
+
+If it is not reported use the extension boolean concept called CommonStockSharesIssuedNotDisclosed with value true in any context. 
 
 The properties of this us-gaap:CommonStockSharesOutstanding fact are:
 
 Period: 2025-01-31
 Unit: shares
-Rule version: 28.0.0RC1 - glei-20250131.htm 294</message>
- <ref href="glei-20250131.htm#ixv-2611" sourceLine="294">
+Rule version: 28.0.1 - glei-20250131.htm 655</message>
+ <ref href="glei-20250131.htm#ixv-2649" sourceLine="655">
   <property name="file" value="glei-20250131.htm"/>
-  <property name="line" value="294"/>
-  <property name="label" value="Document Period End Date"/>
-  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
-  <property name="name" value="DocumentPeriodEndDate"/>
-  <property name="QName" value="dei:DocumentPeriodEndDate"/>
-  <property name="contextRef" value="D240801_250131">
+  <property name="line" value="655"/>
+  <property name="label" value="Common Stock, Shares, Outstanding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="CommonStockSharesOutstanding"/>
+  <property name="QName" value="us-gaap:CommonStockSharesOutstanding"/>
+  <property name="contextRef" value="I250131">
    <property name="entity" value="0001871890">
     <property name="scheme" value="http://www.sec.gov/CIK"/>
    </property>
-   <property name="startDate" value="2024-08-01"/>
-   <property name="endDate" value="2025-01-31"/>
+   <property name="instant" value="2025-01-31"/>
   </property>
-  <property name="decimals" value="None"/>
+  <property name="unitRef" value="Shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
   <property name="precision" value="None"/>
   <property name="xsi:nil" value="false"/>
-  <property name="value" value="2025-01-31"/>
+  <property name="value" value="4,170,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="4,170,000"/>
  </ref></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] DQC.US.0212.10736 time took: 3.657969 - 15:24:25.873250  - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleEvalTime] DQC.US.0212.10736 time took: 1.026423 - 16:50:59.941979  - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Total number of rules processed: 1 - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Rule DQC.US.0212.10736 end. Took 0:00:03.657969 - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleEvalTime] Rule DQC.US.0212.10736 end. Took 0:00:01.026423 - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Total time to process: 0:00:03.687999. - glei-20250131.htm </message>
- <ref href="glei-20250131.htm"/></entry>
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.031755. - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 <entry code="info" level="info">
- <message>[info] validated in 16.40 secs - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
+ <message>[info] validated in 2.85 secs - http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1871890/000113902025000004/glei-20250131.htm"/></entry>
 </log>

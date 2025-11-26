@@ -7,49 +7,57 @@
  <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
  <ref href="EDGAR/transform"/></entry>
 <entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
  <message>[info] Xule version: 3.0.30050 - </message>
  <ref href=""/></entry>
 <entry code="info" level="info">
- <message>[info] loaded in 27.99 secs at 2025-10-11T10:35:26 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[info] loaded in 2.23 secs at 2025-11-05T16:51:29 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.buildIndexTime" level="debug">
- <message>[xule.buildIndexTime] Index build time 0:00:02.735470. - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[xule.buildIndexTime] Index build time 0:00:00.508789. - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.ruleDebug" level="debug">
- <message>[xule.ruleDebug] Processing: DQC.US.0212.10739 - 10:36:21.668336 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[xule.ruleDebug] Processing: DQC.US.0212.10739 - 16:51:35.871077 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.ruleDebug" level="debug">
  <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="DQC.US.0212.10739" level="error">
- <message filing_url="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm" severity="error" status="PROPOSED" effectiveDate="None" cid="1868695104208">[DQC.US.0212.10739] A value was reported for us-gaap:SharesOutstanding with a value of 162,428,000. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept us-gaap:SharesOutstanding and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with any value in any context. This can occur for companies that are not publicly listed.
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm" severity="error" status="APPROVED" effectiveDate="None" cid="1901639774480">[DQC.US.0212.10739] A value was reported for us-gaap:SharesOutstanding with a value of 162,428,000. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept us-gaap:SharesOutstanding and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a boolean value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with a value of true in any context. This can occur for companies that are not publicly listed.
 
 The properties of this us-gaap:SharesOutstanding fact are:
 
 Period: 2024-06-30
 Unit: shares
-Rule version: 28.0.0RC10 - htgc-20240630.htm 8</message>
- <ref href="htgc-20240630.htm#f-1" sourceLine="8">
+Rule version: 28.0.1 - htgc-20240630.htm 8</message>
+ <ref href="htgc-20240630.htm#f-5982" sourceLine="8">
   <property name="file" value="htgc-20240630.htm"/>
   <property name="line" value="8"/>
-  <property name="label" value="Document Type"/>
-  <property name="namespace" value="http://xbrl.sec.gov/dei/2024"/>
-  <property name="name" value="DocumentType"/>
-  <property name="QName" value="dei:DocumentType"/>
-  <property name="contextRef" value="c-1">
+  <property name="label" value="Shares, Outstanding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="SharesOutstanding"/>
+  <property name="QName" value="us-gaap:SharesOutstanding"/>
+  <property name="contextRef" value="c-9">
    <property name="entity" value="0001280784">
     <property name="scheme" value="http://www.sec.gov/CIK"/>
    </property>
-   <property name="startDate" value="2024-01-01"/>
-   <property name="endDate" value="2024-06-30"/>
+   <property name="instant" value="2024-06-30"/>
   </property>
-  <property name="decimals" value="None"/>
+  <property name="unitRef" value="shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="-3"/>
   <property name="precision" value="None"/>
   <property name="xsi:nil" value="false"/>
-  <property name="value" value="10-Q"/>
+  <property name="value" value="162,428,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="162,428"/>
  </ref></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] DQC.US.0212.10739 time took: 3.31215 - 10:36:24.980847  - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[xule.ruleEvalTime] DQC.US.0212.10739 time took: 0.926272 - 16:51:36.797424  - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
  <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
@@ -58,12 +66,12 @@ Rule version: 28.0.0RC10 - htgc-20240630.htm 8</message>
  <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Rule DQC.US.0212.10739 end. Took 0:00:03.312150 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[xule.ruleEvalTime] Rule DQC.US.0212.10739 end. Took 0:00:00.926272 - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="xule.ruleEvalTime" level="debug">
- <message>[xule.ruleEvalTime] Total time to process: 0:00:06.050848. - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.435460. - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 <entry code="info" level="info">
- <message>[info] validated in 30.79 secs - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
+ <message>[info] validated in 5.54 secs - http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm </message>
  <ref href="http://www.sec.gov/Archives/edgar/data/1280784/000128078424000020/htgc-20240630.htm"/></entry>
 </log>
