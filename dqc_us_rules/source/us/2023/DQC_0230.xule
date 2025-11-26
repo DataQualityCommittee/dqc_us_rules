@@ -33,7 +33,11 @@ else
                 $unallowed_other_items = $ALL_OTHER_ITEMS - $dupTargets
                 $unallowedOtherUsedInNetwork = $networkValues intersect $unallowed_other_items
                 if  $unallowedOtherUsedInNetwork.length > 0
-                    true
+                    $ancestors = navigate summation-item ancestors from $unallowedOtherUsedInNetwork taxonomy $US-GAAP returns set (target-name)
+                    if $item in $ancestors
+                        false
+                    else
+                        true
                 else
                     skip
 
