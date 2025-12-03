@@ -37,12 +37,16 @@ else
                     if $item in $ancestors
                         false
                     else
-                        true
+                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent and InterestExpenseOther**/
+                        if AccountsAndOtherReceivablesNetCurrent in $unallowedOtherUsedInNetwork or InterestExpenseOther in $unallowedOtherUsedInNetwork
+                            false
+                        else
+                             true
                 else
                     skip
 
 message
-"The calculation network {$network.role.description} has used the 'other' concept {$unallowedOtherUsedInNetwork.join(', ')}.  The calculation relationship has a calculation concept total of  {$item}.  The 'other' concept in this calculation is expected to be only {$dupTargets.join(', ')}. Each calculated concept should have only one 'other' concept comprising it.
+"The calculation network {$network.role.description} has used the 'other' concept {$unallowedOtherUsedInNetwork.join(', ')}.  The calculation relationship has a calculation concept total of  {$item}.  The 'other' concept in this calculation is expected to be only {$dupTargets.join(', ')}. Each calculated concept should only have 'other' concepts that can comprise it.
 
 Replace the other concept {$unallowedOtherUsedInNetwork.join(', ')} with {$dupTargets.join(', ')}.
    
