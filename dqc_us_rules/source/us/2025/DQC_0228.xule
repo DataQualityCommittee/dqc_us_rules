@@ -40,7 +40,7 @@ else
               if ($sourceFact < $targetFact)
                   true
               else
-                  if ($sourceFact == $targetFact) and not $sourceFact.concept.name in list(Assets, Liabilities, AssetsCurrent, LiabilitiesCurrent, AssetsNoncurrent, LiabilitiesNoncurrent)
+                  if ($sourceFact == $targetFact) and not ($sourceFact.concept.name in list(Assets, Liabilities, AssetsCurrent, LiabilitiesCurrent, AssetsNoncurrent, LiabilitiesNoncurrent))
                         true
                   else
                         false
