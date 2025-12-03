@@ -26,7 +26,7 @@ $reportableSegments = list({covered @concept = NumberOfReportableSegments});
 
 $SegmentFacts = list({covered @StatementBusinessSegmentsAxis = *})
 
-$reportableFlag = list({covered @concept.local-name = 'NumberOfReportableSegmentsNotDisclosedFlag'});
+$reportableFlag = list({covered @concept.local-name in list('NumberOfReportableSegmentsNotDisclosedFlag', 'NumberOfReportableSegmentsDisclosedByDefinition')});
 
 if $reportableSegments.length == 0 and $SegmentFacts.length > 0 and $reportableFlag.length == 0
     // If the NumberOfReportableSegments is not reported, but there are segment facts, then the rule is satisfied.
@@ -36,7 +36,7 @@ else
 
 message
 
-"The filing has reported values for segment facts, but has not reported a value for NumberOfReportableSegments. The filer should report a value for NumberOfReportableSegments even if it only has one segment. If the value is not reported the error can be removed by tagging a value to an extension concept called NumberOfReportableSegmentsNotDisclosedFlag with any value in any context.
+"The filing has reported values for segment facts, but has not reported a value for NumberOfReportableSegments. The filer should report a value for NumberOfReportableSegments even if it only has one segment. If the value is not reported the error can be removed by tagging a value to an extension concept called NumberOfReportableSegmentsNotDisclosedFlag or NumberOfReportableSegmentsDisclosedByDefinition with any value in any context.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
