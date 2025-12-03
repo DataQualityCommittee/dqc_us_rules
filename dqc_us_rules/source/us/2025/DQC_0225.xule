@@ -351,18 +351,3 @@ constant $DERECOGNIZE_LIST = list(PropertyPlantAndEquipmentDisposals,
                                 StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures
     
 )
-
-OUTPUT test225
-
-	$income_roles = filter taxonomy().roles where
-		$item.description.lower-case().contains('- statement -')
-		and (
-			$item.description.lower-case().contains('income')
-			or $item.description.lower-case().contains('operations')
-			or $item.description.lower-case().contains('comprehensive')
-		)
-
-        for $r in $income_roles
-		$income_concepts = filter taxonomy().networks(parent-child, $r).concepts returns $item.name
-
-        $r.description 
