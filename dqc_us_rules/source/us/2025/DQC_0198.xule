@@ -18,15 +18,13 @@ ASSERT US.0198.10650 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
 if not applicable_form(rule-name())
 	skip
 else
 
-/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
-        exists({@concept =  $concept[1] @unit = * }#concept-value) and missing({@concept =  $concept[2] @unit = *})
+        exists({@concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[2] @unit = *})
 else
     skip
 
@@ -59,7 +57,7 @@ else
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
-        exists({@concept =  $concept[2] @unit = * }#concept-value) and missing({@concept =  $concept[1] @unit = * })
+        exists({@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[1] @unit = * })
 else
     skip
 

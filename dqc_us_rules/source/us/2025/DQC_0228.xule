@@ -37,10 +37,13 @@ else
                             and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
                             }
 
-              if ($sourceFact <= $targetFact)
+              if ($sourceFact < $targetFact)
                   true
               else
-                  false
+                  if ($sourceFact == $targetFact) and not ($sourceFact.concept.name in list(Assets, Liabilities, AssetsCurrent, LiabilitiesCurrent, AssetsNoncurrent, LiabilitiesNoncurrent))
+                        true
+                  else
+                        false
       else
           skip
 
