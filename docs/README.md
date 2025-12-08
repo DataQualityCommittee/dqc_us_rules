@@ -172,8 +172,8 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0205](DQC_US_0205/DQC_0205.md) | Invalid Member used on Balance Sheet Location Axis  | Removed after Public Review |  |
 | [DQC_US_0206](DQC_US_0206/DQC_0206.md) | Invalid Member used on Disaggregation Of Income Statement Expense Caption Axis | Approved | 27 |
 | [DQC_US_0207](DQC_US_0207/DQC_0207.md) | Invalid Subtotals in Schedule of Investments | Approved | 27 |
-| [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Removed after Public Review |  |
-| [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Removed after Public Review |  |
+| [DQC_US_0208](DQC_US_0208/DQC_0208.md) | Subtotals match Extensible Enumerations in the Schedule of Investments | Public Review | 29 |
+| [DQC_US_0209](DQC_US_0209/DQC_0209.md) | Missing Extensible Enumeration Elements on the Schedule of Investments | Public Review | 29 |
 | [DQC_US_0210](DQC_US_0210/DQC_0210.md) | Missing Investment Identifier Axis | Approved | 27 |  
 | [DQC_US_0211](DQC_US_0211/DQC_0211.md) | Missing Fact Value for Extensible Enumeration | Approved | 27 |  
 | [DQC_US_0212](DQC_US_0212/DQC_0212.md) | Missing Shares Issued or Authorized Facts When Shares Outstanding Reported | Approved | 28 |
@@ -182,11 +182,21 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0215](DQC_US_0215/DQC_0215.md) | Extension Element Name Matches US GAAP Element | Approved | 28 |
 | [DQC_US_0216](DQC_US_0216/DQC_0216.md) | Improper Use of Extension Geography Members on StatementGeographicalAxis | Approved | 28 |
 | [DQC_US_0217](DQC_US_0217/DQC_0217.md) | Improper Use of Notional Amount Concepts with InvestmentIdentifierAxis | Approved | 28 |
+| [DQC_US_0218](DQC_US_0218/DQC_0218.md) | Missing InvestmentIssuerAffiliationExtensibleEnumeration on the Schedule of Investments | Public Review | 29 |
 | [DQC_US_0219](DQC_US_0219/DQC_0219.md) | Missing Value for NonInvestmentAssetsLessNonInvestmentLiabilities | Approved | 28 |
 | [DQC_US_0220](DQC_US_0220/DQC_0220.md) | Improper Use of StatementTable in Notes Disclosures | Approved | 28 |
 | [DQC_US_0221](DQC_US_0221/DQC_0221.md) | Missing NumberOfReportableSegments When Segment Facts Are Reported | Approved | 28 |
 | [DQC_US_0222](DQC_US_0222/DQC_0222.md) | Scaling Error in EntityPublicFloat | Approved | 28 |
 | [DQC_IFRS_0223](DQC_IFRS_0223/DQC_0223.md) | Extension Leaf Items on Statement of Operating Activities or Income Statement | Approved | 28 |
+| [DQC_IFRS_0224](DQC_IFRS_0224/DQC_0224.md) | Management Defined Performance Measure Reconciliation Accuracy | Public Exposure | 29 |
+| [DQC_US_0225](DQC_US_0225/DQC_0225.md) | Prohibited Recognition and Derecognition Items on Income Statement | Public Exposure | 29 |
+| [DQC_US_0226](DQC_US_0226/DQC_0226.md) | US GAAP Elements Used in Employee Benefit Plan Filings | Public Exposure | 29 |
+| [DQC_US_0227](DQC_US_0227/DQC_0227.md) | Calculated Ratio Consistency Checks | Public Exposure | 29 |
+| [DQC_US_0228](DQC_US_0228/DQC_0228.md) | 'Other' Concept Should Not Exceed Aggregate | Public Exposure | 29 |
+| [DQC_US_0229](DQC_US_0229/DQC_0229.md) | Multiple 'Other' Concepts in a Calculation Network | Public Exposure | 29 |
+| [DQC_US_0230](DQC_US_0230/DQC_0230.md) | Disallowed 'Other' Concepts in Calculation Networks | Public Exposure | 29 |
+| [DQC_US_0231](DQC_US_0231/DQC_0231.md) | Aggregate and 'Other' Concepts Appearing as Siblings in Calculation Networks | Public Exposure | 29 |
+
 
 ## Guidance 
 
