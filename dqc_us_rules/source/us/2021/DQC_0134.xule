@@ -1,0 +1,66 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+
+**/
+
+rule-name-prefix DQC
+
+/** This rule attempts to improce the consistency of the Investment Schedule.**/
+
+assert US.0134.9834 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Updated for public comment by using other concepts that are used for amortized cost**/
+
+$AllowableMembersOnInvestmentTypeAxis = list(FixedMaturitiesMember, ShortTermInvestmentsMember)
+
+$ComponentAmount = {@concept in list(AvailableForSaleDebtSecuritiesAmortizedCostBasis, 
+DebtSecuritiesAvailableForSaleAmortizedCostCurrent, 
+DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent, 
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss, 
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent,
+AvailableForSaleSecuritiesDebtSecurities,
+AvailableForSaleSecuritiesDebtSecuritiesCurrent,
+AvailableForSaleSecuritiesDebtSecuritiesNoncurrent,
+DebtSecuritiesAvailableForSaleExcludingAccruedInterest,
+DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent, 
+DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent) @InvestmentTypeAxis not in $AllowableMembersOnInvestmentTypeAxis};
+
+$Dimensions = filter $ComponentAmount.dimensions.keys returns $item.name;
+
+$InvalidAxis = set(CashAndCashEquivalentsAxis, RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, InvestmentTypeAxis)
+
+$FinancialInstrumentAxisFlag = $Dimensions.contains(FinancialInstrumentAxis);
+
+$InvalidDimensions = $Dimensions.intersect($InvalidAxis);
+
+$FIAxisMessage = "The fact only requires the axis FinancialInstrumentAxis and should not contain the additional axis " + $InvalidDimensions.join(',') + ". If there is a subtotal the members on the FinancialInstrumentAxis should be organized in a hierarchy to reflect the breakdown of financial instruments."
+
+$InvalidDimensions.length > 0
+
+message
+"The filer has reported a value for the element {$ComponentAmount.concept.name} with a value of {$ComponentAmount}  using the axis {$InvalidDimensions.join(',')}. The axis listed must not be used when reporting a value for {$ComponentAmount.concept.name}. The filer should use the axis FinancialInstrumentAxis instead of this axis. 
+{if $FinancialInstrumentAxisFlag $FIAxisMessage else ""} 
+
+Please refer to the FASB implementation guide on Financial Instruments Debt Securities on the FASB website at https://www.fasb.org/debtsecurities_2019.
+
+The properties of this {$ComponentAmount.concept.name} fact are:
+Period :{$ComponentAmount.period}
+Dimensions : {$ComponentAmount.dimensions.join(', ','=')}
+Unit : {$ComponentAmount.unit}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+rule-focus $ComponentAmount
+effectiveDate $effective_dates[$ruleId]

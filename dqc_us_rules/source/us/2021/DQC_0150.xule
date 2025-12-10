@@ -1,0 +1,305 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+**/
+
+rule-name-prefix DQC
+
+ASSERT US.0150.9876 SATISFIED
+
+/** RULE LOGIC Consolidation Items Axis
+1. Identify the segment diclosure cube.
+2. Only use cubes using the ConsolidationItemsAxis
+3. Get Monetary items in the cube
+4. Get the decimals used
+5. For each line item in the cube sum the values of the values using the Consolidation Items Axis
+6. Check if the value of the dimensions is greater than the total.
+7. If there is no value for the total or the components then the rule willk not run.
+**/
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+/**  This rule looks at facts on the segment and Consolidated Items  dimensions and makes sure that they add across to the default in a segment cube.
+t**/
+
+for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                /** Get cubes with srt:ConsolidationItemsAxis **/
+                $dimensions = $segmentCube.dimensions;
+				$dimObjects = filter $dimensions returns $item.concept.name
+                if $dimObjects.contains(srt:ConsolidationItemsAxis)
+                 /* Handle member trees */
+                    $drs_role = $segmentCube.drs-role;
+                    $members = navigate dimensions descendants from srt:ConsolidationItemsAxis drs-role $drs_role returns target-name
+			        $domain = navigate dimensions dimension-domain descendants from srt:ConsolidationItemsAxis drs-role $drs_role returns set target-name
+                    $member_descendants = $members.to-set - $domain;
+
+                    /**Identify all monetary primary concepts in Cubes with ConsolidationItemsAxis **/
+                    $primaryConcepts = $segmentCube.primary-concepts
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
+
+                    for $concept in $monetaryConceptsInCube
+
+						 $factsToAdd = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+										skip
+									else 
+										[nonils @concept = $concept  @cube.drs-role = $drs_role @srt:ConsolidationItemsAxis = $member]);
+
+                        $decimalsAddedFacts =   if $factsToAdd.length == 0
+                                                        0
+                                                else
+                                                    min(list(for $x in $factsToAdd
+                                                        if $x == none 
+                                                            skip
+                                                        else
+                                                            $x.decimals));
+
+                        $addedDimensions = sum($factsToAdd)
+
+                        /** Capture in a string what calc was performed  above to report in the rule message. **/
+                       $addend_string = sum(filter $factsToAdd returns "Reported consolidated items member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
+
+
+                        $dimensionTotal = [nonils @concept = $concept  @srt:ConsolidationItemsAxis = none]
+
+                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                        /** Added to only run when there were more than 2 members to add. If there is only one this indicates its a disclosure and probably not a reconciliation **/
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname or $factsToAdd.length < 2
+                            skip
+                        else
+                         $dimensionTotalDecimals = if $dimensionTotal.decimals == inf
+                                                        0
+                                                 else
+                                                    $dimensionTotal.decimals
+
+                       tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotalDecimals,$decimalsAddedFacts)), 2)
+                else
+                    skip
+              
+
+
+message
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of consolidation item members with a total of {$dimensionTotal}. The value of the total should be greater than or equal to the sum of the values of the consolidated items with a value of {$addedDimensions}. The values for the component dimensions are as follows:
+
+{$addend_string}
+
+The addends are calculated based on the members on the consolidated items  linkbase defined for {$segmentCube.drs-role.description}. 
+
+Total Element : {$concept}
+Total Value : {$dimensionTotal} 
+Total period : {$dimensionTotal.period} 
+Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
+Decimals : {$dimensionTotal.decimals} 
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
+
+ASSERT US.0150.9877 SATISFIED
+
+/** RULE LOGIC Statement Business Segments Axis
+1. Identify the segment diclosure cube.
+2. Only use cubes using the StatementBusinessSegmentsAxis
+3. Get Monetary items in the cube
+4. Get the decimals used
+5. For each line item in the cube sum the values of the values using the Statement Business Segments Axis
+6. Check if the value of the dimensions is greater than the total.
+7. If there is no value for the total or the components then the rule will not run.
+**/
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                /** Get cubes with StatementBusinessSegmentsAxis **/
+                $dimensions = $segmentCube.dimensions;
+				$dimObjects = filter $dimensions returns $item.concept.name
+                if $dimObjects.contains(StatementBusinessSegmentsAxis)
+                    /* Handle member trees */
+                    $drs_role = $segmentCube.drs-role;
+                    $members = navigate dimensions descendants from StatementBusinessSegmentsAxis drs-role $drs_role returns target-name
+			        $domain = navigate dimensions dimension-domain descendants from StatementBusinessSegmentsAxis drs-role $drs_role returns set target-name
+                    $member_descendants = $members.to-set - $domain;
+
+                    /**Identify all monetary primary concepts in Cubes with StatementBusinessSegmentsAxis **/
+                    $primaryConcepts = $segmentCube.primary-concepts
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
+
+
+                    for $concept in $monetaryConceptsInCube
+
+                        $factsToAdd = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role returns set (target-name)) - $domain;
+									if list([nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis in $ancestors_list where $fact.concept.is-monetary]).length > 0
+										$h = [nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis = $member];
+                                        skip
+									else 
+										[nonils @concept = $concept  @cube.drs-role = $drs_role @StatementBusinessSegmentsAxis = $member]);
+
+                        $decimalsAddedFacts = min(filter $factsToAdd returns $item.decimals)
+
+						$addedDimensions = sum($factsToAdd)
+
+                        /** Capture in a string what calc was performed  above to report in the rule message. **/
+                        $addend_string = sum(filter $factsToAdd returns "Reported Segment member " + $item.dimensions.join(', ', '=') + " with a value of " + $item.string + '. ') ;
+
+                        $dimensionTotal = [nonils @concept = $concept  @StatementBusinessSegmentsAxis = none]
+                        $non_neg_qname = (filter $MONETARY_NON_NEGS returns $item.name) 
+
+                        if $addedDimensions == none or $dimensionTotal == none  or $dimensionTotal <= 0 or $concept.local-name.lower-case.contains('incomeloss') or $concept.local-name.lower-case.contains('increasedecrease') or $concept not in $non_neg_qname
+                            skip
+                        else
+                         tolerance_for_decimals_greater_than($addedDimensions, $dimensionTotal, min(list($dimensionTotal.decimals,$decimalsAddedFacts)), 2)
+                else
+                    skip
+              
+
+
+message
+"The disclosure {$segmentCube.drs-role.description} includes an inconsistent addition of a dimensional member. The value of the concept {$concept} represents the sum of business segment members with a total of {$dimensionTotal}. The value of the total should be equal to the sum of the values of the business segments with a value of {$addedDimensions}. The values for the component dimensions are as follows:
+
+{$addend_string}
+
+The addends are calculated based on the member on the StatementBusinessSegmentsAxis.
+
+
+Total Element : {$concept}
+Total Value : {$dimensionTotal} 
+Total period : {$dimensionTotal.period} 
+Dimensions : {$dimensionTotal.dimensions.join(', ','=')}
+Decimals : {$dimensionTotal.decimals} 
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
+/**DQC 0150.10200 **/
+/** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
+**/
+
+/** REMOVED RULE **/
+
+
+/**DQC 0150.9878 **/
+/** FIND WHERE OPERATING SEGMENT HAS NOT BEEN USED. 
+Look at segment table and look where the consolidated items axis is used for a line item and the business segment has been used for the same item without the operating segment member.  
+**/
+
+ASSERT US.0150.9878 SATISFIED
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                /** Get cubes with StatementBusinessSegmentsAxis **/
+                $dimensions = $segmentCube.dimensions;
+				$dimObjects = filter $dimensions returns $item.concept.name
+                if $dimObjects.contains(StatementBusinessSegmentsAxis) and $dimObjects.contains(srt:ConsolidationItemsAxis)
+                    /**Identify all monetary primary concepts in Cubes with StatementBusinessSegmentsAxis **/
+                    $primaryConcepts = $segmentCube.primary-concepts
+                    $monetaryConceptsInCube = filter $primaryConcepts where $item.is-monetary returns $item.name
+                    
+                    for $concept in $monetaryConceptsInCube
+                        /** See if the concept has any value with the consolidated items axis and make sure the concept has no business segment associated with the concept. This means it is a reconciling item.**/
+
+                        /** Are there any reconciling items.  If there are none the rule will not fire**/
+                        $reconcilingItems =  list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = none @srt:ConsolidationItemsAxis != OperatingSegmentsMember}).sort
+
+                        /** find if operating segment is used with operating member. If this is zero the rule wil fire. **/
+                        $consolidationItemsPresent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+
+                        /** find if business segment is used with no operating segment member.  These are business segments after elimination. **/
+                        $consolidationItemsAbsent = list({nonils @concept = $concept  @cube.drs-role = $segmentCube.drs-role @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = none}).sort
+
+                        if  $reconcilingItems.length > 0 and $consolidationItemsAbsent.length > 0 and $consolidationItemsPresent.length == 0
+
+                            /** In some cases the filer does not have the operating segment member because a parent calculation concept has the value reported for the segment with the Operating segment member.  Cigna is an example of this where the calc is reversed and they have Revenue from external customers + internal sales + some other revenue = new revenue element total.  This total as the op segment domain. This next section identifies any **/
+
+                             /** get calc parent and child of concept and check if uses operating segment member **/
+
+                            $calcParents = navigate summation-item parents from $concept where $relationship.weight == 1 returns set (target-name)
+
+                            $calcChildren = navigate summation-item children from $concept where $relationship.weight == 1 returns set (target-name)
+
+                            if $calcParents.length == 0 and $calcChildren == 0
+                                true
+                            else
+                                if $calcParents.length != 0 and $calcChildren == 0
+
+                                /** excluded  @cube.drs-role = $segmentCube.drs-role as there is often blled through over multiple segment cubess See Cigna case with 2 segment disclosures disaggregating revenue **/
+                                $consolidationItemsParentPresent = list({nonils @concept in $calcParents  @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+
+                                $consolidationItemsParentPresent.length == 0
+
+                                else 
+                                    $consolidationItemsChildrenPresent = list({nonils @concept in $calcChildren  @StatementBusinessSegmentsAxis = *  @srt:ConsolidationItemsAxis = OperatingSegmentsMember}).sort
+                                    $consolidationItemsChildrenPresent.length == 0
+                        else    
+                            skip
+                        
+                else
+                    skip
+
+
+
+message
+"The disclosure {$segmentCube.drs-role.description} includes the concept {$concept} with a value of {first($reconcilingItems)} and the dimension of  {first($reconcilingItems).dimensions.join(', ','=')}. This same line item however was used to report the value of {first($consolidationItemsAbsent)} for a busines segment axis with the dimensions of  {first($consolidationItemsAbsent).dimensions.join(', ','=')}, but with no associated operating member. If a value is reported for a segment then an operating member should be used if there are reconciling items for that line item.
+
+Concept : {$concept}
+Value : {first($consolidationItemsAbsent)} 
+Total period : {first($consolidationItemsAbsent).period} 
+Dimensions : {first($consolidationItemsAbsent).dimensions.join(', ','=')}
+Decimals : {first($consolidationItemsAbsent).decimals} 
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
+
+ASSERT US.0150.10076 SATISFIED
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$parentSegmentMembers  = sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                 /** Get members that are a child of the domain as reportable segments should be reported at this level. **/
+					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (source-name)
+ 					))
+
+$AllSegmentMembers  = (sum(set(for $segmentCube in $SEGMENT_DISCLOSURE_CUBES
+                 /** Get members that are a descendants of the domain as reportable segments and remove parent segments **/
+					navigate dimensions domain-member descendants from SegmentDomain drs-role  $segmentCube.drs-role returns set (target-name)
+ 					)) - $parentSegmentMembers).to-set
+
+if $AllSegmentMembers.length > 0
+	$NumberOfSegments = set([@NumberOfReportableSegments @period=*])
+    if $NumberOfSegments.length == 0
+        false
+    else
+        if $AllSegmentMembers.length < min($NumberOfSegments)
+            true
+        else
+            false
+		
+else
+	skip
+
+
+message
+"The filer uses the segment axis and has defined {$AllSegmentMembers.length} segments in the filing. These include the following:
+{$AllSegmentMembers.join(", ")}. The filer has also used the element NumberOfReportableSegments to report {$NumberOfSegments.join(' and ')}. The number of segments should not be greater than the segments reported with the axis.  Please update the number or add additional segment members to the axis.
+
+Concept : NumberOfReportableSegments
+Value : {$NumberOfSegments.join(' and ')} 
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]

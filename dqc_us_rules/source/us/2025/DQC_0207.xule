@@ -27,7 +27,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
 
-$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * };
+$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *} ;
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -68,7 +68,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
 
-$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * };
+$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -109,12 +109,17 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
 
-$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * };
+$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
+
+/** In some cases there may be an unafiliated investment that has a netted value on the axis of the identified fact that is higher than the subtotal. Ie.e the high dimension value has an associated negative item that actually makes it less because it is grossed up.  To check for this we need to identify the dimensions of the $BDC_Affiliation_And_More fact and check if any of the axis associated with it except  InvestmentIssuerAffiliationAxis have a member with the text netted in it.**/
+
+/** If the following returns nothing then $negative_netted_fact will be none, when added to a number the result will be the number.**/
+
+$negative_netted_fact = sum(list({nonils covered-dims  @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != * where $fact < 0}));
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
-$BDC_Affiliation < $BDC_Affiliation_And_More
-
+$BDC_Affiliation < ($BDC_Affiliation_And_More + $negative_netted_fact)
 
 message
 "The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Affiliation}. This concept is used to report the fair value of investments for the {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} affiliation. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Affiliation_And_More} that includes the member {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Affiliation_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} affiliation is less than the value reported for the value {$BDC_Affiliation_And_More} which is a subset of this affiliation. The value reported for the affiliation in aggregate should be more than or equal to the value reported for of {$BDC_Affiliation_And_More}. Please ensure that appropriate dimensions have been used to report these values.
@@ -151,7 +156,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
 
-$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * };
+$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 
@@ -193,7 +198,7 @@ else
 /** select facts with the BDC subtotals **/
 $BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
 
-$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * };
+$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
 
 /** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
 

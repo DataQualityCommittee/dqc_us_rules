@@ -1,0 +1,396 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0124.9584 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** If FinanceLeaseLiability amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** Does the Finance Lease Liability exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+	
+	/** Identify all calculation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no calculations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$fsConcepts = sum(set(for ($network in $fsNetworks)
+								$network.concepts));
+								
+		$fsConceptsQname = filter $fsConcepts returns $item.name;
+
+		/** Identify if FinanceLeaseLiability is contained in the financial statements**/
+
+		if $fsConceptsQname.contains(FinanceLeaseLiability) 
+			false
+			/** Rule will not run if the company is using current and non current finance leases as these will be in the balance sheet **/
+		else
+			if ($fsConceptsQname.contains(FinanceLeaseLiabilityCurrent) or $fsConceptsQname.contains(FinanceLeaseLiabilityNoncurrent))
+		 		false
+			else
+		
+				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the finance lease liability **/
+				if exists({@FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit}) or exists({@FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit}) or exists([@FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*]) or exists([@FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*])
+				 	false
+				else 
+					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/
+					
+					if count(list({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) > 1
+						false
+					else
+						if count(list({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
+							$FLL = list({@concept = FinanceLeaseLiability @unit=*})
+							({@concept = FinanceLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiability @unit=*}) or $FLL.length == 0
+						else
+							true
+else
+ 	false
+ 
+
+
+message
+
+"The element {$leaseLiability.concept.name} with a value of {$leaseLiability} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList should be used to identify the account where the Finance Lease liability is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Finance Lease liability has been apportioned.
+ 
+Period :{$leaseLiability.period}
+Dimensions : {$leaseLiability.dimensions.join(', ','=')}
+Unit : {$leaseLiability.unit}
+Decimals: {$leaseLiability.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $leaseLiability 
+
+
+assert US.0124.9585 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** If Finance lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** Does the Finance Lease Liability exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+	
+	/** Identify all calculation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no calculations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$fsNetworks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$fsConcepts = sum(set(for ($network in $fsNetworks)
+								$network.concepts));
+								
+		$fsConceptsQname = filter $fsConcepts returns $item.name;
+
+		/** Identify if FinanceLeaseLiability is contained in the financial statements**/
+
+		if $fsConceptsQname.contains(FinanceLeaseLiabilityCurrent) 
+			false
+		else
+			/** If the Finance Lease Liability is on the BAlanace Sheet then dont flag an error**/
+			if ($fsConceptsQname.contains(FinanceLeaseLiability))
+		 		false
+			else
+		
+			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the Finance lease liability **/
+			if exists({@FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
+			 	false
+			else 
+				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
+				if count(list({@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
+					false
+				else
+					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
+					if count(list({@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
+						$factItem = {@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*}
+						$specificError = "The element FinanceLeaseLiabilityCurrent with a value of " + $factItem.string + " and the Balance Sheet Location Axis with the member " + $factItem.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the FinanceLeaseLiabilityCurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
+						({@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityCurrent @unit=*}) or list({@concept = FinanceLeaseLiabilityCurrent @unit=*}).length == 0
+					else
+						$factItem = [@concept = FinanceLeaseLiabilityCurrent @unit=*]
+						$specificError = "The element FinanceLeaseLiabilityCurrent with a value of " + $factItem.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should be used to identify the account where the Finance Lease liability Current is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Finance Lease liability Current has been apportioned.";
+						true
+else
+	false
+ 
+message
+
+"{$specificError}
+ 
+Period :{$factItem.period}
+Dimensions : {$factItem.dimensions.join(', ','=')}
+Unit : {$factItem.unit}
+Decimals: {$factItem.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $factItem 
+
+
+assert US.0124.9586 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** If Finance lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** Does the Finance Lease Liability exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+	
+	/** Identify all calculation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no calculations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$FS_Networks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$FS_Concepts = sum(set(for ($network in $FS_Networks)
+								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
+
+		/** Identify if FinanceLeaseLiability is contained in the financial statements**/
+
+		if $FS_Concepts_qname.contains(FinanceLeaseLiabilityNoncurrent)
+			false
+		else
+			/** If the Finance Lease Liability is on the BAlanace Sheet then dont flag an error**/
+			if ($FS_Concepts_qname.contains(FinanceLeaseLiability))
+		 		false
+			else
+		
+			/** Determine if either the extensible list element has been used with a value or if the balance sheet location axis has been used with the Finance lease liability **/
+			if exists({@FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit})
+			 	false
+			else 
+				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
+				$checkValue = count(list({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*}))
+
+				if count(list({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
+					false
+				else
+					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
+					if count(list({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
+						$fact_item = {@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*}
+						$specific_error = "The element FinanceLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the FinanceLeaseLiabilityNoncurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
+						({@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseLiabilityNoncurrent @unit=*}) or list({@concept = FinanceLeaseLiabilityNoncurrent @unit=*}).length == 0
+					else
+						$fact_item = [@concept = FinanceLeaseLiabilityNoncurrent @unit=*]
+						$specific_error = "The element FinanceLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList should be used to identify the account where the Finance Lease liability Noncurrent is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Finance Lease liability Noncurrent has been apportioned.";
+						true
+else
+	false
+ 
+message
+
+"{$specific_error}
+ 
+Period :{$fact_item.period}
+Dimensions : {$fact_item.dimensions.join(', ','=')}
+Unit : {$fact_item.unit}
+Decimals: {$fact_item.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $fact_item
+
+
+assert US.0124.9587 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** If FinanceLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** Does the Finance Lease Asset exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+	
+	/** Identify all presentation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no calculations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$FS_Networks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$FS_Concepts = sum(set(for ($network in $FS_Networks)
+								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
+
+		/** Identify if FinanceLeaseRightOfUseAsset is contained in the financial statements**/
+
+		if $FS_Concepts_qname.contains(FinanceLeaseRightOfUseAsset) or $FS_Concepts_qname.contains(PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization)
+			false
+			/** Rule will not run if the company is using current and non current finance leases as these will be in the balance sheet **/
+		else
+		
+				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the finance lease Asset **/
+				if exists({@FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList @unit}) or exists([@FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*])
+				 	false
+				else 
+					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList should have been used. **/
+					
+					if count(list({@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) > 1
+						false
+					else
+						if count(list({@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) == 1
+							$FLROU = list({@concept = FinanceLeaseRightOfUseAsset @unit=*})
+							({@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = FinanceLeaseRightOfUseAsset @unit=*}) or $FLROU.length == 0
+						else
+							true
+else
+ 	false
+ 
+
+
+message
+
+"The element {$leaseAsset.concept.name} with a value of {$leaseAsset} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList should be used to identify the account where the Finance Lease Asset is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Finance Lease Asset has been apportioned.
+ 
+Period :{$leaseAsset.period}
+Dimensions : {$leaseAsset.dimensions.join(', ','=')}
+Unit : {$leaseAsset.unit}
+Decimals: {$leaseAsset.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $leaseAsset 
+
+assert US.0124.9588 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** If OperatingLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** Does the Finance Lease Asset exist and is the report a 10-K **/
+
+if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+	
+	/** Identify all calculation networks in the company extension **/
+
+	$allNetworks = $PRES_NETWORKS;
+
+	/** eleminate reports with no calculations such as an 8-K with no financial data**/
+	if $allNetworks == none
+			false
+	else
+	
+		/** Get those networks that are the financial Statements **/
+		$FS_Networks = filter $allNetworks where $item.role.description.contains('- Statement ');
+
+		/** Get all concepts in FS Networks **/
+		$FS_Concepts = sum(set(for ($network in $FS_Networks)
+								$network.concepts));
+								
+		$FS_Concepts_qname = filter $FS_Concepts returns $item.name;
+
+		/** Identify if OperatingLeaseRightOfUseAsset is contained in the financial statements**/
+
+		if $FS_Concepts_qname.contains(OperatingLeaseRightOfUseAsset) 
+			false
+			/** Rule will not run if the company is using current and non current finance leases as these will be in the balance sheet **/
+		else
+		
+				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the finance lease Asset **/
+				if exists({@OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList @unit}) or exists([@OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*])
+				 	false
+				else 
+					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList should have been used. **/
+					
+					if count(list({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) > 1
+						false
+					else
+						if count(list({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*})) == 1
+							$OLROU = list({@concept = OperatingLeaseRightOfUseAsset @unit=*})
+							({@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseRightOfUseAsset @unit=*}) or $OLROU.length == 0
+						else
+							true
+else
+ 	false
+ 
+
+
+message
+
+"The element {$leaseAsset.concept.name} with a value of {$leaseAsset} has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
+1. The element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList should be used to identify the account where the Operating Lease Asset is included; or
+2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Operating Lease Asset has been apportioned.
+ 
+Period :{$leaseAsset.period}
+Dimensions : {$leaseAsset.dimensions.join(', ','=')}
+Unit : {$leaseAsset.unit}
+Decimals: {$leaseAsset.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $leaseAsset 

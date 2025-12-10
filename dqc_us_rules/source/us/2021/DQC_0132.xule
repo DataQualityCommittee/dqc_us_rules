@@ -1,0 +1,72 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+Release Version 18
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0132.9730 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** get list of all extension elements in the filing using $EXTENSION_QNAME and go through each one to identify one with the following:
+** contains operating
+** contains lease
+** contains (Amortization, depreciation or expense)
+** Is a duration
+** Has a balance of debit
+** and Element OperatingLeaseRightOfUseAssetAmortizationExpense has not been used.
+** excludes various items from analysis of elements used.
+ **/
+
+for $extension in $EXTENSION_QNAME
+        $extension.local-name.lower-case.contains('operating')
+        and $extension.local-name.lower-case.contains('lease')
+        and $extension.local-name.lower-case.contains('rightofuseasset')
+        and ($extension.local-name.lower-case.contains('expense') or $extension.local-name.lower-case.contains('amortiz') or $extension.local-name.lower-case.contains('depreci'))
+        and not ($extension.local-name.lower-case.contains('financ'))
+        and not ($extension.local-name.lower-case.contains('increasedecrease'))
+        and not ($extension.local-name.lower-case.contains('excluding'))
+        and not ($extension.local-name.lower-case.contains('relatedparty'))
+        and not ($extension.local-name.lower-case.contains('liabilit'))
+        and not ($extension.local-name.lower-case.contains('accumulated'))
+        and not ($extension.local-name.lower-case.contains('rent'))
+        and not ($extension.local-name.lower-case.contains('reversa'))
+        and not ($extension.local-name.lower-case.contains('propertyplantandequipment'))
+        and not ($extension.local-name.lower-case.contains('restructuring'))
+        and not ($extension.local-name.lower-case.contains('remeasurement'))
+        and not ($extension.local-name.lower-case.contains('disposal'))
+        and not ($extension.local-name.lower-case.contains('credit'))
+        and not ($extension.local-name.lower-case.contains('current'))
+        and not ($extension.local-name.lower-case.contains('noncurrent'))
+        and not ($extension.local-name.lower-case.contains('impairment'))
+        and not ($extension.local-name.lower-case.contains('writeoff'))
+        and not ($extension.local-name.lower-case.contains('abandonment'))
+        and not ($extension.local-name.lower-case.contains('accelerated'))
+        and not ($extension.local-name.lower-case.contains('accretion'))
+        and not ($extension.local-name.lower-case.contains('reduction'))
+        and not ($extension.local-name.lower-case.contains('income'))
+        and taxonomy().concept($extension).period-type == duration and taxonomy().concept($extension).balance == debit 
+    
+
+message
+"The concept {$extension} has been included as an extension item in the filing where a standard element could be used. The standard element OperatingLeaseRightOfUseAssetAmortizationExpense was added in the 2020 version of the U.S. Generally Accepted Accounting Principles (GAAP) taxonomy for filers to tag this expense. While filers using the 2019 or an earlier version of the U.S. GAAP taxonomy for their fiscal year 2020 filings would have to create custom tags to tag this expense, SEC staff observed that some filers using the 2020 version of the U.S. GAAP taxonomy still tagged the expense using custom tags instead of the standard element.
+
+If this element represents the element OperatingLeaseRightOfUseAssetAmortizationExpense then the extension element should be removed.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus taxonomy().concept($extension)
+
+
+

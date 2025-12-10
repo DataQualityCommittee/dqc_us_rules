@@ -1,0 +1,115 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP All
+
+WARNING : THIS IS A SINGLE FILE ON CHANGE TO THIS AFFECTS 5 files 2024, 2023, 2022, 2021, 2020
+This was created using a hardlink ln {original} {new}
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+constant $MONETARY_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from IncomeTaxExpenseBenefit returns set target-name).contains(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate)
+
+constant $PERCENTAGE_TAX_RECONCILIATION_DEFINED = (navigate summation-item  descendants from EffectiveIncomeTaxRateContinuingOperations returns set target-name).contains(EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate)
+
+/*
+Add rules to ensure taxo reconcilation calculations have been reported for percentage items
+*/
+ASSERT US.0168.10096 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+
+        $is_statutory_taxRate_in_calc = navigate summation-item  descendants from EffectiveIncomeTaxRateContinuingOperations returns set target-name
+
+        not $is_statutory_taxRate_in_calc.contains(EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate)
+        and 
+        exists([@concept = EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate]#stat)
+        and
+        exists([@concept = EffectiveIncomeTaxRateContinuingOperations]#effective)
+        and
+        not $MONETARY_TAX_RECONCILIATION_DEFINED
+        and 
+        not exists({covered @concept = qname($extension_ns, 'TaxReconciliationNotRequired')})
+
+else
+    skip
+
+message
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $stat
+/*
+Add rules to ensure taxo reconcilation calculations have been reported for monetary items
+*/
+
+ASSERT US.0168.10097 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+if set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+
+
+        $is_statutory_taxRate_in_calc = navigate summation-item  descendants from IncomeTaxExpenseBenefit returns set target-name
+
+        not $is_statutory_taxRate_in_calc.contains(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate)
+        and 
+        exists([@concept = IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#stat)
+        and
+        exists([@concept = IncomeTaxExpenseBenefit]#effective)
+        and
+        not $PERCENTAGE_TAX_RECONCILIATION_DEFINED
+        and
+        not exists({covered @concept = qname($extension_ns, 'TaxReconciliationNotRequired')})
+
+else
+    skip
+
+message
+"The concept {$stat.concept.name} is used in the filing with a value of {$stat}.  This element is reported but is not included in a calculation relationship with the element  {$effective.concept.name} with a value of {$effective}.  The filer should add a calculation relationship between these two elements to capture the details of the effective tax rate reconciliation. If no calculation is required to be disclosed then add an extension element called TaxReconciliationNotRequired.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus $stat
+
+ASSERT US.0168.10098 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/**Check calc weights match taxonomy **/
+
+$percentage_calc = navigate summation-item  descendants from EffectiveIncomeTaxRateContinuingOperations returns list (source-name, target-name, weight)
+
+for $relationship in $percentage_calc
+    $expectedWeight = $us-gaap.effective-weight($relationship[1],$relationship[2])
+    if $expectedWeight == none
+        skip
+    else
+        $relationship[3] != $expectedWeight
+
+
+message
+"The calculation weight between the concept {$relationship[1]} and {$relationship[2]} is {$relationship[3]} in the extension taxonomy.  This weight does not match the weight between these two concepts defined in the US GAAP taxonomy which is {$expectedWeight}. The calculation weight for this relationship should be updated to match the US GAAP taxonomy.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus taxonomy().concept($relationship[1])

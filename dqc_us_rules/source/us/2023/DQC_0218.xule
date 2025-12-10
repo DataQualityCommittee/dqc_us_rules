@@ -1,0 +1,51 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0218.10746 SATISFIED
+
+/** Check to make sure an extensible enumeration value for the InvestmentIndustrySectorExtensibleEnumeration is used.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Get list of all investments **/
+
+$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
+$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
+
+for $DIM in $DIM_Members
+    $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
+    $GEO = [@concept = InvestmentIssuerAffiliationExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) and missing($GEO)
+
+
+message
+"The filer has reported a schedule of investments and has provided a value of {$IOAC} for the InvestmentOwnedAtCost concept.  This is for the investment {$DIM}.  The filer has not reported a value for the InvestmentIssuerAffiliationExtensibleEnumeration concept on this axis.  The values reported for the InvestmentIssuerAffiliationExtensibleEnumeration concept should be reported to identify the issuer affiliation that this investment has.  Please ensure that these values are reported for each investment on the InvestmentIdentifierAxis.
+
+The SEC has issued guidance on this issue called 'Incomplete and Inappropriate Tagging for Business Development Companies' Schedule of Investments which can be found as issue number two at https://www.sec.gov/newsroom/whats-new/2506-dqreminder-inappropriate-tagging-bdc-soi.
+
+Concept : {$IOAC.name}
+Value : {$IOAC}
+Period : {$IOAC.period}
+Dimensions : {$IOAC.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+status $status  
+
+effectiveDate $effective_dates[$rule_id]

@@ -9,8 +9,6 @@ Release Version 18
 
 RULE-NAME-PREFIX DQC
 
-constant $CUT_DOWN_LIST = (filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name) 
-
 ASSERT US.0108.9564 SATISFIED
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
@@ -42,15 +40,23 @@ $elements_To_Check = $CUT_DOWN_LIST - set(CapitalExpendituresIncurredButNotYetPa
          else
             skip
 message
-"The concept {$fact1.concept.name} with a period duration starting on {$fact1.period.start} and ending on {$fact1.period.end} or {$fact1.period.days} days with a reported value of {$fact1} has a value greater than the value of the same element with a longer or equivalent period duration that starts on {$large.period.start} and ends on {$large.period.end} with a value of {$large}.
-The value  {$fact1} for the period of {$fact1.period.days} days should be less or the same as the value  {$large} with a duration of {$large.period.days} days assuming that the concept {$fact1.concept.name} cannot have a negative value. If the difference between the two numbers is insignificant, check that the decimals of the two values are appropriate. The decimal value of {$fact1} is {$fact1.decimals}, and the decimals of {$large} is {$large.decimals}.
-The properties of this {$fact1.concept.name} fact are:
-Period :{$fact1.period}
-Dimensions : {$fact1.dimensions.join(', ','=')}
-Unit : {$fact1.unit}\n
+"INCONSISTENT DURATION VALUES: The concept {$fact1.concept.name} reports {$fact1} for a {$fact1.period.days}-day period ({$fact1.period.start} to {$fact1.period.end}), which exceeds {$large} reported for a longer {$large.period.days}-day period ({$large.period.start} to {$large.period.end}).
 
-Rule Element Id:{$rule_id}
-Rule version: {$ruleVersion}"
+ISSUE: Shorter period values should not exceed longer period values for non-negative monetary concepts.
+
+COMPARISON:
+- Shorter period ({$fact1.period.days} days): {$fact1} (decimals: {$fact1.decimals})
+- Longer period ({$large.period.days} days): {$large} (decimals: {$large.decimals})
+
+FACT DETAILS:
+- Period: {$fact1.period}
+- Dimensions: {$fact1.dimensions.join(', ','=')}
+- Unit: {$fact1.unit}
+
+ACTION REQUIRED: IF the difference is due to rounding, verify decimal precision is appropriate.
+
+Rule Element ID: {$rule_id}
+Rule Version: {$ruleVersion}"
 
 SEVERITY error
 

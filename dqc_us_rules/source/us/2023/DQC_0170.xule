@@ -108,8 +108,11 @@ if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentTy
         if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
             false
         else 
-            $message = 'The filing has used the element TrdArrAdoptionDate. This element should only be used when either the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
-            true
+            if missing({ @concept.local-name = 'TrdArrTerminationDate'})
+                $message = 'The filing has used the element TrdArrAdoptionDate. This element should only be used when either the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
+                true
+            else
+                false
     else
          if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
             $message = 'The filing has not used the element TrdArrAdoptionDate. But has reported a value of true for one of the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag. Please update the filing to include a value for TrdArrAdoptionDate';

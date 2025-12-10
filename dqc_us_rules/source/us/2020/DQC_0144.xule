@@ -1,0 +1,43 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0144.9866 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Check that the all monetary concepts in the balance sheet, income statement and cash flow have a debit or credit balance. **/
+
+
+/**Identify relevant financial statement presentation networks **/
+	/** See the constants file that deines the variable $STATEMENT_PRES_NETWORKS **/
+
+for $network in $STATEMENT_PRES_NETWORKS
+	$items_with_no_balance = navigate parent-child descendants role $network.role where $relationship.target.is-monetary == true and $relationship.target.balance == none and $relationship.target.namespace-uri == $extension_ns returns set (target-name);
+
+	for $no_balance_item in $items_with_no_balance
+		$no_balance_item_values = list({covered @concept = $no_balance_item }).sort
+		$no_balance_item_values.length > 0
+
+
+message
+"The filing reports a value for the extension concept {$no_balance_item} in the statement {$network.role.description}.  This monetary concept appears in the statement but does not have a balance type defined.  All monetary items defined in {$network.role.description} should have a balance type of debit or credit.
+
+Concept : {$no_balance_item}
+Period :{first($no_balance_item_values.sort).period}
+Dimensions : {first($no_balance_item_values.sort).dimensions.join(', ','=')}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus taxonomy().concept($no_balance_item)

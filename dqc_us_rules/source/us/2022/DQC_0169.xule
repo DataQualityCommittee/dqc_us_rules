@@ -1,0 +1,44 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+/**
+Check no calculation in the parenthertical that includes Assets, CurrentAssets CurrentLiabilites, Liabilities etc 
+https://www.sec.gov/Archives/edgar/data/1447028/000144702823000025/0001447028-23-000025-index.html
+https://www.sec.gov/Archives/edgar/data/12208/000001220823000047/0000012208-23-000047-index.html **/
+
+ASSERT US.0169.10102 SATISFIED
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+for $network in $PARENTHETICAL_STATEMENT_CALC_NETWORKS
+    if $network.role.uri.lower-case.contains('cashflow')
+        /* Added this if statement for those cases where filers put the instant reconcilaition between the cash balance in the REC and IS as a supplemental disclosure at the bottom of the cashflow.*/
+        $concepts = filter $network.concepts where $item.is-monetary and $item.period-type == duration
+        $concepts.length > 0
+    else
+        $concepts = filter $network.concepts where $item.is-monetary
+        $concepts.length > 0
+
+
+message
+"The parenthetical network {$network.role.description} contains calculations. The calculation uses the following concepts:
+{$concepts.join(', ')}
+
+These monetary concepts should not be defined in the parenthetical section of the filing and should be included in the statement calculation.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

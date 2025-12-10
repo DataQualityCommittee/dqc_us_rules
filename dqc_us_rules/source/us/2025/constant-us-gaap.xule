@@ -250,7 +250,7 @@ constant $EXCLUDE_NON_NEG_AXIS = set(StatementEquityComponentsAxis,
 				StatementBusinessSegmentsAxis
 				)
 **/
-constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis)
+constant $EXCLUDE_NON_NEG_AXIS = navigate rule-concept descendants from list(dqcrules15:Dqc_0015_ExcludeNonNegAxisAbstract)  taxonomy $DQC_RULES returns set (target-name) + set(StatementBusinessSegmentsAxis, InvestmentIdentifierAxis, qname($EXTENSION_NS,'IncomeTaxEffectChangeInLawAxis'))
 
 /* DQC_0067 */
 constant $NETWORK440000 = navigate parent-child DESCENDANTS role 'http://fasb.org/us-gaap/role/disclosure/DeferredRevenue' taxonomy $US-GAAP where $relationship.target.is-abstract == false and  not($relationship.target.name.local-name == 'GrossTransactionVolume' 
@@ -385,3 +385,17 @@ constant $INTANGIBLE_DURATION_ITEMS = navigate parent-child descendants from lis
 		 **/
 
 		constant $RULE-FORM-LOOKUP = csv-data('https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/master/dqc_us_rules/resources/rule-form-lookup/rule-form-lookup.csv', true, list('string','string')).to-dict
+
+
+constant $INCOME_STATEMENT_ITEMS = 
+				navigate summation-item descendants from list(ComprehensiveIncomeNetOfTax,
+				NetIncomeLoss, 
+				NetIncomeLossAvailableToCommonStockholdersBasic,
+				NetIncomeLossAvailableToCommonStockholdersDiluted,
+				IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+				IncomeLossAttributableToParent,
+				NetIncomeLossAllocatedToGeneralPartners,
+				NetIncomeLossAllocatedToLimitedPartners)  taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+				+
+				navigate parent-child descendants from list(IncomeStatementAbstract,
+				StatementOfIncomeAndComprehensiveIncomeAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)

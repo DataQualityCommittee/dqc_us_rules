@@ -1,0 +1,163 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+/**
+Check where calculation has subtotals as leaf nodes in the financial statements
+https://www.sec.gov/Archives/edgar/data/1378590/000143774923014646/blin20230331_10q.htm
+
+In this case the Operating Income Loss is has no children but its children are at the root level.
+https://csuite.xbrl.us/php/dispatch.php?Task=xbrlChildrenGraph&Accession=0001437749-23-014646&Linkbase=Calculation
+
+**/
+RULE-NAME-PREFIX DQC
+/** Statement of Financial Position **/
+
+Assert US.0167.10099 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+$networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfFinancialPositionAbstract) or $item.role.uri.lower-case.contains('financialposition')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
+				
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+	skip
+else
+	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
+        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a statement of Financial Position it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
+        $network_role = $networkPresRole.join(', ');
+        true
+    else
+        /** Go through the calc network and look for the root items **/
+        for ($calcNetwork in  filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
+            
+            $roots = set(for $root in $calcNetwork.roots 
+                                $root.name
+                            );
+            for $root in $roots
+                $otherRoots = $roots - set($root);
+                if $otherRoots.length > 0
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $inappropriateRoots = $root_descendants.intersect($otherRoots);
+                    $root_string = "In the statement  " + $calcNetwork.role.description + " the filer has defined multiple root calculation elements. It is expected that the calculation tree in this disclosure is a single tree and not multiple trees. The existence of multiple tree's indicate that there is a calculation missing.   The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". To fix the issue a parent calculation element should be defined for the element(s) "+ $inappropriateRoots.join(', ') + " to create a single tree.  The element " + $inappropriateRoots.join(', ') + " is defined as calculation descendant of " + $root.local-name + " in the US GAAP taxonomy. ";
+                    
+                    $inappropriateRoots.length > 0
+                else
+                    skip
+message
+"{ $root_string }
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+Assert US.0167.10100 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+$networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(IncomeStatementAbstract) or $item.role.uri.lower-case.contains('incomestatement')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role;
+				
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+	skip
+else
+	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
+        $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ". Given this is a Statement of Income it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
+        $network_role = $networkPresRole.join(', ');
+        true
+    else
+        /** Go through the calc network and look for the root items **/
+        for ($calcNetwork in  filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
+            
+            $roots = set(for $root in $calcNetwork.roots 
+                                $root.name
+                            );
+            for $root in $roots
+                $otherRoots = $roots - set($root);
+                if $otherRoots.length > 0
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    
+                     /** Make an exception for double tagging NetIncomeLossAvailableToCommonStockholdersBasic and NetIncomeLossAvailableToCommonStockholdersDiluted  see https://www.sec.gov/Archives/edgar/data/895126/000089512624000055/0000895126-24-000055-index.htm **/
+                    $amendedRoots = if ($root == NetIncomeLossAvailableToCommonStockholdersDiluted) and (NetIncomeLossAvailableToCommonStockholdersBasic in $roots)
+                                        $otherRoots - set(NetIncomeLossAvailableToCommonStockholdersBasic)
+                                    else
+                                        $otherRoots
+
+                    $inappropriateRoots = $root_descendants.intersect($amendedRoots);
+                    $root_string = "In the statement  " + $calcNetwork.role.description + " the filer has defined multiple root calculation elements. It is expected that the calculation tree in this disclosure is a single tree and not multiple trees. The existence of multiple tree's indicate that there is a calculation missing.   The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". To fix the issue a parent calculation element should be defined for the element(s) "+ $inappropriateRoots.join(', ') + " to create a single tree.  The element " + $inappropriateRoots.join(', ') + " is defined as calculation descendant of " + $root.local-name + " in the US GAAP taxonomy. ";
+                     
+                    $inappropriateRoots.length > 0
+                else
+                    skip
+message
+"{ $root_string }
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+Assert US.0167.10101 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+$networkPresRole = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfIncomeAndComprehensiveIncomeAbstract) or $item.role.uri.lower-case.contains('comprehensiveincome')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') and not $item.role.uri.lower-case.contains('incomestatement') returns $item.role;
+				
+if (any(set(exists({covered @concept.local-name ='DocumentType' where $fact in $REPORT_TYPE_EXCLUSIONS})))) or ($networkPresRole.length == 0)
+	skip
+else
+	if (filter taxonomy().networks(summation-item) where $item.role in $networkPresRole).length == 0
+              /** Check for the case where OCI only has one presenation item https://www.sec.gov/Archives/edgar/data/1037868/000103786824000030/0001037868-24-000030-index.htm **/
+        $Pres_Network = first(filter taxonomy().networks(parent-child) where $item.role in $networkPresRole)
+        $Number_Monetary_Concepts_In_Presentation = length(filter $Pres_Network.concepts where $item.is-monetary)
+        if  $Number_Monetary_Concepts_In_Presentation < 2
+            false
+        else
+             $root_string = "There are no calculations defined for the role(s)  " + $networkPresRole.join(', ') + ", but there are {$Number_Monetary_Concepts_In_Presentation} monetary items defined in the Statement. Given this is a Statement of Comprehensive Income it is expected that a calculation is defined in this role. Check that the name of the presentation role matches the role defined for the calculation.";
+            $network_role = $networkPresRole.join(', ');
+            true
+    else
+        /** Go through the calc network and look for the root items **/
+        for ($calcNetwork in  filter taxonomy().networks(summation-item) where $item.role in $networkPresRole)
+            
+            $roots = set(for $root in $calcNetwork.roots 
+                                $root.name
+                            );
+            for $root in $roots
+                $otherRoots = $roots - set($root);
+                if $otherRoots.length > 0
+                    $root_descendants = navigate summation-item descendants from $root taxonomy $US-GAAP returns set target-name;
+                    $inappropriateRoots = $root_descendants.intersect($otherRoots);
+                    $root_string = "In the statement  " + $calcNetwork.role.description + " the filer has defined multiple root calculation elements. It is expected that the calculation tree in this disclosure is a single tree and not multiple trees. The existence of multiple tree's indicate that there is a calculation missing.   The root element "+ $root.local-name + " has sibling root elements of " + $otherRoots.join(', ') + " in the filing. The sibling element " + $inappropriateRoots.join(', ') + " should appear as a calculation descendant of "+ $root.local-name + ". To fix the issue a parent calculation element should be defined for the element(s) "+ $inappropriateRoots.join(', ') + " to create a single tree.  The element " + $inappropriateRoots.join(', ') + " is defined as calculation descendant of " + $root.local-name + " in the US GAAP taxonomy. ";
+                     
+                    $inappropriateRoots.length > 0
+                else
+                    skip
+message
+"{ $root_string }
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+

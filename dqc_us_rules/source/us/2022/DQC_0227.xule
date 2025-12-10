@@ -1,0 +1,108 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+/** We are defining a constant for this rule here for the interim (until the met model is final) which will be replaced by the metadata model later. This constant
+** is generated using the following:
+
+$NUMERATOR = navigate 'http://www.xbrl.org/2021/arcrole/concept-numerator' descendants taxonomy $META_2026 returns list (source-name, target-name)
+
+$DENOMINATOR = navigate 'http://www.xbrl.org/2021/arcrole/concept-denominator' descendants taxonomy $META_2026 returns list (source-name, target-name)
+
+$NumeratorSources = filter $NUMERATOR returns $item.first
+
+CONSTANT $NUM_DEN_FULL = dict(for $source in $NumeratorSources
+    $numerator = sum(filter $NUMERATOR where $item.first == $source returns $item.last)
+    $denominator = sum(filter $DENOMINATOR where $item.first == $source returns $item.last)
+    list($source, list($numerator, $denominator)))
+
+**/
+
+CONSTANT $NUM_DEN_FULL = dict(list(srt:FinancingReceivableAllowanceForCreditLossToNonaccrualPercent, list(FinancingReceivableAllowanceForCreditLosses, FinancingReceivableRecordedInvestmentNonaccrualStatus)),
+                    list(srt:FinancingReceivableAllowanceForCreditLossToOutstandingPercent, list(FinancingReceivableAllowanceForCreditLosses, NotesReceivableGross)),
+                    list(srt:FinancingReceivableNonaccrualToOutstandingPercent, list(FinancingReceivableRecordedInvestmentNonaccrualStatus, NotesReceivableGross)),
+                    list(srt:InterestEarningAssetsNetYield, list(InterestIncomeInterestEarningAsset, InterestEarningAssetsAverageAmountOutstanding)),
+                    list(BankingRegulationCommonEquityTierOneRiskBasedCapitalRatioCapitalAdequacyMinimum, list(CommonEquityTierOneCapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(BankingRegulationCommonEquityTierOneRiskBasedCapitalRatioWellCapitalizedMinimum, list(CommonEquityTierOneCapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(CapitalRequiredForCapitalAdequacyToRiskWeightedAssets, list(CapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(CapitalRequiredToBeWellCapitalizedToRiskWeightedAssets, list(CapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(CommonEquityTierOneCapitalRatio, list(CommonEquityTierOneCapital, RiskWeightedAssets)),
+                    list(DebtInstrumentConvertibleConversionRatio1, list(DebtInstrumentConvertibleNumberOfEquityInstruments, DebtInstrumentCarryingAmount)),
+                    list(DefinedBenefitPlanFundedPercentage, list(DefinedBenefitPlanFairValueOfPlanAssets, DefinedBenefitPlanBenefitObligation)),
+                    list(DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryPercentage, list(DefinedBenefitPlanPlanAssetsInvestmentWithinPlanAssetCategoryAmount, DefinedBenefitPlanFairValueOfPlanAssets)),
+                    list(EarningsPerShareBasic, list(NetIncomeLossAvailableToCommonStockholdersBasic, WeightedAverageNumberOfSharesOutstandingBasic)),
+                    list(ExtinguishmentOfDebtGainLossPerShareNetOfTax, list(ExtinguishmentOfDebtGainLossNetOfTax, WeightedAverageNumberOfSharesOutstandingBasic)),
+                    list(FinancingReceivableExcludingAccruedInterestNonaccrualPercentPastDue, list(FinancingReceivableExcludingAccruedInterest90DaysOrMorePastDueStillAccruing, FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss)),
+                     list(FinancingReceivableNonaccrualPercentPastDue1, list(FinancingReceivableRecordedInvestment90DaysPastDueAndStillAccruing, FinancingReceivableRecordedInvestmentNonaccrualStatus)),
+                    list(FinancingReceivablePercentPastDue1, list(FinancingReceivableRecordedInvestment90DaysPastDueAndStillAccruing, NotesReceivableGross)),
+                    list(InvestmentOwnedPercentOfNetAssets, list(InvestmentOwnedAtFairValue, AssetsNet)),
+                    list(LoansAndLeasesReceivableRatioOfNonperformingLoansToAllLoans, list(LoansAndLeasesReceivableImpairedNonperformingNonaccrualOfInterest, LoansAndLeasesReceivableGrossCarryingAmount)),
+                    list(NonInvestmentAssetsLessNonInvestmentLiabilitiesPercentOfNetAssets, list(NonInvestmentAssetsLessNonInvestmentLiabilities, AssetsNet)),
+                    list(RestrictedInvestmentsPercentOfNetAssets, list(RestrictedInvestmentsAtFairValue, AssetsNet)),
+                    list(SaleOfStockPricePerShare, list(SaleOfStockConsiderationReceivedOnTransaction, SaleOfStockNumberOfSharesIssuedInTransaction)),
+                    list(TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
+                    list(TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
+                    list(TierOneRiskBasedCapitalToRiskWeightedAssets, list(TierOneRiskBasedCapital, RiskWeightedAssets)),
+                    list(TreasuryStockAcquiredAverageCostPerShare, list(TreasuryStockValueAcquiredCostMethod, TreasuryStockSharesAcquired)))
+
+CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last
+
+CONSTANT $NUM-DEN = $NUM_DEN_FULL - $EXISTING_PERCENT_CHECKS
+
+ASSERT US.0227.10800 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+  for ($key in $NUM-DEN.keys)
+
+      $numerator_concept =  $NUM-DEN[$key][1]
+      $denominator_concept = $NUM-DEN[$key][2]
+
+      $numerator = {nonils @concept = $numerator_concept @unit =* where $fact != 0}
+      $denominator = {nonils @concept = $denominator_concept @unit =* where $fact != 0}
+
+      $calc = {nonils @concept = $key @unit = * where $fact.unit.numerator == $numerator.unit}
+
+      if (exists($numerator) and exists($denominator) and exists($calc))
+
+          $calcResult = ($numerator / $denominator);
+          $intervalsList = division_intervals($numerator, $denominator);
+          $result_intervals = fact_intervals($calc);
+
+          $greaterThanLowerBound = $intervalsList[1] <= $result_intervals[2]
+          $lessThanUpperBound = $intervalsList[2] >= $result_intervals[1]
+
+      if $greaterThanLowerBound and $lessThanUpperBound
+        false
+      else
+        true
+
+      else
+
+          skip
+
+message
+"The value of {$key} of {$calc} is calculated by dividing  {$numerator_concept} with a value of {$numerator} by {$denominator_concept} with a value of {$denominator} which equals {$calcResult}. This does not equal the reported value of {$calc}. Check that the decimals of the components and calculated fact are appropriate.
+
+Fact Intervals {$result_intervals}
+Calculated Intervals {$intervalsList}
+Calc Decimals : {$calc.decimals}
+Numerator Decimals : {$numerator.decimals}
+Denominator Decimals : {$denominator.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

@@ -1,0 +1,55 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2021
+
+**/
+
+
+rule-name-prefix DQC
+
+assert IFRS.0041.73 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Get the dimension defaults used in  the filing **/
+
+$filingDefaults = navigate dimension-default descendants returns  set (source-name, target-name) ;
+
+/** Get relationships in filing not in taxonomy **/
+
+$defaultInFilingNotInTaxonomy = $filingDefaults - $TAXONOMY_DEFAULTS;
+
+$filingDetailsDefaults = navigate dimension-default descendants include start returns  (source-name, target-name, source, role) as dictionary;
+
+for ($x in $defaultInFilingNotInTaxonomy)
+	$defaultDetailsList = filter $filingDetailsDefaults where $item['source-name'] == $x[1];
+	$defaultDetails = $defaultDetailsList[1]
+	if (not is_extension($defaultDetails['source'],$all_ifrs_base_taxonomies))
+		$dimName = $defaultDetails['source-name'];
+		$dimConcept = $defaultDetails['source'].name.local-name;
+		$dimRole = $defaultDetails['role'].description;
+		$dimBaseNames = navigate dimension-default descendants from $defaultDetails['source-name'] taxonomy $ifrs-gaap returns (target-name);
+		/** In the 2017 and 2016 IFRS Taxonomies a filer should use the ContinuingOperationsMember as the default on the  ContinuingAndDiscontinuedOperationsAxis rather than the one defined in the taxonomy. **/
+		if ($dimBaseNames.length == 0 or $dimConcept == 'ContinuingAndDiscontinuedOperationsAxis')
+			false
+		else 
+			$dimBaseName = $dimBaseNames[1];
+			$memName = $defaultDetails['target-name'];
+			true
+	else
+		false
+
+message
+"The dimension default defined for the axis in the base Taxonomy should not be changed in a company extension taxonomy. The default for the {$dimName} in the base taxonomy is {$dimBaseName}, but the default has been replaced with {$memName} in the extension taxonomy role {$dimRole}.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$ruleId]
+
+

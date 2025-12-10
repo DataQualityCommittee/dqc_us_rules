@@ -1,0 +1,37 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2021
+
+**/
+
+constant $ifrs-gaap = taxonomy('http://xbrl.ifrs.org/taxonomy/2021-03-24/full_ifrs_entry_point_2021-03-24.xsd')
+
+constant $ifrs-gaap-dep = taxonomy('http://xbrl.ifrs.org/taxonomy/2021-03-24/depr_entry_point_2021-03-24.xsd')
+
+constant $country = taxonomy('https://xbrl.sec.gov/country/2021/country-entire-2021.xsd')
+
+constant $currency = taxonomy('https://xbrl.sec.gov/currency/2021/currency-entire-2021.xsd')
+
+constant $exchange = taxonomy('https://xbrl.sec.gov/exch/2021/exch-2021.xsd')
+
+constant $state_province = taxonomy('https://xbrl.sec.gov/stpr/2021/stpr-entire-2021.xsd')
+
+constant $naics = taxonomy('https://xbrl.sec.gov/naics/2021/naics-entire-2021.xsd')
+
+constant $sic = taxonomy('https://xbrl.sec.gov/sic/2021/sic-entire-2021.xsd')
+
+constant $srt = taxonomy('http://xbrl.fasb.org/srt/2021/elts/srt-2021-01-31.xsd')
+
+constant $dei = taxonomy('https://xbrl.sec.gov/dei/2021/dei-entire-2021.xsd')
+
+constant $all_ifrs_base_taxonomies = list($ifrs-gaap, $exchange, $state_province, $naics, $sic, $dei, $srt, $country, $currency )
+
+/** DEI HANDLING **/
+
+constant $dei_namespace  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)
+
+constant $ECD = taxonomy('https://xbrl.sec.gov/ecd/2023/ecd-entire-2023.xsd')

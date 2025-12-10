@@ -1,0 +1,37 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2022
+
+**/
+
+constant $US-GAAP = taxonomy('https://xbrl.fasb.org/us-gaap/2022/entire/us-gaap-entryPoint-std-2022.xsd')
+
+constant $EXCHANGE = taxonomy('https://xbrl.sec.gov/exch/2022/exch-entire-2022.xsd')
+
+constant $STATE_PROVINCE = taxonomy('https://xbrl.sec.gov/stpr/2022/stpr-entire-2022.xsd')
+
+constant $NAICS = taxonomy('https://xbrl.sec.gov/naics/2022/naics-entire-2022.xsd')
+
+constant $SIC = taxonomy('https://xbrl.sec.gov/sic/2022/sic-entire-2022.xsd')
+
+constant $DQC_RULES = taxonomy('https://xbrl.fasb.org/us-gaap/2022/dqcrules/dqcrules-entire-2022.xsd')
+
+constant $EXT_ENUM_LINKS = taxonomy('https://xbrl.fasb.org/us-gaap/2022/elts/us-gaap-tin-def-2022.xml')
+
+constant $BDM = taxonomy('https://xbrl.fasb.org/us-gaap/2022q3/us-gaap-sup-2022q3.xsd')
+
+constant $ALL_BASE_TAXONOMIES = list($US-GAAP, $EXCHANGE, $STATE_PROVINCE, $NAICS, $SIC)
+
+/** DEI HANDLING**/
+
+/**
+constant $DEI_NAMESPACE_list = (filter taxonomy().concepts where $item.name.local-name in list('DocumentPeriodEndDate','DocumentType') and $item.name.namespace-uri.lower-case.contains('dei')).to-list
+
+constant $DEI_NAMESPACE = $DEI_NAMESPACE_list[1].name.namespace-uri
+**/
+
+constant $DEI_NAMESPACE  = first((filter (filter taxonomy().concepts returns $item.name.namespace-uri) where $item.lower-case.contains('xbrl.sec.gov/dei')).to-list)

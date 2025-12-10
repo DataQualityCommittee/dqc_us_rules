@@ -1,0 +1,199 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+**/
+
+rule-name-prefix DQC
+
+
+
+assert US.0043.6833 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations})))) and not (any(set(exists({covered @NetCashProvidedByUsedInOperatingActivities})))))
+	$top = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations;
+	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in $INCOME_ITEMS  where $relationship.target.name not in $INCOME_ITEMS returns by network set (target)
+	for $key in $Children_to_check.keys	
+		for ($bottom in $Children_to_check[$key])
+		$message_text = 
+			if ($bottom.balance == credit)
+			"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". This is in the role " + $key.role.description + ". " + $bottom.name.local-name + " is a credit balance type concept representing a natural cash outflow in the reconciliation of net income (loss) to " + $top.local-name + ".
+A credit balance type concept should always be assigned a negative one (-1) calculation weight as it is a deduction from net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a positive one (+1) calculation weight in the extension taxonomy. 
+Correct the calculation weight to negative one (-1) and input the value as a positive amount if it is a deduction of a non-cash income or gain, an increase in an asset, or a decrease in a liability. If the value is an add-back of a non-cash expense or loss, decrease in an asset, or an increase in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
+			else if ($bottom.balance == debit)
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". This is in the role " + $key.role.description + ". "  + $bottom.name.local-name + " is a debit balance type concept representing a natural cash inflow in the reconciliation of net income (loss) to " + $top.local-name + ".
+
+			A debit balance type concept should always be assigned a positive one (+1) calculation weight as it is an addition to net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a negative one (-1) calculation weight in the extension taxonomy. 
+Correct the calculation weight to positive one (+1) and input the value as a positive amount if it is an addition of a non-cash expense or loss, a decrease in an asset, or an increase in a liability. If the value is an increase in an asset or a decrease in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
+					else
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " does not have a balance type attribute.
+If " + $bottom.name.local-name + ", by definition, represents a natural cash inflow (i.e., a non-cash add-back, decrease in an asset, or an increase in a liability) in the reconciliation of net income (loss) to " + $top.local-name + ", then the concept should be given a positive one (+1) calculation weight.
+
+If " + $bottom.name.local-name + ", by definition, represents a natural cash outflow (i.e., a non-cash reduction, an increase in an asset, or a decrease in a liability) in the reconciliation of net income (loss) to " + $top.local-name + ", then the concept should be given a negative one (-1) calculation weight. 
+	
+The significant portion of values input to the Instance are expected to be absolute; the values are debits or credits, not positive or negative. As there is no balance type attribute, the positive input would represent the value that is consistent with the substance of the concept, as defined.";
+					
+	if ($bottom.balance == credit)
+		if (effective_weight_is_positive_network($top, $bottom, $key.role))
+				true
+		else	
+				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
+					true
+				else
+					false
+	else 
+		if ($bottom.balance == debit)
+			if (effective_weight_is_negative_network($top, $bottom, $key.role))
+				true
+			else
+				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
+					true
+				else
+					false
+		else
+			false
+else
+	false
+message
+"{$message_text}  {if (effective_weight_is_zero_network($top, $bottom, $key.role))  "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights." else ""} 
+
+
+Rule Element Id:6833
+Rule version: {$ruleVersion}"
+
+severity  error
+effectiveDate $effective_dates[$rule_id]
+
+assert US.0043.7488 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$extensionNetIncomeItems = filter taxonomy().concepts where $item.is-monetary == true and $item.balance == credit and $item.namespace-uri == $EXTENSION_NS and $item.name.local-name.lower-case.contains("netincome") returns $item.name;
+
+if ((any(set(exists({covered @concept = NetCashProvidedByUsedInOperatingActivities})))))
+	$top = NetCashProvidedByUsedInOperatingActivities;
+	$Children_to_check = navigate summation-item descendants from $top stop when $relationship.target.name in ($INCOME_ITEMS + $extensionNetIncomeItems.to-set)  where $relationship.target.name not in ($INCOME_ITEMS + $extensionNetIncomeItems.to-set) returns by network set (target)
+	for $key in $Children_to_check.keys
+		for ($bottom in $Children_to_check[$key])
+		$message_text = 
+			if ($bottom.balance == credit)
+			"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". This is in the role " + $key.role.description + ". " + $bottom.name.local-name + " is a credit balance type concept representing a natural cash outflow in the reconciliation of net income (loss) to " + $top.local-name + ".
+A credit balance type concept should always be assigned a negative one (-1) calculation weight as it is a deduction from net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a positive one (+1) calculation weight in the extension taxonomy. 
+Correct the calculation weight to negative one (-1) and input the value as a positive amount if it is a deduction of a non-cash income or gain, an increase in an asset, or a decrease in a liability. If the value is an add-back of a non-cash expense or loss, decrease in an asset, or an increase in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
+			else if ($bottom.balance == debit)
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". This is in the role " + $key.role.description + ". " + $bottom.name.local-name + " is a debit balance type concept representing a natural cash inflow in the reconciliation of net income (loss) to " + $top.local-name + ".
+A debit balance type concept should always be assigned a positive one (+1) calculation weight as it is an addition to net income (loss) to reconcile to " + $top.local-name + ". " + $bottom.name.local-name + " has been incorrectly provided a negative one (-1) calculation weight in the extension taxonomy. 
+Correct the calculation weight to positive one (+1) and input the value as a positive amount if it is an addition of a non-cash expense or loss, a decrease in an asset, or an increase in a liability. If the value is an increase in an asset or a decrease in a liability and " + $bottom.name.local-name + " is the correct concept, input a negative value."
+					else
+					"The concept " + $bottom.name.local-name + " is included in the calculation of " + $top.local-name + ". " + $bottom.name.local-name + " does not have a balance type attribute.
+
+If " + $bottom.name.local-name + ", by definition, represents a natural cash inflow (i.e., a non-cash add-back, decrease in an asset, or an increase in a liability) in the reconciliation of net income (loss) to " + $top.local-name + ", then the concept should be given a positive one (+1) calculation weight.
+
+If " + $bottom.name.local-name + ", by definition, represents a natural cash outflow (i.e., a non-cash reduction, an increase in an asset, or a decrease in a liability) in the reconciliation of net income (loss) to " + $top.local-name + ", then the concept should be given a negative one (-1) calculation weight. 
+
+The significant portion of values input to the Instance are expected to be absolute; the values are debits or credits, not positive or negative. As there is no balance type attribute, the positive input would represent the value that is consistent with the substance of the concept, as defined.";
+					 
+	if ($bottom.balance == credit)
+		if (effective_weight_is_positive_network($top, $bottom, $key.role))
+				true
+		else	
+				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
+					true
+				else
+					false
+	else 
+		if ($bottom.balance == debit)
+			if (effective_weight_is_negative_network($top, $bottom, $key.role))
+				true
+			else
+				if (effective_weight_is_zero_network($top, $bottom, $key.role))	
+					true
+				else
+					false
+		else
+			false
+else
+	false
+message
+"{$message_text}  {if (effective_weight_is_zero_network($top, $bottom, $key.role))  "In this case the company has reported the child concept " + $bottom.name.local-name + " multiple times with alternative weights." else ""} 
+ 
+Rule Element Id:7488
+Rule version: {$ruleVersion}"
+
+severity  error
+effectiveDate $effective_dates[$rule_id]
+
+
+//-----------DQC.US.0043.9873 ---------------//
+
+assert US.0043.9873  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $IncomeItem in (($INCOME_ITEMS) - set(DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax, IncomeLossFromSubsidiariesNetOfTax))
+	for $Operating in list(NetCashProvidedByUsedInOperatingActivities, NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
+		if $Operating == NetCashProvidedByUsedInOperatingActivities
+			$DescendantsToCheck = navigate summation-item descendants from $Operating returns target-name
+			if $DescendantsToCheck.contains(NetCashProvidedByUsedInOperatingActivitiesContinuingOperations)
+				false
+			else
+				$signFlag = "negative"
+				$messageText = "The company has reported the concept " + $IncomeItem.local-name + " as part of the cash flow statement. This income item is being deducted from the value of operating cash flows in the calculation defined by the filer.  This implies that the resulting operating cash flow calculation excludes this income item from cash flow from operations.  If  " + $IncomeItem.local-name + " represents income from discontinued operations then the element NetCashProvidedByUsedInOperatingActivitiesContinuingOperations should be used as the total rather than the current total element of NetCashProvidedByUsedInOperatingActivities. If the item is an income item and is being deducted because the value is negative then consider changing the sign and weight of the element."
+				effective_weight_is_negative($Operating, $IncomeItem)
+		else
+			$discOPs = set(DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax, IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
+			if $IncomeItem in $discOPs
+					$signFlag = "positive"
+					$messageText = "The company has reported the concept " + $IncomeItem.local-name + " as part of the cash flow statement. This income item is being added to the value of operating cash flows in the calculation defined by the filer.  This implies that the resulting operating cash flow calculation includes this income item in cash flow from operations.  If  " + $IncomeItem.local-name + " represents income from discontinued operations then the element NetCashProvidedByUsedInOperatingActivities should be used as the total rather than the current total element of  NetCashProvidedByUsedInOperatingActivitiesContinuingOperations."
+					effective_weight_is_positive($Operating, $IncomeItem)
+			else
+				false
+
+message
+"{$messageText}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity  error
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus taxonomy().concept($IncomeItem)
+
+
+//-----------DQC.US.0043.9875 ---------------//
+
+assert US.0043.9875  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+if list({@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest where $fact != 0}).length == 0
+	$discOpsAfterNCI = {@concept = IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity where $fact != 0}
+	$discOpsBeforeNCI = {@concept = IncomeLossFromDiscontinuedOperationsNetOfTax where $fact != 0}
+	$multiple = $discOpsAfterNCI.signum / $discOpsBeforeNCI.signum
+
+	if $multiple > 0 
+		skip
+	else
+	 	true
+else
+	skip
+
+message
+"The value of {$discOpsAfterNCI.concept.name} with a value of {$discOpsAfterNCI} has the opposite sign of the concept {$discOpsBeforeNCI.concept.name} with a value of {$discOpsBeforeNCI}. The value of the income loss from discontinued operations cannot be negative and positive if the value of non controlling interests is not tagged.  Please correct the signs of these elements so they are consistent or inclue the value for non controlling interests associated with discontinued operations, using the element IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest.
+
+The properties of this {$discOpsAfterNCI.concept.name} fact are:
+Period :{$discOpsAfterNCI.period}
+Dimensions : {$discOpsAfterNCI.dimensions.join(', ','=')}
+Unit : {$discOpsAfterNCI.unit}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity  error
+effectiveDate $effective_dates[$ruleId]

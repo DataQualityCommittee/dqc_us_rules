@@ -1,0 +1,40 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+Assert US.0166.10090 satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+if set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','DEF 14C').contains([covered @concept.local-name ='DocumentType'])
+   skip
+else
+   $conceptsInCube = set({covered @cube=*}.concept)
+
+   $factsNotIncubes = list({covered @ where $fact.dimensions.length > 0 and $fact.concept not in $conceptsInCube})
+
+   for $fact2 in $factsNotIncubes
+      $IncludesTypedDim = $fact2.dimensions.keys.name intersect set(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis)
+      $IncludesTypedDim.length == 0 
+message
+"A value of {$fact2} was reported for the concept {$fact2.concept.name}.  This value has dimensions of  {$fact2.dimensions.join(', ','=')} but this fact is not included in a dimensional table ( hypercube). All dimensional facts should be included in a hypercube.
+
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$ruleId]

@@ -1,0 +1,35 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2023
+
+**/
+
+RULE-NAME-PREFIX DQC
+/**
+Transition ELements using  "This element should be used to tag non-restated comparative information only." **/
+
+ASSERT IFRS.0173.10114 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+$TransitionElements = filter ($ifrs-gaap.concepts) where (filter ($item.all-labels) where $item.text.contains('This element should be used to tag non-restated comparative information only.') returns $item).length > 0
+
+$TranstionFact = {@concept in $TransitionElements where $fact.period.end > date('2023-01-01')}
+
+exists($TranstionFact)
+
+message
+"A value was reported for {$TranstionFact.concept.name} with a value of {$TranstionFact}.  This is a transition element that should not be used after 2023-01-01. The end date of this fact is {$TranstionFact.period.end}. Please update the element to the appropriate element after adoption of the accounting standard.
+
+The properties of this {$TranstionFact.concept.name} fact are:
+Period :{$TranstionFact.period}
+Dimensions : {$TranstionFact.dimensions.join(', ','=')}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]

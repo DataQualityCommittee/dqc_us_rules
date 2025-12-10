@@ -1,0 +1,55 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+**/
+
+
+rule-name-prefix DQC
+
+
+assert US.0095.9528 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Check if any subsequent event impacted shares at the end of the period or there was a stock split. If it did then the rule will not run **/
+if count(set({covered @concept.data-type = xbrli:sharesItemType  @SubsequentEventTypeAxis = SubsequentEventMember})) > 1
+	or count(set({covered @concept in list(StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits, StockholdersEquityNoteStockSplitConversionRatio1)})) > 1
+	skip
+else
+	$EntityCommonStockSharesOutstanding = {@concept.local-name = 'EntityCommonStockSharesOutstanding' @period = * where $fact > 0};
+	$EntityStockPeriod = $EntityCommonStockSharesOutstanding.period.end;
+	$CommonStockSharesOutstanding = {@concept = CommonStockSharesOutstanding @period = * where $fact > 0 and  ($fact.period.end + (time-span("P90D"))) > $EntityStockPeriod};
+
+	$factor = $EntityCommonStockSharesOutstanding / $CommonStockSharesOutstanding;
+
+	if $factor > 99
+		true
+	else
+		if $factor < 0.099
+			true
+		else
+			false
+
+message
+
+"The element {$EntityCommonStockSharesOutstanding.concept.name} with a value of {$EntityCommonStockSharesOutstanding} is different than the value reported for the concept {$CommonStockSharesOutstanding.concept.name} with a value of {$CommonStockSharesOutstanding} by a factor of greater than 100 times. If the difference is the result of a stock split then tag either the element StockIssuedDuringPeriodSharesStockSplits, StockIssuedDuringPeriodSharesReverseStockSplits or the element StockholdersEquityNoteStockSplitConversionRatio1.
+
+Period :{$EntityCommonStockSharesOutstanding.period}
+Unit : {$EntityCommonStockSharesOutstanding.unit}
+Dimensions:{$EntityCommonStockSharesOutstanding.dimensions.join(', ','=')}
+Decimals: {$EntityCommonStockSharesOutstanding.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $EntityCommonStockSharesOutstanding
+		

@@ -1,0 +1,84 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+**/
+
+
+rule-name-prefix DQC
+
+
+assert US.0094.9526 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Rule only applies to an annual filing **/
+
+if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
+	
+/** Return Document Period end date **/
+
+	$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+	$document_period_end_date = $document_period.period.end;
+
+/** Loop through Maturity Elements **/
+	for $schedule in $maturity_schedule_elements
+		$remaining = {covered @concept = $schedule[2]};
+		$year_one = $schedule[3];
+		$remainder_end_date = $remaining.period.end;
+		$remainder_end_date == $document_period_end_date
+	
+
+else
+	false
+message
+
+"The element {$remaining.concept.name} with a value of {$remaining} has an end date of {$remainder_end_date} which is the same as {$document_period_end_date}. Remaining payments for the year should only be used in an annual report if the amount reported is earlier than the period end date.  If the amount represents the value of for year one then the element {$year_one} should be used to tag this value.
+ 
+Period :{$remaining.period}
+Unit : {$remaining.unit}
+Dimensions:{$remaining.dimensions.join(', ','=')}
+Decimals: {$remaining.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+
+
+effectiveDate $effective_dates[$rule_id]
+
+
+assert US.0094.9527 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Loop through Maturity Elements **/
+	for $schedule in $maturity_schedule_elements
+		$remaining = $schedule[2];
+		$year_one = $schedule[3];
+		$year_two = $schedule[4];
+		
+		exists({@concept = $remaining}#remain) and exists({@concept = $year_two}#year2) and missing({@concept = $year_one}#year1)
+		
+message
+
+"The element {$remain.concept.name} with a value of {$remain} is used in the filing as is the element {$year2.concept.name} with a value of {$year2}. However no value is provided for the element {$year_one}. If there is no value for year one but there is a value for the remainder of the year and there is a value for year two, then year one should either have a value of 0, or Year one should have the value for Year 2 of {$year2}.
+
+Period :{$remain.period}
+Unit : {$remain.unit}
+Dimensions:{$remain.dimensions.join(', ','=')}
+Decimals: {$remain.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+
+
+effectiveDate $effective_dates[$rule_id]
+		

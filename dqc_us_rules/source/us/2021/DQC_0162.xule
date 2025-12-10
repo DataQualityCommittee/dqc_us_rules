@@ -1,0 +1,62 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 201
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0162.10084 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/**Check that tickers are correct **/
+
+$InvalidTickers = set('N/A','n/a','-','NONE','NOT APPLICABLE')
+
+$InvalidCharacters = set('"','@','*','&','!','$', '%','#','^')
+
+$TradingSymbol = {@concept = qname($DEI_NAMESPACE,'TradingSymbol')}   
+
+$SecurityTitle =    if exists({@concept = qname($DEI_NAMESPACE,'Security12bTitle')})
+                        {@concept = qname($DEI_NAMESPACE,'Security12bTitle')}
+                    else
+                        ''
+
+$EntityCIK =  {covered @concept = qname($DEI_NAMESPACE,'EntityCentralIndexKey')}   
+
+
+if $TradingSymbol in $InvalidTickers or any(filter $InvalidCharacters where $item in $TradingSymbol returns true) or $TradingSymbol == none
+    true
+else 
+    if $TradingSymbol.upper-case != $TradingSymbol
+        and (not $SecurityTitle.lower-case.contains('pref')) 
+        and (not $SecurityTitle.lower-case.contains('notes'))
+        and (not $TradingSymbol.dimension(StatementClassOfStockAxis).name.local-name.lower-case.contains('pref'))
+        and (not $TradingSymbol.dimension(StatementClassOfStockAxis).name.local-name.lower-case.contains('notes'))
+        true
+    else
+        if $TradingSymbol == 'NA' and $EntityCIK != '0001872302'
+            true
+        else
+            false
+
+message
+"The filer has used an invalid trading symbol of {$TradingSymbol}. If a trading symbol is not applicable then use the no trading symbol flag element 'dei:NoTradingSymbolFlag'. The trading symbol cannot contain special characters such as {$InvalidCharacters.join(', ')} or Invalid Tickers such as {$InvalidTickers.join(', ')} . In addition tickers  should be entered in upper-case. If the ticker is a preferred security the element Security12bTitle should be tagged to indicate that it is a preferred security.
+
+
+The properties of this {$TradingSymbol.concept} fact are:
+Period :{$TradingSymbol.period}
+Dimensions : {$TradingSymbol.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TradingSymbol

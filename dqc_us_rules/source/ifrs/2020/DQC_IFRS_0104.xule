@@ -1,0 +1,303 @@
+
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS 2020
+**/
+
+
+rule-name-prefix DQC
+
+assert IFRS.0104.9551 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis).default.name;
+/** In IFRS taxonomy this dimension is not in a hypercube so have to navigate **/
+$dimensionBaseDefault = navigate dimension-default descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis taxonomy $ifrs-gaap returns  set (target-name);
+
+if $dimensionDefault not in $dimensionBaseDefault
+	skip
+else
+
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+/** UPDATED FOR SRT **/
+
+$member_IFRSGAAP = navigate parent-child descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis taxonomy $ifrs-gaap returns set (target-name);
+
+$member_extension = navigate dimensions dimension-member descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis returns set (target-name);
+
+/** Define allowable extensions with the qname function **/
+
+$allowable_extensions = set();
+
+/** Limit these to extensions filter out base taxonomy elements**/
+$ChildExtensions1 = navigate dimensions domain-member descendants from NoncurrentAssetsHeldForSaleMember returns set (target-name); 
+
+$ChildExtensions2 = navigate dimensions domain-member descendants from DisposalGroupsClassifiedAsHeldForSaleMember returns set (target-name);
+
+$ChildExtensions3 = navigate dimensions domain-member descendants from AssetsAndLiabilitiesClassifiedAsHeldForSaleMember returns set (target-name);
+
+/** Union the sets**/
+
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3;
+
+$unallowed_members = $member_extension - $allowed_members;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis and the unallowable member {$member.local-name}. 
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis. The AssetsAndLiabilitiesClassifiedAsHeldForSaleAxis should only be used with the  following  members: {$allowed_members.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+assert IFRS.0104.9552 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+/** UPDATED FOR SRT **/
+
+$member_IFRSGAAP = navigate parent-child descendants from ContinuingAndDiscontinuedOperationsAxis taxonomy $ifrs-gaap returns set (target-name);
+
+$member_extension = navigate dimensions dimension-member descendants from ContinuingAndDiscontinuedOperationsAxis returns set (target-name);
+
+/** Define allowable extensions with the qname function **/
+
+$allowable_extensions = set();
+
+/** Limit these to extensions filter out base taxonomy elements**/
+$ChildExtensions1 = navigate dimensions domain-member descendants from DiscontinuedOperationsMember returns set (target-name); 
+
+$ChildExtensions2 = navigate dimensions domain-member descendants from DisposalGroupsClassifiedAsHeldForSaleMember returns set (target-name);
+
+$ChildExtensions3 = navigate dimensions domain-member descendants from AggregateContinuingAndDiscontinuedOperationsMember returns set (target-name);
+
+/** Union the sets**/
+
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2  + $ChildExtensions1 + $ChildExtensions3;
+
+$unallowed_members = $member_extension - $allowed_members;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @ContinuingAndDiscontinuedOperationsAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the ContinuingAndDiscontinuedOperationsAxis and the unallowable member {$member.local-name}. 
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis ContinuingAndDiscontinuedOperationsAxis. The ContinuingAndDiscontinuedOperationsAxis should only be used with the  following  members: {$allowed_members.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+assert IFRS.0104.9553 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(ConsolidatedAndSeparateFinancialStatementsAxis).default.name;
+$dimensionBaseDefault = navigate dimension-default descendants from ConsolidatedAndSeparateFinancialStatementsAxis taxonomy $ifrs-gaap returns  set (target-name);
+
+if $dimensionDefault not in $dimensionBaseDefault
+	skip
+else
+
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+/** UPDATED FOR SRT **/
+
+$member_IFRSGAAP = navigate parent-child descendants from ConsolidatedAndSeparateFinancialStatementsAxis taxonomy $ifrs-gaap returns set (target-name);
+
+$member_extension = navigate dimensions dimension-member descendants from ConsolidatedAndSeparateFinancialStatementsAxis returns set (target-name);
+
+/** Define allowable extensions with the qname function **/
+
+$allowable_extensions = set();
+$allowable_IFRS_Members = set(SeparateMember);
+
+
+/** Union the sets**/
+
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $allowable_IFRS_Members;
+$unallowed_members = $member_extension - $allowed_members;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @ConsolidatedAndSeparateFinancialStatementsAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the ConsolidatedAndSeparateFinancialStatementsAxis and the unallowable member {$member.local-name}. The only member that is permitted with this axis is {$allowed_members.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis ConsolidatedAndSeparateFinancialStatementsAxis. The ConsolidatedAndSeparateFinancialStatementsAxis should only be used with the  following  members: {$allowed_members.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+
+assert IFRS.0104.9554 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(SegmentConsolidationItemsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentConsolidationItemsAxis).default.name;
+
+if $dimensionDefault != $dimensionBaseDefault
+	skip
+else
+
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+/** UPDATED FOR SRT **/
+
+$member_IFRSGAAP = navigate dimensions dimension-member descendants from SegmentConsolidationItemsAxis taxonomy $ifrs-gaap returns set (target-name);
+
+$member_extension = navigate dimensions dimension-member descendants from SegmentConsolidationItemsAxis returns set (target-name);
+
+/** Extension members under the following base members are permitted.**/
+$ChildExtensions1 = navigate dimensions domain-member descendants from EliminationOfIntersegmentAmountsMember returns set (target-name); 
+
+$ChildExtensions2 = navigate dimensions domain-member descendants from UnallocatedAmountsMember returns set (target-name);
+
+$ChildExtensions3 = navigate dimensions domain-member descendants from MaterialReconcilingItemsMember returns set (target-name);
+
+$segmentExtensions = navigate dimensions domain-member descendants from OperatingSegmentsMember where $relationship.target-name in (set(qname($extension_ns,'ReportableSubsegmentsMember'), qname($extension_ns,'IntersubsegmentEliminationsMember'))) returns set (target-name);
+
+/** Define allowable extensions with the qname function **/
+$allowable_extensions = set(qname($extension_ns,'CorporateReconcilingItemsAndEliminationsMember'), qname($extension_ns,'CorporateAndReconcilingItemsMember'), qname($extension_ns,'CorporateAndEliminationsMember'), qname($extension_ns,'EliminationsAndReconcilingItemsMember'), qname($extension_ns,'OperatingSegmentsAndCorporateNonSegmentMember'), qname($extension_ns,'OperatingSegmentsExcludingIntersegmentEliminationMember'),
+qname($extension_ns,'CorporateNonSegmentMember'), qname($extension_ns,'GeographyEliminationsMember'), qname($extension_ns,'OtherNonSegmentMember'), qname($extension_ns,'OperatingSegmentsAndUnallocatedMember'));
+
+/** Union the sets**/
+
+$allowed_members = $allowable_extensions + $member_IFRSGAAP + $ChildExtensions2 + $ChildExtensions1 + $ChildExtensions3 + $segmentExtensions;
+
+$unallowed_members = $member_extension - $allowed_members;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @SegmentConsolidationItemsAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the SegmentConsolidationItemsAxis and the unallowable member {$member.local-name}. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.sort.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis SegmentConsolidationItemsAxis. The SegmentConsolidationItemsAxis should only be used with the  following  members: {$allowed_members.sort.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+assert IFRS.0104.9555 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+/** Determine the members on the axis in the taxonomy using the definition linkbase CHANGE TO - dimensions dimension-member **/
+
+/** IF the default for the dimension is wrong do not run the rule **/
+$dimensionDefault = taxonomy().dimension(SegmentsAxis).default.name;
+$dimensionBaseDefault = $ifrs-gaap.dimension(SegmentsAxis).default.name;
+
+if $dimensionDefault != $dimensionBaseDefault
+	skip
+else
+$member_IFRS = navigate dimensions dimension-member descendants from SegmentsAxis taxonomy $ifrs-gaap returns set (target-name);
+
+$baseMembers = navigate dimensions dimension-member descendants from SegmentsAxis where is_base($relationship.target, list($ifrs-gaap, $exchange, $naics, $sic, $dei, $currency )) returns set (target-name);
+
+/** Difference the sets**/
+
+$unallowed_members = $baseMembers - $member_IFRS;
+
+/** Evaluate if facts exists with the unallowable members **/
+/** We have used covered because if it was not covered then the processor looks for alignmnet. This means that the exist will run and if it does not get a result then the processor will stop processing results. i.e. the non existence of the fact means the iteration does not run and the else statement does not run.
+**/
+for ($member in $unallowed_members)
+	$fact1 = {covered @SegmentsAxis = $member};
+	if exists($fact1)
+		$message_for_fact = "The concept {$fact1.concept.name.local-name} with a value of {$fact1} is dimensionally qualified with the SegmentsAxis and the unallowable member {$member.local-name}. The SegmentsAxis should only be used with extension members and the  following  IFRS  members: {$member_IFRS.join(', ')}.
+The properties of the fact for {$fact1.concept.name.local-name} are:
+Period: {$fact1.period}
+Dimensions: {$fact1.dimensions.join(', ','=')} 
+Unit: {$fact1.unit}";
+		true
+	else 
+		$message_for_fact = " The member {$member.local-name} is used on the axis SegmentsAxis. The SegmentsAxis should only be used with extension members and the  following IFRS  members: {$member_IFRS.join(', ')}. There are no facts associated with this member and axis.";
+		true
+
+
+message
+"{$message_for_fact}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

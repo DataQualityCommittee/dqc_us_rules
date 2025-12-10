@@ -1,0 +1,278 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+ASSERT US.0117.9574 SATISFIED
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Get the DRS Roles and dimensions **/
+$drs_roles = set(for $y in $STATEMENT_CUBES 
+					list($y.drs-role, $y.dimensions, $y));
+
+/** GET THE DOCUMENT PERIOD 
+** Only use facts where the duration matches
+** This is done so that the statement cube dosent include peridos that were not reported in the cube.
+**/
+
+$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
+$document_period_duration = $document_period.period.days;
+
+/** Go through each cube **/
+for $drs_role in $drs_roles
+	for $dimension in $drs_role[2]
+		$dim = $dimension.concept.name
+		/**if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis') or $dim.local-name not in list('StatementClassOfStockAxis')**/
+		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','FinancialInstrumentAxis','InformationByCategoryOfDebtSecurityAxis')
+			$members = navigate dimensions descendants from $dimension.concept drs-role $drs_role[1] returns target-name
+
+			$domain = navigate dimensions dimension-domain descendants from $dimension.concept drs-role $drs_role[1] returns set target-name
+
+			/** We need some code here to determine if the rule should run when mutiple breakdowns are defined using multiple dimensions
+			An example is where revenue is broken down by product and then a product category is broken down by related party with not subtotal for the product.
+			**/
+
+			/** Step 1 - Identify facts in the cube that have 2 or more dimensions including the target dimension **/
+
+			$factsWithMutipleDimensions = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = * where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length > 1})
+
+			$SubTotalExists = if $factsWithMutipleDimensions.length > 0
+								/**Step2 Identify members of TargetDim with more than one dimension so we can determine if a subtotal was included.
+								**/
+								$MembersOfTargetDim = (filter $factsWithMutipleDimensions returns $item.dimension($dim).name).to-set
+
+								/**Step 3 - Identify if that target dimension members are reported as a subtotal **/
+								
+								all(set(for $SubMember in $MembersOfTargetDim
+											exists([@cube.drs-role = $drs_role[1] @$dim = $SubMember where $fact.concept.is-monetary])
+										))
+								else
+									true
+				/** Identify if facts exist for the dimension and concept in a parenthetical hypercube **/
+			    $factsInParenthetical = list([nonils @cube in $STATEMENT_PARENTHETICAL_CUBES  @$dim = *]) 
+
+				$NoFactsInParentheticalFlag = $factsInParenthetical.length == 0
+
+				/** Identify if facts exist for the dimension and concept in a notes hypercube **/
+				$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = *])
+
+				/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
+				$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim in $domain where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
+
+				$noFactsInNotes = $factsInNotes.length == 0
+
+				$DimValueGreaterThanTotal = if $noFactsInNotes 
+												false
+											else
+												max($factsInNotes) > $TotalDefault
+										
+				/** Get a set  of the unique members **/
+				$member_descendants = $members.to-set - $domain;
+				
+			if $SubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal) and $NoFactsInParentheticalFlag
+				/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+				$member_facts = list(for $member in $member_descendants
+									$ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $drs_role[1] returns set (target-name)) - $domain;
+									if list([nonils @cube.drs-role = $drs_role[1] @$dim in $ancestors_list where $fact.concept.is-monetary]).length > 0
+										skip
+									else 
+										[nonils @cube.drs-role = $drs_role[1] @$dim = $member where $fact.concept.is-monetary]);
+				/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+				if 	$member_facts.length == 0 
+					skip
+				else		
+					/** aggregate the fact values on the axis **/
+					$member_sums = sum($member_facts);
+					/** Calculate the minimum decimals **/
+
+					$min_decimals = min(list(for $z in $member_facts
+					if $z == none 
+						skip
+					else
+						$z.decimals));
+
+					$member_string = sum(list(for $member_fact in $member_facts
+						"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+
+					/** Get the financial statement cube **/
+					$bs_cubes = (filter $STATEMENT_CUBES  where $item.drs-role == $drs_role[1]).to-list;
+					/** Check if the FASB Exception for 606 applies **/
+					if $bs_cubes.length > 0 and $TotalDefault.name in list(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax) and $dim == srt:ProductOrServiceAxis
+						$bs_cube = $bs_cubes[1]
+						if  $bs_cube.primary-concepts.name.contains(NoninterestIncome)
+							/** This takes into account those cases for Banks and FASB guidance https://www.fasb.org/revenue_2020 and calculation of non interest income.
+							** See Figure 13b-1a. Unfortunately the breakdown for 606 revenue for banks get interlaced and non-dimensional. For now
+							** this rule excludes those cases where the bank breaks down revenue and uses the product or service axis and the element NonInterestIncome
+							** appears in the cube and the value of the default is greater than the value of the members. In these cases a remainder is embedded somewhere else.
+							**/
+							$additional_message = "The value of the dimensions is greater than the default. In the cases of banks reporting non interest income the value of the revenue default should be at least greater than the dimensionalized values."
+							tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2) and $member_sums > $TotalDefault
+						else
+							if $member_sums < $TotalDefault and $bs_cube.primary-concepts.name.contains(Revenues)
+								$calcRevComponents = navigate summation-item descendants from Revenues role $bs_cube.drs-role.uri returns set (target-name);
+								if $calcRevComponents.length > 1 and ($calcRevComponents intersect set(RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromContractWithCustomerIncludingAssessedTax)).length > 0 /** This checks that the breakdown could have a rev item that is 606 and non 606 **/
+									false
+								else
+									$additional_message = "The calculation breakdown of Revenues should include both Revenue From Contract With Customers and at least one additional revenue item that includes both 606 and non 606 income, if the sum of Revenue From Contract With Customers breakdown is not equal to the aggregated value of the dimension members on the ProductOrServiceAxis. Either add a calculation breakdown of Revenues or represent all the 606 revenue as members."
+									tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+							else
+								$additional_message = "When breaking down 606 revenue using the product or service axis and the total does not aggregate, then the element NoninterestIncome income should be used as the total to comply with the FASB guidance for breaking down 606 revenue. To correct this error ensure that a the element NoninterestIncome is included in the presentation and definition linkbases."
+								tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+					else
+						$additional_message = ""
+						tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+			else
+				skip
+		else
+			skip
+	
+message
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} is not equal to the dimensional breakdown of {$member_sums} using the dimension {$dim} which is comprised of the members {$member_descendants.join(", ")}:
+{$member_string}
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+{$additional_message}
+The properties of this {$TotalDefault.concept.name} fact are:
+Period :{$TotalDefault.period}
+Unit : {$TotalDefault.unit}
+Dimensions : {$TotalDefault.dimensions.join(', ','=')}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TotalDefault
+
+ASSERT US.0117.10093 SATISFIED
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Get the DRS Roles and dimensions **/
+$drs_roles = set(for $y in $STATEMENT_CUBES 
+					list($y.drs-role, $y.dimensions, $y));
+
+/** GET THE DOCUMENT PERIOD 
+** Only use facts where the duration matches
+** This is done so that the statement cube dosent include peridos that were not reported in the cube.
+**/
+
+$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
+$document_period_duration = $document_period.period.days;
+
+/** Go through each cube **/
+for $drs_role in $drs_roles
+	for $dimension in $drs_role[2]
+		$dim = $dimension.concept.name
+		/**if $dim.local-name in list('LegalEntityAxis','ConsolidatedEntitiesAxis') or $dim.local-name not in list('StatementClassOfStockAxis')**/
+		if $dim.local-name in list('StatementClassOfStockAxis', 'ProductOrServiceAxis', 'PropertyPlantAndEquipmentByTypeAxis','LongtermDebtTypeAxis','RelatedPartyTransactionsByRelatedPartyAxis','StatementBusinessSegmentsAxis', 'LimitedPartnersCapitalAccountByClassAxis','PartnerTypeOfPartnersCapitalAccountAxis','FiniteLivedIntangibleAssetsByMajorClassAxis','FinancialInstrumentAxis','InformationByCategoryOfDebtSecurityAxis')
+			
+			/** We need some code here to determine if the rule should run when mutiple breakdowns are defined using multiple dimensions
+			An example is where revenue is broken down by product and then a product category is broken down by related party with not subtotal for the product.
+			**/
+
+			/** Step 1 - Identify facts in the cube that have 2 or more dimensions including the target dimension **/
+
+			$factsWithMutipleDimensions = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = * where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length == 2})
+
+			if $factsWithMutipleDimensions.length == 0
+				skip
+			else
+				/**Step2 Identify members of TargetDim with more than one dimension so we can determine if a subtotal was included.
+				**/
+				$MembersOfTargetDim = (filter $factsWithMutipleDimensions returns $item.dimension($dim).name).to-set
+
+				for $SubMember in $MembersOfTargetDim
+
+						/** Get second dimension member **/
+						$Dim2Facts = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length == 2})
+
+						$Dim2Dimensions = sum((filter $Dim2Facts returns $item.dimensions.keys.name).to-set) - set($dim)
+
+						$Dim2Dimension = first($Dim2Dimensions);
+
+						$factsWithMoreThanTwoDimensions = list({covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember  @$Dim2Dimension = * where $fact.concept.is-monetary and ($fact.dimensions.keys.name).length > 2})
+
+						$DoSubTotalExists = CheckSubTotalExists($factsWithMoreThanTwoDimensions,$drs_role, $dim, $SubMember, $Dim2Dimension)
+
+						/** Identify if facts exist for the dimensions and concept in a notes hypercube If they do then the rule will not run as we get bleed through from other hypercubes.**/
+						$factsInNotes = list([nonils @cube in $NOTES_CUBES  @$dim = $SubMember  @$Dim2Dimension = *])
+
+						/** Gets those values in the cube that are monetary and match the reporting period duration or the reporting period instant of the required context.**/
+						$TotalDefault = [nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember where $fact.concept.is-monetary and ($fact.period.days == 0 or $fact.period.days == $document_period_duration)]
+
+						$noFactsInNotes = $factsInNotes.length == 0
+
+						$DimValueGreaterThanTotal = if $noFactsInNotes 
+														false
+													else
+														max($factsInNotes) > $TotalDefault
+						
+					
+						if $DoSubTotalExists and ($noFactsInNotes or $DimValueGreaterThanTotal) and exists($TotalDefault) and not (set('LegalEntityAxis').contains($Dim2Dimension.local-name))
+							$member_facts = list([covered-dims nonils @cube.drs-role = $drs_role[1] @$dim = $SubMember @$Dim2Dimension = * where $fact.concept.is-monetary]);
+							/** If there are no member facts the rule ends otherwise the subtotal is evaluated **/
+								
+								/** aggregate the fact values on the axis **/
+								$member_sums = sum($member_facts);
+								/** Calculate the minimum decimals **/
+
+								$min_decimals = min(list(for $z in $member_facts
+								if $z == none 
+									skip
+								else
+									$z.decimals));
+
+								$member_string = sum(list(for $member_fact in $member_facts
+									"\t" + $member_fact.dimension($dim).local-name + " \t --> {$member_fact}" + " \t --> {$member_fact.dimensions.join(', ','=')} \n"));
+
+								tolerance_for_decimals_comp($member_sums, $TotalDefault, $min_decimals, 2)
+						else
+							skip
+				
+		else
+			skip
+	
+message
+"In the statement {$drs_role[1].description} the concept {$TotalDefault.name} with a value of {$TotalDefault} and dimension of {$dim} and member of {$SubMember} is not equal to the dimensional breakdown of {$member_sums} using the dimension {$dim} and the second dimension {$Dim2Dimension}:
+{$member_string}
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this {$TotalDefault.concept.name} fact are:
+Period :{$TotalDefault.period}
+Unit : {$TotalDefault.unit}
+Dimensions : {$TotalDefault.dimensions.join(', ','=')}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $TotalDefault
+
+
+
+
+function CheckSubTotalExists($factsWithMoreThanTwoDimensions,$drs_role, $dim, $SubMember, $Dim2Dimension)
+  												if $factsWithMoreThanTwoDimensions.length > 0
+												/**Step2 Identify members of SubDim with more than two dimension so we can determine if a subtotal was included.
+												**/
+												$MembersOfSubDim = (filter $factsWithMoreThanTwoDimensions returns $item.dimension($Dim2Dimension).name).to-set
+
+												/**Step 3 - Identify if that Sub dimension members are reported as a subtotal **/
+												
+												all(set(for $SubSubMember in $MembersOfSubDim
+															exists([@cube.drs-role = $drs_role[1] @$dim = $SubMember @$Dim2Dimension = $SubSubMember where $fact.concept.is-monetary])
+														))
+												else
+													true

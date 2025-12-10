@@ -1,0 +1,584 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0004.16 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+$Assets = {nonils @Assets};
+$LiabilitiesAndStockholdersEquity = {nonils @LiabilitiesAndStockholdersEquity};
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($Assets, $LiabilitiesAndStockholdersEquity, $decimal_tolerance_factor)
+
+message
+
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the total of {$LiabilitiesAndStockholdersEquity.concept.label.text} with a value of {$LiabilitiesAndStockholdersEquity}. These values should be equal.
+The properties of this {$Assets.concept} fact are:
+Period :{$Assets.period}
+Dimensions :  {$Assets.dimensions.join(', ','=')}
+Unit : {$Assets.unit}
+Decimals of Assets : {$Assets.decimals}
+Decimals of Liabilities and Equity : {$LiabilitiesAndStockholdersEquity.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+effectiveDate $effective_dates[$rule_id]
+
+/**
+Assets = AssetsCurrent + AssetsNoncurrent
+**/
+
+assert US.0004.9280 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$Assets = {nonils @Assets};
+$CalcAssets = {nonils @AssetsCurrent}#ca <+> {nonils @AssetsNoncurrent}#nca;
+$Decimals = list({nonils @AssetsCurrent},{nonils @Assets},{nonils @AssetsNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$decimal_tolerance_factor = 2;
+
+if $CalcAssets == none
+	skip
+else
+	tolerance_for_decimals_comp($Assets, $CalcAssets, $minDecimals, $decimal_tolerance_factor)
+
+
+message
+
+"{$Assets.concept.label.text} with a value of {$Assets} is not equal to the combined total of Current Assets and Noncurrent assets ( {$ca} + {$nca} ) with a value of {$CalcAssets}. These values should be equal.
+The properties of this {$Assets.concept} fact are:
+Period :{$Assets.period}
+Dimensions :  {$Assets.dimensions.join(', ','=')}
+Unit : {$Assets.unit}
+Decimals of Assets : {$Assets.decimals}
+Decimals of Current Assets : {$ca.decimals}
+Decimals of Non Current Assets : {$nca.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+Liabilities = LiabilitiesCurrent + LiabilitiesNoncurrent
+**/
+
+assert US.0004.9281 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$Liabilities = {nonils @Liabilities};
+$CalcLiabilities = {nonils @LiabilitiesCurrent}#cl <+> {nonils @LiabilitiesNoncurrent}#ncl;
+$Decimals = list({nonils @Liabilities},{nonils @LiabilitiesCurrent},{nonils @LiabilitiesNoncurrent});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$decimal_tolerance_factor = 2;
+
+if $CalcLiabilities == none
+	skip
+else	
+	tolerance_for_decimals_comp($Liabilities, $CalcLiabilities, $minDecimals, $decimal_tolerance_factor)
+
+message
+
+"{$Liabilities.concept.label.text} with a value of {$Liabilities} is not equal to the combined total of Current Liabilities and Noncurrent Liabilites ( {$cl} + {$ncl} ) with a value of {$CalcLiabilities}. 
+
+These values should be equal.
+The properties of this {$Liabilities.concept} fact are:
+Period :{$Liabilities.period}
+Dimensions :  {$Liabilities.dimensions.join(', ','=')}
+Unit : {$Liabilities.unit}
+Decimals of Liabilities : {$Liabilities.decimals}
+Decimals of Current Liabilities : {$cl.decimals}
+Decimals of Non Current Liabilities : {$ncl.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest = StockholdersEquity + MinorityInterest
+**/
+
+assert US.0004.9282 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$SEINCI = {nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none};
+$CalcSE = {nonils @StockholdersEquity @@srt:ConsolidationItemsAxis = none}#se <+> {nonils @MinorityInterest @@srt:ConsolidationItemsAxis = none}#mi;
+$Decimals = list({nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest @@srt:ConsolidationItemsAxis = none},{nonils @StockholdersEquity @@srt:ConsolidationItemsAxis = none},{nonils @MinorityInterest @@srt:ConsolidationItemsAxis = none});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$decimal_tolerance_factor = 2;
+
+if $CalcSE == none
+	skip
+else		
+	tolerance_for_decimals_comp($SEINCI, $CalcSE, $minDecimals, $decimal_tolerance_factor)
+
+message
+
+"{$SEINCI.concept.label.text} with a value of {$SEINCI} is not equal to the combined total of Stockholders Equity Excluding NI and Noncontrolling Interest ( {$se} + {$mi} ) with a value of {$CalcSE}. 
+
+These values should be equal.
+The properties of this {$SEINCI.concept} fact are:
+Period :{$SEINCI.period}
+Dimensions :  {$SEINCI.dimensions.join(', ','=')}
+Unit : {$SEINCI.unit}
+Decimals of Stockholders Equity Including Noncontrolling Interest : {$SEINCI.decimals}
+Decimals of Stockholders Equity Excluding NI : {$se.decimals}
+Decimals of Noncontrolling Interest : {$mi.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+
+LiabilitiesAndStockholdersEquity = StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest + Liabilities + TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests
+
+class of stock axis for temporary equity.
+**/
+
+assert US.0004.9283 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$LSE = {nonils @LiabilitiesAndStockholdersEquity};
+
+$CalcEquity = first-value({nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest}, {nonils @StockholdersEquity} <+ {nonils @MinorityInterest});
+
+$CalcLiabilities = first-value({nonils @Liabilities}, {nonils @LiabilitiesCurrent} <+> {nonils @LiabilitiesNoncurrent});
+
+/** Components for temp Equity **/
+/** TOO COMPLICATED 
+$TempAttParent = sum(axis_members(TemporaryEquityCarryingAmountAttributableToParent, StatementClassOfStockAxis));
+
+$RedeemNCI = sum(axis_members(RedeemableNoncontrollingInterestEquityCarryingAmount, StatementClassOfStockAxis));
+
+$TempSubComp = first-value({nonils @TemporaryEquityCarryingAmountAttributableToParent}, $TempAttParent) + first-value({nonils @RedeemableNoncontrollingInterestEquityCarryingAmount},$RedeemNCI);
+
+$TempIncNCI = sum(axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis));
+
+$CalcTempEquity = first-value({nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}, $TempSubComp, $TempIncNCI);
+**/
+
+$CalcTempEquity = {nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests};
+
+$CalcLSE = $CalcEquity <+> $CalcLiabilities <+> $CalcTempEquity;
+
+$Decimals = list({nonils @LiabilitiesAndStockholdersEquity},{nonils @StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest},{nonils @StockholdersEquity}, {nonils @MinorityInterest}, {nonils @Liabilities}, {nonils @LiabilitiesCurrent}, {nonils @LiabilitiesNoncurrent})
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$decimal_tolerance_factor = 2;
+
+/**
+$addMessage =  (if exists($TempIncNCI) and not exists({nonils @TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests}) and not exists($TempSubComp)
+	"Temporary equity was calculated by adding the value of TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests across the dimension StatementClassOfStockAxis, with the values of {axis_members(TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests, StatementClassOfStockAxis).join(',')} "
+else
+	'');
+**/
+
+if ($CalcEquity == none or $CalcLiabilities == none or $CalcLSE == none or $LSE == none)
+	skip
+else
+	tolerance_for_decimals_comp($LSE, $CalcLSE, $minDecimals, $decimal_tolerance_factor)
+	
+message
+
+"{$LSE.concept.label.text} with a value of {$LSE} is not equal to the combined total of Stockholders Equity, Liabilities and Temporary Equity  ( {$CalcEquity} + {$CalcLiabilities} + {$CalcTempEquity}) with a value of {$CalcLSE}. 
+
+These values should be equal.
+The properties of this {$LSE.concept} fact are:
+Period :{$LSE.period}
+Dimensions :  {$LSE.dimensions.join(', ','=')}
+Unit : {$LSE.unit}
+Decimals of Liabilities and Stockholders Equity : {$LSE.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest = ProfitLoss + OtherComprehensiveIncomeLossNetOfTax
+
+**/
+
+assert US.0004.9284 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
+$agg = {nonils @ProfitLoss}#a1 <+> {nonils @OtherComprehensiveIncomeLossNetOfTax}#a2;
+$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ProfitLoss},{nonils @OtherComprehensiveIncomeLossNetOfTax});
+
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none 
+					skip
+				else
+					$x.decimals));
+
+$decimal_tolerance_factor = 2;
+
+if ($agg == none)
+	skip
+else	
+	tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+
+ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest = ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest + ComprehensiveIncomeNetOfTax
+
+**/
+
+assert US.0004.9285 satisfied
+
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** The first part of the if statement  was added to address the situation where additional extension items comprised the calc of ComprehensiveIncomeNetOfTax which threw the simple compare off. To address this we look at the calc to pick up any extension items or taxonomy items that could get pushed into the calculation. The if statement checks if a calc was defined and if the actual calculation works.**/
+$CalcNetworks = navigate summation-item children from (ComprehensiveIncomeNetOfTax) returns by network (target-name);
+for $key in $CalcNetworks.keys
+	if $CalcNetworks[$key].length > 2 and $CalcNetworks[$key].contains(ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest) and $CalcNetworks[$key].contains(ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest)
+		$CalcItems2 = navigate summation-item children from (ComprehensiveIncomeNetOfTax)  returns list (target-name, weight);
+		$agg = sum(list(for $pair in $CalcItems2
+			{nonils @concept= $pair[1]} * $pair[2]));
+		$base = {nonils @ComprehensiveIncomeNetOfTax};
+		$Decimals = list(for $pair in $CalcItems2
+						{nonils @concept= $pair[1]}) + list({nonils @ComprehensiveIncomeNetOfTax});
+		$minDecimals = min(list(for $x in $Decimals
+						if $x == none 
+							skip
+						else
+							$x.decimals));
+		$custom_message = "The element ComprehensiveIncomeNetOfTax has calculation children that do not add to the total value of " + $base.string + " the value of the aggregate components defined in the calculation sum to " + $agg.string + ". The elements comprising the calculation are " + $CalcNetworks[$key].join(', ') + "."
+		tolerance_for_decimals_comp($base, $agg, $minDecimals, 2)
+	
+	else
+		$base = {nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest};
+		$a2 = {nonils @ComprehensiveIncomeNetOfTax};
+		$a1 = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest};
+		$agg = {nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest} <+> {nonils @ComprehensiveIncomeNetOfTax};
+		$Decimals = list({nonils @ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest},{nonils @ComprehensiveIncomeNetOfTax});
+
+		$minDecimals = min(list(for $x in $Decimals
+						if $x == none 
+							skip
+						else
+							$x.decimals));
+
+		$decimal_tolerance_factor = 2;
+
+		if ($agg == none)
+			skip
+		else
+			$custom_message = $base.concept.label.text + " with a value of " + $base.string + " is not equal to the combined total of " + $a1.concept.label.text + " and " + $a2.concept.label.text + " (" + $a1.string + " + " + $a2.string + ") with a value of " + $agg.string + ". If the calculation includes extension or additional items, then a calculation relationship defining the components of ComprehensiveIncomeNetOfTax should be defined in the extension taxonomy defining these additional items. This will clear the error."; 
+			tolerance_for_decimals_comp($base, $agg, $minDecimals, $decimal_tolerance_factor)
+
+message
+
+"{$custom_message} 
+
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/** CashFlow
+
+CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect = NetCashProvidedByUsedInOperatingActivities + NetCashProvidedByUsedInInvestingActivities + NetCashProvidedByUsedInFinancingActivities
+**/
+
+assert US.0004.9286 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = first-value({nonils @CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect}, {nonils @CashAndCashEquivalentsPeriodIncreaseDecreaseExcludingExchangeRateEffect});
+
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivities}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivities}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivities}#a3;
+$decimal_tolerance_factor = 2;
+
+$component_facts = list({@concept in list(NetCashProvidedByUsedInOperatingActivities,NetCashProvidedByUsedInInvestingActivities,NetCashProvidedByUsedInFinancingActivities)})
+
+$min_decimals = min(list(for $z in $component_facts
+				if $z == none 
+					skip
+				else
+					$z.decimals));
+
+if $base == none
+	skip
+else
+	tolerance_for_decimals_comp($base, $agg, $min_decimals, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text}, {$a2.concept.label.text} and {$a3.concept.label.text} ( {$a1} + {$a2} + {$a3} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+Decimals of {$a3.concept.label.text} : {$a3.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+/**
+NetCashProvidedByUsedInFinancingActivities = NetCashProvidedByUsedInFinancingActivitiesContinuingOperations + CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations
+
+**/
+
+assert US.0004.9287 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @NetCashProvidedByUsedInFinancingActivities};
+$agg = {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a2;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+NetCashProvidedByUsedInInvestingActivities = NetCashProvidedByUsedInInvestingActivitiesContinuingOperations + CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations
+**/
+
+assert US.0004.9288 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @NetCashProvidedByUsedInInvestingActivities};
+$agg = {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $base
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+NetCashProvidedByUsedInOperatingActivities = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations + CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations
+
+**/
+
+assert US.0004.9289 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @NetCashProvidedByUsedInOperatingActivities};
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a2;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+NetCashProvidedByUsedInDiscontinuedOperations = CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations + CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations + CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations
+**/
+
+assert US.0004.9290 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @NetCashProvidedByUsedInDiscontinuedOperations};
+$agg = {nonils @CashProvidedByUsedInOperatingActivitiesDiscontinuedOperations}#a1 <+> {nonils @CashProvidedByUsedInInvestingActivitiesDiscontinuedOperations}#a2 <+> {nonils @CashProvidedByUsedInFinancingActivitiesDiscontinuedOperations}#a3;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text}, {$a2.concept.label.text} and {$a3.concept.label.text} ( {$a1} + {$a2} + {$a3} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+Decimals of {$a3.concept.label.text} : {$a3.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/**
+NetCashProvidedByUsedInContinuingOperations = NetCashProvidedByUsedInOperatingActivitiesContinuingOperations + NetCashProvidedByUsedInInvestingActivitiesContinuingOperations + NetCashProvidedByUsedInFinancingActivitiesContinuingOperations
+**/
+
+assert US.0004.9291 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$base = {nonils @NetCashProvidedByUsedInContinuingOperations};
+$agg = {nonils @NetCashProvidedByUsedInOperatingActivitiesContinuingOperations}#a1 <+> {nonils @NetCashProvidedByUsedInInvestingActivitiesContinuingOperations}#a2 <+> {nonils @NetCashProvidedByUsedInFinancingActivitiesContinuingOperations}#a3;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text}, {$a2.concept.label.text} and {$a3.concept.label.text} ( {$a1} + {$a2} + {$a3} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+Decimals of {$a3.concept.label.text} : {$a3.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

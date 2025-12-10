@@ -1,0 +1,85 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2020
+**/
+
+
+rule-name-prefix DQC
+
+
+assert US.0098.9531 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$valueRecognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period = *};
+$openingDate = $valueRecognized.period.start;
+
+$openingBalanceOfValueRecognized = {@concept = ContractWithCustomerLiability @period = $openingDate};
+
+tolerance_for_decimals_greater($valueRecognized, $openingBalanceOfValueRecognized, 2)
+
+message
+"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$valueRecognized} is greater than the opening balance of ContractWithCustomerLiability with an opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
+
+If representing the revenue recognized during the period as part of a rollforward including the revenue recognized from the opening balance use the extension concept ContractWithCustomerLiabilityRevenueRecognizedIncludingOpeningBalance. If reporting the revenue recognized during the period that excludes the opening balance use the extension element ContractWithCustomerLiabilityRevenueRecognizedExcludingOpeningBalance.
+
+The properties of this {$valueRecognized.concept.name} fact are:
+Period :{$valueRecognized.period}
+Dimensions : {$valueRecognized.dimensions.join(', ','=')}
+Unit : {$valueRecognized.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $valueRecognized
+
+
+assert US.0098.9532 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$valueRecognized = {@concept = ContractWithCustomerLiabilityRevenueRecognized @period=*};
+$openingDate = $valueRecognized.period.start;
+/** We skip this case as it would be picked up by rule 9531 and avoids the issue where this is tagged and only one of Current and Non Current items items is reported**/
+if exists({@concept = ContractWithCustomerLiability @period = $openingDate})
+	skip
+else
+	$openingBalanceOfCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityCurrent @period = $openingDate};
+	$openingBalanceOfNonCurrentValueRecognized = {@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate};
+	$openingBalanceOfValueRecognized = $openingBalanceOfNonCurrentValueRecognized + $openingBalanceOfCurrentValueRecognized
+
+	$fact_values = list($valueRecognized,{@concept = ContractWithCustomerLiabilityCurrent @period = $openingDate},{@concept = ContractWithCustomerLiabilityNoncurrent @period = $openingDate});
+
+	$minDecimals = min(list(for $x in $fact_values
+					if $x == none 
+						skip
+					else
+						$x.decimals));
+
+	tolerance_for_decimals_greater_than($valueRecognized, $openingBalanceOfValueRecognized, $minDecimals, 0)
+
+message
+"The element ContractWithCustomerLiabilityRevenueRecognized with a value of {$valueRecognized} is greater than the opening balances of ContractWithCustomerLiabilityCurrent and ContractWithCustomerLiabilityNoncurrent combined which have an aggregate opening balance of {$openingBalanceOfValueRecognized} on {$openingDate}. The element ContractWithCustomerLiabilityRevenueRecognized represents the amount from the opening balance that was recognized during the period. For this reason it cannot be greater than the opening balance.
+
+The properties of this {$valueRecognized.concept.name} fact are:
+Period :{$valueRecognized.period}
+Dimensions : {$valueRecognized.dimensions.join(', ','=')}
+Unit : {$valueRecognized.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $valueRecognized

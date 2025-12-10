@@ -1,0 +1,68 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2021
+**/
+
+
+rule-name-prefix DQC
+
+
+assert US.0137.9838 satisfied
+
+/** THIS RULE ONLY CHECKS THOSE FACTS THAT HAVE USED a single value for tHE BALANCE SHEET AND INCOME STATEMENT LOCATION AXIS **/
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Is this report a 10-K or 10-Q**/
+if set('10-K','10-KT','10-K/A','20-F', '10-Q', '10-Q/A', '20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
+
+		/** Get the list of items to check **/
+		for $extPairs in $EXT_ENUM
+			$fsConcept = $extPairs[1]
+			$relatedExtEnum = $extPairs[2]
+
+				/** Get a list of elements **/
+
+				if taxonomy().concept($fsConcept).period-type == instant
+
+					$fsConceptItems = list({@concept = $fsConcept @BalanceSheetLocationAxis = * @unit = *});
+				    $locationAxis = "BalanceSheetLocationAxis";
+					if $fsConceptItems.length == 1
+						
+							true
+					else 
+						
+							false
+				else
+					$fsConceptItems = list({@concept = $fsConcept @IncomeStatementLocationAxis = * @unit = *});
+					
+					$locationAxis = "IncomeStatementLocationAxis";
+					if $fsConceptItems.length == 1
+						
+							true
+					else 
+						
+							false
+else
+ false
+ 
+message
+
+"The element {$fsConcept} with a value of {first($fsConceptItems.sort)} has been used in the filing with the axis {$locationAxis}.  This is the only fact reported with this element.  Rather than using the {$locationAxis} the filer should use the extensible enumeration element to indicate the location of the item in the financial statements. In this case the element {$relatedExtEnum} should be used to identify the account where the element {$fsConcept} is included. 
+
+ 
+Period :{first($fsConceptItems.sort).period}
+Dimensions : {first($fsConceptItems.sort).dimensions.join(', ','=')}
+Unit : {first($fsConceptItems.sort).unit}
+Decimals: {first($fsConceptItems.sort).decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus first($fsConceptItems.sort)
+

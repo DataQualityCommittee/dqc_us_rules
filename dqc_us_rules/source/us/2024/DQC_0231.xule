@@ -1,0 +1,46 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2025
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0231.10804 satisfied
+
+/** 
+This rule checks if the other element and its aggregate appear as calculation siblings in the same calculation network
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+if not applicable_form(rule-name())
+	skip
+else
+$LIST_OTHER_AGGREGATE = filter $OTHER_AGGREGATE returns $item.last;
+$LIST_OTHER_AGGREGATE_PARENT = (filter $OTHER_AGGREGATE returns $item.first).to-set;
+$DICT_OTHER_AGGREGATE = $OTHER_AGGREGATE.agg-to-dict(1)
+
+    for $item in $LIST_OTHER_AGGREGATE_PARENT .to-set
+        $networks-dict = navigate summation-item siblings from $item returns by network set (target-name)
+        $dupTargetsAndBase = sum($DICT_OTHER_AGGREGATE[$item]).to-set
+        $dupTargets = $dupTargetsAndBase - set($item)
+        for $network in $networks-dict.keys
+            $networkValues = $networks-dict[$network];
+            $commonItems = $networkValues intersect $dupTargets
+            if  $commonItems.length > 0
+                true
+            else
+                false
+
+message
+"The calculation network {$network.role.description} has used the aggregate concept {$item}.  The calculation relationship also contains the other concept  {$commonItems.join(', ')}. These two concepts should not appear together as siblings in the same calculation network.
+   
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

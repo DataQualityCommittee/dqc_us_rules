@@ -14,78 +14,17 @@ RULE-NAME-PREFIX DQC
 
 /** Check that monetary and percentage tax reconcilition is provided **/
 
-constant $EQUIVALENT_TAX_RATES = list(list(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate, EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate),
-                                    list(IncomeTaxReconciliationStateAndLocalIncomeTaxes, EffectiveIncomeTaxRateReconciliationStateAndLocalIncomeTaxes),
-                                    list(IncomeTaxReconciliationForeignIncomeTaxRateDifferential, EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential),
-                                    list(EffectiveIncomeTaxRateReconciliationBeatAmount, EffectiveIncomeTaxRateReconciliationBeatPercent),
-                                    list(EffectiveIncomeTaxRateReconciliationFdiiAmount, EffectiveIncomeTaxRateReconciliationFdiiPercent),
-                                    list(EffectiveIncomeTaxRateReconciliationGiltiAmount, EffectiveIncomeTaxRateReconciliationGiltiPercent),
-                                    list(EffectiveIncomeTaxRateReconciliationCrossBorderOtherAmount, EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent),
-                                    list(EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectAmount, EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectPercent),
-                                    list(IncomeTaxReconciliationTaxCreditsResearch, EffectiveIncomeTaxRateReconciliationTaxCreditsResearch),
-                                    list(IncomeTaxReconciliationTaxCreditsForeign, EffectiveIncomeTaxRateReconciliationTaxCreditsForeign),
-                                    list(IncomeTaxReconciliationTaxCreditsInvestment, EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment),
-                                    list(EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedAmount, EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedPercent),
-                                    list(IncomeTaxReconciliationTaxCreditsOther, EffectiveIncomeTaxRateReconciliationTaxCreditsOther),
-                                    list(IncomeTaxReconciliationTaxCredits, EffectiveIncomeTaxRateReconciliationTaxCredits),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseDepreciation, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciation),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseAmortization, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseAmortization),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseDepreciationAndAmortization, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciationAndAmortization),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseDepletion, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepletion),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseMealsAndEntertainment, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseCharitableContributions, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseRestructuringCharges, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseRestructuringCharges),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseImpairmentLosses, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseImpairmentLosses),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseResearchAndDevelopment, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseResearchAndDevelopment),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseShareBasedCompensationCost),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseLeases, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLeases),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseLifeInsurance, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance),
-                                    list(IncomeTaxReconciliationNondeductibleExpenseOther, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseOther),
-                                    list(IncomeTaxReconciliationNondeductibleExpense, EffectiveIncomeTaxRateReconciliationNondeductibleExpense),
-                                    list(IncomeTaxReconciliationDeductionsExtraterritorialIncomeExclusion, EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion),
-                                    list(IncomeTaxReconciliationDeductionsDividends, EffectiveIncomeTaxRateReconciliationDeductionsDividends),
-                                    list(IncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends, EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends),
-                                    list(IncomeTaxReconciliationDeductionsMedicarePrescriptionDrugBenefitSubsidy, EffectiveIncomeTaxRateReconciliationDeductionsMedicarePrescriptionDrugBenefit),
-                                    list(IncomeTaxReconciliationDeductionsOther, EffectiveIncomeTaxRateReconciliationDeductionsOther),
-                                    list(IncomeTaxReconciliationDeductions, EffectiveIncomeTaxRateReconciliationDeductions),
-                                    list(IncomeTaxReconciliationTaxContingenciesDomestic, EffectiveIncomeTaxRateReconciliationTaxContingenciesDomestic),
-                                    list(IncomeTaxReconciliationTaxContingenciesForeign, EffectiveIncomeTaxRateReconciliationTaxContingenciesForeign),
-                                    list(IncomeTaxReconciliationTaxContingenciesStateAndLocal, EffectiveIncomeTaxRateReconciliationTaxContingenciesStateAndLocal),
-                                    list(IncomeTaxReconciliationTaxContingenciesOther, EffectiveIncomeTaxRateReconciliationTaxContingenciesOther),
-                                    list(IncomeTaxReconciliationTaxContingencies, EffectiveIncomeTaxRateReconciliationTaxContingencies),
-                                    list(IncomeTaxReconciliationTaxSettlementsDomestic, EffectiveIncomeTaxRateReconciliationTaxSettlementsDomestic),
-                                    list(IncomeTaxReconciliationTaxSettlementsForeign, EffectiveIncomeTaxRateReconciliationTaxSettlementsForeign),
-                                    list(IncomeTaxReconciliationTaxSettlementsStateAndLocal, EffectiveIncomeTaxRateReconciliationTaxSettlementsStateAndLocal),
-                                    list(IncomeTaxReconciliationTaxSettlementsOther, EffectiveIncomeTaxRateReconciliationTaxSettlementsOther),
-                                    list(IncomeTaxReconciliationTaxSettlements, EffectiveIncomeTaxRateReconciliationTaxSettlements),
-                                    list(IncomeTaxReconciliationTaxExemptIncome, EffectiveIncomeTaxRateReconciliationTaxExemptIncome),
-                                    list(IncomeTaxReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary, EffectiveIncomeTaxRateReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary),
-                                    list(IncomeTaxReconciliationMinorityInterestIncomeExpense, EffectiveIncomeTaxRateReconciliationMinorityInterestIncomeExpense),
-                                    list(IncomeTaxReconciliationTaxHolidays, EffectiveIncomeTaxRateReconciliationTaxHolidays),
-                                    list(IncomeTaxReconciliationDispositionOfBusiness, EffectiveIncomeTaxRateReconciliationDispositionOfBusiness),
-                                    list(IncomeTaxReconciliationDispositionOfAssets, EffectiveIncomeTaxRateReconciliationDispositionOfAssets),
-                                    list(IncomeTaxReconciliationRepatriationOfForeignEarnings, EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings),
-                                    list(IncomeTaxReconciliationChangeInEnactedTaxRate, EffectiveIncomeTaxRateReconciliationChangeInEnactedTaxRate),
-                                    list(IncomeTaxReconciliationPriorYearIncomeTaxes, EffectiveIncomeTaxRateReconciliationPriorYearIncomeTaxes),
-                                    list(IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance, EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance),
-                                    list(EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitAmount, EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitPercent),
-                                    list(IncomeTaxReconciliationOtherAdjustments, EffectiveIncomeTaxRateReconciliationOtherAdjustments),
-                                    list(IncomeTaxReconciliationOtherReconcilingItems, EffectiveIncomeTaxRateReconciliationOtherReconcilingItemsPercent),
-                                    list(IncomeTaxExpenseBenefit, EffectiveIncomeTaxRateContinuingOperations))
-
 ASSERT US.0198.10650 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
 if not applicable_form(rule-name())
 	skip
 else
 
-/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
-        exists({@concept =  $concept[1] @unit = * }#concept-value) and missing({@concept =  $concept[2] @unit = *})
+        exists({@concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[2] @unit = *})
 else
     skip
 
@@ -118,7 +57,7 @@ else
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     for $concept in $EQUIVALENT_TAX_RATES
-        exists({@concept =  $concept[2] @unit = * }#concept-value) and missing({@concept =  $concept[1] @unit = * })
+        exists({@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[1] @unit = * })
 else
     skip
 
