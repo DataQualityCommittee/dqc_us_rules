@@ -1,0 +1,340 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+Release Version 18
+**/
+
+/** Concentration Risk **/
+
+/** Address the situation where the concentration is in the default. In this case it should not really exist.  However in some cases comanies report a total of 100%.  This is OK as the value represents the sum of all exposures.  This means the element can only have 1 value in the default of 100%.  The rule flags any default value where the value is not 1.
+
+SEE FASB GUIDE: https://xbrl.fasb.org/ix/?doc=../impdocs/CCR_TIG/inlinef2017icededcreditriskg.htm**/
+
+RULE-NAME-PREFIX DQC
+
+
+/** RULE 9565 Identifies where ConcentrationRiskPercentage1 is used in the default and does not have a value of 100% **/
+
+ASSERT US.0109.9565 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+exists([nonils @concept=ConcentrationRiskPercentage1 where $fact != 1]#fact1)
+message
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+ 
+/** RULE 9566 Identifies where element ConcentrationRiskPercentage1 is used and ConcentrationRiskByBenchmarkAxis and ConcentrationRiskByTypeAxis is missing but another third axis is used.
+** WIth any value other than 1 the concentration risk element must have a numerator of ConcentrationRiskByTypeAxis and  a denominator of ConcentrationRiskByBenchmarkAxis **/
+
+ASSERT US.0109.9566 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+if exists([nonils @concept=ConcentrationRiskPercentage1])
+    skip
+else
+    exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = none @ConcentrationRiskByTypeAxis = none}#fact1)
+
+message
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis.  This element has no meaning without these axis at a minimum.  Any data provided needs to be used in combination with an additional axis to define the actual risk as the numerator. The member used on the ConcentrationRiskByBenchmarkAxis represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+    
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+
+/** RULE 9567 Identifies where ConcentrationRiskByBenchmarkAxis is missing **/
+
+ASSERT US.0109.9567 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = none @ConcentrationRiskByTypeAxis = *}#fact1)
+
+message
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the numerator of ConcentrationRiskByTypeAxis, and not the member used on the ConcentrationRiskByBenchmarkAxis which represents the benchmark denominator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+
+/** RULE 9568 Identifies where ConcentrationRiskByTypeAxis is missing **/
+
+ASSERT US.0109.9568 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+exists({nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = none}#fact1)
+
+message
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with both the ConcentrationRiskByTypeAxis and the ConcentrationRiskByBenchmarkAxis.  This element has no meaning without both these axis at a minimum.  This fact only contains the denominator of ConcentrationRiskByBenchmarkAxis, and not the member used on the ConcentrationRiskByTypeAxis which represents the benchmark numerator. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+
+/** RULE 9569 Identifies where a fact has both ConcentrationRiskByTypeAxis  and ConcentrationRiskByBenchmarkAxis but the disaggregated axis is missing **/
+
+
+ASSERT US.0109.9569 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+exists([nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = * where $fact != 1 and $fact.dimension(ConcentrationRiskByTypeAxis).name not in list(LaborForceConcentrationRiskMember, UnionizedEmployeesConcentrationRiskMember)]#fact1)
+
+message
+"The concept {$fact1.concept.name} with value {$fact1} should always be used with the ConcentrationRiskByTypeAxis the ConcentrationRiskByBenchmarkAxis and a third axis to identify the risk area.  This element can only have a value of 1 when only the ConcentrationRiskByTypeAxis and ConcentrationRiskByBenchmarkAxis are used.  This fact needs another axis to identify the specific {$fact1.dimension(ConcentrationRiskByTypeAxis)} risk. If this value represents the Concentration Risk, Threshold Percentage then use the extension element ConcentrationRiskThresholdPercentage. 
+
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $fact1
+
+
+/** RULE 9570 Identifies If the right risk is used with the right benchmark.  Uses a dictionary to look up the benchmark and makes sure that the appropriate risk is used. **/
+
+constant $BENCHMARK_WITH_RISK_TYPE = dict(list(SalesRevenueNetMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),
+                                        list(SalesRevenueProductLineMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),
+                                        list(SalesRevenueSegmentMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerProductAndServiceBenchmarkMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),
+                                        list(RevenueFromContractWithCustomerSegmentBenchmarkMember,list(GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember, 
+                                                                        ProductConcentrationRiskMember, 
+                                                                        RevenueFromRightsConcentrationRiskMember, 
+                                                                        GovernmentContractsConcentrationRiskMember,
+                                                                        SupplierConcentrationRiskMember)
+                                                                        ),                             
+                                        list(AccountsReceivableMember,list(CreditConcentrationRiskMember, 
+                                                                        GeographicConcentrationRiskMember,
+                                                                        CustomerConcentrationRiskMember)
+                                                                        ),
+                                        list(CostOfGoodsTotalMember,list(GeographicConcentrationRiskMember, 
+                                                                        SupplierConcentrationRiskMember,
+                                                                        ProductConcentrationRiskMember, 
+                                                                        LaborForceConcentrationRiskMember, 
+                                                                        UnionizedEmployeesConcentrationRiskMember)
+                                                                        ),
+                                        list(ReinsuranceRecoverableMember,list(ReinsurerConcentrationRiskMember
+                                                                        )
+                                                                        )
+                                        )
+
+
+ASSERT US.0109.9570 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$concentrationRisk = {nonils @concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis = * @ConcentrationRiskByTypeAxis = *}
+$benchmark = $concentrationRisk.dimension(ConcentrationRiskByBenchmarkAxis);
+$risk = $concentrationRisk.dimension(ConcentrationRiskByTypeAxis);
+
+
+if ($benchmark.name not in $BENCHMARK_WITH_RISK_TYPE.keys) or (is_extension($risk, $ALL_BASE_TAXONOMIES_ELTS))
+    skip
+else
+    $allowableRisks = $BENCHMARK_WITH_RISK_TYPE[$benchmark.name];
+    $risk.name not in $allowableRisks
+
+
+message
+"The concept {$concentrationRisk.concept.name} with value {$concentrationRisk} is used with the ConcentrationRiskByBenchmarkAxis with a benchmark of {$benchmark}.  The risk associated with this benchmark of {$risk} is not approproiate to this benchmark.  Consider using an extension risk or one of the risks associated with this banch mark such as {$allowableRisks.join(", ")}
+
+The properties of this {$concentrationRisk.concept.name} fact are:
+
+Period :{$concentrationRisk.period}
+Dimensions : {$concentrationRisk.dimensions.join(', ','=')}
+Unit : {$concentrationRisk.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $concentrationRisk
+
+/** This rule looks for concentration risk on the benchmark axis **/
+
+ASSERT US.0109.9571 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$set_concentration_risk_items = $SET_CONCENTRATION_RISK_ITEMS;
+
+exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByBenchmarkAxis in $set_concentration_risk_items}#badbenchmark)
+
+message
+"The concept {$badbenchmark.concept.name} with value {$badbenchmark} is used with the ConcentrationRiskByBenchmarkAxis with a benchmark of {$badbenchmark.dimension(ConcentrationRiskByBenchmarkAxis)}.  This is an invalid benchmark as it is an actual type of risk and not a benchmark. The benchmark should reflect the accounting concept that the risk applies to such as revenues, receivables, loans etc.
+
+The properties of this {$badbenchmark.concept.name} fact are:
+
+Period :{$badbenchmark.period}
+Dimensions : {$badbenchmark.dimensions.join(', ','=')}
+Unit : {$badbenchmark.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $badbenchmark
+
+ASSERT US.0109.9572 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$set_benchmark_items = $SET_BENCHMARK_ITEMS;
+
+exists({@concept=ConcentrationRiskPercentage1 @ConcentrationRiskByTypeAxis in $set_benchmark_items}#badRiskType)
+
+message
+"The concept {$badRiskType.concept.name} with value {$badRiskType} is used with the ConcentrationRiskByTypeAxis with a risk of {$badRiskType.dimension(ConcentrationRiskByBenchmarkAxis)}.  This is an invalid risk as it is an actual benchmark and not a type of risk. The type of risk should reflect the risk associated with a benchmark.
+
+The properties of this {$badRiskType.concept.name} fact are:
+
+Period :{$badRiskType.period}
+Dimensions : {$badRiskType.dimensions.join(', ','=')}
+Unit : {$badRiskType.unit}\n
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $badRiskType

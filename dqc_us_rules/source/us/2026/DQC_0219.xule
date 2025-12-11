@@ -1,0 +1,67 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0219.10747 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+// Check if the filing contains the element NonInvestmentAssetsLessNonInvestmentLiabilities with a fact value in the filing.
+
+//If no value is reported check if the filer has reported AssetsNet and InvestmentOwnedAtFairValue in the same context
+
+// If both conditions exist and the element AssetsNet has a calculation child of InvestmentOwnedAtFairValue and an extension item with a negative value, then the filer should report a value for NonInvestmentAssetsLessNonInvestmentLiabilities.
+
+// 1. Check if NonInvestmentAssetsLessNonInvestmentLiabilities is reported
+$non_investment = {@NonInvestmentAssetsLessNonInvestmentLiabilities};
+if exists($non_investment)
+    skip
+else
+    // 2. Find all contexts where both AssetsNet and InvestmentOwnedAtFairValue are reported
+    $assets_net_facts = {@AssetsNet};
+    $investment_facts = {@InvestmentOwnedAtFairValue};
+
+    $calc_children = navigate summation-item children from AssetsNet returns target-name;
+    
+    // 3. For each context, check if AssetsNet has a calculation child of InvestmentOwnedAtFairValue and an extension item with a negative value
+
+    $has_io_child = $calc_children.contains($calc_children);
+    $has_extension_child = filter $calc_children where $item.namespace-uri == $EXTENSION_NS;
+    $extension_element = first($has_extension_child.to-list);
+    if $has_io_child and  $has_extension_child.length > 0
+        exists({@concept in $has_extension_child where $fact < 0})
+    else
+        skip
+   
+
+message
+
+"The filing has not reported a value for NonInvestmentAssetsLessNonInvestmentLiabilities, but has reported a value for an extension element that looks like this element of {$extension_element}. The filer should report a value for NonInvestmentAssetsLessNonInvestmentLiabilities if the following conditions are met:
+1. The filer has reported a value for AssetsNet and InvestmentOwnedAtFairValue in the same context.
+2. The filer has reported a calculation child of InvestmentOwnedAtFairValue in the AssetsNet calculation.
+3. The filer has reported an extension item with a negative value in the AssetsNet calculation.
+
+Concept : {$extension_element.name}
+Value : { $extension_element}
+Period : { $extension_element.period}
+Dimensions : { $extension_element.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error 
+rule-focus $extension_element
+
+effectiveDate $effective_dates[$rule_id]

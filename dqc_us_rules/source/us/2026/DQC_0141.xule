@@ -1,0 +1,88 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0141.9863 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Determine if accrued Interest and excluding accrued interet are reported in the same filing. **/
+
+$AccruedInterestClasses = list("AccountsRec","DebtSecuritiesHeldToMaturity","AvailableForSaleSecuritiesDebtSecurities","DirectFinancingLeaseNet","FinancingReceivable","NetInvestmentInLease","SalesTypeLeaseNet")
+
+for $class in $AccruedInterestClasses
+
+    $valuesReportedWithInterest = list({nonils @concept in $INCLUDING_ACCRUED_INTEREST_DICT[$class] where $fact != 0})
+
+    if $valuesReportedWithInterest.length > 0
+        /** EXCEPTION CASES **/
+        /** in some cases companies report https://www.sec.gov/ix?doc=/Archives/edgar/data/1818874/000181887423000018/sofi-20221231.htm amortized cost excluding int and add the accrued int for every security type
+        In these cases we look at the class AvailableForSaleSecuritiesDebtSecurities and check for that iteration if they have accrued interest and amorized cost excluding accrued int us-gaap:DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss  
+        **/
+        $excluding_accrued_interest = if $class == 'AvailableForSaleSecuritiesDebtSecurities'
+                                                    $excludingInterest = exists({nonils @concept in set(DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss)})
+                                                    $accruedInterest =  exists({nonils @concept in set(DebtSecuritiesAvailableForSaleAccruedInterestAfterAllowanceForCreditLoss)})
+                                                    if  ($excludingInterest and $accruedInterest)
+                                                            $EXCLUDING_ACCRUED_INTEREST_DICT[$class].to-set - set(DebtSecuritiesAvailableForSaleExcludingAccruedInterest, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss)
+                                                    else
+                                                        $EXCLUDING_ACCRUED_INTEREST_DICT[$class]
+                                                 else
+                                                    $EXCLUDING_ACCRUED_INTEREST_DICT[$class]
+
+        $valuesReportedExcludingInterest =   list({nonils @concept in  $excluding_accrued_interest where $fact != 0})
+                                            
+        if $valuesReportedExcludingInterest.length > 0
+        // LOOK Up all the calculation relationships and see if that calc relationship exists in the filing. This is used to determine if there is a reconciliation. //
+            $IncludingInterestSourceCalcs = navigate summation-item children from (filter $valuesReportedWithInterest returns $item.concept.name).to-set where $relationship.target-name in $EXCLUDING_ACCRUED_INTEREST_DICT[$class] returns set source-name;
+
+            $IncludingInterestSourceToExcludingIntCalc = navigate summation-item children from (filter $INCLUDING_ACCRUED_INTEREST_DICT[$class] returns $item).to-set where $relationship.target-name in (filter $valuesReportedExcludingInterest returns $item.concept.name) returns set source-name;
+            
+        /** THIS SECTION IS FOR THE MESSAGE.  IT WORKS OUT THE BIGGEST LIST OF ITEMS IN THE FILING AND TEH SMALLEST AND RETURNS THE SMALLEST AS THEY ARE ASSUMED TO BE THE ERROR **/
+            if $valuesReportedWithInterest.length > $valuesReportedExcludingInterest.length
+                $incorrectElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+                $correctElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+                $setType = "elements excluding interest"
+                $setTypeContra = "elements including interest"
+                $IncludingInterestSourceCalcs.intersect($correctElements).length == 0 and $IncludingInterestSourceToExcludingIntCalc.length == 0
+            else
+                $incorrectElements = (filter $valuesReportedWithInterest returns $item.concept.name).to-set
+                $correctElements = (filter $valuesReportedExcludingInterest returns $item.concept.name).to-set
+                $setType = "elements including interest"
+                $setTypeContra = "elements excluding interest"
+                $IncludingInterestSourceCalcs.intersect($incorrectElements).length == 0 and $IncludingInterestSourceToExcludingIntCalc.length == 0 
+        else   
+            false
+    else
+        false
+
+message
+"The filing reports values that use the including accrued interest items and the excluding accrued interest items. Review the accounting policy elections to determine if you should be using the excluding accrued interest items or the including accrued interest items. 
+
+Review the following {$setType} are appropriate given the majority of disclosure items are {$setTypeContra}:
+{$incorrectElements.join(", ")}.
+
+The  {$setTypeContra} are as follows:
+{$correctElements.join(", ")}.
+
+{$IncludingInterestSourceCalcs.join(", ")}
+
+Period :{first($valuesReportedExcludingInterest).period}
+Dimensions : {first($valuesReportedExcludingInterest).dimensions.join(', ','=')}
+Unit : {first($valuesReportedExcludingInterest).unit}\n
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]

@@ -1,0 +1,120 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+Release Version 18
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0126.9590 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+/**  Get the latest Report Period**/
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+$document_period_start_date = $document_period.period.start;
+
+/** Get tables for financial statement items **/
+/** See the constants file that deines the variable $STATEMENT_PRES_NETWORKS **/
+
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
+
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+         /** Don't run the rule if it is in a table as this is handled by rule 118 **/
+         if $presNetwork.role.uri in $cubeURISet
+            skip
+         else 
+			/** get the calculations aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
+			$calcNetworkSource = navigate summation-item descendants include start role $presNetwork.role.uri returns set (source-name);
+			/** Work out the decimals used in the financial statements **/
+			$fs_fact_values_decimals = filter (list([nonils covered @concept in $calcNetworkSource])) returns $item.decimals;
+			$fs_decimals = most_frequent($fs_fact_values_decimals)
+
+			for $concept_item in $calcNetworkSource
+				if $concept_item == none
+					skip
+				else
+				
+					/** Determine the children of the concept to check **/
+					$calcComponents = navigate summation-item children from $concept_item role $presNetwork.role.uri returns  (target-name, weight);
+					/** Sum the children to get a total. If the child has no value in the default then check if it has values using the dimension being processed. If it does the function takes the members of the dimension and adds them up.  This way if the components of a calc are dimensionalized with no default we will calculate the total.**/	
+						
+					$addendComponents = (list(for $x in $calcComponents
+											$targetElement = $x[1];
+											$targetWeight = $x[2];
+											first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals] * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals >= $fs_decimals])) * $targetWeight, first(list([nonils @concept = $targetElement where $fact.decimals < $fs_decimals])) * $targetWeight)
+									)
+									);
+
+					$addend = sum($addendComponents);
+					$addendNumber = count($addendComponents);
+					
+					/** Capture in a string what calc was performed  above to report in the rule message. **/
+					$addend_string = sum(list(for $x in $calcComponents.sort
+													$targetElement = $x[1];
+													
+													$factAmt = first-value([nonils @concept = $targetElement where $fact.decimals == $fs_decimals],first(list([nonils @concept = $targetElement where $fact.decimals >= $fs_decimals])), first(list([nonils @concept = $targetElement where $fact.decimals < $fs_decimals]))).string
+													$weight =  if $x[2] == 1
+																		"+"
+																else
+																		"-";
+													$strLength = $targetElement.local-name.string.length;
+													$pad = sum(list(for $x in range(150 - $strLength - $factAmt.length)
+																					" " 
+																					)
+																			);
+											"" + $weight + "  \t" + $targetElement.local-name.string  + $pad + $factAmt  +  " \n"
+													)
+									);
+
+					/** Compare the addends to the sum.  This is only done for the current reporting period. This is to prevent bleed though from incomplete periods, and we know the current period should always be complete.**/
+					
+					$sum2 = if (taxonomy().concept($concept_item).period-type == duration)
+
+								$durationValue = [nonils @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date where $fact.decimals == $fs_decimals]
+									$durationValue
+							else
+								[nonils @concept = $concept_item @@period.end = $document_period_end_date where $fact.decimals == $fs_decimals];
+					
+					/** Added check to see if have LiabilitiesSubjectToCompromise as an addend with a fact value. If included the rule does not run as this collects liabilities into a subtotal for the current period that does not match the prior period **/
+					if $addend == none 
+						skip 
+					else
+						if  (filter $calcComponents where $item[1] == LiabilitiesSubjectToCompromise returns $item).length > 0 and
+							list({covered @concept=ReorganizationUnderChapter11OfUSBankruptcyCodeDisclosureTextBlock}).length > 0
+							skip
+						else
+							tolerance_for_decimals($sum2, $addend, $addendNumber + 1)
+
+message
+"The statement {$presNetwork.role.description} includes an inconsistent calculation. The value of the concept {$concept_item} of {$sum2}  should be equal to the sum of its child components defined in the calculation linkbase. The sum of these child components is {$addend}. The values of the addends is determined by adding the values of the child concepts.  The values reported in the financial statement in the current reporting period of {$sum2.period} should be complete if the financial statement is to be mathematically accurate and complete. The components of {$concept_item} that should add to {$sum2} are comprised of the following:
+
+{$addend_string}
+
+The addends are calculated based on the calculation linkbase defined for {$presNetwork.role.description}. If addends are missing then the calculation tree should be amended. The rule will not add dimension components as the financial statement does not include a table. If dimensions are used on the statement then add a table to ensure that the dimensions are defined correctly. 
+
+
+Total Element : {$concept_item}
+Total Value : {$sum2} 
+Total period : {$sum2.period} 
+Dimensions : {$sum2.dimensions.join(', ','=')}
+Decimals of Total: {$sum2.decimals}
+Unit of Total: {$sum2.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus $sum2
+

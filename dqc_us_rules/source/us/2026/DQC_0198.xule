@@ -1,0 +1,271 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+/** RULES TO CHECK THAT NEW TAX DISCLOSURES ARE FOLLOWED**/
+
+/** Check that monetary and percentage tax reconcilition is provided **/
+
+ASSERT US.0198.10650 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+if not applicable_form(rule-name())
+	skip
+else
+
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    for $concept in $EQUIVALENT_TAX_RATES
+        exists({@concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[2] @unit = *})
+else
+    skip
+
+message
+"The filer has reported a value for the concept {$concept[1]} with a value of {$concept-value}. This concept should have an equivalent percentage amount. Please provide the equivalent percentage amount for this concept of {$concept[2]}.  See the FASB implementation guide at https://xbrl.fasb.org/impguidance/IT_TIG/incometaxes.pdf for more information.
+
+The properties of this {$concept-value.concept} fact are:
+Period :{$concept-value.period}
+Dimensions : {$concept-value.dimensions.join(', ','=')}
+Unit : {$concept-value.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0198.10651 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    for $concept in $EQUIVALENT_TAX_RATES
+        exists({@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15')}#concept-value) and missing({@concept =  $concept[1] @unit = * })
+else
+    skip
+
+message
+"The filer has reported a value for the concept {$concept[2]} with a value of {$concept-value}. This concept should have an equivalent monetary amount. Please provide the equivalent monetary amount for this concept of {$concept[1]}.  See the FASB implementation guide at https://xbrl.fasb.org/impguidance/IT_TIG/incometaxes.pdf for more information.
+
+The properties of this {$concept-value.concept} fact are:
+Period :{$concept-value.period}
+Dimensions : {$concept-value.dimensions.join(', ','=')}
+Unit : {$concept-value.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+rule-focus $concept-value
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Check the calculation as well **/
+
+ASSERT US.0198.10652 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
+
+
+// Calculate base income
+$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
+$base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD}
+            else 
+                if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
+                else
+                    if exists({@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                else
+                     if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD where $fact != 0}
+                else
+                    $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
+
+$base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
+
+if exists($base_Income)
+    for $concept in $EQUIVALENT_TAX_RATES
+        $num = {@concept =  $concept[1]  @unit=iso4217:USD }
+        $calc_value = $num / $base_Income
+        $numerator_Intervals = fact_intervals($num)
+        $denominator_Intervals = $base_Income_intervals
+        $intervalsList = division_of_intervals($numerator_Intervals, $denominator_Intervals)
+        $percentage-value = {@concept =  $concept[2]  @unit=*}
+        $percentage-message = if  $percentage-value.decimals != inf "" else "Consider changing the decimal values of the percentage from inf to a decimal value that reflects the rounding used or 2 decimal places."
+        $result_intervals = fact_intervals($percentage-value)
+        if $intervalsList.first <= $result_intervals.last and $intervalsList.last >= $result_intervals.first
+                    false
+                else
+                    if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
+
+                    /** In some cases the calculated tax value includes the Equity Method investments, even though they report the amount before EMI but do not report the total including EMI. Some companies like amazon calc a tax rate excluding EMI some report it including EMI.  The next part of the rule checks if the alternative calc is used. **/
+                        if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
+                            $base_IncomeAlt = {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0} + {@concept=IncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
+                            $calc_valueAlt = $num / $base_IncomeAlt
+                            $denominator_IntervalsAlt = numerical_intervals($base_IncomeAlt, $TaxAmount)
+                            $intervalsListAlt = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt)
+                            $result_intervals = fact_intervals($percentage-value)
+                            if $intervalsListAlt.first <= $result_intervals.last and $intervalsListAlt.last >= $result_intervals.first
+                                false
+                            else
+                                if  ($calc_valueAlt - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt) > 0.01
+                                    true
+                                else
+                                    false
+                        else
+                            true
+                    else
+                        false
+else
+    skip
+
+message
+"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.
+{$percentage-message}
+
+The properties of this {$percentage-value.concept} fact are:
+Period :{$percentage-value.period}
+Decimals : {$percentage-value.decimals}
+Dimensions : {$percentage-value.dimensions.join(', ','=')}
+Unit : {$percentage-value.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $percentage-value
+effectiveDate $effective_dates[$rule_id]
+
+/** Check if the domestic and foreign member are used.**/
+
+ASSERT US.0198.10660 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/**If provide a value for IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate in a 10-K then should have an used the extensible enumeration element TaxJurisdictionOfDomicileExtensibleEnumeration for those comapnies that have adopted unless they have used more than 1 member on the axis IncomeTaxAuthorityAxis.**/
+
+ 
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    if exists([covered @IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#IncomeTax) and missing([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
+        $factsUsingIncomeTaxAuthorityAxis = list({covered @IncomeTaxAuthorityAxis = *});
+        if count($factsUsingIncomeTaxAuthorityAxis) > 0   /** Change to check if have used two members on the axis **/
+            false
+        else
+            true
+    else
+        false
+else
+    skip
+
+message
+"A value of {$IncomeTax} is reported for the concept IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate. This concept is used to report the income tax expense or benefit at the federal statutory income tax rate. The filer has not reported the TaxJurisdictionOfDomicileExtensibleEnumeration for this income tax expense or benefit. Please ensure that the TaxJurisdictionOfDomicileExtensibleEnumeration is used to report the jurisdiction for this income tax expense or benefit, or that the IncomeTaxAuthorityAxis is used with more than one member.
+
+The properties of this {$IncomeTax.concept} fact are:
+Period :{$IncomeTax.period}
+Decimals : {$IncomeTax.decimals}
+Dimensions : {$IncomeTax.dimensions.join(', ','=')}
+Unit : {$IncomeTax.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $IncomeTax
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0198.10661 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/**If provide a value for EffectiveIncomeTaxRateReconciliationTable in a 10-K and TaxJurisdictionOfDomicileExtensibleEnumeration == DomesticCountryMember for those comapnies that have adopted **/
+
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    if list({covered @IncomeTaxAuthorityAxis = *}).length > 0 and exists([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
+        true
+    else
+        false
+else
+    skip
+
+message
+"The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+/** Complete as part of V27 rules **/
+
+/** If do report by IncomeTaxAuthorityAxis that they add to the total , Individual jurisdction should be greater than 5%.  ANy thing less than than 5% is reported as a componet of ForeignTaxJurisdictionOtherMember**/
+
+/**
+ASSERT US.0198.10662 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+false
+**/
+
+
+/** Determine the children of the concept to check **/
+
+/**
+ASSERT US.0198.10663 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$calcComponents = navigate summation-item children from EffectiveIncomeTaxRateContinuingOperations returns  (target-name, weight);
+
+$addendComponents = (list(for $x in $calcComponents
+                        $targetElement = $x[1];
+                        $targetWeight = $x[2];
+                        $factInfo = list({nonils @concept = $targetElement})
+
+                        $factValue = first-value(first(filter $factInfo where $item.decimals == $fs_decimals), first(filter $factInfo where $item.decimals >= $fs_decimals),  max(list(getDimensionSums($targetElement, $cube, 1, $concept_item, $sum2))), max(list(getDimensionSums($targetElement, $cube, 2, $concept_item, $sum2))), first(filter $factInfo where $item.decimals < $fs_decimals));
+                        
+                        if exists($factValue)
+                            list($factValue, $targetWeight, $targetElement, $factValue.string, $factValue.decimals)	
+                        else
+                            skip	
+                )
+                );	
+
+
+                **/
