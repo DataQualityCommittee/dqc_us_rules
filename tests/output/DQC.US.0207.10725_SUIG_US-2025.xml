@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.37 secs at 2025-12-11T15:32:40 - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.059449. - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0207.10725 - 15:32:47.532379 - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="DQC.US.0207.10725" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm" severity="error" effectiveDate="None" cid="2804594241808">[DQC.US.0207.10725] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 6,685,295. This concept is used to report the fair value of investments for the mcvt:ShortTermBankingLoansMember issuer name. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 10,314,787 that includes the member mcvt:ShortTermBankingLoansMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:FinancialInstrumentAxis=mcvt:TwentyPercentSecuredLoansInformationMember, srt:ProductOrServiceAxis=mcvt:RealEstatesInformationMember, us-gaap:InvestmentIssuerNameAxis=mcvt:ShortTermBankingLoansMember. The value representing the fair value of investments in the  mcvt:ShortTermBankingLoansMember issuer name is less than the value reported for the value 10,314,787 which is a subset of this issuer name. The value reported for the issuer name in aggregate should be more than or equal to the value reported for of 10,314,787. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 10,314,787
+Period : 2025-06-30
+Dimensions : us-gaap:InvestmentIssuerNameAxis=mcvt:ShortTermBankingLoansMember, srt:ProductOrServiceAxis=mcvt:RealEstatesInformationMember, us-gaap:FinancialInstrumentAxis=mcvt:TwentyPercentSecuredLoansInformationMember
+
+Rule Element Id:10725
+Rule version: 28.0.4 - mcvt_10q.htm 2</message>
+ <ref href="mcvt_10q.htm#fid_986" sourceLine="2">
+  <property name="file" value="mcvt_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="Investments, at fair value (cost: $17,641,707 and $13,717,089, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="AsOf2025-06-30_mcvt_RealEstatesInformationMember_mcvt_ShortTermBankingLoansMember_mcvt_TwentyPercentSecuredLoansInformationMember">
+   <property name="entity" value="0001425355">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-06-30"/>
+   <property name="dimensions" value="(3)">
+    <property name="srt:ProductOrServiceAxis" value="mcvt:RealEstatesInformationMember"/>
+    <property name="us-gaap:FinancialInstrumentAxis" value="mcvt:TwentyPercentSecuredLoansInformationMember"/>
+    <property name="us-gaap:InvestmentIssuerNameAxis" value="mcvt:ShortTermBankingLoansMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10,314,787"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="10,314,787"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0207.10725 time took: 1.149838 - 15:32:48.682338  - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0207.10725 end. Took 0:00:01.149838 - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.209791. - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 3.25 secs - http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1425355/000165495425009666/mcvt_10q.htm"/></entry>
+</log>

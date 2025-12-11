@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.59 secs at 2025-12-11T15:58:18 - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.087754. - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0135.9835 - 15:58:25.004058 - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:00.863820 from 'https://xbrl.fasb.org/us-gaap/2025/elts/us-gaap-tin-def-2025.xml' - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:01:27.371507 from 'https://xbrl.fasb.org/us-gaap/2025/entire/us-gaap-entryPoint-std-2025.xsd' - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="DQC.US.0135.9835" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm" severity="error" effectiveDate="2022-09-01" cid="2704444862736">[DQC.US.0135.9835] The element us-gaap:IncomeTaxExaminationInterestExpense has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:IncomeTaxInterestRecognitionClassificationExtensibleEnumeration should be used to identify the account where the financial statement element us-gaap:IncomeTaxExaminationInterestExpense is included. 
+
+
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element IncomeTaxInterestRecognitionClassificationExtensibleEnumerationNotDisclosedFlag can be used. If this element is used, the rule will not produce an error. The monetary fact value however still needs to be reported in the filing.
+
+The following is an example of a fact that does not have an extensible list.
+ 
+Concept : us-gaap:IncomeTaxExaminationInterestExpense
+Value : 140,000,000
+Period : 2024-10-01 to 2025-09-30
+Dimensions : 
+Unit : USD
+Decimals: -6
+
+Rule Element Id:9835
+Rule version: 28.0.4 - v-20250930.htm 8</message>
+ <ref href="v-20250930.htm#f-1732" sourceLine="8">
+  <property name="file" value="v-20250930.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Income Tax Examination, Interest Expense"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="IncomeTaxExaminationInterestExpense"/>
+  <property name="QName" value="us-gaap:IncomeTaxExaminationInterestExpense"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001403161">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-10-01"/>
+   <property name="endDate" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-6"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="140,000,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="140"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0135.9835 time took: 90.728608 - 15:59:55.732737  - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0135.9835 end. Took 0:01:30.728608 - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:01:30.816754. - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 93.54 secs - http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1403161/000140316125000089/v-20250930.htm"/></entry>
+</log>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.56 secs at 2025-12-11T16:01:54 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:01.022976. - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0144.9866 - 16:02:11.644846 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="DQC.US.0144.9866" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm" severity="error" effectiveDate="2023-03-31" cid="2116517490960">[DQC.US.0144.9866] The filing reports a value for the extension concept sblk:WriteOffAccrualsAndCurrentLiabilities in the statement 00000008 - Statement - Unaudited Interim Condensed Consolidated Statements of Cash Flows.  This monetary concept appears in the statement but does not have a balance type defined.  All monetary items defined in 00000008 - Statement - Unaudited Interim Condensed Consolidated Statements of Cash Flows should have a balance type of debit or credit.
+
+Concept : sblk:WriteOffAccrualsAndCurrentLiabilities
+Period :2024-01-01 to 2024-06-30
+Dimensions : 
+
+Rule Element Id:9866
+Rule version: 28.0.4 - sblk-20250630.xsd 528</message>
+ <ref href="sblk-20250630.xsd#sblk_WriteOffAccrualsAndCurrentLiabilities" sourceLine="528">
+  <property name="label" value="WriteOffAccrualsAndCurrentLiabilities">
+   <property name="documentation (en-US)" value="Amount of write-off of accruals and current liabilities"/>
+   <property name="label (en-US)" value="WriteOffAccrualsAndCurrentLiabilities"/>
+   <property name="negatedLabel (en-US)" value="Write-off of accruals and current liabilities"/>
+  </property>
+  <property name="namespace" value="http://starbulk.com/20250630"/>
+  <property name="name" value="WriteOffAccrualsAndCurrentLiabilities"/>
+  <property name="QName" value="sblk:WriteOffAccrualsAndCurrentLiabilities"/>
+  <property name="id" value="sblk_WriteOffAccrualsAndCurrentLiabilities"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="duration"/>
+ </ref></entry>
+<entry code="DQC.US.0144.9866" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm" severity="error" effectiveDate="2023-03-31" cid="2116517490960">[DQC.US.0144.9866] The filing reports a value for the extension concept sblk:IncreaseDecreaseAccruedIncome in the statement 00000008 - Statement - Unaudited Interim Condensed Consolidated Statements of Cash Flows.  This monetary concept appears in the statement but does not have a balance type defined.  All monetary items defined in 00000008 - Statement - Unaudited Interim Condensed Consolidated Statements of Cash Flows should have a balance type of debit or credit.
+
+Concept : sblk:IncreaseDecreaseAccruedIncome
+Period :2025-01-01 to 2025-06-30
+Dimensions : 
+
+Rule Element Id:9866
+Rule version: 28.0.4 - sblk-20250630.xsd 530</message>
+ <ref href="sblk-20250630.xsd#sblk_IncreaseDecreaseAccruedIncome" sourceLine="530">
+  <property name="label" value="Accrued income [Default Label]">
+   <property name="documentation (en-US)" value="The increase (decrease) during the reporting period in the amount of accrued income related to of fees and other revenue , exclu..."/>
+   <property name="label (en-US)" value="Accrued income [Default Label]"/>
+   <property name="negatedLabel (en-US)" value="Accrued income"/>
+  </property>
+  <property name="namespace" value="http://starbulk.com/20250630"/>
+  <property name="name" value="IncreaseDecreaseAccruedIncome"/>
+  <property name="QName" value="sblk:IncreaseDecreaseAccruedIncome"/>
+  <property name="id" value="sblk_IncreaseDecreaseAccruedIncome"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="duration"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0144.9866 time took: 2.923611 - 16:02:14.568685  - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0144.9866 end. Took 0:00:02.923611 - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.953405. - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.95 secs - http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1386716/000095015725000635/sblk-20250630.htm"/></entry>
+</log>

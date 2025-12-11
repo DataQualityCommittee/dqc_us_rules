@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.41 secs at 2025-12-11T16:00:00 - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.062908. - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0135.9835 - 16:00:06.299658 - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:00.998895 from 'https://xbrl.fasb.org/us-gaap/2024/elts/us-gaap-tin-def-2024.xml' - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:01:26.645541 from 'https://xbrl.fasb.org/us-gaap/2024/entire/us-gaap-entryPoint-std-2024.xsd' - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="DQC.US.0135.9835" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm" severity="error" effectiveDate="2022-09-01" cid="2638941057296">[DQC.US.0135.9835] The element us-gaap:OperatingLeaseLeaseIncome has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case the following element(s) us-gaap:OperatingLeaseIncomeComprehensiveIncomeExtensibleList should be used to identify the account where the financial statement element us-gaap:OperatingLeaseLeaseIncome is included. 
+
+
+If the filing does not disclose the financial statement captions where the amounts appear, an extension element OperatingLeaseIncomeComprehensiveIncomeExtensibleListNotDisclosedFlag can be used. If this element is used, the rule will not produce an error.  The monetary fact value however still needs to be reported in the filing.
+
+The following is an example of a fact that does not have an extensible list.
+ 
+Concept : us-gaap:OperatingLeaseLeaseIncome
+Value : 585,473,000
+Period : 2024-01-01 to 2024-12-31
+Dimensions : srt:StatementScenarioAxis=tnp:TimeBareboatAndPoolingCharterArrangementsMember
+Unit : USD
+Decimals: -3
+
+Rule Element Id:9835
+Rule version: 28.0.4 - d896344d20f.htm 9249</message>
+ <ref href="d896344d20f.htm#Fact000855" sourceLine="9249">
+  <property name="file" value="d896344d20f.htm"/>
+  <property name="line" value="9249"/>
+  <property name="label" value="Operating Lease, Lease Income"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="OperatingLeaseLeaseIncome"/>
+  <property name="QName" value="us-gaap:OperatingLeaseLeaseIncome"/>
+  <property name="contextRef" value="From2024-01-012024-12-31_custom_TimeBareboatAndPoolingCharterArrangementsMember">
+   <property name="entity" value="0001166663">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:StatementScenarioAxis" value="tnp:TimeBareboatAndPoolingCharterArrangementsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="585,473,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="585,473"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0135.9835 time took: 91.219632 - 16:01:37.519596  - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0135.9835 end. Took 0:01:31.219632 - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:01:31.283271. - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 93.78 secs - http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1166663/000119312525079101/d896344d20f.htm"/></entry>
+</log>
