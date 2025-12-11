@@ -1,0 +1,75 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+
+**/
+
+RULE-NAME-PREFIX DQC
+/**
+Check that transition elemnts are not used 2023 taxonomy and above.**/
+
+ASSERT US.0171.10104 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$ASU201613_TransitionELements = $ASU201613_TRANSITION_ELEMENTS;
+
+$ExceptionsToASU201613 = set(FinancingReceivableAllowanceForCreditLossesIndividuallyEvaluatedForImpairment1, 
+FinancingReceivableAllowanceForCreditLossesCollectivelyEvaluatedForImpairment,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPositionTwelveMonthsOrLongerFairValue,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPositionLessThanTwelveMonthsFairValue,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPosition12MonthsOrLongerAccumulatedLoss,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPositionLessThan12MonthsAccumulatedLoss,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPositionFairValue,
+HeldToMaturitySecuritiesContinuousUnrealizedLossPositionAccumulatedLoss,
+HeldToMaturitySecuritiesInUnrealizedLossPositionsQualitativeDisclosureNumberOfPositions,
+/**FinancingReceivableModificationsNumberOfContracts2, The element has a TIN stating that: Element is intended to be used for each reported period for which amendment from Accounting Standards Update ASU 2022-02 is not applied **/
+/** ImpairedFinancingReceivableRelatedAllowance,
+ImpairedFinancingReceivableRecordedInvestment,
+ImpairedFinancingReceivableWithRelatedAllowanceRecordedInvestment,
+ImpairedFinancingReceivableWithNoRelatedAllowanceRecordedInvestment,
+ImpairedFinancingReceivableUnpaidPrincipalBalance,  FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
+ImpairedFinancingReceivableWithNoRelatedAllowanceUnpaidPrincipalBalance,
+ImpairedFinancingReceivableWithNoRelatedAllowanceAverageRecordedInvestment,   FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
+ImpairedFinancingReceivableWithRelatedAllowanceAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE
+ImpairedFinancingReceivableWithRelatedAllowanceUnpaidPrincipalBalance,
+ImpairedFinancingReceivableInterestIncomeCashBasisMethod,
+ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeCashBasisMethod,
+ImpairedFinancingReceivableAverageRecordedInvestment, FASB SHOULD ADD AN EQUIVALENT ELEMENT TO THE 2026 TAXONOMY as a COMMON DISCLOSURE 
+ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeCashBasisMethod,
+ImpairedFinancingReceivableInterestIncomeAccrualMethod,
+ImpairedFinancingReceivableWithNoRelatedAllowanceInterestIncomeAccrualMethod,**/
+/**ScheduleOfUnrealizedLossOnInvestmentsTableTextBlock,   TALKED TO THE FASB AND THEY SAID THIS ELEMENT is OTTI and should not be an exemption. Removed  May 5th 2025**/
+UnamortizedLoanCommitmentAndOriginationFeesAndUnamortizedDiscountsOrPremiums,
+/**ImpairedFinancingReceivableWithRelatedAllowanceInterestIncomeAccrualMethod,
+ImpairedFinancingReceivablesTableTextBlock**/);
+
+$TransFact = {@concept in ($ASU201613_TransitionELements - $ExceptionsToASU201613) where $fact.period.end > date('2023-09-30')}
+$factIsTextBlock = $TransFact.is-type(dtr-types:textBlockItemType);
+
+exists($TransFact)
+
+message
+"The element {$TransFact.concept.name} with a value of  {$TransFact} {if $factIsTextBlock $TransFact.string.substring(600) + '....' else $TransFact}  has been used in the filing.  This element was transitioned as part of ASU201613. Replace this element with a valid element from the US GAAP taxonomy.
+
+The properties of this {$TransFact.concept.name} fact are:
+
+Period :{$TransFact.period}
+Dimensions : {$TransFact.dimensions.join(', ','=')}
+Unit : {$TransFact.unit}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]

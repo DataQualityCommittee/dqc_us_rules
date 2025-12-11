@@ -1,0 +1,43 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+// TODO -remove the rule and replace with extensible enumeration
+
+RULE-NAME-PREFIX DQC
+
+assert US.0203.10708 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$fact1 = {@IncomeTaxAuthorityAxis in list(DomesticCountryMember)};
+
+exists($fact1) 
+
+message
+"The element  {$fact1.name} with a value of {$fact1} has been used with the axis IncomeTaxAuthorityAxis and the member {$fact1.dimension(IncomeTaxAuthorityAxis)}. The {$fact1.dimension(IncomeTaxAuthorityAxis)} element is not intended to be used in the instance document, instead the specific tax jurisdiction is intended to tag the information. 
+
+Concept : {$fact1.name}
+Value : {$fact1}
+Period : {$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1  
+status $status  
+
+effectiveDate $effective_dates[$rule_id]
+

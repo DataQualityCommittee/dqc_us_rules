@@ -1,0 +1,603 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP All
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0190.10600 satisfied
+
+/** CORRESPONDS TO FASB RULE 1 
+
+New EBP elements are from the employee benefit plan's perspective and not from the employer's perspective, therefore, they should not be used for the employer/plan sponsor filing Form 10-K, 10-Q, 10-KA, 10-QA, 20-F or 40-F.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$EBPQNames = filter $EBP_ELTS.concepts where $item.namespace-uri.contains('us-gaap-ebp') returns $item.name
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+    skip
+else 
+   $filingQnames = filter  taxonomy().concepts returns $item.name
+   $EBPElementsInFiling =  ($filingQnames intersect $EBPQNames).to-list
+    $EBPTop10 = list(for $x in range(1,min(list(10,$EBPElementsInFiling.length) ))
+                    $EBPElementsInFiling[$x])
+    
+   $EBPElementsInFiling.length > 0
+
+message
+"The filer has used EBP elements in the filing. These are the first 10 or less found. {$EBPTop10.join(',')}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10601 satisfied
+
+/** CORRESPONDS TO FASB RULE 2 
+
+DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Example 4/Note 3a) (Example 7a/Note 3a)
+"Employee Benefit Plan, Investment, Fair Value" [ EmployeeBenefitPlanInvestmentFairValue] is only expected to be used when"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Fair Value" (L2[EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue]) or"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue] are also used to tag amounts in the same plan year in the same statement or note. Should the rule restrict to specific hypercube? (EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, EmployeeBenefitPlanInvestmentFairValueAndNavTable, EmployeeBenefitPlanMasterTrustTable, EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable)
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+
+    $invalidConcepts = list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue )
+
+    for $x in $invalidConcepts
+        $EBP_non_master_FV = {covered @concept = $x  @cube.name = us-gaap-ebp:EmployeeBenefitPlanMasterTrustTable}
+
+        exists($EBP_non_master_FV)
+
+else
+    skip
+
+message
+"The filer has used the concept {$x} with a fact value of  {$EBP_non_master_FV } in the hypercube 'Employee Benefit Plan, Master Trust [Table]'. This element should not be used in this table and should be replaced with EmployeeBenefitPlanInvestmentFairValue.
+
+The properties of this {$x} fact are:
+Period :{$x.period}
+Dimensions : {$x.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10602 satisfied
+
+/** CORRESPONDS TO FASB RULE 2 
+
+DQC Rule 2 (Example 1/Note 1a) (Example 3a/Note 2a) (Example 3b/Note 3a) (Example 4/Note 3a) (Example 7a/Note 3a)
+"Employee Benefit Plan, Investment, Fair Value" [ EmployeeBenefitPlanInvestmentFairValue] is only expected to be used when"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Fair Value" (L2[EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue]) or"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue] are also used to tag amounts in the same plan year in the same statement or note. Should the rule restrict to specific hypercube? (EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, EmployeeBenefitPlanInvestmentFairValueAndNavTable, EmployeeBenefitPlanMasterTrustTable, EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable)
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+
+    $HypercubesToCheck = list(us-gaap-ebp:EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValueAndNavTable, us-gaap-ebp:EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, us-gaap-ebp:EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable,  us-gaap-ebp:EmployeeBenefitPlanScheduleOfAllocationAssetAndLiabilityTable )
+
+    for $x in $HypercubesToCheck
+        $EBP_non_master_FV = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue)  @cube.name = $x });
+
+        $EBP_master_and_non_Master_FV = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValue @cube.name = $x}
+
+        if exists($EBP_master_and_non_Master_FV) and $EBP_non_master_FV.length == 0
+            true
+        else    
+            skip
+else
+    skip
+
+message
+"The filer has reported a value of {$EBP_master_and_non_Master_FV} for the concept EmployeeBenefitPlanInvestmentFairValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values shopuld be reported in the this hypercube.
+
+The properties of this {$EBP_master_and_non_Master_FV} fact are:
+Period :{$EBP_master_and_non_Master_FV.period}
+Dimensions : {$EBP_master_and_non_Master_FV.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0190.10603 satisfied
+
+/** CORRESPONDS TO FASB RULE 3
+
+DQC Rule 3 (Example1/Note 1b) (Example 4/Note 3b)
+"Employee Benefit Plan, Investment, Contract Value" [EmployeeBenefitPlanInvestmentContractValue] is only expected to be used when"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Contract Value" (L3[EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue]) or"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Contract Value" [EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue] are also used to tag amounts in the same plan year in the same statement or note. Should the rule restrict to specific hypercube? (EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, EmployeeBenefitPlanFullyBenefitResponsiveInvestmentContractTable, EmployeeBenefitPlanMasterTrustTable, EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable)
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+
+    $HypercubesToCheck = list(us-gaap-ebp:EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, us-gaap-ebp:EmployeeBenefitPlanFullyBenefitResponsiveInvestmentContractTable, us-gaap-ebp:EmployeeBenefitPlanNonparticipantDirectedInvestmentTable, us-gaap-ebp:EmployeeBenefitPlanRelatedPartyAndPartyInInterestTransactionsTable,  us-gaap-ebp:EmployeeBenefitPlanScheduleOfAllocationAssetAndLiabilityTable )
+
+    for $x in $HypercubesToCheck
+        $EBP_non_master_contract = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue)  @cube.name = $x });
+
+        $EBP_master_and_non_Master_contract = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentContractValue @cube.name = $x}
+
+        if exists($EBP_master_and_non_Master_contract) and $EBP_non_master_contract.length == 0
+            true
+        else    
+            skip
+else
+    skip
+
+message
+"The filer has reported a value of {$EBP_master_and_non_Master_contract} for the concept EmployeeBenefitPlanInvestmentContractValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values should be reported in the this hypercube.
+
+The properties of this {$EBP_master_and_non_Master_contract} fact are:
+Period :{$EBP_master_and_non_Master_contract.period}
+Dimensions : {$EBP_master_and_non_Master_contract.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0190.10604 satisfied
+
+/** CORRESPONDS TO FASB RULE 4
+
+DQC Rule 4 (Example 2a/Note 2a) (Example 2b/Note 5b) (Example 2c/Note 2b)
+"Employee Benefit Plan, Nonconsolidated, Master Trust and Plan Interest in Master Trust [Axis]" (A6[EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis]) and applicable members are not expected to be used to tag amounts in the Statement of Net Assets Available for Benefits or the Statement of Changes in Net Assets Available for Benefits. Restrict to Hypercube.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+
+    $HypercubesToCheck = list(us-gaap-ebp:EmployeeBenefitPlanStatementOfNetAssetAvailableForBenefitTable, us-gaap-ebp:EmployeeBenefitPlanStatementOfChangeInNetAssetAvailableForBenefitTable )
+
+    for $x in $HypercubesToCheck
+        
+        $InvalidAxis = list({ @us-gaap-ebp:EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis = *  @cube.name = $x });
+
+        $InvalidAxis.length > 0
+
+else
+    skip
+   
+
+message
+"The filer has reported values using the EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis in the hypercube {$x}.  This axis should not be used with this hypercube.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0190.10605 satisfied
+
+/** CORRESPONDS TO FASB RULE 5 
+
+"DQC Rule 5 (Example 2b/Note 2a) (Example 2c/Note 1a)"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair and Contract Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue] is expected to be used when "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value" (L40[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue]) or "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Contract Value" (L44[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue]) are also used to tag amounts in the same plan year.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        $EBP_InterestInMasterTrustFV_OR_CONTRACT = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue)});
+
+        $EBP_InterestInMasterTrust = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue}
+
+        if exists($EBP_InterestInMasterTrust) and $EBP_InterestInMasterTrustFV_OR_CONTRACT.length == 0
+            true
+        else    
+            skip
+else
+    skip
+
+message
+"The filer has reported a value of {$EBP_InterestInMasterTrust} for the concept EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue.  One of these values should be reported if EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue is reported.
+
+The properties of this  fact are:
+Concept : EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue
+Period :{$EBP_InterestInMasterTrust.period}
+Dimensions : {$EBP_InterestInMasterTrust.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10606 satisfied
+
+/** CORRESPONDS TO FASB RULE 6
+
+DQC Rule 6 (Example 2b/Note 3)
+"Employee Benefit Plan, Investment, Fair and Contract Value" (L46[EmployeeBenefitPlanInvestmentFairAndContractValue]) is only expected to be used when"Employee Benefit Plan, Investment, Fair Value" (L39[EmployeeBenefitPlanInvestmentFairValue]) or"Employee Benefit Plan, Investment, Contract Value" (L45[EmployeeBenefitPlanInvestmentContractValue]) are also used to tag amounts in the same plan year in the same statement or note.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        $EBP_InvestmentFV_OR_CONTRACT = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentContractValue)});
+
+        $EBP_InvestmentMasterTrust = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentFairAndContractValue}
+
+        if exists($EBP_InvestmentMasterTrust) and $EBP_InvestmentFV_OR_CONTRACT.length == 0
+            true
+        else    
+            skip
+else
+    skip
+
+message
+"The filer has reported a value of {$EBP_InvestmentMasterTrust} for the concept EmployeeBenefitPlanInvestmentFairAndContractValue in the filing, and has not reported a value for either EmployeeBenefitPlanInvestmentFairValue or EmployeeBenefitPlanInvestmentContractValue.  One of these values should be reported if EmployeeBenefitPlanInvestmentFairAndContractValue is reported.
+
+The properties of this fact are:
+Concept : EmployeeBenefitPlanInvestmentFairAndContractValue
+Period :{$EBP_InvestmentMasterTrust.period}
+Dimensions : {$EBP_InvestmentMasterTrust.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10607 satisfied
+
+/** CORRESPONDS TO FASB RULE 7
+
+DQC Rule 7 (Example 2b/Note 5a) (Example 2c/Note 2a)
+Employee Benefit Plan, Nonconsolidated, Master Trust and Plan Interest in Master Trust [Axis]" (A6[EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis]) and applicable members are not expected to be used with the following line-item elements:
+
+"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value" (L40[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue]),
+"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Contract Value" (L44[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue]),
+"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair and Contract Value," (L49 [EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue])
+"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Fair Value" (L2[EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue]),
+"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Contract Value," [EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue]
+"Employee Benefit Plan, Investment, Excluding Plan Interest in Master Trust, Fair and Contract Value," [EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairAndContractValue] and
+"Employee Benefit Plan, Change in Net Asset Available for Benefit, Increase (Decrease) from Change in Plan Interest in Master Trust" (L47[EmployeeBenefitPlanChangeInNetAssetAvailableForBenefitIncreaseDecreaseForChangeInPlanInterestInMasterTrust]).
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        
+    $concepts_not_used_with_axis = list(us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairAndContractValue, us-gaap-ebp:EmployeeBenefitPlanChangeInNetAssetAvailableForBenefitIncreaseDecreaseForChangeInPlanInterestInMasterTrust)
+
+        
+        $InvalidConceptsAndAxis = {@concept in $concepts_not_used_with_axis  @us-gaap-ebp:EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis = *  };
+
+        exists($InvalidConceptsAndAxis)
+
+else
+    skip
+   
+
+message
+"The filer has reported a value of {$InvalidConceptsAndAxis} for the concept {$InvalidConceptsAndAxis.concept.name} in the filing, with the axis EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis.  This concept should not be used with this axis. See FASB EBP guidance Example 2b/Note 5a and Example 2c/Note 2a.
+
+The properties of this fact are:
+Concept : {$InvalidConceptsAndAxis.concept.name}
+Period :{$InvalidConceptsAndAxis.period}
+Dimensions : {$InvalidConceptsAndAxis.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+/**
+DO WE NEED THIS ITEM?  ISIT NOT COVERED ABOVE?
+
+DQC Rule 8 (Example 2b/Note 6a) (Example 2c/Note 3a)
+"Employee Benefit Plan, Investment, Fair Value" (L39[EmployeeBenefitPlanInvestmentFairValue]) and "Employee Benefit Plan, Investment, Contract Value" (L45[EmployeeBenefitPlanInvestmentContractValue]) are the only investment debit, instant line-item elements expected to be used with the "Employee Benefit Plan, Nonconsolidated, Master Trust and Plan Interest in Master Trust [Axis]" (A6[EmployeeBenefitPlanNonconsolidatedMasterTrustAndPlanInterestInMasterTrustAxis]) and applicable members to tag the investment assets held by the master trust.
+**/
+
+ASSERT US.0190.10612 satisfied
+
+/** CORRESPONDS TO FASB RULE 12 and 14
+
+DQC Rule 12 (Example 5b/Note 3a) (Example 6b/Note 3a)
+"Investment, Identifier [Axis]" (A9[InvestmentIdentifierAxis]) and "Investment Type [Axis]" (A1[InvestmentTypeAxis]) are not expected to be used together.
+**/
+/*TODO CHECK IF WE CAN REMOVE AS IS THE SAME AS 142 */
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        
+        
+        $InvalidConcepts = {@InvestmentIdentifierAxis = * where $fact.dimensions.length > 2 and not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')};
+
+        exists($InvalidConcepts)
+
+else
+    skip
+   
+
+message
+"The filer has reported a value of {$InvalidConcepts} for the concept {$InvalidConcepts.concept.name} in the filing. A fact reported with the axis InvestmentIdentifierAxis should not be used with any other axis.  See FASB EBP guidance Example 5b/Note 3a and Example 6b/Note 3a and example 5a/Note 2a and example 5b/Note 2a.
+
+The properties of this fact are:
+Concept : {$InvalidConcepts.concept.name}
+Period :{$InvalidConcepts.period}
+Dimensions : {$InvalidConcepts.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+
+ASSERT US.0190.10613 satisfied
+
+/** CORRESPONDS TO FASB RULE 13 
+
+DQC Rule 13 (Example 6a/Note 2b)
+"Employee Benefit Plan, Allocation Status [Axis]" (A8[EmployeeBenefitPlanAllocationStatusAxis]) with "Employee Benefit Plan, Unallocated [Member]" (M33[EmployeeBenefitPlanUnallocatedMember]) and "Employee Benefit Plan, Participant Directed Status [Axis]" (A7[EmployeeBenefitPlanParticipantDirectedStatusAxis]) with "Employee Benefit Plan, Participant-Directed [Member]" (M30[EmployeeBenefitPlanParticipantDirectedMember]) are not expected to be used together.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        
+        
+        $InvalidFacts = {@us-gaap-ebp:EmployeeBenefitPlanAllocationStatusAxis = us-gaap-ebp:EmployeeBenefitPlanUnallocatedMember @us-gaap-ebp:EmployeeBenefitPlanParticipantDirectedStatusAxis = us-gaap-ebp:EmployeeBenefitPlanParticipantDirectedMember };
+
+        exists($InvalidFacts)
+
+else
+    skip
+   
+
+message
+"The filer has reported a value of {$InvalidFacts} for the concept {$InvalidFacts.concept.name} in the filing, with the axis EmployeeBenefitPlanAllocationStatusAxis and memberEmployeeBenefitPlanUnallocatedMember and the axis EmployeeBenefitPlanParticipantDirectedStatusAxis with the member EmployeeBenefitPlanParticipantDirectedMember. These two axis should not be used together on a fact with these members. See FASB EBP guidance example 6a/Note 2b.
+
+The properties of this fact are:
+
+Concept : {$InvalidFacts.concept.name}
+Period :{$InvalidFacts.period}
+Dimensions : {$InvalidFacts.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10616 satisfied
+
+/** CORRESPONDS TO FASB RULE 16 
+
+/** DQC Rule 16 (Example 7a/Note 1a) (Example 7b/Note 1a)
+No report-wide values are expected in the XBRL data.
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+        
+    $defaultFacts = list({covered @concept.namespace-uri = 'http://fasb.org/us-gaap-ebp/2026' where not $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+    $defaultFactsExist  = $defaultFacts.length > 0
+    if $defaultFactsExist
+        $message-text = (filter $defaultFacts returns ('Concept: ' + $item.concept.name.local-name  + ' Period: ' + $item.period.string)).join('
+        ')
+        true
+    else
+        false
+
+else
+    skip
+   
+
+message
+"The filing contains {$defaultFacts.length} facts that do not include the LegalEntityAxis. All facts in the instance must include the LegalEntityAxis.
+
+Facts missing LegalEntityAxis:
+{$message-text}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0190.10617 satisfied
+
+/** Possible DQC Rule 17 (Example 7b/Note 2)
+The members to be used with the "Legal Entity [Axis]" (A10) are intended to be plan specific members. To help facilitate data consumption, plan-specific members are to be created using a format that starts with "EBP" followed by the nine-digit Employer Identification Number with a dash after the first two digits, a space, and the Plan Number (i.e., EBP 12-3456789 001 [Member]).
+**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+
+    $LegalEntityValues = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')})
+
+    $LegalEntityAxisMembers = filter $LegalEntityValues returns $item.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')).name.local-name
+
+    for $member in $LegalEntityAxisMembers
+    
+        $matchDict = $member.regex-match('^EBP[A-z0-9]\{3,8\}Member$')
+        if $matchDict['match-count'] == 0
+            $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
+            $matchDict['match-count'] == 0
+        else
+            false
+else
+    skip
+
+message
+"The filing includes a member on the Legal Entity Axis called  {$member}. The Legal Entity Axis member should represent an EBP plan identifier comprised of the EBP  and Plan number.  The element name should following the structure below:  
+- The first 3 alpha characters should be EBP.
+- The plan number represented using 3 digits or up to 8 alphanumeric characters.
+- The member name must conclude with the string Member.
+The form is as follows EBPxxxMember. i.e. EBP011Member or EBPFranceMember when there is no plan member.
+
+The label of the member does not need to follow this format.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0190.10619 satisfied
+
+/* Check cover page for EBP filers has legal entity axis for default facts */
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
+
+if $EBPReports
+/* Identify DEI facts */
+$defaultFacts = list([covered @concept.namespace-uri = $DEI_NAMESPACE])
+
+for $DEIfact in $defaultFacts
+        $ebpDEIFact = list({covered @concept= $DEIfact.concept where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')} )
+        not exists($ebpDEIFact)
+
+else
+    skip
+   
+message
+"The filing contains a DEI fact without a LegalEntityAxis member.  All DEI facts in the instance must include the LegalEntityAxis for 11-K filings. Except for DocumentType, AmendmentFlag, AmendmentDescription, DocumentPeriodEndDate and DocumentFiscalYearFocus which must be tagged twice if they are used.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

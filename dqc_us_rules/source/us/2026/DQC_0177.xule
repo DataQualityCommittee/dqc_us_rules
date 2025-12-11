@@ -1,0 +1,187 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** CHeck if Proxy adds correctly - Add the members of the AdjToCompAxis to check that they match the total**/
+
+
+ASSERT US.0177.10132 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
+                            if $link.contains('https://xbrl.sec.gov/ecd/2023/ecd-2023.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2024/ecd-2024.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2026/ecd-2026.xsd')
+                                true
+                            else
+                                false
+                                    ));
+
+$ruleExclusionIfUseMembers = set('PensionValueAndEquityAwardsValueInCompensationTableForTheApplicableYearMember', 'ChangeInPensionValueAndEquityAwardValueMember', 'NetAdjustmentsForPensionMember', 'EquityAwardsAdjustmentsChangeInFairValueAsOfVestingDateOfVestedAwardsDuringCurrentYearMember','TotalDeductionsMember')
+
+if $ecdtaxonomy
+    /** Get a list of the members **/
+    $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set
+
+    /** Check if exclusions apply **/
+
+    if ($member_descendants.name.local-name intersect  $ruleExclusionIfUseMembers).length > 0
+        skip
+    else
+    /** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+    $member_facts = list(for $member in $member_descendants
+            if $member.name == ecd:AllAdjToCompMember
+                skip
+            else
+                $ancestors_list = (navigate dimensions domain-member ancestors from $member.name returns set (target-name)) - set(ecd:AllAdjToCompMember);
+                if list({nonils @ecd:AdjToCompAmt  @ecd:AdjToCompAxis in $ancestors_list @ecd:ExecutiveCategoryAxis = ecd:PeoMember}).length > 0
+                    skip
+                else 
+                    {nonils  @ecd:AdjToCompAmt  @ecd:AdjToCompAxis = $member.name @ecd:ExecutiveCategoryAxis = ecd:PeoMember});
+        
+        /** aggregate the fact values on the axis **/
+        $member_sums = if 	$member_facts.length == 0 
+                                0
+                        else
+                            sum($member_facts);
+
+        /** Calculate the minimum decimals **/
+
+        $min_decimals = min(list(for $z in $member_facts
+                if $z == none 
+                    skip
+                else
+                    $z.decimals));
+
+        $TotalCompAmount = {@concept = ecd:PeoTotalCompAmt @ecd:AdjToCompAxis = none}
+        $TotalActualCompAmount = {@concept = ecd:PeoActuallyPaidCompAmt @ecd:AdjToCompAxis = none}
+
+        $DiffValue = $TotalActualCompAmount - $TotalCompAmount
+
+        if tolerance_for_decimals_comp($DiffValue, $member_sums, $min_decimals, 2 ) and $member_sums != 0
+        
+            /** Make a string that shows the components of the components that comprise the total **/
+            $member_string = sum(list(for $member_fact in $member_facts
+                "\t" + $member_fact.dimension(ecd:AdjToCompAxis).local-name + " --> {$member_fact}" + " --> {$member_fact.dimensions.join(', ','=')} \n"));
+            $member_sum = $member_sums;
+            true
+        else 
+            skip	
+else
+    false
+message
+"The value of the difference between PeoActuallyPaidCompAmt and PeoTotalCompAmt has a value of {$DiffValue}, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of {$member_sum} based on the data in the filing. 
+
+The values of the calculation components are as follows:
+{$member_string}
+
+The value of the difference between PeoTotalCompAmt and PeoActuallyPaidCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :{$TotalCompAmount.period}
+Dimensions : {$TotalCompAmount.dimensions.join(', ','=')}
+Unit : {$TotalCompAmount.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0177.10133 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
+                            if $link.contains('https://xbrl.sec.gov/ecd/2023/ecd-2023.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2022q4/ecd-2022q4.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2026/ecd-2026.xsd')
+                                true
+                            else
+                                false
+                                    ));
+
+if $ecdtaxonomy
+
+	/** Get a list of the members **/
+	$member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis).to-set
+
+	/** Generate a list of the member values to sum. It excludes member values that are included as a subtotal, by checking if a members ancestor has a value. If yes, then the value is excluded. **/
+	$member_facts = list(for $member in $member_descendants
+			if $member.name == ecd:AllAdjToCompMember
+				skip
+			else
+				$ancestors_list = (navigate dimensions domain-member ancestors from $member.name returns set (target-name)) - set(ecd:AllAdjToCompMember);
+				if list({nonils @ecd:AdjToCompAmt  @ecd:AdjToCompAxis in $ancestors_list @ecd:ExecutiveCategoryAxis = ecd:NonPeoNeoMember}).length > 0
+					skip
+				else 
+					{nonils  @ecd:AdjToCompAmt  @ecd:AdjToCompAxis = $member.name @ecd:ExecutiveCategoryAxis = ecd:NonPeoNeoMember});
+		
+		/** aggregate the fact values on the axis **/
+		$member_sums = if $member_facts.length == 0 
+	        				0
+						else
+							sum($member_facts);
+
+		/** Calculate the minimum decimals **/
+
+		$min_decimals = min(list(for $z in $member_facts
+				if $z == none 
+					skip
+				else
+					$z.decimals));
+
+        $TotalCompAmount = {@concept = ecd:NonPeoNeoAvgTotalCompAmt @ecd:AdjToCompAxis = none}
+        $TotalActualCompAmount = {@concept = ecd:NonPeoNeoAvgCompActuallyPaidAmt @ecd:AdjToCompAxis = none}
+
+		$DiffValue = $TotalActualCompAmount <-> $TotalCompAmount
+
+		if tolerance_for_decimals_comp($DiffValue, $member_sums, $min_decimals, 2 ) and $member_sums != 0
+		
+			/** Make a string that shows the components of the components that comprise the total **/
+			$member_string = sum(list(for $member_fact in $member_facts
+				"\t" + $member_fact.dimension(ecd:AdjToCompAxis).local-name + " --> {$member_fact}" + " --> {$member_fact.dimensions.join(', ','=')} \n"));
+			$member_sum = $member_sums;
+			true
+		else 
+			skip	
+else
+    false
+
+message
+"The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of {$DiffValue}, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of {$member_sum} based on the data in the filing. 
+
+The values of the calculation components are as follows:
+{$member_string}
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :{$TotalCompAmount.period}
+Dimensions : {$TotalCompAmount.dimensions.join(', ','=')}
+Unit : {$TotalCompAmount.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

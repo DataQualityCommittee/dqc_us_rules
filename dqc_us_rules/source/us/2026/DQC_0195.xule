@@ -1,0 +1,482 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+/** Rule Documentation 
+
+# Facts using an invalid member with the Equity Components Axis
+Rule ID: DQC_0195
+Status: Final  
+Release date: Oct 15, 2024  
+Effective date: Nov 30, 2024
+
+## Rule Function
+The rule checks that movements in shareholders equity element are represented with the appropriate member and line item combination.  Specifally the rule checks where values are reported with line items and members that are not appropriate. The rule covers the following situations:
+1. Where the CommonStockMember is used with an inappropriate line item.
+2. Where the StockholdersEquity line item is reported with a Noncontrolling Interest member.
+3. Where line items representing Shares Outstanding and Shares Issued are used with Treasury Stock Members.
+4. Where Treasury Stock line items are used with the Common Stock Member.
+5. Where stock issued and  stock outstanding are both used with the common stock member.
+6. Where the Retained Earnings Members are used with an inappropriate line item.
+
+## Problem Solved by the Rule
+ The rule helps to ensure consistency in filings when reporting the statement of stockholders equity.  It also identified where the concept StatementEquityComponentsAxis has been used in the footnotes that does not match what has been reported in the financial statements.
+
+## Example Rule Message 1
+
+us-gaap:StockIssuedDuringPeriodValueTreasuryStockReissued has a value of 31,000 and has been used with the common stock [Member]. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
+
+The properties of this us-gaap:StockIssuedDuringPeriodValueTreasuryStockReissued fact are:
+Period :2020-11-01 to 2021-10-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : USD
+Rule Element Id:10622
+Rule version: 26.0.0RC1
+
+## Example Rule Message 2
+us-gaap:StockholdersEquity has a value of 230,000 and has been used with an Non Controlling Interest member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as us-gaap:StockholdersEquity does not include non controlling interest. Change the element us-gaap:StockholdersEquity to StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest.
+
+The properties of this us-gaap:StockholdersEquity fact are:
+Period :2022-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedDefinedBenefitPlansAdjustmentIncludingPortionAttributableToNoncontrollingInterestMember
+Unit : USD
+Rule Element Id:10623
+Rule version: 26.0.0RC1
+
+## Example Rule Message 3
+us-gaap:SharesOutstanding has a value of -546,658 and has been used with Treasury Stock Member on the StatementEquityComponentsAxis. This element should not have a value when used with Treasury Stock Member.  FASB FAQ guidance (https://xbrl.fasb.org/resources/taxonomyfaq.pdf) 2.16 requires that specific line item elements are used for treasury shares such as TreasuryStockCommonShares and TreasuryStockPreferredShares rather than us-gaap:SharesOutstanding
+
+The properties of this us-gaap:SharesOutstanding fact are:
+Period :2022-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:TreasuryStockCommonMember
+Unit : shares
+Rule Element Id:10624
+Rule version: 26.0.0RC1
+
+## Example Rule Message 4
+us-gaap:TreasuryStockSharesRetired has a value of -16,197,849 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with this Member as us-gaap:TreasuryStockSharesRetired should not impact common stock. Change the opening balance share element us-gaap:TreasuryStockSharesRetired to SharesIssued.
+
+The properties of this us-gaap:TreasuryStockSharesRetired fact are:
+Period :2020-07-01 to 2021-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 26.0.0RC1
+
+## Example Rule Message 5
+The filer has used the concept us-gaap:SharesIssued with a value of 250,000 and has also used the value us-gaap:SharesOutstanding with a value of 142,088,039 both using the common stock member. The filer should report one or the other but not both when using the common stock member. If the column representing shares in the Changes in equity represents issued shares then the SharesOutstanding elememnt should not be used with the common stock member. If the column representing shares in the Changes in equity represents outstanding shares then the SharesIssued element should not be used with the common stock member.
+
+The properties of this us-gaap:SharesIssued fact are:
+Period :2022-02-14
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10626
+Rule version: 26.0.0RC1
+
+## Example Rule Message 6
+us-gaap:StockRepurchasedAndRetiredDuringPeriodValue has a value of 6,100,000 and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+
+The properties of this us-gaap:StockRepurchasedAndRetiredDuringPeriodValue fact are:
+Period :2021-01-01 to 2021-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:RetainedEarningsMember
+Unit : USD
+Rule Element Id:10627
+Rule version: 26.0.0RC1 - wtm-20220331.htm 4
+
+
+## Rule element ID index  
+The rule element id is used to identify unique elements or combinations of elements tested in the rule.
+
+|Rule Element ID|Element|
+|--- |--- |
+| DQC.US.0195.10622 |StatementEquityComponentsAxis = CommonStockMember|
+| DQC.US.0195.10623 |StatementEquityComponentsAxis in Non Controlling Interest Members|
+| DQC.US.0195.10624 |StatementEquityComponentsAxis in treasury members|
+| DQC.US.0195.10625 |SharesIssued, SharesOutstanding|
+| DQC.US.0195.10626 |SharesIssued, SharesOutstanding|
+| DQC.US.0195.10627 |StatementEquityComponentsAxis = RetainedEarningsMember|
+
+
+© Copyright 2016 - 2026, XBRL US Inc. All rights reserved.   
+See [License](https://xbrl.us/dqc-license) for license information.  
+See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice. 
+
+ **/
+
+RULE-NAME-PREFIX DQC
+
+constant $ELEMENT_COMMON_STOCK_EMPTY = set(PreferredStockSharesOutstanding, 
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
+                                    PreferredStockDividendsShares,
+                                    StockIssuedDuringPeriodValueTreasuryStockReissued,
+                                    TreasuryStockPreferredValue,
+                                    ProfitLoss,
+                                    NetIncomeLossAttributableToRedeemableNoncontrollingInterest,
+                                    NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest,
+                                    OtherComprehensiveIncomeLossNetOfTax,
+                                    PreferredStockRedemptionPremium,
+                                    PreferredStockRedemptionDiscount,
+                                    PreferredStockAccretionOfRedemptionDiscount,
+                                    IncreaseInCarryingAmountOfRedeemablePreferredStock,
+                                    PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,
+                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                                    NoncontrollingInterestIncreaseFromBusinessCombination,
+                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
+                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                                    MinorityInterestDecreaseFromRedemptions,
+                                    NoncontrollingInterestDecreaseFromDeconsolidation
+                                    ) + ($APIC_ADJUSTMENTS)
+
+ASSERT US.0195.10622 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$fact1 = {nonils @concept in $ELEMENT_COMMON_STOCK_EMPTY @StatementEquityComponentsAxis = CommonStockMember @unit=* where $fact != 0}
+
+/** Check if have no par value tagged and if they do then AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts should be ok to use with CommonstockMember 
+
+If No Par value is tagged with 0 or nil and the cocept is AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts then the rule will pass. The case Shelly sent should still have an error.**/
+
+if $fact1.concept.name == 'AdjustmentsToAdditionalPaidInCapitalStockIssuedIssuanceCosts'
+
+    $fact2 = {covered @concept = CommonStockNoParValue  where $fact == 0 or $fact == none}
+
+    if exists($fact2)
+        false
+    else
+        exists($fact1)
+else
+    exists($fact1)
+
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock Member. This element should not have a value when used with the common stock [Member]. The preparer should consider if the value is input correctly or if a different element or member should be used.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+/** Check STockholders Equity for the correct opening balance element.**/
+
+ASSERT US.0195.10623 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$fact1 = {nonils @concept = StockholdersEquity @StatementEquityComponentsAxis in $NCI  @unit=* where $fact != 0}
+
+exists($fact1)
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with an Non Controlling Interest member on the StatementEquityComponentsAxis. This element should not have a value when used with the with this [Member] as {$fact1.concept} does not include non controlling interest. Change the element {$fact1.concept} to StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0195.10624 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$treasury =  set(TreasuryStockCommonMember, TreasuryStockPreferredMember);
+
+$fact1 = {nonils @concept in list(SharesOutstanding,CommonStockSharesOutstanding, PreferredStockSharesOutstanding, SharesIssued, CommonStockSharesIssued, PreferredStockSharesIssued ) @StatementEquityComponentsAxis in $treasury  @unit=* where $fact != 0}
+
+exists($fact1)
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with Treasury Stock Member on the StatementEquityComponentsAxis. This element should not have a value when used with Treasury Stock Member.  FASB FAQ guidance (https://xbrl.fasb.org/resources/taxonomyfaq.pdf) 2.16 requires that specific line item elements are used for treasury shares such as TreasuryStockCommonShares and TreasuryStockPreferredShares rather than {$fact1.concept.name}.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+/** THis can be super confusingin terms of multiple meanings.  WHats the difference between treasuryStockSharesAqcuired and StockRepurchasedDuringPeriodShares and the treasury stock member
+
+The issue is further complicated by the fact that common stock for shares can be either outstanding or issued where as the value amount for common stock is not netted for tresury. 
+
+In the notes if you see treasuryStockSharesAqcuired with common stock member then this implies the shares colum is outstanding in the SHE. 
+
+It seems to me none of the treasury share elements should be used if the changes in she uses the shares outstanding rather than the shares issued
+
+An example of this is here : https://www.sec.gov/ix?doc=/Archives/edgar/data/846475/000155837024010200/zyxi-20240630x10q.htm
+
+This filing has treasury but for the shares colum uses shares outstanding and not issued.  In the notes they disclose share buybacks going into treasury.  SHouldnt the elemnts be consistent with the statement of SHE.**/
+
+
+/** IF TREASURURY IS ZERO SHOULD RULE FLAG **/
+ASSERT US.0195.10625 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$Common_stock_shares_issued = list([covered @concept in list(SharesIssued, CommonStockSharesIssued)  @StatementEquityComponentsAxis = CommonStockMember  @StatementClassOfStockAxis @period=*])
+
+$COMMON_STOCK_SHARES_ISSUED_METHOD = if $Common_stock_shares_issued.length > 0
+                                                    true
+                                                else
+                                                    false
+
+$message_dict = dict(
+                    list(TreasuryStockSharesAcquired, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element TreasuryStockSharesAcquired that was used implies that the treasury shares acquired were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of TreasuryStockSharesAcquired. Alternatively change the opening balance share element to SharesOutstanding. The opening balance of shares issued is presumed based on the following fact(s) : ' + $Common_stock_shares_issued.join(", ") + ' using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued'),
+                    list(StockIssuedDuringPeriodSharesTreasuryStockReissued, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockIssuedDuringPeriodSharesTreasuryStockReissued that was used implies that shares were issued out of treasury stock. If the roll-forward of shares is based on shares issued the element StockIssuedDuringPeriodSharesNewIssues should be used instead of StockIssuedDuringPeriodSharesTreasuryStockReissued. Alternatively change the opening balance share element to SharesOutstanding The opening balance of shares issued is presumed based on the following fact(s) : ' + $Common_stock_shares_issued.join(", ") + ' using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued'),
+                    list(StockRepurchasedDuringPeriodShares, 'The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding. The opening balance of shares issued is presumed based on the following fact(s) : ' + $Common_stock_shares_issued.join(", ") + ' using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued'),
+                    list(TreasuryStockSharesRetired, 'The Statement of Changes in Equity implies treasury stock is excluded from the opening balance of shares as the opening balance uses a shares outstanding concept. The element TreasuryStockSharesRetired that was used in the roll-forward cannot reduce the shares outstanding. If the roll-forward of shares is based on shares issued the element TreasuryStockSharesRetired can be used but the  opening balance share element should be changed to SharesIssued or CommonStockSharesIssued.')
+                    )
+
+if  $COMMON_STOCK_SHARES_ISSUED_METHOD
+
+    $treasury =  set(TreasuryStockSharesAcquired,
+                StockIssuedDuringPeriodSharesTreasuryStockReissued,
+                StockRepurchasedDuringPeriodShares
+                )
+
+    $fact1 = {nonils @concept in $treasury  @StatementEquityComponentsAxis = CommonStockMember  @unit=*}
+
+    exists($fact1)
+
+else
+
+    $treasury2 =  set(TreasuryStockSharesRetired)
+
+    $fact1 = {nonils @concept in $treasury2  @StatementEquityComponentsAxis = CommonStockMember  @unit=*}
+
+    exists($fact1)
+
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as {$fact1.concept} should not impact common stock. 
+
+{$message_dict[$fact1.concept.name]}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Add rule to check cannot have stock issued and  stock outstanding with the common stock member **/
+
+ASSERT US.0195.10626 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$fact1 = {nonils @concept = SharesIssued  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
+
+$fact2 = {nonils @concept = SharesOutstanding  @StatementEquityComponentsAxis = CommonStockMember  @period=*}
+
+exists($fact1) and exists($fact2)
+
+message
+"The filer has used the concept {$fact1.concept} with a value of {$fact1} and has also used the value {$fact2.concept} with a value of {$fact2} both using the common stock member. The filer should report one or the other but not both when using the common stock member. If the column representing shares in the Changes in equity represents issued shares then the SharesOutstanding elememnt should not be used with the common stock member. If the column representing shares in the Changes in equity represents outstanding shares then the SharesIssued element should not be used with the common stock member.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+
+ASSERT US.0195.10627 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** LOok at allowable values for common stock **/
+
+$Element_Retained_Earnings_empty = set(SharesOutstanding, 
+                                    CommonStockSharesOutstanding, 
+                                    StockIssuedDuringPeriodValueNewIssues,
+                                    StockIssuedDuringPeriodSharesNewIssues,
+                                    StockIssuedDuringPeriodValueIssuedForServices,
+                                    StockIssuedDuringPeriodSharesIssuedForServices,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationGross,
+                                    StockGrantedDuringPeriodValueSharebasedCompensationForfeited,
+                                    StockGrantedDuringPeriodValueSharebasedCompensation,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriodGross,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsForfeituresInPeriod,
+                                    ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsGrantsInPeriod,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodValueShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodValueShareBasedCompensation,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationGross,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensationForfeited,
+                                    StockIssuedDuringPeriodSharesShareBasedCompensation,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardForfeitures,
+                                    StockIssuedDuringPeriodValueRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardGross,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardForfeited,
+                                    StockIssuedDuringPeriodSharesRestrictedStockAwardNetOfForfeitures,
+                                    StockIssuedDuringPeriodValueStockOptionsExercised,
+                                    StockIssuedDuringPeriodSharesStockOptionsExercised,
+                                    StockIssuedDuringPeriodValueEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockOwnershipPlan,
+                                    StockIssuedDuringPeriodValueEmployeeStockPurchasePlan,
+                                    StockIssuedDuringPeriodSharesEmployeeStockPurchasePlans,
+                                    StockIssuedDuringPeriodValueEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodSharesEmployeeBenefitPlan,
+                                    StockIssuedDuringPeriodValueAcquisitions,
+                                    StockIssuedDuringPeriodSharesAcquisitions,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodSharesConversionOfConvertibleSecurities,
+                                    StockIssuedDuringPeriodValueConversionOfConvertibleSecuritiesNetOfAdjustments,
+                                    StockIssuedDuringPeriodValueConversionOfUnits,
+                                    StockIssuedDuringPeriodSharesConversionOfUnits,
+                                    StockIssuedDuringPeriodValueStockDividend,
+                                    CommonStockDividendsShares,
+                                    StockDividendsShares,
+                                    /**StockIssuedDuringPeriodValueDividendReinvestmentPlan, /** Removed as some companies book the dividends against the retained earnings same as DividendsCommonStockStock**/
+                                    StockIssuedDuringPeriodSharesDividendReinvestmentPlan,
+                                    StockIssuedDuringPeriodValuePurchaseOfAssets,
+                                    StockIssuedDuringPeriodSharesPurchaseOfAssets,
+                                    StockIssuedDuringPeriodValueOther,
+                                    StockIssuedDuringPeriodSharesOther,
+                                    StockIssuedDuringPeriodSharesStockSplits,
+                                    StockIssuedDuringPeriodSharesReverseStockSplits, /** Assume use calc to negate **/
+                                    /**StockRepurchasedAndRetiredDuringPeriodValue,**/ /** Can impact retained earnings if no treasury stock **/
+                                    StockRepurchasedAndRetiredDuringPeriodShares,
+                                    StockRepurchasedDuringPeriodValue, /** If no treasury stock this element should not be used as it would be retired use StockRepurchasedAndRetiredDuringPeriodValue **/
+                                    StockRepurchasedDuringPeriodShares,
+                                    /**StockRedeemedOrCalledDuringPeriodValue,**/ 
+                                    StockRedeemedOrCalledDuringPeriodShares,
+                                    TreasuryStockRetiredParValueMethodAmount,
+                                    /**TreasuryStockRetiredCostMethodAmount,**/ /** Can impact retained earnings if no APIC is avialble **/
+                                    TreasuryStockSharesRetired,
+                                    AmortizationOfESOPAward,
+                                    PreferredStockSharesOutstanding, 
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebt,           
+                                    AdjustmentsToAdditionalPaidInCapitalEquityComponentOfConvertibleDebtSubsequentAdjustments,
+                                    PreferredStockDividendsShares,
+                                    /**StockIssuedDuringPeriodValueTreasuryStockReissued,**/ /** Is not included because if buy treasury back at a higher cost than you reissue it the difference needs to go to APIC.  If APIC is insufficient then goes against retained earnings. **/
+                                    TreasuryStockPreferredValue,
+                                    /**PreferredStockRedemptionPremium,**/ /** The Premium is first charged against APIC (But is specific to the original issuance of the same class of preferred stock being redeemed, then is allowed to hit retained earnings.) **/
+                                    PreferredStockRedemptionDiscount,
+                                    PreferredStockAccretionOfRedemptionDiscount,
+                                    /**IncreaseInCarryingAmountOfRedeemablePreferredStock, **/ /** Definition or element states it impacts RE **/
+                                    /**PreferredStockConvertibleDownRoundFeatureIncreaseDecreaseInEquityAmount1,**/ /** Round down can impact retained earnings if no APIC to cover the round down.**/
+                                    NoncontrollingInterestIncreaseFromSubsidiaryEquityIssuance,
+                                    NoncontrollingInterestIncreaseFromSaleOfParentEquityInterest,
+                                    NoncontrollingInterestIncreaseFromBusinessCombination,
+                                    ComprehensiveIncomeNetOfTaxAttributableToNoncontrollingInterest,
+                                    MinorityInterestDecreaseFromDistributionsToNoncontrollingInterestHolders,
+                                    MinorityInterestDecreaseFromRedemptions,
+                                    NoncontrollingInterestDecreaseFromDeconsolidation,
+                                    TreasuryStockCommonValue,
+                                    TreasuryStockPreferredValue,
+                                    TreasuryStockValue,
+                                    /**TreasuryStockValueAcquiredParValueMethod,**/ /** Can impact retained earnings if no treasury stock **/
+                                    /**TreasuryStockValueAcquiredCostMethod, **/ /** Can impact retained earnings if no treasury stock and retire the stock as the diff has to go somewhere if no APIC.**/
+                                    /**TreasuryStockReissuedAtLowerThanRepurchasePrice, **/ /** If issue at lowe than repurchase price then and there is no APIC then diff goes to retained earnings **/
+                                    TreasuryStockCarryingBasis,
+                                    OtherComprehensiveIncomeLossNetOfTax,
+                                    OtherComprehensiveIncomeLossBeforeTax,
+                                    OtherComprehensiveIncomeLossTax
+                                    /**ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest**/
+                                    )
+
+for $concept in $Element_Retained_Earnings_empty
+   
+    $fact1 = {nonils @concept = $concept @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact != 0}
+
+    /** Get total **/
+
+    $defaultTotal = {nonils @concept = $concept @StatementEquityComponentsAxis = none }
+
+/** Use 10% of total as a threshold for the error  as these items have extra stuff which is considered OK as it is not material **/
+
+    if missing($defaultTotal)
+        $customMessage = "";
+        true
+    else
+        if abs($defaultTotal * 0.1) < abs($fact1)
+             $customMessage = "This rule will not report an error if the Retained Earnings value is less than 10% of the total impacting shareholders equity. The total compared to determine materiality is 10% of " + $defaultTotal.string + " or " + ($defaultTotal * 0.1).string + ".";
+            true
+        else
+            false
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+{if $fact1.concept.name == StockRepurchasedDuringPeriodValue "If the company has no treasury stock then the element StockRepurchasedDuringPeriodValue should not be used as the stock would be retired and the value should be reported using StockRepurchasedAndRetiredDuringPeriodValue." else ''}
+
+{$customMessage}
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]

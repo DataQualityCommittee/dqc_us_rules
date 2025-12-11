@@ -1,0 +1,451 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+/** Rule Documentation 
+
+# Opening and Closing Balances on the Statement of Shareholders Equity
+Rule ID: DQC_0196
+Status: Final  
+Release date: Oct 15, 2024  
+Effective date: Nov 30, 2024
+
+## Rule Function
+The rule identifies instant elements that have been used in the statement of Shareholders Equity that do not represent the opening and closing balances of Stockholders Equity. The rule identifies those instant facts that are used with the StatementEquityComponentsAxis that do not represent and opening or closing balance of the monetary value of Shareholders Equity or the share value of Stockholders Equity.
+
+## Problem Solved by the Rule
+The rule identifies where filers use the more specific instant elements in the Statement of Stockholders Equity, such as AdditionalPaidInCapital or RetainedEarningsAccumulatedDeficit.  The values using these elements should be tagged with the more generic elements such as StockholdersEquity. This ensures consistency across filings and removes duplicate ways of tagging the same fact. The rule also detects where extensions have been used to represent the opening and closing balances. SHareholders Equity is a standard element and should not be extended.
+
+## Example Rule Message 1
+aerc:StockholdersEquityIncludingMembersEquity has a value of 138,776 and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Common Stock.
+
+The properties of this aerc:StockholdersEquityIncludingMembersEquity fact are:
+Period :2021-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : USD
+Rule Element Id:10628
+Rule version: 26.0.0RC1
+
+## Example Rule Message 2
+ us-gaap:InvestmentOwnedAtFairValue has a value of 2,537,000 and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Preferred Stock.
+
+The properties of this us-gaap:InvestmentOwnedAtFairValue fact are:
+Period :2022-09-30
+Dimensions : us-gaap:InvestmentTypeAxis=pflt:InvestmentsInNonControlledNonAffiliatedPortfolioCompaniesMember, us-gaap:EquitySecuritiesByIndustryAxis=pflt:MediaMember, us-gaap:StatementEquityComponentsAxis=us-gaap:PreferredStockMember, srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis=pflt:MeritDirectHoldingsLPMember
+Unit : USD
+Rule Element Id:10629
+Rule version: 26.0.0RC1 
+
+## Example Rule Message 3
+us-gaap:RetainedEarningsAccumulatedDeficit has a value of 8,201,000,000 and has been used with a Retained Earnings Member.  This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Retained Earnings.
+
+The properties of this us-gaap:RetainedEarningsAccumulatedDeficit fact are:
+Period :2022-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:RetainedEarningsMember
+Unit : USD
+Rule Element Id:10630
+Rule version: 26.0.0RC1
+
+## Example Rule Message 4
+us-gaap:TreasuryStockCommonValue has a value of 24,094,000,000 and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of Treasury.
+
+The properties of this us-gaap:TreasuryStockCommonValue fact are:
+Period :2022-10-30
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:TreasuryStockCommonMember
+Unit : USD
+Rule Element Id:10631
+Rule version: 26.0.0RC1
+
+## Example Rule Message 5
+us-gaap:AdditionalPaidInCapital has a value of 1,278,728,000 and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of AOCI.
+
+The properties of this us-gaap:AdditionalPaidInCapital fact are:
+Period :2022-02-26
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AdditionalPaidInCapitalMember
+Unit : USD
+Rule Element Id:10632
+Rule version: 26.0.0RC1
+
+## Example Rule Message 6
+us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax has a value of -15,381,000 and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of AOCI.
+
+The properties of this us-gaap:AccumulatedOtherComprehensiveIncomeLossNetOfTax fact are:
+Period :2020-09-25
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedTranslationAdjustmentMember
+Unit : USD
+Rule Element Id:10633
+Rule version: 26.0.0RC1 
+
+## Example Rule Message 7
+ us-gaap:MinorityInterest has a value of 196,000,000 and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member. This element should not be used to represent an opening or closing balance in the changes of equity.  Please remove the member from this fact or consider using a different element to represent the opening or closing balance of NCI.
+
+The properties of this us-gaap:MinorityInterest fact are:
+Period :2021-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:NoncontrollingInterestMember
+Unit : USD
+Rule Element Id:10635
+Rule version: 26.0.0RC1
+
+## Rule element ID index  
+The rule element id is used to identify unique elements or combinations of elements tested in the rule.
+
+|Rule Element ID|Element|
+|--- |--- |
+| DQC.US.0196.10628 |StatementEquityComponentsAxis = CommonStockMember|
+| DQC.US.0196.10629 |StatementEquityComponentsAxis = PreferredStockMember|
+| DQC.US.0196.10630 |StatementEquityComponentsAxis = RetainedEarnings|
+| DQC.US.0196.10631 |StatementEquityComponentsAxis = TreasuryStock|
+| DQC.US.0196.10632 |StatementEquityComponentsAxis = AdditionalPaidInCapitalMember|
+| DQC.US.0196.10633 |StatementEquityComponentsAxis = AOCI|
+| DQC.US.0196.10635 |StatementEquityComponentsAxis = Noncontrolling Interest|
+
+
+© Copyright 2016 - 2026, XBRL US Inc. All rights reserved.   
+See [License](https://xbrl.us/dqc-license) for license information.  
+See [Patent Notice](https://xbrl.us/dqc-patent) for patent infringement notice. 
+
+ **/
+
+
+RULE-NAME-PREFIX DQC
+                                      
+ASSERT US.0196.10628 satisfied
+
+/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+    if $STATEMENT_SHE_CUBES.length == 0
+        skip
+    else
+        $exclusionList = list(StockholdersEquity,
+                            PartnersCapital,
+                            PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+                            StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                            TemporaryEquityCarryingAmountAttributableToParent,
+                            TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                            MembersEquity,
+                            MembersCapital,
+                            LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest
+                            )
+
+        $SHE_Name = (filter $STATEMENT_SHE_CUBES  returns $item.drs-role.description).to-list;
+        $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember @cube in $STATEMENT_SHE_CUBES}).length > 0;
+        $fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = CommonStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+        $message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                        "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                    else
+                        "";
+                        exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Common Stock Member. This fact value has been used with the StatementEquityComponentsAxis and CommonStockMember in the disclosure {$SHE_Name.join(", ")}. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Common Stock.
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0196.10629 satisfied
+
+/** Therule check where the PreferredStockMember  is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+    if $STATEMENT_SHE_CUBES.length == 0
+        skip
+    else
+        $exclusionList = list(StockholdersEquity,
+                            PartnersCapital,
+                            PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+                            StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                            TemporaryEquityCarryingAmountAttributableToParent,
+                            TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                            MembersEquity,
+                            MembersCapital,
+                            LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+
+        $Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(PreferredStockMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+        $fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis = PreferredStockMember where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+        $message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                        "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                        else
+                    "";
+                    exists($fact1) and ($fact1.sid in sum(filter $STATEMENT_SHE_CUBES.facts returns $item.sid)) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Preferred Stock Member. This fact value has been used with the StatementEquityComponentsAxis and PreferredStockMember. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Preferred Stock.
+{$message }
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0196.10630 satisfied
+
+/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$exclusionList = list(StockholdersEquity,
+                    PartnersCapital,
+                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    PreferredStockValue,
+                    PreferredStockValueOutstanding,
+                    TemporaryEquityCarryingAmountAttributableToParent,
+                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                    MembersEquity,
+                    MembersCapital,
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$fact1 = {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(RetainedEarningsMember, RetainedEarningsAppropriatedMember, RetainedEarningsUnappropriatedMember) where $fact.concept.period-type == instant and $fact != 0};
+$message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+            exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with a Retained Earnings Member.  When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Retained Earnings.
+
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0196.10631 satisfied
+
+/** Therule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$exclusionList = list(StockholdersEquity,
+					PartnersCapitalAccountUnits,
+                    PartnersCapital,
+                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    PreferredStockValue,
+                    PreferredStockValueOutstanding,
+                    TemporaryEquityCarryingAmountAttributableToParent,
+                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                    MembersEquity,
+                    MembersCapital,
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(TreasuryStockCommonMember, TreasuryStockPreferredMember) where $fact.concept.period-type == instant and $fact.concept.is-monetary and $fact != 0};
+$message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+            exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Treasury Stock Member. This fact value has been used with the StatementEquityComponentsAxis and the Treasury Stock Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of Treasury.
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0196.10632 satisfied
+
+/** The rule check where the commonstock member is used on the StatementEquityComponentsAxis with an instant element that is not an expected element.}**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$exclusionList = list(StockholdersEquity,
+                    PartnersCapital,
+                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    PreferredStockValue,
+                    PreferredStockValueOutstanding,
+                    TemporaryEquityCarryingAmountAttributableToParent,
+                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                    MembersEquity,
+                    MembersCapital,
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest
+                    )
+
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in list(AdditionalPaidInCapitalMember) where $fact.concept.period-type == instant and $fact != 0};
+
+$message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+
+exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Additional Paid In Capital Member. This fact value has been used with the StatementEquityComponentsAxis and the Additional Paid In Capital Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of APIC.
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0196.10633 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$AOCI-Members = $AOCI_MEMBERS
+
+$exclusionList = list(StockholdersEquity,
+                    PartnersCapital,
+                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    PreferredStockValue,
+                    PreferredStockValueOutstanding,
+                    TemporaryEquityCarryingAmountAttributableToParent,
+                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                    MembersEquity,
+                    MembersCapital,
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    /** Added for AOCI rollforward before tax disclosure **/
+                    AccumulatedOtherComprehensiveIncomeLossBeforeTax1,
+                    AociIncludingPortionAttributableToNoncontrollingInterestTax,
+                    AociBeforeTaxAttributableToParent,
+                    AociTaxAttributableToParent)
+
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $AOCI-Members where $fact.concept.period-type == instant and $fact != 0};
+
+$message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+            exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Accumulated Other Comprehensive Income Member. This fact value has been used with the StatementEquityComponentsAxis and the Accumulated Other Comprehensive Income Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of AOCI.
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0196.10635 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+
+$exclusionList = list(StockholdersEquity,
+                    PartnersCapital,
+                    PartnersCapitalIncludingPortionAttributableToNoncontrollingInterest,
+					StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest,
+                    PreferredStockValue,
+                    PreferredStockValueOutstanding,
+                    TemporaryEquityCarryingAmountAttributableToParent,
+                    TemporaryEquityCarryingAmountIncludingPortionAttributableToNoncontrollingInterests,
+                    MembersEquity,
+                    MembersCapital,
+                    LimitedLiabilityCompanyLlcMembersEquityIncludingPortionAttributableToNoncontrollingInterest)
+
+$Included_Standard_Elements = list({nonils @concept in  $exclusionList  @StatementEquityComponentsAxis in $NCI @cube in $STATEMENT_SHE_CUBES}).length > 0;
+$fact1 =  {nonils @concept not in  $exclusionList  @StatementEquityComponentsAxis in $NCI where $fact.concept.period-type == instant and $fact != 0};
+$message = if is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS))
+                "If this extension element was used to represent the changes in equity, the period type should be changed to a duration. If it represents an opening or closing balance then the element should be removed and the standard element used instead."
+                else
+            "";
+            exists($fact1) and not ($Included_Standard_Elements and is_extension($fact1.concept, list($US-GAAP_ELTS_CALCS)))
+
+message
+"{$fact1.concept} has a value of {$fact1} and has been used with the Noncontrolling Interest Member. This fact value has been used with the StatementEquityComponentsAxis and the Noncontrolling Interest Member. When an instant element is  used with the StatementEquityComponentsAxis it is typically used to represent the opening and closing balance in the changes of equity. The element  {$fact1.concept}  should not be used to represent an opening or closing balance in the changes of equity. Rather an element such as one of the following standard elements should be used {$exclusionList.join(',')}. Please remove the member from this fact or consider using one of the standard elements to represent the opening or closing balance of NCI.
+{$message}
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact1
+effectiveDate $effective_dates[$rule_id]

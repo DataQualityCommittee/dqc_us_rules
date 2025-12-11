@@ -1,0 +1,44 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+Assert US.0200.10700 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Income Statement location axis cannot be used for instant monetary elements unless they are future expenses.**/
+
+/** Replace this with a metamodel reference of $META-2026.concepts-by-trait(list(us-gaap-metaModel:EstimatedFutureExpenseRevenueMember)) when approved.**/
+
+$exceptions = set(BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedIntangibles, FiniteLivedIntangibleAssetsAmortizationExpenseNextTwelveMonths, FiniteLivedIntangibleAssetsAmortizationExpenseYearTwo, FiniteLivedIntangibleAssetsAmortizationExpenseYearThree, FiniteLivedIntangibleAssetsAmortizationExpenseYearFour, FiniteLivedIntangibleAssetsAmortizationExpenseYearFive, FiniteLivedIntangibleAssetsAmortizationExpenseAfterYearFive, FiniteLivedIntangibleAssetsAmortizationExpenseRemainderOfFiscalYear, FiniteLivedIntangibleAssetsAmortizationExpenseRollingYearTwo, FiniteLivedIntangibleAssetsAmortizationExpenseRollingYearThree, FiniteLivedIntangibleAssetsAmortizationExpenseRollingYearFour, FiniteLivedIntangibleAssetsAmortizationExpenseRollingYearFive, FiniteLivedIntangibleAssetsAmortizationExpenseRollingAfterYearFive, BelowMarketLeaseNet, BelowMarketLeaseAmortizationIncomeNextTwelveMonths, BelowMarketLeaseAmortizationIncomeYearTwo, BelowMarketLeaseAmortizationIncomeYearThree, BelowMarketLeaseAmortizationIncomeYearFour, BelowMarketLeaseAmortizationIncomeYearFive, BelowMarketLeaseAmortizationIncomeAfterYearFive, BelowMarketLeaseAmortizationIncomeRemainderOfFiscalYear, BelowMarketLeaseAmortizationIncomeNextRollingTwelveMonths, BelowMarketLeaseAmortizationIncomeRollingYearTwo, BelowMarketLeaseAmortizationIncomeRollingYearThree, BelowMarketLeaseAmortizationIncomeRollingYearFour, BelowMarketLeaseAmortizationIncomeRollingYearFive, BelowMarketLeaseAmortizationIncomeRollingAfterYearFive, PresentValueOfFutureInsuranceProfitsAmortizationExpenseYearOne, PresentValueOfFutureInsuranceProfitsAmortizationExpenseYearTwo, PresentValueOfFutureInsuranceProfitsAmortizationExpenseYearThree, PresentValueOfFutureInsuranceProfitsAmortizationExpenseYearFour, PresentValueOfFutureInsuranceProfitsAmortizationExpenseYearFive, PresentValueOfFutureInsuranceProfitsAmortizationExpenseRemainderOfFiscalYear, PresentValueOfFutureInsuranceProfitsPercentageOfAmortizationExpenseYearOne, PresentValueOfFutureInsuranceProfitsPercentageOfAmortizationExpenseYearTwo, PresentValueOfFutureInsuranceProfitsPercentageOfAmortizationExpenseYearThree, PresentValueOfFutureInsuranceProfitsPercentageOfAmortizationExpenseYearFour, PresentValueOfFutureInsuranceProfitsPercentageOfAmortizationExpenseYearFive, EntertainmentLicenseAgreementForProgramMaterialExpectedAmortizationYearOne, EntertainmentLicenseAgreementForProgramMaterialExpectedAmortizationYearTwo, EntertainmentLicenseAgreementForProgramMaterialExpectedAmortizationYearThree, FilmMonetizedInFilmGroupReleasedFilmExpectedAmortizationYearOne, FilmMonetizedInFilmGroupReleasedFilmExpectedAmortizationYearThree, FilmMonetizedInFilmGroupReleasedFilmExpectedAmortizationYearTwo, FilmMonetizedOnItsOwnReleasedFilmExpectedAmortizationYearOne, FilmMonetizedOnItsOwnReleasedFilmExpectedAmortizationYearThree, FilmMonetizedOnItsOwnReleasedFilmExpectedAmortizationYearTwo, FiniteLivedIntangibleAssetsNet)
+
+exists({@concept.period-type = instant @concept.data-type = xbrli:monetaryItemType @IncomeStatementLocationAxis = * where $fact.name not in $exceptions}#fact2)
+
+message
+"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the IncomeStatementLocationAxis. This element should not be used to represent an income statement location. Please remove the member from this fact or consider using a different element to represent the balance sheet location.
+
+The properties of this {$fact2.concept.name} fact are:
+
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $fact2
+
+effectiveDate $effective_dates[$rule_id]

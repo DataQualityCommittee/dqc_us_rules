@@ -1,0 +1,186 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0127.9591 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+/**  Get the latest Report Period**/
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+$document_period_start_date = $document_period.period.start;
+
+
+/** Get tables for financial statement items **/
+
+/** Get tables for financial statement items **/
+/** See the constants file that defines the variable $STATEMENT_PRES_NETWORKS **/
+
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
+
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+
+/** get the presentation items aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
+			
+        $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
+         /** This rule applies where no table is used. **/
+         if $presNetwork.role.uri in $cubeURISet
+            skip
+         else 
+
+			for $concept_item in $presItems
+				if $concept_item == none
+					skip
+				else
+				
+					/** Determine if each concept has a default value **/
+
+                    $defaultValueCount = if taxonomy().concept($concept_item).period-type == duration
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*]).length
+							else
+								list([nildefault @concept = $concept_item @@period.end = $document_period_end_date @unit=*]).length
+                    
+
+                    /** Determine if each concept has a dimension value **/
+                    $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=*})
+							else
+								list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=*})
+                    
+                    $dimensionValueCount = $dimensionValues.length
+                    
+                    /** If there is no default value and if there is a dimension item then flag an error **/
+
+                    if $defaultValueCount == 0 and $dimensionValueCount > 0 and sum($dimensionValues) != 0
+
+                        //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                        $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                        $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
+
+                        $ConsolidatedEntitiesAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('ConsolidatedEntitiesAxis'));
+
+                        if ($legalEntityAxisUsed or $InvestmentAxisUsed or $ConsolidatedEntitiesAxisUsed)
+                            false
+                        else 
+                            true
+                    else
+                        false
+
+message
+"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing does not include a dimensional structure for this statement.  The filing  does not include a  default value for this presentation item {$concept_item} but does include dimensionalized values for this element of the following:
+
+{$dimensionValues.sort.join(',   ')}
+
+If the dimensionalized value appears in the financial statements, then a dimension needs to be added to the report. If the item has no value on the financial statements, then the presentation item should be removed from the financial statements.
+
+Total Element : {$concept_item}
+Total period : {first($dimensionValues.sort).period} 
+Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus taxonomy().concept($concept_item)
+
+ASSERT US.0127.9592 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+/**  Get the latest Report Period**/
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+$document_period_end_date = $document_period.period.end - time-span("P1D");
+$document_period_start_date = $document_period.period.start;
+
+/** Get tables for financial statement items **/
+    /** See the constants file that defines the variable $STATEMENT_PRES_NETWORKS **/
+
+
+$cubeURISet = (FILTER $STATEMENT_CUBES returns $item.drs-role.uri).to-set;
+
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+
+/** get the presentation items aligned with the pres role.  We assume that the same role is used for the cube and the dimension**/
+			
+        $presItems = navigate parent-child descendants  role $presNetwork.role.uri where $relationship.target.is-monetary == true returns set (target-name)
+         /** If use a table check that facts have the correct member **/
+         if $presNetwork.role.uri in $cubeURISet
+            $bs_cube = filter $STATEMENT_CUBES where $item.drs-role.uri == $presNetwork.role.uri
+            $bs_cube_facts = sum($bs_cube.facts)
+
+            /** This section excludes presentation items not included in the table **/
+            $tableConcept = first($bs_cube.cube-concept());
+
+            $presentationItemsUnderCube = navigate parent-child descendants from $tableConcept role $presNetwork.role.uri returns set (target-name)
+
+            $validPresentationItems = $presentationItemsUnderCube intersect $presItems
+
+            /** Now we have valid presentation items we check they are valid **/
+            for $concept_item in $validPresentationItems
+
+                $dimensionValues = if taxonomy().concept($concept_item).period-type == duration
+                                    list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @@period.start = $document_period_start_date @unit=* where $fact.concept.is-numeric})
+                                else
+                                    list({nonils covered-dims @concept = $concept_item @@period.end = $document_period_end_date @unit=* where $fact.concept.is-numeric})
+
+                if $dimensionValues.length == 0 or sum($dimensionValues) == 0
+                    skip
+                else
+                    $set_of_concept_facts_included_in_bs = filter $bs_cube_facts where $item.concept.name in $dimensionValues.concept.name;
+
+                    $is_concept_in_table = filter sum($bs_cube.primary-concepts) where $item.name == $concept_item
+
+                    //ADD THAT FACTS WITH LEGAL ENTITY AXIS ARE EXCLUDED BECAUSE THEY ARE UNRELATED AS SHOULD EQUITY METHOD
+                    $legalEntityAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('LegalEntityAxis'));
+
+                    $InvestmentAxisUsed = all(filter $dimensionValues returns $item.dimensions().keys.name.local-name.contains('EquityMethodInvestmentNonconsolidatedInvesteeAxis'));
+
+                    if $set_of_concept_facts_included_in_bs.length == 0 and not ($legalEntityAxisUsed or $InvestmentAxisUsed)
+                        true
+                    else
+                        false
+         else 
+			skip
+
+message
+"The statement {$presNetwork.role.description} includes the concept {$concept_item} in the presentation tree. The filing uses an XBRL table called {first($bs_cube.cube-concept())} to represent this statement. The table includes the dimensions {(for $d in $bs_cube.dimensions $d.concept.name).sort.join(", ")}.  The statement presentation group {$presNetwork.role.description} includes a presentation concept called {$concept_item}. This concept  has the following values associated with it that do not appear in the financial statement table  {first($bs_cube.cube-concept())}:
+
+{(list(for $d in $dimensionValues list($d.concept.name, $d).join(' = ')).sort).to-set.join(' \n')}
+
+The presentation concept is defined for the statement but no fact values are defined in the instance document that use this line item in the table {first($bs_cube.cube-concept())}. If the concept appears in the financial statements table, then either a dimension or line item needs to be added to the structure of the definition linkbase that defines the statement. If the item is not represented on the financial statements, then the presentation item should be removed.
+{if $is_concept_in_table.length == 0 '
+In this case the concept ' + $concept_item.local-name + ' is missing from the definition linkbase table nd should be added.' else ''}
+
+Total Element : {$concept_item}
+Total period : {first($dimensionValues.sort).period} 
+Dimensions : {first($dimensionValues.sort).dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+rule-focus taxonomy().concept($concept_item)
