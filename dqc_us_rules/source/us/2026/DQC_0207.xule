@@ -1,0 +1,221 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+ASSERT US.0207.10722 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair value of a fact  using the EquitySecuritiesByIndustryAxis is greater than  facts with the mor  dimensions.**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+/** select facts with the BDC subtotals **/
+$BDC_Industry = [nonils @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = *];
+
+$BDC_Industry_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@EquitySecuritiesByIndustryAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *} ;
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+    $BDC_Industry < $BDC_Industry_And_More
+
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Industry}. This concept is used to report the fair value of investments for the {$BDC_Industry.dimension(EquitySecuritiesByIndustryAxis)} industry. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Industry_And_More} that includes the member {$BDC_Industry.dimension(EquitySecuritiesByIndustryAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Industry_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Industry.dimension(EquitySecuritiesByIndustryAxis)} industry is less than the value reported for the value {$BDC_Industry_And_More} which is a subset of this industry. The value reported for the industry in aggregate should be more than or equal to the value reported for of {$BDC_Industry_And_More}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_Industry_And_More.name}
+Value : {$BDC_Industry_And_More}
+Period : {$BDC_Industry_And_More.period}
+Dimensions : {$BDC_Industry_And_More.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+rule-focus $BDC_Industry_And_More
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0207.10723 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair valueof a fact  using the InvestmentTypeAxis is greater than  facts with the mor  dimensions.**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+/** select facts with the BDC subtotals **/
+$BDC_InvestmentType= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = *];
+
+$BDC_InvestmentType_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentTypeAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_InvestmentType < $BDC_InvestmentType_And_More
+
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_InvestmentType}. This concept is used to report the fair value of investments for the {$BDC_InvestmentType.dimension(InvestmentTypeAxis)} investment type. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_InvestmentType_And_More} that includes the member {$BDC_InvestmentType.dimension(InvestmentTypeAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_InvestmentType_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_InvestmentType.dimension(InvestmentTypeAxis)} investment type is less than the value reported for the value {$BDC_InvestmentType_And_More} which is a subset of this investment type. The value reported for the investment type in aggregate should be more than or equal to the value reported for of {$BDC_InvestmentType_And_More}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_InvestmentType_And_More.name}
+Value : {$BDC_InvestmentType_And_More}
+Period : {$BDC_InvestmentType_And_More.period}
+Dimensions : {$BDC_InvestmentType_And_More.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+rule-focus $BDC_InvestmentType_And_More
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0207.10724 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair valueof a fact  using the InvestmentIssuerAffiliationAxis is greater than  facts with the mor  dimensions.**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+/** select facts with the BDC subtotals **/
+$BDC_Affiliation= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = *];
+
+$BDC_Affiliation_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
+
+/** In some cases there may be an unafiliated investment that has a netted value on the axis of the identified fact that is higher than the subtotal. Ie.e the high dimension value has an associated negative item that actually makes it less because it is grossed up.  To check for this we need to identify the dimensions of the $BDC_Affiliation_And_More fact and check if any of the axis associated with it except  InvestmentIssuerAffiliationAxis have a member with the text netted in it.**/
+
+/** If the following returns nothing then $negative_netted_fact will be none, when added to a number the result will be the number.**/
+
+$negative_netted_fact = sum(list({nonils covered-dims  @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerAffiliationAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != * where $fact < 0}));
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Affiliation < ($BDC_Affiliation_And_More + $negative_netted_fact)
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Affiliation}. This concept is used to report the fair value of investments for the {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} affiliation. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Affiliation_And_More} that includes the member {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Affiliation_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Affiliation.dimension(InvestmentIssuerAffiliationAxis)} affiliation is less than the value reported for the value {$BDC_Affiliation_And_More} which is a subset of this affiliation. The value reported for the affiliation in aggregate should be more than or equal to the value reported for of {$BDC_Affiliation_And_More}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_Affiliation_And_More.name}
+Value : {$BDC_Affiliation_And_More}
+Period : {$BDC_Affiliation_And_More.period}
+Dimensions : {$BDC_Affiliation_And_More.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+rule-focus $BDC_Affiliation_And_More
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0207.10725 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair value of a fact  using the InvestmentIssuerNameAxis is greater than  facts with the mor  dimensions.**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+/** select facts with the BDC subtotals **/
+$BDC_Name= [nonils @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = *];
+
+$BDC_Name_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@InvestmentIssuerNameAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Name < $BDC_Name_And_More
+
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Name}. This concept is used to report the fair value of investments for the {$BDC_Name.dimension(InvestmentIssuerNameAxis)} issuer name. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Name_And_More} that includes the member {$BDC_Name.dimension(InvestmentIssuerNameAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Name_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Name.dimension(InvestmentIssuerNameAxis)} issuer name is less than the value reported for the value {$BDC_Name_And_More} which is a subset of this issuer name. The value reported for the issuer name in aggregate should be more than or equal to the value reported for of {$BDC_Name_And_More}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_Name_And_More.name}
+Value : {$BDC_Name_And_More}
+Period : {$BDC_Name_And_More.period}
+Dimensions : {$BDC_Name_And_More.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+rule-focus $BDC_Name_And_More
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0207.10726 SATISFIED
+
+/** Check to make sure that BDC subtotals are correct and have not used the wrong dimensions 
+It is expected that subtotals can be provided by security type, industry and geography or a combination of these.
+The less dimensions reported would indicate a higher value as more investments are included.
+
+THis rule checks that the fair value of a fact  using the srt:StatementGeographicalAxis is greater than  facts with the mor  dimensions.**/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+/** select facts with the BDC subtotals **/
+$BDC_Geo= [nonils @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = *];
+
+$BDC_Geo_And_More = {nonils covered-dims @concept = InvestmentOwnedAtFairValue @@srt:StatementGeographicalAxis = * @InvestmentCompanyNonconsolidatedSubsidiaryAxis != * @dei:LegalEntityAxis != *};
+
+/** check if the BDC subtotals are less than the BDC subtotals with more dimensions **/
+
+$BDC_Geo < $BDC_Geo_And_More
+
+message
+"The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Geo}. This concept is used to report the fair value of investments for the {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} geography. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of {$BDC_Geo_And_More} that includes the member {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} but also has additional members. This value is used to report the fair value of investments for the following dimensions {$BDC_Geo_And_More.dimensions.join(', ','=')}. The value representing the fair value of investments in the  {$BDC_Geo.dimension(srt:StatementGeographicalAxis)} geography is less than the value reported for the value {$BDC_Geo_And_More} which is a subset of this geography. The value reported for the geography in aggregate should be more than or equal to the value reported for of {$BDC_Geo_And_More}. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : {$BDC_Geo_And_More.name}
+Value : {$BDC_Geo_And_More}
+Period : {$BDC_Geo_And_More.period}
+Dimensions : {$BDC_Geo_And_More.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+rule-focus $BDC_Geo_And_More
+
+effectiveDate $effective_dates[$rule_id]

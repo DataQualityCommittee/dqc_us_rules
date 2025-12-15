@@ -1,0 +1,275 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP All
+
+**/
+
+RULE-NAME-PREFIX DQC
+/* TODO - Include nesting of the members on the axis.  Check that the gross elements are nested under the subtotal element */
+/** Check PPEGross is calculated correctly **/
+ASSERT US.0187.10173 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** Need to run on cube where the axis is PropertyPlantAndEquipmentByTypeAxis and has line item PropertyPlantAndEquipmentGross**/
+
+/** Find the Cube **/
+
+$PPE-Cubes = FILTER taxonomy().cubes  where $item.primary-concepts.name.contains(PropertyPlantAndEquipmentGross) and $item.dimensions.concept.name.contains(PropertyPlantAndEquipmentByTypeAxis)
+
+for $cube in $PPE-Cubes
+        $members = navigate dimensions descendants from PropertyPlantAndEquipmentByTypeAxis returns set target-name
+        $domain = navigate dimensions dimension-domain descendants from PropertyPlantAndEquipmentByTypeAxis returns set target-name /*SHould only have one member*/
+
+        $member_descendants = $members - $domain;
+
+        $member_facts = list(for $member in $member_descendants
+                                            $ancestors_list = (navigate dimensions domain-member ancestors from $member drs-role $cube.drs-role returns set (target-name)) - $domain;
+                                            if list({nonils  @concept=PropertyPlantAndEquipmentGross @cube.drs-role = $cube.drs-role @PropertyPlantAndEquipmentByTypeAxis in $ancestors_list}).length > 0
+                                                skip
+                                            else 
+                                                {nonils @concept=PropertyPlantAndEquipmentGross @cube.drs-role = $cube.drs-role @PropertyPlantAndEquipmentByTypeAxis = $member});
+
+        $ppe_gross = {nonils @concept=PropertyPlantAndEquipmentGross};
+        $ppe_Gross_dim_components = $member_facts;
+        $ppe_Gross_dim_components_sum = sum($ppe_Gross_dim_components)
+        if $ppe_Gross_dim_components_sum == none
+            skip
+        else
+            $ppe_gross < $ppe_Gross_dim_components_sum
+
+message
+"The value of PropertyPlantAndEquipmentGross is reported as {$ppe_gross}. The dimensional breakdown of PropertyPlantAndEquipmentGross using the axis PropertyPlantAndEquipmentByTypeAxis aggregates to a total of {$ppe_Gross_dim_components_sum}.  This is more than the value of PropertyPlantAndEquipmentGross.
+
+The dimensional values reported are as follows:
+{$ppe_Gross_dim_components.join(', ')}
+
+These values are reported in the role  {$cube.drs-role}.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $ppe_gross
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Filings with error 
+** https://www.sec.gov/ix?doc=/Archives/edgar/data/65759/000101054922000090/micropac10q.htm
+**/
+ASSERT US.0187.10174 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$children_of_netPPE = navigate summation-item children from PropertyPlantAndEquipmentNet returns set target-name;
+
+$reconciling_items_other_than_depr = $children_of_netPPE - set(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentGross)
+
+$decimal_tolerance_factor = if $reconciling_items_other_than_depr.length > 0 and $children_of_netPPE.contains(PropertyPlantAndEquipmentGross)
+                            $value_of_DR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == debit})),0);
+                            $value_of_CR_reconciling_items = first-value(sum(list({nonils @concept in $reconciling_items_other_than_depr where $fact.concept.balance == credit})),0);
+
+                            $difference = $value_of_DR_reconciling_items - $value_of_CR_reconciling_items
+
+                            $difference.abs + 2
+                        else
+                            2
+
+$base = {nonils @PropertyPlantAndEquipmentGross};
+$agg = {nonils @PropertyPlantAndEquipmentNet}#a1 <+> {nonils @AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment}#a2;
+
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0187.10175 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$base = {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization};
+$agg = {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization}#a1 <+> {nonils @PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization}#a2;
+$decimal_tolerance_factor = 2;
+
+tolerance_for_decimals($base, $agg, $decimal_tolerance_factor)
+
+message
+
+"{$base.concept.label.text} with a value of {$base} is not equal to the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$agg}. 
+
+These values should be equal.
+The properties of this {$base.concept} fact are:
+Period :{$base.period}
+Dimensions :  {$base.dimensions.join(', ','=')}
+Unit : {$base.unit}
+Decimals of {$base.concept.label.text} : {$base.decimals}
+Decimals of {$a1.concept.label.text} : {$a1.decimals}
+Decimals of {$a2.concept.label.text} : {$a2.decimals}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Check PPEGross is calculated correctly **/
+ASSERT US.0187.10176 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$ppe_gross = {nonils @concept=PropertyPlantAndEquipmentGross};
+$ppe_Gross_dim_components = list({nonils @concept=PropertyPlantAndEquipmentGross @PublicUtilityAxis=*});
+$ppe_Gross_dim_components_sum = sum($ppe_Gross_dim_components)
+if $ppe_Gross_dim_components_sum == none
+    skip
+else
+$ppe_gross < $ppe_Gross_dim_components_sum
+
+message
+"The value of PropertyPlantAndEquipmentGross is reported as {$ppe_gross}. The dimensional breakdown of PropertyPlantAndEquipmentGross using the axis PublicUtilityAxis aggregates to a total of {$ppe_Gross_dim_components_sum}.  This is more than the value of PropertyPlantAndEquipmentGross.
+
+The dimensional values reported are as follows:
+{$ppe_Gross_dim_components.join(', ')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $ppe_gross
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0187.10179 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$net = {nonils @MineralPropertiesNet};
+$gross = {nonils @MineralPropertiesGross}#a1 + {nonils @MineralRights}#a2;
+$decimal_tolerance_factor = 2;
+
+$gross < $net
+
+message
+
+"{$net.concept.label.text} with a value of {$net} is greater than the combined total of {$a1.concept.label.text} and {$a2.concept.label.text} ( {$a1} + {$a2} ) with a value of {$gross}. 
+
+These values should be equal.
+The properties of this {$net.concept} fact are:
+Period :{$net.period}
+Dimensions :  {$net.dimensions.join(', ','=')}
+Unit : {$net.unit}
+Decimals of {$net.concept.label.text} : {$net.decimals}
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Situation where there is nesting of gross elements using extensions for subtotals but there is no hierachy on the axis.
+**
+** https://www.sec.gov/Archives/edgar/data/3545/000095017022014273/0000950170-22-014273-xbrl.zip
+** The extension member DepreciablePropertyPlantAndEquipmentMember is a subtotal.  Then depreciation is subtracted using the member DepreciablePropertyPlantAndEquipmentMember.
+** The accum depr uses the element AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment.
+** Land uses the same axis Property Plant And Equipment By Type Axis and the LandAndLandImprovementsMember but uses the element PropertyPlantAndEquipmentNet
+** The subtotal for Net depreciable assets uses  DepreciablePropertyPlantAndEquipmentMember and PropertyPlantAndEquipmentNet.
+** This should be tagged using the Gross element for the values including land. The axis needs a hierachy to pick up DepreciablePropertyPlantAndEquipmentMember as a total. 
+** An extension element should be added for Net depreciable properties. Accumulated depreciation should not have an axis as this is not disaggregated.
+** Rules to check the following:
+**  - AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment with only 1 member on the axis Property Plant And Equipment By Type Axis. Could have mutiple if 
+** show gross and net for each class of element.
+** 
+**/
+
+
+/** Situation where do not add a PPE calculation 
+
+** https://www.sec.gov/ix?doc=/Archives/edgar/data/1081745/000149315222022853/form10-q.htm
+** Filer has a total to gross but   includes capitalized software in gross calcbut no calc exists.  Check where gross items are used but no calc to gross is provided.
+** https://www.sec.gov/ix?doc=/Archives/edgar/data/1023364/000185173422000267/auto20220331_10q.htm
+**/
+
+
+/** SItuation where PPE and FINANCE LEASE Gross is less than PPE NET 
+**  Example is https://www.sec.gov/ix?doc=/Archives/edgar/data/1360565/000149315222012959/form10-q.htm
+** Filer uses PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization to represent the FinanceLEase Component.
+** Heve logical inconsistencies we need to check for:
+** Accumulated depreciation is greater than Associated contra - use meta taxonomy
+** CHeck that net is always less than gross
+** PPEandLEASE is less than PPE for gross and neet elements and depreciation:
+**  PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization < FinanceLeaseRightOfUseAssetBeforeAccumulatedAmortization
+**  PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization < PropertyPlantAndEquipmentGross
+**  PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetBeforeAccumulatedDepreciationAndAmortization < PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAfterAccumulatedDepreciationAndAmortization
+**  PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization < AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment
+**  PropertyPlantAndEquipmentAndFinanceLeaseRightOfUseAssetAccumulatedDepreciationAndAmortization < FinanceLeaseRightOfUseAssetAccumulatedAmortization
+**  PropertyPlantAndEquipmentGross < PropertyPlantAndEquipmentNet
+**  AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment < PropertySubjectToOrAvailableForOperatingLeaseAccumulatedDepreciation
+**/
+
+/**
+output A
+
+$concepts = list(PropertyPlantAndEquipmentGross)
+for $concept in $concepts
+    $balance = $US-GAAP.concept($concept)
+    navigate summation-item children from  list($concept)  taxonomy $US-GAAP_ELTS_CALCS returns set (target-name)
+
+**/
+
+
+/** In footnotes have not used the GROSS members
+** SHould have total to gross element
+** where have land not deprciated still use landMember with the gross element.
+** If provide subtotal use extension member DeprecaibleAssetsMember
+** Make sure that gross members are nested under this member.
+** do not add an accumulated depreciation member
+**/

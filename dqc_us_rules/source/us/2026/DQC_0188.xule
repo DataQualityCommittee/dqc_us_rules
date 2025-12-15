@@ -1,0 +1,49 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP All
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0188.10183 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$ecdtaxonomy = any(set(for $link in dts-document-locations(taxonomy())
+                            if $link.contains('https://xbrl.sec.gov/ecd/2024/ecd-2024.xsd') or $link.contains('https://xbrl.sec.gov/ecd/2026/ecd-2026.xsd')
+                                true
+                            else
+                                false
+                                    ));
+
+if $ecdtaxonomy
+    /** Get a list of the members **/
+    $member_descendants = (navigate dimensions descendants from ecd:AdjToCompAxis returns set (target-name)).to-set - set(ecd:AllAdjToCompMember)
+
+    $member_descendants_in_taxonomy = $ECD_ADJ_TO_COMP_MBRS
+
+    $commonMembers = $member_descendants_in_taxonomy intersect $member_descendants
+
+    $commonMembers == 0
+
+else
+    skip
+message
+"The filer has not used any of the common adjustments defined in the SEC taxonomy.  The filer has used the following adjustment members:
+{$member_descendants}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

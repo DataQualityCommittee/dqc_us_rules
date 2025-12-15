@@ -1,0 +1,297 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** Overview  of the rules **/
+/**
+** This rule is comprised of two sub-rules.  The rule chacks that the investment schedule that show the difference between amortized cost and fair value is calculated correctly.
+** The rule takes the components an calculates each line as a seperate iteration, for each dimension member. The rule operates once for amounts including accrued interest and once for amounts excluding accrued interest.   Both rules should not fire for the same filing as filers are required to report either the values including accrued interest or excluding accrued interest.  The fair value and amortized cost must be present for the rule to fire.
+**/
+
+assert US.0140.9861 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** This rule checks the cross calculation for interest Included **/
+
+$AmortCost = first-value({nonils @AvailableForSaleDebtSecuritiesAmortizedCostBasis}, {nonils @DebtSecuritiesAvailableForSaleAmortizedCostCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent})
+
+$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLoss}, {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent}, 0)
+
+$AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
+
+$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent}))
+
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
+
+$gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
+
+$loss = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax}
+
+$fairValue = first-value({nonils @AvailableForSaleSecuritiesDebtSecurities}, {nonils @AvailableForSaleSecuritiesDebtSecuritiesCurrent} + {nonils @AvailableForSaleSecuritiesDebtSecuritiesNoncurrent})
+
+$Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
+
+$decimal_tolerance_factor = 4;
+
+if $fairValueCalc == none
+	skip
+else
+	if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+
+	$additionalMessage = ""
+	$expectedElements = set(AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax, AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax, AvailableForSaleSecuritiesDebtSecurities, AvailableForSaleSecuritiesDebtSecuritiesCurrent,
+	AvailableForSaleSecuritiesDebtSecuritiesNoncurrent,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLoss,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent,
+	DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent
+	)
+	
+	/** Need to check they did not use an extension element in the calc **/
+	$calcComponentsOfAmortizedCostDict = navigate summation-item children from list(AvailableForSaleDebtSecuritiesAmortizedCostBasis) returns by network (target-name, weight) 
+	/** Cut down to networks with only fair value **/
+	/** Check if network includes the fair value element. If not then drop the network  creates list(list(target,weight), list(target,weight),list(target,weight))**/
+	$calcComponentsOfAmortizedCostNetworks = set(for $network in $calcComponentsOfAmortizedCostDict.keys
+													for $relationship in $calcComponentsOfAmortizedCostDict[$network]
+														if $relationship.contains(AvailableForSaleSecuritiesDebtSecurities)
+															$calcComponentsOfAmortizedCostDict[$network]
+														else
+															skip		 
+											)
+				
+	if $calcComponentsOfAmortizedCostNetworks.length > 0
+			$amortValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostNetworks
+												for $x in $network
+													$targetElement = $x[1];
+													$targetWeight = $x[2];
+													{nonils @concept = $targetElement } * $targetWeight	
+										)
+									);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
+													for $x in $network
+														$x[1]) - $expectedElements
+			
+
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+											$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+				))
+				tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
+	else
+		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
+
+		$calcComponentsOfAmortizedCostAfterCreditNetwork = set(for $network in $calcComponentsOfAmortizedCostAfterCredit.keys
+													for $relationship in $calcComponentsOfAmortizedCostAfterCredit[$network]
+														if $relationship.contains(AvailableForSaleSecuritiesDebtSecurities)
+															$calcComponentsOfAmortizedCostAfterCredit[$network]
+														else
+															skip		 
+											)
+
+		if $calcComponentsOfAmortizedCostAfterCreditNetwork.length > 0
+			$amortAfterCreditValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$targetElement = $x[1];
+														$targetWeight = $x[2];
+														{nonils @concept = $targetElement } * $targetWeight	
+												)
+											);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$x[1]) - $expectedElements
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"))
+				tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+		else
+				true
+		
+	else
+		$additionalMessage = ""
+		true
+else
+	false
+
+message
+
+"The reported fair value of Available For Sale Debt Securities Securities of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
+Amortized Cost of 					{first-value($AmortCost, ($AmortizedCostAfterCreditLoss + $creditLoss))}
+Credit Loss on Securities of 		{$creditLoss}
+Amortized Cost After Credit Loss 	{$AmortizedCostAfterCreditLoss}
+Gain on Securities 					{$gain}
+Loss on Securities of 				{$loss}
+
+{$additionalMessage}
+
+Period :{$fairValue.period}
+Dimensions : {$fairValue.dimensions.join(', ','=')}
+Unit : {$fairValue.unit}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+
+assert US.0140.9862 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+/** This rule checks the cross calculation **/
+
+$AmortCost = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss},{nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent})
+
+$creditLoss = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest}, {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent}, 0)
+
+$AmortizedCostAfterAllowanceCalc = $AmortCost <-  $creditLoss
+
+$AmortizedCostAfterAllowance = first-value({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss}, ({nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent} + {nonils @DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent}))
+
+$AmortizedCostAfterCreditLoss = first-value($AmortizedCostAfterAllowance, $AmortizedCostAfterAllowanceCalc)
+
+$gain = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax}
+
+$loss = {nonils @AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax}
+
+
+$fairValue = first-value({nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterest}, {nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent} + {nonils @DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent})
+
+$Decimals = list($AmortCost, $creditLoss, $AmortizedCostAfterAllowance, $gain, $loss);
+$minDecimals = min(list(for $x in $Decimals
+				if $x == none or $x.decimals == none
+					skip
+				else
+					$x.decimals));
+
+$fairValueCalc = $AmortizedCostAfterCreditLoss <+> $gain - $loss
+
+$AmortizedCostBeforeAndAfterCreditSameValue = ($AmortCost  == $AmortizedCostAfterCreditLoss) and ($creditLoss > 0)
+
+$additionalMessage2 = if $AmortizedCostBeforeAndAfterCreditSameValue "The value of the amortized cost before the credit allowance and after the credit loss is the same with a value of "  + first-value($AmortCost, $AmortizedCostAfterCreditLoss + $creditLoss).string +  ", but a credit allowance has also been recognized with a value of " + $creditLoss.string + ". Review the filing to ensure a value for DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss has not been used by mistake." else ""
+
+$decimal_tolerance_factor = 4;
+
+if  tolerance_for_decimals_comp($fairValue, $fairValueCalc, $minDecimals, $decimal_tolerance_factor)
+
+	$additionalMessage = "";
+	$expectedElements = set(AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedGainBeforeTax, AvailableForSaleDebtSecuritiesAccumulatedGrossUnrealizedLossBeforeTax, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent, DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterest,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent,
+	DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent
+	)
+
+	/** Need to check they did not use an extension element in the calc **/
+	$calcComponentsOfAmortizedCostDict = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss) returns by network (target-name, weight) 
+	/** Cut down to networks with only fair value **/
+	/** Check if network includes the fair value element. If not then drop the network  creates list(list(target,weight), list(target,weight),list(target,weight))**/
+	$calcComponentsOfAmortizedCostNetworks = set(for $network in $calcComponentsOfAmortizedCostDict.keys
+													for $relationship in $calcComponentsOfAmortizedCostDict[$network]
+														if $relationship.contains(DebtSecuritiesAvailableForSaleExcludingAccruedInterest)
+															$calcComponentsOfAmortizedCostDict[$network]
+														else
+															skip		 
+											)
+				
+	if $calcComponentsOfAmortizedCostNetworks.length > 0
+			$amortValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostNetworks
+												for $x in $network
+													$targetElement = $x[1];
+													$targetWeight = $x[2];
+													{nonils @concept = $targetElement } * $targetWeight	
+										)
+									);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostNetworks
+													for $x in $network
+														$x[1]) - $expectedElements
+			
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+											$con.local-name + " of " + {nonils @concept = $con }.string + "\n"
+				))
+				tolerance_for_decimals_comp($AmortCost, $amortValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
+	else
+		$calcComponentsOfAmortizedCostAfterCredit = navigate summation-item children from list(DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss) returns by network(target-name, weight)
+
+		$calcComponentsOfAmortizedCostAfterCreditNetwork = set(for $network in $calcComponentsOfAmortizedCostAfterCredit.keys
+													for $relationship in $calcComponentsOfAmortizedCostAfterCredit[$network]
+														if $relationship.contains(DebtSecuritiesAvailableForSaleExcludingAccruedInterest)
+															$calcComponentsOfAmortizedCostAfterCredit[$network]
+														else
+															skip		 
+											)
+
+		if $calcComponentsOfAmortizedCostAfterCreditNetwork.length > 0
+			$amortAfterCreditValueCalc = sum(list(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$targetElement = $x[1];
+														$targetWeight = $x[2];
+														{nonils @concept = $targetElement } * $targetWeight	
+												)
+											);
+			$unexpectedConceptsInCalc = set(for $network in $calcComponentsOfAmortizedCostAfterCreditNetwork
+													for $x in $network
+														$x[1]) - $expectedElements
+			/** Need to check if no extension added and calc works but have excluded credit loss **/
+			if $unexpectedConceptsInCalc.length > 0
+				$additionalMessage = sum(list(for $con in $unexpectedConceptsInCalc
+										$con.local-name + " of " + {nonils @concept = $con}.string  + "\n"))
+				tolerance_for_decimals_comp($AmortizedCostAfterAllowance, $amortAfterCreditValueCalc, $minDecimals, $decimal_tolerance_factor)
+			else
+				true
+		else
+			$additionalMessage = ""
+			true
+else
+	false
+
+
+message
+
+"The reported fair value of Available For Sale Debt Securities Securities excluding interest of {$fairValue} does not match the calculated value of {$fairValueCalc}. This is comprised of the following:
+Amortized Cost of 					{first-value($AmortCost, ($AmortizedCostAfterCreditLoss + $creditLoss))}
+Credit Loss on Securities of 		{$creditLoss}
+Amortized Cost After Credit Loss 	{$AmortizedCostAfterCreditLoss}
+Gain on Securities 					{$gain}
+Loss on Securities of 				{$loss}
+{$additionalMessage}{$additionalMessage2}
+
+Period :{$fairValue.period}
+Dimensions : {$fairValue.dimensions.join(', ','=')}
+Unit : {$fairValue.unit}
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]

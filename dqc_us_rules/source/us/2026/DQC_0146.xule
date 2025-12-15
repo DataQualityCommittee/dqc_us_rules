@@ -1,0 +1,69 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+//-----------DQC.US.0146.9870 ---------------//
+assert US.0146.9870  satisfied
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
+
+if not exists($document_period)
+	skip
+else
+	$document_period_end_date = $document_period.period.end;
+	$document_period_start_date = $document_period.period.start + time-span("P0D")
+
+	if  not set('10-K','20-F','40-F').contains([covered @concept.local-name ='DocumentType'])
+		or (exists({covered @concept = qname($EXTENSION_NS,'TransitionReport')}))
+		or (exists({covered @concept = qname($EXTENSION_NS,'YearOfInception')}))
+		or (exists({covered nonils @concept.local-name = 'DocumentTransitionReport' where $fact == true}))
+		or (exists({covered @concept = FinancialDesignationPredecessorAndSuccessorFixedList}))
+
+		skip
+	else
+							
+		for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+			
+			$presConceptItems = $presNetwork.concept-names;
+
+			// Income Statement Processing 
+			if $presConceptItems.contains(IncomeStatementAbstract)
+				$presNumericItems = filter $presConceptItems where taxonomy().concept($item).is-monetary and taxonomy().concept($item).period-type == duration;
+				$periodDuration = duration($document_period_start_date, $document_period_end_date);
+				$totalYearItems = list([covered @concept in $presNumericItems @period in list($periodDuration)])#YearFacts.count
+				$totalNonYearItems = list([covered @concept in $presNumericItems @period.end = $document_period_end_date - time-span("P1D") @period.start != $document_period_start_date])#facts.count
+				$totalYearItems < $totalNonYearItems
+
+			else 
+				skip
+
+
+message
+"The company has reported a 10K but the majority of the values reported on the Income Statement are for a period other than a year. The document period for the report starts on {$document_period_start_date} and ends on {$document_period_end_date}. Facts reported for this duration were {$totalYearItems} and the total for non years were {$totalNonYearItems}. Please check that the values used on the Income Statement represent a full year for the required reporting period.
+
+Facts with values not reported for a year are as follows: {$facts.join(' | ')}
+
+Facts with values reported for a year are as follows: {if $totalYearItems == 0 "none" else $YearFacts.join(' | ')}
+
+If this is a transition report  use the DocumentTransitionReport element. If this is a successor company then ensure the element FinancialDesignationPredecessorAndSuccessorFixedList has been tagged. If this is the Year of Inception then define an extension element called YearOfInception with a nil value to indicate this fact.
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+rule-focus first($facts.sort)

@@ -1,0 +1,127 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP ALL
+
+WARNING : THIS IS A SINGLE FILE ON CHANGE TO THIS AFFECTS 5 files 2024, 2023, 2022, 2021, 2020
+This was created using a hardlink ln {original} {new}
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0184.10163 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$excluded_OCI = set(OciLiabilityForFuturePolicyBenefitGainLossAfterReclassificationAdjustmentAndTax, OciMarketRiskBenefitInstrumentSpecificCreditRiskGainLossAfterAdjustmentsAndTax)
+
+$oci_tax_parents = navigate summation-item children from OtherComprehensiveIncomeLossNetOfTax role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $US-GAAP_ELTS_CALCS where $relationship.target.name not in $excluded_OCI returns target-name
+
+for $oci_tax_parent in $oci_tax_parents
+        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeAlternative' taxonomy $US-GAAP_ELTS_CALCS returns list target-name) + list($oci_tax_parent)
+        $SignValueComponents = list(for $child in $components
+                                        {@concept = $child}
+                                    )
+        
+        if $SignValueComponents.contains(none) or length($SignValueComponents) != 3 or $SignValueComponents.contains(0) 
+            false
+        else
+            if abs(sum(list(for $x in $SignValueComponents
+                $x.signum))) != 3
+                ($SignValueComponents[1] - $SignValueComponents[2]) != $SignValueComponents[3]
+            else
+                false
+
+message
+"The following elements have the following values. All of these values should have the same sign of either negative or positive:
+  {$SignValueComponents[3].concept.name} has a value of  {$SignValueComponents[3]} 
+  {$SignValueComponents[1].concept.name} has a value of  {$SignValueComponents[1]} 
+  {$SignValueComponents[2].concept.name} has a value of  {$SignValueComponents[2]} 
+  
+  All 3 of these elements should have the same signs
+
+The properties of this {$SignValueComponents[3].concept.name} fact are:
+Period :{$SignValueComponents[3].period}
+Dimensions : {$SignValueComponents[3].dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $SignValueComponents[3]
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.00184.10164 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$oci_tax_parents = set(
+    OtherComprehensiveIncomeUnrealizedHoldingGainLossOnSecuritiesArisingDuringPeriodNetOfTax,
+    OtherComprehensiveIncomeLossTransfersFromHeldToMaturityToAvailableForSaleSecuritiesNetOfTax,
+    OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForSaleOfSecuritiesNetOfTax,
+    OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIForWritedownOfSecuritiesNetOfTax,
+    OtherComprehensiveIncomeLossReclassificationAdjustmentFromAociForInvestmentTransferredFromAvailableForSaleToEquityMethodAfterTax,
+    OciDebtSecuritiesAvailableForSaleTransferToHeldToMaturityAdjustmentFromAociForAmortizationOfGainLossAfterTax,
+    OtherComprehensiveIncomeLossCashFlowHedgeGainLossBeforeReclassificationAfterTax,
+    OtherComprehensiveIncomeLossCashFlowHedgeGainLossReclassificationAfterTax,
+    OtherComprehensiveIncomeLossCashFlowHedgeGainLossReclassificationAfterTax,
+    OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAdjustmentsAfterTax,
+    OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAdjustmentsAfterTax,
+    OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionReclassificationAdjustmentFromAociForDerecognitionAfterTax,
+    OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionReclassificationAdjustmentFromAociForDerecognitionAfterTax,
+    OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationReclassificationAdjustmentFromAOCIRealizedUponSaleOrLiquidationNetOfTax,
+    OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationReclassificationAdjustmentFromAOCIRealizedUponSaleOrLiquidationNetOfTax,
+    OtherComprehensiveIncomeDefinedBenefitPlanNetPriorServiceCostsCreditArisingDuringPeriodNetOfTax,
+    OtherComprehensiveIncomeLossFinalizationOfPensionAndNonPensionPostretirementPlanValuationNetOfTax,
+    OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIPensionAndOtherPostretirementBenefitPlansForNetTransitionAssetObligationNetOfTax,
+    OtherComprehensiveIncomeLossReclassificationAdjustmentFromAOCIPensionAndOtherPostretirementBenefitPlansForNetGainLossNetOfTax,
+    OtherComprehensiveIncomeLossAmortizationAdjustmentFromAOCIPensionAndOtherPostretirementBenefitPlansForNetPriorServiceCostCreditNetOfTax
+)
+
+for $oci_tax_parent in $oci_tax_parents
+        $components = (navigate summation-item children from $oci_tax_parent  role 'http://fasb.org/us-gaap/role/statement/StatementOfOtherComprehensiveIncomeFouthAlternative' taxonomy $US-GAAP_ELTS_CALCS returns list target-name) + list($oci_tax_parent)
+        $SignValueComponents = list(for $child in $components
+                                        {@concept = $child}
+                                    )
+        
+        if $SignValueComponents.contains(none) or length($SignValueComponents) != 3 or $SignValueComponents.contains(0) 
+            false
+        else
+             if abs(sum(list(for $x in $SignValueComponents
+                $x.signum))) != 3
+                ($SignValueComponents[1] - $SignValueComponents[2]) != $SignValueComponents[3]
+            else
+                false
+
+message
+"The following elements have the following values. All of these values should have the same sign of either negative or positive:
+  {$SignValueComponents[3].concept.name} has a value of  {$SignValueComponents[3]} 
+  {$SignValueComponents[1].concept.name} has a value of  {$SignValueComponents[1]} 
+  {$SignValueComponents[2].concept.name} has a value of  {$SignValueComponents[2]} 
+  
+  All 3 of these elements should have the same signs
+
+The properties of this {$SignValueComponents[3].concept.name} fact are:
+Period :{$SignValueComponents[3].period}
+Dimensions : {$SignValueComponents[3].dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+severity error
+rule-focus $SignValueComponents[3]
+effectiveDate $effective_dates[$rule_id]

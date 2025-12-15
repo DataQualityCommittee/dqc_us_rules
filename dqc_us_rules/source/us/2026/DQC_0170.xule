@@ -1,0 +1,133 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+
+**/
+
+RULE-NAME-PREFIX DQC
+/**
+Check that buy or sell shares as insiders with none for the period tag boolean flags as false. **/
+
+ASSERT US.0170.10103 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$NoDisclosureFlag = if exists([covered @concept.local-name = 'NoInsiderTradingFlag']) and [covered @concept.local-name = 'NoInsiderTradingFlag'] == true
+                            true
+                    else
+                            false
+
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31')) and not $NoDisclosureFlag
+    $ecdFlags = list(ecd:Rule10b51ArrAdoptedFlag,
+    ecd:NonRule10b51ArrAdoptedFlag,
+    ecd:Rule10b51ArrTrmntdFlag,
+    ecd:NonRule10b51ArrTrmntdFlag)
+
+    if list({covered @concept in $ecdFlags where $fact == true}).length == 0
+        if list({covered @concept in $ecdFlags where $fact == false}).length >= 4
+            if exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == false}) and
+                exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == false}) and
+                exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == false}) and
+                exists({@concept = ecd:NonRule10b51ArrTrmntdFlag where $fact == false})
+                false
+            else    
+                true
+        else    
+            true
+    else
+        false
+else
+    skip
+
+message
+"The filing does not include a value of true for one of the following elements {$ecdFlags.join(', ')} or a value of false for all 4 elements. This is a required disclosure after 12/31/2023. Please report the boolean flag value of true for one of these elements or false for all of them.  If there is no insider trading disclosure in the filing create an extension boolean element called 'NoInsiderTradingFlag' with a value of true. 
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+
+ASSERT US.0170.10129 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
+
+    if exists({ @concept.local-name = 'TrdArrTerminationDate'})
+        if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag where $fact == true})
+            false
+        else 
+            $message = 'The filing has used the element TrdArrTerminationDate. This element should only be used when either the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
+            true
+    else
+         if  exists({@concept = ecd:Rule10b51ArrTrmntdFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrTrmntdFlag where $fact == true})
+         $message = 'The filing has not used the element TrdArrTerminationDate. But has reported a value of true for one of the elements Rule10b51ArrTrmntdFlag or NonRule10b51ArrTrmntdFlag. Please update the filing to include a value for TrdArrTerminationDate';
+            true
+        else 
+            false
+    
+else
+    skip
+
+message
+"{$message}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]
+
+ASSERT US.0170.10131 SATISFIED
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+if set('10-K','10-KT','10-Q').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2023-12-31'))
+
+    if exists({ @concept.local-name = 'TrdArrAdoptionDate'})
+        if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
+            false
+        else 
+            if missing({ @concept.local-name = 'TrdArrTerminationDate'})
+                $message = 'The filing has used the element TrdArrAdoptionDate. This element should only be used when either the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag are set to true. Please update the filing to include a value for one of the pre-mentioned flags.';
+                true
+            else
+                false
+    else
+         if  exists({@concept = ecd:Rule10b51ArrAdoptedFlag where $fact == true}) or exists({@concept = ecd:NonRule10b51ArrAdoptedFlag where $fact == true})
+            $message = 'The filing has not used the element TrdArrAdoptionDate. But has reported a value of true for one of the elements Rule10b51ArrAdoptedFlag or NonRule10b51ArrAdoptedFlag. Please update the filing to include a value for TrdArrAdoptionDate';
+            true
+        else 
+            false
+    
+else
+    skip
+
+message
+"{$message}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$ruleId]

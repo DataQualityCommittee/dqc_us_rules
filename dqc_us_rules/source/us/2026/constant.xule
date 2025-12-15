@@ -1,0 +1,663 @@
+/**
+
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+/**
+	Define report types  exluded from identified rules
+**/
+
+constant $REPORT_TYPE_EXCLUSIONS = set( 'S-1', 'S-3', 'S-4', 'S-6', 'S-8', 'S-11', 'S-20', 'S-1/A', 'S-3/A', 'S-4/A', 'S-6/A', 'S-8/A', 'S-11/A', 'S-20/A', 'F-1','F-3','10-12G', '10-12G/A')
+
+
+constant $CASH_FLOW_EXCEPTIONS = set(ProceedsFromDepositsWithOtherInstitutions, 
+				InterestPaidCapitalized,
+				ProceedsFromFederalHomeLoanBankAdvances,
+				PaymentsForFederalHomeLoanBankAdvances,
+				ProceedsFromPaymentsForTradingSecurities,
+				PaymentsForDepositsWithOtherInstitutions,
+				ProceedsFromPaymentsForInSecuritiesSoldUnderAgreementsToRepurchase,
+				IncreaseDecreaseInFederalFundsPurchasedAndSecuritiesSoldUnderAgreementsToRepurchaseNet,
+				IncreaseDecreaseOfRestrictedInvestments,
+				PaymentsForProceedsFromOtherDeposits,
+				ProceedsFromOtherDeposits,
+				PaymentsForOtherDeposits
+				)
+
+constant $EXTENSION_NS = taxonomy().entry-point-namespace
+
+constant $EXTENSION_CONCEPTS = filter taxonomy().concepts where $item.name.namespace-uri == $EXTENSION_NS returns $item
+
+constant $EXTENSION_QNAME = filter $EXTENSION_CONCEPTS returns $item.name
+
+constant $TAX_ITEMS = set(IncomeTaxExpenseBenefit,
+				CurrentIncomeTaxExpenseBenefit,
+				CurrentForeignTaxExpenseBenefit,
+				CurrentFederalStateAndLocalTaxExpenseBenefit,
+				CurrentFederalTaxExpenseBenefit,
+				CurrentStateAndLocalTaxExpenseBenefit,
+				DeferredIncomeTaxExpenseBenefit,
+				DeferredForeignIncomeTaxExpenseBenefit,
+				DeferredFederalStateAndLocalTaxExpenseBenefit,
+				DeferredFederalIncomeTaxExpenseBenefit,
+				DeferredStateAndLocalIncomeTaxExpenseBenefit,
+				OtherTaxExpenseBenefit
+				)
+
+
+/** Rule DQC.US.0014 **/
+constant $NON_DIMENSIONAL_NON_NEGS = list(
+				list('2786',DerivativeFairValueOfDerivativeLiability),
+				list('2787',DerivativeLiabilities),
+				list('2788',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetValue),
+				list('2789',FairValueMeasurementWithUnobservableInputsReconciliationsRecurringBasisLiabilityValue),
+				list('2790',LiabilitiesFairValueDisclosure),
+				list('2791',AmortizationOfIntangibleAssets),
+				list('2792',DerivativeFairValueOfDerivativeLiabilityAmountNotOffsetAgainstCollateral),
+				list('2793',DerivativeAssets),
+				list('2794',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetTransfersOutOfLevel3),
+				list('2795',DerivativeFairValueOfDerivativeAssetAmountOffsetAgainstCollateral),
+				list('2796',DerivativeFairValueOfDerivativeLiabilityAmountOffsetAgainstCollateral),
+				list('2797',DerivativeFairValueOfDerivativeAssetAmountNotOffsetAgainstCollateral),
+				list('2798',DerivativeLiabilityFairValueGrossAsset),
+				list('2799',FinancialInstrumentsOwnedAtFairValue),
+				list('2800',DerivativeAssetFairValueGrossLiability),
+				list('2801',CashDividendsPaidToParentCompany),
+				list('2802',DerivativeFairValueOfDerivativeAsset),
+				list('2803',DerivativeLiabilitiesCurrent),
+				list('2804',InvestmentsFairValueDisclosure),
+				list('2805',CashDividendsPaidToParentCompanyByConsolidatedSubsidiaries),
+				list('2806',DerivativeCollateralObligationToReturnCash),
+				list('2807',Goodwill),
+				list('2808',LoansAndLeasesReceivableAllowance),
+				list('2809',FairValueMeasurementWithUnobservableInputsReconciliationRecurringBasisAssetTransfersIntoLevel3),
+				list('3003',PriceRiskDerivativeLiabilitiesAtFairValue),
+				list('3004',DerivativeAssetsNoncurrent),
+				list('3005',ConversionOfStockSharesConverted1),
+				list('3006',ConversionOfStockAmountConverted1),
+				list('3007',OtherLiabilitiesNoncurrent),
+				/** Rule 3008 was removed as the element was deprecated **/
+				list('3009',ConversionOfStockSharesIssued1),
+				list('3096',FairValueMeasurementWithUnobservableInputsReconciliationLiabilityTransfersOutOfLevel3),
+				list('7651',RevenueFromContractWithCustomerIncludingAssessedTax),
+				list('7652',RevenueFromContractWithCustomerExcludingAssessedTax),
+				list('2695',CostOfGoodsAndServicesSold),
+				list('2697',CostOfRevenue),
+				list('9093',CostOfGoodsAndServiceExcludingDepreciationDepletionAndAmortization)
+				)
+
+
+/** Rule DQC.US.0084 **/
+
+constant $NON_ADDITIVE_DURATION_CONCEPTS = set()
+
+/** Rule DQC.US.0108 **/
+
+constant $CUT_DOWN_LIST = (filter $MONETARY_NON_NEGS where $item.period-type == duration and not ($item.name.local-name.lower-case.contains('average') or $item.name.local-name.lower-case.contains('maximum') or $item.name.local-name.lower-case.contains('minimum')) returns $item.name)
+
+/** DQC.US.0001 **/
+
+
+constant $OCI_TOTALS = list(OtherComprehensiveIncomeLossNetOfTax, OtherComprehensiveIncomeLossBeforeTax, OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent, OtherComprehensiveIncomeLossBeforeTaxPortionAttributableToParent)
+
+constant $INCOME_LOSS_EXTENSION_ITEMS = filter $EXTENSION_CONCEPTS where $item.balance == credit and $item.name.local-name.lower-case.contains('incomeloss') and not $item.name.local-name.lower-case.contains('equitymethod') and not $item.name.local-name.lower-case.contains('equityincomeloss') returns $item.name
+
+
+constant $INCOME_ITEMS = set(
+					ComprehensiveIncomeNetOfTax,
+					ComprehensiveIncomeNetOfTaxIncludingPortionAttributableToNoncontrollingInterest,
+					DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax,
+					IncomeLossAttributableToNoncontrollingInterest,
+					IncomeLossAttributableToParent,
+					IncomeLossFromContinuingOperations,
+					IncomeLossFromContinuingOperationsAttributableToNoncontrollingEntity,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesDomestic,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest,
+					IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments,
+					IncomeLossFromContinuingOperationsBeforeInterestExpenseInterestIncomeIncomeTaxesExtraordinaryItemsNoncontrollingInterestsNet,
+					IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity,
+					IncomeLossFromSubsidiariesNetOfTax,
+					IncomeLossIncludingPortionAttributableToNoncontrollingInterest,
+					NetIncomeLoss,
+					NetIncomeLossAllocatedToGeneralPartners,
+					NetIncomeLossAllocatedToLimitedPartners,
+					NetIncomeLossAttributableToNoncontrollingInterest,
+					NetIncomeLossAttributableToParentNetOfFederalHomeLoanBankAssessments,
+					NetIncomeLossAvailableToCommonStockholdersBasic,
+					NetIncomeLossIncludingPortionAttributableToNonredeemableNoncontrollingInterest,
+					ProfitLoss,
+					DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax
+					/** InvestmentCompanyNetAssetsFromOperationsIncreaseDecrease DEPRECATED**/
+					) + $INCOME_LOSS_EXTENSION_ITEMS 
+
+constant $DISCONTINUED_INCOME_ITEMS = set(IncomeLossFromDiscontinuedOperationsNetOfTax,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToNoncontrollingInterest,
+					IncomeLossFromDiscontinuedOperationsNetOfTaxAttributableToReportingEntity)
+
+constant $PRES_NETWORKS = taxonomy().networks(parent-child)
+
+constant $BASE_CALC_NETWORKS = taxonomy().networks(summation-item)
+
+constant $PARENTHETICAL_STATEMENT_CALC_NETWORKS = FILTER $BASE_CALC_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
+constant $PARENTHETICAL_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and ($item.role.uri.lower-case.contains('parenthetical'))
+
+/*  
+*	Gets the end of period date (dei:DocumentPeriodEndDate).  Returns the fact
+*	value or the context end date on the fact, whichever is later.
+*
+*	Used for Rule 5
+*/
+
+constant $DOCUMENT_PERIOD_END_VALUE =  set(date({covered @concept.local-name ='DocumentPeriodEndDate'}))
+
+constant $DOCUMENT_PERIOD_END_CONTEXT = set({covered @concept.local-name ='DocumentPeriodEndDate'}.period.end)
+
+constant $MAXIMUM_PERIOD_END_DATE = max($DOCUMENT_PERIOD_END_VALUE + $DOCUMENT_PERIOD_END_CONTEXT)
+
+/** DEPRECATED CONCEPTS 
+**
+** This will return a set of deprecated concepts that is used by a rule to evaluate these items.
+**/
+
+
+constant $MONETARY_NON_NEGS = filter $NON_NEG_ITEMS.keys where taxonomy().concept($item).is-monetary returns taxonomy().concept($item)
+
+constant $LEASE_ITEMS = list(FinanceLeaseLiability, FinanceLeaseLiabilityCurrent, FinanceLeaseLiabilityNoncurrent, FinanceLeaseRightOfUseAsset, OperatingLeaseRightOfUseAsset, OperatingLeaseLiability, OperatingLeaseLiabilityCurrent, OperatingLeaseLiabilityNoncurrent)
+
+constant $NON_REQUIRED_CAPTION_DISCLOSURE = list(DefinedBenefitPlanOtherCosts, RestrictedCash, RestrictedCashAndCashEquivalents, RestrictedCashAndCashEquivalentsAtCarryingValue, RestrictedCashAndCashEquivalentsNoncurrent, RestrictedCashCurrent, RestrictedCashEquivalents, RestrictedCashEquivalentsCurrent, RestrictedCashEquivalentsNoncurrent, RestrictedCashNoncurrent)
+
+constant $STATEMENT_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and (not $item.drs-role.uri.lower-case.contains('parenthetical')) 
+and (not $item.drs-role.uri.lower-case.contains('equity')) 
+and (not $item.drs-role.uri.lower-case.contains('deficit')) 
+and (not $item.drs-role.uri.lower-case.contains('stockholders')) 
+and (not $item.drs-role.uri.lower-case.contains('capital')) 
+and (not $item.drs-role.uri.lower-case.contains('investment')) 
+and (not $item.drs-role.uri.lower-case.contains('changes')) 
+and (not $item.drs-role.uri.lower-case.contains('shareholder')) 
+and (not $item.drs-role.uri.lower-case.contains('convertible')) 
+and (not $item.drs-role.uri.lower-case.contains('preferred'))  
+and (not $item.drs-role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.drs-role.uri.lower-case.contains('redeemable'))
+and (not $item.drs-role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.drs-role.uri.lower-case.contains('membersinterest'))
+and (not $item.drs-role.description.lower-case.contains('schedule iii'))
+and (not $item.drs-role.description.lower-case.contains('schedule iv'))
+and (not $item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))
+
+constant $STATEMENT_PARENTHETICAL_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and ($item.drs-role.uri.lower-case.contains('parenthetical')) 
+
+constant $STATEMENT_SHE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and $item.dimensions.concept.name.contains(StatementEquityComponentsAxis)
+
+constant $BROAD_STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') and (not $item.role.uri.lower-case.contains('parenthetical'))
+
+constant $STATEMENT_NETWORK_CONCEPTS = filter taxonomy().networks(summation-item) where $item.role.description.contains('- Statement -') returns $item.concepts
+
+constant $STATEMENT_CONCEPTS = sum(filter $STATEMENT_NETWORK_CONCEPTS returns $item.name)
+
+constant $STATEMENT_PRES_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and (not $item.role.uri.lower-case.contains('parenthetical')) 
+and (not $item.role.uri.lower-case.contains('equity')) 
+and (not $item.role.uri.lower-case.contains('deficit')) 
+and (not $item.role.uri.lower-case.contains('stockholders')) 
+and (not $item.role.uri.lower-case.contains('capital')) 
+and (not $item.role.uri.lower-case.contains('investment')) 
+and (not $item.role.uri.lower-case.contains('changes')) 
+and (not $item.role.uri.lower-case.contains('shareholder')) 
+and (not $item.role.uri.lower-case.contains('convertible')) 
+and (not $item.role.uri.lower-case.contains('preferred'))  
+and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+and (not $item.role.uri.lower-case.contains('redeemable'))
+and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+and (not $item.role.uri.lower-case.contains('membersinterest'))
+and (not $item.role.uri.lower-case.contains('membershipinterest'))
+and (not $item.role.description.lower-case.contains('schedule iii'))
+and (not $item.role.description.lower-case.contains('schedule iv'))
+and (not $item.role.uri.lower-case.contains('highlights'))
+and (not $item.role.uri.lower-case.contains('employee'))
+and (not $item.role.uri.lower-case.contains('ebp'))
+
+
+constant $EXCLUDING_ACCRUED_INTEREST_DICT =  dict(
+list("AccountsRec", list(
+AccountsReceivableExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+AccountsReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+AccountsReceivableAllowanceForCreditLossExcludingAccruedInterestNoncurrent)),
+list("DebtSecuritiesHeldToMaturity", list(
+DebtSecuritiesHeldToMaturityAllowanceForCreditLossExcludingAccruedInterestCurrent,
+DebtSecuritiesHeldToMaturityAllowanceForCreditLossExcludingAccruedInterest,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestAfterAllowanceForCreditLoss,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestAfterAllowanceForCreditLossCurrent,
+DebtSecuritiesHeldToMaturityAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestOriginatedMoreThanFiveYearsBeforeCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestYearFiveOriginatedFourYearsBeforeCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestYearFourOriginatedThreeYearsBeforeCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestYearOneOriginatedCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestYearThreeOriginatedTwoYearsBeforeCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityExcludingAccruedInterestYearTwoOriginatedFiscalYearBeforeCurrentFiscalYear)),
+list("AvailableForSaleSecuritiesDebtSecurities",list(
+DebtSecuritiesAvailableForSaleExcludingAccruedInterest,
+DebtSecuritiesAvailableForSaleExcludingAccruedInterestCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+DebtSecuritiesAvailableForSaleExcludingAccruedInterestNoncurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLoss, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossCurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterest, 
+DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostAllowanceForCreditLossExcludingAccruedInterestNoncurrent, DebtSecuritiesAvailableForSaleAmortizedCostExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent)),
+list("DirectFinancingLeaseNet",list(
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLoss,
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestCurrent,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterest,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent,
+DirectFinancingLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossCurrent)),
+list("FinancingReceivable",list(
+FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLoss,
+FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+FinancingReceivableExcludingAccruedInterestOriginatedMoreThanFiveYearsBeforeCurrentFiscalYear,
+FinancingReceivableAllowanceForCreditLossExcludingAccruedInterest,
+FinancingReceivableAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLossCurrent,
+FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent,
+FinancingReceivableExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+FinancingReceivableExcludingAccruedInterestRevolvingConvertedToTermLoan,
+FinancingReceivableExcludingAccruedInterestYearFiveOriginatedFourYearsBeforeCurrentFiscalYear,
+FinancingReceivableExcludingAccruedInterestYearTwoOriginatedFiscalYearBeforeCurrentFiscalYear,
+FinancingReceivableExcludingAccruedInterestRevolving,
+FinancingReceivableExcludingAccruedInterestYearFourOriginatedThreeYearsBeforeCurrentFiscalYear,
+FinancingReceivableExcludingAccruedInterestYearOneOriginatedCurrentFiscalYear,
+FinancingReceivableAllowanceForCreditLossExcludingAccruedInterestCurrent,
+FinancingReceivableExcludingAccruedInterestYearThreeOriginatedTwoYearsBeforeCurrentFiscalYear,
+FinancingReceivableExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent)),
+list("NetInvestmentInLease",list(
+NetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterest,
+NetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+NetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestNoncurrent,
+NetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+NetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent,
+NetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLoss,
+NetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+NetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossCurrent,
+NetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestCurrent)),
+list("SalesTypeLeaseNet",list(
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossCurrent,
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLoss,
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestBeforeAllowanceForCreditLossNoncurrent,
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossCurrent,
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLossNoncurrent,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterest,
+SalesTypeLeaseNetInvestmentInLeaseExcludingAccruedInterestAfterAllowanceForCreditLoss,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestCurrent,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossExcludingAccruedInterestNoncurrent)))
+
+constant $INCLUDING_ACCRUED_INTEREST_DICT = dict(
+list("AccountsRec", list(
+AccountsReceivableNetNoncurrent,
+AccountsReceivableGrossNoncurrent,
+AllowanceForDoubtfulAccountsReceivableNoncurrent)),
+list("DebtSecuritiesHeldToMaturity", list(
+DebtSecuritiesHeldToMaturityAmortizedCostAfterAllowanceForCreditLossCurrent,
+HeldToMaturitySecuritiesCurrent,
+DebtSecuritiesHeldToMaturityAllowanceForCreditLossCurrent,
+DebtSecuritiesHeldToMaturityAmortizedCostAfterAllowanceForCreditLoss,
+HeldToMaturitySecurities,
+DebtSecuritiesHeldToMaturityAllowanceForCreditLoss,
+DebtSecuritiesHeldToMaturityAmortizedCostAfterAllowanceForCreditLossNoncurrent,
+HeldToMaturitySecuritiesNoncurrent,
+DebtSecuritiesHeldToMaturityAllowanceForCreditLossNoncurrent,
+DebtSecuritiesHeldToMaturityOriginatedInCurrentFiscalYear,
+DebtSecuritiesHeldToMaturityOriginatedInFiscalYearBeforeLatestFiscalYear,
+DebtSecuritiesHeldToMaturityOriginatedTwoYearsBeforeLatestFiscalYear,
+DebtSecuritiesHeldToMaturityOriginatedThreeYearsBeforeLatestFiscalYear,
+DebtSecuritiesHeldToMaturityOriginatedFourYearsBeforeLatestFiscalYear,
+DebtSecuritiesHeldToMaturityOriginatedFiveOrMoreYearsBeforeLatestFiscalYear)),
+list("AvailableForSaleSecuritiesDebtSecurities",list(
+AvailableForSaleSecuritiesDebtSecuritiesNoncurrent,
+AvailableForSaleSecuritiesDebtSecuritiesCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLoss,
+AvailableForSaleDebtSecuritiesAmortizedCostBasis,
+DebtSecuritiesAvailableForSaleAllowanceForCreditLoss,
+AvailableForSaleSecuritiesDebtSecurities,
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostCurrent,
+DebtSecuritiesAvailableForSaleAllowanceForCreditLossCurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostAfterAllowanceForCreditLossNoncurrent,
+DebtSecuritiesAvailableForSaleAmortizedCostNoncurrent,
+DebtSecuritiesAvailableForSaleAllowanceForCreditLossNoncurrent)),
+list("DirectFinancingLeaseNet",list(
+DirectFinancingLeaseNetInvestmentInLeaseAfterAllowanceForCreditLoss,
+DirectFinancingLeaseNetInvestmentInLease,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLoss,
+DirectFinancingLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossCurrent,
+DirectFinancingLeaseNetInvestmentInLeaseBeforeAllowanceForCreditLossCurrent,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossCurrent,
+DirectFinancingLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossNoncurrent,
+DirectFinancingLeaseNetInvestmentInLeaseBeforeAllowanceForCreditLossNoncurrent,
+DirectFinancingLeaseNetInvestmentInLeaseAllowanceForCreditLossNoncurrent)),
+list("NotesReceivable",list(
+NotesReceivableNet,
+NotesReceivableGross,
+NotesAndLoansReceivableNetCurrent,
+NotesAndLoansReceivableGrossCurrent,
+AllowanceForNotesAndLoansReceivableCurrent,
+NotesAndLoansReceivableNetNoncurrent,
+NotesAndLoansReceivableGrossNoncurrent,
+AllowanceForNotesAndLoansReceivableNoncurrent)),
+list("FinancingReceivable",list(
+NotesReceivableNet,
+FinancingReceivableAllowanceForCreditLosses,
+FinancingReceivableRevolvingConvertedToTermLoan,
+FinancingReceivableRevolving,
+FinancingReceivableOriginatedInCurrentFiscalYear,
+FinancingReceivableOriginatedInFiscalYearBeforeLatestFiscalYear,
+FinancingReceivableOriginatedTwoYearsBeforeLatestFiscalYear,
+FinancingReceivableOriginatedThreeYearsBeforeLatestFiscalYear,
+FinancingReceivableOriginatedFourYearsBeforeLatestFiscalYear,
+FinancingReceivableOriginatedFiveOrMoreYearsBeforeLatestFiscalYear)),
+list("NetInvestmentInLease",list(
+NetInvestmentInLeaseAfterAllowanceForCreditLoss,
+NetInvestmentInLease,
+NetInvestmentInLeaseAllowanceForCreditLoss,
+NetInvestmentInLeaseAfterAllowanceForCreditLossCurrent,
+NetInvestmentInLeaseCurrent,
+NetInvestmentInLeaseAllowanceForCreditLossCurrent,
+NetInvestmentInLeaseAfterAllowanceForCreditLossNoncurrent,
+NetInvestmentInLeaseNoncurrent,
+NetInvestmentInLeaseAllowanceForCreditLossNoncurrent)),
+list("SalesTypeLeaseNet",list(
+SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLoss,
+SalesTypeLeaseNetInvestmentInLease,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLoss,
+SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossCurrent,
+SalesTypeLeaseNetInvestmentInLeaseBeforeAllowanceForCreditLossCurrent,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossCurrent,
+SalesTypeLeaseNetInvestmentInLeaseAfterAllowanceForCreditLossNoncurrent,
+SalesTypeLeaseNetInvestmentInLeaseBeforeAllowanceForCreditLossNoncurrent,
+SalesTypeLeaseNetInvestmentInLeaseAllowanceForCreditLossNoncurrent)))
+
+constant $OCI_PARENT_ITEMS = set(OtherComprehensiveIncomeLossAvailableForSaleSecuritiesAdjustmentNetOfTax, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTax, OtherComprehensiveIncomeLossForeignCurrencyTransactionAndTranslationAdjustmentNetOfTax, OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustment, OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTax, OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentBeforeTaxPortionAttributableToParent, OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationBeforeTaxParent,
+OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentBeforeTaxPortionAttributableToParent,
+OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionBeforeTaxAfterReclassificationAdjustmentAttributableToParent,
+OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsBeforeTaxParent,
+OtherComprehensiveIncomeAvailableforsaleSecuritiesAdjustmentNetOfTaxPortionAttributableToParent,
+OtherComprehensiveIncomeForeignCurrencyTransactionAndTranslationAdjustmentNetOfTaxPortionAttributableToParent,
+OtherComprehensiveIncomeLossCashFlowHedgeGainLossAfterReclassificationAndTaxParent,
+OtherComprehensiveIncomeLossDerivativeExcludedComponentIncreaseDecreaseAfterAdjustmentsAndTaxParent,
+OtherComprehensiveIncomeLossFinancialLiabilityFairValueOptionAfterTaxAndReclassificationAdjustmentAttributableToParent)
+
+constant $TYPED_DIMENSIONS = list(RevenueRemainingPerformanceObligationExpectedTimingOfSatisfactionStartDateAxis, OpenFuturesContractIdentifierAxis, OpenForwardForeignCurrencyContractIdentifierAxis, OpenOptionContractIdentifierAxis, OpenSwapContractIdentifierAxis, SecuritySoldShortIdentifierAxis, InvestmentIdentifierAxis, ReinsuranceContractAxis,DisaggregationOfIncomeStatementExpenseCaptionIdentifierAxis, dei:NameChangeEventDateAxis)
+
+constant $CASH_FLOW_ROLES  = filter $PRES_NETWORKS where ($item.concept-names.contains(StatementOfCashFlowsAbstract) or $item.role.uri.lower-case.contains('cashflow')) and  $item.role.description.contains('- Statement ') and not $item.role.uri.lower-case.contains('parenthetical') returns $item.role
+
+constant $CASH_FLOW_ROLE_SORTED = (filter $CASH_FLOW_ROLES returns list($item.description, $item.uri, $item )).sort
+
+constant $CASH_FLOW_ROLE = if $CASH_FLOW_ROLES.length > 0 
+								$CASH_FLOW_ROLE_SORTED[1][3]
+						else
+							none
+
+constant $SEGMENT_DISCLOSURE_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+and ($item.drs-role.uri.lower-case.contains('segment')) 
+
+constant $NOTES_CUBES = FILTER taxonomy().cubes where $item.drs-role.description.contains('- Disclosure -')
+
+constant $FUNCTION_GET_DIMENSION_RELATED_PARTY_PAIR = list('RelatedPartyTransactionsByRelatedPartyAxis','RelatedPartyMember')
+
+constant $COUNTERPARTY_DIMENSION = srt:CounterpartyNameAxis
+
+constant $DOCUMENT_TYPE = first(list([covered @concept.local-name ='DocumentType']))
+
+
+constant $STATEMENT_SOI_CUBES_FLAG = (FILTER taxonomy().cubes where $item.drs-role.description.contains('- Statement -')
+and ($item.cube-concept.name in set(ScheduleOfInvestmentsTable,SummaryOfInvestmentHoldingsTable,InvestmentsSoldNotYetPurchasedTable,OpenOptionContractsWrittenTable,OpenFuturesContractTable,OpenForwardForeignCurrencyContractTable,OpenSwapContractTable))).length > 0
+
+constant $SOI_PRES_NETWORKS_FLAG = (FILTER $PRES_NETWORKS where $item.role.description.contains('- Statement -') 
+and ( $item.role.description.lower-case.contains('schedule'))
+and ( $item.role.description.lower-case.contains('investment'))).length > 0
+
+constant $BDC_FLAG = $STATEMENT_SOI_CUBES_FLAG and $SOI_PRES_NETWORKS_FLAG
+
+CONSTANT $EQUIVALENT_TAX_RATES = list(list(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate, EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate),
+                                    list(IncomeTaxReconciliationStateAndLocalIncomeTaxes, EffectiveIncomeTaxRateReconciliationStateAndLocalIncomeTaxes),
+                                    list(IncomeTaxReconciliationForeignIncomeTaxRateDifferential, EffectiveIncomeTaxRateReconciliationForeignIncomeTaxRateDifferential),
+                                    list(EffectiveIncomeTaxRateReconciliationBeatAmount, EffectiveIncomeTaxRateReconciliationBeatPercent),
+                                    list(EffectiveIncomeTaxRateReconciliationFdiiAmount, EffectiveIncomeTaxRateReconciliationFdiiPercent),
+                                    list(EffectiveIncomeTaxRateReconciliationGiltiAmount, EffectiveIncomeTaxRateReconciliationGiltiPercent),
+                                    list(EffectiveIncomeTaxRateReconciliationCrossBorderOtherAmount, EffectiveIncomeTaxRateReconciliationCrossBorderOtherPercent),
+                                    list(EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectAmount, EffectiveIncomeTaxRateReconciliationCrossBorderTaxEffectPercent),
+                                    list(IncomeTaxReconciliationTaxCreditsResearch, EffectiveIncomeTaxRateReconciliationTaxCreditsResearch),
+                                    list(IncomeTaxReconciliationTaxCreditsForeign, EffectiveIncomeTaxRateReconciliationTaxCreditsForeign),
+                                    list(IncomeTaxReconciliationTaxCreditsInvestment, EffectiveIncomeTaxRateReconciliationTaxCreditsInvestment),
+                                    list(EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedAmount, EffectiveIncomeTaxRateReconciliationTaxCreditEnergyRelatedPercent),
+                                    list(IncomeTaxReconciliationTaxCreditsOther, EffectiveIncomeTaxRateReconciliationTaxCreditsOther),
+                                    list(IncomeTaxReconciliationTaxCredits, EffectiveIncomeTaxRateReconciliationTaxCredits),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseDepreciation, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciation),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseAmortization, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseAmortization),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseDepreciationAndAmortization, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepreciationAndAmortization),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseDepletion, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseDepletion),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseMealsAndEntertainment, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseMealsAndEntertainment),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseCharitableContributions, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseCharitableContributions),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseRestructuringCharges, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseRestructuringCharges),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseImpairmentLosses, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseImpairmentLosses),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseResearchAndDevelopment, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseResearchAndDevelopment),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseShareBasedCompensationCost, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseShareBasedCompensationCost),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseLeases, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLeases),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseLifeInsurance, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseLifeInsurance),
+                                    list(IncomeTaxReconciliationNondeductibleExpenseOther, EffectiveIncomeTaxRateReconciliationNondeductibleExpenseOther),
+                                    list(IncomeTaxReconciliationNondeductibleExpense, EffectiveIncomeTaxRateReconciliationNondeductibleExpense),
+                                    list(IncomeTaxReconciliationDeductionsExtraterritorialIncomeExclusion, EffectiveIncomeTaxRateReconciliationDeductionsExtraterritorialIncomeExclusion),
+                                    list(IncomeTaxReconciliationDeductionsDividends, EffectiveIncomeTaxRateReconciliationDeductionsDividends),
+                                    list(IncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends, EffectiveIncomeTaxRateReconciliationDeductionsEmployeeStockOwnershipPlanDividends),
+                                    list(IncomeTaxReconciliationDeductionsMedicarePrescriptionDrugBenefitSubsidy, EffectiveIncomeTaxRateReconciliationDeductionsMedicarePrescriptionDrugBenefit),
+                                    list(IncomeTaxReconciliationDeductionsOther, EffectiveIncomeTaxRateReconciliationDeductionsOther),
+                                    list(IncomeTaxReconciliationDeductions, EffectiveIncomeTaxRateReconciliationDeductions),
+                                    list(IncomeTaxReconciliationTaxContingenciesDomestic, EffectiveIncomeTaxRateReconciliationTaxContingenciesDomestic),
+                                    list(IncomeTaxReconciliationTaxContingenciesForeign, EffectiveIncomeTaxRateReconciliationTaxContingenciesForeign),
+                                    list(IncomeTaxReconciliationTaxContingenciesStateAndLocal, EffectiveIncomeTaxRateReconciliationTaxContingenciesStateAndLocal),
+                                    list(IncomeTaxReconciliationTaxContingenciesOther, EffectiveIncomeTaxRateReconciliationTaxContingenciesOther),
+                                    list(IncomeTaxReconciliationTaxContingencies, EffectiveIncomeTaxRateReconciliationTaxContingencies),
+                                    list(IncomeTaxReconciliationTaxSettlementsDomestic, EffectiveIncomeTaxRateReconciliationTaxSettlementsDomestic),
+                                    list(IncomeTaxReconciliationTaxSettlementsForeign, EffectiveIncomeTaxRateReconciliationTaxSettlementsForeign),
+                                    list(IncomeTaxReconciliationTaxSettlementsStateAndLocal, EffectiveIncomeTaxRateReconciliationTaxSettlementsStateAndLocal),
+                                    list(IncomeTaxReconciliationTaxSettlementsOther, EffectiveIncomeTaxRateReconciliationTaxSettlementsOther),
+                                    list(IncomeTaxReconciliationTaxSettlements, EffectiveIncomeTaxRateReconciliationTaxSettlements),
+                                    list(IncomeTaxReconciliationTaxExemptIncome, EffectiveIncomeTaxRateReconciliationTaxExemptIncome),
+                                    list(IncomeTaxReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary, EffectiveIncomeTaxRateReconciliationEquityInEarningsLossesOfUnconsolidatedSubsidiary),
+                                    list(IncomeTaxReconciliationMinorityInterestIncomeExpense, EffectiveIncomeTaxRateReconciliationMinorityInterestIncomeExpense),
+                                    list(IncomeTaxReconciliationTaxHolidays, EffectiveIncomeTaxRateReconciliationTaxHolidays),
+                                    list(IncomeTaxReconciliationDispositionOfBusiness, EffectiveIncomeTaxRateReconciliationDispositionOfBusiness),
+                                    list(IncomeTaxReconciliationDispositionOfAssets, EffectiveIncomeTaxRateReconciliationDispositionOfAssets),
+                                    list(IncomeTaxReconciliationRepatriationOfForeignEarnings, EffectiveIncomeTaxRateReconciliationRepatriationOfForeignEarnings),
+                                    list(IncomeTaxReconciliationChangeInEnactedTaxRate, EffectiveIncomeTaxRateReconciliationChangeInEnactedTaxRate),
+                                    list(IncomeTaxReconciliationPriorYearIncomeTaxes, EffectiveIncomeTaxRateReconciliationPriorYearIncomeTaxes),
+                                    list(IncomeTaxReconciliationChangeInDeferredTaxAssetsValuationAllowance, EffectiveIncomeTaxRateReconciliationChangeInDeferredTaxAssetsValuationAllowance),
+                                    list(EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitAmount, EffectiveIncomeTaxRateReconciliationShareBasedCompensationExcessTaxBenefitPercent),
+                                    list(IncomeTaxReconciliationOtherAdjustments, EffectiveIncomeTaxRateReconciliationOtherAdjustments),
+                                    list(IncomeTaxReconciliationOtherReconcilingItems, EffectiveIncomeTaxRateReconciliationOtherReconcilingItemsPercent),
+                                    list(IncomeTaxExpenseBenefit, EffectiveIncomeTaxRateContinuingOperations))
+
+/** TODO. Replace the below comment with actual code to extract OTHER_AGGREGATE from META_2026 once META_2026 is available
+ BUILD FROM THE FOLLOWING:
+**   constant $OTHER_AGGREGATE = navigate 'http://www.xbrl.org/2021/arcrole/aggregate-other' descendants taxonomy $META_2026 returns list (source-name, target-name)
+**/
+
+constant $OTHER_AGGREGATE = list(list(AccumulatedDepreciationDepletionAndAmortizationPropertyPlantAndEquipment, PropertyPlantAndEquipmentOtherAccumulatedDepreciation), 
+                            list(AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationRequisiteServicePeriodRecognitionValue, AdjustmentsToAdditionalPaidInCapitalSharebasedCompensationOtherLongtermIncentivePlansRequisiteServicePeriodRecognition), 
+                            list(AllowanceForNotesAndLoansReceivableNoncurrent, OtherReceivableAllowanceForCreditLossNoncurrent), 
+                            list(AmortizationOfDeferredCharges, OtherAmortizationOfDeferredCharges), 
+                            list(AssetImpairmentCharges, OtherAssetImpairmentCharges), 
+                            list(Assets, PrepaidExpenseAndOtherAssets), 
+                            list(Assets, OtherAssetsMiscellaneous), 
+                            list(Assets, OtherAssets), 
+                            list(AssetsCurrent, OtherAssetsCurrent), 
+                            list(AssetsCurrent, OtherAssetsMiscellaneousCurrent), 
+                            list(AssetsCurrent, PrepaidExpenseAndOtherAssetsCurrent), 
+                            list(AssetsHeldForSaleNotPartOfDisposalGroup, AssetsHeldForSaleNotPartOfDisposalGroupOther), 
+                            list(AssetsHeldForSaleNotPartOfDisposalGroupCurrent, AssetsHeldForSaleNotPartOfDisposalGroupCurrentOther), 
+                            list(AssetsNoncurrent, InvestmentsAndOtherNoncurrentAssets), 
+                            list(AssetsNoncurrent, OtherAssetsNoncurrent), 
+                            list(AssetsNoncurrent, OtherAssetsMiscellaneousNoncurrent), 
+                            list(AssetsNoncurrent, PrepaidExpenseAndOtherAssetsNoncurrent), 
+                            list(AssetsOfDisposalGroupIncludingDiscontinuedOperation, DisposalGroupIncludingDiscontinuedOperationOtherAssets), 
+                            list(AssetsOfDisposalGroupIncludingDiscontinuedOperationCurrent, DisposalGroupIncludingDiscontinuedOperationOtherCurrentAssets), 
+                            list(BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedCurrentLiabilities, BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedCurrentLiabilitiesOther), 
+                            list(BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedNoncurrentLiabilities, BusinessCombinationRecognizedIdentifiableAssetsAcquiredAndLiabilitiesAssumedNoncurrentLiabilitiesOther), 
+                            list(ClosedBlockAssetsAndLiabilitiesMaximumFutureEarningsToBeRecognizedPeriodIncreaseDecrease, ClosedBlockAssetsAndLiabilitiesMaximumFutureEarningsToBeRecognizedOtherAdjustments), 
+                            list(ClosedBlockLiabilities, ClosedBlockLiabilitiesOtherClosedBlockLiabilities), 
+                            list(ClosedBlockOperationsRevenue, ClosedBlockOperationsOtherRevenue), 
+                            list(CommonStockSharesOutstanding, CommonStockOtherSharesOutstanding), 
+                            list(CommonStockValueOutstanding, CommonStockOtherValueOutstanding), 
+                            list(CostOfRevenue, OtherCostOfOperatingRevenue), 
+                            list(DebtInstrumentIncreaseDecreaseForPeriodNet, DebtInstrumentIncreaseDecreaseOtherNet), 
+                            list(DeferredCompensationLiabilityCurrent, OtherDeferredCompensationArrangementsLiabilityCurrent), 
+                            list(DeferredCostsCurrent, OtherDeferredCostsNet), 
+                            list(DeferredIncomeTaxesAndTaxCredits, OtherNoncashIncomeTaxExpense), 
+                            list(DeferredSalesInducementsPeriodIncreaseDecrease, DeferredSalesInducementsAdjustments), 
+                            list(DefinedBenefitPlanBenefitObligationPeriodIncreaseDecrease, DefinedBenefitPlanOtherChanges), 
+                            list(DepreciationAndAmortization, OtherDepreciationAndAmortization), 
+                            list(DisposalGroupIncludingDiscontinuedOperationAssetsNoncurrent, DisposalGroupIncludingDiscontinuedOperationOtherNoncurrentAssets), 
+                            list(EnergyRelatedInventory, EnergyRelatedInventoryOtherFossilFuel), 
+                            list(EnvironmentalExpenseAndLiabilities, OtherIncreaseDecreaseInEnvironmentalLiabilities), 
+                            list(FinancialInstrumentsOwnedAtFairValue, FinancialInstrumentsOwnedOtherAtFairValue), 
+                            list(ForeclosedAssets, OtherForeclosedAssets), 
+                            list(GainLossOnDispositionOfAssets1, GainLossOnSaleOfOtherAssets), 
+                            list(GainLossOnSaleOfLoansAndLeases, GainLossOnSaleOfOtherLoansAndLeases), 
+                            list(GainsLossesOnSalesOfAssets, GainLossOnDispositionOfOtherFinancialAssets), 
+                            list(GeneralAndAdministrativeExpense, OtherGeneralAndAdministrativeExpense), 
+                            list(GoodwillPeriodIncreaseDecrease, GoodwillOtherIncreaseDecrease), 
+                            list(IncomeTaxReconciliationDeductions, IncomeTaxReconciliationDeductionsOther), 
+                            list(IncomeTaxReconciliationNondeductibleExpense, IncomeTaxReconciliationNondeductibleExpenseOther), 
+                            list(IncomeTaxReconciliationOtherReconcilingItems, IncomeTaxReconciliationOtherAdjustments), 
+                            list(IncomeTaxReconciliationTaxContingencies, IncomeTaxReconciliationTaxContingenciesOther), 
+                            list(IncomeTaxReconciliationTaxCredits, IncomeTaxReconciliationTaxCreditsOther), 
+                            list(IncreaseDecreaseInAccountsPayable, IncreaseDecreaseInOtherAccountsPayable), 
+                            list(IncreaseDecreaseInAccruedLiabilities, IncreaseDecreaseInOtherAccruedLiabilities), 
+                            list(IncreaseDecreaseInDeferredLiabilities, IncreaseDecreaseInOtherDeferredLiability), 
+                            list(IncreaseDecreaseInDeposits, IncreaseDecreaseInOtherDeposits), 
+                            list(IncreaseDecreaseInDueToRelatedPartiesCurrent, IncreaseDecreaseInDueToOtherRelatedPartiesCurrent), 
+                            list(IncreaseDecreaseInEmployeeRelatedLiabilities, IncreaseDecreaseInOtherEmployeeRelatedLiabilities), 
+                            list(IncreaseDecreaseInOperatingAssets, IncreaseDecreaseInOtherOperatingAssets), 
+                            list(IncreaseDecreaseInOperatingLiabilities, IncreaseDecreaseInOtherOperatingLiabilities), 
+                            list(IncreaseDecreaseInReceivables, IncreaseDecreaseInOtherReceivables), 
+                            list(IncreaseDecreaseInTimeDeposits, IncreaseDecreaseInOtherTimeDeposits), 
+                            list(InterestAndDividendIncomeOperating, OtherInterestAndDividendIncome), 
+                            list(InterestAndDividendIncomeSecurities, InterestAndDividendIncomeSecuritiesOther), 
+                            list(InterestAndFeeIncomeLoansAndLeasesHeldForSale, InterestAndFeeIncomeOtherLoansHeldForSale), 
+                            list(InterestAndFeeIncomeLoansAndLeasesHeldInPortfolio, InterestAndFeeIncomeOtherLoans), 
+                            list(InterestAndFeeIncomeLoansConsumer, InterestAndFeeIncomeLoansOtherConsumer), 
+                            list(InterestExpense, InterestExpenseOther), 
+                            list(InterestExpenseDomesticDeposits, InterestExpenseOtherDomesticDeposits), 
+                            list(InterestExpenseLongTermDebt, InterestExpenseOtherLongTermDebt), 
+                            list(InterestExpenseNonoperating, InterestExpenseOther), 
+                            list(InterestExpenseShortTermBorrowingsExcludingFederalFundsAndSecuritiesSoldUnderAgreementsToRepurchase, InterestExpenseOtherShortTermBorrowings), 
+                            list(InterestIncomeDomesticDeposits, InterestIncomeOtherDomesticDeposits), 
+                            list(InterestIncomeInterestEarningAsset, InterestIncomeShortTermInvestmentOther), 
+                            list(InterestIncomeSecuritiesUSTreasuryAndOtherUSGovernment, InterestIncomeSecuritiesOtherUSGovernment), 
+                            list(InventoryGross, OtherInventory), 
+                            list(InventoryNoncurrent, OtherInventoryNoncurrent), 
+                            list(InventoryRawMaterialsAndSupplies, OtherInventorySupplies), 
+                            list(InventoryRealEstate, InventoryRealEstateOther), 
+                            list(Investments, OtherInvestments), 
+                            list(Liabilities, OtherLiabilities), 
+                            list(LiabilitiesCurrent, OtherLiabilitiesCurrent), 
+                            list(LiabilitiesNoncurrent, OtherLiabilitiesNoncurrent), 
+                            list(LiabilitiesSubjectToCompromise, LiabilitiesSubjectToCompromiseOtherLiabilities), 
+                            list(LiabilityForFuturePolicyBenefitExpectedFuturePolicyBenefitPeriodIncreaseDecrease, LiabilityForFuturePolicyBenefitExpectedFuturePolicyBenefitIncreaseDecreaseForOtherChange), 
+                            list(LiabilityForFuturePolicyBenefitExpectedNetPremiumPeriodIncreaseDecrease, LiabilityForFuturePolicyBenefitExpectedNetPremiumIncreaseDecreaseForOtherChange), 
+                            list(LineOfCreditFacilityIncreaseDecreaseForPeriodNet, LineOfCreditFacilityIncreaseDecreaseOtherNet), 
+                            list(LongTermDebtCurrent, OtherLongTermDebtCurrent), 
+                            list(LongTermDebtNoncurrent, OtherLongTermDebtNoncurrent), 
+                            list(LongTermInvestments, OtherLongTermInvestments), 
+                            list(MortgageLoansOnRealEstatePeriodIncreaseDecrease, MortgageLoansOnRealEstateOtherDeductions), 
+                            list(NetCashProvidedByUsedInFinancingActivitiesContinuingOperations, ProceedsFromPaymentsForOtherFinancingActivities), 
+                            list(NetIncomeLossAttributableToNonredeemableNoncontrollingInterest, NoncontrollingInterestInNetIncomeLossOtherNoncontrollingInterestsNonredeemable), 
+                            list(NetIncomeLossAttributableToRedeemableNoncontrollingInterest, NoncontrollingInterestInNetIncomeLossOtherNoncontrollingInterestsRedeemable), 
+                            list(NonoperatingGainsLosses, OtherNonoperatingGainsLosses), 
+                            list(NonoperatingIncomeExpense, OtherNonoperatingIncomeExpense), 
+                            list(NonoperatingIncomeExpense, OtherNonoperatingAssetRelatedIncome), 
+                            list(NontradeReceivables, OtherReceivables), 
+                            list(NotesAndLoansReceivableGrossNoncurrent, OtherReceivableBeforeAllowanceForCreditLossNoncurrent), 
+                            list(NotesAndLoansReceivableNetNoncurrent, OtherReceivableAfterAllowanceForCreditLossNoncurrent), 
+                            list(OperatingExpenses, OtherGeneralExpense), 
+                            list(OperatingExpenses, OtherExpenses), 
+                            list(PartnersCapital, OtherPartnersCapital), 
+                            list(PartnersCapitalAccountPeriodIncreaseDecrease, PartnersCapitalOther), 
+                            list(srt:PayablesToBrokerDealersAndClearingOrganizations, OtherPayablesToBrokerDealersAndClearingOrganizations), 
+                            list(PaymentsForProceedsFromRealEstatePartnershipInvestmentNet, PaymentsForProceedsFromOtherRealEstatePartnerships), 
+                            list(PaymentsForRepurchaseOfEquity, PaymentsForRepurchaseOfOtherEquity), 
+                            list(PaymentsToAcquireBusinessesNetOfCashAcquired, OtherPaymentsToAcquireBusinesses), 
+                            list(PaymentsToAcquireLoansAndLeasesHeldForInvestment, PaymentsToAcquireOtherLoansAndLeasesHeldForInvestment), 
+                            list(PaymentsToAcquireProductiveAssets, PaymentsToAcquireOtherProductiveAssets), 
+                            list(PaymentsToAcquirePropertyPlantAndEquipment, PaymentsToAcquireOtherPropertyPlantAndEquipment), 
+                            list(PaymentsToAcquireReceivables, PaymentsToAcquireOtherReceivables), 
+                            list(PaymentsToPurchaseLoansHeldForSale, PaymentsToPurchaseOtherLoansHeldForSale), 
+                            list(PolicyholderAccountBalancePeriodIncreaseDecrease, PolicyholderAccountBalanceIncreaseDecreaseFromOtherChange), 
+                            list(PolicyholderFunds, OtherPolicyholderFunds), 
+                            list(PreferredStockDividendsAndOtherAdjustments, OtherPreferredStockDividendsAndAdjustments), 
+                            list(PrepaidExpenseCurrent, OtherPrepaidExpenseCurrent), 
+                            list(PrepaidExpenseNoncurrent, PrepaidExpenseOtherNoncurrent), 
+                            list(ProceedsFromCollectionOfLoansHeldForSale, ProceedsFromCollectionOfOtherLoansHeldForSale), 
+                            list(ProceedsFromIssuanceOfDebt, ProceedsFromOtherDebt), 
+                            list(ProceedsFromIssuanceOfLongTermDebt, ProceedsFromIssuanceOfOtherLongTermDebt), 
+                            list(ProceedsFromIssuanceOrSaleOfEquity, ProceedsFromOtherEquity), 
+                            list(ProceedsFromRepaymentsOfDebt, ProceedsFromRepaymentsOfOtherDebt), 
+                            list(ProceedsFromRepaymentsOfLongTermDebtAndCapitalSecurities, ProceedsFromRepaymentsOfOtherLongTermDebt), 
+                            list(ProceedsFromSaleAndCollectionOfReceivables, ProceedsFromSaleAndCollectionOfOtherReceivables), 
+                            list(ProceedsFromSaleMaturityAndCollectionsOfInvestments, ProceedsFromSaleAndMaturityOfOtherInvestments), 
+                            list(ProceedsFromSaleOfLoansHeldForSale, ProceedsFromSaleOfOtherLoansHeldForSale), 
+                            list(ProceedsFromSaleOfProductiveAssets, ProceedsFromSaleOfOtherProductiveAssets), 
+                            list(ProceedsFromSaleOfPropertyPlantAndEquipment, ProceedsFromSaleOfOtherPropertyPlantAndEquipment), 
+                            list(ProceedsFromShortTermDebt, ProceedsFromOtherShortTermDebt), 
+                            list(PropertyPlantAndEquipmentGross, PropertyPlantAndEquipmentOther), 
+                            list(PropertyPlantAndEquipmentNet, PropertyPlantAndEquipmentOtherNet), 
+                            list(ProvisionForLoanLeaseAndOtherLosses, ProvisionForOtherCreditLosses), 
+                            list(ProvisionForLoanLeaseAndOtherLosses, ProvisionForOtherLosses), 
+                            list(PublicUtilitiesPropertyPlantAndEquipmentPlantInService, PublicUtilitiesPropertyPlantAndEquipmentOtherPropertyPlantAndEquipment), 
+                            list(RealEstateAccumulatedDepreciationPeriodIncreaseDecrease, RealEstateAccumulatedDepreciationOtherDeductions), 
+                            list(RealEstateInvestmentPropertyAtCost, RealEstateInvestmentsOther), 
+                            list(RealEstatePeriodIncreaseDecrease, RealEstateOtherDeductions), 
+                            list(RealizedInvestmentGainsLosses, GainLossOnSaleOfOtherInvestments), 
+                            list(ReceivablesFromBrokersDealersAndClearingOrganizations, OtherReceivablesFromBrokerDealersAndClearingOrganizations), 
+                            list(ReceivablesNetCurrent, AccountsAndOtherReceivablesNetCurrent), 
+                            list(RedeemableNoncontrollingInterestEquityCarryingAmount, RedeemableNoncontrollingInterestEquityOtherCarryingAmount), 
+                            list(RepaymentsOfDebt, RepaymentsOfOtherDebt), 
+                            list(RepaymentsOfLongTermDebt, RepaymentsOfOtherLongTermDebt), 
+                            list(RepaymentsOfShortTermDebt, RepaymentsOfOtherShortTermDebt), 
+                            list(RestrictedCashAndInvestmentsCurrent, OtherRestrictedAssetsCurrent), 
+                            list(RestrictedCashAndInvestmentsNoncurrent, OtherRestrictedAssetsNoncurrent), 
+                            list(RestructuringCharges, OtherRestructuringCosts), 
+                            list(ResultsOfOperationsExpenseFromOilAndGasProducingActivities, ResultsOfOperationsExpenseOther), 
+                            list(SecuredDebt, SecuredDebtOther), 
+                            list(SellingAndMarketingExpense, OtherSellingAndMarketingExpense), 
+                            list(SellingGeneralAndAdministrativeExpense, OtherSellingGeneralAndAdministrativeExpense), 
+                            list(ServicingAssetAtAmortizedValuePeriodIncreaseDecrease, ServicingAssetAtAmortizedValueOtherChangesThatAffectBalanceAmount), 
+                            list(ServicingAssetAtFairValuePeriodIncreaseDecrease, ServicingAssetAtFairValueOtherChangesThatAffectBalance), 
+                            list(ServicingLiabilityAtAmortizedValuePeriodIncreaseDecrease, ServicingLiabilityAtAmortizedCostOtherIncreaseDecreaseInObligation), 
+                            list(ServicingLiabilityAtFairValuePeriodIncreaseDecrease, ServicingLiabilityAtFairValueOtherChangesThatAffectBalance), 
+                            list(ShareBasedCompensationArrangementByShareBasedPaymentAwardNonOptionEquityInstrumentsPeriodIncreaseDecrease, ShareBasedCompensationArrangementByShareBasedPaymentAwardNonOptionEquityInstrumentsOther), 
+                            list(ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOutstandingPeriodIncreaseDecrease, ShareBasedCompensationArrangementByShareBasedPaymentAwardOptionsOtherIncreasesDecreasesInPeriod), 
+                            list(ShortTermBorrowings, OtherShortTermBorrowings), 
+                            list(ShortTermInvestments, OtherShortTermInvestments), 
+                            list(srt:StandardizedMeasureOfDiscountedFutureNetCashFlowsRelatingToProvedOilAndGasReserves, srt:StandardizedMeasureOfDiscountedFutureNetCashFlowOfProvedOilAndGasReservesOther), 
+                            list(StockholdersEquityPeriodIncreaseDecrease, StockholdersEquityOther), 
+                            list(SupplementalUnemploymentBenefits, SupplementalUnemploymentBenefitsOtherPostemployment), 
+                            list(TaxesExcludingIncomeAndExciseTaxes, TaxesOther), 
+                            list(TaxesPayableCurrent, AccrualForTaxesOtherThanIncomeTaxesCurrent), 
+                            list(TemporaryEquityIssuePeriodIncreaseOrDecrease, TemporaryEquityOtherChanges))

@@ -1,0 +1,195 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0139.9855 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+{nonils @concept in $BANKING_MEASURES_BETWEEN_ZERO_AND_ONE @srt:ConsolidatedEntitiesAxis = none}#fact1 > 1 
+
+message
+
+"The element {$fact1.concept.name} with a value of {$fact1} has a value greater than 100 percent.  The measure {$fact1.concept.name} should have a value between zero and one as this is reported as a percentage. Check that the value has the appropriate scale.  In XBRL files a value of 1 is equivalent to 100%.
+ 
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Decimals: {$fact1.decimals}
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+SEVERITY error
+effectiveDate $effective_dates[$ruleId]
+
+
+assert US.0139.9856 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+{@concept=TierOneRiskBasedCapitalRequiredForCapitalAdequacy}#fact1 > {@TierOneRiskBasedCapital}#fact2
+
+message
+"The value of the Tier 1 capital {$fact2} is less than the minimum Tier 1 capital to be adequately capitalized with a value of {$fact1}. Tier 1 capital should generally be greater than the amount required to be adequately capitalized. Confirm that the Tier 1 capital or minimum Tier 1 capital to be adequately capitalized has been tagged with the appropriate scale.
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+assert US.0139.9857 satisfied 
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$aggAssets =[covered @concept=Assets];
+$aggAssets#otherFact1 < {@concept=RiskWeightedAssets where $fact.period==$aggAssets.period and $fact.unit ==$aggAssets.unit}#fact1
+
+message
+"The value of the banks Assets of {$otherFact1} is less than the banks Risk Weighted Assets of {$fact1}. Risk Weighted Assets should not be greater than the banks Assets. Confirm that Risk Weighted Assets has been tagged with the appropriate scale.
+The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+//----------------9858-----------------------//
+assert  US.0139.9858 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+// SHould be 6.0 percent for fact2 vs 8% for well capitalized (fact1). If greater then peraps the buffer of 2.5% is an issue //
+
+$fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets}
+$fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets}
+$BufferAmount = 0.085
+
+$bufferMessage = if $fact2  != 0.085
+                    "Confirm that the Tier One capital percentages have been tagged with the appropriate scale."
+                else 
+                    "It looks like the tier 1 capital includes a buffer.  If a buffer is used the extension element TierOneRiskBasedCapitalRequiredForCapitalAdequacyWithBufferToRiskWeightedAssets should be used rather than the element TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets." 
+
+if $fact2 > $fact1
+        true
+else
+        false
+
+message
+"The percentage of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the percentage of Tier One capital to be well capitalized with a value of  {$fact1}.
+
+{$bufferMessage}
+
+The properties of this {$fact2.concept.name} fact are:
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+//----------------9859-----------------------//
+
+assert  US.0139.9859 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$fact1 = {nonils @TierOneRiskBasedCapitalRequiredToBeWellCapitalized}
+$fact2 = {nonils @TierOneRiskBasedCapitalRequiredForCapitalAdequacy}
+$CapAddAndBufferAmount = (0.085 * ($fact1 / 0.08));
+$BufferAmount = 0.025 * ($fact1 / 0.08)
+
+$bufferMessage = if tolerance_for_decimals($fact2, $CapAddAndBufferAmount, 2 )
+                     "Confirm that the Tier One capital values have been tagged with the appropriate scale."
+                else 
+                    "It looks like the tier 1 capital includes a buffer with a value of " + $BufferAmount.string + ", if a buffer is used the extension element TierOneRiskBasedCapitalRequiredForCapitalAdequacyWithBuffer should be used rather than the element TierOneRiskBasedCapitalRequiredForCapitalAdequacy." 
+                     
+if $fact2 > $fact1
+        true
+else
+        false
+
+message
+"The value of the Tier 1 capital to be adequately capitalized of {$fact2} is greater than the value of Tier One capital to be well capitalized with a value of  {$fact1}. 
+
+{$bufferMessage}
+
+The properties of this {$fact2.concept.name} fact are:
+Period :{$fact2.period}
+Dimensions : {$fact2.dimensions.join(', ','=')}
+Unit : {$fact2.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]
+
+//----------------9860-----------------------//
+
+assert US.0139.9860 satisfied
+
+$ruleId = (rule-name().split('.'))[rule-name().split('.').length]
+
+{@concept=TierOneRiskBasedCapitalToRiskWeightedAssets}#otherFact1 < {@concept=TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets}#fact1
+
+message
+"The value of the Tier 1 capital (TierOneRiskBasedCapitalToRiskWeightedAssets) of {$otherFact1} is less than the minimum Tier One capital required to be adequately capitalized with a value of  {$fact1}.  Tier One capital should generally be greater than the minimum requirement to be adequately capitalized. 
+Confirm that the Tier One capital or  Tier One capital required to be adequately capitalized has been tagged with the appropriate scale.
+{$otherFact1.concept.name}The properties of this {$fact1.concept.name} fact are:
+
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}\n
+
+Rule Element Id:{$ruleId}
+Rule version: {$ruleVersion}"
+
+severity error
+effectiveDate $effective_dates[$ruleId]

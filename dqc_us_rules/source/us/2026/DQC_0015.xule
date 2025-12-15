@@ -1,0 +1,45 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+assert US.0015 satisfied
+
+/** DQCRT RULE **/
+if not applicable_form_string('0015')
+	skip
+else
+
+$fact1 =
+	{nonils @concept in $NON_NEG_ITEMS.keys @unit=* where $fact < 0 and ($fact.dimensions.length == 0 or 
+		(not match_set_substring($fact, $EXCLUDE_NON_NEG_STRING_MEMBERS)
+		and (to-set($fact.dimensions-explicit.values.name) intersect $EXCLUDE_NON_NEG_MEMBERS).length == 0
+		and ($fact.dimensions.keys.name intersect $EXCLUDE_NON_NEG_AXIS).length == 0
+		and not_elim_adjust($fact, $EXCLUDE_NON_NEG_AXIS_MEMBERS)))
+		};
+$rule_suffix_id = $NON_NEG_ITEMS[$fact1.concept.name];
+
+true
+
+message
+"{$fact1.concept} has a value of {$fact1} which is less than zero. This element should not have a negative value. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this {$fact1.concept} fact are:
+Period :{$fact1.period}
+Dimensions : {$fact1.dimensions.join(', ','=')}
+Unit : {$fact1.unit}
+Rule version: {$ruleVersion}"
+
+rule-suffix
+$rule_suffix_id
+
+severity error
+
+effectiveDate $effective_dates[$rule_suffix_id]
+

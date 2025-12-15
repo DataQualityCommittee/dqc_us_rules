@@ -1,0 +1,88 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+ASSERT US.0181.10180 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$children_of_nonoperating = navigate summation-item descendants  from  list(NonoperatingIncomeExpense) returns set target-name
+
+$invalid_Concepts = $children_of_nonoperating intersect set(InterestExpense,InterestExpenseOperating)
+
+for $x in $invalid_Concepts
+    true
+   
+   message
+"The concept {$x} is a descendant of NonoperatingIncomeExpense.  This element {$x} includes operating interest expense which should not be included as a component of NonoperatingIncomeExpense.  Select the nonoperating interest expense element InterestExpenseNonoperating instead of {$x}.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0181.10181 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$children_of_nonoperating = navigate summation-item descendants  from  list(InterestIncomeExpenseNet) returns set target-name
+
+$invalid_Concepts = $children_of_nonoperating intersect set(InterestExpense,InterestExpenseNonoperating)
+
+for $x in $invalid_Concepts
+    true
+   
+   message
+"The concept {$x} is a descendant of InterestIncomeExpenseNet.  This element InterestIncomeExpenseNet represents operating interest income expense net. The element {$x} represents non operating interest and should  not be included as a component of InterestIncomeExpenseNet.  Select the operating interest expense element InterestExpenseOperating instead of {$x}.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+ASSERT US.0181.10182 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$children_of_nonoperating = navigate summation-item descendants  from  list(OperatingExpenses) returns set target-name
+
+$invalid_Concepts = $children_of_nonoperating intersect set(InterestExpense,InterestExpenseNonoperating)
+
+for $x in $invalid_Concepts
+    true
+   
+   message
+"The concept {$x} is a descendant of OperatingExpenses.  The element OperatingExpenses represents operating expenses. The element {$x} represents non operating interest and should  not be included as a calculation component of OperatingExpenses.  Select the operating interest expense element InterestExpenseOperating instead of {$x}.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
