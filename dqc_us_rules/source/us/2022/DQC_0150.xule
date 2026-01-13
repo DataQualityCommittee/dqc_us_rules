@@ -100,8 +100,8 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$rule_id]
-
+effectiveDate $effective_dates[$rule_id] 
+rule-focus $dimensionTotal
 
 ASSERT US.0150.9877 SATISFIED
 
@@ -193,7 +193,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$rule_id]
-
+rule-focus $dimensionTotal
 
 /**DQC 0150.10200 **/
 /** Determine if they have a reconcilaition in the 10-K for segment net income and if a calculation of the rec does not exist then report an error. This only works when they have reported a value with the ConsolidationItemsAxis in the segment table.  
@@ -282,6 +282,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus first($consolidationItemsAbsent)
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -330,4 +331,5 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus first($NumberOfSegments)
 effectiveDate $effective_dates[$rule_id]
