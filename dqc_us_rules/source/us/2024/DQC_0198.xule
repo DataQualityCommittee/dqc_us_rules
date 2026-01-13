@@ -76,7 +76,7 @@ Rule version: {$ruleVersion}"
 
 
 severity error
-
+rule-focus $concept-value
 effectiveDate $effective_dates[$rule_id]
 
 
@@ -162,7 +162,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $percentage-value
 effectiveDate $effective_dates[$rule_id]
 
 /** Check if the domestic and foreign member are used.**/
@@ -205,7 +205,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $IncomeTax
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0198.10661 satisfied
@@ -222,6 +222,7 @@ else
 
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
     if list({covered @IncomeTaxAuthorityAxis = *}).length > 0 and exists([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
+        $factValue = first(list({covered @IncomeTaxAuthorityAxis = *}))
         true
     else
         false
@@ -231,9 +232,8 @@ else
 message
 "The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
 
-
 severity error
-
+rule-focus $factValue
 effectiveDate $effective_dates[$rule_id]
 /** Complete as part of V27 rules **/
 
