@@ -1,0 +1,61 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: IFRS
+
+**/
+
+RULE-NAME-PREFIX DQC
+
+
+Assert IFRS.0232.11000 satisfied
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$ifrs18_Flag = dts-document-locations(taxonomy()).contains('https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs_18_entry_point_2025-03-27.xsd')
+
+
+// Added rule but the false flag turns it off for now until we go to V30.//
+if $ifrs18_Flag and false
+
+    /**Identify all concepts used on the statement of operating activities or income statement by looking at the presentation parent-child relationships in the STatement of operating activities role, which starts with the string Statement**/
+    $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+    $presNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Statement -')
+    and (not $item.role.description.lower-case.contains('parenthetical'))
+    and (not $item.role.uri.lower-case.contains('parenthetical')) 
+    and (not $item.role.uri.lower-case.contains('equity')) 
+    and (not $item.role.uri.lower-case.contains('deficit')) 
+    and (not $item.role.uri.lower-case.contains('stockholders')) 
+    and (not $item.role.uri.lower-case.contains('capital')) 
+    and (not $item.role.uri.lower-case.contains('investment')) 
+    and (not $item.role.uri.lower-case.contains('changes')) 
+    and (not $item.role.uri.lower-case.contains('shareholder')) 
+    and (not $item.role.uri.lower-case.contains('convertible')) 
+    and (not $item.role.uri.lower-case.contains('preferred'))  
+    and (not $item.role.uri.lower-case.contains('temporaryequity')) 
+    and (not $item.role.uri.lower-case.contains('redeemable'))
+    and (not $item.role.uri.lower-case.contains('netproceedsfromallsources'))
+    and (not $item.role.uri.lower-case.contains('membersinterest'))
+    and (not $item.role.uri.lower-case.contains('highlights'))
+                      
+    for $presNetwork in $presNetworks
+        $concepts_in_role = taxonomy().networks(parent-child, $presNetwork.role).concepts;
+
+        /** Of the concepts identified, identify those concepts identify those ones that totals and are not distinctly operating items.**/
+        $unallowed_concepts = filter $concepts_in_role where $item.name in list(Depreciation, Amortisation, ImpairmentLossReversalOfImpairmentLossRecognisedInProfitOrLoss) 
+
+        for $concept in $unallowed_concepts
+            true
+else 
+    skip
+
+message
+"The concept {$concept.name} is used in the statement of operating activities or income statement, but is not allowed. These items represent totals of operating, investing, or financing activities and should not be included as distinct items.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
