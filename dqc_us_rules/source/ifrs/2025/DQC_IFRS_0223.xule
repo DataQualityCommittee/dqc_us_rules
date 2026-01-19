@@ -14,8 +14,10 @@ Assert IFRS.0223.10709 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $ifrs18_Flag = dts-document-locations(taxonomy()).contains('https://xbrl.ifrs.org/taxonomy/2025-03-27/ifrs_18_entry_point_2025-03-27.xsd')
+
+$ifrsIAS1_Flag = dts-document-locations(taxonomy()).contains('https://xbrl.ifrs.org/taxonomy/2025-03-27/full_ifrs_entry_point_2025-03-27.xsd')
                             
-if $ifrs18_Flag
+if $ifrs18_Flag and not $ifrsIAS1_Flag
 
 /**Identify all concepts used on the statement of operating activities or income statement by looking at the presentation parent-child relationships in the STatement of operating activities role, which starts with the string Statement**/
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];

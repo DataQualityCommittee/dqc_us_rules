@@ -101,8 +101,8 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-effectiveDate $effective_dates[$rule_id]
-
+effectiveDate $effective_dates[$rule_id] 
+rule-focus $dimensionTotal
 
 ASSERT US.0150.9877 SATISFIED
 
@@ -195,6 +195,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$rule_id]
+rule-focus $dimensionTotal
 
 
 /**DQC 0150.9878 **/
@@ -275,6 +276,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus first($consolidationItemsAbsent)
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0150.10076 SATISFIED
@@ -322,3 +324,4 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$rule_id]
+rule-focus first($NumberOfSegments)
