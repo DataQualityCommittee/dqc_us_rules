@@ -32,8 +32,8 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A','10-Q','10-Q/A','
 
 		if taxonomy().concept($fsConcept).period-type == instant
 
-			$fsConceptItems = list({@concept = $fsConcept @BalanceSheetLocationAxis = * @unit = *});
-			$locationAxis = "BalanceSheetLocationAxis";
+			$fsConceptItems = list({@concept = $fsConcept @StatementOfFinancialPositionLocationBalanceAxis = * @unit = *});
+			$locationAxis = "StatementOfFinancialPositionLocationBalanceAxis";
 			if $fsConceptItems.length == 1
 				
 				true
@@ -41,8 +41,8 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A','10-Q','10-Q/A','
 				
 				false
 		else
-			$fsConceptItems = list({@concept = $fsConcept @IncomeStatementLocationAxis = * @unit = *});
-			$locationAxis = "IncomeStatementLocationAxis";
+			$fsConceptItems = list({@concept = $fsConcept @StatementOfIncomeLocationBalanceAxis = * @unit = *});
+			$locationAxis = "StatementOfIncomeLocationBalanceAxis";
 			if $fsConceptItems.length == 1
 				true
 			else 

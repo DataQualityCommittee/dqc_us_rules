@@ -101,6 +101,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
+rule-focus $dimensionTotal
 
 
 ASSERT US.0150.9877 SATISFIED
@@ -194,7 +195,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
-
+rule-focus $dimensionTotal
 
 /**DQC 0150.9878 **/
 /** FIND WHERE OPERATING SEGMENT HAS NOT BEEN USED. 
@@ -275,6 +276,7 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
+rule-focus first($consolidationItemsAbsent)
 
 ASSERT US.0150.10076 SATISFIED
 
@@ -320,4 +322,5 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus first($NumberOfSegments)
 effectiveDate $effective_dates[$ruleId]

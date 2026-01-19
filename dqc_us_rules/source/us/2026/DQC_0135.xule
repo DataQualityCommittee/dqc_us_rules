@@ -235,14 +235,14 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covere
 					* TO DO At some point we may want to update to check if there is a total and if not then check the detail.
 					***/
 
-					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@BalanceSheetLocationAxis = * @unit = * @@BalanceSheetLocationAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@StatementOfFinancialPositionLocationBalanceAxis = * @unit = * @@StatementOfFinancialPositionLocationBalanceAxis = * @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=*  @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
 				    
 				
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					if exists({nonils @concept = $related_ext_enum @@BalanceSheetLocationAxis = *})
+					if exists({nonils @concept = $related_ext_enum @@StatementOfFinancialPositionLocationBalanceAxis = *})
 						
 							false
 					else 
@@ -250,13 +250,13 @@ if set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covere
 							true
 				else
 					/** Added @@RestructuringCostAndReserveAxis != * @@srt:ProductOrServiceAxis != * for restructuring example where restructuring costs down to COGS seemed adequate rather than focing further down. Needs further discussion if this is appropriate. **/
-					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@IncomeStatementLocationAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * @@RestructuringCostAndReserveAxis != * @@srt:ProductOrServiceAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
+					$FS_Concept_Item1 = {nonils @concept = $FS_concept @@StatementOfIncomeLocationBalanceAxis = * @unit = *  @@FairValueByAssetClassAxis != * @@FairValueByLiabilityClassAxis != * @@FinancialInstrumentAxis != * @@RetirementPlanNameAxis != * @@RetirementPlanTypeAxis != * @@RetirementPlanSponsorLocationAxis !=* @@DerivativeInstrumentRiskAxis != * @@DerivativeInstrumentsGainLossByHedgingRelationshipAxis != * @@EnvironmentalRemediationSiteAxis != * @@HedgingDesignationAxis != * @@RestructuringCostAndReserveAxis != * @@srt:ProductOrServiceAxis != * where $fact != 0 and ($fact.dimensions-explicit.values.name not in $FairValueBreakdownItemsNotChecked)};
 					
 				/** Determine if any the extensible list element has been used with a value 
 				** In some cases the context does not need the related extension because it is provided at a different dimensional level.
 				** We need to check that either the BS Location or IS location axis has also been used with the item. If any of these axis are used then no error is reported
 				**/
-					if exists({nonils @concept = $related_ext_enum @@IncomeStatementLocationAxis = *})
+					if exists({nonils @concept = $related_ext_enum @@StatementOfIncomeLocationBalanceAxis = *})
 						
 							false
 					else 

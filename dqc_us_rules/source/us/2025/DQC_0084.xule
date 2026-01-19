@@ -6,6 +6,7 @@ DQC Rules
 Taxonomy: US GAAP 2024
 **/
 
+rule-name-prefix DQC
 
 assert US.0084.9298 satisfied
 
@@ -100,7 +101,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $fact1
+

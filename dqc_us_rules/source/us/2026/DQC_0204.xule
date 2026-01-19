@@ -48,7 +48,7 @@ if not applicable_form(rule-name())
 	skip
 else
 
-$fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in ($PPE_MEMBERS - set(SoftwareDevelopmentMember,SoftwareAndSoftwareDevelopmentCostsMember)) where $fact  != 0};
+$fact1 = {@FiniteLivedIntangibleAssetsByMajorClassAxis in ($PPE_MEMBERS - $SOFTWARE_DEVELOPMENT_ITEMS) where $fact  != 0};
 
 exists($fact1) 
 
@@ -78,7 +78,7 @@ if not applicable_form(rule-name())
 	skip
 else
 
-$fact3= {@PropertyPlantAndEquipmentByTypeAxis in ($INTANGIBLE_FINITE_ASSETS_MEMBERS + $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS) };
+$fact3= {@PropertyPlantAndEquipmentByTypeAxis in (($INTANGIBLE_FINITE_ASSETS_MEMBERS + $INTANGIBLE_INDEFINITE_ASSETS_MEMBERS) - $SOFTWARE_DEVELOPMENT_ITEMS) };
 
 exists($fact3) 
 
@@ -113,7 +113,7 @@ $fact4= {@concept = CapitalizedComputerSoftwareGross @PropertyPlantAndEquipmentB
 exists($fact4) 
 
 message
-"The concept  {$fact4.name} with a value of {$fact4} has been used with the axis PropertyPlantAndEquipmentByTypeAxis and the member {$fact4.dimension(PropertyPlantAndEquipmentByTypeAxis)}. The concept CapitalizedComputerSoftwareGross should not be disaggregated using this axis as the software in the type of PPE. Replace the concept with the concept PropertyPLantAndEquipmentGross.
+"The concept  {$fact4.name} with a value of {$fact4} has been used with the axis PropertyPlantAndEquipmentByTypeAxis and the member {$fact4.dimension(PropertyPlantAndEquipmentByTypeAxis)}. The concept CapitalizedComputerSoftwareGross should not be disaggregated using this axis as the software in not a type of PPE. Replace the concept with the concept PropertyPLantAndEquipmentGross.
 
 Concept : {$fact4.name}
 Value : {$fact4}

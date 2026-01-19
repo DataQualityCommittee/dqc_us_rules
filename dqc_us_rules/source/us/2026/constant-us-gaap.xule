@@ -376,6 +376,9 @@ constant $INTANGIBLE_MONETARY_ITEMS = navigate parent-child descendants from lis
 
 constant $INTANGIBLE_DURATION_ITEMS = navigate parent-child descendants from list(IntangibleAssetsDisclosureTextBlock) taxonomy $US-GAAP where $relationship.target.data-type.name == xbrli:durationItemType  returns set (target-name)
 
+
+constant $SOFTWARE_DEVELOPMENT_ITEMS = set(SoftwareDevelopmentMember, SoftwareAndSoftwareDevelopmentCostsMember, SoftwareInternallyDevelopedAndPurchasedMember, SoftwareInDevelopmentMember,SoftwarePurchasedMember)
+
 /** 
 		*  Rule form lookup schedule
 		*
