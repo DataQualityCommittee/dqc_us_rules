@@ -100,6 +100,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus $dimensionTotal
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -193,6 +194,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus $dimensionTotal
 effectiveDate $effective_dates[$ruleId]
 
 
@@ -274,6 +276,7 @@ Rule Element Id:{$ruleId}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
+rule-focus first($consolidationItemsAbsent)
 effectiveDate $effective_dates[$ruleId]
 
 ASSERT US.0150.10076 SATISFIED
@@ -321,3 +324,4 @@ Rule version: {$ruleVersion}"
 
 SEVERITY error
 effectiveDate $effective_dates[$ruleId]
+rule-focus first($NumberOfSegments)

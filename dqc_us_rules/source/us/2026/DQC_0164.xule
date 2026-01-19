@@ -29,7 +29,7 @@ $excluded_concepts = set(AllocatedShareBasedCompensationExpense)
 
 for $cube in $STATEMENT_CUBES  // ANALYZE EACH OF THE STATEMENT CUBES
     $dimensionsSet = filter $cube.dimensions returns $item.concept.name //GET THE DIMENSIONS ON THE CUBE
-    for $abstract in set(BalanceSheetLocationAxis, IncomeStatementLocationAxis, OtherComprehensiveIncomeLocationAxis) //LOOP THROUGH EACH LOCATION AXIS AND COMPARE TO THE CUBES DIMS
+    for $abstract in set(StatementOfFinancialPositionLocationBalanceAxis, StatementOfIncomeLocationBalanceAxis, OtherComprehensiveIncomeBalanceAxis) //LOOP THROUGH EACH LOCATION AXIS AND COMPARE TO THE CUBES DIMS
         if $dimensionsSet.contains($abstract) //IF THE CUBE DOES NOT HAVE A LOCATION AXIS EXIT THE RULE ELSE CONTINUE
             $facts_with_excluded_concept = list({covered @cube=$cube @$abstract = * where $fact.concept.name in $excluded_concepts}) //GET FACTS WITH ELEMENTS THAT ARE OK TO USE WITH AXIS
             $facts_with_bad_axis = list({covered @cube=$cube @$abstract = * where $fact.concept.name not in $excluded_concepts}) // GET FACTS THAT ARE NOT OK TO USE
@@ -65,9 +65,9 @@ else
 
 $HighLevelElements = set(Assets, Liabilities, AssetsCurrent, AssetsNoncurrent, LiabilitiesCurrent, LiabilitiesNoncurrent, LiabilitiesAndStockholdersEquity, StockholdersEquity, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest)
 
-exists({@concept in $HighLevelElements @BalanceSheetLocationAxis = *}#fact2)
+exists({@concept in $HighLevelElements @StatementOfFinancialPositionLocationBalanceAxis = *}#fact2)
 message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the BalanceSheetLocationAxis. This concept is an aggregation concept and should not be disaggregated using the BalanceSheetLocationAxis and the member {$fact2.dimension(BalanceSheetLocationAxis)}. Use a more specific line item from the fact.
+"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the StatementOfFinancialPositionLocationBalanceAxis. This concept is an aggregation concept and should not be disaggregated using the StatementOfFinancialPositionLocationBalanceAxis and the member {$fact2.dimension(StatementOfFinancialPositionLocationBalanceAxis)}. Use a more specific line item from the fact.
 
 The properties of this {$fact2.concept.name} fact are:
 
@@ -95,9 +95,9 @@ else
 
 $HighLevelElements = set(ProfitLoss, NetIncomeLoss, IncomeLossFromContinuingOperationsIncludingPortionAttributableToNoncontrollingInterest, IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest, IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments, OperatingIncomeLoss, GrossProfit, OperatingExpenses, Revenues, CostOfRevenue, OperatingCostsAndExpenses, OtherOperatingIncomeExpenseNet, NonoperatingIncomeExpense, OtherNonoperatingIncomeExpense, IncomeTaxExpenseBenefit)
 
-exists({@concept in $HighLevelElements @IncomeStatementLocationAxis = *}#fact2)
+exists({@concept in $HighLevelElements @StatementOfIncomeLocationBalanceAxis = *}#fact2)
 message
-"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the IncomeStatementLocationAxis. This concept is an aggregation concept and should not be disaggregated using the IncomeStatementLocationAxis and the member {$fact2.dimension(IncomeStatementLocationAxis)}. Use a more specific line item to report the fact value or remove the IncomeStatementLocationAxis.
+"A value of {$fact2} is reported for the concept {$fact2.concept.name} with the StatementOfIncomeLocationBalanceAxis. This concept is an aggregation concept and should not be disaggregated using the StatementOfIncomeLocationBalanceAxis and the member {$fact2.dimension(StatementOfIncomeLocationBalanceAxis)}. Use a more specific line item to report the fact value or remove the StatementOfIncomeLocationBalanceAxis.
 
 The properties of this {$fact2.concept.name} fact are:
 

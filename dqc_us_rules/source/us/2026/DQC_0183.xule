@@ -19,9 +19,9 @@ if not applicable_form(rule-name())
 	skip
 else
 
-exists({@BalanceSheetLocationAxis=* where ($fact.concept.period-type == duration and $fact.concept.data-type.name == xbrli:monetaryItemType)}#BSLocationFact)
+exists({@StatementOfFinancialPositionLocationBalanceAxis=* where ($fact.concept.period-type == duration and $fact.concept.data-type.name == xbrli:monetaryItemType)}#BSLocationFact)
 message
-"The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis BalanceSheetLocationAxis. This is a duration element. Duration elements should not be used with the balance sheet location axis. The BalanceSheetLocationAxis is used to show where a value appears in a Balance Sheet. If the element represent the explanation of the balance sheet accounts to which an accrual or duration element has been applied then one of the following two axis may be more appropriate:
+"The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationBalanceAxis. This is a duration element. Duration elements should not be used with the balance sheet location axis. The StatementOfFinancialPositionLocationBalanceAxis is used to show where a value appears in a Balance Sheet. If the element represent the explanation of the balance sheet accounts to which an accrual or duration element has been applied then one of the following two axis may be more appropriate:
 - StatementOfFinancialPositionLocationActivityAccrualAxis or 
 - StatementOfFinancialPositionLocationActivityCapitalizationAxis
 

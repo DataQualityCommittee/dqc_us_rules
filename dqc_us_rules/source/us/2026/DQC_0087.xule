@@ -22,7 +22,7 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = OperatingLeaseLiability @StatementOfFinancialPositionLocationBalanceAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -53,17 +53,17 @@ if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* 
 			else
 		
 				/** Determine if any the extensible list element has been used with a value or if the balance sheet location axis has been used with the operating lease liability **/
-				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit}) or exists([@OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*]) or exists([@OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*])
+				if exists({@OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList @unit}) or exists({@OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList @unit}) or exists([@OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*]) or exists([@OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*])
 				 	false
 				else 
 					/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityStatementOfFinancialPositionExtensibleList should have been used. **/
 					
-					if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) > 1
+					if count(list({@concept = OperatingLeaseLiability @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) > 1
 						false
 					else
-						if count(list({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*})) == 1
+						if count(list({@concept = OperatingLeaseLiability @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) == 1
 							$OLL = list({@concept = OperatingLeaseLiability @unit=*})
-							({@concept = OperatingLeaseLiability @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiability @unit=*}) or $OLL.length == 0
+							({@concept = OperatingLeaseLiability @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*} == {@concept = OperatingLeaseLiability @unit=*}) or $OLL.length == 0
 						else
 							true
 else
@@ -86,7 +86,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-
+rule-focus $leaseLiability
 effectiveDate $effective_dates[$rule_id]
 
 assert US.0087.9370 satisfied
@@ -102,7 +102,7 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -137,14 +137,14 @@ if exists([@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis @
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
-				if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
+				if count(list({@concept = OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) > 1
 					false
 				else
 					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
-					if count(list({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
-						$fact_item = {@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*}
-						$specific_error = "The element OperatingLeaseLiabilityCurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the OperatingLeaseLiabilityCurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
-						({@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityCurrent @unit=*}) or list({@concept = OperatingLeaseLiabilityCurrent @unit=*}).length == 0
+					if count(list({@concept = OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) == 1
+						$fact_item = {@concept = OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*}
+						$specific_error = "The element OperatingLeaseLiabilityCurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(StatementOfFinancialPositionLocationBalanceAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the OperatingLeaseLiabilityCurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
+						({@concept = OperatingLeaseLiabilityCurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityCurrent @unit=*}) or list({@concept = OperatingLeaseLiabilityCurrent @unit=*}).length == 0
 					else
 						$fact_item = [@concept = OperatingLeaseLiabilityCurrent @unit=*]
 						$specific_error = "The element OperatingLeaseLiabilityCurrent with a value of " + $fact_item.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
@@ -167,10 +167,8 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-
-effectiveDate $effective_dates[$rule_id]
-
 rule-focus $fact_item 
+effectiveDate $effective_dates[$rule_id]
 
 
 assert US.0087.9371 satisfied
@@ -186,7 +184,7 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -221,21 +219,21 @@ if exists([@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxi
 			 	false
 			else 
 				/** If using the balance sheet location axis the value must be seperated across 2 or more financial statement captions otherwise the element OperatingLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList should have been used. **/ 
-				$checkValue = count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*}))
+				$checkValue = count(list({@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*}))
 
-				if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) > 1
+				if count(list({@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) > 1
 					false
 				else
 					/** Check that the values on the balance sheet location axis are not a subcomponent of the total. If they are a sub component then the rule will not flag an error. **/
-					if count(list({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*})) == 1
-						$fact_item = {@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*}
-						$specific_error = "The element OperatingLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(BalanceSheetLocationAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the OperatingLeaseLiabilityNoncurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
-						({@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityNoncurrent @unit=*}) or list({@concept = OperatingLeaseLiabilityNoncurrent @unit=*}).length == 0
+					if count(list({@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*})) == 1
+						$fact_item = {@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*}
+						$specific_error = "The element OperatingLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " and the Balance Sheet Location Axis with the member " + $fact_item.dimension(StatementOfFinancialPositionLocationBalanceAxis).string + " only appears in the balance sheet line item represented by the member. The Balance Sheet Location Axis should be used when the OperatingLeaseLiabilityNoncurrent amount is split across multiple Balance Sheet line items. When the amount is not spread across multiple line items then the OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList item should be used with a value of the element name of the Balance Sheet line item.";
+						({@concept = OperatingLeaseLiabilityNoncurrent @StatementOfFinancialPositionLocationBalanceAxis = * @unit=*} == {@concept = OperatingLeaseLiabilityNoncurrent @unit=*}) or list({@concept = OperatingLeaseLiabilityNoncurrent @unit=*}).length == 0
 					else
 						$fact_item = [@concept = OperatingLeaseLiabilityNoncurrent @unit=*]
 						$specific_error = "The element OperatingLeaseLiabilityNoncurrent with a value of " + $fact_item.string + " has been used in the filing but does not appear in the financial statements of the filing. This disclosure should appear in the face financials unless it is included in another account caption. If this is the case either:
 1. The element OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList should be used to identify the account where the Operating Lease liability Noncurrent is included; or
-2. The Balance Sheet location axis should be used with two or more account members to identify into which financial statement captions the Operating Lease liability Noncurrent has been apportioned.";
+2. The Statement Of Financial Position Location Balance Axis should be used with two or more account members to identify into which financial statement captions the Operating Lease liability Noncurrent has been apportioned.";
 						true
 else
 	false
@@ -253,7 +251,6 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 SEVERITY error
-
+rule-focus $fact_item 
 effectiveDate $effective_dates[$rule_id]
 
-rule-focus $fact_item 
