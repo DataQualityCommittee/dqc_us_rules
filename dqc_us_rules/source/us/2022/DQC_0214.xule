@@ -45,14 +45,25 @@ else
 	$AccumulatedOtherComprehensiveIncomeLoss = [nonils @concept = AccumulatedOtherComprehensiveIncomeLossNetOfTax where $fact != 0];
 	$NoncontrollingInterest = [nonils @concept = MinorityInterest where $fact != 0];
 	$PreferredStockValue = [nonils @concept = PreferredStockValue where $fact != 0];
-
+	$TotalAssets = [nonils @concept = Assets where $fact != 0];
 
 	$items_to_check = list($TreasuryValue, $CommonStock, $AdditionalPaidInCapital, $RetainedEarnings, $AccumulatedOtherComprehensiveIncomeLoss, $NoncontrollingInterest, $PreferredStockValue);
 
 	for $item in $items_to_check
 		$item_in_balance_sheet = $balance_sheet_calc_target_items.contains($item.name);
 		if not $item_in_balance_sheet
-			true
+
+		/** IF 10-K make as an error, if 10-Q check if item is in presentation of equity and if is then make as an error **/
+			 if set('10-K','10-KT','10-K/A','20-F').contains([covered @concept.local-name ='DocumentType'])
+			 	true
+			 else 
+			 	/** Get the balance sheet presentation target items**/
+					$balance_sheet_presentation_target_items = navigate parent-child descendants role $balance_sheet_role returns set (target-name)
+					$item_in_balance_sheet_presentation = $balance_sheet_presentation_target_items.contains($item.name);
+					if $item_in_balance_sheet_presentation or missing($TotalAssets) or ($item * 0.05 > $TotalAssets)
+						true	
+					else
+						false
 		else
 			false
 
