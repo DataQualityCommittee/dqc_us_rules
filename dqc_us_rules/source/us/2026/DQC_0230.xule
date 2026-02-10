@@ -21,9 +21,9 @@ if not applicable_form(rule-name())
 else
      $DICT_OTHER_AGGREGATE = $OTHER_AGGREGATE.agg-to-dict(1)
     $ALL_OTHER_ITEMS = (filter $OTHER_AGGREGATE returns $item.last).to-set
-
+    /** Go through each aggregate that has an other **/
     for $item in $DICT_OTHER_AGGREGATE.keys
-    
+        /** get the set of children of the aggregate by calculation network **/
         $networks-dict = navigate summation-item children from $item returns by network set (target-name)
 
         for $network in $networks-dict.keys
@@ -37,9 +37,9 @@ else
                     if $item in $ancestors
                         false
                     else
-                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent**/
-                        $missingCalculationToItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent) intersect $unallowedOtherUsedInNetwork
-                        if $missingCalculationToItem.length > 0
+                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent rolling up to another interim total**/
+                        $missingCalculationForItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent, PropertyPlantAndEquipmentOtherNet) intersect $unallowedOtherUsedInNetwork
+                        if $missingCalculationForItem.length > 0
                             false
                         else
                              true
