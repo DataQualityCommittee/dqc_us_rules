@@ -38,7 +38,7 @@ else
                          false
                     else
                         /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent rolling up to another interim total**/
-                        $missingCalculationForItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent, PropertyPlantAndEquipmentOtherNet) intersect $unallowedOtherUsedInNetwork
+                        $missingCalculationForItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent, PropertyPlantAndEquipmentOtherNet, DisposalGroupIncludingDiscontinuedOperationOtherCurrentAssets, DisposalGroupIncludingDiscontinuedOperationOtherNoncurrentAssets, DisposalGroupIncludingDiscontinuedOperationPrepaidAndOtherAssetsCurrent) intersect $unallowedOtherUsedInNetwork
                         if $missingCalculationForItem.length > 0
                             false
                         else
