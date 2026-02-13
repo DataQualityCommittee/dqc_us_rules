@@ -56,11 +56,12 @@ rule-focus $fact1
 
 **/
 
+/**
 assert US.0121.9581 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
+
 if not applicable_form(rule-name())
 	skip
 else
@@ -72,7 +73,7 @@ else
 	$document_period = first(list({covered @concept.local-name = 'DocumentType'}));
 	$document_period_end = $document_period.period.end;
 
-	/** Prior elements included in presentation group with text priortoadoptionoftopic842 will be excluded from the rule. **/
+
 	$presDisclosureNetworks = FILTER taxonomy().networks(parent-child) where $item.role.description.contains('- Disclosure -') 
 	and ($item.role.uri.lower-case.contains('priortoadoptionoftopic842'))
 
@@ -100,7 +101,7 @@ else
 		for $transitionElement in ($transitionElements - $exceptionTransitionElements)
 
 			$fact1 = if set('S-1','S-1/A').contains([covered @concept.local-name ='DocumentType'])
-					/** Private companies do not have to adopt ASU's until after 2021-12-15 **/
+					
 					{@concept = $transitionElement where ($fact.period.start > date('2021-12-15') and $fact.concept.period-type == duration) or ($fact.period.start > date('2022-12-15') and $fact.concept.period-type == instant) and ($fact.period.end == $document_period_end)}
 				else 
 					{@concept = $transitionElement where $fact.period.end >= date('2020-01-01') and ($fact.period.end == $document_period_end)}
@@ -135,6 +136,6 @@ rule-focus $fact1
 effectiveDate $effective_dates[$rule_id]
 
 
-
+**/
 
 
