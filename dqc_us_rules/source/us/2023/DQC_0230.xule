@@ -35,10 +35,11 @@ else
                 if  $unallowedOtherUsedInNetwork.length > 0
                     $ancestors = navigate summation-item ancestors from $unallowedOtherUsedInNetwork taxonomy $US-GAAP returns set (target-name)
                     if $item in $ancestors
-                        false
+                         false
                     else
-                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent and InterestExpenseOther**/
-                        if AccountsAndOtherReceivablesNetCurrent in $unallowedOtherUsedInNetwork or InterestExpenseOther in $unallowedOtherUsedInNetwork
+                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent rolling up to another interim total**/
+                        $missingCalculationForItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent, PropertyPlantAndEquipmentOtherNet) intersect $unallowedOtherUsedInNetwork
+                        if $missingCalculationForItem.length > 0
                             false
                         else
                              true

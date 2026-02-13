@@ -75,6 +75,10 @@ else
       $numerator = {nonils @concept = $numerator_concept @unit =* where $fact != 0}
       $denominator = {nonils @concept = $denominator_concept @unit =* where $fact != 0}
 
+      $perShareItemTolerance = if taxonomy().concept($key).data-type.name == dtr-types:perShareItemType
+                              0.01
+                          else 
+                              0            
       $calc = {nonils @concept = $key @unit = * where $fact.unit.numerator == $numerator.unit}
 
       if (exists($numerator) and exists($denominator) and exists($calc))
@@ -82,17 +86,15 @@ else
           $calcResult = ($numerator / $denominator);
           $intervalsList = division_intervals($numerator, $denominator);
           $result_intervals = fact_intervals($calc);
-
-          $greaterThanLowerBound = $intervalsList[1] <= $result_intervals[2]
-          $lessThanUpperBound = $intervalsList[2] >= $result_intervals[1]
+          /** We add a penny tolerance for the per share items to account for rounding differences that can occur when calculating the per share amount. This is only for the per share items as those are the ones that have had issues with rounding differences in the past.  The logic adds a penny to drag it up if it is to low and deducts a penny to drag it down into the interval if it is too high.**/
+          $greaterThanLowerBound = $intervalsList[1] <= ($result_intervals[2] + $perShareItemTolerance)
+          $lessThanUpperBound = $intervalsList[2] >= ($result_intervals[1] - $perShareItemTolerance)
 
       if $greaterThanLowerBound and $lessThanUpperBound
         false
       else
         true
-
       else
-
           skip
 
 message

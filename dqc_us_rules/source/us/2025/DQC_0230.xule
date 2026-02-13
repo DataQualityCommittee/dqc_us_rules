@@ -37,8 +37,9 @@ else
                     if $item in $ancestors
                         false
                     else
-                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent and InterestExpenseOther**/
-                        if AccountsAndOtherReceivablesNetCurrent in $unallowedOtherUsedInNetwork or InterestExpenseOther in $unallowedOtherUsedInNetwork
+                        /** Add logic to deal with missing calculation for AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent rolling up to another interim total**/
+                        $missingCalculationForItem = set(AccountsAndOtherReceivablesNetCurrent, InterestExpenseOther, InvestmentsAndOtherNoncurrentAssets, PrepaidExpenseAndOtherAssetsCurrent, PropertyPlantAndEquipmentOtherNet) intersect $unallowedOtherUsedInNetwork
+                        if $missingCalculationForItem.length > 0
                             false
                         else
                              true
