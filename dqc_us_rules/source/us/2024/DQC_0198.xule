@@ -105,7 +105,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) and not $EGCFlag and $INCOME_TAX_NETWORKS.length > 0
     for $concept in $EQUIVALENT_TAX_RATES
-        exists([@concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15') and $fact != 0 ]#concept-value) and missing([@concept =  $concept[2] @unit = * ])
+        exists([nonils @concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15') and $fact != 0 ]#concept-value) and missing([@concept =  $concept[2] @unit = * ])
 else
     skip
 
@@ -146,7 +146,7 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) and not $EGCFlag and $INCOME_TAX_NETWORKS.length > 0
     for $concept in $EQUIVALENT_TAX_RATES
-        exists([@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15') and $fact != 0]#concept-value) and missing([@concept =  $concept[1] @unit = * ])
+        exists([nonils@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15') and $fact != 0]#concept-value) and missing([@concept =  $concept[1] @unit = * ])
 else
     skip
 
