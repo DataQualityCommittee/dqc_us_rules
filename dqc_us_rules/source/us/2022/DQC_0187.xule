@@ -44,7 +44,7 @@ for $cube in $PPE-Cubes
         if $ppe_Gross_dim_components_sum == none
             skip
         else
-            $ppe_gross < $ppe_Gross_dim_components_sum
+           tolerance_for_decimals_greater_than($ppe_Gross_dim_components_sum, $ppe_gross, $ppe_gross.decimals, 2)
 
 message
 "The value of PropertyPlantAndEquipmentGross is reported as {$ppe_gross}. The dimensional breakdown of PropertyPlantAndEquipmentGross using the axis PropertyPlantAndEquipmentByTypeAxis aggregates to a total of {$ppe_Gross_dim_components_sum}.  This is more than the value of PropertyPlantAndEquipmentGross.
