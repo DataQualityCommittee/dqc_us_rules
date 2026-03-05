@@ -18,12 +18,21 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
 /** If FinanceLeaseLiability amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseLiabilityStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
-/** Does the Finance Lease Liability exist and is the report a 10-K **/
+/** 
+Have issue where the value was reported in a historical period that the balance sheet does not cover so need to exclude these facts from the check. 
+- Work out report date
+- Because a balance sheet reports two years of data we deduct 1 year and 3 months from the balance date so it capture the current year and the prior year but not the previous year or any other periods, that may be reported in the notes.
+**/
 
-if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
+
+/** Does the Finance Lease Asset exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -102,12 +111,21 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
 /** If Finance lease liability Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityCurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
-/** Does the Finance Lease Liability exist and is the report a 10-K **/
+/** 
+Have issue where the value was reported in a historical period that the balance sheet does not cover so need to exclude these facts from the check. 
+- Work out report date
+- Because a balance sheet reports two years of data we deduct 1 year and 3 months from the balance date so it capture the current year and the prior year but not the previous year or any other periods, that may be reported in the notes.
+**/
 
-if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
+
+/** Does the Finance Lease Asset exist and is the report a 10-K **/
+
+if exists([@concept = FinanceLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -187,12 +205,20 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
 /** If Finance lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element FinanceLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** 
+Have issue where the value was reported in a historical period that the balance sheet does not cover so need to exclude these facts from the check. 
+- Work out report date
+- Because a balance sheet reports two years of data we deduct 1.3 years from the balance date so it capture the current year and the prior year but not the previous year or any other periods, that may be reported in the notes.
+**/
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 /** Does the Finance Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+if exists([@concept = FinanceLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability ) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -274,12 +300,21 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
 /** If FinanceLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element FinanceLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** 
+Have issue where the value was reported in a historical period that the balance sheet does not cover so need to exclude these facts from the check. 
+- Work out report date
+- Because a balance sheet reports two years of data we deduct 1 year and 3 months from the balance date so it capture the current year and the prior year but not the previous year or any other periods, that may be reported in the notes.
+**/
+
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = FinanceLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseAsset) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all presentation networks in the company extension **/
 
@@ -354,12 +389,21 @@ if not applicable_form(rule-name())
 	skip
 else
 
-
 /** If OperatingLeaseRightOfUseAsset amount is reported but is not included in the Financial statement presentation then the extensible list element OperatingLeaseRightOfUseAssetStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
+
+/** 
+Have issue where the value was reported in a historical period that the balance sheet does not cover so need to exclude these facts from the check. 
+- Work out report date
+- Because a balance sheet reports two years of data we deduct 1 year and 3 months from the balance date so it capture the current year and the prior year but not the previous year or any other periods, that may be reported in the notes.
+**/
+
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseAsset) and set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType'])
+if exists([@concept = OperatingLeaseRightOfUseAsset @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseAsset) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
