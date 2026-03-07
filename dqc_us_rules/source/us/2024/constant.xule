@@ -658,3 +658,5 @@ constant $OTHER_AGGREGATE = list(list(AccumulatedDepreciationDepletionAndAmortiz
                             list(TaxesExcludingIncomeAndExciseTaxes, TaxesOther), 
                             list(TaxesPayableCurrent, AccrualForTaxesOtherThanIncomeTaxesCurrent), 
                             list(TemporaryEquityIssuePeriodIncreaseOrDecrease, TemporaryEquityOtherChanges))
+
+ constant $FILIN_COMPONENTS_OF_NET_INC_LOSS = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
