@@ -544,7 +544,7 @@ constant $OTHER_AGGREGATE = list(list(AccumulatedDepreciationDepletionAndAmortiz
                             list(GoodwillPeriodIncreaseDecrease, GoodwillOtherIncreaseDecrease), 
                             list(IncomeTaxReconciliationDeductions, IncomeTaxReconciliationDeductionsOther), 
                             list(IncomeTaxReconciliationNondeductibleExpense, IncomeTaxReconciliationNondeductibleExpenseOther), 
-                            list(IncomeTaxReconciliationOtherReconcilingItems, IncomeTaxReconciliationOtherAdjustments), 
+                             /** list(IncomeTaxReconciliationOtherReconcilingItems, IncomeTaxReconciliationOtherAdjustments), NOT CLEAR THAT THIS RELATIONSHIP IS CORRECT **/
                             list(IncomeTaxReconciliationTaxContingencies, IncomeTaxReconciliationTaxContingenciesOther), 
                             list(IncomeTaxReconciliationTaxCredits, IncomeTaxReconciliationTaxCreditsOther), 
                             list(IncreaseDecreaseInAccountsPayable, IncreaseDecreaseInOtherAccountsPayable), 
@@ -661,3 +661,5 @@ constant $OTHER_AGGREGATE = list(list(AccumulatedDepreciationDepletionAndAmortiz
                             list(TaxesExcludingIncomeAndExciseTaxes, TaxesOther), 
                             list(TaxesPayableCurrent, AccrualForTaxesOtherThanIncomeTaxesCurrent), 
                             list(TemporaryEquityIssuePeriodIncreaseOrDecrease, TemporaryEquityOtherChanges))
+
+constant $FILIN_COMPONENTS_OF_NET_INC_LOSS = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)

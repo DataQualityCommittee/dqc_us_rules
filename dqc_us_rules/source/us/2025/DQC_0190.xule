@@ -229,17 +229,17 @@ severity error
 
 effectiveDate $effective_dates[$rule_id]
 
-
+/** Decided to Remove Rule 5 as per discussion with Shelly Wavrin and Sonny Jablonski 
 ASSERT US.0190.10605 satisfied
 
-/** CORRESPONDS TO FASB RULE 5 
+CORRESPONDS TO FASB RULE 5 
 
 "DQC Rule 5 (Example 2b/Note 2a) (Example 2c/Note 1a)"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair and Contract Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue] is expected to be used when "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value" (L40[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue]) or "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Contract Value" (L44[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue]) are also used to tag amounts in the same plan year.
 **/
-
+/**
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
+
 if not applicable_form(rule-name())
 	skip
 else
@@ -273,6 +273,7 @@ Rule version: {$ruleVersion}"
 severity error
 rule-focus $EBP_InterestInMasterTrust
 effectiveDate $effective_dates[$rule_id]
+**/
 
 ASSERT US.0190.10606 satisfied
 
