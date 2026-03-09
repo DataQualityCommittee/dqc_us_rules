@@ -226,7 +226,7 @@ else
                         else
                             if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
 
-                                $RegularMessage = "The filer has reported a value for the concept" + $percentage-value.concept.name.local-name + " with a value of " + $percentage-value.string + ". This value should be calculated by taking the value of " + $num.concept.name.local-name + " with a value of " + $num.string + " divided by the value of net income before tax of " +  $base_Income.string + ". This equals " +  $calc_value.string + ". Please provide the equivalent percentage amount for this concept of " + $percentage-value.string + "."
+                                $RegularMessage = "The filer has reported a value for the concept " + $percentage-value.concept.name.local-name + " with a value of " + $percentage-value.string + ". This value should be calculated by taking the value of " + $num.concept.name.local-name + " with a value of " + $num.string + " divided by the value of net income before tax of " +  $base_Income.string + ". This equals " +  $calc_value.string + ". Please provide the equivalent percentage amount for this concept of " + $percentage-value.string + "."
 
                             //** THIS HANDLES THE NCI ADJUSTMENT WHERE NCI is CALCULATED AFTER DEDUCTING NCI **/
 
@@ -274,7 +274,7 @@ else
 
 message
 "{$RegularMessage} 
-{ IF $NCI_Flag $NCI_Message else $RegularMessage}
+{ IF $NCI_Flag $NCI_Message else ""}
 {$percentage-message}
 
 The properties of this {$percentage-value.concept} fact are:
