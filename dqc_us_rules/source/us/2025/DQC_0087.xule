@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2024
+Taxonomy: US GAAP 2025
 **/
 
 
@@ -22,7 +22,11 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
+
+if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -102,7 +106,11 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
-if exists([@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
+
+if exists([@concept = OperatingLeaseLiabilityCurrent @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability) and  set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 
@@ -183,8 +191,11 @@ else
 /** If operating lease liability Non Current amount is reported but is not included in the Financial statement calculation then the extensible list element OperatingLeaseLiabilityNoncurrentStatementOfFinancialPositionExtensibleList must be tagged with a value or the Balance Sheet Location Axis should be used. **/
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
+$ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
 
-if exists([@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
+$PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
+
+if exists([@concept = OperatingLeaseLiabilityNoncurrent @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability ) and  set('10-K','10-KT','20-F').contains([covered @concept.local-name ='DocumentType']) 
 	
 	/** Identify all calculation networks in the company extension **/
 

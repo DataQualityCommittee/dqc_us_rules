@@ -234,17 +234,17 @@ severity error
 rule-focus first($InvalidAxis)
 effectiveDate $effective_dates[$rule_id]
 
-
+/** Decided to Remove Rule 5 as per discussion with Shelly Wavrin and Sonny Jablonski
 ASSERT US.0190.10605 satisfied
-
+**/
 /** CORRESPONDS TO FASB RULE 5 
 
 "DQC Rule 5 (Example 2b/Note 2a) (Example 2c/Note 1a)"Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair and Contract Value"[ EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairAndContractValue] is expected to be used when "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Fair Value" (L40[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue]) or "Employee Benefit Plan, Investment, Plan Interest in Master Trust, Contract Value" (L44[EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue]) are also used to tag amounts in the same plan year.
 **/
-
+/**
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
+
 if not applicable_form(rule-name())
 	skip
 else
@@ -279,6 +279,7 @@ Rule version: {$ruleVersion}"
 severity error
 rule-focus $EBP_InterestInMasterTrust
 effectiveDate $effective_dates[$rule_id]
+**/
 
 ASSERT US.0190.10606 satisfied
 
@@ -547,19 +548,25 @@ else
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
 if $EBPReports
-
+    /**
     $LegalEntityValues = list({covered @ where $fact.dimensions.keys.name.local-name.contains('LegalEntityAxis')})
 
     $LegalEntityAxisMembers = filter $LegalEntityValues returns $item.dimension(qname($DEI_NAMESPACE,'LegalEntityAxis')).name.local-name
+   **/ 
+    $LegalEntityAxisMembers = navigate dimensions dimension-member descendants 
+                                from qname($DEI_NAMESPACE,'LegalEntityAxis') 
+                                returns set (target-name)
 
-    for $member in $LegalEntityAxisMembers
-    
-        $matchDict = $member.regex-match('^EBP[A-z0-9]\{3,8\}Member$')
-        if $matchDict['match-count'] == 0
-            $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
-            $matchDict['match-count'] == 0
+    for $member in $LegalEntityAxisMembers.local-name
+        if $member == 'EntityDomain'
+            skip
         else
-            false
+            $matchDict = $member.regex-match('^EBP[A-z0-9]\{3,8\}Member$')
+            if $matchDict['match-count'] == 0
+                $matchDict = $member.regex-match('^EBP[0-9][0-9]-?[0-9][0-9][0-9][0-9][0-9][0-9][0-9]-?[0-9][0-9][0-9]Member$')
+                $matchDict['match-count'] == 0
+            else
+                false
 else
     skip
 
