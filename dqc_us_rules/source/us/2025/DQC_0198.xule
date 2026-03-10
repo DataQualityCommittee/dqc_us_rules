@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP ALL
@@ -9,6 +9,18 @@ Taxonomy: US GAAP ALL
 
 RULE-NAME-PREFIX DQC
 
+constant $INCOME_TAX_STRUCTURE_ELEMENTS = set(EffectiveIncomeTaxRateReconciliationTable,
+EffectiveIncomeTaxRateReconciliationLineItems,
+IncomeTaxExpenseBenefitContinuingOperationsIncomeTaxReconciliationAbstract,
+EffectiveIncomeTaxRateContinuingOperationsTaxRateReconciliationAbstract)
+
+constant $INCOME_TAX_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Disclosure -') and (($item.concept-names).to-set intersect $INCOME_TAX_STRUCTURE_ELEMENTS).length > 0
+
+constant $NETWORK_TAX_CONCEPTS = $INCOME_TAX_NETWORKS.concepts.to-set
+
+constant $REIT_IDENTIFIER_ELEMENTS = set(srt:RealEstateAndAccumulatedDepreciationByPropertyTable)
+
+constant $REIT_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Disclosure -') and (($item.concept-names).to-set intersect $REIT_IDENTIFIER_ELEMENTS).length > 0
 
 /** RULES TO CHECK THAT NEW TAX DISCLOSURES ARE FOLLOWED**/
 
@@ -22,9 +34,27 @@ if not applicable_form(rule-name())
 	skip
 else
 
-if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+$EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
+                if ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2026-12-15'))
+                    false
+                else
+				    first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
+			else 
+				false
+
+if (set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) 
+    and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    and not $EGCFlag 
+    and $INCOME_TAX_NETWORKS.length > 0)
+
     for $concept in $EQUIVALENT_TAX_RATES
-        exists([@concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')]#concept-value) and missing([@concept =  $concept[2] @unit = *])
+        $taxConcept = $concept[1]
+        $NETWORK_TAX_CONCEPTS_NAME = filter sum($NETWORK_TAX_CONCEPTS) returns $item.name
+        if $taxConcept in $NETWORK_TAX_CONCEPTS_NAME
+            exists([nonils @concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')  and $fact != 0 and $fact.period.days > 350]#concept-value) 
+            and missing([@concept =  $concept[2] @unit = *])
+         else
+            skip 
 else
     skip
 
@@ -54,10 +84,27 @@ if not applicable_form(rule-name())
 	skip
 else
 
+$EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
+                if ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2026-12-15'))
+                    false
+                else
+				    first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
+			else 
+				false
+
 /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
-if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) 
+    and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+    and not $EGCFlag 
+    and $INCOME_TAX_NETWORKS.length > 0
     for $concept in $EQUIVALENT_TAX_RATES
-        exists([@concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15')]#concept-value) and missing([@concept =  $concept[1] @unit = * ])
+        $taxConcept = $concept[2]
+        $NETWORK_TAX_CONCEPTS_NAME = filter sum($NETWORK_TAX_CONCEPTS) returns $item.name
+        if $taxConcept in $NETWORK_TAX_CONCEPTS_NAME
+            exists([nonils @concept =  $concept[2] @unit = * where $fact.period.end >= date('2025-12-15')  and $fact != 0 and $fact.period.days > 350]#concept-value) 
+            and missing([@concept =  $concept[1] @unit = * ])
+        else
+            skip
 else
     skip
 
@@ -88,66 +135,93 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 if not applicable_form(rule-name())
 	skip
 else
+ if $REIT_NETWORKS.length > 0
+        skip
+    else
+        /**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
 
-/**If provide a value for tax in a 10-K then should have an equivent percentage amount **/
-
-
-// Calculate base income
-$TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
-$base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
-                {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD}
-            else 
-                if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
-                    {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
-                else
-                    if exists({@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0})
-                    {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
-                else
-                     if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
-                    {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD where $fact != 0}
-                else
-                    $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
-
-$base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
-
-if exists($base_Income)
-    for $concept in $EQUIVALENT_TAX_RATES
-        $num = {@concept =  $concept[1]  @unit=iso4217:USD }
-        $calc_value = $num / $base_Income
-        $numerator_Intervals = fact_intervals($num)
-        $denominator_Intervals = $base_Income_intervals
-        $intervalsList = division_of_intervals($numerator_Intervals, $denominator_Intervals)
-        $percentage-value = {@concept =  $concept[2]  @unit=*}
-        $percentage-message = if  $percentage-value.decimals != inf "" else "Consider changing the decimal values of the percentage from inf to a decimal value that reflects the rounding used or 2 decimal places."
-        $result_intervals = fact_intervals($percentage-value)
-        if $intervalsList.first <= $result_intervals.last and $intervalsList.last >= $result_intervals.first
-                    false
-                else
-                    if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
-
-                    /** In some cases the calculated tax value includes the Equity Method investments, even though they report the amount before EMI but do not report the total including EMI. Some companies like amazon calc a tax rate excluding EMI some report it including EMI.  The next part of the rule checks if the alternative calc is used. **/
+        // Calculate base income
+        $TaxAmount = {@concept=IncomeTaxExpenseBenefit @unit=iso4217:USD where $fact != 0}
+        $base_Income = if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                        {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest @unit=iso4217:USD}
+                    else 
                         if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
-                            $base_IncomeAlt = {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0} + {@concept=IncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
-                            $calc_valueAlt = $num / $base_IncomeAlt
-                            $denominator_IntervalsAlt = numerical_intervals($base_IncomeAlt, $TaxAmount)
-                            $intervalsListAlt = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt)
-                            $result_intervals = fact_intervals($percentage-value)
-                            if $intervalsListAlt.first <= $result_intervals.last and $intervalsListAlt.last >= $result_intervals.first
-                                false
-                            else
-                                if  ($calc_valueAlt - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt) > 0.01
-                                    true
-                                else
-                                    false
+                            {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
                         else
-                            true
-                    else
-                        false
-else
-    skip
+                            if exists({@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0})
+                            {@concept=IncomeLossAttributableToParent @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD}
+                        else
+                            if exists({@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0})
+                            {@concept=IncomeLossIncludingPortionAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0} - {@concept=DiscontinuedOperationIncomeLossFromDiscontinuedOperationBeforeIncomeTax @unit=iso4217:USD where $fact != 0}
+                        else
+                            $TaxAmount / {@concept=EffectiveIncomeTaxRateContinuingOperations @unit=* where $fact != 0}
+
+        $base_Income_intervals = numerical_intervals($base_Income, $TaxAmount)
+
+        if exists($base_Income)
+            for $concept in $EQUIVALENT_TAX_RATES
+                $num = {@concept =  $concept[1]  @unit=iso4217:USD }
+                $calc_value = $num / $base_Income
+                $numerator_Intervals = fact_intervals($num)
+                $denominator_Intervals = $base_Income_intervals
+                $intervalsList = division_of_intervals($numerator_Intervals, $denominator_Intervals)
+                $percentage-value = {@concept =  $concept[2]  @unit=*}
+                $percentage-message = if  $percentage-value.decimals != inf "" else "Consider changing the decimal values of the percentage from inf to a decimal value that reflects the rounding used or 2 decimal places."
+                $result_intervals = fact_intervals($percentage-value)
+                if $intervalsList.first <= $result_intervals.last and $intervalsList.last >= $result_intervals.first
+                            false
+                        else
+                            if  ($calc_value - $percentage-value) > 0.01 or ($percentage-value - $calc_value) > 0.01
+
+                                $RegularMessage = "The filer has reported a value for the concept " + $percentage-value.concept.name.local-name + " with a value of " + $percentage-value.string + ". This value should be calculated by taking the value of " + $num.concept.name.local-name + " with a value of " + $num.string + " divided by the value of net income before tax of " +  $base_Income.string + ". This equals " +  $calc_value.string + ". Please provide the equivalent percentage amount for this concept of " + $percentage-value.string + "."
+
+                            //** THIS HANDLES THE NCI ADJUSTMENT WHERE NCI is CALCULATED AFTER DEDUCTING NCI **/
+
+                                $NCI_Flag = if exists({@concept=NetIncomeLossAttributableToNoncontrollingInterest @unit=iso4217:USD  where $fact != 0}) true else false
+                                $NCI_Amount = if $NCI_Flag {@concept=NetIncomeLossAttributableToNoncontrollingInterest @unit=iso4217:USD} else 0
+                                $base_Income_Less_NCI = $base_Income - $NCI_Amount
+                                $calc_valueAlt2 = $num / $base_Income_Less_NCI
+
+                                $NCI_Message = "If effective tax rates are calulated after deducting non controlling interests from income before tax then this value should be calculated by taking the value of " + $num.concept.name.local-name + " with a value of " + $num.string + " divided by the value of net income before tax of " +  $base_Income_Less_NCI.string + "(Adjusted for NCI). This equals " +  $calc_valueAlt2.string + ". Please provide the equivalent percentage amount for this concept of " + $percentage-value.string + "."
+
+                                $NCI_ADJUSTMENT_NOT_VALID =  if $NCI_Flag 
+                                                                
+                                                                $denominator_IntervalsAlt2 = numerical_intervals($base_Income, $TaxAmount)
+                                                                $intervalsListAlt2 = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt2)
+                                                                if $intervalsListAlt2.first <= $result_intervals.last and $intervalsListAlt2.last >= $result_intervals.first
+                                                                    false
+                                                                else
+                                                                    if  ($calc_valueAlt2 - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt2) > 0.01
+                                                                        true
+                                                                    else
+                                                                        false
+                                                            else 
+                                                                true
+
+                            /** In some cases the calculated tax value includes the Equity Method investments, even though they report the amount before EMI but do not report the total including EMI. Some companies like amazon calc a tax rate excluding EMI some report it including EMI.  The next part of the rule checks if the alternative calc is used. **/
+                                if exists({@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0})
+                                    $base_IncomeAlt = {@concept=IncomeLossFromContinuingOperationsBeforeIncomeTaxesMinorityInterestAndIncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0} + {@concept=IncomeLossFromEquityMethodInvestments @unit=iso4217:USD  where $fact != 0}
+                                    $calc_valueAlt = $num / $base_IncomeAlt
+                                    $denominator_IntervalsAlt = numerical_intervals($base_IncomeAlt, $TaxAmount)
+                                    $intervalsListAlt = division_of_intervals($numerator_Intervals, $denominator_IntervalsAlt)
+                                    $result_intervals = fact_intervals($percentage-value)
+                                    if $intervalsListAlt.first <= $result_intervals.last and $intervalsListAlt.last >= $result_intervals.first
+                                        false
+                                    else
+                                        if  ($calc_valueAlt - $percentage-value) > 0.01 or ($percentage-value - $calc_valueAlt) > 0.01
+                                            $NCI_ADJUSTMENT_NOT_VALID
+                                        else
+                                            false
+                                else
+                                    $NCI_ADJUSTMENT_NOT_VALID
+                            else
+                                false
+        else
+            skip
 
 message
-"The filer has reported a value for the concept {$percentage-value.concept.name} with a value of {$percentage-value}. This value should be calculated by taking the value of {$num.concept.name} with a value of {$num} divided by the value of net income before tax of {$base_Income}. This equals {$calc_value}. Please provide the equivalent percentage amount for this concept of {$percentage-value}.
+"{$RegularMessage} 
+{ IF $NCI_Flag $NCI_Message else ""}
 {$percentage-message}
 
 The properties of this {$percentage-value.concept} fact are:
@@ -174,10 +248,18 @@ if not applicable_form(rule-name())
 	skip
 else
 
+$EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany']).length > 0
+                if ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2026-12-15'))
+                    false
+                else
+				    first(list([covered @concept.local-name ='EntityEmergingGrowthCompany']))
+			else 
+				false
+
 /**If provide a value for IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate in a 10-K then should have an used the extensible enumeration element TaxJurisdictionOfDomicileExtensibleEnumeration for those comapnies that have adopted unless they have used more than 1 member on the axis IncomeTaxAuthorityAxis.**/
 
  
-if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
+if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) and not $EGCFlag
     if exists([covered @IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#IncomeTax) and missing([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
         $factsUsingIncomeTaxAuthorityAxis = list({covered @IncomeTaxAuthorityAxis = *});
         if count($factsUsingIncomeTaxAuthorityAxis) > 0   /** Change to check if have used two members on the axis **/
@@ -206,33 +288,7 @@ rule-focus $IncomeTax
 effectiveDate $effective_dates[$rule_id]
 
 
-ASSERT US.0198.10661 satisfied
-
-$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
-
-/** DQCRT RULE **/
-if not applicable_form(rule-name())
-	skip
-else
-
-/**If provide a value for EffectiveIncomeTaxRateReconciliationTable in a 10-K and TaxJurisdictionOfDomicileExtensibleEnumeration == DomesticCountryMember for those comapnies that have adopted **/
-
-if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) 
-    if list({covered @IncomeTaxAuthorityAxis = *}).length > 0 and exists([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
-        $factValue = first(list({covered @IncomeTaxAuthorityAxis = *}))
-        true
-    else
-        false
-else
-    skip
-
-message
-"The filer has reported a value using the IncomeTaxAuthorityAxis.  The filer has also used the extensible enumeration element. Only one of these mechanisms should be used to identify the tax jurisdiction."
-
-severity error
-rule-focus $factValue
-
-effectiveDate $effective_dates[$rule_id]
+/** REMOVE 10661 as conflicted with FASB GUIDANCE **/
 
 /** Complete as part of V27 rules **/
 

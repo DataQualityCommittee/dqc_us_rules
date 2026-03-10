@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2025
@@ -23,12 +23,12 @@ if not $EBPReports
     skip
 else 
    $US-GAAPQNames = filter $US-GAAP_ELTS_CALCS.concepts where $item.namespace-uri.contains('fasb.org/us-gaap/') and (not $item.is-abstract) returns $item.name
-   $filingQnames = filter  taxonomy().concepts returns $item.name
-   $US-GAAPElementsInFiling =  ($filingQnames intersect $US-GAAPQNames).to-list
-   $GAAPTop10 = list(for $x in range(1,min(list(10,$US-GAAPElementsInFiling.length) ))
-                    $US-GAAPElementsInFiling[$x])
+   $factValues = list({covered @concept in $US-GAAPQNames})
+   
+   $GAAPTop10 = list(for $x in range(1,min(list(10, $factValues.length) ))
+                    $factValues[$x].concept.name)
     
-  $US-GAAPElementsInFiling.length > 0
+  $factValues.length > 0
 
 message
 "The filer has used US-GAAP elements in the EBP filing. These are the first 10 or less found. {$GAAPTop10.join(',')}

@@ -1,7 +1,7 @@
 /**
 
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2025
@@ -302,7 +302,7 @@ constant $NonFinancing = set(NetCashProvidedByUsedInInvestingActivitiesAbstract,
 constant $NON_FINANCING_DESCENDANTS = navigate parent-child descendants from $NonFinancing taxonomy $US-GAAP  returns set (target-name)
 constant $NonInvesting = set(NetCashProvidedByUsedInFinancingActivitiesAbstract, NetCashProvidedByUsedInOperatingActivitiesAbstract, EffectOfExchangeRateOnCashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsIncludingDisposalGroupAndDiscontinuedOperationsAbstract)
 constant $NON_INVESTING_DESCENDANTS = navigate parent-child descendants from $NonInvesting taxonomy $US-GAAP  returns set (target-name)
-constant $FILIN_COMPONENTS_OF_NET_INC_LOSS = navigate parent-child descendants from list(IncomeStatementAbstract, StatementOfIncomeAndComprehensiveIncomeAbstract) where $relationship.target.is-monetary == true returns set (target-name)
+
 constant $CHG_IN_OP_CAPTL = navigate parent-child descendants from IncreaseDecreaseInOperatingCapitalAbstract taxonomy $US-GAAP returns set (target-name)
 
 /* DQC_0148 */

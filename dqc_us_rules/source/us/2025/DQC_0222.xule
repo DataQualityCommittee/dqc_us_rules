@@ -1,6 +1,6 @@
 /**
 DQC Rules
- (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
 Taxonomy: US GAAP 2025
@@ -23,6 +23,17 @@ $public_float_facts = [nonils @concept.local-name = 'EntityPublicFloat' @unit @p
 
 $small = [nonils @concept.local-name = 'EntitySmallBusiness' @unit @period];
 
+// If revenue is less than $100 million and Public float is less than 700 million then the small filer logic still applies so we need to account for this. //
+
+$revenue_items = (navigate summation-item descendants include start from  list(Revenues, RegulatedAndUnregulatedOperatingRevenue, InterestAndDividendIncomeSecurities, ResultsOfOperationsRevenueFromOilAndGasProducingActivities, LeaseIncome)  taxonomy $US-GAAP returns set (target-name)) + set(InterestAndDividendIncomeSecurities, DeferredRevenueRevenueRecognized1, OperatingLeasesIncomeStatementLeaseRevenue, RevenueNotFromContractWithCustomerOther)
+
+/** GET LIST OF FINANCIAL SERVICE (FS) REVENUE THAT IS OTHER REVENUE FOR COMMERCIAL COMPANIES **/
+$FS_revenue_items = (navigate summation-item descendants include start from  list(InterestIncomeExpenseAfterProvisionForLoanLoss, NoninterestIncome, GainsLossesOnSalesOfAssets)  taxonomy $US-GAAP returns set (target-name))
+
+$all_possible_revenue_items = ($revenue_items + $FS_revenue_items) + set(RevenueFromContractWithCustomerIncludingAssessedTax, RevenueNotFromContractWithCustomerExcludingInterestIncome, RevenueFromContractWithCustomerExcludingAssessedTax, RevenueFromCollaborativeArrangementExcludingRevenueFromContractWithCustomer) 
+
+$revenue_facts = first-value(max(list([nonils @concept in $all_possible_revenue_items @unit where $fact.period.end == $small.period.end])),0);
+
 // Check for scaling error: value is greater than $10 trillion or less than $1 million (likely error)
 $scaling_error_large = 
     exists($public_float_facts) and (
@@ -40,7 +51,14 @@ if $scaling_error_large and (missing($small) or $small == false)
     true
 else
     if $scaling_error_small and  $small == true
-        true
+        // For small filers check if revenue is greater than $100 million and public float greater than $250 million //
+        if $revenue_facts < 100000000 and $public_float_facts > 250000000 and $public_float_facts < 700000000
+            false
+        else
+            if  $public_float_facts < 1000 or $public_float_facts > 2500000000
+                true
+            else
+                false
     else
         skip
 
