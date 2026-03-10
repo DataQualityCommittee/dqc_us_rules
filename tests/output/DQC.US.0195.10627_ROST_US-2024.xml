@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 0.71 secs at 2026-03-09T21:36:45 - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.033894. - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10627 - 21:36:48.192446 - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="DQC.US.0195.10627" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm" severity="error" effectiveDate="2025-04-15" cid="2695691104528">[DQC.US.0195.10627] us-gaap:StockRepurchasedDuringPeriodValue has a value of 905,988,000 and has been used with a retained earnings member. This element should not have a value when used with a retained earnings member. The preparer should consider if the value is input correctly or if a different element or member should be used.
+If the company has no treasury stock then the element StockRepurchasedDuringPeriodValue should not be used as the stock would be retired and the value should be reported using StockRepurchasedAndRetiredDuringPeriodValue.
+
+This rule will not report an error if the Retained Earnings value is less than 10% of the total impacting shareholders equity. The total compared to determine materiality is 10% of 949,996,000 or 94,999,600.
+
+The properties of this us-gaap:StockRepurchasedDuringPeriodValue fact are:
+Period :2022-01-30 to 2023-01-28
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:RetainedEarningsMember
+Unit : USD
+Rule Element Id:10627
+Rule version: 28.0.9 - rost-20250201.htm 8</message>
+ <ref href="rost-20250201.htm#f-189" sourceLine="8">
+  <property name="file" value="rost-20250201.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Stock Repurchased During Period, Value"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockRepurchasedDuringPeriodValue"/>
+  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodValue"/>
+  <property name="contextRef" value="c-13">
+   <property name="entity" value="0000745732">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-30"/>
+   <property name="endDate" value="2023-01-28"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:RetainedEarningsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="905,988,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="905,988"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10627 time took: 1.308135 - 21:36:49.500658  - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10627 end. Took 0:00:01.308135 - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.342500. - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 3.63 secs - http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/745732/000074573225000010/rost-20250201.htm"/></entry>
+</log>
