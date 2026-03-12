@@ -337,11 +337,14 @@ for $concept in $Element_Retained_Earnings_empty
 
      /** This checks that if share based compensation is increasing retained earnings from the gain on treasury stock their must be a reduction in the treasury stock held **/
 
-    $TreasuryStock = exists({nonils @concept = $concept @StatementEquityComponentsAxis = TreasuryStockCommonMember where $fact > 0})
+     $ExceptionConceptsIfTreasuryImpact = list(StockIssuedDuringPeriodValueEmployeeBenefitPlan, StockIssuedDuringPeriodValueShareBasedCompensation)
 
-    $ExceptionConceptsIfTreasuryImpact = list(StockIssuedDuringPeriodValueEmployeeBenefitPlan, StockIssuedDuringPeriodValueShareBasedCompensation)
+    $TreasuryStockFlag = if $concept in $ExceptionConceptsIfTreasuryImpact 
+                              list({nonils @concept = $concept @StatementEquityComponentsAxis = TreasuryStockCommonMember where $fact > 0}).length > 0 and exists($fact1)
+                        else
+                            false
 
-    if $TreasuryStock and $concept in $ExceptionConceptsIfTreasuryImpact
+    if  $TreasuryStockFlag
         false
     else
 
