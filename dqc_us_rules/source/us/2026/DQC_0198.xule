@@ -238,12 +238,12 @@ rule-focus $percentage-value
 effectiveDate $effective_dates[$rule_id]
 
 /** Check if the domestic and foreign member are used.**/
-
+/** REMOVED RULE AS REPLACED IN V30 BY 0234 **/
+/**
 ASSERT US.0198.10660 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** DQCRT RULE **/
 if not applicable_form(rule-name())
 	skip
 else
@@ -256,13 +256,11 @@ $EGCFlag = if list([covered @concept.local-name ='EntityEmergingGrowthCompany'])
 			else 
 				false
 
-/**If provide a value for IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate in a 10-K then should have an used the extensible enumeration element TaxJurisdictionOfDomicileExtensibleEnumeration for those comapnies that have adopted unless they have used more than 1 member on the axis IncomeTaxAuthorityAxis.**/
-
  
 if set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType']) and ([covered @concept.local-name ='DocumentPeriodEndDate'] >= date('2025-12-15')) and not $EGCFlag
     if exists([covered @IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate]#IncomeTax) and missing([covered @TaxJurisdictionOfDomicileExtensibleEnumeration])
-        $factsUsingIncomeTaxAuthorityAxis = list({covered @IncomeTaxAuthorityAxis = *});
-        if count($factsUsingIncomeTaxAuthorityAxis) > 0   /** Change to check if have used two members on the axis **/
+        $factsUsingIncomeTaxAuthorityAxis = list({covered @IncomeTaxAuthorityAxis = *});  
+        if count($factsUsingIncomeTaxAuthorityAxis) > 0   
             false
         else
             true
@@ -286,7 +284,7 @@ Rule version: {$ruleVersion}"
 severity error
 rule-focus $IncomeTax
 effectiveDate $effective_dates[$rule_id]
-
+**/
 
 /** REMOVE 10661 as conflicted with FASB GUIDANCE **/
 
