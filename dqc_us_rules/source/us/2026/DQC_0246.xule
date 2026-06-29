@@ -1,0 +1,38 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+
+Assert US.0246.10948 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** This rule checks that the security name is UNIQUE for the investment identifier on a SOI 
+
+1. Need to get the value up to the first |.  Then ensure that this value is unique for each investment identifier.  Need to add them to a list and identify if duplicates exist.  If no | then the rule does not run.**/
+
+for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
+        $presConceptItems = $presNetwork.concept-names;
+        if $presConceptItems.contains(srt:ConsolidatedEntitiesAxis)
+            true
+        else
+            skip
+
+message
+"
+.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
