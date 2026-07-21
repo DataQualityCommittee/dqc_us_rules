@@ -19,12 +19,12 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 1. Need to get the value up to the first |.  Then ensure that this value is unique for each investment identifier.  Need to add them to a list and identify if duplicates exist.  If no | then the rule does not run.**/
 
-for $presNetwork in $STATEMENT_PRES_NETWORKS.sort
-        $presConceptItems = $presNetwork.concept-names;
-        if $presConceptItems.contains(srt:ConsolidatedEntitiesAxis)
-            true
-        else
-            skip
+$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
+$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis))
+
+$KEYED_Value = filter $DIM_Members where $item.contains("|") returns $item
+
+true
 
 message
 "
