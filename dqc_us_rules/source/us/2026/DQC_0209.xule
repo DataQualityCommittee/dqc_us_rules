@@ -27,8 +27,8 @@ $DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdenti
 
 for $DIM in $DIM_Members
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
-    $GEO = [@concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and missing($GEO)
+    $IND = [@concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) and (missing($IND) and get_dim_key_value($DIM, "IND") == none)
 
 
 message
@@ -67,8 +67,8 @@ $DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdenti
 
 for $DIM in $DIM_Members
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @period @unit];
-    $GEO = [@concept = InvestmentIssuerNameExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @period  @unit where $fact.period.end == $IOAC.period.end]
-    exists($IOAC) and missing($GEO)
+    $ISS = [@concept = InvestmentIssuerNameExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @period  @unit where $fact.period.end == $IOAC.period.end]
+    exists($IOAC) and (missing($ISS) and get_dim_key_value($DIM, "ISS") == none)
 
 
 message
@@ -108,8 +108,8 @@ $DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdenti
 
 for $DIM in $DIM_Members
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
-    $GEO = [@concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and missing($GEO)
+    $TYP = [@concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) and (missing($TYP) and get_dim_key_value($DIM, "TYP") == none)
 
 
 message
@@ -147,7 +147,7 @@ $DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdenti
 for $DIM in $DIM_Members
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $GEO = [@concept = InvestmentIssuerGeographicRegionExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and missing($GEO)
+    exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none)
 
 
 message
