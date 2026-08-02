@@ -9,26 +9,73 @@ Taxonomy: US GAAP 2024
 
 rule-name-prefix DQC
 
-/** V30 Release **/
+/** V31 Release **/
+/**
+
+OVERVIEW OF RULE 246 
+
+The rule checks the following:
+
+1. The security name is UNIQUE for the investment identifier on a SOI.  The value of the InvestmentIdentifierAxis dimension is required to be unique for each investment identifier.  When using a key the security title before the | character must be unique.
+2. The keys are valid.  Keys that may appear in domain element InvestmentIdentifierAxis.domain are shown below. Key values have aliases defined deterministically. The table below shows an initial set of keys and their syntax. i.e. AFF - Investment Issuer Affiliation. Future revisions may add keys and relax constraints. No key can ever be removed, and any additional syntax constraints applied retrospectively should be warnings.
+3. No two keys are duplicated.  The keys used to identify the attributes of the security must be unique for the InvestmentIdentifierAxis dimension.
+4. The value of the keys are valid.
+5. All required keys are present.  The required keys are AFF, GEO, IND, ISS, TYP.  The required keys must be present for the InvestmentIdentifierAxis dimension.
+
+
+Keys that may appear in domain element InvestmentIdentifierAxis.domain are shown below. Key values have aliases
+defined deterministically.
+The  table below shows an initial set of keys and their syntax. i.e. AFF - Investment Issuer Affiliation. Future revisions may add keys and relax
+constraints. No key can ever be removed, and any additional syntax constraints applied retrospectively should be
+warnings.
+
+ dict(
+    list("AFF", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(InvestmentIssuerAffiliationDomain)))),
+    list("GEB", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(GeographicBasisAbstract)))),
+    list("GEO", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(country:AllCountriesDomain, srt:SegmentGeographicalDomain, stpr:ActiveStateProvinceCodeDomain)))),
+    list("IND", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(EquitySecuritiesIndustryMember)))),
+    list("ISS", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "FALSE"),list("domain-member", list(InvestmentIssuerNameDomain)))),
+    list("TYP", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(InvestmentTypeCategorizationMember)))),
+    list("VRB", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(VariableRateDomain))))
+)
+
+An example dimension member is as follows:
+Mood Media Borrower, LLC, Debt investments, First Lien Term Loan | IS=Mood_Media_Borrower_LLC
+TY=Debtinvestments STY=First_Lien_Term_Loan GEO=US
+
+**/
 
 Assert US.0246.10948 satisfied
 
+/** This rule checks that the security name is UNIQUE for the investment identifier on a SOI **/
+
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** This rule checks that the security name is UNIQUE for the investment identifier on a SOI 
+$IssuerName = list(for $x in (filter $DIM_MEMBERS where $item.contains("|") returns $item)
+    $x.split('|')[1])
 
-1. Need to get the value up to the first |.  Then ensure that this value is unique for each investment identifier.  Need to add them to a list and identify if duplicates exist.  If no | then the rule does not run.**/
+$uniqueMembers = $IssuerName.to-set
 
-$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis))
+/* Just detect if ANY duplicates exist */
+$hasDuplicates = $IssuerName.length > $uniqueMembers.length
 
-$KEYED_Value = filter $DIM_Members where $item.contains("|") returns $item
+if $hasDuplicates
+    
+/* Get only the duplicated values by checking count > 1 */
+$duplicateIssuers = (list(for $uniqueItem in $uniqueMembers
+    if (sum(list(for $check in $IssuerName 
+        if $check == $uniqueItem 1 else 0))) > 1
+        $uniqueItem
+    else
+        skip))
 
-true
+$duplicateIssuers.length > 0
+
+else 
+    skip
 
 message
-"
-.
+"The filing has used InvestmentIdentifierAxis dimension with keys to identify the attributes of the security.  The value of the InvestmentIdentifierAxis dimension is required to be unique for each investment identifier.  When using a key the security title before the | character must be unique. The following duplicate values have been identified for the InvestmentIdentifierAxis dimension: {$duplicateIssuers.join(", ")}.  Please ensure that the value of the InvestmentIdentifierAxis dimension title is unique for each investment identifier.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -36,3 +83,177 @@ Rule version: {$ruleVersion}"
 severity error  
 effectiveDate $effective_dates[$rule_id]
 
+/** Check that the keys are valid **/
+
+Assert US.0246.10949 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** This gets the key pairs**/
+for $x in (filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item)
+    $SpaceLimitedKeys = $x.split('|');
+    $SecurityName = $SpaceLimitedKeys[1];
+
+    /* Remove spaces around '=' by splitting on '=', trimming each part, then rejoining */
+    $cleanedKeys = (list(for $part in $SpaceLimitedKeys[2].split('=')
+        join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
+    )).join('=');
+
+    $keyPairs = filter list(for $key in  ($cleanedKeys.split(' '))
+                $key) where $item != "" returns $item
+
+    $keysUsed = (list(for $key in $keyPairs
+                $keyPairList = $key.split('=');
+                $keyPairList[1]).to-set
+            )
+    $KeyDiff = $keysUsed - ($APPROVED_KEYS.keys)
+    if $KeyDiff.length > 0
+        true
+    else
+        skip
+
+message
+"The filing has used InvestmentIdentifierAxis dimension with keys to identify the attributes of the security.  The following key(s) have been identified as not being valid for the InvestmentIdentifierAxis for the security {$SecurityName} with the non standard keys: {$KeyDiff.join(", ")}.  Please ensure that the keys used are valid for the InvestmentIdentifierAxis dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Check no two keys are duplicated **/
+
+Assert US.0246.10950 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** THis get the key pairs**/
+for $x in (filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item)
+    $SpaceLimitedKeys = $x.split('|');
+    $SecurityName = $SpaceLimitedKeys[1];
+
+    /* Remove spaces around '=' by splitting on '=', trimming each part, then rejoining */
+    $cleanedKeys = (list(for $part in $SpaceLimitedKeys[2].split('=')
+        join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
+    )).join('=');
+
+    $keyPairs = filter list(for $key in  ($cleanedKeys.split(' '))
+                $key) where $item != "" returns $item
+
+    $keysUsed = (list(for $key in $keyPairs
+                $keyPairList = $key.split('=');
+                $keyPairList[1])
+            )
+
+    $hasDuplicates = $keysUsed.length > $keysUsed.to-set.length
+
+    if $hasDuplicates
+    
+        /* Get only the duplicated values by checking count > 1 */
+        $duplicateKeys = (list(for $uniqueItem in $keysUsed.to-set
+            if (sum(list(for $check in $keysUsed 
+                if $check == $uniqueItem 1 else 0))) > 1
+                $uniqueItem
+            else
+                skip))
+
+        $duplicateKeys.length > 0
+
+        else 
+            skip
+message
+"The filing has used InvestmentIdentifierAxis dimension with keys to identify the attributes of the security.  The following key(s) have been identified as being duplicated for the InvestmentIdentifierAxis for the security {$SecurityName} with the duplicated keys: {$duplicateKeys.join(", ")}.  Please ensure that the keys used are unique for the InvestmentIdentifierAxis dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+/** Check value of keys are valid **/
+
+Assert US.0246.10951 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+for $x in (filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item)
+    $SpaceLimitedKeys = $x.split('|');
+    $SecurityName = $SpaceLimitedKeys[1];
+
+    /* Remove spaces around '=' by splitting on '=', trimming each part, then rejoining */
+    $cleanedKeys = (list(for $part in $SpaceLimitedKeys[2].split('=')
+        join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
+    )).join('=');
+
+    $keyPairs = filter list(for $key in  ($cleanedKeys.split(' '))
+                $key) where $item != "" returns $item
+
+    $PairsDict = (dict(for $key in $keyPairs
+                $keyPairList = $key.split('=');
+                list($keyPairList[1], $keyPairList[2])
+            )
+    )
+
+    /** Lookup the items in the key and check they match the corresponding values in the constant $ALLOWED-KEYS_DICTIONARY**/
+    $invalidKeyValues = (list(for $key in $PairsDict.keys
+        if $ALLOWED-KEYS_DICTIONARY[$key].contains($PairsDict[$key]) 
+            skip
+        else
+            list($key, $PairsDict[$key])
+    ))
+    $invalidKeyValuesDict = $invalidKeyValues.to-dict
+
+    $invalidKeyValues.length > 0
+
+
+message
+"The filing has used InvestmentIdentifierAxis dimension with keys to identify the attributes of the security.  The following key(s) have invalid values for the InvestmentIdentifierAxis for the security {$SecurityName} with the invalid key values: {$invalidKeyValuesDict.join(', ','=')}.  Please ensure  the keys used are valid for the InvestmentIdentifierAxis dimension.
+
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+
+/** CHeck that all required keys are present **/
+
+Assert US.0246.10952 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$requiredKeys = set("AFF", "GEO", "IND", "ISS", "TYP")
+
+/** This gets the key pairs**/
+for $x in (filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item)
+    $SpaceLimitedKeys = $x.split('|');
+    $SecurityName = $SpaceLimitedKeys[1];
+
+    /* Remove spaces around '=' by splitting on '=', trimming each part, then rejoining */
+    $cleanedKeys = (list(for $part in $SpaceLimitedKeys[2].split('=')
+        join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
+    )).join('=');
+
+    $keyPairs = filter list(for $key in  ($cleanedKeys.split(' '))
+                $key) where $item != "" returns $item
+
+    $keysUsed = (list(for $key in $keyPairs
+                $keyPairList = $key.split('=');
+                $keyPairList[1]).to-set
+            )
+    $KeyDiff =  $requiredKeys - $keysUsed
+    if $KeyDiff.length > 0
+        true
+    else
+        skip
+
+message
+"The filing has used InvestmentIdentifierAxis dimension with keys to identify the attributes of the security. The following required key(s) have been identified as missing for the InvestmentIdentifierAxis for the security {$SecurityName} with the missing keys: {$KeyDiff.join(", ")}.  Please ensure that the required keys are present for the InvestmentIdentifierAxis dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error      
+effectiveDate $effective_dates[$rule_id]
