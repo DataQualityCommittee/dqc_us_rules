@@ -1,0 +1,149 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** V30 Release **/
+
+/**
+Overview: Each dimension in the taxonomy is associated with a specific semantic class that defines the type of disaggregation it provides (e.g. geography, financial instrument, business segment). When the same member is used on dimensions that belong to different classes, it creates ambiguity about what the member represents and can lead to misinterpretation of the reported data. For example, a member representing a country should only be used on geography related axes, not on a financial instrument axis.
+
+Rule US.0250.10962 identifies every member used in the filing on one of the monitored axes below, together with the dimension class of each axis it is used with. If a member is used on axes belonging to more than one class, the rule is not satisfied.
+**/
+
+ASSERT US.0250.10962 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$axisClassDict = dict(
+						list(srt:StatementGeographicalAxis, 'Geography'),
+						list(StatutoryAccountingPracticesByJurisdictionAxis, 'Geography'),
+						list(IncomeTaxAuthorityAxis, 'Geography'),
+
+						list(PartnerCapitalComponentsAxis, 'EquityComponents'),
+						list(StatementEquityComponentsAxis, 'EquityComponents'),
+
+						list(FinancialInstrumentAxis, 'FinancialInstrument'),
+						list(InvestmentTypeAxis, 'FinancialInstrument'),
+						list(DerivativeInstrumentRiskAxis, 'FinancialInstrument'),
+						list(DefinedBenefitPlanByPlanAssetCategoriesAxis, 'FinancialInstrument'),
+						list(FairValueByAssetClassAxis, 'FinancialInstrument'),
+						list(SecurityOwnedAndSoldNotYetPurchasedAtFairValueAxis, 'FinancialInstrument'),
+						list(AssetsSoldUnderAgreementsToRepurchaseAxis, 'FinancialInstrument'),
+						list(CashAndCashEquivalentsAxis, 'FinancialInstrument'),
+						list(ExtinguishmentOfDebtAxis, 'FinancialInstrument'),
+						list(ShortTermDebtTypeAxis, 'FinancialInstrument'),
+						list(LongtermDebtTypeAxis, 'FinancialInstrument'),
+						list(RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, 'FinancialInstrument'),
+						list(CreditFacilityAxis, 'FinancialInstrument'),
+						list(UnderlyingAssetClassAxis, 'FinancialInstrument'),
+						list(StatementClassOfStockAxis, 'FinancialInstrument'),
+
+						list(AdjustmentsForChangeInAccountingPrincipleAxis, 'AccountStandards'),
+						list(AdjustmentsForNewAccountingPronouncementsAxis, 'AccountStandards'),
+
+						list(FairValueByMeasurementBasisAxis, 'MeasurementBasis'),
+
+						list(EquitySecuritiesByIndustryAxis, 'IndustrySector'),
+
+						list(LineOfCreditFacilityAxis, 'entityIndividualPlanName'),
+						list(srt:CounterpartyNameAxis, 'entityIndividualPlanName'),
+						list(srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis, 'entityIndividualPlanName'),
+						list(CededCreditRiskAxis, 'entityIndividualPlanName'),
+						list(NoncashOrPartNoncashDivestituresByUniqueNameAxis, 'entityIndividualPlanName'),
+						list(PlanNameAxis, 'entityIndividualPlanName'),
+						list(RetirementPlanNameAxis, 'entityIndividualPlanName'),
+						list(InvestmentIssuerNameAxis, 'entityIndividualPlanName'),
+						list(OtherOwnershipInterestsByNameAxis, 'entityIndividualPlanName'),
+						list(IncomeTaxAuthorityNameAxis, 'entityIndividualPlanName'),
+						list(EmployeeStockOwnershipPlanESOPDisclosuresByPlanAxis, 'entityIndividualPlanName'),
+						list(srt:MajorCustomersAxis, 'entityIndividualPlanName'),
+						list(ShareBasedGoodsAndNonemployeeServicesTransactionBySupplierAxis, 'entityIndividualPlanName'),
+						list(dei:LegalEntityAxis, 'entityIndividualPlanName'),
+						list(PartnerTypeOfPartnersCapitalAccountAxis, 'entityIndividualPlanName'),
+						list(srt:OwnershipAxis, 'entityIndividualPlanName'),
+						list(BusinessAcquisitionAxis, 'entityIndividualPlanName'),
+
+						list(FairValueByFairValueHierarchyLevelAxis, 'FairValueHierachy'),
+
+						list(srt:RangeAxis, 'statisticalMeasurement'),
+
+						list(GeographicDistributionAxis, 'foreignDomesticDistribution'),
+
+						list(srt:StatementScenarioAxis, 'Scenarios'),
+
+						list(srt:RestatementAxis, 'Revision'),
+
+						list(srt:ConsolidationItemsAxis, 'Consolidation'),
+
+						list(StatementBusinessSegmentsAxis, 'BusinessSegment'),
+
+						list(StatementOperatingActivitiesSegmentAxis, 'Operating'),
+
+						list(srt:CurrencyAxis, 'Currency'),
+
+						list(srt:LitigationCaseAxis, 'LitigationID'),
+
+						list(LitigationStatusAxis, 'LitigationStatus'),
+
+						list(srt:CreditRatingFitchAxis, 'FitchRating'),
+
+						list(srt:CreditRatingMoodysAxis, 'MoodyRating'),
+
+						list(srt:CreditRatingStandardPoorsAxis, 'SAndPRating'),
+
+						list(srt:CreditRatingAMBestAxis, 'AMBestRating'),
+
+						list(InternalCreditAssessmentAxis, 'InternalCreditRating'),
+
+						list(srt:ReserveQuantitiesByTypeOfReserveAxis, 'FossilFuels'),
+
+						list(srt:ShareRepurchaseProgramAxis, 'ShareRepurchasePrograms'),
+
+						list(RestructuringCostAndReserveAxis, 'RestructuringType'),
+
+						list(DebtInstrumentAxis, 'DebtByName')
+						);
+
+$monitoredAxes = $axisClassDict.keys;
+
+/** Build a set of (member, axis, class) triples for every monitored axis actually used in the filing **/
+$memberAxisClassTriples = sum(set(for $axis in $monitoredAxes
+									sum(set(for $usageFact in list({covered @ where $fact.dimensions.keys.name.contains($axis)})
+												set(list($usageFact.dimension($axis), $axis, $axisClassDict[$axis]))
+											))
+									));
+
+$membersUsed = (filter $memberAxisClassTriples returns $item[1]).to-set;
+
+for $member in $membersUsed.sort
+	$memberRows = filter $memberAxisClassTriples where $item[1] == $member returns $item;
+
+	$classesUsed = (filter $memberRows returns $item[3]).to-set;
+	$axesUsed = (filter $memberRows returns $item[2]).to-set;
+
+	$classesUsed.length > 1
+
+message
+"The member {$member} is used in the filing on dimensions that belong to more than one semantic class: {$classesUsed.join(', ')}. This member is used on the following axes: {$axesUsed.join(', ')}.
+
+Each dimension in the taxonomy is associated with a specific semantic class that defines the type of disaggregation it provides (e.g. geography, financial instrument, business segment). Using the same member across dimensions from different classes creates ambiguity about what the member represents in each context and can lead to misinterpretation of the reported data.
+
+The filer should either use a member that is specific to the class of each axis, or reconsider whether the same underlying concept should be represented using different, axis-appropriate members.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]

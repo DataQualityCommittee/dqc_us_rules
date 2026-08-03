@@ -1,0 +1,81 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+RULE-NAME-PREFIX DQC
+
+/** V30 Release **/
+
+/**
+Overview: Extensible enumeration axes are designed to disaggregate a line item by multiple categories. When only a single member is used on such an axis to tag a line item, the fact represents the total for that line item and the axis provides no meaningful disaggregation. In this case the filer should either use the corresponding extensible enumeration element to report the member value (with the aggregate reported without the axis), or simply report the aggregate value without the axis.
+
+Rule US.0249.10961 checks each of the monitored extensible enumeration axes below. For a cube that uses one of these axes, if the domain of the axis has only one descendant member, and only one fact is reported using that axis for a given primary concept, and no aggregate value for that concept is reported without the axis, then the rule is not satisfied.
+**/
+
+ASSERT US.0249.10961 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name())
+	skip
+else
+
+$axisExtensibleEnumDict = dict(
+                                list(AdjustmentsForChangeInAccountingPrincipleAxis, "ChangeInAccountingPrincipleTypeExtensibleList"),
+                                list(AdjustmentsForNewAccountingPronouncementsAxis, "AccountingStandardsUpdateExtensibleList"),
+                                list(CollectiveBargainingArrangementAxis, "MultiemployerPlanPensionInsignificantCollectiveBargainingArrangementExtensibleList or MultiemployerPlanPensionSignificantCollectiveBargainingArrangementExtensibleList"),
+                                list(ContractWithCustomerBasisOfPricingAxis, "RevenueFromContractWithCustomerBasisOfPricingExtensibleList"),
+                                list(ContractWithCustomerDurationAxis, "RevenueFromContractWithCustomerDurationExtensibleList"),
+                                list(ContractWithCustomerSalesChannelAxis, "RevenueFromContractWithCustomerSalesChannelExtensibleList"),
+                                list(srt:CryptoAssetAxis, "CryptoAssetNameExtensibleEnumeration"),
+                                list(ErrorCorrectionsAndPriorPeriodAdjustmentsRestatementByRestatementPeriodAndAmountAxis, "ErrorCorrectionTypeExtensibleList"),
+                                list(FinancialSupportToNonconsolidatedLegalEntityAxis, "InvestmentCompanyFinancialSupportTypeExtensibleEnumeration"),
+                                list(GovernmentAssistanceTypeAxis, "GovernmentAssistanceAssetCurrentTypeExtensibleEnumeration or GovernmentAssistanceAssetNoncurrentTypeExtensibleEnumeration"),
+                                list(IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis, "DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration"),
+                                list(IncomeTaxEffectChangeInLawAxis, "IncomeTaxEffectChangeInLawExtensibleEnumeration"),
+                                list(ReclassificationTypeAxis, "ReclassificationTypeExtensibleList"),
+                                list(StatutoryAccountingPracticesByJurisdictionAxis, "StatutoryAccountingPracticeJurisdictionExtensibleEnumeration"),
+                                list(TimingOfTransferOfGoodOrServiceAxis, "RevenueFromContractWithCustomerTimingOfTransferOfGoodOrServiceExtensibleList"),
+                                list(UnrecordedUnconditionalPurchaseObligationByCategoryOfItemPurchasedAxis, "UnrecordedUnconditionalPurchaseObligationCategoryExtensibleEnumeration")
+                                )
+
+$all_cubes = filter taxonomy().cubes;
+
+for $cube in $all_cubes
+        for $dim in $axisExtensibleEnumDict.keys
+            if $cube.dimensions().concept().name.contains($dim)
+                    $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
+                    if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
+                        $count_values = count(list({@cube = $cube @$dim = *}#PrimaryConcept));
+
+                        $count_values == 1 and (not exists({@cube = $cube @$dim = none}))
+                    else
+                        skip
+            else
+                    skip
+
+
+message
+"The filing has reported a value for the element {$PrimaryConcept.concept} with a value of {$PrimaryConcept} using the axis {$dim} in the role {$cube.drs-role.description} on the table {$cube.cube-concept()}. However, the only member used to disaggregate the total for {$PrimaryConcept.concept} was the member {$PrimaryConcept.dimension($dim)}. When an extensible enumeration axis has only one member, the fact represents the aggregate value for that line item and the axis provides no meaningful disaggregation. The filer should either:
+
+1. Retag the filing using the element {$axisExtensibleEnumDict[$dim]} with a value of {$PrimaryConcept.dimension($dim)}. The member {$PrimaryConcept.dimension($dim)} should be removed from the value as it represents the aggregate value of {$PrimaryConcept.concept}.
+
+2. Tag the aggregate value of {$PrimaryConcept.concept} with a value of {$PrimaryConcept} without the {$dim} axis. This rule will not generate an error if the aggregate value of {$PrimaryConcept.concept} is reported.
+
+The properties of this {$PrimaryConcept.concept} fact are:
+Period :{$PrimaryConcept.period}
+Dimensions : {$PrimaryConcept.dimensions.join(', ','=')}
+Unit : {$PrimaryConcept.unit}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}
+"
+
+SEVERITY error
+
+effectiveDate $effective_dates[$rule_id]

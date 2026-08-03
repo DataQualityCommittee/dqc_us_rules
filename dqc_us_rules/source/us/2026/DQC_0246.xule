@@ -1,0 +1,250 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+
+/**
+Overview: Filers reporting a Schedule of Investments (SOI) can identify the attributes of an investment on the InvestmentIdentifierAxis using a structured key-value format on the label of the axis member:
+
+	SecurityName|KEY1=value1 KEY2=value2 ...
+
+The approved keys, whether the key allows a filer created extension value, and whether the key allows one of the standard taxonomy defined values are as follows:
+
+Key   Description                        Allows Extension   Allows Standard
+AFF   Investment Issuer Affiliation       No                  Yes
+GEB   Geographic Basis                   No                  Yes
+GEO   Geographic Location                No                  Yes
+IND   Industry                           Yes                  Yes
+ISS   Investment Issuer Name             Yes                  No
+TYP   Investment Type Categorization      No                  Yes
+VRB   Variable Rate                      Yes                  Yes
+
+This rule set validates that this key-value format, when used, is correctly structured:
+
+Rule US.0246.10948 checks that the security name (the portion before the '|' character) is unique across all InvestmentIdentifierAxis members that use the key-value format.
+
+Rule US.0246.10949 checks that every key used in the key-value pairs is one of the approved keys (AFF, GEB, GEO, IND, ISS, TYP, VRB).
+
+Rule US.0246.10950 checks that no key is repeated more than once in the key-value pairs used to describe a single investment.
+
+Rule US.0246.10951 checks that the value provided for the keys that do not allow a filer created extension (AFF, GEB, GEO, TYP) matches one of the standard values defined in the taxonomy for that key.
+
+Rule US.0246.10952 checks that the required keys (AFF, GEO, IND, ISS, TYP) are all present in the key-value pairs used to describe a single investment.
+
+Approach: Identify the members used on the InvestmentIdentifierAxis and obtain the label of each member. Where the label contains the '|' character, the label is assumed to use the key-value format and is parsed into a security name and a list of KEY=value pairs which are then evaluated by each of the assertions above.
+**/
+
+constant $INVESTMENT_APPROVED_KEYS = set('AFF','GEB','GEO','IND','ISS','TYP','VRB')
+
+constant $INVESTMENT_REQUIRED_KEYS = set('AFF','GEO','IND','ISS','TYP')
+
+/** Keys that do not allow a filer created extension value, so the value must match one of the standard taxonomy defined values **/
+constant $INVESTMENT_STRICT_DOMAIN_KEYS = set('AFF','GEB','GEO','TYP')
+
+/** Identify the labels of the members reported on the InvestmentIdentifierAxis **/
+constant $INVESTMENT_ID_FACTS = list({covered @ where $fact.dimensions.keys.name.contains(InvestmentIdentifierAxis)})
+
+constant $INVESTMENT_IDENTIFIER_LABELS = (filter $INVESTMENT_ID_FACTS returns taxonomy().concept($item.dimension(InvestmentIdentifierAxis)).label.text).to-set
+
+/** Only the labels that use the pipe delimited key-value format are evaluated by this rule set **/
+constant $INVESTMENT_KEY_VALUE_IDENTIFIERS = filter $INVESTMENT_IDENTIFIER_LABELS where $item.contains('|')
+
+/** Standard domains used to validate the value of the keys that do not allow a filer created extension **/
+constant $AFF_DOMAIN = (filter (navigate dimensions dimension-domain descendants from InvestmentIssuerAffiliationAxis returns set (target-name)) returns normalizeInvestmentText(taxonomy().concept($item).label.text)).to-set
+
+constant $TYP_DOMAIN = (filter (navigate dimensions dimension-domain descendants from InvestmentTypeAxis returns set (target-name)) returns normalizeInvestmentText(taxonomy().concept($item).label.text)).to-set
+
+constant $GEB_DOMAIN = set(normalizeInvestmentText(taxonomy().concept(GeographicBasisCorporateHeadquartersMember).label.text), normalizeInvestmentText(taxonomy().concept(GeographicBasisCountryOfDomicileMember).label.text))
+
+constant $GEO_DOMAIN = (filter taxonomy().concepts where $item.namespace-uri == 'http://xbrl.sec.gov/country/2026' returns normalizeInvestmentText($item.local-name)).to-set
+
+ASSERT US.0246.10948 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+$securityNames = (filter $INVESTMENT_KEY_VALUE_IDENTIFIERS returns getSecurityName($item)).to-set;
+
+for $name in $securityNames.sort
+	$matchingIdentifiers = (filter $INVESTMENT_KEY_VALUE_IDENTIFIERS where getSecurityName($item) == $name returns $item).to-set
+
+	$matchingIdentifiers.length > 1
+
+message
+"The security name '{$name}' is used by more than one InvestmentIdentifierAxis member using the key-value format. The security name is the portion of the member label preceding the '|' character. Each investment identified using the key-value format (SecurityName|KEY1=value1 KEY2=value2 ...) must have a unique security name so that the investment can be distinguished from other investments reported in the Schedule of Investments. The following {$matchingIdentifiers.length} member label(s) share this security name:
+
+{$matchingIdentifiers.join('\n')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0246.10949 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
+	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))).to-set
+
+	$invalidKeys = $keysUsed - $INVESTMENT_APPROVED_KEYS
+
+	$invalidKeys.length > 0
+
+message
+"The InvestmentIdentifierAxis member with the label '{$identifier}' includes the key(s) {$invalidKeys.join(', ')} which are not part of the approved list of keys used to identify the attributes of an investment on the Schedule of Investments. The approved keys are AFF (Investment Issuer Affiliation), GEB (Geographic Basis), GEO (Geographic Location), IND (Industry), ISS (Investment Issuer Name), TYP (Investment Type Categorization) and VRB (Variable Rate). Correct or remove the key(s) that are not part of this list.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0246.10950 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
+	$keysList = list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))
+
+	$duplicateKeys = list(for $key in $keysList.to-set
+							if (filter $keysList where $item == $key).length > 1
+								$key
+							else
+								skip)
+
+	$duplicateKeys.length > 0
+
+message
+"The InvestmentIdentifierAxis member with the label '{$identifier}' includes the following key(s) more than once: {$duplicateKeys.join(', ')}. Each key used in the key-value pairs (KEY=value) that identify the attributes of an investment must be unique. Remove the duplicate occurrence(s) of the key(s) listed above.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0246.10951 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
+	$invalidPairs = list(for $pair in getKeyValuePairs($identifier)
+							$key = getKeyFromPair($pair);
+							if $key not in $INVESTMENT_STRICT_DOMAIN_KEYS
+								skip
+							else
+								$domain = if $key == 'AFF' $AFF_DOMAIN
+										  else if $key == 'GEB' $GEB_DOMAIN
+										  else if $key == 'GEO' $GEO_DOMAIN
+										  else $TYP_DOMAIN;
+
+								if $domain.length == 0 or normalizeInvestmentText(getValueFromPair($pair)) in $domain
+									skip
+								else
+									$pair)
+
+	$invalidPairs.length > 0
+
+message
+"The InvestmentIdentifierAxis member with the label '{$identifier}' includes the following key-value pair(s) with a value that does not match any of the standard values defined in the taxonomy for that key: {$invalidPairs.join(', ')}. The keys AFF, GEB, GEO and TYP do not allow a filer created extension value, so the value provided for these keys must match one of the standard taxonomy defined values. Correct the value(s) so that they match one of the allowed values.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0246.10952 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
+	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))).to-set
+
+	$missingKeys = $INVESTMENT_REQUIRED_KEYS - $keysUsed
+
+	$missingKeys.length > 0
+
+message
+"The InvestmentIdentifierAxis member with the label '{$identifier}' is missing the following required key(s): {$missingKeys.join(', ')}. The required keys for an investment identified using the key-value format are AFF, GEO, IND, ISS and TYP. Add the missing key(s) to the member label.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Returns the security name portion of a key-value formatted InvestmentIdentifierAxis label, i.e. the text preceding the '|' character. **/
+function getSecurityName($identifier)
+	($identifier.split('|'))[1]
+
+/** Returns the key-value portion of a key-value formatted InvestmentIdentifierAxis label, i.e. the text following the '|' character. **/
+function getKeyValuePart($identifier)
+	($identifier.split('|'))[2]
+
+/** Splits the key-value portion of a label into a list of individual 'KEY=value' tokens. **/
+function getKeyValuePairs($identifier)
+	filter (getKeyValuePart($identifier).split(' ')) where $item.length > 0 returns $item
+
+/** Returns the key portion of a single 'KEY=value' token. **/
+function getKeyFromPair($pair)
+	($pair.split('='))[1]
+
+/** Returns the value portion of a single 'KEY=value' token. **/
+function getValueFromPair($pair)
+	$parts = $pair.split('=');
+	if $parts.length >= 2
+		$parts[2]
+	else
+		""
+
+/** Normalizes text for comparison purposes by removing spaces, underscores, commas, periods and hyphens and converting to upper-case. This allows a key value (e.g. 'Debtinvestments') to be compared to a taxonomy label (e.g. 'Debt investments'). **/
+function normalizeInvestmentText($text)
+	$s1 = ($text.split(' ')).join('');
+	$s2 = ($s1.split('_')).join('');
+	$s3 = ($s2.split(',')).join('');
+	$s4 = ($s3.split('.')).join('');
+	(($s4.split('-')).join('')).upper-case()
