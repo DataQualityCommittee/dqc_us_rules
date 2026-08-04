@@ -207,6 +207,11 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0241](DQC_US_0241/DQC_0241.md) | Incorrect Use of TransactionTypeAxis with Transaction Market Method Members | Approved | 30 |
 | [DQC_US_0242](DQC_US_0242/DQC_0242.md) | Software-to-be-Sold Not Using Dedicated Capitalized Software Concepts | Approved | 30 |
 | [DQC_US_0243](DQC_US_0243/DQC_0243.md) | Inappropriate Use of ConsolidationItemsAxis with Cash Flow and Equity Concepts | Approved | 30 |
+| [DQC_US_0245](DQC_US_0245/DQC_0245.md) | Consolidated Entities Axis in Statement Section | Public Review | 31 |
+| [DQC_US_0246](DQC_US_0246/DQC_0246.md) | Investment Identifier Axis Key Validation | Public Review | 31 |
+| [DQC_US_0248](DQC_US_0248/DQC_0248.md) | 11-K Filing Cover Page Tagging with Legal Entity Axis | Public Review | 31 |
+| [DQC_US_0249](DQC_US_0249/DQC_0249.md) | Single Member Extensible Enumeration Axis Used Without Aggregate Value | Public Review | 31 |
+| [DQC_US_0250](DQC_US_0250/DQC_0250.md) | Members Used Across Incompatible Dimension Classes | Public Review | 31 |
 
 
 ## Guidance 
