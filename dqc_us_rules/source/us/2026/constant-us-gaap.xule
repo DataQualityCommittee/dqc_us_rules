@@ -403,3 +403,58 @@ constant $INCOME_STATEMENT_ITEMS =
 				+
 				navigate parent-child descendants from list(IncomeStatementAbstract,
 				StatementOfIncomeAndComprehensiveIncomeAbstract) taxonomy $US-GAAP where $relationship.target.is-monetary == true returns set (target-name)
+
+
+constant $APPROVED_KEYS = dict(
+                                list("AFF", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(InvestmentIssuerAffiliationDomain)))),
+                                list("GEB", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(GeographicBasisAbstract)))),
+                                list("GEO", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(country:AllCountriesDomain, srt:SegmentGeographicalDomain, stpr:ActiveStateProvinceCodeDomain)))),
+                                list("IND", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(EquitySecuritiesIndustryMember)))),
+                                list("ISS", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "FALSE"),list("domain-member", list(InvestmentIssuerNameDomain)))),
+                                list("TYP", dict(list("AllowsExtension", "FALSE"),list("AllowsStandard", "TRUE"),list("domain-member", list(InvestmentTypeCategorizationMember)))),
+                                list("VRB", dict(list("AllowsExtension", "TRUE"),list("AllowsStandard", "TRUE"),list("domain-member", list(VariableRateDomain))))
+                                )
+
+CONSTANT $BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
+CONSTANT $DIM_MEMBERS = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis))
+
+CONSTANT $ALLOWED_AFF_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["AFF"]["domain-member"] taxonomy $US-GAAP returns set (target)
+CONSTANT $ALLOWED_AFF_ALIAS = filter $ALLOWED_AFF_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_AFF_ITEMS = (filter $ALLOWED_AFF_MEMBERS returns $item.name.local-name) + $ALLOWED_AFF_ALIAS
+
+CONSTANT $ALLOWED_GEB_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["GEB"]["domain-member"] taxonomy $US-GAAP returns set (target) 
+CONSTANT $ALLOWED_GEB_ALIAS = filter $ALLOWED_GEB_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_GEB_ITEMS = (filter $ALLOWED_GEB_MEMBERS returns $item.name.local-name) + $ALLOWED_GEB_ALIAS
+
+CONSTANT $ALLOWED_GEO_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $US-GAAP returns set (target) + navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $COUNTRY returns set (target)
+CONSTANT $ALLOWED_GEO_ALIAS = filter $ALLOWED_GEO_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_GEO_ITEMS = (filter $ALLOWED_GEO_MEMBERS returns $item.name.local-name) + $ALLOWED_GEO_ALIAS
+
+CONSTANT $ALLOWED_IND_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["IND"]["domain-member"] taxonomy $US-GAAP returns set (target)
+CONSTANT $ALLOWED_IND_EXT_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["IND"]["domain-member"]  returns set (target)
+CONSTANT $ALLOWED_IND_ALIAS = filter $ALLOWED_IND_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_IND_ITEMS = (filter $ALLOWED_IND_MEMBERS returns $item.name.local-name) + $ALLOWED_IND_ALIAS + (filter $ALLOWED_IND_EXT_MEMBERS returns $item.name.local-name) 
+
+CONSTANT $ALLOWED_ISS_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["ISS"]["domain-member"] taxonomy $US-GAAP returns set (target)
+CONSTANT $ALLOWED_ISS_EXT_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["ISS"]["domain-member"]  returns set (target)
+CONSTANT $ALLOWED_ISS_ALIAS = filter $ALLOWED_ISS_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_ISS_ITEMS = (filter $ALLOWED_ISS_MEMBERS returns $item.name.local-name) + $ALLOWED_ISS_ALIAS + (filter $ALLOWED_ISS_EXT_MEMBERS returns $item.name.local-name)
+
+CONSTANT $ALLOWED_TYP_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["TYP"]["domain-member"] taxonomy $US-GAAP returns set (target)
+CONSTANT $ALLOWED_TYP_ALIAS = filter $ALLOWED_TYP_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_TYP_ITEMS = (filter $ALLOWED_TYP_MEMBERS returns $item.name.local-name) + $ALLOWED_TYP_ALIAS
+
+CONSTANT $ALLOWED_VRB_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["VRB"]["domain-member"] taxonomy $US-GAAP returns set (target)
+CONSTANT $ALLOWED_VRB_EXT_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["VRB"]["domain-member"]  returns set (target)
+CONSTANT $ALLOWED_VRB_ALIAS = filter $ALLOWED_VRB_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
+CONSTANT $ALLOWED_VRB_ITEMS = (filter $ALLOWED_VRB_MEMBERS returns $item.name.local-name) + $ALLOWED_VRB_ALIAS + (filter $ALLOWED_VRB_EXT_MEMBERS returns $item.name.local-name)
+
+CONSTANT $ALLOWED-KEYS_DICTIONARY = dict(
+                                list("AFF", $ALLOWED_AFF_ITEMS),
+                                list("GEB", $ALLOWED_GEB_ITEMS),
+                                list("GEO", $ALLOWED_GEO_ITEMS),
+                                list("IND", $ALLOWED_IND_ITEMS),
+                                list("ISS", $ALLOWED_ISS_ITEMS),
+                                list("TYP", $ALLOWED_TYP_ITEMS),
+                                list("VRB", $ALLOWED_VRB_ITEMS)
+                                )

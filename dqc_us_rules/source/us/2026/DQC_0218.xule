@@ -26,8 +26,8 @@ $DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdenti
 
 for $DIM in $DIM_Members
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
-    $GEO = [@concept = InvestmentIssuerAffiliationExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and missing($GEO)
+    $AFF = [@concept = InvestmentIssuerAffiliationExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) (missing($AFF) and get_dim_key_value($DIM, "AFF") == none)
 
 
 message
