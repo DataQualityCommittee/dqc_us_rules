@@ -1,0 +1,65 @@
+name: Sync Test Sets from Travis
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to sync (leave empty for default branch)'
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    name: Sync test sets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+          path: target
+
+      - name: Checkout default branch for scripts
+        uses: actions/checkout@v4
+        with:
+          path: scripts
+
+      - name: Run sync script
+        id: sync
+        run: |
+          set +e
+          python scripts/tests/synctestsets.py --dry-run \
+            --travis target/.travis.yml \
+            --tests target/tests/secvalidationtests.json
+          RESULT=$?
+          set -e
+          if [ $RESULT -eq 2 ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          elif [ $RESULT -ne 0 ]; then
+            echo "Sync script failed with exit code $RESULT"
+            exit $RESULT
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Apply changes
+        if: steps.sync.outputs.has_changes == 'true'
+        run: |
+          python scripts/tests/synctestsets.py \
+            --travis target/.travis.yml \
+            --tests target/tests/secvalidationtests.json
+
+      - name: Commit and push
+        if: steps.sync.outputs.has_changes == 'true'
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add tests/secvalidationtests.json
+          git commit -m "Sync secvalidationtests.json with .travis.yml matrix"
+          git push

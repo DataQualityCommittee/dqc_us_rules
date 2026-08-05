@@ -4,48 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       test_set:
-        description: 'Which test sets to run'
+        description: 'Test set name to run (or "all" for all sets). Names are defined in tests/secvalidationtests.json.'
         required: true
         default: 'all'
-        type: choice
-        options:
-          - all
-          - V30
-          - US GAAP 2026
-          - US GAAP 2025
-          - US GAAP 2025 (2)
-          - US GAAP 2025 (3)
-          - US GAAP roll to 2025
-          - US GAAP roll to 2025 (2)
-          - US GAAP roll to 2025 (3)
-          - US GAAP roll to 2025 (4)
-          - US GAAP 2024
-          - US GAAP 2024 (2)
-          - US GAAP 2024 (3)
-          - US GAAP 2023
-          - IFRS 2025 & 2024
-          - IFRS 2023
-      xule_version:
-        description: 'Xule plugin branch/tag'
-        required: false
-        default: '30050'
         type: string
-      transform_version:
-        description: 'EDGAR transform plugin branch/tag'
+      branch:
+        description: 'Branch to validate (leave empty for default branch)'
         required: false
-        default: '25.1'
+        default: ''
         type: string
-      arelle_version:
-        description: 'Arelle-release pip version'
-        required: false
-        default: '2.37.58'
-        type: string
-
-env:
-  PYTHON_VERSION: '3.13'
-  XULE_VERSION: ${{ inputs.xule_version }}
-  XULE_REPO: xbrlus
-  TRANSFORM_VERSION: ${{ inputs.transform_version }}
 
 jobs:
   build-matrix:
@@ -53,9 +20,36 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
+      new_tests: ${{ steps.sync-check.outputs.new_tests }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - name: Check for new INFILES in .travis.yml
+        id: sync-check
+        run: |
+          set +e
+          python tests/synctestsets.py --dry-run
+          RESULT=$?
+          set -e
+          if [ $RESULT -eq 2 ]; then
+            echo "new_tests=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::New test sets found in .travis.yml that are not in secvalidationtests.json. Run the 'Sync Test Sets from Travis' workflow to add them."
+          else
+            echo "new_tests=false" >> "$GITHUB_OUTPUT"
+            echo "Test config is in sync with .travis.yml"
+          fi
+
+          echo "Available test sets:"
+          python3 -c "
+          import json
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          for t in tests:
+              print(f\"  - {t['name']} ({len(t['infiles'])} filings)\")
+          "
 
       - name: Build matrix from test config
         id: set-matrix
@@ -64,17 +58,16 @@ jobs:
           if [ "$SELECTED" = "all" ]; then
             MATRIX=$(python3 -c "
           import json
-          with open('.github/workflows/sec-validation-tests.json') as f:
+          with open('tests/secvalidationtests.json') as f:
               tests = json.load(f)
           includes = []
           for i, t in enumerate(tests):
-              if t.get('enabled', True):
-                  includes.append({
-                      'index': i,
-                      'name': t['name'],
-                  })
+              includes.append({
+                  'index': i,
+                  'name': t['name'],
+              })
           if not includes:
-              print('No enabled test sets found', file=sys.stderr)
+              print('No test sets found', file=sys.stderr)
               exit(1)
           print(json.dumps({'include': includes}))
           ")
@@ -82,7 +75,7 @@ jobs:
             MATRIX=$(python3 -c "
           import json, sys
           selected = sys.argv[1]
-          with open('.github/workflows/sec-validation-tests.json') as f:
+          with open('tests/secvalidationtests.json') as f:
               tests = json.load(f)
           includes = []
           for i, t in enumerate(tests):
@@ -103,6 +96,11 @@ jobs:
     name: "${{ matrix.name }}"
     needs: build-matrix
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/validation:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     timeout-minutes: 120
     strategy:
       fail-fast: false
@@ -111,35 +109,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set up Python ${{ env.PYTHON_VERSION }}
-        uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install Arelle-release==${{ inputs.arelle_version }}
-
-      - name: Set up Xule and EDGAR plugins
-        run: |
-          SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
-
-          git clone --depth=1 --branch "$XULE_VERSION" --single-branch \
-            "https://github.com/$XULE_REPO/xule.git" temp/xule
-          mv temp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
-          mv temp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
-          mv temp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
-          rm -rf temp
-
-          git clone --quiet --depth=1 --branch "$TRANSFORM_VERSION" --single-branch \
-            "https://github.com/Arelle/EDGAR.git" EDGAR
-          mv EDGAR "$SITE_PACKAGES/arelle/plugin/"
+          ref: ${{ inputs.branch || github.ref }}
 
       - name: Configure ruleset map
         run: |
-          GH_RAW="https://github.com/${{ github.repository }}/raw/${{ github.ref_name }}"
+          BRANCH="${{ inputs.branch || github.ref_name }}"
+          GH_RAW="https://github.com/${{ github.repository }}/raw/$BRANCH"
           sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|$GH_RAW/dqc_us_rules/|" rulesetMap.json
           sed -i "s|\?raw=true||" rulesetMap.json
 
@@ -148,7 +124,7 @@ jobs:
         run: |
           python3 -c "
           import json
-          with open('.github/workflows/sec-validation-tests.json') as f:
+          with open('tests/secvalidationtests.json') as f:
               tests = json.load(f)
           test = tests[${{ matrix.index }}]
           with open('infiles.json', 'w') as f:

@@ -93,8 +93,10 @@ else
       if $greaterThanLowerBound and $lessThanUpperBound
         false
       else
-        true
-
+        if $calc.concept.period-type == xbrli:duration and $calc.period.days > 100 and $calc.period.days < 310
+          false
+        else
+          true
       else
 
           skip
