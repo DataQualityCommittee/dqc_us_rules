@@ -1,0 +1,240 @@
+name: Compile DQC Rulesets
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to compile (determines version tag, e.g. v30 → V30)'
+        required: true
+        default: 'v30'
+        type: string
+      taxonomy:
+        description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
+        required: true
+        default: 'all'
+        type: string
+      year:
+        description: 'Year(s) to compile ("all" or a comma-separated list like "2025,2026")'
+        required: true
+        default: 'all'
+        type: string
+      arelle_version:
+        description: 'Arelle-release pip version ("latest" for the newest release or other supported version)'
+        required: true
+        default: '2.37.58'
+        type: choice
+        options:
+          - latest
+          - '2.37.58'
+      xule_version:
+        description: 'Xule plugin branch/tag'
+        required: true
+        default: '30052.1'
+        type: string
+      version_suffix:
+        description: 'Version suffix (e.g. ".0.0" for V30.0.0, leave empty for V30)'
+        required: false
+        default: ''
+        type: string
+
+env:
+  XULE_REPO: xbrlus
+  VENV_PATH: ${{ github.workspace }}/../dqc-venv
+
+jobs:
+  build-matrix:
+    name: Discover source directories
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Discover compilable sources
+        id: discover
+        run: |
+          BRANCH="${{ inputs.branch }}"
+          VERSION_TAG="$(echo "$BRANCH" | sed 's/^v/V/')${{ inputs.version_suffix }}"
+          TAXONOMY="${{ inputs.taxonomy }}"
+          YEAR="${{ inputs.year }}"
+
+          MATRIX=$(python3 -c "
+          import json, os, sys
+
+          source_root = 'dqc_us_rules/source'
+          version_tag = '$VERSION_TAG'
+          taxonomy_filters = [t.strip() for t in '$TAXONOMY'.split(',') if t.strip()]
+          year_filters = [y.strip() for y in '$YEAR'.split(',') if y.strip()]
+          includes = []
+
+          for taxonomy in sorted(os.listdir(source_root)):
+              tax_path = os.path.join(source_root, taxonomy)
+              if not os.path.isdir(tax_path) or taxonomy == 'lib':
+                  continue
+              if 'all' not in taxonomy_filters and taxonomy not in taxonomy_filters:
+                  continue
+              for year_dir in sorted(os.listdir(tax_path)):
+                  dir_path = os.path.join(tax_path, year_dir)
+                  if not os.path.isdir(dir_path):
+                      continue
+                  if 'all' not in year_filters and not any(year_dir == yf or year_dir.endswith(yf) for yf in year_filters):
+                      continue
+                  # Build output zip name: dqc-{taxonomy}-{year}-{version}-ruleset.zip
+                  # For esef dirs like 'esef-2020', use that directly
+                  zip_name = f'dqc-{year_dir if taxonomy == \"esef\" else taxonomy + \"-\" + year_dir}-{version_tag}-ruleset.zip'
+                  includes.append({
+                      'taxonomy': taxonomy,
+                      'year_dir': year_dir,
+                      'source_path': dir_path,
+                      'zip_name': zip_name,
+                      'label': f'{taxonomy}/{year_dir}',
+                  })
+
+          if not includes:
+              print('No matching source directories found', file=sys.stderr)
+              sys.exit(1)
+
+          print(json.dumps({'include': includes}))
+          ")
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+          echo "Sources to compile:"
+          echo "$MATRIX" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          for item in data['include']:
+              print(f\"  {item['label']} → {item['zip_name']}\")
+          "
+
+  build-env:
+    name: Build Python/Arelle/Xule environment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            git gcc g++ python3-dev libxml2-dev libxslt1-dev
+
+      - name: Create virtual environment
+        run: python -m venv --copies "${{ env.VENV_PATH }}"
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Install Arelle and Xule plugin
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+          if [ "${{ inputs.arelle_version }}" = "latest" ]; then
+            pip install --no-cache-dir --upgrade Arelle-release
+          else
+            pip install --no-cache-dir Arelle-release==${{ inputs.arelle_version }}
+          fi
+          SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
+          git clone --depth=1 --branch ${{ inputs.xule_version }} --single-branch \
+            https://github.com/${{ env.XULE_REPO }}/xule.git /tmp/xule
+          cp -r /tmp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
+          rm -rf /tmp/xule
+
+      - name: Archive virtual environment
+        run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
+
+      - name: Upload environment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv.tar.gz
+          retention-days: 1
+
+  compile:
+    name: "${{ matrix.label }}"
+    needs: [build-matrix, build-env]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Download environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv
+
+      - name: Restore virtual environment
+        run: |
+          mkdir -p "${{ env.VENV_PATH }}"
+          tar -C "${{ env.VENV_PATH }}" -xzf /tmp/dqc-venv/dqc-venv.tar.gz
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Compile XULE ruleset
+        run: |
+          python -m arelle.CntlrCmdLine \
+            --plugins xule \
+            --xule-compile ${{ matrix.source_path }} \
+            --xule-rule-set ./dqc_us_rules/${{ matrix.zip_name }} \
+            --xule-crash
+
+      - name: Verify output
+        run: |
+          ls -lh ./dqc_us_rules/${{ matrix.zip_name }}
+          python3 -c "
+          import zipfile
+          with zipfile.ZipFile('./dqc_us_rules/${{ matrix.zip_name }}') as z:
+              print(f'Ruleset contains {len(z.namelist())} files')
+              for name in sorted(z.namelist())[:10]:
+                  print(f'  {name}')
+              if len(z.namelist()) > 10:
+                  print(f'  ... and {len(z.namelist()) - 10} more')
+          "
+
+      - name: Commit compiled ruleset
+        run: |
+          VERSION_TAG="$(echo '${{ inputs.branch }}' | sed 's/^v/V/')${{ inputs.version_suffix }}"
+          PYTHON_VERSION=$(python --version | awk '{print $2}')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ./dqc_us_rules/${{ matrix.zip_name }}
+          git commit -m "$(cat <<EOF
+          Recompile ruleset .zip files
+
+          Python ${PYTHON_VERSION} || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} for ${VERSION_TAG}
+          EOF
+          )" || echo "No changes to commit"
+          git push || echo "Nothing to push"
+
+      - name: Upload ruleset artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "${{ matrix.zip_name }}"
+          path: "./dqc_us_rules/${{ matrix.zip_name }}"
+          retention-days: 90
