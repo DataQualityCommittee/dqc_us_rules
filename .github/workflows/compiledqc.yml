@@ -3,11 +3,6 @@ name: Compile DQC Rulesets
 on:
   workflow_dispatch:
     inputs:
-      branch:
-        description: 'Branch to compile (determines version tag, e.g. v30 → V30)'
-        required: true
-        default: 'v30'
-        type: string
       taxonomy:
         description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
         required: true
@@ -32,7 +27,7 @@ on:
         default: '30052.1'
         type: string
       version_suffix:
-        description: 'Version suffix (e.g. ".0.0" for V30.0.0, leave empty for V30)'
+        description: 'Suffix appended to the zip filename/tag (e.g. "-test" for a test build; leave empty for a plain V30 release build)'
         required: false
         default: ''
         type: string
@@ -42,21 +37,71 @@ env:
   VENV_PATH: ${{ github.workspace }}/../dqc-venv
 
 jobs:
+  build-env:
+    name: Build Python/Arelle/Xule environment
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            git gcc g++ python3-dev libxml2-dev libxslt1-dev
+
+      - name: Create virtual environment
+        run: python -m venv --copies "${{ env.VENV_PATH }}"
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Install Arelle and Xule plugin
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+          if [ "${{ inputs.arelle_version }}" = "latest" ]; then
+            pip install --no-cache-dir --upgrade Arelle-release
+          else
+            pip install --no-cache-dir Arelle-release==${{ inputs.arelle_version }}
+          fi
+          SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
+          git clone --depth=1 --branch ${{ inputs.xule_version }} --single-branch \
+            https://github.com/${{ env.XULE_REPO }}/xule.git /tmp/xule
+          cp -r /tmp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
+          rm -rf /tmp/xule
+
+      - name: Archive virtual environment
+        run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
+
+      - name: Upload environment artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv.tar.gz
+          retention-days: 1
+
   build-matrix:
     name: Discover source directories
+    needs: build-env
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
       - name: Discover compilable sources
         id: discover
         run: |
-          BRANCH="${{ inputs.branch }}"
+          BRANCH="${{ github.ref_name }}"
           VERSION_TAG="$(echo "$BRANCH" | sed 's/^v/V/')${{ inputs.version_suffix }}"
           TAXONOMY="${{ inputs.taxonomy }}"
           YEAR="${{ inputs.year }}"
@@ -109,62 +154,9 @@ jobs:
               print(f\"  {item['label']} → {item['zip_name']}\")
           "
 
-  build-env:
-    name: Build Python/Arelle/Xule environment
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            git gcc g++ python3-dev libxml2-dev libxslt1-dev
-
-      - name: Create virtual environment
-        run: python -m venv --copies "${{ env.VENV_PATH }}"
-
-      - name: Add virtual environment to PATH
-        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
-
-      - name: Install Arelle and Xule plugin
-        run: |
-          pip install --no-cache-dir -r requirements.txt
-          if [ "${{ inputs.arelle_version }}" = "latest" ]; then
-            pip install --no-cache-dir --upgrade Arelle-release
-          else
-            pip install --no-cache-dir Arelle-release==${{ inputs.arelle_version }}
-          fi
-          SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
-          git clone --depth=1 --branch ${{ inputs.xule_version }} --single-branch \
-            https://github.com/${{ env.XULE_REPO }}/xule.git /tmp/xule
-          cp -r /tmp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
-          cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
-          cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
-          rm -rf /tmp/xule
-
-      - name: Archive virtual environment
-        run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
-
-      - name: Upload environment artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dqc-venv
-          path: /tmp/dqc-venv.tar.gz
-          retention-days: 1
-
   compile:
     name: "${{ matrix.label }}"
-    needs: [build-matrix, build-env]
+    needs: [build-env, build-matrix]
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
@@ -174,8 +166,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -219,7 +209,7 @@ jobs:
 
       - name: Commit compiled ruleset
         run: |
-          VERSION_TAG="$(echo '${{ inputs.branch }}' | sed 's/^v/V/')${{ inputs.version_suffix }}"
+          VERSION_TAG="$(echo '${{ github.ref_name }}' | sed 's/^v/V/')${{ inputs.version_suffix }}"
           PYTHON_VERSION=$(python --version | awk '{print $2}')
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
