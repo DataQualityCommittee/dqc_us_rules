@@ -1,6 +1,6 @@
 FROM python:3.13-slim
 
-ARG XULE_VERSION=30050
+ARG XULE_VERSION=30052.1
 ARG XULE_REPO=xbrlus
 ARG TRANSFORM_VERSION=25.1
 ARG ARELLE_VERSION=2.37.58
@@ -17,7 +17,11 @@ RUN apt-get update && \
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
-    pip install --no-cache-dir Arelle-release==${ARELLE_VERSION}
+    if [ "$ARELLE_VERSION" = "latest" ]; then \
+      pip install --no-cache-dir --upgrade Arelle-release; \
+    else \
+      pip install --no-cache-dir Arelle-release==${ARELLE_VERSION}; \
+    fi
 
 RUN SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])") && \
     git clone --depth=1 --branch ${XULE_VERSION} --single-branch \
