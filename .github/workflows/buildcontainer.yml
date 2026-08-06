@@ -2,10 +2,25 @@ name: Build Validation Container
 
 on:
   workflow_dispatch:
+    inputs:
+      arelle_version:
+        description: 'Arelle-release pip version ("latest" for the newest release or other supported version)'
+        required: true
+        default: '2.37.58'
+        type: choice
+        options:
+          - latest
+          - '2.37.58'
+      xule_version:
+        description: 'Xule plugin branch/tag (avoid "/" — it is used verbatim in the published image tag)'
+        required: true
+        default: '30052.1'
+        type: string
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/validation
+  XULE_REPO: xbrlus
 
 permissions:
   contents: read
@@ -38,10 +53,11 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            XULE_VERSION=30050
-            XULE_REPO=xbrlus
+            XULE_VERSION=${{ inputs.xule_version }}
+            XULE_REPO=${{ env.XULE_REPO }}
             TRANSFORM_VERSION=25.1
-            ARELLE_VERSION=2.37.58
+            ARELLE_VERSION=${{ inputs.arelle_version }}
