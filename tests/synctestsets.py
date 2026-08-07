@@ -2,9 +2,9 @@
 Sync sec-validation-tests.json with the matrix entries in .travis.yml.
 
 Parses all active and single-commented matrix rows from .travis.yml,
-compares them against the existing test sets in the JSON config, and
-adds any missing entries with enabled=false. Existing entries are
-never modified or removed.
+compares them against the existing test sets in the JSON config. When
+an entry's name already exists but its content (filings) has changed,
+the existing entry is updated in place. Truly new entries are prepended.
 
 Usage:
     python tests/synctestsets.py [--dry-run]
@@ -88,12 +88,22 @@ def sync(dry_run=False, travis_file=None, tests_json=None):
         existing = []
 
     existing_fps = {fingerprint(e) for e in existing}
+    existing_by_name = {e["name"]: i for i, e in enumerate(existing)}
 
     added = []
+    updated = []
     new_entries = []
     for entry in travis_entries:
         fp = fingerprint(entry)
-        if fp not in existing_fps:
+        if fp in existing_fps:
+            continue
+        if entry["name"] in existing_by_name:
+            idx = existing_by_name[entry["name"]]
+            existing[idx]["infiles"] = entry["infiles"]
+            existing[idx]["exfiles"] = entry["exfiles"]
+            existing_fps.add(fp)
+            updated.append(entry["name"])
+        else:
             new_entries.append({
                 "name": entry["name"],
                 "infiles": entry["infiles"],
@@ -104,13 +114,18 @@ def sync(dry_run=False, travis_file=None, tests_json=None):
 
     existing = new_entries + existing
 
-    if not added:
+    if not added and not updated:
         print("No new test sets found. JSON is already in sync.")
         return False
 
-    print(f"Found {len(added)} new test set(s):")
-    for name in added:
-        print(f"  + {name}")
+    if updated:
+        print(f"Updated {len(updated)} existing test set(s):")
+        for name in updated:
+            print(f"  ~ {name}")
+    if added:
+        print(f"Found {len(added)} new test set(s):")
+        for name in added:
+            print(f"  + {name}")
 
     if dry_run:
         print("\nDry run — no changes written.")

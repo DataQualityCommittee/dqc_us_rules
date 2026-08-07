@@ -3,6 +3,21 @@ name: Compile & Validate DQC Rulesets
 on:
   workflow_dispatch:
     inputs:
+      use_prebuilt_env:
+        description: 'Use a prebuilt Arelle/Xule container image instead of building with versions below'
+        required: true
+        default: true
+        type: boolean
+      arelle_version:
+        description: 'Arelle-release pip version ("latest" for the newest release or other version)'
+        required: true
+        default: '2.37.58'
+        type: string
+      xule_version:
+        description: 'Xule plugin branch/tag'
+        required: true
+        default: '30052.1'
+        type: string
       taxonomy:
         description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
         required: true
@@ -13,34 +28,16 @@ on:
         required: true
         default: 'all'
         type: string
-      arelle_version:
-        description: 'Arelle-release pip version ("latest" for the newest release or other supported version)'
-        required: true
-        default: '2.37.58'
-        type: choice
-        options:
-          - latest
-          - '2.37.58'
-      xule_version:
-        description: 'Xule plugin branch/tag'
-        required: true
-        default: '30052.1'
-        type: string
       version_suffix:
-        description: 'Suffix appended to the zip filename/tag (e.g. "-test" for a test build; leave empty for a plain V30 release build)'
+        description: 'Suffix appended to the zip filename/tag (e.g. "-test" for a test build; leave empty for a branch-named ruleset.zip build)'
         required: false
         default: ''
         type: string
       ruleset_version:
-        description: 'Version label for the commit message (e.g. "V30.0.1"); if empty, defaults to the branch-derived tag + suffix'
+        description: 'Version label in the commit message (e.g. "V30.0.1"); if empty, defaults to the branch + suffix above'
         required: false
         default: ''
         type: string
-      use_prebuilt_env:
-        description: 'Use the prebuilt Arelle/Xule container image instead of building a fresh environment (faster)'
-        required: true
-        default: true
-        type: boolean
       test_mode:
         description: '"all" = compile + validate everything; "changed" = only rulesets with changed .xule files; "none" = compile all, skip validation'
         required: true
@@ -50,22 +47,50 @@ on:
           - all
           - changed
           - none
-      skip_compilation:
-        description: 'Skip compilation and validate using the existing ruleset .zip files already committed on this branch (useful when only test comparison files changed)'
-        required: true
-        default: false
-        type: boolean
       base_commit:
-        description: 'When test_mode is "changed": commit SHA to diff against. Leave empty to auto-detect from last successful run.'
+        description: 'When test_mode is "changed" enter the commit SHA to diff against. Leave empty to auto-detect from last successful workflow.'
         required: false
         default: ''
         type: string
+      skip_compilation:
+        description: 'Skip compilation and validate using ruleset .zip files committed on this branch (useful when only test comparison files changed)'
+        required: true
+        default: false
+        type: boolean
 
 env:
   XULE_REPO: xbrlus
   VENV_PATH: ${{ github.workspace }}/../dqc-venv
 
 jobs:
+  # ──────────────────────────────────────────────
+  #  Print workflow inputs summary
+  # ──────────────────────────────────────────────
+  summary:
+    name: Workflow inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print summary
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
+          ### Workflow Inputs
+
+          | Input | Value |
+          |-------|-------|
+          | **Environment** | `${{ inputs.use_prebuilt_env && 'prebuilt container' || 'fresh build' }}` |
+          | **Arelle version** | `${{ inputs.arelle_version }}` |
+          | **Xule version** | `${{ inputs.xule_version }}` |
+          | **Taxonomy** | `${{ inputs.taxonomy }}` |
+          | **Year** | `${{ inputs.year }}` |
+          | **Version suffix** | `${{ inputs.version_suffix || '(none)' }}` |
+          | **Ruleset version** | `${{ inputs.ruleset_version || '(auto)' }}` |
+          | **Test mode** | `${{ inputs.test_mode }}` |
+          | **Base commit** | `${{ inputs.base_commit || '(auto-detect)' }}` |
+          | **Skip compilation** | `${{ inputs.skip_compilation }}` |
+
+          **Branch:** `${{ github.ref_name }}` | **Triggered by:** `${{ github.actor }}`
+          EOF
+
   # ──────────────────────────────────────────────
   #  Detect changed .xule files (test_mode=changed only)
   # ──────────────────────────────────────────────
@@ -154,7 +179,7 @@ jobs:
                   rule_ids.add(f'DQC.US.{m.group(1)}')
                   continue
               name_lower = basename.lower().replace('.xule', '')
-              if name_lower in ('constants', 'functions'):
+              if any(keyword in name_lower for keyword in ('constants', 'functions', 'namespace', 'base-taxonomy')):
                   rule_ids.add('__ALL__')
                   is_full_rebuild = True
 
@@ -595,8 +620,10 @@ jobs:
           PYEOF
 
       - name: Run Arelle DQC validation
+        id: validation
         if: steps.testdata.outputs.filing_count != '0'
         run: |
+          set +e
           python -m arelle.CntlrCmdLine \
             --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
             --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
@@ -605,10 +632,16 @@ jobs:
             --xule-filing-list infiles.json \
             --logFile ./log.xml \
             --xule-debug
+          ARELLE_EXIT=$?
+          set -e
+          echo "arelle_exit=$ARELLE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ $ARELLE_EXIT -ne 0 ]; then
+            echo "::warning::Arelle exited with code $ARELLE_EXIT (non-zero is expected when validation errors are found in test filings)"
+          fi
 
       - name: Compare results against expected
         id: compare
-        if: steps.testdata.outputs.filing_count != '0'
+        if: always() && steps.testdata.outputs.filing_count != '0' && steps.validation.outcome != 'cancelled'
         run: |
           python compare.py \
             --compare-file ./report.txt \
@@ -790,8 +823,10 @@ jobs:
           PYEOF
 
       - name: Run Arelle DQC validation
+        id: validation
         if: steps.testdata.outputs.filing_count != '0'
         run: |
+          set +e
           python -m arelle.CntlrCmdLine \
             --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
             --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
@@ -800,10 +835,16 @@ jobs:
             --xule-filing-list infiles.json \
             --logFile ./log.xml \
             --xule-debug
+          ARELLE_EXIT=$?
+          set -e
+          echo "arelle_exit=$ARELLE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ $ARELLE_EXIT -ne 0 ]; then
+            echo "::warning::Arelle exited with code $ARELLE_EXIT (non-zero is expected when validation errors are found in test filings)"
+          fi
 
       - name: Compare results against expected
         id: compare
-        if: steps.testdata.outputs.filing_count != '0'
+        if: always() && steps.testdata.outputs.filing_count != '0' && steps.validation.outcome != 'cancelled'
         run: |
           python compare.py \
             --compare-file ./report.txt \
@@ -891,20 +932,24 @@ jobs:
           RULESET_VERSION: ${{ inputs.ruleset_version }}
           ARELLE_VERSION: ${{ inputs.arelle_version }}
           XULE_VERSION: ${{ inputs.xule_version }}
+          TEST_MODE: ${{ inputs.test_mode }}
+          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
         run: |
           VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
           COMMIT_VERSION="${RULESET_VERSION}"
           if [ -z "$COMMIT_VERSION" ]; then
             COMMIT_VERSION="$VERSION_TAG"
           fi
+          if [ "$SKIP_COMPILATION" = "true" ]; then
+            ACTION="Test"
+          elif [ "$TEST_MODE" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "$(cat <<EOF
-          Recompile ruleset .zip files
-
-          Python 3.13 || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} for ${COMMIT_VERSION}
-          EOF
-          )"
+          git commit -m "${ACTION} ruleset .zip files ${COMMIT_VERSION}" -m "Python 3.13 || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION}"
           git push
