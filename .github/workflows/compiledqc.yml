@@ -31,6 +31,11 @@ on:
         required: false
         default: ''
         type: string
+      ruleset_version:
+        description: 'Version label for the commit message (e.g. "V30.0.1"); if empty, defaults to the branch-derived tag + suffix'
+        required: false
+        default: ''
+        type: string
       use_prebuilt_env:
         description: 'Use the prebuilt Arelle/Xule container image from the "Build Validation Container" workflow instead of building a fresh environment (faster). Requires that workflow to have already been run with the same arelle_version/xule_version.'
         required: true
@@ -252,6 +257,10 @@ jobs:
       - name: Commit and push
         run: |
           VERSION_TAG="$(echo '${{ github.ref_name }}' | sed 's/^v/V/')${{ inputs.version_suffix }}"
+          COMMIT_VERSION="${{ inputs.ruleset_version }}"
+          if [ -z "$COMMIT_VERSION" ]; then
+            COMMIT_VERSION="$VERSION_TAG"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip
@@ -259,7 +268,7 @@ jobs:
           git commit -m "$(cat <<EOF
           Recompile ruleset .zip files
 
-          Python 3.13 || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} for ${VERSION_TAG}
+          Python 3.13 || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} for ${COMMIT_VERSION}
           EOF
           )"
           git push
