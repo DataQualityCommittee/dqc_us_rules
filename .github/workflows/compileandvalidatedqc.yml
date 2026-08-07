@@ -371,12 +371,16 @@ jobs:
         env:
           TEST_MODE: ${{ inputs.test_mode }}
           CHANGED_RULES: ${{ needs.detect-changes.outputs.changed_rules }}
+          TAXONOMY: ${{ inputs.taxonomy }}
+          YEAR: ${{ inputs.year }}
         run: |
           python3 << 'PYEOF'
-          import json, os, sys
+          import json, os, re, sys
 
           test_mode = os.environ.get('TEST_MODE', 'all')
           changed_rules_raw = os.environ.get('CHANGED_RULES', '')
+          taxonomy_input = os.environ.get('TAXONOMY', 'all').strip().lower()
+          year_input = os.environ.get('YEAR', 'all').strip()
 
           with open('tests/secvalidationtests.json') as f:
               tests = json.load(f)
@@ -387,10 +391,40 @@ jobs:
           print(f'Test mode: {test_mode}')
           print(f'Changed rules detected: {sorted(changed_rules)}')
 
+          taxonomy_filters = {t.strip() for t in taxonomy_input.split(',') if t.strip()}
+          year_filters = {y.strip() for y in year_input.split(',') if y.strip()}
+          filter_by_scope = 'all' not in taxonomy_filters or 'all' not in year_filters
+
+          def matches_scope(name):
+              if not filter_by_scope:
+                  return True
+              name_lower = name.lower()
+              if name_lower.startswith('us gaap') or 'roll to' in name_lower:
+                  test_tax = 'us'
+              elif name_lower.startswith('ifrs'):
+                  test_tax = 'ifrs'
+              elif name_lower.startswith('v'):
+                  return True
+              else:
+                  return True
+              if 'all' not in taxonomy_filters and test_tax not in taxonomy_filters:
+                  if not (test_tax == 'ifrs' and 'esef' in taxonomy_filters):
+                      return False
+              if 'all' not in year_filters:
+                  years_in_name = set(re.findall(r'20\d{2}', name))
+                  if years_in_name and not years_in_name & year_filters:
+                      return False
+              return True
+
+          if filter_by_scope:
+              print(f'Filtering tests to taxonomy={taxonomy_input}, year={year_input}')
+
           is_full = '__ALL__' in changed_rules
           includes = []
 
           for i, t in enumerate(tests):
+              if not matches_scope(t['name']):
+                  continue
               if test_mode == 'all' or is_full:
                   includes.append({'index': i, 'name': t['name']})
               elif test_mode == 'changed' and changed_rules:
@@ -420,7 +454,7 @@ jobs:
               for item in includes:
                   print(f"  {item['name']}")
           else:
-              print('No test sets matched the changed rules.')
+              print('No test sets matched the filters.')
           PYEOF
 
   # ──────────────────────────────────────────────
