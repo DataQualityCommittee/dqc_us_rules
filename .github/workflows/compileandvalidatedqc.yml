@@ -187,7 +187,7 @@ jobs:
   # ──────────────────────────────────────────────
   build-env:
     name: Build Python/Arelle/Xule environment
-    if: inputs.skip_compilation == false && inputs.use_prebuilt_env == false
+    if: inputs.use_prebuilt_env == false && (inputs.skip_compilation == false || inputs.test_mode != 'none')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -476,16 +476,17 @@ jobs:
           zip_name: ${{ matrix.zip_name }}
 
   # ──────────────────────────────────────────────
-  #  Validate compiled rulesets against SEC filings
+  #  Validate compiled rulesets (prebuilt container)
   # ──────────────────────────────────────────────
-  validate:
-    name: "${{ matrix.name }}"
+  validate-prebuilt:
+    name: "${{ matrix.name }} (prebuilt env)"
     needs: [compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
     if: >-
       always()
+      && inputs.use_prebuilt_env
       && inputs.test_mode != 'none'
       && needs.build-test-matrix.outputs.has_tests == 'true'
-      && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
+      && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success')
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
@@ -655,16 +656,212 @@ jobs:
           fi
 
   # ──────────────────────────────────────────────
+  #  Validate compiled rulesets (fresh environment)
+  # ──────────────────────────────────────────────
+  validate-fresh:
+    name: "${{ matrix.name }} (fresh env)"
+    needs: [compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
+    if: >-
+      always()
+      && inputs.use_prebuilt_env == false
+      && inputs.test_mode != 'none'
+      && needs.build-test-matrix.outputs.has_tests == 'true'
+      && needs.build-env.result == 'success'
+      && (inputs.skip_compilation || needs.compile-fresh.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-test-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Download environment artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv
+
+      - name: Restore virtual environment
+        run: |
+          mkdir -p "${{ env.VENV_PATH }}"
+          tar -C "${{ env.VENV_PATH }}" -xzf /tmp/dqc-venv/dqc-venv.tar.gz
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Download all compiled rulesets
+        if: inputs.skip_compilation == false
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          pattern: 'dqc-*-ruleset.zip'
+
+      - name: Install compiled rulesets
+        if: inputs.skip_compilation == false
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name '*.zip' -type f
+          find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
+
+      - name: Configure ruleset map to use local zips
+        run: |
+          echo "Rulesets in dqc_us_rules/:"
+          ls -lh ./dqc_us_rules/*.zip
+
+          python3 << 'PYEOF'
+          import json, os
+
+          with open('rulesetMap.json') as f:
+              rmap = json.load(f)
+
+          updated = {}
+          for uri, url in rmap.items():
+              filename = url.rsplit('/', 1)[-1].split('?')[0]
+              local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
+              if os.path.exists(local_path):
+                  updated[uri] = local_path
+                  print(f'  {uri} -> {local_path}')
+              else:
+                  updated[uri] = url
+                  print(f'  {uri} -> {url} (remote, no local zip)')
+
+          with open('rulesetMap.json', 'w') as f:
+              json.dump(updated, f, indent=2)
+          PYEOF
+
+      - name: Extract test set and write filing list
+        id: testdata
+        env:
+          TEST_MODE: ${{ inputs.test_mode }}
+          CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
+          MATRIX_INDEX: ${{ matrix.index }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+
+          test_mode = os.environ.get('TEST_MODE', 'all')
+          changed_rules_json = os.environ.get('CHANGED_RULES_JSON', '[]')
+          index = int(os.environ['MATRIX_INDEX'])
+
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          test = tests[index]
+
+          infiles = test['infiles']
+          exfiles_list = [e.strip() for e in test['exfiles'].split(',') if e.strip()]
+
+          changed_rules = set()
+          if test_mode == 'changed' and changed_rules_json:
+              changed_rules = set(json.loads(changed_rules_json))
+
+          if test_mode == 'changed' and changed_rules and '__ALL__' not in changed_rules:
+              filtered_in = []
+              filtered_ex = []
+              for i, filing in enumerate(infiles):
+                  run_only = filing.get('xule_run_only', '')
+                  if any(rule_id in run_only for rule_id in changed_rules):
+                      filtered_in.append(filing)
+                      if i < len(exfiles_list):
+                          filtered_ex.append(exfiles_list[i])
+              print(f'Filtered {len(infiles)} filings down to {len(filtered_in)} matching changed rules')
+              infiles = filtered_in
+              exfiles_list = filtered_ex
+
+          with open('infiles.json', 'w') as f:
+              json.dump(infiles, f)
+          exfiles_str = ','.join(exfiles_list)
+          with open('exfiles.txt', 'w') as f:
+              f.write(exfiles_str)
+
+          print('Filing list:')
+          for filing in infiles:
+              print(f"  {filing['xule_run_only']}: {filing['file']}")
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'exfiles={exfiles_str}\n')
+              out.write(f'filing_count={len(infiles)}\n')
+          PYEOF
+
+      - name: Run Arelle DQC validation
+        if: steps.testdata.outputs.filing_count != '0'
+        run: |
+          python -m arelle.CntlrCmdLine \
+            --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
+            --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
+            -v \
+            --dqc-replace-rule-set-map ./rulesetMap.json \
+            --xule-filing-list infiles.json \
+            --logFile ./log.xml \
+            --xule-debug
+
+      - name: Compare results against expected
+        id: compare
+        if: steps.testdata.outputs.filing_count != '0'
+        run: |
+          python compare.py \
+            --compare-file ./report.txt \
+            --test-files ./log.xml \
+            --expected-results "${{ steps.testdata.outputs.exfiles }}" \
+            --html-file ./report.html
+        continue-on-error: true
+
+      - name: Print log.xml
+        if: always()
+        run: head -3000 log.xml || true
+
+      - name: Print comparison report
+        if: always()
+        run: |
+          echo "===== COMPARISON REPORT (TEXT) ====="
+          cat report.txt 2>/dev/null || echo "No text report generated."
+          echo "===== END COMPARISON REPORT ====="
+          echo ""
+          echo "===== COMPARISON REPORT (HTML) ====="
+          cat report.html 2>/dev/null || echo "No HTML report generated."
+          echo "===== END COMPARISON REPORT ====="
+
+      - name: Upload reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "reports-${{ matrix.name }}"
+          path: |
+            log.xml
+            report.txt
+            report.html
+          retention-days: 30
+
+      - name: Report outcome
+        if: always()
+        run: |
+          if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
+            echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
+          elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
+            exit 1
+          else
+            echo "All validation results match expected output for ${{ matrix.name }}."
+          fi
+
+  # ──────────────────────────────────────────────
   #  Commit compiled rulesets
   # ──────────────────────────────────────────────
   commit:
     name: Commit all rulesets
-    needs: [compile-prebuilt, compile-fresh, validate]
+    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
     if: >-
       always()
       && inputs.skip_compilation == false
       && (needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
-      && (needs.validate.result == 'success' || needs.validate.result == 'skipped')
+      && (needs.validate-prebuilt.result == 'success' || needs.validate-prebuilt.result == 'skipped')
+      && (needs.validate-fresh.result == 'success' || needs.validate-fresh.result == 'skipped')
     runs-on: ubuntu-latest
     permissions:
       contents: write
