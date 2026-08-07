@@ -18,6 +18,11 @@ on:
         required: true
         default: '30052.1'
         type: string
+      edgar_version:
+        description: 'EDGAR transform plugin branch/tag (from Arelle/EDGAR repo)'
+        required: true
+        default: '25.1'
+        type: string
       taxonomy:
         description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
         required: true
@@ -68,28 +73,64 @@ jobs:
   # ──────────────────────────────────────────────
   summary:
     name: Workflow inputs
+    needs: resolve-env
     runs-on: ubuntu-latest
     steps:
       - name: Print summary
+        env:
+          USE_PREBUILT: ${{ needs.resolve-env.outputs.use_prebuilt }}
         run: |
-          cat >> "$GITHUB_STEP_SUMMARY" << 'EOF'
-          ### Workflow Inputs
+          if [ "${{ inputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
+            ENV_LABEL="fresh build (auto — custom versions override prebuilt)"
+          elif [ "$USE_PREBUILT" = "true" ]; then
+            ENV_LABEL="prebuilt container"
+          else
+            ENV_LABEL="fresh build"
+          fi
+          {
+            echo "### Workflow Inputs"
+            echo ""
+            echo "| Input | Value |"
+            echo "|-------|-------|"
+            echo "| **Environment** | \`${ENV_LABEL}\` |"
+            echo "| **Arelle version** | \`${{ inputs.arelle_version }}\` |"
+            echo "| **Xule version** | \`${{ inputs.xule_version }}\` |"
+            echo "| **EDGAR version** | \`${{ inputs.edgar_version }}\` |"
+            echo "| **Taxonomy** | \`${{ inputs.taxonomy }}\` |"
+            echo "| **Year** | \`${{ inputs.year }}\` |"
+            echo "| **Version suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
+            echo "| **Ruleset version** | \`${{ inputs.ruleset_version || '(auto)' }}\` |"
+            echo "| **Test mode** | \`${{ inputs.test_mode }}\` |"
+            echo "| **Base commit** | \`${{ inputs.base_commit || '(auto-detect)' }}\` |"
+            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
+            echo ""
+            echo "**Branch:** \`${{ github.ref_name }}\` | **Triggered by:** \`${{ github.actor }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
-          | Input | Value |
-          |-------|-------|
-          | **Environment** | `${{ inputs.use_prebuilt_env && 'prebuilt container' || 'fresh build' }}` |
-          | **Arelle version** | `${{ inputs.arelle_version }}` |
-          | **Xule version** | `${{ inputs.xule_version }}` |
-          | **Taxonomy** | `${{ inputs.taxonomy }}` |
-          | **Year** | `${{ inputs.year }}` |
-          | **Version suffix** | `${{ inputs.version_suffix || '(none)' }}` |
-          | **Ruleset version** | `${{ inputs.ruleset_version || '(auto)' }}` |
-          | **Test mode** | `${{ inputs.test_mode }}` |
-          | **Base commit** | `${{ inputs.base_commit || '(auto-detect)' }}` |
-          | **Skip compilation** | `${{ inputs.skip_compilation }}` |
-
-          **Branch:** `${{ github.ref_name }}` | **Triggered by:** `${{ github.actor }}`
-          EOF
+  # ──────────────────────────────────────────────
+  #  Resolve effective environment choice
+  #  Auto-disables prebuilt when versions differ from the defaults baked into the container image.
+  # ──────────────────────────────────────────────
+  resolve-env:
+    name: Resolve environment
+    runs-on: ubuntu-latest
+    outputs:
+      use_prebuilt: ${{ steps.resolve.outputs.use_prebuilt }}
+    steps:
+      - name: Resolve effective use_prebuilt flag
+        id: resolve
+        run: |
+          DEFAULT_ARELLE="2.37.58"
+          DEFAULT_XULE="30052.1"
+          DEFAULT_EDGAR="25.1"
+          USE_PREBUILT="${{ inputs.use_prebuilt_env }}"
+          if [ "$USE_PREBUILT" = "true" ]; then
+            if [ "${{ inputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ inputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ inputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
+              echo "::warning::Prebuilt container uses Arelle $DEFAULT_ARELLE / Xule $DEFAULT_XULE / EDGAR $DEFAULT_EDGAR — custom versions requested, switching to fresh build."
+              USE_PREBUILT="false"
+            fi
+          fi
+          echo "use_prebuilt=$USE_PREBUILT" >> "$GITHUB_OUTPUT"
 
   # ──────────────────────────────────────────────
   #  Detect changed .xule files (test_mode=changed only)
@@ -104,7 +145,7 @@ jobs:
       is_full_rebuild: ${{ steps.analyze.outputs.is_full_rebuild }}
     steps:
       - name: Checkout repository (with history)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -212,15 +253,16 @@ jobs:
   # ──────────────────────────────────────────────
   build-env:
     name: Build Python/Arelle/Xule environment
-    if: inputs.use_prebuilt_env == false && (inputs.skip_compilation == false || inputs.test_mode != 'none')
+    needs: resolve-env
+    if: needs.resolve-env.outputs.use_prebuilt == 'false' && (inputs.skip_compilation == false || inputs.test_mode != 'none')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
@@ -236,7 +278,7 @@ jobs:
       - name: Add virtual environment to PATH
         run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
 
-      - name: Install Arelle and Xule plugin
+      - name: Install Arelle, Xule, and EDGAR plugins
         run: |
           pip install --no-cache-dir -r requirements.txt
           if [ "${{ inputs.arelle_version }}" = "latest" ]; then
@@ -251,12 +293,16 @@ jobs:
           cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
           cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
           rm -rf /tmp/xule
+          git clone --depth=1 --branch ${{ inputs.edgar_version }} --single-branch \
+            https://github.com/Arelle/EDGAR.git /tmp/EDGAR
+          cp -r /tmp/EDGAR "$SITE_PACKAGES/arelle/plugin/"
+          rm -rf /tmp/EDGAR
 
       - name: Archive virtual environment
         run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
 
       - name: Upload environment artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dqc-venv
           path: /tmp/dqc-venv.tar.gz
@@ -275,7 +321,7 @@ jobs:
       has_sources: ${{ steps.discover.outputs.has_sources }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Discover compilable sources
         id: discover
@@ -364,19 +410,23 @@ jobs:
       changed_rules: ${{ steps.set-matrix.outputs.changed_rules }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build matrix from test config
         id: set-matrix
         env:
           TEST_MODE: ${{ inputs.test_mode }}
           CHANGED_RULES: ${{ needs.detect-changes.outputs.changed_rules }}
+          TAXONOMY: ${{ inputs.taxonomy }}
+          YEAR: ${{ inputs.year }}
         run: |
           python3 << 'PYEOF'
-          import json, os, sys
+          import json, os, re, sys
 
           test_mode = os.environ.get('TEST_MODE', 'all')
           changed_rules_raw = os.environ.get('CHANGED_RULES', '')
+          taxonomy_input = os.environ.get('TAXONOMY', 'all').strip().lower()
+          year_input = os.environ.get('YEAR', 'all').strip()
 
           with open('tests/secvalidationtests.json') as f:
               tests = json.load(f)
@@ -387,10 +437,40 @@ jobs:
           print(f'Test mode: {test_mode}')
           print(f'Changed rules detected: {sorted(changed_rules)}')
 
+          taxonomy_filters = {t.strip() for t in taxonomy_input.split(',') if t.strip()}
+          year_filters = {y.strip() for y in year_input.split(',') if y.strip()}
+          filter_by_scope = 'all' not in taxonomy_filters or 'all' not in year_filters
+
+          def matches_scope(name):
+              if not filter_by_scope:
+                  return True
+              name_lower = name.lower()
+              if name_lower.startswith('us gaap') or 'roll to' in name_lower:
+                  test_tax = 'us'
+              elif name_lower.startswith('ifrs'):
+                  test_tax = 'ifrs'
+              elif name_lower.startswith('v'):
+                  return True
+              else:
+                  return True
+              if 'all' not in taxonomy_filters and test_tax not in taxonomy_filters:
+                  if not (test_tax == 'ifrs' and 'esef' in taxonomy_filters):
+                      return False
+              if 'all' not in year_filters:
+                  years_in_name = set(re.findall(r'20\d{2}', name))
+                  if years_in_name and not years_in_name & year_filters:
+                      return False
+              return True
+
+          if filter_by_scope:
+              print(f'Filtering tests to taxonomy={taxonomy_input}, year={year_input}')
+
           is_full = '__ALL__' in changed_rules
           includes = []
 
           for i, t in enumerate(tests):
+              if not matches_scope(t['name']):
+                  continue
               if test_mode == 'all' or is_full:
                   includes.append({'index': i, 'name': t['name']})
               elif test_mode == 'changed' and changed_rules:
@@ -420,7 +500,7 @@ jobs:
               for item in includes:
                   print(f"  {item['name']}")
           else:
-              print('No test sets matched the changed rules.')
+              print('No test sets matched the filters.')
           PYEOF
 
   # ──────────────────────────────────────────────
@@ -428,11 +508,11 @@ jobs:
   # ──────────────────────────────────────────────
   compile-prebuilt:
     name: "${{ matrix.label }} (prebuilt env)"
-    needs: build-compile-matrix
+    needs: [resolve-env, build-compile-matrix]
     if: >-
       always()
       && needs.build-compile-matrix.result == 'success'
-      && inputs.use_prebuilt_env
+      && needs.resolve-env.outputs.use_prebuilt == 'true'
       && needs.build-compile-matrix.outputs.has_sources == 'true'
     runs-on: ubuntu-latest
     container:
@@ -446,7 +526,7 @@ jobs:
       matrix: ${{ fromJson(needs.build-compile-matrix.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Compile ruleset
         uses: ./.github/actions/compile-ruleset
@@ -459,12 +539,12 @@ jobs:
   # ──────────────────────────────────────────────
   compile-fresh:
     name: "${{ matrix.label }} (fresh env)"
-    needs: [build-env, build-compile-matrix]
+    needs: [resolve-env, build-env, build-compile-matrix]
     if: >-
       always()
       && needs.build-compile-matrix.result == 'success'
       && (needs.build-env.result == 'success')
-      && inputs.use_prebuilt_env == false
+      && needs.resolve-env.outputs.use_prebuilt == 'false'
       && needs.build-compile-matrix.outputs.has_sources == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -473,15 +553,15 @@ jobs:
       matrix: ${{ fromJson(needs.build-compile-matrix.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -505,10 +585,10 @@ jobs:
   # ──────────────────────────────────────────────
   validate-prebuilt:
     name: "${{ matrix.name }} (prebuilt env)"
-    needs: [compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
+    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
     if: >-
       always()
-      && inputs.use_prebuilt_env
+      && needs.resolve-env.outputs.use_prebuilt == 'true'
       && inputs.test_mode != 'none'
       && needs.build-test-matrix.outputs.has_tests == 'true'
       && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success')
@@ -524,11 +604,11 @@ jobs:
       matrix: ${{ fromJson(needs.build-test-matrix.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -660,14 +740,10 @@ jobs:
           echo "===== COMPARISON REPORT (TEXT) ====="
           cat report.txt 2>/dev/null || echo "No text report generated."
           echo "===== END COMPARISON REPORT ====="
-          echo ""
-          echo "===== COMPARISON REPORT (HTML) ====="
-          cat report.html 2>/dev/null || echo "No HTML report generated."
-          echo "===== END COMPARISON REPORT ====="
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -676,12 +752,26 @@ jobs:
             report.html
           retention-days: 30
 
+      - name: Upload HTML report
+        if: always() && steps.compare.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: "discrepancies-${{ matrix.name }}.html"
+          path: report.html
+          retention-days: 30
+
       - name: Report outcome
         if: always()
         run: |
           if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
             echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
           elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
             exit 1
           else
@@ -693,10 +783,10 @@ jobs:
   # ──────────────────────────────────────────────
   validate-fresh:
     name: "${{ matrix.name }} (fresh env)"
-    needs: [compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
+    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
     if: >-
       always()
-      && inputs.use_prebuilt_env == false
+      && needs.resolve-env.outputs.use_prebuilt == 'false'
       && inputs.test_mode != 'none'
       && needs.build-test-matrix.outputs.has_tests == 'true'
       && needs.build-env.result == 'success'
@@ -708,15 +798,15 @@ jobs:
       matrix: ${{ fromJson(needs.build-test-matrix.outputs.matrix) }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -731,7 +821,7 @@ jobs:
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -863,14 +953,10 @@ jobs:
           echo "===== COMPARISON REPORT (TEXT) ====="
           cat report.txt 2>/dev/null || echo "No text report generated."
           echo "===== END COMPARISON REPORT ====="
-          echo ""
-          echo "===== COMPARISON REPORT (HTML) ====="
-          cat report.html 2>/dev/null || echo "No HTML report generated."
-          echo "===== END COMPARISON REPORT ====="
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -879,12 +965,26 @@ jobs:
             report.html
           retention-days: 30
 
+      - name: Upload HTML report
+        if: always() && steps.compare.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: "discrepancies-${{ matrix.name }}.html"
+          path: report.html
+          retention-days: 30
+
       - name: Report outcome
         if: always()
         run: |
           if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
             echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
           elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
             exit 1
           else
@@ -908,10 +1008,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -932,20 +1032,30 @@ jobs:
           RULESET_VERSION: ${{ inputs.ruleset_version }}
           ARELLE_VERSION: ${{ inputs.arelle_version }}
           XULE_VERSION: ${{ inputs.xule_version }}
+          EDGAR_VERSION: ${{ inputs.edgar_version }}
+          TEST_MODE: ${{ inputs.test_mode }}
+          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
         run: |
           VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
           COMMIT_VERSION="${RULESET_VERSION}"
           if [ -z "$COMMIT_VERSION" ]; then
             COMMIT_VERSION="$VERSION_TAG"
           fi
+          if [ "$SKIP_COMPILATION" = "true" ]; then
+            ACTION="Test"
+          elif [ "$TEST_MODE" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "$(cat <<EOF
-          Recompile ruleset .zip files
+          ${ACTION} ruleset .zip files ${COMMIT_VERSION}
 
-          Python 3.13 || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} for ${COMMIT_VERSION}
+          Python 3.13 || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}
           EOF
           )"
           git push
