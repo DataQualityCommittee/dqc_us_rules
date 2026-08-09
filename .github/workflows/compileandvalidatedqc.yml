@@ -11,7 +11,7 @@ on:
       arelle_version:
         description: 'Arelle-release pip version ("latest" for the newest release or other version)'
         required: true
-        default: '2.37.58'
+        default: '2.44.0'
         type: string
       xule_version:
         description: 'Xule plugin branch/tag'
@@ -21,7 +21,7 @@ on:
       edgar_version:
         description: 'EDGAR transform plugin branch/tag (from Arelle/EDGAR repo)'
         required: true
-        default: '25.1'
+        default: '26.1.3'
         type: string
       taxonomy:
         description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
@@ -120,9 +120,9 @@ jobs:
       - name: Resolve effective use_prebuilt flag
         id: resolve
         run: |
-          DEFAULT_ARELLE="2.37.58"
+          DEFAULT_ARELLE="2.44.0"
           DEFAULT_XULE="30052.1"
-          DEFAULT_EDGAR="25.1"
+          DEFAULT_EDGAR="26.1.3"
           USE_PREBUILT="${{ inputs.use_prebuilt_env }}"
           if [ "$USE_PREBUILT" = "true" ]; then
             if [ "${{ inputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ inputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ inputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
@@ -516,7 +516,7 @@ jobs:
       && needs.build-compile-matrix.outputs.has_sources == 'true'
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
+      image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -594,7 +594,7 @@ jobs:
       && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success')
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
+      image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}

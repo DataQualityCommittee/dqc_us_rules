@@ -6,15 +6,21 @@ on:
       arelle_version:
         description: 'Arelle-release pip version ("latest" for the newest release or other supported version)'
         required: true
-        default: '2.37.58'
+        default: '2.44.0'
         type: choice
         options:
           - latest
+          - '2.44.0'
           - '2.37.58'
       xule_version:
         description: 'Xule plugin branch/tag (avoid "/" — it is used verbatim in the published image tag)'
         required: true
         default: '30052.1'
+        type: string
+      edgar_version:
+        description: 'EDGAR transform plugin branch/tag (from Arelle/EDGAR repo)'
+        required: true
+        default: '26.1.3'
         type: string
 
 env:
@@ -23,7 +29,7 @@ env:
   XULE_REPO: xbrlus
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -33,31 +39,78 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Detect Python version from Dockerfile
+        id: pyver
+        run: |
+          PY_VERSION=$(grep -oP '(?<=FROM python:)[^\s-]+' Dockerfile)
+          echo "python_version=$PY_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Print summary
+        env:
+          PY_VERSION: ${{ steps.pyver.outputs.python_version }}
+        run: |
+          {
+            echo "### Build Validation Container"
+            echo ""
+            echo "| Component | Version |"
+            echo "|-----------|---------|"
+            echo "| **Python** | \`${PY_VERSION}\` |"
+            echo "| **Arelle** | \`${{ inputs.arelle_version }}\` |"
+            echo "| **Xule** | \`${{ inputs.xule_version }}\` |"
+            echo "| **EDGAR** | \`${{ inputs.edgar_version }}\` |"
+            echo ""
+            echo "**Image:** \`${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}\`"
+            echo ""
+            echo "**Repository:** \`${{ github.repository }}\` | **Triggered by:** \`${{ github.actor }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
             XULE_VERSION=${{ inputs.xule_version }}
             XULE_REPO=${{ env.XULE_REPO }}
-            TRANSFORM_VERSION=25.1
+            TRANSFORM_VERSION=${{ inputs.edgar_version }}
             ARELLE_VERSION=${{ inputs.arelle_version }}
+
+      - name: Update Dockerfile defaults and commit
+        env:
+          PY_VERSION: ${{ steps.pyver.outputs.python_version }}
+        run: |
+          sed -i "s/^ARG ARELLE_VERSION=.*/ARG ARELLE_VERSION=${{ inputs.arelle_version }}/" Dockerfile
+          sed -i "s/^ARG XULE_VERSION=.*/ARG XULE_VERSION=${{ inputs.xule_version }}/" Dockerfile
+          sed -i "s/^ARG TRANSFORM_VERSION=.*/ARG TRANSFORM_VERSION=${{ inputs.edgar_version }}/" Dockerfile
+          if git diff --quiet Dockerfile; then
+            echo "Dockerfile already up to date — no commit needed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Dockerfile
+          git commit -m "$(cat <<EOF
+          Update Dockerfile defaults
+
+          Python ${PY_VERSION} || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} || EDGAR ${{ inputs.edgar_version }}
+          EOF
+          )"
+          git push
