@@ -39,7 +39,7 @@ on:
         default: ''
         type: string
       ruleset_version:
-        description: 'Version label in the commit message (e.g. "V30.0.1"); if empty, defaults to the branch + suffix above'
+        description: 'Version label for rulesetMap and commit title (e.g. "v30.0.1"); if empty, defaults to the branch + suffix above'
         required: false
         default: ''
         type: string
@@ -1025,6 +1025,19 @@ jobs:
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
+      - name: Update rulesetMap.json version references
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          RULESET_VERSION: ${{ inputs.ruleset_version }}
+        run: |
+          MAP_VERSION="${RULESET_VERSION}"
+          if [ -z "$MAP_VERSION" ]; then
+            MAP_VERSION="$BRANCH_NAME"
+          fi
+          sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
+          echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
+          cat rulesetMap.json
+
       - name: Commit and push
         env:
           VERSION_SUFFIX: ${{ inputs.version_suffix }}
@@ -1050,7 +1063,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ./dqc_us_rules/*.zip
+          git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "$(cat <<EOF
           ${ACTION} ruleset .zip files ${COMMIT_VERSION}
