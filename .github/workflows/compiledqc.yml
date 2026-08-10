@@ -31,6 +31,16 @@ on:
         required: false
         default: ''
         type: string
+      ruleset_version:
+        description: 'Version label for the commit message (e.g. "V30.0.1"); if empty, defaults to the branch-derived tag + suffix'
+        required: false
+        default: ''
+        type: string
+      use_prebuilt_env:
+        description: 'Use the prebuilt Arelle/Xule container image from the "Build Validation Container" workflow instead of building a fresh environment (faster). Requires that workflow to have already been run with the same arelle_version/xule_version.'
+        required: true
+        default: true
+        type: boolean
 
 env:
   XULE_REPO: xbrlus
@@ -39,6 +49,7 @@ env:
 jobs:
   build-env:
     name: Build Python/Arelle/Xule environment
+    if: inputs.use_prebuilt_env == false
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -90,7 +101,6 @@ jobs:
 
   build-matrix:
     name: Discover source directories
-    needs: build-env
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
@@ -154,8 +164,34 @@ jobs:
               print(f\"  {item['label']} → {item['zip_name']}\")
           "
 
-  compile:
-    name: "${{ matrix.label }}"
+  compile-prebuilt:
+    name: "${{ matrix.label }} (prebuilt env)"
+    if: inputs.use_prebuilt_env
+    needs: build-matrix
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/validation:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile ruleset
+        uses: ./.github/actions/compile-ruleset
+        with:
+          source_path: ${{ matrix.source_path }}
+          zip_name: ${{ matrix.zip_name }}
+
+  compile-fresh:
+    name: "${{ matrix.label }} (fresh env)"
+    if: inputs.use_prebuilt_env == false
     needs: [build-env, build-matrix]
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -186,45 +222,53 @@ jobs:
       - name: Add virtual environment to PATH
         run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
 
-      - name: Compile XULE ruleset
-        run: |
-          python -m arelle.CntlrCmdLine \
-            --plugins xule \
-            --xule-compile ${{ matrix.source_path }} \
-            --xule-rule-set ./dqc_us_rules/${{ matrix.zip_name }} \
-            --xule-crash
+      - name: Compile ruleset
+        uses: ./.github/actions/compile-ruleset
+        with:
+          source_path: ${{ matrix.source_path }}
+          zip_name: ${{ matrix.zip_name }}
 
-      - name: Verify output
-        run: |
-          ls -lh ./dqc_us_rules/${{ matrix.zip_name }}
-          python3 -c "
-          import zipfile
-          with zipfile.ZipFile('./dqc_us_rules/${{ matrix.zip_name }}') as z:
-              print(f'Ruleset contains {len(z.namelist())} files')
-              for name in sorted(z.namelist())[:10]:
-                  print(f'  {name}')
-              if len(z.namelist()) > 10:
-                  print(f'  ... and {len(z.namelist()) - 10} more')
-          "
+  commit:
+    name: Commit all rulesets
+    needs: [compile-prebuilt, compile-fresh]
+    if: always() && (needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Commit compiled ruleset
+      - name: Download all compiled rulesets
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+          pattern: 'dqc-*-ruleset.zip'
+
+      - name: Copy rulesets into repo
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name '*.zip' -type f
+          find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
+          echo ""
+          echo "Rulesets in dqc_us_rules/:"
+          ls -lh ./dqc_us_rules/*.zip
+
+      - name: Commit and push
         run: |
           VERSION_TAG="$(echo '${{ github.ref_name }}' | sed 's/^v/V/')${{ inputs.version_suffix }}"
-          PYTHON_VERSION=$(python --version | awk '{print $2}')
+          COMMIT_VERSION="${{ inputs.ruleset_version }}"
+          if [ -z "$COMMIT_VERSION" ]; then
+            COMMIT_VERSION="$VERSION_TAG"
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ./dqc_us_rules/${{ matrix.zip_name }}
+          git add ./dqc_us_rules/*.zip
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "$(cat <<EOF
           Recompile ruleset .zip files
 
-          Python ${PYTHON_VERSION} || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} for ${VERSION_TAG}
+          Python 3.13 || Arelle ${{ inputs.arelle_version }} || XULE ${{ inputs.xule_version }} for ${COMMIT_VERSION}
           EOF
-          )" || echo "No changes to commit"
-          git push || echo "Nothing to push"
-
-      - name: Upload ruleset artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: "${{ matrix.zip_name }}"
-          path: "./dqc_us_rules/${{ matrix.zip_name }}"
-          retention-days: 90
+          )"
+          git push
