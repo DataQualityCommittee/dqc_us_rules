@@ -1108,6 +1108,7 @@ jobs:
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           COMMIT_MSG="${ACTION} ruleset .zip files ${COMMIT_VERSION}"
-          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION} \n\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}"
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
           git push
