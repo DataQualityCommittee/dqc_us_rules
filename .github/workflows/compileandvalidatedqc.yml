@@ -101,7 +101,6 @@ jobs:
           fi
           {
             echo "## ${ACTION} ruleset .zip files v${RULE_VERSION}"
-            echo "🔗 [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
             echo ""
             echo "### Workflow Inputs"
             echo ""
@@ -320,7 +319,7 @@ jobs:
         run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
 
       - name: Upload environment artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv.tar.gz
@@ -351,7 +350,7 @@ jobs:
           VERSION_SUFFIX: ${{ inputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^V/v/')${VERSION_SUFFIX}"
+          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
           export RESOLVED_VERSION_TAG="$VERSION_TAG"
 
           python3 << 'PYEOF'
@@ -579,7 +578,7 @@ jobs:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -626,7 +625,7 @@ jobs:
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -649,7 +648,6 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
-          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -657,11 +655,6 @@ jobs:
           updated = {}
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
-              url = re.sub(
-                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
-                  f'-{branch_lower}\\2',
-                  url,
-              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
@@ -772,7 +765,7 @@ jobs:
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -783,7 +776,7 @@ jobs:
 
       - name: Upload HTML report
         if: always() && steps.compare.outcome == 'failure'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "discrepancies-${{ matrix.name }}.html"
           path: report.html
@@ -835,7 +828,7 @@ jobs:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -850,7 +843,7 @@ jobs:
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -873,7 +866,6 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
-          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -881,11 +873,6 @@ jobs:
           updated = {}
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
-              url = re.sub(
-                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
-                  f'-{branch_lower}\\2',
-                  url,
-              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
@@ -996,7 +983,7 @@ jobs:
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -1007,7 +994,7 @@ jobs:
 
       - name: Upload HTML report
         if: always() && steps.compare.outcome == 'failure'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "discrepancies-${{ matrix.name }}.html"
           path: report.html
@@ -1051,7 +1038,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -1089,7 +1076,6 @@ jobs:
         run: |
           MAP_VERSION="v${RULE_VERSION}"
           sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
-          sed -i -E "s/-V([0-9]+)-ruleset\.zip/-v\1-ruleset.zip/g" rulesetMap.json
           echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
           cat rulesetMap.json
 
@@ -1134,62 +1120,24 @@ jobs:
     steps:
       - name: Write status badge
         env:
-          COMPILE_PRE: ${{ needs.compile-prebuilt.result }}
-          COMPILE_FRESH: ${{ needs.compile-fresh.result }}
-          VALIDATE_PRE: ${{ needs.validate-prebuilt.result }}
-          VALIDATE_FRESH: ${{ needs.validate-fresh.result }}
-          COMMIT_RESULT: ${{ needs.commit.result }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          HAS_FAILURE: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: |
-          COMPILE="skipped"
-          if [ "$COMPILE_PRE" = "success" ] || [ "$COMPILE_FRESH" = "success" ]; then
-            COMPILE="success"
-          elif [ "$COMPILE_PRE" = "failure" ] || [ "$COMPILE_FRESH" = "failure" ]; then
-            COMPILE="failure"
-          fi
-
-          VALIDATE="skipped"
-          if [ "$VALIDATE_PRE" = "success" ] || [ "$VALIDATE_FRESH" = "success" ]; then
-            VALIDATE="success"
-          elif [ "$VALIDATE_PRE" = "failure" ] || [ "$VALIDATE_FRESH" = "failure" ]; then
-            VALIDATE="failure"
-          fi
-
-          if [ "$COMPILE" = "failure" ] || [ "$VALIDATE" = "failure" ]; then
-            STATUS="failed"
-            COLOR="#e5534b"
+          if [ "$HAS_FAILURE" = "true" ]; then
+            COLOR="%23e5534b"
             LABEL="Failed"
-          elif [ "$COMPILE" = "success" ] && { [ "$VALIDATE" = "success" ] || [ "$VALIDATE" = "skipped" ]; }; then
-            STATUS="passed"
-            COLOR="#57ab5a"
-            LABEL="Passed"
-          elif [ "$COMPILE" = "skipped" ] && [ "$VALIDATE" = "success" ]; then
-            STATUS="passed"
-            COLOR="#57ab5a"
-            LABEL="Passed"
-          elif [ "$COMPILE" = "skipped" ] && [ "$VALIDATE" = "skipped" ]; then
-            STATUS="skipped"
-            COLOR="#768390"
-            LABEL="Skipped"
           else
-            STATUS="partial"
-            COLOR="#c69026"
-            LABEL="Partial"
+            COLOR="%2357ab5a"
+            LABEL="Passed"
           fi
-
-          W_LABEL=90
           W_VALUE=$(( ${#LABEL} * 8 + 16 ))
-          W_TOTAL=$(( W_LABEL + W_VALUE ))
-          X_VALUE=$(( W_LABEL + W_VALUE / 2 ))
-
+          W_TOTAL=$(( 90 + W_VALUE ))
+          X_VALUE=$(( 90 + W_VALUE / 2 ))
+          BADGE_HTML="<a href=\"${RUN_URL}\"><img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W_TOTAL}' height='20'%3E%3ClinearGradient id='b' x2='0' y2='100%25'%3E%3Cstop offset='0' stop-color='%23bbb' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.1'/%3E%3C/linearGradient%3E%3Cmask id='a'%3E%3Crect width='${W_TOTAL}' height='20' rx='3' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Crect width='90' height='20' fill='%23555'/%3E%3Crect x='90' width='${W_VALUE}' height='20' fill='${COLOR}'/%3E%3Crect width='${W_TOTAL}' height='20' fill='url(%23b)'/%3E%3C/g%3E%3Cg fill='%23fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'%3E%3Ctext x='45' y='15' fill='%23010101' fill-opacity='.3'%3Eworkflow%3C/text%3E%3Ctext x='45' y='14'%3Eworkflow%3C/text%3E%3Ctext x='${X_VALUE}' y='15' fill='%23010101' fill-opacity='.3'%3E${LABEL}%3C/text%3E%3Ctext x='${X_VALUE}' y='14'%3E${LABEL}%3C/text%3E%3C/g%3E%3C/svg%3E\" alt=\"Workflow ${LABEL}\" /></a>"
           {
-            echo "<a href=\"${RUN_URL}\">"
-            echo "<img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W_TOTAL}' height='20'%3E%3ClinearGradient id='b' x2='0' y2='100%25'%3E%3Cstop offset='0' stop-color='%23bbb' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.1'/%3E%3C/linearGradient%3E%3Cmask id='a'%3E%3Crect width='${W_TOTAL}' height='20' rx='3' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Crect width='${W_LABEL}' height='20' fill='%23555'/%3E%3Crect x='${W_LABEL}' width='${W_VALUE}' height='20' fill='${COLOR}'/%3E%3Crect width='${W_TOTAL}' height='20' fill='url(%23b)'/%3E%3C/g%3E%3Cg fill='%23fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'%3E%3Ctext x='45' y='15' fill='%23010101' fill-opacity='.3'%3Eworkflow%3C/text%3E%3Ctext x='45' y='14'%3Eworkflow%3C/text%3E%3Ctext x='${X_VALUE}' y='15' fill='%23010101' fill-opacity='.3'%3E${LABEL}%3C/text%3E%3Ctext x='${X_VALUE}' y='14'%3E${LABEL}%3C/text%3E%3C/g%3E%3C/svg%3E\" alt=\"Workflow ${LABEL}\" />"
-            echo "</a>"
+            echo "### Status Badge HTML"
             echo ""
-            echo "| Stage | Status |"
-            echo "|-------|--------|"
-            echo "| Compilation | \`${COMPILE}\` |"
-            echo "| Validation | \`${VALIDATE}\` |"
-            echo "| Commit | \`${COMMIT_RESULT}\` |"
+            echo '```html'
+            echo "$BADGE_HTML"
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
