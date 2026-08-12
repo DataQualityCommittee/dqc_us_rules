@@ -628,27 +628,38 @@ jobs:
           find ./artifacts -name '*.zip' -type f
           find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
 
-      - name: Configure ruleset map to use local zips
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
           python3 << 'PYEOF'
-          import json, os
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
 
           updated = {}
           for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
                   updated[uri] = local_path
-                  print(f'  {uri} -> {local_path}')
+                  print(f'  {uri} -> {local_path} (local)')
               else:
                   updated[uri] = url
-                  print(f'  {uri} -> {url} (remote, no local zip)')
+                  print(f'  {uri} -> {url} (branch {branch})')
 
           with open('rulesetMap.json', 'w') as f:
               json.dump(updated, f, indent=2)
@@ -841,27 +852,38 @@ jobs:
           find ./artifacts -name '*.zip' -type f
           find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
 
-      - name: Configure ruleset map to use local zips
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
           python3 << 'PYEOF'
-          import json, os
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
 
           updated = {}
           for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
                   updated[uri] = local_path
-                  print(f'  {uri} -> {local_path}')
+                  print(f'  {uri} -> {local_path} (local)')
               else:
                   updated[uri] = url
-                  print(f'  {uri} -> {url} (remote, no local zip)')
+                  print(f'  {uri} -> {url} (branch {branch})')
 
           with open('rulesetMap.json', 'w') as f:
               json.dump(updated, f, indent=2)
@@ -1057,6 +1079,7 @@ jobs:
         run: |
           MAP_VERSION="v${RULE_VERSION}"
           sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
+          sed -i -E "s/-V([0-9]+)-ruleset\.zip/-v\1-ruleset.zip/g" rulesetMap.json
           echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
           cat rulesetMap.json
 
@@ -1084,12 +1107,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "$(cat <<EOF
-          ${ACTION} ruleset .zip files ${COMMIT_VERSION}
-          
-          Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}
-          
-          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          EOF
-          )"
+          COMMIT_MSG="${ACTION} ruleset .zip files ${COMMIT_VERSION}"
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}"'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          git commit -m "${COMMIT_MSG}"
           git push
