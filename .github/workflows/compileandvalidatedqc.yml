@@ -92,7 +92,17 @@ jobs:
           else
             ENV_LABEL="fresh build"
           fi
+          if [ "${{ inputs.skip_compilation }}" = "true" ]; then
+            ACTION="Test"
+          elif [ "${{ inputs.test_mode }}" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
           {
+            echo "## ${ACTION} ruleset .zip files v${RULE_VERSION}"
+            echo "🔗 [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo ""
             echo "### Workflow Inputs"
             echo ""
             echo "| Input | Value |"
