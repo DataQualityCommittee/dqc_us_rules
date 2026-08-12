@@ -3,8 +3,13 @@ name: Compile & Validate DQC Rulesets
 on:
   workflow_dispatch:
     inputs:
+      skip_compilation:
+        description: 'Skip compilation and run tests with current ruleset .zip files on this branch (useful when only test comparison files changed)'
+        required: true
+        default: false
+        type: boolean
       use_prebuilt_env:
-        description: 'Use a prebuilt Arelle/Xule container image instead of building with versions below'
+        description: 'Use a prebuilt Arelle/Xule container image (instead of building with versions below)'
         required: true
         default: true
         type: boolean
@@ -34,17 +39,12 @@ on:
         default: 'all'
         type: string
       version_suffix:
-        description: 'Suffix appended to the zip filename/tag (e.g. "-test" for a test build; leave empty for a branch-named ruleset.zip build)'
-        required: false
-        default: ''
-        type: string
-      ruleset_version:
-        description: 'Version label in the commit message (e.g. "V30.0.1"); if empty, defaults to the branch + suffix above'
+        description: 'Suffix appended to the branch in zip filename/tag (e.g. "-test" for -v30-test-ruleset.zip)'
         required: false
         default: ''
         type: string
       test_mode:
-        description: '"all" = compile + validate everything; "changed" = only rulesets with changed .xule files; "none" = compile all, skip validation'
+        description: 'Run tests: "all" = run all tests; "changed" = run tests for changed .xule files; "none" = compile rulesets, skip tests.'
         required: true
         default: 'all'
         type: choice
@@ -53,15 +53,10 @@ on:
           - changed
           - none
       base_commit:
-        description: 'When test_mode is "changed" enter the commit SHA to diff against. Leave empty to auto-detect from last successful workflow.'
+        description: 'Specify "changed" by commit SHA to diff against. Leave empty to auto-detect from last successful workflow.'
         required: false
         default: ''
         type: string
-      skip_compilation:
-        description: 'Skip compilation and validate using ruleset .zip files committed on this branch (useful when only test comparison files changed)'
-        required: true
-        default: false
-        type: boolean
 
 env:
   XULE_REPO: xbrlus
@@ -76,9 +71,19 @@ jobs:
     needs: resolve-env
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Extract ruleset version
+        id: version
+        run: |
+          RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule || true)
+          echo "rule_version=${RULE_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
+
       - name: Print summary
         env:
           USE_PREBUILT: ${{ needs.resolve-env.outputs.use_prebuilt }}
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
         run: |
           if [ "${{ inputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
             ENV_LABEL="fresh build (auto — custom versions override prebuilt)"
@@ -92,17 +97,17 @@ jobs:
             echo ""
             echo "| Input | Value |"
             echo "|-------|-------|"
+            echo "| **Ruleset version** | \`${RULE_VERSION}\` |"
             echo "| **Environment** | \`${ENV_LABEL}\` |"
             echo "| **Arelle version** | \`${{ inputs.arelle_version }}\` |"
             echo "| **Xule version** | \`${{ inputs.xule_version }}\` |"
             echo "| **EDGAR version** | \`${{ inputs.edgar_version }}\` |"
-            echo "| **Taxonomy** | \`${{ inputs.taxonomy }}\` |"
-            echo "| **Year** | \`${{ inputs.year }}\` |"
-            echo "| **Version suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
-            echo "| **Ruleset version** | \`${{ inputs.ruleset_version || '(auto)' }}\` |"
+            echo "| **Taxonomies** | \`${{ inputs.taxonomy }}\` |"
+            echo "| **Years** | \`${{ inputs.year }}\` |"
+            echo "| **Ruleset suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
+            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
             echo "| **Test mode** | \`${{ inputs.test_mode }}\` |"
             echo "| **Base commit** | \`${{ inputs.base_commit || '(auto-detect)' }}\` |"
-            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
             echo ""
             echo "**Branch:** \`${{ github.ref_name }}\` | **Triggered by:** \`${{ github.actor }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -336,7 +341,7 @@ jobs:
           VERSION_SUFFIX: ${{ inputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
+          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^V/v/')${VERSION_SUFFIX}"
           export RESOLVED_VERSION_TAG="$VERSION_TAG"
 
           python3 << 'PYEOF'
@@ -623,27 +628,38 @@ jobs:
           find ./artifacts -name '*.zip' -type f
           find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
 
-      - name: Configure ruleset map to use local zips
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
           python3 << 'PYEOF'
-          import json, os
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
 
           updated = {}
           for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
                   updated[uri] = local_path
-                  print(f'  {uri} -> {local_path}')
+                  print(f'  {uri} -> {local_path} (local)')
               else:
                   updated[uri] = url
-                  print(f'  {uri} -> {url} (remote, no local zip)')
+                  print(f'  {uri} -> {url} (branch {branch})')
 
           with open('rulesetMap.json', 'w') as f:
               json.dump(updated, f, indent=2)
@@ -836,27 +852,38 @@ jobs:
           find ./artifacts -name '*.zip' -type f
           find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
 
-      - name: Configure ruleset map to use local zips
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
           python3 << 'PYEOF'
-          import json, os
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
 
           updated = {}
           for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
                   updated[uri] = local_path
-                  print(f'  {uri} -> {local_path}')
+                  print(f'  {uri} -> {local_path} (local)')
               else:
                   updated[uri] = url
-                  print(f'  {uri} -> {url} (remote, no local zip)')
+                  print(f'  {uri} -> {url} (branch {branch})')
 
           with open('rulesetMap.json', 'w') as f:
               json.dump(updated, f, indent=2)
@@ -1028,15 +1055,29 @@ jobs:
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
 
+      - name: Detect Python version from Dockerfile
+        id: pyver
+        run: |
+          PY_VERSION=$(grep -oP '(?<=FROM python:)[^\s-]+' Dockerfile)
+          echo "python_version=${PY_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - name: Extract ruleset version from version.xule
+        id: version
+        run: |
+          RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule)
+          if [ -z "$RULE_VERSION" ]; then
+            echo "::error::Could not extract \$ruleVersion from dqc_us_rules/source/lib/version.xule"
+            exit 1
+          fi
+          echo "rule_version=$RULE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Extracted ruleset version: $RULE_VERSION"
+
       - name: Update rulesetMap.json version references
         env:
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
           BRANCH_NAME: ${{ github.ref_name }}
-          RULESET_VERSION: ${{ inputs.ruleset_version }}
         run: |
-          MAP_VERSION="${RULESET_VERSION}"
-          if [ -z "$MAP_VERSION" ]; then
-            MAP_VERSION="$BRANCH_NAME"
-          fi
+          MAP_VERSION="v${RULE_VERSION}"
           sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
           echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
           cat rulesetMap.json
@@ -1045,18 +1086,15 @@ jobs:
         env:
           VERSION_SUFFIX: ${{ inputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
-          RULESET_VERSION: ${{ inputs.ruleset_version }}
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          PY_VERSION: ${{ steps.pyver.outputs.python_version }}
           ARELLE_VERSION: ${{ inputs.arelle_version }}
           XULE_VERSION: ${{ inputs.xule_version }}
           EDGAR_VERSION: ${{ inputs.edgar_version }}
           TEST_MODE: ${{ inputs.test_mode }}
           SKIP_COMPILATION: ${{ inputs.skip_compilation }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
-          COMMIT_VERSION="${RULESET_VERSION}"
-          if [ -z "$COMMIT_VERSION" ]; then
-            COMMIT_VERSION="$VERSION_TAG"
-          fi
+          COMMIT_VERSION="v${RULE_VERSION}"
           if [ "$SKIP_COMPILATION" = "true" ]; then
             ACTION="Test"
           elif [ "$TEST_MODE" = "none" ]; then
@@ -1068,10 +1106,12 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "$(cat <<EOF
+          git commit -m "$(cat <<'EOF'
           ${ACTION} ruleset .zip files ${COMMIT_VERSION}
-
-          Python 3.13 || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}
+          
+          Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}
+          
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           EOF
           )"
           git push
