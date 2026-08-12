@@ -92,7 +92,16 @@ jobs:
           else
             ENV_LABEL="fresh build"
           fi
+          if [ "${{ inputs.skip_compilation }}" = "true" ]; then
+            ACTION="Test"
+          elif [ "${{ inputs.test_mode }}" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
           {
+            echo "## ${ACTION} ruleset .zip files v${RULE_VERSION}"
+            echo ""
             echo "### Workflow Inputs"
             echo ""
             echo "| Input | Value |"
@@ -310,7 +319,7 @@ jobs:
         run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
 
       - name: Upload environment artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv.tar.gz
@@ -341,7 +350,7 @@ jobs:
           VERSION_SUFFIX: ${{ inputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^V/v/')${VERSION_SUFFIX}"
+          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
           export RESOLVED_VERSION_TAG="$VERSION_TAG"
 
           python3 << 'PYEOF'
@@ -569,7 +578,7 @@ jobs:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -616,7 +625,7 @@ jobs:
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -639,7 +648,6 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
-          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -647,11 +655,6 @@ jobs:
           updated = {}
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
-              url = re.sub(
-                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
-                  f'-{branch_lower}\\2',
-                  url,
-              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
@@ -762,7 +765,7 @@ jobs:
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -773,7 +776,7 @@ jobs:
 
       - name: Upload HTML report
         if: always() && steps.compare.outcome == 'failure'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "discrepancies-${{ matrix.name }}.html"
           path: report.html
@@ -825,7 +828,7 @@ jobs:
           python-version: '3.13'
 
       - name: Download environment artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dqc-venv
           path: /tmp/dqc-venv
@@ -840,7 +843,7 @@ jobs:
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -863,7 +866,6 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
-          branch_lower = branch.lower()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -871,11 +873,6 @@ jobs:
           updated = {}
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
-              url = re.sub(
-                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
-                  f'-{branch_lower}\\2',
-                  url,
-              )
               filename = url.rsplit('/', 1)[-1].split('?')[0]
               local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
               if os.path.exists(local_path):
@@ -986,7 +983,7 @@ jobs:
 
       - name: Upload reports as artifacts
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "reports-${{ matrix.name }}"
           path: |
@@ -997,7 +994,7 @@ jobs:
 
       - name: Upload HTML report
         if: always() && steps.compare.outcome == 'failure'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: "discrepancies-${{ matrix.name }}.html"
           path: report.html
@@ -1041,7 +1038,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
@@ -1079,7 +1076,6 @@ jobs:
         run: |
           MAP_VERSION="v${RULE_VERSION}"
           sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
-          sed -i -E "s/-V([0-9]+)-ruleset\.zip/-v\1-ruleset.zip/g" rulesetMap.json
           echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
           cat rulesetMap.json
 
@@ -1108,6 +1104,40 @@ jobs:
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           COMMIT_MSG="${ACTION} ruleset .zip files ${COMMIT_VERSION}"
-          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION} \n\n${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}"
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
           git push
+
+  # ──────────────────────────────────────────────
+  #  Final status summary
+  # ──────────────────────────────────────────────
+  final-status:
+    name: Final status
+    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write status badge
+        env:
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          HAS_FAILURE: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: |
+          if [ "$HAS_FAILURE" = "true" ]; then
+            COLOR="%23e5534b"
+            LABEL="Failed"
+          else
+            COLOR="%2357ab5a"
+            LABEL="Passed"
+          fi
+          W_VALUE=$(( ${#LABEL} * 8 + 16 ))
+          W_TOTAL=$(( 90 + W_VALUE ))
+          X_VALUE=$(( 90 + W_VALUE / 2 ))
+          BADGE_HTML="<a href=\"${RUN_URL}\"><img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W_TOTAL}' height='20'%3E%3ClinearGradient id='b' x2='0' y2='100%25'%3E%3Cstop offset='0' stop-color='%23bbb' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.1'/%3E%3C/linearGradient%3E%3Cmask id='a'%3E%3Crect width='${W_TOTAL}' height='20' rx='3' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Crect width='90' height='20' fill='%23555'/%3E%3Crect x='90' width='${W_VALUE}' height='20' fill='${COLOR}'/%3E%3Crect width='${W_TOTAL}' height='20' fill='url(%23b)'/%3E%3C/g%3E%3Cg fill='%23fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'%3E%3Ctext x='45' y='15' fill='%23010101' fill-opacity='.3'%3Eworkflow%3C/text%3E%3Ctext x='45' y='14'%3Eworkflow%3C/text%3E%3Ctext x='${X_VALUE}' y='15' fill='%23010101' fill-opacity='.3'%3E${LABEL}%3C/text%3E%3Ctext x='${X_VALUE}' y='14'%3E${LABEL}%3C/text%3E%3C/g%3E%3C/svg%3E\" alt=\"Workflow ${LABEL}\" /></a>"
+          {
+            echo "### Status Badge HTML"
+            echo ""
+            echo '```html'
+            echo "$BADGE_HTML"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
