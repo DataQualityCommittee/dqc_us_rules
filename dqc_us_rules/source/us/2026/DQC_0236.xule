@@ -1,0 +1,45 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+
+ASSERT US.0236.10933 satisfied
+
+/** This rule looks at tax jrisdiction members in the tax reconcilation and checks for the following:
+1. If the line item has a tax jurisdiction member that matches the local jurisdiction based on the enumeration item then then must be another fact value reported with the same line item with another tax jurisdiction member.
+ **/
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$enumerationItem = [covered @TaxJurisdictionOfDomicileExtensibleEnumeration]
+
+$DomesticFacts = list({@IncomeTaxAuthorityAxis = $enumerationItem})
+
+$domesticLineItems = set(for $x in $DomesticFacts
+                    $DomesticFacts[$x].concept.name)
+
+for $lineItem in $domesticLineItems
+    $factsForLineItem = list({@concept.name = $lineItem @IncomeTaxAuthorityAxis != $enumerationItem})
+    if $factsForLineItem.length == 0
+        true
+    else
+        false
+
+
+message
+"The filer has reported a fact value for {$lineItem} with the domestic tax jurisdiction of {$enumerationItem} with fact values of {$DomesticFacts.join(",  ")}.  This line item should also have a fact value reported with a tax jurisdiction other than the domestic jurisdiction to to reflect the breakdown of the item over multiple tax jurisdictions. If this line item does not apply to other jurisdictions, ithe the axis and member should be removed from the fact values for this line item.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+rule-focus $enumerationItem
+effectiveDate $effective_dates[$rule_id]

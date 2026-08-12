@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.13 secs at 2026-05-19T16:04:50 - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.178430. - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0108.9564 - 16:05:02.578562 - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:18.571288 from 'https://xbrl.fasb.org/us-gaap/2025/dqcrules/dqcrules-entire-2025.xsd' - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="DQC.US.0108.9564" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm" severity="error" effectiveDate="2021-09-01" cid="1953895936272">[DQC.US.0108.9564] INCONSISTENT DURATION VALUES: The concept us-gaap:Dividends reports 9,100,000 for a 1-day period (2025-04-30 to 2025-05-01), which exceeds 8,500,000 reported for a longer 365-day period (2024-12-31 to 2025-12-31).
+
+ISSUE: Shorter period values should not exceed longer period values for non-negative monetary concepts.
+
+COMPARISON:
+- Shorter period (1 days): 9,100,000 (decimals: -3)
+- Longer period (365 days): 8,500,000 (decimals: -3)
+
+FACT DETAILS:
+- Period: 2025-05-01 to 2025-05-01
+- Dimensions: us-gaap:DistributionsMadeToMemberOrLimitedPartnerByDistributionTypeAxis=rrr:SpecialDividendMember, us-gaap:RelatedPartyTransactionAxis=rrr:FertittaFamilyEntitiesMember
+- Unit: USD
+
+ACTION REQUIRED: IF the difference is due to rounding, verify decimal precision is appropriate.
+
+Rule Element ID: 9564
+Rule Version: 30.0.0RC1 - rrr-20251231.htm 8</message>
+ <ref href="rrr-20251231.htm#f-876" sourceLine="8">
+  <property name="file" value="rrr-20251231.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="Dividends"/>
+  <property name="QName" value="us-gaap:Dividends"/>
+  <property name="contextRef" value="c-194">
+   <property name="entity" value="0001653653">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-05-01"/>
+   <property name="endDate" value="2025-05-01"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:DistributionsMadeToMemberOrLimitedPartnerByDistributionTypeAxis" value="rrr:SpecialDividendMember"/>
+    <property name="us-gaap:RelatedPartyTransactionAxis" value="rrr:FertittaFamilyEntitiesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="9,100,000"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="6"/>
+  <property name="html value" value="9.1"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0108.9564 time took: 27.430738 - 16:05:30.009456  - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0108.9564 end. Took 0:00:27.430738 - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:27.609765. - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 35.16 secs - http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1653653/000165365326000004/rrr-20251231.htm"/></entry>
+</log>

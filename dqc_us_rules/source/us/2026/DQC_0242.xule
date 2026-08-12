@@ -1,0 +1,52 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+
+
+Assert US.0242.10943 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** IF any of these elements are used that indicate they are for sale lease or marketed to be sold then the element CapitalizedComputerSoftwareGross should be used. 
+FiniteLivedIntangibleAssetsGross
+FiniteLivedIntangibleAssetsAccumulatedAmortization
+FiniteLivedIntangibleAssetsNet
+PropertyPlantAndEquipmentNet.
+
+then flag as error but have to look at the label. **/
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+$PotentialCapitalizedComputerSoftwareGross = list({@concept in list(FiniteLivedIntangibleAssetsGross, FiniteLivedIntangibleAssetsAccumulatedAmortization, FiniteLivedIntangibleAssetsNet) @FiniteLivedIntangibleAssetsByMajorClassAxis = *})
+
+for $x in $PotentialCapitalizedComputerSoftwareGross
+     if (filter $x.dimensions.values.all-labels.sum where $item.text.contains('to be sold')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('for sale')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('for lease')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('to be leased')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('marketed')).length > 0
+
+        $labelValue = filter $x.dimensions.values.all-labels.sum returns $item.text
+        true
+    else
+        false
+
+message
+"The filer has reported a fact with the FiniteLivedIntangibleAssetsByMajorClassAxis that is tagged with the concept {$x.concept.name} with a value of {$x} that has a member label that indicates it is for software to be sold, leased, or marketed. The following label values are used that indicate that the software is in this category. The label(s) on the member are {$labelValue.join(", ")}. The element CapitalizedComputerSoftwareGross should be used for capitalized costs for software to be sold, leased, or marketed instead of elements tagged with the {$x.concept.name}.  The filer should use the element CapitalizedComputerSoftwareGross for any facts tagged with the {$x.concept.name} that are for software to be sold, leased, or marketed.
+
+Concept : {$x.name}
+Value : { $x}
+Period : { $x.period}
+Dimensions : { $x.dimensions.join(', ','=')} 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error 
+rule-focus $x
+effectiveDate $effective_dates[$rule_id]
+

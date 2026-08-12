@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.61 secs at 2026-05-19T16:51:03 - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.207673. - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0179.10139 - 16:51:12.700087 - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="DQC.US.0179.10139" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm" severity="error" effectiveDate="2024-08-31" cid="2830804300048">[DQC.US.0179.10139] The filing includes a value for dividends using the concept us-gaap:CommonStockDividendsPerShareDeclared with a value of -0.25. This value is reported with the dimension  us-gaap:StatementEquityComponentsAxis.  This dimension should not be used with the concept us-gaap:CommonStockDividendsPerShareDeclared.  Please check the filing and use the DividendsAxis with this value.
+
+The properties of this  fact are:
+Period :2025-01-01 to 2025-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:AccumulatedOtherComprehensiveIncomeMember
+Unit : USD/shares
+
+Rule Element Id:10139
+Rule version: 30.0.0RC1 - jakk10k123125.htm 4729</message>
+ <ref href="jakk10k123125.htm#ixv-17713" sourceLine="4729">
+  <property name="file" value="jakk10k123125.htm"/>
+  <property name="line" value="4729"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Declared"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="CommonStockDividendsPerShareDeclared"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareDeclared"/>
+  <property name="contextRef" value="c53">
+   <property name="entity" value="0001009829">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:AccumulatedOtherComprehensiveIncomeMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPershares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-0.25"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.25"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0179.10139 time took: 3.610108 - 16:51:16.310400  - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0179.10139 end. Took 0:00:03.610108 - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.818609. - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 8.79 secs - http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1009829/000118518526000723/jakk10k123125.htm"/></entry>
+</log>

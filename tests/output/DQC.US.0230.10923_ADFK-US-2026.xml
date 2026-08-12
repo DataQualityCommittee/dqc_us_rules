@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.52 secs at 2026-05-19T17:44:05 - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.013185. - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0230.10923 - 17:44:10.849512 - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:04.452383 from 'https://xbrl.fasb.org/us-gaap/2026/entire/us-gaap-entryPoint-std-2026.xsd' - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="DQC.US.0230.10923" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm" severity="error" effectiveDate="2026-06-01" cid="2477021720848">[DQC.US.0230.10923] The calculation network 00000002 - Statement - Consolidated Balance Sheets has used the 'other' concept PrepaidExpenseAndOtherAssets.  The calculation relationship has a calculation concept total of  AssetsCurrent.  The 'other' concept in this calculation is expected to be only OtherAssetsCurrent, OtherAssetsMiscellaneousCurrent, PrepaidExpenseAndOtherAssetsCurrent. Each calculated concept should only have 'other' concepts that can comprise it.
+
+Replace the other concept PrepaidExpenseAndOtherAssets with OtherAssetsCurrent, OtherAssetsMiscellaneousCurrent, PrepaidExpenseAndOtherAssetsCurrent.
+   
+Rule Element Id:10923
+Rule version: 30.0.0RC1 - https://xbrl.fasb.org/us-gaap/2026/elts/us-gaap-2026.xsd 6791</message>
+ <ref href="https://xbrl.fasb.org/us-gaap/2026/elts/us-gaap-2026.xsd#us-gaap_AssetsCurrent" sourceLine="6791">
+  <property name="label" value="Assets, Current">
+   <property name="label (en-US)" value="Assets, Current"/>
+   <property name="totalLabel (en-US)" value="Total assets"/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="AssetsCurrent"/>
+  <property name="QName" value="us-gaap:AssetsCurrent"/>
+  <property name="id" value="us-gaap_AssetsCurrent"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="debit"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0230.10923 time took: 5.730752 - 17:44:16.580373  - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0230.10923 end. Took 0:00:05.730752 - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:05.744442. - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 8.63 secs - http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/828530/000155335026000071/adfk_10q.htm"/></entry>
+</log>

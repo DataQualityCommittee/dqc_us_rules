@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.22 secs at 2026-05-19T15:56:53 - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.029421. - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 15:56:57.718490 - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:00.987926 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v29/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2026-all.xsd' - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm" severity="error" effectiveDate="2019-09-30" cid="1838941384976">[DQC.US.0081.9278] The line item concept us-gaap:PreferredStockValue with a value of 4,843 and a calculation parent of us-gaap:LiabilitiesAndStockholdersEquity is represented as a sibling of us-gaap:StockholdersEquity with a value of -62,354,451 in the extension taxonomy role 00000002 - Statement - CONDENSED CONSOLIDATED BALANCE SHEETS (Unaudited), but us-gaap:PreferredStockValue is represented as a descendent of us-gaap:StockholdersEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:PreferredStockValue fact are:
+
+Period :2025-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - nbh-s1a.htm 11157</message>
+ <ref href="nbh-s1a.htm#Fact000110" sourceLine="11157">
+  <property name="file" value="nbh-s1a.htm"/>
+  <property name="line" value="11157"/>
+  <property name="label" value="Mezzanine equity, Series A redeemable, non voting, preferred stock Preferred stock, par value $0.0001, 50,000,000 shares authorized; 3,000,000 issued and outstanding at March 31, 2026 and December 31, 2025"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="PreferredStockValue"/>
+  <property name="QName" value="us-gaap:PreferredStockValue"/>
+  <property name="contextRef" value="AsOf2025-12-31">
+   <property name="entity" value="0001936756">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,843"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="4,843"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm" severity="error" effectiveDate="2019-09-30" cid="1838941384976">[DQC.US.0081.9278] The line item concept us-gaap:PreferredStockValue with a value of 4,843 and a calculation parent of us-gaap:LiabilitiesAndStockholdersEquity is represented as a sibling of us-gaap:StockholdersEquity with a value of -63,758,533 in the extension taxonomy role 00000002 - Statement - CONDENSED CONSOLIDATED BALANCE SHEETS (Unaudited), but us-gaap:PreferredStockValue is represented as a descendent of us-gaap:StockholdersEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:PreferredStockValue fact are:
+
+Period :2026-03-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - nbh-s1a.htm 13569</message>
+ <ref href="nbh-s1a.htm#Fact000645" sourceLine="13569">
+  <property name="file" value="nbh-s1a.htm"/>
+  <property name="line" value="13569"/>
+  <property name="label" value="Mezzanine equity, Series A redeemable, non voting, preferred stock Preferred stock, par value $0.0001, 50,000,000 shares authorized; 3,000,000 issued and outstanding at March 31, 2026 and December 31, 2025"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="PreferredStockValue"/>
+  <property name="QName" value="us-gaap:PreferredStockValue"/>
+  <property name="contextRef" value="AsOf2026-03-31">
+   <property name="entity" value="0001936756">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2026-03-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,843"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="4,843"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 8.122483 - 15:57:05.841110  - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:08.122483 - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:08.152529. - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 10.93 secs - http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1936756/000119983526000138/nbh-s1a.htm"/></entry>
+</log>

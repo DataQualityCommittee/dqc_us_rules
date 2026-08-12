@@ -53,10 +53,10 @@ else
 
 $Income_Statement_Items = $INCOME_STATEMENT_CONCEPTS + set(ContractWithCustomerLiabilityRevenueRecognized)
 
-exists({@concept not in $Income_Statement_Items @StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.name not in $EXTENSION_QNAME}#BSLocationFact)
+exists({@concept not in $Income_Statement_Items @SfpLocationActivityAccrualAxis = * where $fact.concept.name not in $EXTENSION_QNAME}#BSLocationFact)
 
 message
-"The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityAccrualAxis and the member {$BSLocationFact.dimension(StatementOfFinancialPositionLocationActivityAccrualAxis).name}. This  axis should be used when a filer needs to disclose where a revenue or expense item has been reported as an effect on a statement of position line item. The concept reported is not a a concept that is an accrual concept that can be allocated to a Financial Statement account. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+"The value {$BSLocationFact} for {$BSLocationFact.concept.name} has been broken down using the axis SfpLocationActivityAccrualAxis and the member {$BSLocationFact.dimension(SfpLocationActivityAccrualAxis).name}. This  axis should be used when a filer needs to disclose where a revenue or expense item has been reported as an effect on a statement of position line item. The concept reported is not a a concept that is an accrual concept that can be allocated to a Financial Statement account. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
 
 The properties of this {$BSLocationFact.concept.name} fact are:
 Period :{$BSLocationFact.period}
@@ -81,10 +81,10 @@ if not applicable_form(rule-name())
 	skip
 else
 
-exists({@StatementOfFinancialPositionLocationActivityAccrualAxis = * where $fact.concept.period-type == instant }#AccrualAxisFact)
+exists({@SfpLocationActivityAccrualAxis = * where $fact.concept.period-type == instant }#AccrualAxisFact)
 
 message
-"The value {$AccrualAxisFact} for {$AccrualAxisFact.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityAccrualAxis and the member {$AccrualAxisFact.dimension(StatementOfFinancialPositionLocationActivityAccrualAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+"The value {$AccrualAxisFact} for {$AccrualAxisFact.concept.name} has been broken down using the axis SfpLocationActivityAccrualAxis and the member {$AccrualAxisFact.dimension(SfpLocationActivityAccrualAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
 
 The properties of this {$AccrualAxisFact.concept.name} fact are:
 Period :{$AccrualAxisFact.period}
@@ -108,10 +108,10 @@ if not applicable_form(rule-name())
 	skip
 else
 
-exists({@StatementOfFinancialPositionLocationActivityCapitalizationAxis = * where $fact.concept.period-type == instant }#CapitalizationAxis)
+exists({@SfpLocationActivityCapitalizationAxis = * where $fact.concept.period-type == instant }#CapitalizationAxis)
 
 message
-"The value {$CapitalizationAxis} for {$CapitalizationAxis.concept.name} has been broken down using the axis StatementOfFinancialPositionLocationActivityCapitalizationAxis and the member {$CapitalizationAxis.dimension(StatementOfFinancialPositionLocationActivityCapitalizationAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
+"The value {$CapitalizationAxis} for {$CapitalizationAxis.concept.name} has been broken down using the axis SfpLocationActivityCapitalizationAxis and the member {$CapitalizationAxis.dimension(SfpLocationActivityCapitalizationAxis).name}. This concept is an instant concept. This  axis should only be used with a duration concept. See FASB guidance at https://xbrl.fasb.org/impguidance/FSL_PG/finstatelocdimensions.pdf.
 
 The properties of this {$CapitalizationAxis.concept.name} fact are:
 Period :{$CapitalizationAxis.period}

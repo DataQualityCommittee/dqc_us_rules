@@ -1,0 +1,1002 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.53 secs at 2026-05-19T16:23:43 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.097825. - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 16:23:49.644708 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -32,596,819 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1905" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_AdditionalPaidInCapitalAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-32,596,819"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="32,596,819"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 0 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1841" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalPaidInCapitalAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:zerodash"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="-"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 14,486,745 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1899" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_AccumulatedDeficitAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="14,486,745"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="14,486,745"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -122,187,673 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:RetainenEarningssMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1830" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_RetainenEarningssMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:RetainenEarningssMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-122,187,673"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="122,187,673"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -140,350,893 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:RetainenEarningssMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1902" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_RetainenEarningssMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:RetainenEarningssMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-140,350,893"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="140,350,893"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 136,863,364 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidsInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1904" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_AdditionalPaidsInCapitalsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidsInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="136,863,364"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="136,863,364"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 127,757,269 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidsInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1889" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalPaidsInCapitalsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidsInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="127,757,269"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="127,757,269"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -154,837,638 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1901" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_AccumulatedDeficitAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-154,837,638"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="154,837,638"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -122,187,673 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1850" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AccumulatedDeficitAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-122,187,673"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="122,187,673"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 169,460,183 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1903" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_cei_AdditionalPaidInCapitalAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="169,460,183"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="169,460,183"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 0 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1859" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AccumulatedDeficitAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:zerodash"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="-"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm" severity="error" effectiveDate="2021-11-30" cid="2236687446288">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 127,757,269 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10ka.htm 3</message>
+ <ref href="cei_10ka.htm#fid_1808" sourceLine="3">
+  <property name="file" value="cei_10ka.htm"/>
+  <property name="line" value="3"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalPaidInCapitalAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="127,757,269"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="127,757,269"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.433655 - 16:23:51.078486  - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.433655 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.531958. - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.77 secs - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005266/cei_10ka.htm"/></entry>
+</log>
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.27 secs at 2026-05-19T16:23:56 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.086959. - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 16:24:04.943105 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 0 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2836" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalPaidInCapitalAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:zerodash"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="-"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -32,596,819 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2824" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_AdditionalPaidInCapitalAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-32,596,819"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="32,596,819"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -132,907,001 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:RetainenEarningssMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2806" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_RetainenEarningssMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:RetainenEarningssMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-132,907,001"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="132,907,001"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 134,072,578 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalsPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2805" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_AdditionalsPaidInCapitalsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalsPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="134,072,578"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="134,072,578"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 127,757,269 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2600" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalPaidInCapitalAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="127,757,269"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="127,757,269"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -122,187,673 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2851" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AccumulatedDeficitAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-122,187,673"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="122,187,673"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -147,393,746 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2839" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_AccumulatedDeficitAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-147,393,746"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="147,393,746"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 127,757,269 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalsPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2601" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AdditionalsPaidInCapitalsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalsPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="127,757,269"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="127,757,269"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 166,669,397 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AdditionalPaidInCapitalAsPreviouslyReportedMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2818" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_AdditionalPaidInCapitalAsPreviouslyReportedMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AdditionalPaidInCapitalAsPreviouslyReportedMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="166,669,397"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="166,669,397"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 0 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2866" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_AccumulatedDeficitAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0"/>
+  <property name="format" value="ixt:zerodash"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="-"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of -122,187,673 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:RetainenEarningssMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2814" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2022-12-31_cei_RetainenEarningssMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:RetainenEarningssMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-122,187,673"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="122,187,673"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2643546403088">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 14,486,745 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=cei:AccumulatedDeficitAdjustmentsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - cei_10q.htm 2</message>
+ <ref href="cei_10q.htm#fid_2854" sourceLine="2">
+  <property name="file" value="cei_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Stockholders' Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-09-30_cei_AccumulatedDeficitAdjustmentsMember">
+   <property name="entity" value="0001309082">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="cei:AccumulatedDeficitAdjustmentsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="14,486,745"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="14,486,745"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.409232 - 16:24:06.352436  - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.409232 - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.496691. - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.79 secs - http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1309082/000147793224005253/cei_10q.htm"/></entry>
+</log>

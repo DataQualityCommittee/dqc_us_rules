@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.47 secs at 2026-05-19T17:35:06 - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.087162. - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0204.10705 - 17:35:13.404636 - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:04.618704 from 'https://xbrl.fasb.org/us-gaap/2025/entire/us-gaap-entryPoint-std-2025.xsd' - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  VIVK:PropertyPlantAndEquipmentsEstimatedUsefulLives with a value of Lesser of the lease term or estimated useful life has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:LeaseholdImprovementsMember. The member  us-gaap:LeaseholdImprovementsMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : VIVK:PropertyPlantAndEquipmentsEstimatedUsefulLives
+Value : Lesser of the lease term or estimated useful life
+Period : 2025-01-01 to 2025-12-31
+Dimensions : us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:LeaseholdImprovementsMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13272</message>
+ <ref href="vivakor_10k.htm#Fact000823" sourceLine="13272">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13272"/>
+  <property name="label" value="property, plant and equipment, estimated useful lives"/>
+  <property name="namespace" value="http://vivakor.com/20251231"/>
+  <property name="name" value="PropertyPlantAndEquipmentsEstimatedUsefulLives"/>
+  <property name="QName" value="VIVK:PropertyPlantAndEquipmentsEstimatedUsefulLives"/>
+  <property name="contextRef" value="From2025-01-012025-12-31_us-gaap_LeaseholdImprovementsMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:LeaseholdImprovementsMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="Lesser of the lease term or estimated useful life"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P3Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:MachineryAndEquipmentMember. The member  us-gaap:MachineryAndEquipmentMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P3Y
+Period : 2025-12-31
+Dimensions : srt:RangeAxis=srt:MinimumMember, us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:MachineryAndEquipmentMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13248</message>
+ <ref href="vivakor_10k.htm#Fact000803" sourceLine="13248">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13248"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MinimumMember_us-gaap_MachineryAndEquipmentMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MinimumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:MachineryAndEquipmentMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P3Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P5Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:FurnitureAndFixturesMember. The member  us-gaap:FurnitureAndFixturesMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P5Y
+Period : 2025-12-31
+Dimensions : srt:RangeAxis=srt:MinimumMember, us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:FurnitureAndFixturesMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13256</message>
+ <ref href="vivakor_10k.htm#Fact000811" sourceLine="13256">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13256"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MinimumMember_us-gaap_FurnitureAndFixturesMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MinimumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:FurnitureAndFixturesMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P5Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P5Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:VehiclesMember. The member  us-gaap:VehiclesMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P5Y
+Period : 2025-12-31
+Dimensions : us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:VehiclesMember, srt:RangeAxis=srt:MinimumMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13252</message>
+ <ref href="vivakor_10k.htm#Fact000807" sourceLine="13252">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13252"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MinimumMember_us-gaap_VehiclesMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MinimumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:VehiclesMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P5Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P7Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:VehiclesMember. The member  us-gaap:VehiclesMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P7Y
+Period : 2025-12-31
+Dimensions : us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:VehiclesMember, srt:RangeAxis=srt:MaximumMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13252</message>
+ <ref href="vivakor_10k.htm#Fact000809" sourceLine="13252">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13252"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MaximumMember_us-gaap_VehiclesMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MaximumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:VehiclesMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P7Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P10Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:FurnitureAndFixturesMember. The member  us-gaap:FurnitureAndFixturesMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P10Y
+Period : 2025-12-31
+Dimensions : srt:RangeAxis=srt:MaximumMember, us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:FurnitureAndFixturesMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13256</message>
+ <ref href="vivakor_10k.htm#Fact000813" sourceLine="13256">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13256"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MaximumMember_us-gaap_FurnitureAndFixturesMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MaximumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:FurnitureAndFixturesMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P10Y"/>
+ </ref></entry>
+<entry code="DQC.US.0204.10705" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm" severity="error" effectiveDate="2025-07-15" cid="2296725287184">[DQC.US.0204.10705] The concept  us-gaap:PropertyPlantAndEquipmentUsefulLife with a value of P5Y has been used with the axis FiniteLivedIntangibleAssetsByMajorClassAxis and the member us-gaap:MachineryAndEquipmentMember. The member  us-gaap:MachineryAndEquipmentMember should not be used with the FiniteLivedIntangibleAssetsByMajorClassAxis hs it is expected to represent a tangible asset. Please change the member to represent an intangible asset or change the axis to represent a tangible asset. i.e. PropertyPlantAndEquipmentByTypeAxis.
+
+Concept : us-gaap:PropertyPlantAndEquipmentUsefulLife
+Value : P5Y
+Period : 2025-12-31
+Dimensions : srt:RangeAxis=srt:MaximumMember, us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis=us-gaap:MachineryAndEquipmentMember
+
+Rule Element Id:10705
+Rule version: 30.0.0RC1 - vivakor_10k.htm 13248</message>
+ <ref href="vivakor_10k.htm#Fact000805" sourceLine="13248">
+  <property name="file" value="vivakor_10k.htm"/>
+  <property name="line" value="13248"/>
+  <property name="label" value="Property, plant and equipment, useful life"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentUsefulLife"/>
+  <property name="contextRef" value="AsOf2025-12-31_srt_MaximumMember_us-gaap_MachineryAndEquipmentMember">
+   <property name="entity" value="0001450704">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(2)">
+    <property name="srt:RangeAxis" value="srt:MaximumMember"/>
+    <property name="us-gaap:FiniteLivedIntangibleAssetsByMajorClassAxis" value="us-gaap:MachineryAndEquipmentMember"/>
+   </property>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="P5Y"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0204.10705 time took: 5.918805 - 17:35:19.323588  - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0204.10705 end. Took 0:00:05.918805 - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:06.006587. - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 9.52 secs - http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1450704/000182912626003530/vivakor_10k.htm"/></entry>
+</log>

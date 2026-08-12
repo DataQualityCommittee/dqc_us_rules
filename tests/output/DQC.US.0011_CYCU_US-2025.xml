@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.27 secs at 2026-04-28T11:53:15 - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.130771. - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0011 - 11:53:19.776092 - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="DQC.US.0011.6824" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm" severity="error" rule-suffix="6824" effectiveDate="2018-01-01" cid="2129217679632">[DQC.US.0011.6824] It is expected that CommonStockValue with a value of 1,059 reported in the network role http://cycurion.com/role/BalanceSheetsParenthetical, http://cycurion.com/role/BalanceSheets should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:CommonStockMember and a reported value of 35 multiplied by 1. This value appears in the network role http://cycurion.com/role/StatementsOfChangesInStockholdersEquity, http://cycurion.com/role/OrganizationAndDescriptionOfBusinessDetailsNarrative. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:CommonStockValue fact are:
+
+Period : 2024-12-31
+Dimensions : 
+Unit : USD
+Decimals of CommonStockValue : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 29.0.2
+ - forms-1a.htm 21131</message>
+ <ref href="forms-1a.htm#Fact000249" sourceLine="21131">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="21131"/>
+  <property name="label" value="Common stock ($0.0001 par value, 70,000,000 shares authorized, 10,592,607 and 7,341,607 shares issued and outstanding)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="CommonStockValue"/>
+  <property name="QName" value="us-gaap:CommonStockValue"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001868419">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,059"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="1,059"/>
+ </ref></entry>
+<entry code="DQC.US.0011.6825" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm" severity="error" rule-suffix="6825" effectiveDate="2018-01-01" cid="2129217679632">[DQC.US.0011.6825] It is expected that AdditionalPaidInCapital with a value of 6,670,060 reported in the network role http://cycurion.com/role/BalanceSheets should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:AdditionalPaidInCapitalMember and a reported value of 6,671,084 multiplied by 1. This value appears in the network role http://cycurion.com/role/StatementsOfChangesInStockholdersEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:AdditionalPaidInCapital fact are:
+
+Period : 2024-12-31
+Dimensions : 
+Unit : USD
+Decimals of AdditionalPaidInCapital : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 29.0.2
+ - forms-1a.htm 21135</message>
+ <ref href="forms-1a.htm#Fact000268" sourceLine="21135">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="21135"/>
+  <property name="label" value="Additional paid in capital"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AdditionalPaidInCapital"/>
+  <property name="QName" value="us-gaap:AdditionalPaidInCapital"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001868419">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="6,670,060"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="6,670,060"/>
+ </ref></entry>
+<entry code="DQC.US.0011.6829" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm" severity="error" rule-suffix="6829" effectiveDate="2018-01-01" cid="2129217679632">[DQC.US.0011.6829] It is expected that StockholdersEquity with a value of 5,246,111 reported in the network role http://cycurion.com/role/StatementsOfChangesInStockholdersEquity, http://cycurion.com/role/BalanceSheets should be equal to the dimensionally qualified concept, StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the dimension us-gaap:StatementEquityComponentsAxis = us-gaap:ParentMember and a reported value of 3,246,111 multiplied by 1. This value appears in the network role http://cycurion.com/role/StatementsOfChangesInStockholdersEquity. This error occurs when the dimensionally qualified fact is not equal to the value input for the non dimensional item.
+
+The properties of this us-gaap:StockholdersEquity fact are:
+
+Period : 2023-12-31
+Dimensions : 
+Unit : USD
+Decimals of StockholdersEquity : 0
+Decimals of StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest : 0
+Rule version: 29.0.2
+ - forms-1a.htm 21520</message>
+ <ref href="forms-1a.htm#Fact000423" sourceLine="21520">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="21520"/>
+  <property name="label" value="Equity, Attributable to Parent"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001868419">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,246,111"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,246,111"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0011 time took: 1.282313 - 11:53:21.058476  - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0011 end. Took 0:00:01.282313 - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.413444. - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.31 secs - http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1868419/000149315225025801/forms-1a.htm"/></entry>
+</log>

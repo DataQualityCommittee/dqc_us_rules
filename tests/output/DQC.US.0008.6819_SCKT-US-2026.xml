@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.99 secs at 2026-05-19T15:44:41 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="arelle:info.preferredLabelEmpty" level="info">
+ <message source="us-gaap:PropertyPlantAndEquipmentAbstract" target="us-gaap:PropertyPlantAndEquipmentGross" linkrole="http://socketmobile.com/role/BalanceSheets" preferredLabel="http://www.xbrl.org/2003/role/totalLabel">[arelle:info.preferredLabelEmpty] (Info xbrl.5.2.4.2.1) Presentation relationship from us-gaap:PropertyPlantAndEquipmentAbstract to us-gaap:PropertyPlantAndEquipmentGross in link role http://socketmobile.com/role/BalanceSheets has empty preferredLabel http://www.xbrl.org/2003/role/totalLabel - sckt-20260331_pre.xml 231</message>
+ <ref href="sckt-20260331_pre.xml#element(/1/47/25)" sourceLine="231">
+  <property name="label" value="Property, Plant, and Equipment, before Accumulated Depreciation, Depletion, and Amortization">
+   <property name="label (en-US)" value="Property, Plant, and Equipment, before Accumulated Depreciation, Depletion, and Amortization"/>
+   <property name="totalLabel (en-US)" value=" "/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="PropertyPlantAndEquipmentGross"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentGross"/>
+  <property name="id" value="us-gaap_PropertyPlantAndEquipmentGross"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="debit"/>
+  <property name="arcrole" value="http://www.xbrl.org/2003/arcrole/parent-child"/>
+  <property name="preferredLabel" value="http://www.xbrl.org/2003/role/totalLabel"/>
+  <property name="order" value="110.0"/>
+  <property name="priority" value="0"/>
+  <property name="from" value="us-gaap:PropertyPlantAndEquipmentAbstract"/>
+ </ref></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.024374. - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0008.6819 - 15:44:47.345269 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:04.083372 from 'https://xbrl.fasb.org/us-gaap/2026/entire/us-gaap-entryPoint-std-2026.xsd' - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="DQC.US.0008.6819" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm" severity="error" effectiveDate="2018-01-01" cid="1966778036496">[DQC.US.0008.6819] The calculation in the extension taxonomy from OperatingLeaseLiability to OperatingLeaseLiabilityNoncurrent in 999042 - Disclosure - Future minimum lease payments under the operating lease in effect as of March 31, 2026 (Details) is the opposite of a calculation defined in the base US GAAP taxonomy. Check that the calculation is correct or that you have used the correct tag for the two elements identified in the calculation It is possible that the calculation is correct in the case of a reconciliation calculation.
+OperatingLeaseLiabilityNoncurrent
+
+Rule version: 30.0.0RC1 - q1_2026.htm 980</message>
+ <ref href="q1_2026.htm#Fact000013" sourceLine="980">
+  <property name="file" value="q1_2026.htm"/>
+  <property name="line" value="980"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="From2026-01-01to2026-03-31">
+   <property name="entity" value="0000944075">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2026-01-01"/>
+   <property name="endDate" value="2026-03-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-Q"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0008.6819 time took: 9.831664 - 15:44:57.177020  - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0008.6819 end. Took 0:00:09.831664 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:09.856534. - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 12.31 secs - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+</log>

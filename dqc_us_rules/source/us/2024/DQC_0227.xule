@@ -53,8 +53,9 @@ CONSTANT $NUM_DEN_FULL = dict(list(srt:FinancingReceivableAllowanceForCreditLoss
                     list(SaleOfStockPricePerShare, list(SaleOfStockConsiderationReceivedOnTransaction, SaleOfStockNumberOfSharesIssuedInTransaction)),
                     list(TierOneRiskBasedCapitalRequiredForCapitalAdequacyToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredForCapitalAdequacy, RiskWeightedAssets)),
                     list(TierOneRiskBasedCapitalRequiredToBeWellCapitalizedToRiskWeightedAssets, list(TierOneRiskBasedCapitalRequiredToBeWellCapitalized, RiskWeightedAssets)),
-                    list(TierOneRiskBasedCapitalToRiskWeightedAssets, list(TierOneRiskBasedCapital, RiskWeightedAssets)),
-                    list(TreasuryStockAcquiredAverageCostPerShare, list(TreasuryStockValueAcquiredCostMethod, TreasuryStockSharesAcquired)))
+                    list(TierOneRiskBasedCapitalToRiskWeightedAssets, list(TierOneRiskBasedCapital, RiskWeightedAssets))
+                    /**list(TreasuryStockAcquiredAverageCostPerShare, list(TreasuryStockValueAcquiredCostMethod, TreasuryStockSharesAcquired)) REMOVED AS THIS IS WEIGHTED OVER TRANSACTIONS THAT IS NOT A SIMPLE DIVISION.**/
+                    )
 
 /** CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last **/
 
@@ -93,7 +94,10 @@ else
       if $greaterThanLowerBound and $lessThanUpperBound
         false
       else
-        true
+         if $calc.concept.period-type == xbrli:duration and $calc.period.days > 100 and $calc.period.days < 310
+          false
+        else
+          true
       else
           skip
 

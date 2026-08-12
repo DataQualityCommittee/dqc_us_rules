@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.18 secs at 2026-05-19T17:39:06 - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.107736. - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0212.10738 - 17:39:10.968473 - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="DQC.US.0212.10738" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm" severity="error" effectiveDate="2025-12-15" cid="2278248378640">[DQC.US.0212.10738] A value was reported for us-gaap:CommonStockSharesOutstanding with a value of 4,668,017. A value was not reported to represent shares authorized. If shares outstanding and shares authorized are the same, then the value should be tagged with the concept us-gaap:CommonStockSharesOutstanding and the concept CommonStockSharesAuthorized.  If the authorized stock is unlimited it should be tagged with the concept CommonStockSharesAuthorizedUnlimited.  In those cases where the authorized shares are not disclosed, the filer should tag a boolean value to an extension concept called NumberOfAuthorizedSharesNotDisclosed with a value of true in any context. This can occur for companies that are not publicly listed.
+
+The properties of this us-gaap:CommonStockSharesOutstanding fact are:
+
+Period: 2025-12-31
+Unit: shares
+Rule version: 30.0.0RC1 - iqst10k_123125.htm 9237</message>
+ <ref href="iqst10k_123125.htm#Fact000175" sourceLine="9237">
+  <property name="file" value="iqst10k_123125.htm"/>
+  <property name="line" value="9237"/>
+  <property name="label" value="Common Stock, Shares, Outstanding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="CommonStockSharesOutstanding"/>
+  <property name="QName" value="us-gaap:CommonStockSharesOutstanding"/>
+  <property name="contextRef" value="AsOf2025-12-31">
+   <property name="entity" value="0001527702">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+  </property>
+  <property name="unitRef" value="Shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,668,017"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="4,668,017"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0212.10738 time took: 1.117397 - 17:39:12.085968  - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0212.10738 end. Took 0:00:01.117397 - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.225961. - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.61 secs - http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1527702/000166357726000094/iqst10k_123125.htm"/></entry>
+</log>

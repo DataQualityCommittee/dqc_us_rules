@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.18 secs at 2026-05-19T15:59:53 - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.046564. - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 16:00:01.505227 - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:01.461605 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2025-all.xsd' - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm" severity="error" effectiveDate="2019-09-30" cid="2164785377552">[DQC.US.0081.9278] The line item concept us-gaap:EquityMethodInvestments with a value of 304,439 and a calculation parent of us-gaap:Assets is represented as a sibling of us-gaap:Investments with a value of 424,000 in the extension taxonomy role 110200 - Statement - CONSOLIDATED BALANCE SHEETS, but us-gaap:EquityMethodInvestments is represented as a descendent of us-gaap:Investments in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:EquityMethodInvestments fact are:
+
+Period :2024-12-29
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - btbd_s4a.htm 2</message>
+ <ref href="btbd_s4a.htm#fid_1751" sourceLine="2">
+  <property name="file" value="btbd_s4a.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="EQUITY METHOD INVESTMENT IN UNCONSOLIDATED AFFILIATE"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="EquityMethodInvestments"/>
+  <property name="QName" value="us-gaap:EquityMethodInvestments"/>
+  <property name="contextRef" value="AsOf2024-12-29">
+   <property name="entity" value="0001718224">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-29"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="304,439"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="304,439"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 13.189468 - 16:00:14.694807  - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:13.189468 - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:13.237034. - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 16.85 secs - http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1718224/000147793226002209/btbd_s4a.htm"/></entry>
+</log>

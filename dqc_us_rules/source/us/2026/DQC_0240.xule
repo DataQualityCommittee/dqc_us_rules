@@ -1,0 +1,79 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+/** Rules to identify inappropriate use of the consolidatedEntities axis.
+
+Overview: The ConsolidatedEntitiesAxis is intended to provide disaggregation between consolidated entities. When used it represents the identified entities contribution to the total reported amount for consolidated entity.  With no additional axis or members it represents the total net of any consolidation adjustments.  If used with the consolidated items axis it can be used to identify the gross amounts for the consolidated entity before consolidation adjustments.  Companies have been using this axis to report the financial values for the stand alone legal entities rather than the entity as a representative portion of the consolidated entity. This rule attempts to identify where the ConsolidatedEntitiesAxis has been used rather than the legal entity axis.
+
+The rule identifies those filers that are reits by identifying the use of the element (srt:RealEstateAndAccumulatedDepreciationByPropertyTable) to indicate if the filing is a reit. The rule then looks at the balance sheet and income statement and identifies if the  ConsolidatedEntitiesAxis has been used on all these concepts. It then checks if the consolidatedItemsAxis has been used. If not the rule will suggest using the legal entity axis. 
+
+
+constant $REIT_IDENTIFIER_ELEMENTS = set(srt:RealEstateAndAccumulatedDepreciationByPropertyTable)
+
+constant $REIT_NETWORKS = FILTER $PRES_NETWORKS where $item.role.description.contains('- Disclosure -') and (($item.concept-names).to-set intersect $REIT_IDENTIFIER_ELEMENTS).length > 0
+
+
+ASSERT US.0240.10940 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+ if $REIT_NETWORKS.length > 0
+        skip
+    else
+
+$cashflowItems = $CASH_OUTFLOWS + $CASH_INFLOWS;
+
+$badFact = {covered @concept.local-name in $cashflowItems  @srt:ConsolidatedEntitiesAxis = *}
+
+exists($badFact)
+
+message
+"The filer has reported a fact with the consolidated entities axis that is tagged with the concept {$badFact.name} with a value of {$badFact} that is identified as a cash inflow or outflow in the meta taxonomy.  The consolidated entities axis should not be used with cash flow statement items.  The filer should remove the consolidated entities axis from any facts tagged with cash flow statement items.	
+
+Concept : {$badFact.name}
+Value : { $badFact}
+Period : { $badFact.period}
+Dimensions : { $badFact.dimensions.join(', ','=')} 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0240.10941 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+$equityItems = $EQUITY_ITEMS;
+
+$badFact = {covered @concept.local-name in $equityItems  @srt:ConsolidatedEntitiesAxis = *}
+
+exists($badFact)
+
+message
+"The filer has reported a fact with the consolidated entities axis that is tagged with the concept {$badFact.name} with a value of {$badFact} that is identified as a measure of equity in the meta taxonomy.  The consolidated entities axis should not be used with equity items.  The filer should remove the consolidated entities axis from any facts tagged with equity items.	
+
+Concept : {$badFact.name}
+Value : { $badFact}
+Period : { $badFact.period}
+Dimensions : { $badFact.dimensions.join(', ','=')} 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+**/

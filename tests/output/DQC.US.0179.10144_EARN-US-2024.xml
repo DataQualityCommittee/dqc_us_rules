@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.79 secs at 2026-05-19T16:53:26 - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.342951. - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0179.10144 - 16:53:37.058234 - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm" severity="error" effectiveDate="2024-08-31" cid="2044631576848">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.08 at 2025-06-09. This represents the amount of dividends that are payable per share at 2025-06-09. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2025-05-27. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2025-05-27 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2025-06-09
+Dimensions : us-gaap:DividendsAxis=us-gaap:DividendDeclaredMember, us-gaap:SubsequentEventTypeAxis=us-gaap:SubsequentEventMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - earn-20250331.htm 8</message>
+ <ref href="earn-20250331.htm#f-2398" sourceLine="8">
+  <property name="file" value="earn-20250331.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="c-731">
+   <property name="entity" value="0001560672">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-06-09"/>
+   <property name="dimensions" value="(2)">
+    <property name="us-gaap:DividendsAxis" value="us-gaap:DividendDeclaredMember"/>
+    <property name="us-gaap:SubsequentEventTypeAxis" value="us-gaap:SubsequentEventMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.08"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.08"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0179.10144 time took: 1.087079 - 16:53:38.145501  - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0179.10144 end. Took 0:00:01.087079 - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.430812. - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 6.70 secs - http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1560672/000156067225000074/earn-20250331.htm"/></entry>
+</log>

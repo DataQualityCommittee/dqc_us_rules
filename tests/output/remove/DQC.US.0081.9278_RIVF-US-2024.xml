@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.04 secs at 2026-05-19T16:00:21 - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.033601. - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 16:00:26.996134 - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:00.626173 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2024-all.xsd' - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1561216643344">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquirePropertyPlantAndEquipment with a value of 1,052 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivities is represented as a sibling of us-gaap:PaymentsToAcquireProductiveAssets with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:PaymentsToAcquirePropertyPlantAndEquipment is represented as a descendent of us-gaap:PaymentsToAcquireProductiveAssets in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:PaymentsToAcquirePropertyPlantAndEquipment fact are:
+
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 2261</message>
+ <ref href="rivf-20240630.htm#ixv-6042" sourceLine="2261">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="2261"/>
+  <property name="label" value="Purchases of property, plant and equipment"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="PaymentsToAcquirePropertyPlantAndEquipment"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"/>
+  <property name="contextRef" value="Y23">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,052"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,052"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1561216643344">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromIssuanceOfCommonStock with a value of 5,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:ProceedsFromIssuanceOrSaleOfEquity with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:ProceedsFromIssuanceOfCommonStock is represented as a descendent of us-gaap:ProceedsFromIssuanceOrSaleOfEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:ProceedsFromIssuanceOfCommonStock fact are:
+
+Period :2022-01-01 to 2022-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 2319</message>
+ <ref href="rivf-20240630.htm#ixv-6052" sourceLine="2319">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="2319"/>
+  <property name="label" value="Proceeds from sale of common stock"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProceedsFromIssuanceOfCommonStock"/>
+  <property name="QName" value="us-gaap:ProceedsFromIssuanceOfCommonStock"/>
+  <property name="contextRef" value="Y22">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="5,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1561216643344">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromIssuanceOfCommonStock with a value of 3,000,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:ProceedsFromIssuanceOrSaleOfEquity with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:ProceedsFromIssuanceOfCommonStock is represented as a descendent of us-gaap:ProceedsFromIssuanceOrSaleOfEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:ProceedsFromIssuanceOfCommonStock fact are:
+
+Period :2024-01-01 to 2024-06-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 2313</message>
+ <ref href="rivf-20240630.htm#ixv-6050" sourceLine="2313">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="2313"/>
+  <property name="label" value="Proceeds from sale of common stock"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProceedsFromIssuanceOfCommonStock"/>
+  <property name="QName" value="us-gaap:ProceedsFromIssuanceOfCommonStock"/>
+  <property name="contextRef" value="D240101_240630">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,000,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="3,000,000"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 6.608152 - 16:00:33.604488  - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:06.608152 - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:06.642601. - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 9.51 secs - http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647424000658/rivf-20240630.htm"/></entry>
+</log>
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.56 secs at 2026-05-19T16:00:39 - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.022252. - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 16:00:45.813873 - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:01.166350 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2024-all.xsd' - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1458882769168">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromIssuanceOfCommonStock with a value of 5,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:ProceedsFromIssuanceOrSaleOfEquity with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:ProceedsFromIssuanceOfCommonStock is represented as a descendent of us-gaap:ProceedsFromIssuanceOrSaleOfEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:ProceedsFromIssuanceOfCommonStock fact are:
+
+Period :2022-01-01 to 2022-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 2043</message>
+ <ref href="rivf-20240630.htm#ixv-4496" sourceLine="2043">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="2043"/>
+  <property name="label" value="Proceeds from sale of common stock"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProceedsFromIssuanceOfCommonStock"/>
+  <property name="QName" value="us-gaap:ProceedsFromIssuanceOfCommonStock"/>
+  <property name="contextRef" value="Y22">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2022-01-01"/>
+   <property name="endDate" value="2022-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="5,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1458882769168">[DQC.US.0081.9278] The line item concept us-gaap:ProceedsFromIssuanceOfCommonStock with a value of 3,000,000 and a calculation parent of us-gaap:NetCashProvidedByUsedInFinancingActivities is represented as a sibling of us-gaap:ProceedsFromIssuanceOrSaleOfEquity with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:ProceedsFromIssuanceOfCommonStock is represented as a descendent of us-gaap:ProceedsFromIssuanceOrSaleOfEquity in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:ProceedsFromIssuanceOfCommonStock fact are:
+
+Period :2024-01-01 to 2024-06-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 2037</message>
+ <ref href="rivf-20240630.htm#ixv-4494" sourceLine="2037">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="2037"/>
+  <property name="label" value="Proceeds from sale of common stock"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="ProceedsFromIssuanceOfCommonStock"/>
+  <property name="QName" value="us-gaap:ProceedsFromIssuanceOfCommonStock"/>
+  <property name="contextRef" value="D240101_240630">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,000,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="3,000,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm" severity="error" effectiveDate="2019-09-30" cid="1458882769168">[DQC.US.0081.9278] The line item concept us-gaap:PaymentsToAcquirePropertyPlantAndEquipment with a value of 1,052 and a calculation parent of us-gaap:NetCashProvidedByUsedInInvestingActivities is represented as a sibling of us-gaap:PaymentsToAcquireProductiveAssets with a value of 0 in the extension taxonomy role 000060 - Statement - Statements of Cash Flows (July 30, 2024 Unaudited), but us-gaap:PaymentsToAcquirePropertyPlantAndEquipment is represented as a descendent of us-gaap:PaymentsToAcquireProductiveAssets in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:PaymentsToAcquirePropertyPlantAndEquipment fact are:
+
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - rivf-20240630.htm 1985</message>
+ <ref href="rivf-20240630.htm#ixv-4486" sourceLine="1985">
+  <property name="file" value="rivf-20240630.htm"/>
+  <property name="line" value="1985"/>
+  <property name="label" value="Purchases of computer equipment"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="PaymentsToAcquirePropertyPlantAndEquipment"/>
+  <property name="QName" value="us-gaap:PaymentsToAcquirePropertyPlantAndEquipment"/>
+  <property name="contextRef" value="Y23">
+   <property name="entity" value="0001342936">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,052"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,052"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 6.212367 - 16:00:52.026338  - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:06.212367 - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:06.235601. - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 9.06 secs - http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1342936/000137647425000520/rivf-20240630.htm"/></entry>
+</log>

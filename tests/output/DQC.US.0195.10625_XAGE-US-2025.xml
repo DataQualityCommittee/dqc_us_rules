@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="xmlSchema:valueError" level="error">
+ <message element="ix:nonNumeric fact dei:DocumentType" typeName="string" value="10-K/A(Amendment No. 1)" error="pattern facet ((Other)|([A-Z0-9]+([/A-Z0-9 a-z\.\-]*[A-Z0-9])?))">[xmlSchema:valueError] Element ix:nonNumeric fact dei:DocumentType type string value error: 10-K/A(Amendment No. 1), pattern facet ((Other)|([A-Z0-9]+([/A-Z0-9 a-z\.\-]*[A-Z0-9])?)) - xage-20241231.htm 13</message>
+ <ref href="xage-20241231.htm#F_f0d5033f-30b0-4674-8bd1-011aae7fd5f1" sourceLine="13">
+  <property name="file" value="xage-20241231.htm"/>
+  <property name="line" value="13"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="C_ca4e5215-3097-43a8-a520-a6f20bf9a570">
+   <property name="entity" value="0001842939">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K/A(Amendment No. 1)"/>
+ </ref></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.86 secs at 2026-05-19T17:14:22 - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.487205. - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10625 - 17:14:43.866251 - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="DQC.US.0195.10625" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm" severity="error" effectiveDate="2025-04-15" cid="2955448168720">[DQC.US.0195.10625] us-gaap:TreasuryStockSharesRetired has a value of 3,845,337 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:TreasuryStockSharesRetired should not impact common stock. 
+
+The Statement of Changes in Equity implies treasury stock is excluded from the opening balance of shares as the opening balance uses a shares outstanding concept. The element TreasuryStockSharesRetired that was used in the roll-forward cannot reduce the shares outstanding. If the roll-forward of shares is based on shares issued the element TreasuryStockSharesRetired can be used but the  opening balance share element should be changed to SharesIssued or CommonStockSharesIssued.
+
+The properties of this us-gaap:TreasuryStockSharesRetired fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 30.0.0RC1 - xage-20241231.htm 4329</message>
+ <ref href="xage-20241231.htm#F_e5973167-014e-4c6b-a89d-fa2edc0b5faf" sourceLine="4329">
+  <property name="file" value="xage-20241231.htm"/>
+  <property name="line" value="4329"/>
+  <property name="label" value="Treasury Stock, Shares, Retired"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="TreasuryStockSharesRetired"/>
+  <property name="QName" value="us-gaap:TreasuryStockSharesRetired"/>
+  <property name="contextRef" value="C_59b20125-4809-41ee-be10-e309f9275606">
+   <property name="entity" value="0001842939">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3,845,337"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="3,845,337"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10625 time took: 3.030074 - 17:14:46.896511  - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10625 end. Took 0:00:03.030074 - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.518286. - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 20.35 secs - http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1842939/000095017025087485/xage-20241231.htm"/></entry>
+</log>

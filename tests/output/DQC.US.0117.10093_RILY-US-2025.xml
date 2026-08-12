@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 13.14 secs at 2026-05-19T16:15:20 - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.296296. - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0117.10093 - 16:15:40.800215 - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm" severity="error" effectiveDate="2023-08-31" cid="1709548384528">[DQC.US.0117.10093] In the statement 9952153 - Statement - Condensed Consolidated Statements of Operations (Loss) (Unaudited) the concept us-gaap:Revenues with a value of -5,997,000 and dimension of srt:ProductOrServiceAxis and member of rily:FairValueAdjustmentOnLoansMember is not equal to the dimensional breakdown of -3,185,000 using the dimension srt:ProductOrServiceAxis and the second dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis:
+	FairValueAdjustmentOnLoansMember 	 --> -3,185,000 	 --> us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember, srt:ProductOrServiceAxis=rily:FairValueAdjustmentOnLoansMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:Revenues fact are:
+Period :2025-01-01 to 2025-09-30
+Unit : USD
+Dimensions : srt:ProductOrServiceAxis=rily:FairValueAdjustmentOnLoansMember
+Rule Element Id:10093
+Rule version: 30.0.0RC1 - rily-20250930.htm 8</message>
+ <ref href="rily-20250930.htm#f-187" sourceLine="8">
+  <property name="file" value="rily-20250930.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Revenues"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="Revenues"/>
+  <property name="QName" value="us-gaap:Revenues"/>
+  <property name="contextRef" value="c-38">
+   <property name="entity" value="0001464790">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:ProductOrServiceAxis" value="rily:FairValueAdjustmentOnLoansMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-5,997,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="5,997"/>
+ </ref></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm" severity="error" effectiveDate="2023-08-31" cid="1709548384528">[DQC.US.0117.10093] In the statement 9952153 - Statement - Condensed Consolidated Statements of Operations (Loss) (Unaudited) the concept us-gaap:Revenues with a value of 9,143,000 and dimension of srt:ProductOrServiceAxis and member of rily:InterestIncomeLoansMember is not equal to the dimensional breakdown of 1,818,000 using the dimension srt:ProductOrServiceAxis and the second dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis:
+	InterestIncomeLoansMember 	 --> 1,818,000 	 --> us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember, srt:ProductOrServiceAxis=rily:InterestIncomeLoansMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:Revenues fact are:
+Period :2025-01-01 to 2025-09-30
+Unit : USD
+Dimensions : srt:ProductOrServiceAxis=rily:InterestIncomeLoansMember
+Rule Element Id:10093
+Rule version: 30.0.0RC1 - rily-20250930.htm 8</message>
+ <ref href="rily-20250930.htm#f-195" sourceLine="8">
+  <property name="file" value="rily-20250930.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Revenues"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="Revenues"/>
+  <property name="QName" value="us-gaap:Revenues"/>
+  <property name="contextRef" value="c-46">
+   <property name="entity" value="0001464790">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:ProductOrServiceAxis" value="rily:InterestIncomeLoansMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="9,143,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="9,143"/>
+ </ref></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm" severity="error" effectiveDate="2023-08-31" cid="1709548384528">[DQC.US.0117.10093] In the statement 9952153 - Statement - Condensed Consolidated Statements of Operations (Loss) (Unaudited) the concept us-gaap:Revenues with a value of 475,279,000 and dimension of srt:ProductOrServiceAxis and member of rily:ServiceAndFeeRevenuesMember is not equal to the dimensional breakdown of 9,168,000 using the dimension srt:ProductOrServiceAxis and the second dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis:
+	ServiceAndFeeRevenuesMember 	 --> 9,168,000 	 --> srt:ProductOrServiceAxis=rily:ServiceAndFeeRevenuesMember, us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:RelatedPartyMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:Revenues fact are:
+Period :2025-01-01 to 2025-09-30
+Unit : USD
+Dimensions : srt:ProductOrServiceAxis=rily:ServiceAndFeeRevenuesMember
+Rule Element Id:10093
+Rule version: 30.0.0RC1 - rily-20250930.htm 8</message>
+ <ref href="rily-20250930.htm#f-175" sourceLine="8">
+  <property name="file" value="rily-20250930.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Revenues"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="Revenues"/>
+  <property name="QName" value="us-gaap:Revenues"/>
+  <property name="contextRef" value="c-26">
+   <property name="entity" value="0001464790">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:ProductOrServiceAxis" value="rily:ServiceAndFeeRevenuesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="475,279,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="475,279"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0117.10093 time took: 2.354468 - 16:15:43.154799  - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0117.10093 end. Took 0:00:02.354468 - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.651322. - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 9.35 secs - http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1464790/000146479026000007/rily-20250930.htm"/></entry>
+</log>

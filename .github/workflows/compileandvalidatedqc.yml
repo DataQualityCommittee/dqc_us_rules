@@ -1,0 +1,1117 @@
+name: Compile & Validate DQC Rulesets
+
+on:
+  workflow_dispatch:
+    inputs:
+      skip_compilation:
+        description: 'Skip compilation and run tests with current ruleset .zip files on this branch (useful when only test comparison files changed)'
+        required: true
+        default: false
+        type: boolean
+      use_prebuilt_env:
+        description: 'Use a prebuilt Arelle/Xule container image (instead of building with versions below)'
+        required: true
+        default: true
+        type: boolean
+      arelle_version:
+        description: 'Arelle-release pip version ("latest" for the newest release or other version)'
+        required: true
+        default: '2.44.0'
+        type: string
+      xule_version:
+        description: 'Xule plugin branch/tag'
+        required: true
+        default: '30052.1'
+        type: string
+      edgar_version:
+        description: 'EDGAR transform plugin branch/tag (from Arelle/EDGAR repo)'
+        required: true
+        default: '26.1.3'
+        type: string
+      taxonomy:
+        description: 'Taxonomy(ies) to compile ("all" or a comma-separated list like "us,ifrs")'
+        required: true
+        default: 'all'
+        type: string
+      year:
+        description: 'Year(s) to compile ("all" or a comma-separated list like "2025,2026")'
+        required: true
+        default: 'all'
+        type: string
+      version_suffix:
+        description: 'Suffix appended to the branch in zip filename/tag (e.g. "-test" for -v30-test-ruleset.zip)'
+        required: false
+        default: ''
+        type: string
+      test_mode:
+        description: 'Run tests: "all" = run all tests; "changed" = run tests for changed .xule files; "none" = compile rulesets, skip tests.'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - changed
+          - none
+      base_commit:
+        description: 'Specify "changed" by commit SHA to diff against. Leave empty to auto-detect from last successful workflow.'
+        required: false
+        default: ''
+        type: string
+
+env:
+  XULE_REPO: xbrlus
+  VENV_PATH: ${{ github.workspace }}/../dqc-venv
+
+jobs:
+  # ──────────────────────────────────────────────
+  #  Print workflow inputs summary
+  # ──────────────────────────────────────────────
+  summary:
+    name: Workflow inputs
+    needs: resolve-env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Extract ruleset version
+        id: version
+        run: |
+          RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule || true)
+          echo "rule_version=${RULE_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - name: Print summary
+        env:
+          USE_PREBUILT: ${{ needs.resolve-env.outputs.use_prebuilt }}
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+        run: |
+          if [ "${{ inputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
+            ENV_LABEL="fresh build (auto — custom versions override prebuilt)"
+          elif [ "$USE_PREBUILT" = "true" ]; then
+            ENV_LABEL="prebuilt container"
+          else
+            ENV_LABEL="fresh build"
+          fi
+          {
+            echo "### Workflow Inputs"
+            echo ""
+            echo "| Input | Value |"
+            echo "|-------|-------|"
+            echo "| **Ruleset version** | \`${RULE_VERSION}\` |"
+            echo "| **Environment** | \`${ENV_LABEL}\` |"
+            echo "| **Arelle version** | \`${{ inputs.arelle_version }}\` |"
+            echo "| **Xule version** | \`${{ inputs.xule_version }}\` |"
+            echo "| **EDGAR version** | \`${{ inputs.edgar_version }}\` |"
+            echo "| **Taxonomies** | \`${{ inputs.taxonomy }}\` |"
+            echo "| **Years** | \`${{ inputs.year }}\` |"
+            echo "| **Ruleset suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
+            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
+            echo "| **Test mode** | \`${{ inputs.test_mode }}\` |"
+            echo "| **Base commit** | \`${{ inputs.base_commit || '(auto-detect)' }}\` |"
+            echo ""
+            echo "**Branch:** \`${{ github.ref_name }}\` | **Triggered by:** \`${{ github.actor }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # ──────────────────────────────────────────────
+  #  Resolve effective environment choice
+  #  Auto-disables prebuilt when versions differ from the defaults baked into the container image.
+  # ──────────────────────────────────────────────
+  resolve-env:
+    name: Resolve environment
+    runs-on: ubuntu-latest
+    outputs:
+      use_prebuilt: ${{ steps.resolve.outputs.use_prebuilt }}
+      image: ${{ steps.resolve.outputs.image }}
+    steps:
+      - name: Resolve effective use_prebuilt flag
+        id: resolve
+        run: |
+          IMAGE_NAME="$(echo '${{ github.repository }}/validation' | tr '[:upper:]' '[:lower:]')"
+          echo "image=ghcr.io/${IMAGE_NAME}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}" >> "$GITHUB_OUTPUT"
+          DEFAULT_ARELLE="2.44.0"
+          DEFAULT_XULE="30052.1"
+          DEFAULT_EDGAR="26.1.3"
+          USE_PREBUILT="${{ inputs.use_prebuilt_env }}"
+          if [ "$USE_PREBUILT" = "true" ]; then
+            if [ "${{ inputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ inputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ inputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
+              echo "::warning::Prebuilt container uses Arelle $DEFAULT_ARELLE / Xule $DEFAULT_XULE / EDGAR $DEFAULT_EDGAR — custom versions requested, switching to fresh build."
+              USE_PREBUILT="false"
+            fi
+          fi
+          echo "use_prebuilt=$USE_PREBUILT" >> "$GITHUB_OUTPUT"
+
+  # ──────────────────────────────────────────────
+  #  Detect changed .xule files (test_mode=changed only)
+  # ──────────────────────────────────────────────
+  detect-changes:
+    name: Detect changed .xule files
+    if: inputs.test_mode == 'changed'
+    runs-on: ubuntu-latest
+    outputs:
+      changed_dirs: ${{ steps.analyze.outputs.changed_dirs }}
+      changed_rules: ${{ steps.analyze.outputs.changed_rules }}
+      is_full_rebuild: ${{ steps.analyze.outputs.is_full_rebuild }}
+    steps:
+      - name: Checkout repository (with history)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Determine base commit and analyze changes
+        id: analyze
+        env:
+          BASE_COMMIT: ${{ inputs.base_commit }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          BASE="$BASE_COMMIT"
+
+          if [ -z "$BASE" ]; then
+            echo "No base_commit provided — finding last successful run..."
+            LAST_SUCCESS_SHA=$(
+              gh api \
+                "repos/$REPO/actions/workflows/compileandvalidatedqc.yml/runs?status=success&per_page=1&branch=$BRANCH" \
+                --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || true
+            )
+            if [ -n "$LAST_SUCCESS_SHA" ]; then
+              echo "Last successful run commit: $LAST_SUCCESS_SHA"
+              BASE="$LAST_SUCCESS_SHA"
+            else
+              echo "No previous successful run found — falling back to HEAD~1"
+              BASE="HEAD~1"
+            fi
+          fi
+
+          echo "Diffing $BASE..HEAD for .xule file changes..."
+          CHANGED_XULE=$(git diff --name-only "$BASE"..HEAD -- '*.xule' || true)
+
+          if [ -z "$CHANGED_XULE" ]; then
+            echo "No .xule files changed."
+            echo "changed_dirs=" >> "$GITHUB_OUTPUT"
+            echo "changed_rules=" >> "$GITHUB_OUTPUT"
+            echo "is_full_rebuild=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "Changed .xule files:"
+          echo "$CHANGED_XULE"
+
+          export CHANGED_XULE
+          python3 << 'PYEOF'
+          import re, os, json
+
+          raw = os.environ.get('CHANGED_XULE', '')
+          files = [f for f in raw.strip().split('\n') if f.strip()]
+          rule_ids = set()
+          changed_dirs = set()
+          is_full_rebuild = False
+
+          for f in files:
+              basename = f.rsplit('/', 1)[-1]
+
+              parts = f.split('/')
+              if 'source' in parts:
+                  idx = parts.index('source')
+                  if idx + 2 < len(parts):
+                      taxonomy = parts[idx + 1]
+                      year_dir = parts[idx + 2]
+                      if taxonomy != 'lib':
+                          changed_dirs.add(f'{taxonomy}/{year_dir}')
+
+              m = re.match(r'DQC_IFRS_(\d+)', basename)
+              if m:
+                  rule_ids.add(f'DQC.IFRS.{m.group(1)}')
+                  continue
+              m = re.match(r'DQC_(\d+)', basename)
+              if m:
+                  rule_ids.add(f'DQC.US.{m.group(1)}')
+                  continue
+              name_lower = basename.lower().replace('.xule', '')
+              if any(keyword in name_lower for keyword in ('constants', 'functions', 'namespace', 'base-taxonomy')):
+                  rule_ids.add('__ALL__')
+                  is_full_rebuild = True
+
+          if is_full_rebuild:
+              source_root = 'dqc_us_rules/source'
+              for taxonomy in sorted(os.listdir(source_root)):
+                  tax_path = os.path.join(source_root, taxonomy)
+                  if not os.path.isdir(tax_path) or taxonomy == 'lib':
+                      continue
+                  for year_dir in sorted(os.listdir(tax_path)):
+                      if os.path.isdir(os.path.join(tax_path, year_dir)):
+                          changed_dirs.add(f'{taxonomy}/{year_dir}')
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              dirs_json = json.dumps(sorted(changed_dirs))
+              out.write(f'changed_dirs={dirs_json}\n')
+              out.write(f'is_full_rebuild={str(is_full_rebuild).lower()}\n')
+              rules_str = '\n'.join(sorted(rule_ids))
+              out.write(f'changed_rules<<RULES_EOF\n')
+              out.write(f'{rules_str}\n')
+              out.write(f'RULES_EOF\n')
+
+          print(f'Changed source directories: {sorted(changed_dirs)}')
+          print(f'Changed rule IDs: {sorted(rule_ids)}')
+          print(f'Full rebuild: {is_full_rebuild}')
+          PYEOF
+
+  # ──────────────────────────────────────────────
+  #  Build environment (if not using prebuilt container)
+  # ──────────────────────────────────────────────
+  build-env:
+    name: Build Python/Arelle/Xule environment
+    needs: resolve-env
+    if: needs.resolve-env.outputs.use_prebuilt == 'false' && (inputs.skip_compilation == false || inputs.test_mode != 'none')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            git gcc g++ python3-dev libxml2-dev libxslt1-dev
+
+      - name: Create virtual environment
+        run: python -m venv --copies "${{ env.VENV_PATH }}"
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Install Arelle, Xule, and EDGAR plugins
+        run: |
+          pip install --no-cache-dir -r requirements.txt
+          if [ "${{ inputs.arelle_version }}" = "latest" ]; then
+            pip install --no-cache-dir --upgrade Arelle-release
+          else
+            pip install --no-cache-dir Arelle-release==${{ inputs.arelle_version }}
+          fi
+          SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
+          git clone --depth=1 --branch ${{ inputs.xule_version }} --single-branch \
+            https://github.com/${{ env.XULE_REPO }}/xule.git /tmp/xule
+          cp -r /tmp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
+          cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
+          rm -rf /tmp/xule
+          git clone --depth=1 --branch ${{ inputs.edgar_version }} --single-branch \
+            https://github.com/Arelle/EDGAR.git /tmp/EDGAR
+          cp -r /tmp/EDGAR "$SITE_PACKAGES/arelle/plugin/"
+          rm -rf /tmp/EDGAR
+
+      - name: Archive virtual environment
+        run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
+
+      - name: Upload environment artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv.tar.gz
+          retention-days: 1
+
+  # ──────────────────────────────────────────────
+  #  Discover source directories to compile
+  # ──────────────────────────────────────────────
+  build-compile-matrix:
+    name: Discover source directories
+    needs: detect-changes
+    if: always() && inputs.skip_compilation == false
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.discover.outputs.matrix }}
+      has_sources: ${{ steps.discover.outputs.has_sources }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Discover compilable sources
+        id: discover
+        env:
+          TEST_MODE: ${{ inputs.test_mode }}
+          CHANGED_DIRS: ${{ needs.detect-changes.outputs.changed_dirs }}
+          TAXONOMY: ${{ inputs.taxonomy }}
+          YEAR: ${{ inputs.year }}
+          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^V/v/')${VERSION_SUFFIX}"
+          export RESOLVED_VERSION_TAG="$VERSION_TAG"
+
+          python3 << 'PYEOF'
+          import json, os, sys
+
+          source_root = 'dqc_us_rules/source'
+          version_tag = os.environ['RESOLVED_VERSION_TAG']
+          taxonomy_input = os.environ.get('TAXONOMY', 'all')
+          year_input = os.environ.get('YEAR', 'all')
+          test_mode = os.environ.get('TEST_MODE', 'all')
+          changed_dirs_raw = os.environ.get('CHANGED_DIRS', '')
+
+          changed_dirs = set()
+          if test_mode == 'changed' and changed_dirs_raw:
+              changed_dirs = set(json.loads(changed_dirs_raw))
+              print(f'Filtering compilation to changed directories: {sorted(changed_dirs)}')
+
+          taxonomy_filters = [t.strip() for t in taxonomy_input.split(',') if t.strip()]
+          year_filters = [y.strip() for y in year_input.split(',') if y.strip()]
+          includes = []
+
+          for taxonomy in sorted(os.listdir(source_root)):
+              tax_path = os.path.join(source_root, taxonomy)
+              if not os.path.isdir(tax_path) or taxonomy == 'lib':
+                  continue
+              if 'all' not in taxonomy_filters and taxonomy not in taxonomy_filters:
+                  continue
+              for year_dir in sorted(os.listdir(tax_path)):
+                  dir_path = os.path.join(tax_path, year_dir)
+                  if not os.path.isdir(dir_path):
+                      continue
+                  if 'all' not in year_filters and not any(year_dir == yf or year_dir.endswith(yf) for yf in year_filters):
+                      continue
+                  dir_key = f'{taxonomy}/{year_dir}'
+                  if test_mode == 'changed' and changed_dirs and dir_key not in changed_dirs:
+                      continue
+                  zip_name = f'dqc-{year_dir if taxonomy == "esef" else taxonomy + "-" + year_dir}-{version_tag}-ruleset.zip'
+                  includes.append({
+                      'taxonomy': taxonomy,
+                      'year_dir': year_dir,
+                      'source_path': dir_path,
+                      'zip_name': zip_name,
+                      'label': f'{taxonomy}/{year_dir}',
+                  })
+
+          has_sources = 'true' if includes else 'false'
+          if not includes and test_mode == 'changed':
+              print('No source directories matched the changed .xule files.')
+          elif not includes:
+              print('No matching source directories found', file=sys.stderr)
+              sys.exit(1)
+
+          matrix = {'include': includes}
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'matrix={json.dumps(matrix)}\n')
+              out.write(f'has_sources={has_sources}\n')
+
+          print(f'Sources to compile ({len(includes)}):')
+          for item in includes:
+              print(f"  {item['label']} -> {item['zip_name']}")
+          PYEOF
+
+  # ──────────────────────────────────────────────
+  #  Build test matrix (parallel with compilation)
+  # ──────────────────────────────────────────────
+  build-test-matrix:
+    name: Build test matrix
+    needs: detect-changes
+    if: always() && inputs.test_mode != 'none'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has_tests: ${{ steps.set-matrix.outputs.has_tests }}
+      changed_rules: ${{ steps.set-matrix.outputs.changed_rules }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build matrix from test config
+        id: set-matrix
+        env:
+          TEST_MODE: ${{ inputs.test_mode }}
+          CHANGED_RULES: ${{ needs.detect-changes.outputs.changed_rules }}
+          TAXONOMY: ${{ inputs.taxonomy }}
+          YEAR: ${{ inputs.year }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os, re, sys
+
+          test_mode = os.environ.get('TEST_MODE', 'all')
+          changed_rules_raw = os.environ.get('CHANGED_RULES', '')
+          taxonomy_input = os.environ.get('TAXONOMY', 'all').strip().lower()
+          year_input = os.environ.get('YEAR', 'all').strip()
+
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+
+          changed_rules = set()
+          if test_mode == 'changed' and changed_rules_raw:
+              changed_rules = {r.strip() for r in changed_rules_raw.strip().split('\n') if r.strip()}
+          print(f'Test mode: {test_mode}')
+          print(f'Changed rules detected: {sorted(changed_rules)}')
+
+          taxonomy_filters = {t.strip() for t in taxonomy_input.split(',') if t.strip()}
+          year_filters = {y.strip() for y in year_input.split(',') if y.strip()}
+          filter_by_scope = 'all' not in taxonomy_filters or 'all' not in year_filters
+
+          def matches_scope(name):
+              if not filter_by_scope:
+                  return True
+              name_lower = name.lower()
+              if name_lower.startswith('us gaap') or 'roll to' in name_lower:
+                  test_tax = 'us'
+              elif name_lower.startswith('ifrs'):
+                  test_tax = 'ifrs'
+              elif name_lower.startswith('v'):
+                  return True
+              else:
+                  return True
+              if 'all' not in taxonomy_filters and test_tax not in taxonomy_filters:
+                  if not (test_tax == 'ifrs' and 'esef' in taxonomy_filters):
+                      return False
+              if 'all' not in year_filters:
+                  years_in_name = set(re.findall(r'20\d{2}', name))
+                  if years_in_name and not years_in_name & year_filters:
+                      return False
+              return True
+
+          if filter_by_scope:
+              print(f'Filtering tests to taxonomy={taxonomy_input}, year={year_input}')
+
+          is_full = '__ALL__' in changed_rules
+          includes = []
+
+          for i, t in enumerate(tests):
+              if not matches_scope(t['name']):
+                  continue
+              if test_mode == 'all' or is_full:
+                  includes.append({'index': i, 'name': t['name']})
+              elif test_mode == 'changed' and changed_rules:
+                  matched = False
+                  for filing in t['infiles']:
+                      run_only = filing.get('xule_run_only', '')
+                      for rule_id in changed_rules:
+                          if rule_id in run_only:
+                              matched = True
+                              break
+                      if matched:
+                          break
+                  if matched:
+                      includes.append({'index': i, 'name': t['name']})
+
+          has_tests = 'true' if includes else 'false'
+          matrix = {'include': includes} if includes else {'include': []}
+
+          rules_json = json.dumps(sorted(changed_rules)) if changed_rules else '[]'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'matrix={json.dumps(matrix)}\n')
+              out.write(f'has_tests={has_tests}\n')
+              out.write(f'changed_rules={rules_json}\n')
+
+          if includes:
+              print(f'Test sets to validate ({len(includes)}):')
+              for item in includes:
+                  print(f"  {item['name']}")
+          else:
+              print('No test sets matched the filters.')
+          PYEOF
+
+  # ──────────────────────────────────────────────
+  #  Compile rulesets (prebuilt container path)
+  # ──────────────────────────────────────────────
+  compile-prebuilt:
+    name: "${{ matrix.label }} (prebuilt env)"
+    needs: [resolve-env, build-compile-matrix]
+    if: >-
+      always()
+      && needs.build-compile-matrix.result == 'success'
+      && needs.resolve-env.outputs.use_prebuilt == 'true'
+      && needs.build-compile-matrix.outputs.has_sources == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.resolve-env.outputs.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-compile-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compile ruleset
+        uses: ./.github/actions/compile-ruleset
+        with:
+          source_path: ${{ matrix.source_path }}
+          zip_name: ${{ matrix.zip_name }}
+
+  # ──────────────────────────────────────────────
+  #  Compile rulesets (fresh environment path)
+  # ──────────────────────────────────────────────
+  compile-fresh:
+    name: "${{ matrix.label }} (fresh env)"
+    needs: [resolve-env, build-env, build-compile-matrix]
+    if: >-
+      always()
+      && needs.build-compile-matrix.result == 'success'
+      && (needs.build-env.result == 'success')
+      && needs.resolve-env.outputs.use_prebuilt == 'false'
+      && needs.build-compile-matrix.outputs.has_sources == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-compile-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Download environment artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv
+
+      - name: Restore virtual environment
+        run: |
+          mkdir -p "${{ env.VENV_PATH }}"
+          tar -C "${{ env.VENV_PATH }}" -xzf /tmp/dqc-venv/dqc-venv.tar.gz
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Compile ruleset
+        uses: ./.github/actions/compile-ruleset
+        with:
+          source_path: ${{ matrix.source_path }}
+          zip_name: ${{ matrix.zip_name }}
+
+  # ──────────────────────────────────────────────
+  #  Validate compiled rulesets (prebuilt container)
+  # ──────────────────────────────────────────────
+  validate-prebuilt:
+    name: "${{ matrix.name }} (prebuilt env)"
+    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
+    if: >-
+      always()
+      && needs.resolve-env.outputs.use_prebuilt == 'true'
+      && inputs.test_mode != 'none'
+      && needs.build-test-matrix.outputs.has_tests == 'true'
+      && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success')
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.resolve-env.outputs.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-test-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download all compiled rulesets
+        if: inputs.skip_compilation == false
+        uses: actions/download-artifact@v6
+        with:
+          path: ./artifacts
+          pattern: 'dqc-*-ruleset.zip'
+
+      - name: Install compiled rulesets
+        if: inputs.skip_compilation == false
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name '*.zip' -type f
+          find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
+
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          echo "Rulesets in dqc_us_rules/:"
+          ls -lh ./dqc_us_rules/*.zip
+
+          python3 << 'PYEOF'
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
+
+          with open('rulesetMap.json') as f:
+              rmap = json.load(f)
+
+          updated = {}
+          for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
+              filename = url.rsplit('/', 1)[-1].split('?')[0]
+              local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
+              if os.path.exists(local_path):
+                  updated[uri] = local_path
+                  print(f'  {uri} -> {local_path} (local)')
+              else:
+                  updated[uri] = url
+                  print(f'  {uri} -> {url} (branch {branch})')
+
+          with open('rulesetMap.json', 'w') as f:
+              json.dump(updated, f, indent=2)
+          PYEOF
+
+      - name: Extract test set and write filing list
+        id: testdata
+        env:
+          TEST_MODE: ${{ inputs.test_mode }}
+          CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
+          MATRIX_INDEX: ${{ matrix.index }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+
+          test_mode = os.environ.get('TEST_MODE', 'all')
+          changed_rules_json = os.environ.get('CHANGED_RULES_JSON', '[]')
+          index = int(os.environ['MATRIX_INDEX'])
+
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          test = tests[index]
+
+          infiles = test['infiles']
+          exfiles_list = [e.strip() for e in test['exfiles'].split(',') if e.strip()]
+
+          changed_rules = set()
+          if test_mode == 'changed' and changed_rules_json:
+              changed_rules = set(json.loads(changed_rules_json))
+
+          if test_mode == 'changed' and changed_rules and '__ALL__' not in changed_rules:
+              filtered_in = []
+              filtered_ex = []
+              for i, filing in enumerate(infiles):
+                  run_only = filing.get('xule_run_only', '')
+                  if any(rule_id in run_only for rule_id in changed_rules):
+                      filtered_in.append(filing)
+                      if i < len(exfiles_list):
+                          filtered_ex.append(exfiles_list[i])
+              print(f'Filtered {len(infiles)} filings down to {len(filtered_in)} matching changed rules')
+              infiles = filtered_in
+              exfiles_list = filtered_ex
+
+          with open('infiles.json', 'w') as f:
+              json.dump(infiles, f)
+          exfiles_str = ','.join(exfiles_list)
+          with open('exfiles.txt', 'w') as f:
+              f.write(exfiles_str)
+
+          print('Filing list:')
+          for filing in infiles:
+              print(f"  {filing['xule_run_only']}: {filing['file']}")
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'exfiles={exfiles_str}\n')
+              out.write(f'filing_count={len(infiles)}\n')
+          PYEOF
+
+      - name: Run Arelle DQC validation
+        id: validation
+        if: steps.testdata.outputs.filing_count != '0'
+        run: |
+          set +e
+          python -m arelle.CntlrCmdLine \
+            --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
+            --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
+            -v \
+            --dqc-replace-rule-set-map ./rulesetMap.json \
+            --xule-filing-list infiles.json \
+            --logFile ./log.xml \
+            --xule-debug
+          ARELLE_EXIT=$?
+          set -e
+          echo "arelle_exit=$ARELLE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ $ARELLE_EXIT -ne 0 ]; then
+            echo "::warning::Arelle exited with code $ARELLE_EXIT (non-zero is expected when validation errors are found in test filings)"
+          fi
+
+      - name: Compare results against expected
+        id: compare
+        if: always() && steps.testdata.outputs.filing_count != '0' && steps.validation.outcome != 'cancelled'
+        run: |
+          python compare.py \
+            --compare-file ./report.txt \
+            --test-files ./log.xml \
+            --expected-results "${{ steps.testdata.outputs.exfiles }}" \
+            --html-file ./report.html
+        continue-on-error: true
+
+      - name: Print log.xml
+        if: always()
+        run: head -3000 log.xml || true
+
+      - name: Print comparison report
+        if: always()
+        run: |
+          echo "===== COMPARISON REPORT (TEXT) ====="
+          cat report.txt 2>/dev/null || echo "No text report generated."
+          echo "===== END COMPARISON REPORT ====="
+
+      - name: Upload reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: "reports-${{ matrix.name }}"
+          path: |
+            log.xml
+            report.txt
+            report.html
+          retention-days: 30
+
+      - name: Upload HTML report
+        if: always() && steps.compare.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: "discrepancies-${{ matrix.name }}.html"
+          path: report.html
+          retention-days: 30
+
+      - name: Report outcome
+        if: always()
+        run: |
+          if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
+            echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
+          elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
+            exit 1
+          else
+            echo "All validation results match expected output for ${{ matrix.name }}."
+          fi
+
+  # ──────────────────────────────────────────────
+  #  Validate compiled rulesets (fresh environment)
+  # ──────────────────────────────────────────────
+  validate-fresh:
+    name: "${{ matrix.name }} (fresh env)"
+    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
+    if: >-
+      always()
+      && needs.resolve-env.outputs.use_prebuilt == 'false'
+      && inputs.test_mode != 'none'
+      && needs.build-test-matrix.outputs.has_tests == 'true'
+      && needs.build-env.result == 'success'
+      && (inputs.skip_compilation || needs.compile-fresh.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-test-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Download environment artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: dqc-venv
+          path: /tmp/dqc-venv
+
+      - name: Restore virtual environment
+        run: |
+          mkdir -p "${{ env.VENV_PATH }}"
+          tar -C "${{ env.VENV_PATH }}" -xzf /tmp/dqc-venv/dqc-venv.tar.gz
+
+      - name: Add virtual environment to PATH
+        run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Download all compiled rulesets
+        if: inputs.skip_compilation == false
+        uses: actions/download-artifact@v6
+        with:
+          path: ./artifacts
+          pattern: 'dqc-*-ruleset.zip'
+
+      - name: Install compiled rulesets
+        if: inputs.skip_compilation == false
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name '*.zip' -type f
+          find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
+
+      - name: Configure ruleset map to use branch zips
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          echo "Rulesets in dqc_us_rules/:"
+          ls -lh ./dqc_us_rules/*.zip
+
+          python3 << 'PYEOF'
+          import json, os, re
+
+          branch = os.environ['BRANCH_NAME']
+          branch_lower = branch.lower()
+
+          with open('rulesetMap.json') as f:
+              rmap = json.load(f)
+
+          updated = {}
+          for uri, url in rmap.items():
+              url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
+              url = re.sub(
+                  r'(?i)(-' + re.escape(branch) + r')(-ruleset\.zip)',
+                  f'-{branch_lower}\\2',
+                  url,
+              )
+              filename = url.rsplit('/', 1)[-1].split('?')[0]
+              local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
+              if os.path.exists(local_path):
+                  updated[uri] = local_path
+                  print(f'  {uri} -> {local_path} (local)')
+              else:
+                  updated[uri] = url
+                  print(f'  {uri} -> {url} (branch {branch})')
+
+          with open('rulesetMap.json', 'w') as f:
+              json.dump(updated, f, indent=2)
+          PYEOF
+
+      - name: Extract test set and write filing list
+        id: testdata
+        env:
+          TEST_MODE: ${{ inputs.test_mode }}
+          CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
+          MATRIX_INDEX: ${{ matrix.index }}
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+
+          test_mode = os.environ.get('TEST_MODE', 'all')
+          changed_rules_json = os.environ.get('CHANGED_RULES_JSON', '[]')
+          index = int(os.environ['MATRIX_INDEX'])
+
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          test = tests[index]
+
+          infiles = test['infiles']
+          exfiles_list = [e.strip() for e in test['exfiles'].split(',') if e.strip()]
+
+          changed_rules = set()
+          if test_mode == 'changed' and changed_rules_json:
+              changed_rules = set(json.loads(changed_rules_json))
+
+          if test_mode == 'changed' and changed_rules and '__ALL__' not in changed_rules:
+              filtered_in = []
+              filtered_ex = []
+              for i, filing in enumerate(infiles):
+                  run_only = filing.get('xule_run_only', '')
+                  if any(rule_id in run_only for rule_id in changed_rules):
+                      filtered_in.append(filing)
+                      if i < len(exfiles_list):
+                          filtered_ex.append(exfiles_list[i])
+              print(f'Filtered {len(infiles)} filings down to {len(filtered_in)} matching changed rules')
+              infiles = filtered_in
+              exfiles_list = filtered_ex
+
+          with open('infiles.json', 'w') as f:
+              json.dump(infiles, f)
+          exfiles_str = ','.join(exfiles_list)
+          with open('exfiles.txt', 'w') as f:
+              f.write(exfiles_str)
+
+          print('Filing list:')
+          for filing in infiles:
+              print(f"  {filing['xule_run_only']}: {filing['file']}")
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'exfiles={exfiles_str}\n')
+              out.write(f'filing_count={len(infiles)}\n')
+          PYEOF
+
+      - name: Run Arelle DQC validation
+        id: validation
+        if: steps.testdata.outputs.filing_count != '0'
+        run: |
+          set +e
+          python -m arelle.CntlrCmdLine \
+            --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
+            --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
+            -v \
+            --dqc-replace-rule-set-map ./rulesetMap.json \
+            --xule-filing-list infiles.json \
+            --logFile ./log.xml \
+            --xule-debug
+          ARELLE_EXIT=$?
+          set -e
+          echo "arelle_exit=$ARELLE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ $ARELLE_EXIT -ne 0 ]; then
+            echo "::warning::Arelle exited with code $ARELLE_EXIT (non-zero is expected when validation errors are found in test filings)"
+          fi
+
+      - name: Compare results against expected
+        id: compare
+        if: always() && steps.testdata.outputs.filing_count != '0' && steps.validation.outcome != 'cancelled'
+        run: |
+          python compare.py \
+            --compare-file ./report.txt \
+            --test-files ./log.xml \
+            --expected-results "${{ steps.testdata.outputs.exfiles }}" \
+            --html-file ./report.html
+        continue-on-error: true
+
+      - name: Print log.xml
+        if: always()
+        run: head -3000 log.xml || true
+
+      - name: Print comparison report
+        if: always()
+        run: |
+          echo "===== COMPARISON REPORT (TEXT) ====="
+          cat report.txt 2>/dev/null || echo "No text report generated."
+          echo "===== END COMPARISON REPORT ====="
+
+      - name: Upload reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: "reports-${{ matrix.name }}"
+          path: |
+            log.xml
+            report.txt
+            report.html
+          retention-days: 30
+
+      - name: Upload HTML report
+        if: always() && steps.compare.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: "discrepancies-${{ matrix.name }}.html"
+          path: report.html
+          retention-days: 30
+
+      - name: Report outcome
+        if: always()
+        run: |
+          if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
+            echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
+          elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
+            exit 1
+          else
+            echo "All validation results match expected output for ${{ matrix.name }}."
+          fi
+
+  # ──────────────────────────────────────────────
+  #  Commit compiled rulesets
+  # ──────────────────────────────────────────────
+  commit:
+    name: Commit all rulesets
+    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
+    if: >-
+      always()
+      && inputs.skip_compilation == false
+      && (needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
+      && (needs.validate-prebuilt.result == 'success' || needs.validate-prebuilt.result == 'skipped')
+      && (needs.validate-fresh.result == 'success' || needs.validate-fresh.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Download all compiled rulesets
+        uses: actions/download-artifact@v6
+        with:
+          path: ./artifacts
+          pattern: 'dqc-*-ruleset.zip'
+
+      - name: Copy rulesets into repo
+        run: |
+          echo "Downloaded artifacts:"
+          find ./artifacts -name '*.zip' -type f
+          find ./artifacts -name '*.zip' -type f -exec cp {} ./dqc_us_rules/ \;
+          echo ""
+          echo "Rulesets in dqc_us_rules/:"
+          ls -lh ./dqc_us_rules/*.zip
+
+      - name: Detect Python version from Dockerfile
+        id: pyver
+        run: |
+          PY_VERSION=$(grep -oP '(?<=FROM python:)[^\s-]+' Dockerfile)
+          echo "python_version=${PY_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - name: Extract ruleset version from version.xule
+        id: version
+        run: |
+          RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule)
+          if [ -z "$RULE_VERSION" ]; then
+            echo "::error::Could not extract \$ruleVersion from dqc_us_rules/source/lib/version.xule"
+            exit 1
+          fi
+          echo "rule_version=$RULE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Extracted ruleset version: $RULE_VERSION"
+
+      - name: Update rulesetMap.json version references
+        env:
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          MAP_VERSION="v${RULE_VERSION}"
+          sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
+          echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
+          cat rulesetMap.json
+
+      - name: Commit and push
+        env:
+          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          PY_VERSION: ${{ steps.pyver.outputs.python_version }}
+          ARELLE_VERSION: ${{ inputs.arelle_version }}
+          XULE_VERSION: ${{ inputs.xule_version }}
+          EDGAR_VERSION: ${{ inputs.edgar_version }}
+          TEST_MODE: ${{ inputs.test_mode }}
+          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
+        run: |
+          COMMIT_VERSION="v${RULE_VERSION}"
+          if [ "$SKIP_COMPILATION" = "true" ]; then
+            ACTION="Test"
+          elif [ "$TEST_MODE" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ./dqc_us_rules/*.zip rulesetMap.json
+          git diff --cached --quiet && echo "No changes to commit" && exit 0
+          git commit -m "$(cat <<'EOF'
+          ${ACTION} ruleset .zip files ${COMMIT_VERSION}
+          
+          Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}
+          
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+          )"
+          git push

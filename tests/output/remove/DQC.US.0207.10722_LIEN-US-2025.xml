@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.70 secs at 2026-05-19T17:36:40 - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.474371. - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0207.10722 - 17:36:48.297952 - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="DQC.US.0207.10722" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm" severity="error" effectiveDate="2025-07-15" cid="2198572249360">[DQC.US.0207.10722] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 10,322,928. This concept is used to report the fair value of investments for the lien:PublicAdministrationMember industry. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 10,323,000 that includes the member lien:PublicAdministrationMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:InvestmentTypeAxis=lien:CorporateDebtFirstLienSeniorSecuredMember, srt:StatementGeographicalAxis=country:US, us-gaap:EquitySecuritiesByIndustryAxis=lien:PublicAdministrationMember. The value representing the fair value of investments in the  lien:PublicAdministrationMember industry is less than the value reported for the value 10,323,000 which is a subset of this industry. The value reported for the industry in aggregate should be more than or equal to the value reported for of 10,323,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 10,323,000
+Period : 2024-12-31
+Dimensions : us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:EquitySecuritiesByIndustryAxis=lien:PublicAdministrationMember, srt:StatementGeographicalAxis=country:US, us-gaap:InvestmentTypeAxis=lien:CorporateDebtFirstLienSeniorSecuredMember
+
+Rule Element Id:10722
+Rule version: 30.0.0RC1 - lien-20250930.htm 8532</message>
+ <ref href="lien-20250930.htm#F_a07c00b3-f49c-4f67-a469-96b4de200a67" sourceLine="8532">
+  <property name="file" value="lien-20250930.htm"/>
+  <property name="line" value="8532"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_33063448-1d52-49db-aaea-bbc0b18eed96">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:StatementGeographicalAxis" value="country:US"/>
+    <property name="us-gaap:EquitySecuritiesByIndustryAxis" value="lien:PublicAdministrationMember"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lien:CorporateDebtFirstLienSeniorSecuredMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10,323,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="10,323"/>
+ </ref></entry>
+<entry code="DQC.US.0207.10722" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm" severity="error" effectiveDate="2025-07-15" cid="2198572249360">[DQC.US.0207.10722] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 2,994,731. This concept is used to report the fair value of investments for the lien:ManufacturingMember industry. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 2,995,000 that includes the member lien:ManufacturingMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:EquitySecuritiesByIndustryAxis=lien:ManufacturingMember, us-gaap:InvestmentTypeAxis=lien:USCorporateDebtFirstLienSeniorSecuredMember. The value representing the fair value of investments in the  lien:ManufacturingMember industry is less than the value reported for the value 2,995,000 which is a subset of this industry. The value reported for the industry in aggregate should be more than or equal to the value reported for of 2,995,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 2,995,000
+Period : 2025-09-30
+Dimensions : us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:InvestmentTypeAxis=lien:USCorporateDebtFirstLienSeniorSecuredMember, us-gaap:EquitySecuritiesByIndustryAxis=lien:ManufacturingMember
+
+Rule Element Id:10722
+Rule version: 30.0.0RC1 - lien-20250930.htm 4948</message>
+ <ref href="lien-20250930.htm#F_f0fa0314-75aa-453b-82bc-a2cac4e9ccf5" sourceLine="4948">
+  <property name="file" value="lien-20250930.htm"/>
+  <property name="line" value="4948"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_8277fce3-02a4-47b9-a6dc-ec96fb32d586">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:EquitySecuritiesByIndustryAxis" value="lien:ManufacturingMember"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lien:USCorporateDebtFirstLienSeniorSecuredMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,995,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="2,995"/>
+ </ref></entry>
+<entry code="DQC.US.0207.10722" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm" severity="error" effectiveDate="2025-07-15" cid="2198572249360">[DQC.US.0207.10722] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 11,659,571. This concept is used to report the fair value of investments for the lien:PublicAdministrationMember industry. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 11,660,000 that includes the member lien:PublicAdministrationMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentTypeAxis=lien:USCorporateDebtFirstLienSeniorSecuredMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:EquitySecuritiesByIndustryAxis=lien:PublicAdministrationMember. The value representing the fair value of investments in the  lien:PublicAdministrationMember industry is less than the value reported for the value 11,660,000 which is a subset of this industry. The value reported for the industry in aggregate should be more than or equal to the value reported for of 11,660,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 11,660,000
+Period : 2025-09-30
+Dimensions : us-gaap:EquitySecuritiesByIndustryAxis=lien:PublicAdministrationMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:InvestmentTypeAxis=lien:USCorporateDebtFirstLienSeniorSecuredMember
+
+Rule Element Id:10722
+Rule version: 30.0.0RC1 - lien-20250930.htm 5065</message>
+ <ref href="lien-20250930.htm#F_80a2a654-9003-4e0d-869b-e6549309df90" sourceLine="5065">
+  <property name="file" value="lien-20250930.htm"/>
+  <property name="line" value="5065"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_f3532f0c-1d42-4174-ba28-c8d5cc7cd1ad">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+   <property name="dimensions" value="(3)">
+    <property name="us-gaap:EquitySecuritiesByIndustryAxis" value="lien:PublicAdministrationMember"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lien:USCorporateDebtFirstLienSeniorSecuredMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="11,660,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="11,660"/>
+ </ref></entry>
+<entry code="DQC.US.0207.10722" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm" severity="error" effectiveDate="2025-07-15" cid="2198572249360">[DQC.US.0207.10722] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 2,796,946. This concept is used to report the fair value of investments for the lien:HealthCareAndSocialAssistanceMember industry. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 2,797,000 that includes the member lien:HealthCareAndSocialAssistanceMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentTypeAxis=lien:CorporateDebtFirstLienSeniorSecuredMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:EquitySecuritiesByIndustryAxis=lien:HealthCareAndSocialAssistanceMember, srt:StatementGeographicalAxis=country:US. The value representing the fair value of investments in the  lien:HealthCareAndSocialAssistanceMember industry is less than the value reported for the value 2,797,000 which is a subset of this industry. The value reported for the industry in aggregate should be more than or equal to the value reported for of 2,797,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 2,797,000
+Period : 2024-12-31
+Dimensions : us-gaap:EquitySecuritiesByIndustryAxis=lien:HealthCareAndSocialAssistanceMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, us-gaap:InvestmentTypeAxis=lien:CorporateDebtFirstLienSeniorSecuredMember, srt:StatementGeographicalAxis=country:US
+
+Rule Element Id:10722
+Rule version: 30.0.0RC1 - lien-20250930.htm 8212</message>
+ <ref href="lien-20250930.htm#F_6985f02c-a475-42e4-959b-5dc7eb500597" sourceLine="8212">
+  <property name="file" value="lien-20250930.htm"/>
+  <property name="line" value="8212"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_bf37b510-7517-4778-95da-c11b61313288">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(4)">
+    <property name="srt:StatementGeographicalAxis" value="country:US"/>
+    <property name="us-gaap:EquitySecuritiesByIndustryAxis" value="lien:HealthCareAndSocialAssistanceMember"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lien:CorporateDebtFirstLienSeniorSecuredMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,797,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="2,797"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0207.10722 time took: 1.68177 - 17:36:49.979810  - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0207.10722 end. Took 0:00:01.681770 - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.156580. - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 6.72 secs - http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312525278786/lien-20250930.htm"/></entry>
+</log>

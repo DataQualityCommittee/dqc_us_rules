@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 11.01 secs at 2026-05-19T17:17:16 - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.331450. - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10625 - 17:17:46.706076 - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="DQC.US.0195.10625" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm" severity="error" effectiveDate="2025-04-15" cid="2439809036560">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of -6,765,720 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. 
+
+The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding. The opening balance of shares issued is presumed based on the following fact(s) : 653,270,717, 644,089,050, 641,329,557, 646,066,830 using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued
+
+The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 30.0.0RC1 - d779353d20f.htm 16541</message>
+ <ref href="d779353d20f.htm#ixv-38253" sourceLine="16541">
+  <property name="file" value="d779353d20f.htm"/>
+  <property name="line" value="16541"/>
+  <property name="label" value="Stock Repurchased During Period, Shares"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockRepurchasedDuringPeriodShares"/>
+  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodShares"/>
+  <property name="contextRef" value="P01_01_2023To12_31_2023_CommonStockMemberusgaapStatementEquityComponentsAxis">
+   <property name="entity" value="0001269238">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2023-01-01"/>
+   <property name="endDate" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-6,765,720"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="6,765,720"/>
+ </ref></entry>
+<entry code="DQC.US.0195.10625" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm" severity="error" effectiveDate="2025-04-15" cid="2439809036560">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of -5,980,861 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. 
+
+The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding. The opening balance of shares issued is presumed based on the following fact(s) : 653,270,717, 644,089,050, 641,329,557, 646,066,830 using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued
+
+The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 30.0.0RC1 - d779353d20f.htm 17426</message>
+ <ref href="d779353d20f.htm#ixv-38315" sourceLine="17426">
+  <property name="file" value="d779353d20f.htm"/>
+  <property name="line" value="17426"/>
+  <property name="label" value="Stock Repurchased During Period, Shares"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockRepurchasedDuringPeriodShares"/>
+  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodShares"/>
+  <property name="contextRef" value="P01_01_2024To12_31_2024_CommonStockMemberusgaapStatementEquityComponentsAxis">
+   <property name="entity" value="0001269238">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Unit_shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-5,980,861"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="5,980,861"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10625 time took: 1.719197 - 17:17:48.425487  - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10625 end. Took 0:00:01.719197 - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.051701. - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 20.68 secs - http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1269238/000119312525078429/d779353d20f.htm"/></entry>
+</log>

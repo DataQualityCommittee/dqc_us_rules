@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.33 secs at 2026-05-19T16:04:31 - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.009277. - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0108.9564 - 16:04:37.481324 - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="DQC.US.0108.9564" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm" severity="error" effectiveDate="2021-09-01" cid="1479264301328">[DQC.US.0108.9564] INCONSISTENT DURATION VALUES: The concept us-gaap:GeneralPartnerDistributions reports 2,145,000 for a 90-day period (2024-12-31 to 2025-03-31), which exceeds 0 reported for a longer 273-day period (2024-09-30 to 2025-06-30).
+
+ISSUE: Shorter period values should not exceed longer period values for non-negative monetary concepts.
+
+COMPARISON:
+- Shorter period (90 days): 2,145,000 (decimals: inf)
+- Longer period (273 days): 0 (decimals: inf)
+
+FACT DETAILS:
+- Period: 2025-01-01 to 2025-03-31
+- Dimensions: 
+- Unit: USD
+
+ACTION REQUIRED: IF the difference is due to rounding, verify decimal precision is appropriate.
+
+Rule Element ID: 9564
+Rule Version: 30.0.0RC1 - xcap-20260331_10q.htm 772</message>
+ <ref href="xcap-20260331_10q.htm#ixv-3134" sourceLine="772">
+  <property name="file" value="xcap-20260331_10q.htm"/>
+  <property name="line" value="772"/>
+  <property name="label" value="Stockholder distributions"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="GeneralPartnerDistributions"/>
+  <property name="QName" value="us-gaap:GeneralPartnerDistributions"/>
+  <property name="contextRef" value="Y25Q1">
+   <property name="entity" value="0001999538">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-03-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,145,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="2,145,000"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0108.9564 time took: 7.786655 - 16:04:45.268067  - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0108.9564 end. Took 0:00:07.786655 - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:07.796478. - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 11.04 secs - http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1999538/000137647426000364/xcap-20260331_10q.htm"/></entry>
+</log>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.48 secs at 2026-04-28T11:59:05 - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.048128. - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0177.10133 - 11:59:12.712263 - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm" severity="error" effectiveDate="2024-05-16" cid="2787581489424">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of 48,381, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 595,423 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardAdjustmentsMember --> 547,042 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:EquityAwardAdjustmentsMember 
+	AwardsGrantedInPriorFiscalYearsMember --> -115,763 --> ecd:AdjToCompAxis=lsak:AwardsGrantedInPriorFiscalYearsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember --> 69,660 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember 
+	FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember --> 0 --> ecd:AdjToCompAxis=lsak:FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	FairValueOfUnvestedCoveredYearEquityAwardsMember --> 532,489 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfUnvestedCoveredYearEquityAwardsMember 
+	FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember --> 60,656 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember 
+	ReportedValueOfEquityAwardsMember --> -498,661 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:ReportedValueOfEquityAwardsMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2023-07-01 to 2024-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 29.0.2 - form10ka.htm 2137</message>
+ <ref href="form10ka.htm#ID_28" sourceLine="2137">
+  <property name="file" value="form10ka.htm"/>
+  <property name="line" value="2137"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="FROM_Jul01_2024_TO_Jun30_2025_Entity_0001041514">
+   <property name="entity" value="0001041514">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-07-01"/>
+   <property name="endDate" value="2025-06-30"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K/A"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm" severity="error" effectiveDate="2024-05-16" cid="2787581489424">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -358,253, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -35,111 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardAdjustmentsMember --> 323,142 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:EquityAwardAdjustmentsMember 
+	AwardsGrantedInPriorFiscalYearsMember --> -102,800 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:AwardsGrantedInPriorFiscalYearsMember 
+	FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember --> -36,790 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember 
+	FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember --> 341,250 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember 
+	FairValueOfUnvestedCoveredYearEquityAwardsMember --> 280,876 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfUnvestedCoveredYearEquityAwardsMember 
+	FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember --> -159,394 --> ecd:AdjToCompAxis=lsak:FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	ReportedValueOfEquityAwardsMember --> -681,395 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:ReportedValueOfEquityAwardsMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2022-07-01 to 2023-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 29.0.2 - form10ka.htm 2137</message>
+ <ref href="form10ka.htm#ID_28" sourceLine="2137">
+  <property name="file" value="form10ka.htm"/>
+  <property name="line" value="2137"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="FROM_Jul01_2024_TO_Jun30_2025_Entity_0001041514">
+   <property name="entity" value="0001041514">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-07-01"/>
+   <property name="endDate" value="2025-06-30"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K/A"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm" severity="error" effectiveDate="2024-05-16" cid="2787581489424">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -326,512, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 48,526 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EquityAwardAdjustmentsMember --> 375,038 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:EquityAwardAdjustmentsMember 
+	AwardsGrantedInPriorFiscalYearsMember --> 0 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:AwardsGrantedInPriorFiscalYearsMember 
+	FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember --> -7,262 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfEquityAwardsGrantedInPriorYearsThatVestedInYearMember 
+	FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember --> 0 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueAsOfVestingDateOfEquityAwardsGrantedAndVestedInYearMember 
+	FairValueOfUnvestedCoveredYearEquityAwardsMember --> 394,525 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:FairValueOfUnvestedCoveredYearEquityAwardsMember 
+	FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember --> -12,225 --> ecd:AdjToCompAxis=lsak:FairValueOfOutstandingAndUnvestedPriorYearEquityAwardsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	ReportedValueOfEquityAwardsMember --> -701,550 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=lsak:ReportedValueOfEquityAwardsMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2024-07-01 to 2025-06-30
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 29.0.2 - form10ka.htm 2137</message>
+ <ref href="form10ka.htm#ID_28" sourceLine="2137">
+  <property name="file" value="form10ka.htm"/>
+  <property name="line" value="2137"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="FROM_Jul01_2024_TO_Jun30_2025_Entity_0001041514">
+   <property name="entity" value="0001041514">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-07-01"/>
+   <property name="endDate" value="2025-06-30"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K/A"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0177.10133 time took: 0.626372 - 11:59:13.338705  - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0177.10133 end. Took 0:00:00.626372 - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:00.674849. - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.44 secs - http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1041514/000156276226000013/form10ka.htm"/></entry>
+</log>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 6.62 secs at 2026-05-19T16:19:14 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.418744. - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0117.10093 - 16:19:28.603101 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm" severity="error" effectiveDate="2023-08-31" cid="2515802190096">[DQC.US.0117.10093] In the statement 00000002 - Statement - Consolidated Balance Sheets the concept us-gaap:NotesPayableCurrent with a value of 212,716 and dimension of us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and member of us-gaap:NonrelatedPartyMember is not equal to the dimensional breakdown of 5,729,442 using the dimension us-gaap:RelatedPartyTransactionsByRelatedPartyAxis and the second dimension us-gaap:BusinessAcquisitionAxis:
+	NonrelatedPartyMember 	 --> 5,729,442 	 --> us-gaap:BusinessAcquisitionAxis=EZFL:NextNRGHoldingCorpMember, us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:NonrelatedPartyMember 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:NotesPayableCurrent fact are:
+Period :2024-09-30
+Unit : USD
+Dimensions : us-gaap:RelatedPartyTransactionsByRelatedPartyAxis=us-gaap:NonrelatedPartyMember
+Rule Element Id:10093
+Rule version: 30.0.0RC1 - forms-1a.htm 28963</message>
+ <ref href="forms-1a.htm#Fact000119" sourceLine="28963">
+  <property name="file" value="forms-1a.htm"/>
+  <property name="line" value="28963"/>
+  <property name="label" value="Notes payable – related party"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="NotesPayableCurrent"/>
+  <property name="QName" value="us-gaap:NotesPayableCurrent"/>
+  <property name="contextRef" value="AsOf2024-09-30_us-gaap_NonrelatedPartyMember">
+   <property name="entity" value="0001817004">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:RelatedPartyTransactionsByRelatedPartyAxis" value="us-gaap:NonrelatedPartyMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="212,716"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="212,716"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0117.10093 time took: 5.827654 - 16:19:34.430992  - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0117.10093 end. Took 0:00:05.827654 - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:06.247048. - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 13.18 secs - http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1817004/000149315224050968/forms-1a.htm"/></entry>
+</log>

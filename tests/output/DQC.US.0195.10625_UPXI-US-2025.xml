@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 8.32 secs at 2026-05-19T17:16:06 - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.370409. - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10625 - 17:16:32.174099 - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="DQC.US.0195.10625" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm" severity="error" effectiveDate="2025-04-15" cid="2337620504848">[DQC.US.0195.10625] us-gaap:StockRepurchasedDuringPeriodShares has a value of 25,000 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:StockRepurchasedDuringPeriodShares should not impact common stock. 
+
+The Statement of Changes in Equity implies there is no treasury stock as the opening balance of shares uses a shares issued concept. The element StockRepurchasedDuringPeriodShares that was used implies that the repurchased shares were added to treasury stock. If the roll-forward of shares is based on shares issued the element StockRepurchasedAndRetiredDuringPeriodShares should be used instead of StockRepurchasedDuringPeriodShares. Alternatively change the opening balance share element to SharesOutstanding. The opening balance of shares issued is presumed based on the following fact(s) : 1,430,429, 1,010,843, 1,045,429, 1,015,348, 1,015,348, 1,045,429, 1,045,348, 835,712, 1,045,429 using the SharesIssued or CommonStockSharesIssued with the StatementEquityComponentsAxis and CommonStockMember. Please check that you meant to tag this fact with SharesIssued or CommonStockSharesIssued
+
+The properties of this us-gaap:StockRepurchasedDuringPeriodShares fact are:
+Period :2024-01-01 to 2024-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 30.0.0RC1 - upxi_s1a.htm 2</message>
+ <ref href="upxi_s1a.htm#fid_2306" sourceLine="2">
+  <property name="file" value="upxi_s1a.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="Issuance of stock for conversion of debt, shares"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockRepurchasedDuringPeriodShares"/>
+  <property name="QName" value="us-gaap:StockRepurchasedDuringPeriodShares"/>
+  <property name="contextRef" value="From2024-01-01to2024-03-31_us-gaap_CommonStockMember">
+   <property name="entity" value="0001775194">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="25,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="25,000"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10625 time took: 2.298094 - 17:16:34.472433  - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10625 end. Took 0:00:02.298094 - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.669644. - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 19.76 secs - http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1775194/000147793225006999/upxi_s1a.htm"/></entry>
+</log>

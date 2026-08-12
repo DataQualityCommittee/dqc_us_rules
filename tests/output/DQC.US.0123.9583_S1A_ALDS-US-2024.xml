@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.31 secs at 2026-05-21T13:15:25 - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.031758. - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 13:15:29.472558 - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm" severity="error" effectiveDate="2021-11-30" cid="1519176986896">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 0 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-01-05 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:SeriesCPreferredStockMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - alds-20250630_s1z.htm 3111</message>
+ <ref href="alds-20250630_s1z.htm#ixv-9715" sourceLine="3111">
+  <property name="file" value="alds-20250630_s1z.htm"/>
+  <property name="line" value="3111"/>
+  <property name="label" value="Total stockholders' deficit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="I250105_StClStock-SeriesCPrefStock">
+   <property name="entity" value="0001755101">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-01-05"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesCPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="128"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.0000000000000000000000000000"/>
+  <property name="format" value="ixt:fixed-zero"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="-"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm" severity="error" effectiveDate="2021-11-30" cid="1519176986896">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 3 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-06-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:SeriesCPreferredStockMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - alds-20250630_s1z.htm 3222</message>
+ <ref href="alds-20250630_s1z.htm#ixv-9759" sourceLine="3222">
+  <property name="file" value="alds-20250630_s1z.htm"/>
+  <property name="line" value="3222"/>
+  <property name="label" value="Total stockholders' deficit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25Q2_StClStock-SeriesCPrefStock">
+   <property name="entity" value="0001755101">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesCPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="3"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm" severity="error" effectiveDate="2021-11-30" cid="1519176986896">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:SeriesDPreferredStockMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - alds-20250630_s1z.htm 4613</message>
+ <ref href="alds-20250630_s1z.htm#ixv-10030" sourceLine="4613">
+  <property name="file" value="alds-20250630_s1z.htm"/>
+  <property name="line" value="4613"/>
+  <property name="label" value="Total stockholders' deficit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25Q3_StClStock-SeriesDPrefStock">
+   <property name="entity" value="0001755101">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesDPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm" severity="error" effectiveDate="2021-11-30" cid="1519176986896">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-06-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:SeriesDPreferredStockMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - alds-20250630_s1z.htm 3225</message>
+ <ref href="alds-20250630_s1z.htm#ixv-9761" sourceLine="3225">
+  <property name="file" value="alds-20250630_s1z.htm"/>
+  <property name="line" value="3225"/>
+  <property name="label" value="Total stockholders' deficit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25Q2_StClStock-SeriesDPrefStock">
+   <property name="entity" value="0001755101">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesDPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm" severity="error" effectiveDate="2021-11-30" cid="1519176986896">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 3 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:SeriesCPreferredStockMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - alds-20250630_s1z.htm 4608</message>
+ <ref href="alds-20250630_s1z.htm#ixv-10028" sourceLine="4608">
+  <property name="file" value="alds-20250630_s1z.htm"/>
+  <property name="line" value="4608"/>
+  <property name="label" value="Total stockholders' deficit"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25Q3_StClStock-SeriesCPrefStock">
+   <property name="entity" value="0001755101">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:SeriesCPreferredStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="3"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="3"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.146397 - 13:15:30.619044  - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.146397 - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.178601. - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.16 secs - http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1755101/000109690625002083/alds-20250630_s1z.htm"/></entry>
+</log>

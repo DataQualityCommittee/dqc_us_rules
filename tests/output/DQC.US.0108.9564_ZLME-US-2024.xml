@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.10 secs at 2026-05-19T16:07:26 - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.010951. - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0108.9564 - 16:07:32.653726 - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:13.743537 from 'https://xbrl.fasb.org/us-gaap/2024/dqcrules/dqcrules-entire-2024.xsd' - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="DQC.US.0108.9564" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm" severity="error" effectiveDate="2021-09-01" cid="2432804385040">[DQC.US.0108.9564] INCONSISTENT DURATION VALUES: The concept us-gaap:ProceedsFromPartnershipContribution reports 36,308 for a 151-day period (2022-12-31 to 2023-05-31), which exceeds 8,758 reported for a longer 365-day period (2022-12-31 to 2023-12-31).
+
+ISSUE: Shorter period values should not exceed longer period values for non-negative monetary concepts.
+
+COMPARISON:
+- Shorter period (151 days): 36,308 (decimals: 0)
+- Longer period (365 days): 8,758 (decimals: 0)
+
+FACT DETAILS:
+- Period: 2023-01-01 to 2023-05-31
+- Dimensions: 
+- Unit: USD
+
+ACTION REQUIRED: IF the difference is due to rounding, verify decimal precision is appropriate.
+
+Rule Element ID: 9564
+Rule Version: 30.0.0RC1 - form10-kt.htm 463</message>
+ <ref href="form10-kt.htm#Fact000011" sourceLine="463">
+  <property name="file" value="form10-kt.htm"/>
+  <property name="line" value="463"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2024"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="From2024-01-01to2024-05-31">
+   <property name="entity" value="0001489300">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-05-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-KT"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0108.9564 time took: 21.067852 - 16:07:53.721674  - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0108.9564 end. Took 0:00:21.067852 - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:21.079468. - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 23.82 secs - http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1489300/000149315224033791/form10-kt.htm"/></entry>
+</log>

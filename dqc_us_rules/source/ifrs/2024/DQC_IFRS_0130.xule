@@ -19,12 +19,13 @@ for $x in $SHARE_PERCENTAGES.keys
 	if $result == none or $numerator == none or $denominator == none 
 		skip 
 	else
+		$perShareItemTolerance = 0.01;
 		$calcResult = ($numerator / $denominator);
 		$intervalsList = division_intervals($numerator, $denominator);
 		$result_intervals = fact_intervals($result);
 
 		/** Check if there is an intersection of the intervals **/
-		if $intervalsList[1] <= $result_intervals[2] and $intervalsList[2] >= $result_intervals[1]
+		if $intervalsList[1] <= ($result_intervals[2] + $perShareItemTolerance) and $intervalsList[2] >= ($result_intervals[1] - $perShareItemTolerance)
 			false
 		else
 			true

@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.63 secs at 2026-05-19T16:24:11 - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.081412. - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 16:24:17.146765 - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2024-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12748</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31575" sourceLine="12748">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12748"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E24_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1,179 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2024-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12743</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31573" sourceLine="12743">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12743"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E24_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,179"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,179"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1,044 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12488</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31497" sourceLine="12488">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12488"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E23_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,044"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,044"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12493</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31499" sourceLine="12493">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12493"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E23_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12876</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31595" sourceLine="12876">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12876"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12365</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31456" sourceLine="12365">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12365"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E22_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1,179 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2025-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12871</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31593" sourceLine="12871">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12871"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E25_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,179"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,179"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm" severity="error" effectiveDate="2021-11-30" cid="1237002465552">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquity with the axis StatementClassOfStockAxis with a value of 1,044 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquity to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquity
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20251231_20f.htm 12360</message>
+ <ref href="trsg-20251231_20f.htm#ixv-31454" sourceLine="12360">
+  <property name="file" value="trsg-20251231_20f.htm"/>
+  <property name="line" value="12360"/>
+  <property name="label" value="Total shareholders' equity"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquity"/>
+  <property name="QName" value="us-gaap:StockholdersEquity"/>
+  <property name="contextRef" value="E22_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,044"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,044"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.717146 - 16:24:18.864006  - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.717146 - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.799047. - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.83 secs - http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690626000600/trsg-20251231_20f.htm"/></entry>
+</log>
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.43 secs at 2026-05-19T16:24:23 - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.073557. - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 16:24:28.955713 - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 1,044 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5477</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-19950" sourceLine="5477">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5477"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E22_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,044"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,044"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 1,179 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2024-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5825</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-20058" sourceLine="5825">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5825"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E24_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,179"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,179"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 1,044 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5593</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-19989" sourceLine="5593">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5593"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E23_StClStock-CommonClassA">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,044"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="1,044"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5598</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-19991" sourceLine="5598">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5598"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E23_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2022-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5482</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-19952" sourceLine="5482">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5482"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E22_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2022-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm" severity="error" effectiveDate="2021-11-30" cid="1564451795216">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 456 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2024-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassBMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - trsg-20241231_20fz.htm 5830</message>
+ <ref href="trsg-20241231_20fz.htm#ixv-20060" sourceLine="5830">
+  <property name="file" value="trsg-20241231_20fz.htm"/>
+  <property name="line" value="5830"/>
+  <property name="label" value="TOTAL EQUITY"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="E24_StClStock-CommonClassB">
+   <property name="entity" value="0001943444">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassBMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="456"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="456"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.01709 - 16:24:29.972899  - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.017090 - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.091104. - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.07 secs - http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1943444/000109690625001681/trsg-20241231_20fz.htm"/></entry>
+</log>

@@ -51,8 +51,11 @@ if (set('10-K','10-KT').contains([covered @concept.local-name ='DocumentType'])
         $taxConcept = $concept[1]
         $NETWORK_TAX_CONCEPTS_NAME = filter sum($NETWORK_TAX_CONCEPTS) returns $item.name
         if $taxConcept in $NETWORK_TAX_CONCEPTS_NAME
+            /** WHat if concept[2] exists with a jurisdiction member as a granular breakdown**/
+            $GranularByJurisdiction = list([nonils @concept =  $concept[2] @unit = *  @IncomeTaxAuthorityAxis= * where $fact.period.end >= date('2025-12-15')  and $fact != 0 and $fact.period.days > 350]).length == 0
+
             exists([nonils @concept =  $concept[1] @unit = * where $fact.period.end >= date('2025-12-15')  and $fact != 0 and $fact.period.days > 350]#concept-value) 
-            and missing([@concept =  $concept[2] @unit = *])
+            and missing([@concept =  $concept[2] @unit = *]) and $GranularByJurisdiction
          else
             skip 
 else

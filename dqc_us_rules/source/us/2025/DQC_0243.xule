@@ -1,0 +1,86 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V30 Release **/
+
+/**
+Overview: The ConsolidationItemsAxis is used as a grouping structure to identify values before intercompany , intersegement or inter geography eliminations.  It should not be used to report the financial data of legal entities.  The values associated with this axis should be used within the confines of a specific legal entity. The rules in this set are designed to identify instances where the ConsolidationItemsAxis is used in a way that is not consistent with its intended purpose.  The rules will check for the presence of facts that are tagged with the ConsolidationItemsAxis and will evaluate whether those facts are appropriately tagged based on the context of the filing.
+
+Rule US.0240.10940 checks for the use of the ConsolidationItemsAxis  with concepts that are in the cashflow statement.  Cashflow concepts should not be used with this axis.
+
+Rule US.0240.10941 checks for the use of the ConsolidationItemsAxis with concepts representing sharholders equity.  Because this axis relates to elimintations no concepts related to sharholders entity should use this axis.
+
+Approach:
+
+Identify cashflow items using the meta taxonomy to identify items that are inflows and outflows.  Then identify if any of those items are tagged with the ConsolidationItemsAxis.  If so, then the rule is not satisfied.
+
+Identify equity items using the meta taxonomy to identify items that are measures of equity.  Then identify if any of those items are tagged with the consolidated entities axis.  If so, then the rule is not satisfied.
+**/
+
+constant $CASH_OUTFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-outflow' descendants from list(Cash, CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents) taxonomy $META returns set (target-name)
+
+constant $CASH_INFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-inflow' descendants from list(Cash, CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents) taxonomy $META returns set (target-name)
+
+constant $EQUITY_ITEMS = $META.concepts-by-trait(list(us-gaap-metaModel:EquityMemberMM))
+
+ASSERT US.0243.10944 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Identify cashflow items using the meta taxonomy to identify items that are inflows and outflows.  Then identify if any of those items are tagged with the ConsolidationItemsAxis.  If so, then the rule is not satisfied. **/
+  
+$cashflowItems = $CASH_OUTFLOWS + $CASH_INFLOWS - set(SegmentExpenditureAdditionToLongLivedAssets, PaymentsForRestructuring)
+
+$badFact = {covered @concept in $cashflowItems  @srt:ConsolidationItemsAxis != srt:ReportableLegalEntitiesMember}
+
+exists($badFact)
+
+message
+"The filer has reported a fact with the ConsolidationItemsAxis that is tagged with the concept {$badFact.name} with a value of {$badFact} that is identified as a cash inflow or outflow in the meta taxonomy.  The ConsolidationItemsAxis should not be used with cash flow statement items.  The filer should remove the ConsolidationItemsAxis from any facts tagged with cash flow statement items.	
+
+Concept : {$badFact.name}
+Value : { $badFact}
+Period : { $badFact.period}
+Dimensions : { $badFact.dimensions.join(', ','=')} 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0243.10945 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Identify equity items using the meta taxonomy to identify items that are measures of equity.  Then identify if any of those items are tagged with the consolidated entities axis.  If so, then the rule is not satisfied. **/
+
+$equityItems = $EQUITY_ITEMS;
+
+$badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis != srt:ReportableLegalEntitiesMember}
+
+exists($badFact)
+
+message
+"The filer has reported a fact with the ConsolidationItemsAxis that is tagged with the concept {$badFact.name} with a value of {$badFact} that is identified as a measure of equity in the meta taxonomy.  The ConsolidationItemsAxis should not be used with equity items.  The filer should remove the ConsolidationItemsAxis from any facts tagged with equity items.	
+
+Concept : {$badFact.name}
+Value : { $badFact}
+Period : { $badFact.period}
+Dimensions : { $badFact.dimensions.join(', ','=')} 
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+

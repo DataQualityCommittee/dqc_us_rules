@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.50 secs at 2026-05-19T16:53:43 - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.162934. - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0179.10144 - 16:53:53.302217 - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.45 at 2024-11-11. This represents the amount of dividends that are payable per share at 2024-11-11. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-03-06. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-03-06 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-11-11
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27959</message>
+ <ref href="gsl-20241231.htm#Fact002376" sourceLine="27959">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27959"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-11-11_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-11-11"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.45"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.45"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.45 at 2024-11-11. This represents the amount of dividends that are payable per share at 2024-11-11. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-06-03. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-06-03 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-11-11
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27959</message>
+ <ref href="gsl-20241231.htm#Fact002376" sourceLine="27959">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27959"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-11-11_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-11-11"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.45"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.45"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.45 at 2024-11-11. This represents the amount of dividends that are payable per share at 2024-11-11. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-09-04. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-09-04 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-11-11
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27959</message>
+ <ref href="gsl-20241231.htm#Fact002376" sourceLine="27959">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27959"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-11-11_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-11-11"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.45"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.45"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.375 at 2024-05-10. This represents the amount of dividends that are payable per share at 2024-05-10. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-03-06. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-03-06 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-05-10
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27949</message>
+ <ref href="gsl-20241231.htm#Fact002368" sourceLine="27949">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27949"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-05-10_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-05-10"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.375"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.375"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.45 at 2024-08-05. This represents the amount of dividends that are payable per share at 2024-08-05. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-03-06. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-03-06 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-08-05
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27954</message>
+ <ref href="gsl-20241231.htm#Fact002372" sourceLine="27954">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27954"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-08-05_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-08-05"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.45"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.45"/>
+ </ref></entry>
+<entry code="DQC.US.0179.10144" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm" severity="error" effectiveDate="2024-08-31" cid="2206337888528">[DQC.US.0179.10144] The element DividendsPayableAmountPerShare has a value of 0.45 at 2024-08-05. This represents the amount of dividends that are payable per share at 2024-08-05. However, the payment date associated with the dividend has passed. The payment date associated with the dividend is 2024-06-03. To resolve the issue the value of the context for DividendsPayableAmountPerShare should be changed to the declaration date or the value of DividendsPayableDateOfRecordDayMonthAndYear or DividendsPayableDateToBePaidMonthAndYear should be changed to reflect the date the dividend will be paid. If the payment date relates to a seperate dividened distribution unrelated to DividendsPayableAmountPerShare then the value of 2024-06-03 should be reported using the DividendsAxis.
+
+The properties of  us-gaap:DividendsPayableAmountPerShare are:
+Period :2024-08-05
+Dimensions : us-gaap:StatementClassOfStockAxis=us-gaap:CommonClassAMember
+
+Rule Element Id:10144
+Rule version: 30.0.0RC1 - gsl-20241231.htm 27954</message>
+ <ref href="gsl-20241231.htm#Fact002372" sourceLine="27954">
+  <property name="file" value="gsl-20241231.htm"/>
+  <property name="line" value="27954"/>
+  <property name="label" value="Dividends Payable, Amount Per Share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2024-08-05_us-gaap_CommonClassAMember">
+   <property name="entity" value="0001430725">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-08-05"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="us-gaap:CommonClassAMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.45"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.45"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0179.10144 time took: 2.122295 - 16:53:55.424711  - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0179.10144 end. Took 0:00:02.122295 - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.286213. - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 7.43 secs - http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1430725/000114036125009158/gsl-20241231.htm"/></entry>
+</log>

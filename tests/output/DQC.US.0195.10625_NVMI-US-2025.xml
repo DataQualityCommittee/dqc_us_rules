@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 7.53 secs at 2026-05-19T17:15:27 - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.374497. - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0195.10625 - 17:15:54.936789 - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="DQC.US.0195.10625" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm" severity="error" effectiveDate="2025-04-15" cid="2516823765264">[DQC.US.0195.10625] us-gaap:TreasuryStockSharesRetired has a value of 93,029 and has been used with the common stock member on the StatementEquityComponentsAxis. This element should not have a value when used with the common stock Member as us-gaap:TreasuryStockSharesRetired should not impact common stock. 
+
+The Statement of Changes in Equity implies treasury stock is excluded from the opening balance of shares as the opening balance uses a shares outstanding concept. The element TreasuryStockSharesRetired that was used in the roll-forward cannot reduce the shares outstanding. If the roll-forward of shares is based on shares issued the element TreasuryStockSharesRetired can be used but the  opening balance share element should be changed to SharesIssued or CommonStockSharesIssued.
+
+The properties of this us-gaap:TreasuryStockSharesRetired fact are:
+Period :2025-01-01 to 2025-06-30
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : shares
+Rule Element Id:10625
+Rule version: 30.0.0RC1 - exhibit_99-2.htm 2964</message>
+ <ref href="exhibit_99-2.htm#Fxbrl_20250211183814109_xbrl_20230206142432249_20230206044353070_62" sourceLine="2964">
+  <property name="file" value="exhibit_99-2.htm"/>
+  <property name="line" value="2964"/>
+  <property name="label" value="Treasury Stock, Shares, Retired"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="TreasuryStockSharesRetired"/>
+  <property name="QName" value="us-gaap:TreasuryStockSharesRetired"/>
+  <property name="contextRef" value="C_20250101to20250630_usgaapStatementEquityComponentsAxis_usgaapCommonStockMember">
+   <property name="entity" value="0001109345">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="Shares (shares)">
+   <property name="measure" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="93,029"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="93,029"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0195.10625 time took: 3.452182 - 17:15:58.389127  - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0195.10625 end. Took 0:00:03.452182 - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.827698. - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 23.56 secs - http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1109345/000117891325003200/exhibit_99-2.htm"/></entry>
+</log>

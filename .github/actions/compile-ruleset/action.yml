@@ -1,0 +1,43 @@
+name: Compile ruleset
+description: Compiles a XULE ruleset, verifies it, and uploads it as a workflow artifact.
+
+inputs:
+  source_path:
+    description: Path to the XULE source directory to compile
+    required: true
+  zip_name:
+    description: Output ruleset zip filename
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Compile XULE ruleset
+      shell: bash
+      run: |
+        python -m arelle.CntlrCmdLine \
+          --plugins xule \
+          --xule-compile ${{ inputs.source_path }} \
+          --xule-rule-set ./dqc_us_rules/${{ inputs.zip_name }} \
+          --xule-crash
+
+    - name: Verify output
+      shell: bash
+      run: |
+        ls -lh ./dqc_us_rules/${{ inputs.zip_name }}
+        python3 -c "
+        import zipfile
+        with zipfile.ZipFile('./dqc_us_rules/${{ inputs.zip_name }}') as z:
+            print(f'Ruleset contains {len(z.namelist())} files')
+            for name in sorted(z.namelist())[:10]:
+                print(f'  {name}')
+            if len(z.namelist()) > 10:
+                print(f'  ... and {len(z.namelist()) - 10} more')
+        "
+
+    - name: Upload ruleset artifact
+      uses: actions/upload-artifact@v6
+      with:
+        name: "${{ inputs.zip_name }}"
+        path: "./dqc_us_rules/${{ inputs.zip_name }}"
+        retention-days: 90

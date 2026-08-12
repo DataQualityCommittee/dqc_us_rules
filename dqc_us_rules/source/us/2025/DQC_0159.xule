@@ -25,6 +25,12 @@ $NonFinancialStatement = set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','
 if $liquidation_networks.length > 0 or $NonFinancialStatement 
     skip
 else
+    $MaxAssetValue = max(list({covered nonils @concept = Assets}))
+    $MonetaryValue = max(list({covered nonils where $fact.is-monetary}))   
+
+    if $MaxAssetValue < 2000 or $MonetaryValue < 2000
+            skip
+        else
 
     $All_statement_abstract_elements = sum(set(for $presNetwork in $BROAD_STATEMENT_PRES_NETWORKS.sort
                                     filter $presNetwork.concepts where $item.is-abstract returns $item.name))

@@ -129,7 +129,7 @@ else
     skip
 
 message
-"The filer has reported a value of {$EBP_master_and_non_Master_FV} for the concept EmployeeBenefitPlanInvestmentFairValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values shopuld be reported in the this hypercube.
+"The filer has reported a value of {$EBP_master_and_non_Master_FV} for the concept EmployeeBenefitPlanInvestmentFairValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values should be reported in this hypercube.
 
 The properties of this {$EBP_master_and_non_Master_FV} fact are:
 Period :{$EBP_master_and_non_Master_FV.period}
@@ -178,7 +178,7 @@ else
     skip
 
 message
-"The filer has reported a value of {$EBP_master_and_non_Master_contract} for the concept EmployeeBenefitPlanInvestmentContractValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values should be reported in the this hypercube.
+"The filer has reported a value of {$EBP_master_and_non_Master_contract} for the concept EmployeeBenefitPlanInvestmentContractValue in the hypercube {$x}, and has not reported a value for either EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue or EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue.  These values should be reported in this hypercube.
 
 The properties of this {$EBP_master_and_non_Master_contract} fact are:
 Period :{$EBP_master_and_non_Master_contract.period}
@@ -303,10 +303,15 @@ $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name
 if $EBPReports
         $EBP_InvestmentFV_OR_CONTRACT = list({ @concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentContractValue)});
 
+        $EBP_InvestmenstExcludingMasterTrustBreakdown = list({@concept in list(us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustContractValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentPlanInterestInMasterTrustFairValue, us-gaap-ebp:EmployeeBenefitPlanInvestmentExcludingPlanInterestInMasterTrustContractValue)});
+
         $EBP_InvestmentMasterTrust = {@concept = us-gaap-ebp:EmployeeBenefitPlanInvestmentFairAndContractValue}
 
         if exists($EBP_InvestmentMasterTrust) and $EBP_InvestmentFV_OR_CONTRACT.length == 0
-            true
+            if  $EBP_InvestmenstExcludingMasterTrustBreakdown.length == 0
+                true
+            else
+                skip
         else    
             skip
 else

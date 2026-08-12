@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.28 secs at 2026-05-19T16:51:21 - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.038236. - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0179.10139 - 16:51:28.567695 - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="DQC.US.0179.10139" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm" severity="error" effectiveDate="2024-08-31" cid="1688086376720">[DQC.US.0179.10139] The filing includes a value for dividends using the concept us-gaap:DividendsPayableAmountPerShare with a value of 0.01. This value is reported with the dimension  srt:TitleOfIndividualAxis.  This dimension should not be used with the concept us-gaap:DividendsPayableAmountPerShare.  Please check the filing and use the DividendsAxis with this value.
+
+The properties of this  fact are:
+Period :2025-11-19
+Dimensions : srt:TitleOfIndividualAxis=BMNR:BoardOfDirectorsMember
+Unit : USD/shares
+
+Rule Element Id:10139
+Rule version: 30.0.0RC1 - form10-q.htm 4159</message>
+ <ref href="form10-q.htm#Fact000909" sourceLine="4159">
+  <property name="file" value="form10-q.htm"/>
+  <property name="line" value="4159"/>
+  <property name="label" value="Cash dividend, per share"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="DividendsPayableAmountPerShare"/>
+  <property name="QName" value="us-gaap:DividendsPayableAmountPerShare"/>
+  <property name="contextRef" value="AsOf2025-11-19_custom_BoardOfDirectorsMember">
+   <property name="entity" value="0001829311">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-11-19"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:TitleOfIndividualAxis" value="BMNR:BoardOfDirectorsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USDPShares ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="INF"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.01"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="0.01"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0179.10139 time took: 3.119001 - 16:51:31.686831  - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0179.10139 end. Took 0:00:03.119001 - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:03.159991. - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 6.45 secs - http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1829311/000149315226002084/form10-q.htm"/></entry>
+</log>

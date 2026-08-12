@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 4.61 secs at 2026-05-19T16:07:00 - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.141660. - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0108.9564 - 16:07:10.178684 - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:02.733460 from 'https://xbrl.fasb.org/us-gaap/2025/dqcrules/dqcrules-entire-2025.xsd' - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="DQC.US.0108.9564" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm" severity="error" effectiveDate="2021-09-01" cid="2107181166864">[DQC.US.0108.9564] INCONSISTENT DURATION VALUES: The concept us-gaap:ProceedsFromCollectionOfLoansReceivable reports 215,164 for a 182-day period (2023-12-31 to 2024-06-30), which exceeds 212,794 reported for a longer 366-day period (2023-12-31 to 2024-12-31).
+
+ISSUE: Shorter period values should not exceed longer period values for non-negative monetary concepts.
+
+COMPARISON:
+- Shorter period (182 days): 215,164 (decimals: 0)
+- Longer period (366 days): 212,794 (decimals: 0)
+
+FACT DETAILS:
+- Period: 2024-01-01 to 2024-06-30
+- Dimensions: 
+- Unit: SGD
+
+ACTION REQUIRED: IF the difference is due to rounding, verify decimal precision is appropriate.
+
+Rule Element ID: 9564
+Rule Version: 30.0.0RC1 - ex99-1.htm 5124</message>
+ <ref href="ex99-1.htm#Fact000487" sourceLine="5124">
+  <property name="file" value="ex99-1.htm"/>
+  <property name="line" value="5124"/>
+  <property name="label" value="Collection from loans to related parties"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="ProceedsFromCollectionOfLoansReceivable"/>
+  <property name="QName" value="us-gaap:ProceedsFromCollectionOfLoansReceivable"/>
+  <property name="contextRef" value="From2024-01-012024-06-30">
+   <property name="entity" value="0001938534">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-06-30"/>
+  </property>
+  <property name="unitRef" value="SGD ($)">
+   <property name="measure" value="iso4217:SGD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="215,164"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="215,164"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0108.9564 time took: 10.530268 - 16:07:20.709345  - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0108.9564 end. Took 0:00:10.530268 - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:10.673379. - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 15.17 secs - http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1938534/000149315225018376/ex99-1.htm"/></entry>
+</log>

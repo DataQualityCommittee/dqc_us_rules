@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.86 secs at 2026-05-19T16:52:41 - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.070755. - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0179.10143 - 16:52:49.213077 - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="DQC.US.0179.10143" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm" severity="error" effectiveDate="2024-08-31" cid="2845526208784">[DQC.US.0179.10143] The filing has used the DividendsAxis with the member us-gaap:MeasurementInputExpectedDividendRateMember, but has used the concept us-gaap:CommonStockDividendsPerShareDeclared multiple times on this axis with different period contexts. The concept us-gaap:CommonStockDividendsPerShareDeclared has been used mutiple times to capture the values 0.2 and 0.2 for the periods 2025-01-01 to 2025-03-31 and 2024-01-01 to 2024-03-31.  The DividendAxis should use discrete members to represent different dividend events. The same concept should not be used more than once with the same dividend member us-gaap:MeasurementInputExpectedDividendRateMember.
+
+Rule Element Id:10143
+Rule version: 30.0.0RC1 - oln-20250331.htm 8</message>
+ <ref href="oln-20250331.htm#f-245" sourceLine="8">
+  <property name="file" value="oln-20250331.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Common Stock, Dividends, Per Share, Declared"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2024"/>
+  <property name="name" value="CommonStockDividendsPerShareDeclared"/>
+  <property name="QName" value="us-gaap:CommonStockDividendsPerShareDeclared"/>
+  <property name="contextRef" value="c-36">
+   <property name="entity" value="0000074303">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:DividendsAxis" value="us-gaap:MeasurementInputExpectedDividendRateMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usdPerShare ($ / shares)">
+   <property name="mul" value="iso4217:USD"/>
+   <property name="div" value="xbrli:shares"/>
+  </property>
+  <property name="decimals" value="2"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="0.20"/>
+  <property name="format" value="None"/>
+  <property name="scale" value="0"/>
+  <property name="html value" value="0.20"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0179.10143 time took: 1.45505 - 16:52:50.668218  - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0179.10143 end. Took 0:00:01.455050 - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.526273. - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.22 secs - http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/74303/000007430325000071/oln-20250331.htm"/></entry>
+</log>

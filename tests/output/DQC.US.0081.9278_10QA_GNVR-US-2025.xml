@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.34 secs at 2026-05-21T13:08:25 - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.031938. - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 13:08:30.119868 - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:01.076498 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2025-all.xsd' - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm" severity="error" effectiveDate="2019-09-30" cid="2229728899344">[DQC.US.0081.9278] The line item concept us-gaap:AccruedLiabilitiesCurrent with a value of 57,026 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 366,899 in the extension taxonomy role 00000002 - Statement - CONDENSED CONSOLIDATED BALANCE SHEETS, but us-gaap:AccruedLiabilitiesCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccruedLiabilitiesCurrent fact are:
+
+Period :2025-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - gnvr_10qa.htm 1807</message>
+ <ref href="gnvr_10qa.htm#Fact000066" sourceLine="1807">
+  <property name="file" value="gnvr_10qa.htm"/>
+  <property name="line" value="1807"/>
+  <property name="label" value="Accrued interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccruedLiabilitiesCurrent"/>
+  <property name="QName" value="us-gaap:AccruedLiabilitiesCurrent"/>
+  <property name="contextRef" value="AsOf2025-09-30">
+   <property name="entity" value="0001792941">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="57,026"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="57,026"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm" severity="error" effectiveDate="2019-09-30" cid="2229728899344">[DQC.US.0081.9278] The line item concept us-gaap:AccruedLiabilitiesCurrent with a value of 69,960 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 247,852 in the extension taxonomy role 00000002 - Statement - CONDENSED CONSOLIDATED BALANCE SHEETS, but us-gaap:AccruedLiabilitiesCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccruedLiabilitiesCurrent fact are:
+
+Period :2025-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - gnvr_10qa.htm 1806</message>
+ <ref href="gnvr_10qa.htm#Fact000065" sourceLine="1806">
+  <property name="file" value="gnvr_10qa.htm"/>
+  <property name="line" value="1806"/>
+  <property name="label" value="Accrued interest"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccruedLiabilitiesCurrent"/>
+  <property name="QName" value="us-gaap:AccruedLiabilitiesCurrent"/>
+  <property name="contextRef" value="AsOf2025-12-31">
+   <property name="entity" value="0001792941">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="69,960"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="69,960"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 4.970168 - 13:08:35.090133  - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:04.970168 - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:05.002730. - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 7.92 secs - http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1792941/000190359626000063/gnvr_10qa.htm"/></entry>
+</log>

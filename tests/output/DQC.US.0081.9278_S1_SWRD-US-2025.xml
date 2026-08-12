@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.34 secs at 2026-05-21T13:10:36 - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.131175. - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 13:10:42.436536 - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:00.795994 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2025-all.xsd' - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:NotesPayable with a value of 25,163,642 and a calculation parent of us-gaap:LiabilitiesNoncurrent is represented as a sibling of us-gaap:NotesAndLoansPayable with a value of 4,700,000 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:NotesPayable is represented as a descendent of us-gaap:NotesAndLoansPayable in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:NotesPayable fact are:
+
+Period :2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21793</message>
+ <ref href="favo_s1a2.htm#Fact000113" sourceLine="21793">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21793"/>
+  <property name="label" value="Notes payable, net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="NotesPayable"/>
+  <property name="QName" value="us-gaap:NotesPayable"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="25,163,642"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="25,163,642"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:NotesPayable with a value of 25,163,642 and a calculation parent of us-gaap:Liabilities is represented as a sibling of us-gaap:NotesAndLoansPayable with a value of 4,700,000 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:NotesPayable is represented as a descendent of us-gaap:NotesAndLoansPayable in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:NotesPayable fact are:
+
+Period :2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21793</message>
+ <ref href="favo_s1a2.htm#Fact000113" sourceLine="21793">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21793"/>
+  <property name="label" value="Notes payable, net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="NotesPayable"/>
+  <property name="QName" value="us-gaap:NotesPayable"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="25,163,642"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="25,163,642"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:OtherNotesPayableCurrent with a value of 1,500,000 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:NotesAndLoansPayableCurrent with a value of 122,437 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:OtherNotesPayableCurrent is represented as a descendent of us-gaap:NotesAndLoansPayableCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:OtherNotesPayableCurrent fact are:
+
+Period :2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21734</message>
+ <ref href="favo_s1a2.htm#Fact000080" sourceLine="21734">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21734"/>
+  <property name="label" value="Notes payable, related party"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="OtherNotesPayableCurrent"/>
+  <property name="QName" value="us-gaap:OtherNotesPayableCurrent"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,500,000"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="1,500,000"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 5,072,691 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 652,462 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21739</message>
+ <ref href="favo_s1a2.htm#Fact000083" sourceLine="21739">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21739"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,072,691"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,072,691"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 5,072,691 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 652,462 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2023-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21739</message>
+ <ref href="favo_s1a2.htm#Fact000083" sourceLine="21739">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21739"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2023-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,072,691"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,072,691"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:NotesPayable with a value of 32,229,267 and a calculation parent of us-gaap:LiabilitiesNoncurrent is represented as a sibling of us-gaap:NotesAndLoansPayable with a value of 1,600,000 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:NotesPayable is represented as a descendent of us-gaap:NotesAndLoansPayable in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:NotesPayable fact are:
+
+Period :2024-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21792</message>
+ <ref href="favo_s1a2.htm#Fact000112" sourceLine="21792">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21792"/>
+  <property name="label" value="Notes payable, net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="NotesPayable"/>
+  <property name="QName" value="us-gaap:NotesPayable"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="32,229,267"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="32,229,267"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:NotesPayable with a value of 32,229,267 and a calculation parent of us-gaap:Liabilities is represented as a sibling of us-gaap:NotesAndLoansPayable with a value of 1,600,000 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:NotesPayable is represented as a descendent of us-gaap:NotesAndLoansPayable in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:NotesPayable fact are:
+
+Period :2024-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21792</message>
+ <ref href="favo_s1a2.htm#Fact000112" sourceLine="21792">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21792"/>
+  <property name="label" value="Notes payable, net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="NotesPayable"/>
+  <property name="QName" value="us-gaap:NotesPayable"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="32,229,267"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="32,229,267"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 5,284,505 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 1,528,228 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2024-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21738</message>
+ <ref href="favo_s1a2.htm#Fact000082" sourceLine="21738">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21738"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,284,505"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,284,505"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 5,284,505 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 1,528,228 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2024-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 21738</message>
+ <ref href="favo_s1a2.htm#Fact000082" sourceLine="21738">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="21738"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2024-12-31">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="5,284,505"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="5,284,505"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:NotesPayable with a value of 36,400,527 and a calculation parent of us-gaap:Liabilities is represented as a sibling of us-gaap:LongTermDebt with a value of 73,625,000 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:NotesPayable is represented as a descendent of us-gaap:LongTermDebt in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:NotesPayable fact are:
+
+Period :2025-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 26259</message>
+ <ref href="favo_s1a2.htm#Fact001347" sourceLine="26259">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="26259"/>
+  <property name="label" value="Notes payable, net"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="NotesPayable"/>
+  <property name="QName" value="us-gaap:NotesPayable"/>
+  <property name="contextRef" value="AsOf2025-09-30">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="36,400,527"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="36,400,527"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 4,959,921 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 6,314,747 in the extension taxonomy role 00000007 - Statement - Condensed Consolidated Balance Sheets (Unaudited), but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2025-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 26208</message>
+ <ref href="favo_s1a2.htm#Fact001314" sourceLine="26208">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="26208"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2025-09-30">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,959,921"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="4,959,921"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AccountsPayableOtherCurrent with a value of 4,959,921 and a calculation parent of us-gaap:LiabilitiesCurrent is represented as a sibling of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent with a value of 6,314,747 in the extension taxonomy role 00000002 - Statement - Consolidated Balance Sheets, but us-gaap:AccountsPayableOtherCurrent is represented as a descendent of us-gaap:AccountsPayableAndAccruedLiabilitiesCurrent in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AccountsPayableOtherCurrent fact are:
+
+Period :2025-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 26208</message>
+ <ref href="favo_s1a2.htm#Fact001314" sourceLine="26208">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="26208"/>
+  <property name="label" value="Syndicate payable"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AccountsPayableOtherCurrent"/>
+  <property name="QName" value="us-gaap:AccountsPayableOtherCurrent"/>
+  <property name="contextRef" value="AsOf2025-09-30">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="4,959,921"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="4,959,921"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfIntangibleAssets with a value of 2,022,025 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivities is represented as a sibling of us-gaap:AdjustmentForAmortization with a value of 56,250 in the extension taxonomy role 00000011 - Statement - Condensed Consolidated Statements of Cash Flows, but us-gaap:AmortizationOfIntangibleAssets is represented as a descendent of us-gaap:AdjustmentForAmortization in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AmortizationOfIntangibleAssets fact are:
+
+Period :2025-01-01 to 2025-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 28092</message>
+ <ref href="favo_s1a2.htm#Fact002311" sourceLine="28092">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="28092"/>
+  <property name="label" value="Amortization of intangible assets"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AmortizationOfIntangibleAssets"/>
+  <property name="QName" value="us-gaap:AmortizationOfIntangibleAssets"/>
+  <property name="contextRef" value="From2025-01-01to2025-09-30">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="2,022,025"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="2,022,025"/>
+ </ref></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm" severity="error" effectiveDate="2019-09-30" cid="1945286029584">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfIntangibleAssets with a value of 146,250 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivities is represented as a sibling of us-gaap:AdjustmentForAmortization with a value of 28,125 in the extension taxonomy role 00000011 - Statement - Condensed Consolidated Statements of Cash Flows, but us-gaap:AmortizationOfIntangibleAssets is represented as a descendent of us-gaap:AdjustmentForAmortization in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AmortizationOfIntangibleAssets fact are:
+
+Period :2024-01-01 to 2024-09-30
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - favo_s1a2.htm 28093</message>
+ <ref href="favo_s1a2.htm#Fact002312" sourceLine="28093">
+  <property name="file" value="favo_s1a2.htm"/>
+  <property name="line" value="28093"/>
+  <property name="label" value="Amortization of intangible assets"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AmortizationOfIntangibleAssets"/>
+  <property name="QName" value="us-gaap:AmortizationOfIntangibleAssets"/>
+  <property name="contextRef" value="From2024-01-012024-09-30">
+   <property name="entity" value="0001795851">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2024-01-01"/>
+   <property name="endDate" value="2024-09-30"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="146,250"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="146,250"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 12.088753 - 13:10:54.525394  - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:12.088753 - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:12.220494. - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 16.04 secs - http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1795851/000166357725000334/favo_s1a2.htm"/></entry>
+</log>

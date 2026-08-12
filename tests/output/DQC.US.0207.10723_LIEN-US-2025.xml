@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.77 secs at 2026-05-20T11:52:49 - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.203891. - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0207.10723 - 11:52:57.065798 - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="DQC.US.0207.10723" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm" severity="error" effectiveDate="2025-07-15" cid="1412127191312">[DQC.US.0207.10723] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 1,171,605. This concept is used to report the fair value of investments for the us-gaap:WarrantMember investment type. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 1,172,000 that includes the member us-gaap:WarrantMember but also has additional members. This value is used to report the fair value of investments for the following dimensions us-gaap:InvestmentTypeAxis=us-gaap:WarrantMember, srt:StatementGeographicalAxis=country:US, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember. The value representing the fair value of investments in the  us-gaap:WarrantMember investment type is less than the value reported for the value 1,172,000 which is a subset of this investment type. The value reported for the investment type in aggregate should be more than or equal to the value reported for of 1,172,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 1,172,000
+Period : 2025-12-31
+Dimensions : us-gaap:InvestmentTypeAxis=us-gaap:WarrantMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember, srt:StatementGeographicalAxis=country:US
+
+Rule Element Id:10723
+Rule version: 30.0.0RC1 - lien-20251231.htm 11118</message>
+ <ref href="lien-20251231.htm#F_16d774bc-71f4-4e85-af65-948ce726a132" sourceLine="11118">
+  <property name="file" value="lien-20251231.htm"/>
+  <property name="line" value="11118"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_94ba82c0-9381-4c4d-8d1d-e869c36b621f">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2025-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="srt:StatementGeographicalAxis" value="country:US"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="us-gaap:WarrantMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="1,172,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="1,172"/>
+ </ref></entry>
+<entry code="DQC.US.0207.10723" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm" severity="error" effectiveDate="2025-07-15" cid="1412127191312">[DQC.US.0207.10723] The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 34,656,192. This concept is used to report the fair value of investments for the lien:SeniorSecuredNotesMember investment type. The filer has reported a value for the concept InvestmentOwnedAtFairValue with a value of 34,657,000 that includes the member lien:SeniorSecuredNotesMember but also has additional members. This value is used to report the fair value of investments for the following dimensions srt:StatementGeographicalAxis=country:US, us-gaap:InvestmentTypeAxis=lien:SeniorSecuredNotesMember, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember. The value representing the fair value of investments in the  lien:SeniorSecuredNotesMember investment type is less than the value reported for the value 34,657,000 which is a subset of this investment type. The value reported for the investment type in aggregate should be more than or equal to the value reported for of 34,657,000. Please ensure that appropriate dimensions have been used to report these values.
+
+Concept : us-gaap:InvestmentOwnedAtFairValue
+Value : 34,657,000
+Period : 2024-12-31
+Dimensions : us-gaap:InvestmentTypeAxis=lien:SeniorSecuredNotesMember, srt:StatementGeographicalAxis=country:US, us-gaap:InvestmentIssuerAffiliationAxis=us-gaap:InvestmentUnaffiliatedIssuerMember
+
+Rule Element Id:10723
+Rule version: 30.0.0RC1 - lien-20251231.htm 13485</message>
+ <ref href="lien-20251231.htm#F_8e0bfb9e-23b0-454a-86a3-4cd99b1facc1" sourceLine="13485">
+  <property name="file" value="lien-20251231.htm"/>
+  <property name="line" value="13485"/>
+  <property name="label" value="Non-control/non-affiliate investments at fair value (amortized cost of $310,270,261 and $274,346,711, respectively)"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="InvestmentOwnedAtFairValue"/>
+  <property name="QName" value="us-gaap:InvestmentOwnedAtFairValue"/>
+  <property name="contextRef" value="C_b2b91aa5-0c6a-4ce8-8265-d052a5192dc2">
+   <property name="entity" value="0001843162">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-12-31"/>
+   <property name="dimensions" value="(3)">
+    <property name="srt:StatementGeographicalAxis" value="country:US"/>
+    <property name="us-gaap:InvestmentIssuerAffiliationAxis" value="us-gaap:InvestmentUnaffiliatedIssuerMember"/>
+    <property name="us-gaap:InvestmentTypeAxis" value="lien:SeniorSecuredNotesMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="U_USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="34,657,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="34,657"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0207.10723 time took: 0.921808 - 11:52:57.987715  - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0207.10723 end. Took 0:00:00.921808 - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.126374. - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.29 secs - http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1843162/000119312526115112/lien-20251231.htm"/></entry>
+</log>

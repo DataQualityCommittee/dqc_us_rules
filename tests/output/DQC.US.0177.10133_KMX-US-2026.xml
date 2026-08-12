@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.60 secs at 2026-05-19T16:48:18 - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.012825. - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0177.10133 - 16:48:24.642094 - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm" severity="error" effectiveDate="2024-05-16" cid="2263857475856">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -2,968,990, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of -4,676,842 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	AverageYearEndFairValueOfEquityAwardsGrantedDuringYearThatRemainedUnvestedAsOfLastDayOfYearMember --> 1,148,768 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=kmx:AverageYearEndFairValueOfEquityAwardsGrantedDuringYearThatRemainedUnvestedAsOfLastDayOfYearMember 
+	AverageChangeInFairValueFromLastDayOfPriorYearToLastDayOfYearOfUnvestedEquityAwardsGrantedInAPriorYearMember --> -1,677,578 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=kmx:AverageChangeInFairValueFromLastDayOfPriorYearToLastDayOfYearOfUnvestedEquityAwardsGrantedInAPriorYearMember 
+	AverageVestingDateFairValueOfEquityAwardsGrantedDuringYearThatVestedDuringYearMember --> 0 --> ecd:AdjToCompAxis=kmx:AverageVestingDateFairValueOfEquityAwardsGrantedDuringYearThatVestedDuringYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	AverageChangeInFairValueFromLastDayOfPriorYearToVestingDateOfEquityAwardsGrantedInAPriorYearThatVestedDuringYearMember --> -325,116 --> ecd:AdjToCompAxis=kmx:AverageChangeInFairValueFromLastDayOfPriorYearToVestingDateOfEquityAwardsGrantedInAPriorYearThatVestedDuringYearMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	ExclusionOfChangeInPensionValueMember --> -2,963 --> ecd:AdjToCompAxis=kmx:ExclusionOfChangeInPensionValueMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	AverageFairValueAtLastDayOfPriorYearOfEquityAwardsForfeitedDuringYearMember --> 0 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=kmx:AverageFairValueAtLastDayOfPriorYearOfEquityAwardsForfeitedDuringYearMember 
+	ExclusionOfStockAwardsAndOptionAwardsMember --> -2,112,101 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=kmx:ExclusionOfStockAwardsAndOptionAwardsMember 
+	AverageInclusionOfEquityValuesMember --> -853,926 --> ecd:AdjToCompAxis=kmx:AverageInclusionOfEquityValuesMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	InclusionOfEquityValuesMember --> -853,926 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=kmx:InclusionOfEquityValuesMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2025-03-01 to 2026-02-28
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 30.0.0RC1 - kmx-20260508.htm 8</message>
+ <ref href="kmx-20260508.htm#f-4" sourceLine="8">
+  <property name="file" value="kmx-20260508.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001170010">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-03-01"/>
+   <property name="endDate" value="2026-02-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="DEF 14A"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0177.10133 time took: 1.178979 - 16:48:25.821172  - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0177.10133 end. Took 0:00:01.178979 - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.192320. - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.38 secs - http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1170010/000117001026000045/kmx-20260508.htm"/></entry>
+</log>

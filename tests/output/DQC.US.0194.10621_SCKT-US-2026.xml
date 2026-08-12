@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.44 secs at 2026-05-19T17:08:28 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="arelle:info.preferredLabelEmpty" level="info">
+ <message source="us-gaap:PropertyPlantAndEquipmentAbstract" target="us-gaap:PropertyPlantAndEquipmentGross" linkrole="http://socketmobile.com/role/BalanceSheets" preferredLabel="http://www.xbrl.org/2003/role/totalLabel">[arelle:info.preferredLabelEmpty] (Info xbrl.5.2.4.2.1) Presentation relationship from us-gaap:PropertyPlantAndEquipmentAbstract to us-gaap:PropertyPlantAndEquipmentGross in link role http://socketmobile.com/role/BalanceSheets has empty preferredLabel http://www.xbrl.org/2003/role/totalLabel - sckt-20260331_pre.xml 231</message>
+ <ref href="sckt-20260331_pre.xml#element(/1/47/25)" sourceLine="231">
+  <property name="label" value="Property, Plant, and Equipment, before Accumulated Depreciation, Depletion, and Amortization">
+   <property name="label (en-US)" value="Property, Plant, and Equipment, before Accumulated Depreciation, Depletion, and Amortization"/>
+   <property name="totalLabel (en-US)" value=" "/>
+  </property>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="PropertyPlantAndEquipmentGross"/>
+  <property name="QName" value="us-gaap:PropertyPlantAndEquipmentGross"/>
+  <property name="id" value="us-gaap_PropertyPlantAndEquipmentGross"/>
+  <property name="abstract" value="false"/>
+  <property name="type" value="xbrli:monetaryItemType"/>
+  <property name="subst grp" value="xbrli:item"/>
+  <property name="period type" value="instant"/>
+  <property name="balance" value="debit"/>
+  <property name="arcrole" value="http://www.xbrl.org/2003/arcrole/parent-child"/>
+  <property name="preferredLabel" value="http://www.xbrl.org/2003/role/totalLabel"/>
+  <property name="order" value="110.0"/>
+  <property name="priority" value="0"/>
+  <property name="from" value="us-gaap:PropertyPlantAndEquipmentAbstract"/>
+ </ref></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.055946. - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0194.10621 - 17:08:44.274244 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="DQC.US.0194.10621" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm" severity="error" effectiveDate="2025-04-15" cid="2282047893776">[DQC.US.0194.10621] us-gaap:TreasuryStockRetiredCostMethodAmount has a value of -74 which is less than zero. This element should not have a negative value when used with the common stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this us-gaap:TreasuryStockRetiredCostMethodAmount fact are:
+Period :2025-01-01 to 2025-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : USD
+Rule Element Id:10621
+Rule version: 30.0.0RC1 - q1_2026.htm 1879</message>
+ <ref href="q1_2026.htm#Fact000266" sourceLine="1879">
+  <property name="file" value="q1_2026.htm"/>
+  <property name="line" value="1879"/>
+  <property name="label" value="Restricted stock retired for tax withholding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="TreasuryStockRetiredCostMethodAmount"/>
+  <property name="QName" value="us-gaap:TreasuryStockRetiredCostMethodAmount"/>
+  <property name="contextRef" value="From2025-01-012025-03-31_us-gaap_CommonStockMember">
+   <property name="entity" value="0000944075">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-74"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="74"/>
+ </ref></entry>
+<entry code="DQC.US.0194.10621" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm" severity="error" effectiveDate="2025-04-15" cid="2282047893776">[DQC.US.0194.10621] us-gaap:TreasuryStockRetiredCostMethodAmount has a value of -78 which is less than zero. This element should not have a negative value when used with the common stock [Member]. The preparer should consider if the value is input correctly for this assertion and, after considering the appropriateness of the input, if incorrect, input the amount as a positive (i.e., absolute) value and provide a negated label.
+
+The properties of this us-gaap:TreasuryStockRetiredCostMethodAmount fact are:
+Period :2026-01-01 to 2026-03-31
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:CommonStockMember
+Unit : USD
+Rule Element Id:10621
+Rule version: 30.0.0RC1 - q1_2026.htm 1769</message>
+ <ref href="q1_2026.htm#Fact000224" sourceLine="1769">
+  <property name="file" value="q1_2026.htm"/>
+  <property name="line" value="1769"/>
+  <property name="label" value="Restricted stock retired for tax withholding"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2026"/>
+  <property name="name" value="TreasuryStockRetiredCostMethodAmount"/>
+  <property name="QName" value="us-gaap:TreasuryStockRetiredCostMethodAmount"/>
+  <property name="contextRef" value="From2026-01-012026-03-31_us-gaap_CommonStockMember">
+   <property name="entity" value="0000944075">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2026-01-01"/>
+   <property name="endDate" value="2026-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementEquityComponentsAxis" value="us-gaap:CommonStockMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="-78"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="78"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0194.10621 time took: 2.63916 - 17:08:46.913611  - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0194.10621 end. Took 0:00:02.639160 - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:02.696672. - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 14.54 secs - http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/944075/000094407526000040/q1_2026.htm"/></entry>
+</log>

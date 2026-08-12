@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 2.58 secs at 2026-05-19T16:49:33 - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.009073. - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0177.10133 - 16:49:38.991350 - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm" severity="error" effectiveDate="2024-05-16" cid="2054044463376">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -413,572, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 945,150 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EqtyAwrdsInSummryCompstnTblForAplblYrMember --> 113,892 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:EqtyAwrdsInSummryCompstnTblForAplblYrMember 
+	ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember --> 744,473 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember 
+	YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember --> 46,334 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember 
+	ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember --> 40,451 --> ecd:AdjToCompAxis=ecd:ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2025-01-01 to 2025-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 30.0.0RC1 - nnbr-20260406.htm 8</message>
+ <ref href="nnbr-20260406.htm#f-5" sourceLine="8">
+  <property name="file" value="nnbr-20260406.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0000918541">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="DEFR14A"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm" severity="error" effectiveDate="2024-05-16" cid="2054044463376">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of -646,114, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 1,284,606 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EqtyAwrdsInSummryCompstnTblForAplblYrMember --> 433,614 --> ecd:AdjToCompAxis=ecd:EqtyAwrdsInSummryCompstnTblForAplblYrMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember --> 197,535 --> ecd:AdjToCompAxis=ecd:ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	FrValAsOfPrrYrEndOfEqtyAwrdsGrntdInPrrYrsFldVstngCondsDrngCvrdYrMember --> 334,211 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:FrValAsOfPrrYrEndOfEqtyAwrdsGrntdInPrrYrsFldVstngCondsDrngCvrdYrMember 
+	YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember --> 314,746 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember 
+	ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember --> 4,500 --> ecd:AdjToCompAxis=ecd:ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2024-01-01 to 2024-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 30.0.0RC1 - nnbr-20260406.htm 8</message>
+ <ref href="nnbr-20260406.htm#f-5" sourceLine="8">
+  <property name="file" value="nnbr-20260406.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0000918541">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="DEFR14A"/>
+ </ref></entry>
+<entry code="DQC.US.0177.10133" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm" severity="error" effectiveDate="2024-05-16" cid="2054044463376">[DQC.US.0177.10133] The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt has a value of 820,224, which is not equal to the aggregated value of the concept AdjToCompAmt using  the dimensionally qualified components on the axis AdjToCompAxis which has an aggregate value of 2,192,946 based on the data in the filing. 
+
+The values of the calculation components are as follows:
+	EqtyAwrdsInSummryCompstnTblForAplblYrMember --> 662,266 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:EqtyAwrdsInSummryCompstnTblForAplblYrMember 
+	ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember --> 40,521 --> ecd:AdjToCompAxis=ecd:ChngInFrValOfOutsdngAndUnvstdEqtyAwrdsGrntdInPrrYrsMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+	FrValAsOfPrrYrEndOfEqtyAwrdsGrntdInPrrYrsFldVstngCondsDrngCvrdYrMember --> 16,384 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:FrValAsOfPrrYrEndOfEqtyAwrdsGrntdInPrrYrsFldVstngCondsDrngCvrdYrMember 
+	YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember --> 1,466,064 --> ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember, ecd:AdjToCompAxis=ecd:YrEndFrValOfEqtyAwrdsGrntdInCvrdYrOutsdngAndUnvstdMember 
+	ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember --> 7,711 --> ecd:AdjToCompAxis=ecd:ChngInFrValAsOfVstngDtOfPrrYrEqtyAwrdsVstdInCvrdYrMember, ecd:ExecutiveCategoryAxis=ecd:NonPeoNeoMember 
+
+
+The value of the difference between NonPeoNeoAvgCompActuallyPaidAmt and NonPeoNeoAvgTotalCompAmt should equal to the dimensional aggregation of the AdjToCompAxis axis using the concept AdjToCompAmt. Check that the signs used on this element are based on the element AdjToCompAmt. This means that decreases in compensation should be entered as a negative amount irrespective of the member used.
+This rule aggregates the value of member components located on the axis at the highest level of aggregation to avoid double counting in the event that the company uses a hierarchy of members.
+
+The properties of this  fact are:
+Period :2023-01-01 to 2023-12-31
+Dimensions : 
+Unit : USD
+
+Rule Element Id:10133
+Rule version: 30.0.0RC1 - nnbr-20260406.htm 8</message>
+ <ref href="nnbr-20260406.htm#f-5" sourceLine="8">
+  <property name="file" value="nnbr-20260406.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2025"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0000918541">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="DEFR14A"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0177.10133 time took: 1.119317 - 16:49:40.110802  - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0177.10133 end. Took 0:00:01.119317 - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.128985. - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 4.52 secs - http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/918541/000091854126000026/nnbr-20260406.htm"/></entry>
+</log>

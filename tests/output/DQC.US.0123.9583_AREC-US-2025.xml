@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.48 secs at 2026-05-19T16:23:13 - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.165869. - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0123.9583 - 16:23:23.923525 - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2557209456912">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 182,939,985 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2024-03-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=arec:AdditionalPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - arec_10q.htm 2</message>
+ <ref href="arec_10q.htm#fid_3453" sourceLine="2">
+  <property name="file" value="arec_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2024-03-31_arec_AdditionalPaidInCapitalsMember">
+   <property name="entity" value="0001590715">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-03-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="arec:AdditionalPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="182,939,985"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="182,939,985"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2557209456912">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 181,753,261 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2023-12-31 
+Dimensions : us-gaap:StatementClassOfStockAxis=arec:AdditionalPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - arec_10q.htm 2</message>
+ <ref href="arec_10q.htm#fid_3460" sourceLine="2">
+  <property name="file" value="arec_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2023-12-31_arec_AdditionalPaidInCapitalsMember">
+   <property name="entity" value="0001590715">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2023-12-31"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="arec:AdditionalPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="181,753,261"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="181,753,261"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2557209456912">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 184,934,174 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2024-09-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=arec:AdditionalPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - arec_10q.htm 2</message>
+ <ref href="arec_10q.htm#fid_6228" sourceLine="2">
+  <property name="file" value="arec_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2024-09-30_arec_AdditionalPaidInCapitalsMember">
+   <property name="entity" value="0001590715">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-09-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="arec:AdditionalPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="184,934,174"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="184,934,174"/>
+ </ref></entry>
+<entry code="DQC.US.0123.9583" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm" severity="error" effectiveDate="2021-11-30" cid="2557209456912">[DQC.US.0123.9583] The company has reported a value for us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest with the axis StatementClassOfStockAxis with a value of 184,028,905 to represent the monetary value of the class of stock in equity. This fact however when used in the Statement of Shareholders Equity must include the Component of Equity and associated member indicating if it is preferred stock, common stock or treasury stock. This error could occur because the filer has either 1) used the incorrect element or 2) has NOT included the Statement Equity Components Axis with the Common Stock or Preferred Stock member on the fact. 
+
+The filer should either add the Statement Equity Components Axis and respective stock member in addition to the class of stock axis to the fact, or change the element name from us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest to the appropriate element if the value is not included in Stockholders Equity.
+
+Element : us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest
+Period : 2024-06-30 
+Dimensions : us-gaap:StatementClassOfStockAxis=arec:AdditionalPaidInCapitalsMember
+
+Rule Element Id:9583
+Rule version: 30.0.0RC1 - arec_10q.htm 2</message>
+ <ref href="arec_10q.htm#fid_6220" sourceLine="2">
+  <property name="file" value="arec_10q.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="[Equity, Including Portion Attributable to Noncontrolling Interest]"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="QName" value="us-gaap:StockholdersEquityIncludingPortionAttributableToNoncontrollingInterest"/>
+  <property name="contextRef" value="AsOf2024-06-30_arec_AdditionalPaidInCapitalsMember">
+   <property name="entity" value="0001590715">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="instant" value="2024-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="us-gaap:StatementClassOfStockAxis" value="arec:AdditionalPaidInCapitalsMember"/>
+   </property>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="184,028,905"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="184,028,905"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0123.9583 time took: 1.667792 - 16:23:25.591439  - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0123.9583 end. Took 0:00:01.667792 - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.834389. - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 6.21 secs - http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1590715/000147793225008333/arec_10q.htm"/></entry>
+</log>

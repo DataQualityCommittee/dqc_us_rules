@@ -20,7 +20,7 @@ else
 
 $AdditionalCapitalFact = {@SegmentExpenditureAdditionToLongLivedAssets}
 
-for $x in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions)
+for $x in list(PaymentsToAcquirePropertyPlantAndEquipment, PropertyPlantAndEquipmentAdditions, PaymentsToAcquireProductiveAssets)
     $PPEFacts = {@concept = $x}
 
     $PPEHypercubeLocation = navigate parent-child ancestors from $x where $relationship.source.name in list(ScheduleOfSegmentReportingInformationBySegmentTable, ScheduleOfRevenuesFromExternalCustomersAndLongLivedAssetsTable) returns set (target-name);

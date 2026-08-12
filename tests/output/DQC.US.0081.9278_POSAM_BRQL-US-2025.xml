@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 1.57 secs at 2026-05-21T13:10:18 - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.080730. - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0081.9278 - 13:10:23.600144 - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.otherTaxonomyLoadTime" level="debug">
+ <message>[xule.otherTaxonomyLoadTime] Load taxonomy time 0:00:01.085166 from 'https://raw.githubusercontent.com/DataQualityCommittee/dqc_us_rules/refs/heads/v28/dqc_us_rules/resources/Taxonomies/us-gaap-cal-2025-all.xsd' - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="DQC.US.0081.9278" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm" severity="error" effectiveDate="2019-09-30" cid="2208868987152">[DQC.US.0081.9278] The line item concept us-gaap:AmortizationOfFinancingCostsAndDiscounts with a value of 780,724 and a calculation parent of us-gaap:NetCashProvidedByUsedInOperatingActivities is represented as a sibling of us-gaap:AdjustmentForAmortization with a value of 233,683 in the extension taxonomy role 170000 - Statement - STATEMENTS OF CASH FLOWS, but us-gaap:AmortizationOfFinancingCostsAndDiscounts is represented as a descendent of us-gaap:AdjustmentForAmortization in the calculation relationships defined in the US GAAP taxonomies. Please review the element selection to determine that an appropriate element has been used for these two line item concepts.
+
+
+The properties of this us-gaap:AmortizationOfFinancingCostsAndDiscounts fact are:
+
+Period :2025-01-01 to 2025-12-31
+Dimensions : 
+Unit : USD
+
+
+Rule Element Id:9278
+Rule version: 30.0.0RC1
+ - brql_posam.htm 2</message>
+ <ref href="brql_posam.htm#fid_1909" sourceLine="2">
+  <property name="file" value="brql_posam.htm"/>
+  <property name="line" value="2"/>
+  <property name="label" value="Amortization of debt discount"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="AmortizationOfFinancingCostsAndDiscounts"/>
+  <property name="QName" value="us-gaap:AmortizationOfFinancingCostsAndDiscounts"/>
+  <property name="contextRef" value="From2025-01-01to2025-12-31">
+   <property name="entity" value="0001854526">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-01-01"/>
+   <property name="endDate" value="2025-12-31"/>
+  </property>
+  <property name="unitRef" value="USD ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="0"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="780,724"/>
+  <property name="format" value="ixt:numdotdecimal"/>
+  <property name="scale" value="None"/>
+  <property name="html value" value="780,724"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0081.9278 time took: 7.247764 - 13:10:30.848020  - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0081.9278 end. Took 0:00:07.247764 - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:07.329051. - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 10.47 secs - http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1854526/000147793226002489/brql_posam.htm"/></entry>
+</log>

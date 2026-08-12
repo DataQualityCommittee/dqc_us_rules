@@ -196,6 +196,17 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0229](DQC_US_0229/DQC_0229.md) | Multiple 'Other' Concepts in a Calculation Network | Removed after Public Review |  |
 | [DQC_US_0230](DQC_US_0230/DQC_0230.md) | Disallowed 'Other' Concepts in Calculation Networks | Approved | 29 |
 | [DQC_US_0231](DQC_US_0231/DQC_0231.md) | Aggregate and 'Other' Concepts Appearing as Siblings in Calculation Networks | Approved | 29 |
+| [DQC_IFRS_0232](DQC_IFRS_0232/DQC_0232.md) | Disallowed Combined Total Concepts in IFRS 18 Statement of Operating Activities or Income Statement | Approved | 30 |
+| [DQC_US_0233](DQC_US_0233/DQC_0233.md) | Incorrect Use of ScenarioAdjustmentMember for Accounting Standard Updates | Approved | 30 |
+| [DQC_US_0234](DQC_US_0234/DQC_0234.md) | Incorrect Use of IncomeTaxAuthorityAxis with Domestic Tax Reconciliation Concepts | Approved | 30 |
+| [DQC_US_0235](DQC_US_0235/DQC_0235.md) | Incorrect Use of CollateralAxis with Repurchase Agreement and Securities Loaned Concepts | Approved | 30 |
+| [DQC_US_0236](DQC_US_0236/DQC_0236.md) | Domestic Tax Jurisdiction Without Other Jurisdiction Breakdown | Approved | 30 |
+| [DQC_US_0237](DQC_US_0237/DQC_0237.md) | Location Balance Axis Member Not Present in Face Financial Statements | Approved | 30 |
+| [DQC_US_0238](DQC_US_0238/DQC_0238.md) | Segment Reporting Text Block Used Without StatementBusinessSegmentsAxis | Approved | 30 |
+| [DQC_US_0239](DQC_US_0239/DQC_0239.md) | Capitalized Computer Software Concepts Incorrectly Tagged with FiniteLivedIntangibleAssetsByMajorClassAxis | Approved | 30 |
+| [DQC_US_0241](DQC_US_0241/DQC_0241.md) | Incorrect Use of TransactionTypeAxis with Transaction Market Method Members | Approved | 30 |
+| [DQC_US_0242](DQC_US_0242/DQC_0242.md) | Software-to-be-Sold Not Using Dedicated Capitalized Software Concepts | Approved | 30 |
+| [DQC_US_0243](DQC_US_0243/DQC_0243.md) | Inappropriate Use of ConsolidationItemsAxis with Cash Flow and Equity Concepts | Approved | 30 |
 
 
 ## Guidance 
