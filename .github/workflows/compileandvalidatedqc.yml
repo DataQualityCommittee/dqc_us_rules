@@ -92,7 +92,17 @@ jobs:
           else
             ENV_LABEL="fresh build"
           fi
+          if [ "${{ inputs.skip_compilation }}" = "true" ]; then
+            ACTION="Test"
+          elif [ "${{ inputs.test_mode }}" = "none" ]; then
+            ACTION="Recompile"
+          else
+            ACTION="Recompile and test"
+          fi
           {
+            echo "## ${ACTION} ruleset .zip files v${RULE_VERSION}"
+            echo "🔗 [View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+            echo ""
             echo "### Workflow Inputs"
             echo ""
             echo "| Input | Value |"
@@ -1112,3 +1122,74 @@ jobs:
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
           git push
+
+  # ──────────────────────────────────────────────
+  #  Final status summary
+  # ──────────────────────────────────────────────
+  final-status:
+    name: Final status
+    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write status badge
+        env:
+          COMPILE_PRE: ${{ needs.compile-prebuilt.result }}
+          COMPILE_FRESH: ${{ needs.compile-fresh.result }}
+          VALIDATE_PRE: ${{ needs.validate-prebuilt.result }}
+          VALIDATE_FRESH: ${{ needs.validate-fresh.result }}
+          COMMIT_RESULT: ${{ needs.commit.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          COMPILE="skipped"
+          if [ "$COMPILE_PRE" = "success" ] || [ "$COMPILE_FRESH" = "success" ]; then
+            COMPILE="success"
+          elif [ "$COMPILE_PRE" = "failure" ] || [ "$COMPILE_FRESH" = "failure" ]; then
+            COMPILE="failure"
+          fi
+
+          VALIDATE="skipped"
+          if [ "$VALIDATE_PRE" = "success" ] || [ "$VALIDATE_FRESH" = "success" ]; then
+            VALIDATE="success"
+          elif [ "$VALIDATE_PRE" = "failure" ] || [ "$VALIDATE_FRESH" = "failure" ]; then
+            VALIDATE="failure"
+          fi
+
+          if [ "$COMPILE" = "failure" ] || [ "$VALIDATE" = "failure" ]; then
+            STATUS="failed"
+            COLOR="#e5534b"
+            LABEL="Failed"
+          elif [ "$COMPILE" = "success" ] && { [ "$VALIDATE" = "success" ] || [ "$VALIDATE" = "skipped" ]; }; then
+            STATUS="passed"
+            COLOR="#57ab5a"
+            LABEL="Passed"
+          elif [ "$COMPILE" = "skipped" ] && [ "$VALIDATE" = "success" ]; then
+            STATUS="passed"
+            COLOR="#57ab5a"
+            LABEL="Passed"
+          elif [ "$COMPILE" = "skipped" ] && [ "$VALIDATE" = "skipped" ]; then
+            STATUS="skipped"
+            COLOR="#768390"
+            LABEL="Skipped"
+          else
+            STATUS="partial"
+            COLOR="#c69026"
+            LABEL="Partial"
+          fi
+
+          W_LABEL=90
+          W_VALUE=$(( ${#LABEL} * 8 + 16 ))
+          W_TOTAL=$(( W_LABEL + W_VALUE ))
+          X_VALUE=$(( W_LABEL + W_VALUE / 2 ))
+
+          {
+            echo "<a href=\"${RUN_URL}\">"
+            echo "<img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W_TOTAL}' height='20'%3E%3ClinearGradient id='b' x2='0' y2='100%25'%3E%3Cstop offset='0' stop-color='%23bbb' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.1'/%3E%3C/linearGradient%3E%3Cmask id='a'%3E%3Crect width='${W_TOTAL}' height='20' rx='3' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Crect width='${W_LABEL}' height='20' fill='%23555'/%3E%3Crect x='${W_LABEL}' width='${W_VALUE}' height='20' fill='${COLOR}'/%3E%3Crect width='${W_TOTAL}' height='20' fill='url(%23b)'/%3E%3C/g%3E%3Cg fill='%23fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'%3E%3Ctext x='45' y='15' fill='%23010101' fill-opacity='.3'%3Eworkflow%3C/text%3E%3Ctext x='45' y='14'%3Eworkflow%3C/text%3E%3Ctext x='${X_VALUE}' y='15' fill='%23010101' fill-opacity='.3'%3E${LABEL}%3C/text%3E%3Ctext x='${X_VALUE}' y='14'%3E${LABEL}%3C/text%3E%3C/g%3E%3C/svg%3E\" alt=\"Workflow ${LABEL}\" />"
+            echo "</a>"
+            echo ""
+            echo "| Stage | Status |"
+            echo "|-------|--------|"
+            echo "| Compilation | \`${COMPILE}\` |"
+            echo "| Validation | \`${VALIDATE}\` |"
+            echo "| Commit | \`${COMMIT_RESULT}\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
