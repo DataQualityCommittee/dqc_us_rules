@@ -1076,6 +1076,7 @@ jobs:
         run: |
           MAP_VERSION="v${RULE_VERSION}"
           sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
+          sed -i -E "s/-v([0-9]+)-ruleset\.zip/-V\1-ruleset.zip/g" rulesetMap.json
           echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
           cat rulesetMap.json
 
