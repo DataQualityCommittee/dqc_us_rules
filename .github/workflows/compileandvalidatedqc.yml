@@ -1,6 +1,9 @@
 name: Compile & Validate DQC Rulesets
 
 on:
+  push:
+    paths:
+      - 'dqc_us_rules/source/lib/version.xule'
   workflow_dispatch:
     inputs:
       skip_compilation:
@@ -64,11 +67,54 @@ env:
 
 jobs:
   # ──────────────────────────────────────────────
+  #  Resolve inputs (provides defaults for push-triggered runs)
+  # ──────────────────────────────────────────────
+  resolve-inputs:
+    name: Resolve inputs
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch'
+      || github.repository_owner != 'DataQualityCommittee'
+      || github.ref == 'refs/heads/master'
+    outputs:
+      skip_compilation: ${{ steps.resolve.outputs.skip_compilation }}
+      use_prebuilt_env: ${{ steps.resolve.outputs.use_prebuilt_env }}
+      arelle_version: ${{ steps.resolve.outputs.arelle_version }}
+      xule_version: ${{ steps.resolve.outputs.xule_version }}
+      edgar_version: ${{ steps.resolve.outputs.edgar_version }}
+      taxonomy: ${{ steps.resolve.outputs.taxonomy }}
+      year: ${{ steps.resolve.outputs.year }}
+      version_suffix: ${{ steps.resolve.outputs.version_suffix }}
+      test_mode: ${{ steps.resolve.outputs.test_mode }}
+      base_commit: ${{ steps.resolve.outputs.base_commit }}
+    steps:
+      - name: Set effective inputs
+        id: resolve
+        env:
+          IS_DQC_MASTER: ${{ github.event_name == 'push' && github.repository_owner == 'DataQualityCommittee' && github.ref == 'refs/heads/master' }}
+        run: |
+          if [ "$IS_DQC_MASTER" = "true" ]; then
+            SKIP_COMPILATION="true"
+          else
+            SKIP_COMPILATION="${{ inputs.skip_compilation || 'false' }}"
+          fi
+          echo "skip_compilation=${SKIP_COMPILATION}" >> "$GITHUB_OUTPUT"
+          echo "use_prebuilt_env=${{ inputs.use_prebuilt_env || 'true' }}" >> "$GITHUB_OUTPUT"
+          echo "arelle_version=${{ inputs.arelle_version || '2.44.0' }}" >> "$GITHUB_OUTPUT"
+          echo "xule_version=${{ inputs.xule_version || '30052.1' }}" >> "$GITHUB_OUTPUT"
+          echo "edgar_version=${{ inputs.edgar_version || '26.1.3' }}" >> "$GITHUB_OUTPUT"
+          echo "taxonomy=${{ inputs.taxonomy || 'all' }}" >> "$GITHUB_OUTPUT"
+          echo "year=${{ inputs.year || 'all' }}" >> "$GITHUB_OUTPUT"
+          echo "version_suffix=${{ inputs.version_suffix }}" >> "$GITHUB_OUTPUT"
+          echo "test_mode=${{ inputs.test_mode || 'all' }}" >> "$GITHUB_OUTPUT"
+          echo "base_commit=${{ inputs.base_commit }}" >> "$GITHUB_OUTPUT"
+
+  # ──────────────────────────────────────────────
   #  Print workflow inputs summary
   # ──────────────────────────────────────────────
   summary:
     name: Workflow inputs
-    needs: resolve-env
+    needs: [resolve-inputs, resolve-env]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -85,16 +131,16 @@ jobs:
           USE_PREBUILT: ${{ needs.resolve-env.outputs.use_prebuilt }}
           RULE_VERSION: ${{ steps.version.outputs.rule_version }}
         run: |
-          if [ "${{ inputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
+          if [ "${{ needs.resolve-inputs.outputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
             ENV_LABEL="fresh build (auto — custom versions override prebuilt)"
           elif [ "$USE_PREBUILT" = "true" ]; then
             ENV_LABEL="prebuilt container"
           else
             ENV_LABEL="fresh build"
           fi
-          if [ "${{ inputs.skip_compilation }}" = "true" ]; then
+          if [ "${{ needs.resolve-inputs.outputs.skip_compilation }}" = "true" ]; then
             ACTION="Test"
-          elif [ "${{ inputs.test_mode }}" = "none" ]; then
+          elif [ "${{ needs.resolve-inputs.outputs.test_mode }}" = "none" ]; then
             ACTION="Recompile"
           else
             ACTION="Recompile and test"
@@ -108,15 +154,15 @@ jobs:
             echo "|-------|-------|"
             echo "| **Ruleset version** | \`${RULE_VERSION}\` |"
             echo "| **Environment** | \`${ENV_LABEL}\` |"
-            echo "| **Arelle version** | \`${{ inputs.arelle_version }}\` |"
-            echo "| **Xule version** | \`${{ inputs.xule_version }}\` |"
-            echo "| **EDGAR version** | \`${{ inputs.edgar_version }}\` |"
-            echo "| **Taxonomies** | \`${{ inputs.taxonomy }}\` |"
-            echo "| **Years** | \`${{ inputs.year }}\` |"
-            echo "| **Ruleset suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
-            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
-            echo "| **Test mode** | \`${{ inputs.test_mode }}\` |"
-            echo "| **Base commit** | \`${{ inputs.base_commit || '(auto-detect)' }}\` |"
+            echo "| **Arelle version** | \`${{ needs.resolve-inputs.outputs.arelle_version }}\` |"
+            echo "| **Xule version** | \`${{ needs.resolve-inputs.outputs.xule_version }}\` |"
+            echo "| **EDGAR version** | \`${{ needs.resolve-inputs.outputs.edgar_version }}\` |"
+            echo "| **Taxonomies** | \`${{ needs.resolve-inputs.outputs.taxonomy }}\` |"
+            echo "| **Years** | \`${{ needs.resolve-inputs.outputs.year }}\` |"
+            echo "| **Ruleset suffix** | \`${{ needs.resolve-inputs.outputs.version_suffix || '(none)' }}\` |"
+            echo "| **Skip compilation** | \`${{ needs.resolve-inputs.outputs.skip_compilation }}\` |"
+            echo "| **Test mode** | \`${{ needs.resolve-inputs.outputs.test_mode }}\` |"
+            echo "| **Base commit** | \`${{ needs.resolve-inputs.outputs.base_commit || '(auto-detect)' }}\` |"
             echo ""
             echo "**Branch:** \`${{ github.ref_name }}\` | **Triggered by:** \`${{ github.actor }}\`"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -127,6 +173,7 @@ jobs:
   # ──────────────────────────────────────────────
   resolve-env:
     name: Resolve environment
+    needs: resolve-inputs
     runs-on: ubuntu-latest
     outputs:
       use_prebuilt: ${{ steps.resolve.outputs.use_prebuilt }}
@@ -136,13 +183,13 @@ jobs:
         id: resolve
         run: |
           IMAGE_NAME="$(echo '${{ github.repository }}/validation' | tr '[:upper:]' '[:lower:]')"
-          echo "image=ghcr.io/${IMAGE_NAME}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}" >> "$GITHUB_OUTPUT"
+          echo "image=ghcr.io/${IMAGE_NAME}:arelle-${{ needs.resolve-inputs.outputs.arelle_version }}-xule-${{ needs.resolve-inputs.outputs.xule_version }}-edgar-${{ needs.resolve-inputs.outputs.edgar_version }}" >> "$GITHUB_OUTPUT"
           DEFAULT_ARELLE="2.44.0"
           DEFAULT_XULE="30052.1"
           DEFAULT_EDGAR="26.1.3"
-          USE_PREBUILT="${{ inputs.use_prebuilt_env }}"
+          USE_PREBUILT="${{ needs.resolve-inputs.outputs.use_prebuilt_env }}"
           if [ "$USE_PREBUILT" = "true" ]; then
-            if [ "${{ inputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ inputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ inputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
+            if [ "${{ needs.resolve-inputs.outputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ needs.resolve-inputs.outputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ needs.resolve-inputs.outputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
               echo "::warning::Prebuilt container uses Arelle $DEFAULT_ARELLE / Xule $DEFAULT_XULE / EDGAR $DEFAULT_EDGAR — custom versions requested, switching to fresh build."
               USE_PREBUILT="false"
             fi
@@ -154,7 +201,8 @@ jobs:
   # ──────────────────────────────────────────────
   detect-changes:
     name: Detect changed .xule files
-    if: inputs.test_mode == 'changed'
+    needs: resolve-inputs
+    if: needs.resolve-inputs.outputs.test_mode == 'changed'
     runs-on: ubuntu-latest
     outputs:
       changed_dirs: ${{ steps.analyze.outputs.changed_dirs }}
@@ -169,7 +217,7 @@ jobs:
       - name: Determine base commit and analyze changes
         id: analyze
         env:
-          BASE_COMMIT: ${{ inputs.base_commit }}
+          BASE_COMMIT: ${{ needs.resolve-inputs.outputs.base_commit }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
@@ -270,8 +318,8 @@ jobs:
   # ──────────────────────────────────────────────
   build-env:
     name: Build Python/Arelle/Xule environment
-    needs: resolve-env
-    if: needs.resolve-env.outputs.use_prebuilt == 'false' && (inputs.skip_compilation == false || inputs.test_mode != 'none')
+    needs: [resolve-inputs, resolve-env]
+    if: needs.resolve-env.outputs.use_prebuilt == 'false' && (needs.resolve-inputs.outputs.skip_compilation != 'true' || needs.resolve-inputs.outputs.test_mode != 'none')
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -298,19 +346,19 @@ jobs:
       - name: Install Arelle, Xule, and EDGAR plugins
         run: |
           pip install --no-cache-dir -r requirements.txt
-          if [ "${{ inputs.arelle_version }}" = "latest" ]; then
+          if [ "${{ needs.resolve-inputs.outputs.arelle_version }}" = "latest" ]; then
             pip install --no-cache-dir --upgrade Arelle-release
           else
-            pip install --no-cache-dir Arelle-release==${{ inputs.arelle_version }}
+            pip install --no-cache-dir Arelle-release==${{ needs.resolve-inputs.outputs.arelle_version }}
           fi
           SITE_PACKAGES=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
-          git clone --depth=1 --branch ${{ inputs.xule_version }} --single-branch \
+          git clone --depth=1 --branch ${{ needs.resolve-inputs.outputs.xule_version }} --single-branch \
             https://github.com/${{ env.XULE_REPO }}/xule.git /tmp/xule
           cp -r /tmp/xule/plugin/xule "$SITE_PACKAGES/arelle/plugin/"
           cp /tmp/xule/plugin/semanticHash.py "$SITE_PACKAGES/arelle/plugin/"
           cp /tmp/xule/plugin/validate/DQC.py "$SITE_PACKAGES/arelle/plugin/validate/"
           rm -rf /tmp/xule
-          git clone --depth=1 --branch ${{ inputs.edgar_version }} --single-branch \
+          git clone --depth=1 --branch ${{ needs.resolve-inputs.outputs.edgar_version }} --single-branch \
             https://github.com/Arelle/EDGAR.git /tmp/EDGAR
           cp -r /tmp/EDGAR "$SITE_PACKAGES/arelle/plugin/"
           rm -rf /tmp/EDGAR
@@ -330,8 +378,8 @@ jobs:
   # ──────────────────────────────────────────────
   build-compile-matrix:
     name: Discover source directories
-    needs: detect-changes
-    if: always() && inputs.skip_compilation == false
+    needs: [resolve-inputs, detect-changes]
+    if: always() && needs.resolve-inputs.outputs.skip_compilation != 'true'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
@@ -343,11 +391,11 @@ jobs:
       - name: Discover compilable sources
         id: discover
         env:
-          TEST_MODE: ${{ inputs.test_mode }}
+          TEST_MODE: ${{ needs.resolve-inputs.outputs.test_mode }}
           CHANGED_DIRS: ${{ needs.detect-changes.outputs.changed_dirs }}
-          TAXONOMY: ${{ inputs.taxonomy }}
-          YEAR: ${{ inputs.year }}
-          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+          TAXONOMY: ${{ needs.resolve-inputs.outputs.taxonomy }}
+          YEAR: ${{ needs.resolve-inputs.outputs.year }}
+          VERSION_SUFFIX: ${{ needs.resolve-inputs.outputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
           VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
@@ -418,8 +466,8 @@ jobs:
   # ──────────────────────────────────────────────
   build-test-matrix:
     name: Build test matrix
-    needs: detect-changes
-    if: always() && inputs.test_mode != 'none'
+    needs: [resolve-inputs, detect-changes]
+    if: always() && needs.resolve-inputs.outputs.test_mode != 'none'
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -432,10 +480,10 @@ jobs:
       - name: Build matrix from test config
         id: set-matrix
         env:
-          TEST_MODE: ${{ inputs.test_mode }}
+          TEST_MODE: ${{ needs.resolve-inputs.outputs.test_mode }}
           CHANGED_RULES: ${{ needs.detect-changes.outputs.changed_rules }}
-          TAXONOMY: ${{ inputs.taxonomy }}
-          YEAR: ${{ inputs.year }}
+          TAXONOMY: ${{ needs.resolve-inputs.outputs.taxonomy }}
+          YEAR: ${{ needs.resolve-inputs.outputs.year }}
         run: |
           python3 << 'PYEOF'
           import json, os, re, sys
@@ -525,7 +573,7 @@ jobs:
   # ──────────────────────────────────────────────
   compile-prebuilt:
     name: "${{ matrix.label }} (prebuilt env)"
-    needs: [resolve-env, build-compile-matrix]
+    needs: [resolve-inputs, resolve-env, build-compile-matrix]
     if: >-
       always()
       && needs.build-compile-matrix.result == 'success'
@@ -556,7 +604,7 @@ jobs:
   # ──────────────────────────────────────────────
   compile-fresh:
     name: "${{ matrix.label }} (fresh env)"
-    needs: [resolve-env, build-env, build-compile-matrix]
+    needs: [resolve-inputs, resolve-env, build-env, build-compile-matrix]
     if: >-
       always()
       && needs.build-compile-matrix.result == 'success'
@@ -602,13 +650,13 @@ jobs:
   # ──────────────────────────────────────────────
   validate-prebuilt:
     name: "${{ matrix.name }} (prebuilt env)"
-    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
+    needs: [resolve-inputs, resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix]
     if: >-
       always()
       && needs.resolve-env.outputs.use_prebuilt == 'true'
-      && inputs.test_mode != 'none'
+      && needs.resolve-inputs.outputs.test_mode != 'none'
       && needs.build-test-matrix.outputs.has_tests == 'true'
-      && (inputs.skip_compilation || needs.compile-prebuilt.result == 'success')
+      && (needs.resolve-inputs.outputs.skip_compilation == 'true' || needs.compile-prebuilt.result == 'success')
     runs-on: ubuntu-latest
     container:
       image: ${{ needs.resolve-env.outputs.image }}
@@ -624,14 +672,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
-        if: inputs.skip_compilation == false
+        if: needs.resolve-inputs.outputs.skip_compilation != 'true'
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
 
       - name: Install compiled rulesets
-        if: inputs.skip_compilation == false
+        if: needs.resolve-inputs.outputs.skip_compilation != 'true'
         run: |
           echo "Downloaded artifacts:"
           find ./artifacts -name '*.zip' -type f
@@ -671,7 +719,7 @@ jobs:
       - name: Extract test set and write filing list
         id: testdata
         env:
-          TEST_MODE: ${{ inputs.test_mode }}
+          TEST_MODE: ${{ needs.resolve-inputs.outputs.test_mode }}
           CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
           MATRIX_INDEX: ${{ matrix.index }}
         run: |
@@ -805,14 +853,14 @@ jobs:
   # ──────────────────────────────────────────────
   validate-fresh:
     name: "${{ matrix.name }} (fresh env)"
-    needs: [resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
+    needs: [resolve-inputs, resolve-env, compile-prebuilt, compile-fresh, build-test-matrix, build-compile-matrix, build-env]
     if: >-
       always()
       && needs.resolve-env.outputs.use_prebuilt == 'false'
-      && inputs.test_mode != 'none'
+      && needs.resolve-inputs.outputs.test_mode != 'none'
       && needs.build-test-matrix.outputs.has_tests == 'true'
       && needs.build-env.result == 'success'
-      && (inputs.skip_compilation || needs.compile-fresh.result == 'success')
+      && (needs.resolve-inputs.outputs.skip_compilation == 'true' || needs.compile-fresh.result == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 120
     strategy:
@@ -842,14 +890,14 @@ jobs:
         run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
 
       - name: Download all compiled rulesets
-        if: inputs.skip_compilation == false
+        if: needs.resolve-inputs.outputs.skip_compilation != 'true'
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
           pattern: 'dqc-*-ruleset.zip'
 
       - name: Install compiled rulesets
-        if: inputs.skip_compilation == false
+        if: needs.resolve-inputs.outputs.skip_compilation != 'true'
         run: |
           echo "Downloaded artifacts:"
           find ./artifacts -name '*.zip' -type f
@@ -889,7 +937,7 @@ jobs:
       - name: Extract test set and write filing list
         id: testdata
         env:
-          TEST_MODE: ${{ inputs.test_mode }}
+          TEST_MODE: ${{ needs.resolve-inputs.outputs.test_mode }}
           CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
           MATRIX_INDEX: ${{ matrix.index }}
         run: |
@@ -1023,10 +1071,10 @@ jobs:
   # ──────────────────────────────────────────────
   commit:
     name: Commit all rulesets
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
+    needs: [resolve-inputs, compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
     if: >-
       always()
-      && inputs.skip_compilation == false
+      && needs.resolve-inputs.outputs.skip_compilation != 'true'
       && (needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
       && (needs.validate-prebuilt.result == 'success' || needs.validate-prebuilt.result == 'skipped')
       && (needs.validate-fresh.result == 'success' || needs.validate-fresh.result == 'skipped')
@@ -1082,15 +1130,15 @@ jobs:
 
       - name: Commit and push
         env:
-          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+          VERSION_SUFFIX: ${{ needs.resolve-inputs.outputs.version_suffix }}
           BRANCH_NAME: ${{ github.ref_name }}
           RULE_VERSION: ${{ steps.version.outputs.rule_version }}
           PY_VERSION: ${{ steps.pyver.outputs.python_version }}
-          ARELLE_VERSION: ${{ inputs.arelle_version }}
-          XULE_VERSION: ${{ inputs.xule_version }}
-          EDGAR_VERSION: ${{ inputs.edgar_version }}
-          TEST_MODE: ${{ inputs.test_mode }}
-          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
+          ARELLE_VERSION: ${{ needs.resolve-inputs.outputs.arelle_version }}
+          XULE_VERSION: ${{ needs.resolve-inputs.outputs.xule_version }}
+          EDGAR_VERSION: ${{ needs.resolve-inputs.outputs.edgar_version }}
+          TEST_MODE: ${{ needs.resolve-inputs.outputs.test_mode }}
+          SKIP_COMPILATION: ${{ needs.resolve-inputs.outputs.skip_compilation }}
         run: |
           COMMIT_VERSION="v${RULE_VERSION}"
           if [ "$SKIP_COMPILATION" = "true" ]; then
@@ -1115,7 +1163,7 @@ jobs:
   # ──────────────────────────────────────────────
   final-status:
     name: Final status
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit]
+    needs: [resolve-inputs, compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit]
     if: always()
     runs-on: ubuntu-latest
     steps:
