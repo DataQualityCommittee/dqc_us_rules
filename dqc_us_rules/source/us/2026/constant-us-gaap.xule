@@ -448,13 +448,3 @@ CONSTANT $ALLOWED_VRB_MEMBERS = navigate domain-member descendants from $APPROVE
 CONSTANT $ALLOWED_VRB_EXT_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["VRB"]["domain-member"]  returns set (target)
 CONSTANT $ALLOWED_VRB_ALIAS = filter $ALLOWED_VRB_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
 CONSTANT $ALLOWED_VRB_ITEMS = (filter $ALLOWED_VRB_MEMBERS returns $item.name.local-name) + $ALLOWED_VRB_ALIAS + (filter $ALLOWED_VRB_EXT_MEMBERS returns $item.name.local-name)
-
-CONSTANT $ALLOWED-KEYS_DICTIONARY = dict(
-                                list("AFF", $ALLOWED_AFF_ITEMS),
-                                list("GEB", $ALLOWED_GEB_ITEMS),
-                                list("GEO", $ALLOWED_GEO_ITEMS),
-                                list("IND", $ALLOWED_IND_ITEMS),
-                                list("ISS", $ALLOWED_ISS_ITEMS),
-                                list("TYP", $ALLOWED_TYP_ITEMS),
-                                list("VRB", $ALLOWED_VRB_ITEMS)
-                                )
