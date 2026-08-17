@@ -59,6 +59,12 @@ CONSTANT $NUM_DEN_FULL = dict(list(srt:FinancingReceivableAllowanceForCreditLoss
 
 /** CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last **/
 
+CONSTANT $TWO_CLASS_METHOD_ITEMS = list(EarningsPerShareBasicDistributed, EarningsPerShareBasicUndistributed, EarningsPerShareDilutedDistributed, EarningsPerShareDilutedUndistributed, UndistributedEarningsLossAvailableToCommonShareholdersBasic)
+
+CONSTANT $FACT_USING_TWOCLASS_METHOD = list({covered nonils @concept = $TWO_CLASS_METHOD_ITEMS}).length > 0
+
+CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last
+
 CONSTANT $NUM-DEN = $NUM_DEN_FULL /** - $EXISTING_PERCENT_CHECKS **/
 
 ASSERT US.0227.10920 satisfied
@@ -94,11 +100,16 @@ else
       if $greaterThanLowerBound and $lessThanUpperBound
         false
       else
-         if $calc.concept.period-type == xbrli:duration and $calc.period.days > 100 and $calc.period.days < 310
+        $period_focus = first(set({covered @concept.local-name ='DocumentFiscalPeriodFocus'}));
+        if $key == EarningsPerShareBasic and  (($period_focus == "FY" and $calc.period.days < 310) or ($period_focus == "Q2" and $calc.period.days < 120) or ($period_focus == "Q3" and $calc.period.days < 200))
           false
         else
-          true
+          if $key == EarningsPerShareBasic and $FACT_USING_TWOCLASS_METHOD
+            false
+          else
+            true
       else
+
           skip
 
 message
@@ -114,5 +125,5 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
-
+rule-focus $calc
 effectiveDate $effective_dates[$rule_id]
