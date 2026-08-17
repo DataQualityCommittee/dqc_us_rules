@@ -1,9 +1,9 @@
 FROM python:3.13-slim
 
-ARG XULE_VERSION=30050
+ARG XULE_VERSION=30052.1
 ARG XULE_REPO=xbrlus
-ARG TRANSFORM_VERSION=25.1
-ARG ARELLE_VERSION=2.37.58
+ARG TRANSFORM_VERSION=26.1.3
+ARG ARELLE_VERSION=2.44.0
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
