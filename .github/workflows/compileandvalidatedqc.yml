@@ -750,6 +750,7 @@ jobs:
             --test-files ./log.xml \
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
             --html-file ./report.html \
+            --json-file ./report.json \
             --test-case "${{ matrix.name }}"
         continue-on-error: true
 
@@ -773,6 +774,7 @@ jobs:
             log.xml
             report.txt
             report.html
+            report.json
           retention-days: 30
 
       - name: Copy discrepancy reports to uniquely named files
@@ -780,6 +782,7 @@ jobs:
         run: |
           cp report.html "discrepancies-${{ matrix.name }}.html"
           cp report.txt "discrepancies-${{ matrix.name }}.txt"
+          cp report.json "discrepancies-${{ matrix.name }}.json"
 
       - name: Upload discrepancy reports
         if: always() && steps.compare.outcome == 'failure'
@@ -789,6 +792,7 @@ jobs:
           path: |
             discrepancies-${{ matrix.name }}.html
             discrepancies-${{ matrix.name }}.txt
+            discrepancies-${{ matrix.name }}.json
           retention-days: 1
 
       - name: Report outcome
@@ -971,6 +975,7 @@ jobs:
             --test-files ./log.xml \
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
             --html-file ./report.html \
+            --json-file ./report.json \
             --test-case "${{ matrix.name }}"
         continue-on-error: true
 
@@ -994,6 +999,7 @@ jobs:
             log.xml
             report.txt
             report.html
+            report.json
           retention-days: 30
 
       - name: Copy discrepancy reports to uniquely named files
@@ -1001,6 +1007,7 @@ jobs:
         run: |
           cp report.html "discrepancies-${{ matrix.name }}.html"
           cp report.txt "discrepancies-${{ matrix.name }}.txt"
+          cp report.json "discrepancies-${{ matrix.name }}.json"
 
       - name: Upload discrepancy reports
         if: always() && steps.compare.outcome == 'failure'
@@ -1010,6 +1017,7 @@ jobs:
           path: |
             discrepancies-${{ matrix.name }}.html
             discrepancies-${{ matrix.name }}.txt
+            discrepancies-${{ matrix.name }}.json
           retention-days: 1
 
       - name: Report outcome
@@ -1126,18 +1134,46 @@ jobs:
         id: summary
         if: steps.check.outputs.count != '0'
         run: |
-          {
-            echo 'summary<<GH_REPORT_SUMMARY_EOF'
-            shopt -s nullglob
-            for f in ./discrepancies/*.txt; do
-              name=$(basename "$f" .txt)
-              name=${name#discrepancies-}
-              echo "===== ${name} ====="
-              cat "$f"
-              echo ""
-            done
-            echo 'GH_REPORT_SUMMARY_EOF'
-          } >> "$GITHUB_OUTPUT"
+          pip install --quiet tabulate
+          python3 << 'PYEOF'
+          import glob
+          import json
+          import os
+          from tabulate import tabulate
+
+          def split_string(s, size):
+              def _split(s, size):
+                  for pos in range(0, len(s), size):
+                      yield s[pos:pos + size]
+              return '\n'.join('\n'.join(_split(line, size)) for line in str(s).split('\n'))
+
+          rows = []
+          for fname in sorted(glob.glob('./discrepancies/*.json')):
+              with open(fname, encoding='utf-8') as f:
+                  rows.extend(json.load(f))
+
+          rows.sort(key=lambda r: str(r.get('code', '')).split('\n', 1)[0])
+
+          headers = ['test case', 'code', 'message', 'test count', 'expected count']
+          tab_report = [
+              [
+                  split_string(r.get('test case', ''), 18),
+                  split_string(r.get('code', ''), 18),
+                  split_string(r.get('message', ''), 65),
+                  split_string(r.get('test count', ''), 8),
+                  split_string(r.get('expected count', ''), 8),
+              ]
+              for r in rows
+          ]
+          summary_table = tabulate(tab_report, headers=headers, tablefmt='grid') if tab_report else 'No differences.'
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('summary<<GH_REPORT_SUMMARY_EOF\n')
+              out.write(summary_table + '\n')
+              out.write('GH_REPORT_SUMMARY_EOF\n')
+
+          print(f'Combined {len(rows)} discrepancy row(s) from {len(glob.glob("./discrepancies/*.json"))} report(s) into a single table, sorted by code.')
+          PYEOF
 
       - name: Delete staged per-test discrepancy artifacts
         if: always()
