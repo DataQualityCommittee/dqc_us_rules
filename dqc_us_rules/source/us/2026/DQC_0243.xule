@@ -37,9 +37,9 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify cashflow items using the meta taxonomy to identify items that are inflows and outflows.  Then identify if any of those items are tagged with the ConsolidationItemsAxis.  If so, then the rule is not satisfied. **/
  
-$cashflowItems = $CASH_OUTFLOWS + $CASH_INFLOWS - set(SegmentExpenditureAdditionToLongLivedAssets);
+$cashflowItems = $CASH_OUTFLOWS + $CASH_INFLOWS - set(SegmentExpenditureAdditionToLongLivedAssets, PaymentsForRestructuring);
 
-$badFact = {covered @concept in $cashflowItems  @srt:ConsolidationItemsAxis != srt:ReportableLegalEntitiesMember}
+$badFact = {covered @concept in $cashflowItems  @srt:ConsolidationItemsAxis not in list(srt:ReportableLegalEntitiesMember, srt:ConsolidationEliminationsMember)}
 
 exists($badFact)
 
@@ -64,7 +64,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify equity items using the meta taxonomy to identify items that are measures of equity.  Then identify if any of those items are tagged with the consolidated entities axis.  If so, then the rule is not satisfied. **/
 
-$equityItems = $EQUITY_ITEMS;
+$equityItems = $EQUITY_ITEMS - set(StockholdersEquity);
 
 $badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis != srt:ReportableLegalEntitiesMember}
 
