@@ -89,6 +89,7 @@ def sync(dry_run=False, travis_file=None, tests_json=None):
 
     existing_fps = {fingerprint(e) for e in existing}
     existing_by_name = {e["name"]: i for i, e in enumerate(existing)}
+    travis_names = {entry["name"] for entry in travis_entries}
 
     added = []
     updated = []
@@ -112,12 +113,19 @@ def sync(dry_run=False, travis_file=None, tests_json=None):
             existing_fps.add(fp)
             added.append(entry["name"])
 
+    removed = [e["name"] for e in existing if e["name"] not in travis_names]
+    existing = [e for e in existing if e["name"] in travis_names]
+
     existing = new_entries + existing
 
-    if not added and not updated:
+    if not added and not updated and not removed:
         print("No new test sets found. JSON is already in sync.")
         return False
 
+    if removed:
+        print(f"Removed {len(removed)} stale test set(s) no longer in .travis.yml:")
+        for name in removed:
+            print(f"  - {name}")
     if updated:
         print(f"Updated {len(updated)} existing test set(s):")
         for name in updated:

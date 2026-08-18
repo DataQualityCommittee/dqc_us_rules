@@ -22,22 +22,27 @@ This document describes the two-stage process for keeping the `.travis.yml` matr
 
 Each active `- INFILES` line corresponds to one Travis CI job. Commented lines (`##-`, `#-`) are skipped by Travis CI but preserved for reference. Lines run in the order they appear; job numbers are assigned left-to-right through active lines only.
 
-**Current ordering convention (after last maintenance run):**
+**Current ordering convention (as of 2026-08-17):**
+
+No `#-` triage-hold or dedup-hold lines are currently present — the matrix consists solely of active `- INFILES` lines. The `V31` line has been populated from `v31.csv` with 6 new `DQC.US.0245.10947` test pairs (tickers resolved via SEC EDGAR CIK lookup); corresponding Arelle commands to generate their `$EXPECTED` output live in `run_v31_dqc.bat`.
 
 | Line | Prefix | Label | Pairs |
 |------|--------|-------|-------|
-| 20 | `#-` | Failing pairs (triage hold) | 7 |
-| 22 | `#-` | Duplicated US rule tests (dedup hold) | 46 |
-| 24 | `-` | OK as fail | 3 |
-| 26 | `-` | US GAAP 2026 | 5 |
-| 28 | `-` | US GAAP 2025 | 39 |
-| 30 | `-` | US GAAP roll to 2025 (roll 1) | 98 |
-| 32 | `-` | US GAAP roll to 2025 (roll 2) | 92 |
-| 34 | `-` | US GAAP 2024 | 114 |
-| 36 | `-` | US GAAP 2023 | 9 |
-| 38 | `-` | IFRS 2025 | 1 |
-| 40 | `-` | IFRS 2024 | 37 |
-| 42 | `-` | IFRS 2023 | 27 |
+| 21 | `-` | V31 | 6 |
+| 23 | `-` | US GAAP 2026 | 49 |
+| 25 | `-` | US GAAP 2025 | 62 |
+| 27 | `-` | US GAAP 2025 | 64 |
+| 29 | `-` | US GAAP 2025 | 77 |
+| 31 | `-` | US GAAP roll to 2025 (roll 1) | 49 |
+| 32 | `-` | US GAAP roll to 2025 (roll 2) | 49 |
+| 34 | `-` | US GAAP roll to 2025 (roll 3) | 45 |
+| 36 | `-` | US GAAP roll to 2025 (roll 4) | 46 |
+| 38 | `-` | US GAAP 2024 | 68 |
+| 40 | `-` | US GAAP 2024 | 48 |
+| 42 | `-` | US GAAP 2024 | 62 |
+| 44 | `-` | US GAAP 2023 | 9 |
+| 46 | `-` | IFRS 2025 & 2024 | 37 |
+| 48 | `-` | IFRS 2023 | 27 |
 
 ---
 

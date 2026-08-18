@@ -37,9 +37,23 @@ else
 
     $BDC_Ext_enum = sum(list([covered @concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+     /** Determine if they have used keys **/
 
-    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
+    $BDC_Key_Values = filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item
+
+    /** Get the local names of the keys used **/
+
+    $BDC_IND = (filter $BDC_Key_Values returns get_dim_key_value($item, "TYP")).to-set
+
+    /** Switch to localNames **/
+
+    $Get_Domain_Members_LocalNames = filter $Get_Domain_Members returns $item.local-name
+
+    $BDC_Ext_enum_LocalNames = if $BDC_Ext_enum.length > 0  ((filter $BDC_Ext_enum returns $item.local-name) + $BDC_IND) else $BDC_IND
+
+    $intersectingDebt = $BDC_Ext_enum_LocalNames.intersect($Get_Domain_Members_LocalNames)
+
+    $NoTotalForInvestmentType = $BDC_Ext_enum_LocalNames - $intersectingDebt
 
     $NoTotalForInvestmentType.length > 0
 
@@ -87,9 +101,23 @@ else
 
     $BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
-    $intersectingDebt = $BDC_Ext_enum.intersect($Get_Domain_Members)
+    /** Determine if they have used keys **/
 
-    $NoTotalForInvestmentType = $BDC_Ext_enum - $intersectingDebt
+    $BDC_Key_Values = filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item
+
+    /** Get the local names of the keys used **/
+
+    $BDC_IND = (filter $BDC_Key_Values returns get_dim_key_value($item, "IND")).to-set
+
+    /** Switch to localNames **/
+
+    $Get_Domain_Members_LocalNames = filter $Get_Domain_Members returns $item.local-name
+
+    $BDC_Ext_enum_LocalNames = if $BDC_Ext_enum.length > 0  ((filter $BDC_Ext_enum returns $item.local-name) + $BDC_IND) else $BDC_IND
+
+    $intersectingDebt = $BDC_Ext_enum_LocalNames.intersect($Get_Domain_Members_LocalNames)
+
+    $NoTotalForInvestmentType = $BDC_Ext_enum_LocalNames - $intersectingDebt
 
     $NoTotalForInvestmentType.length > 0
 
