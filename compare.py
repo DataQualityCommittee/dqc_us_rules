@@ -36,6 +36,8 @@ def options():
                         help='File name of text version of compare results.')
     parser.add_argument('--html-file', dest='html_file',
                         help='File name of html version of compare results')
+    parser.add_argument('--test-case', dest='test_case', default='',
+                        help='Label for the test case being compared, added as a "Test Case" column in the text report.')
 
     args = parser.parse_args()
 
@@ -163,14 +165,14 @@ def write_table_report(report, args):
         tab_report = []
         # Filter headers to exclude the specified columns
         excluded_columns = {'severity', 'test file', 'expected file', 'key message'}  # Exclude specific columns
-        headers = [col for col in report[0] if col not in excluded_columns]
+        headers = ['test case'] + [col for col in report[0] if col not in excluded_columns]
         for row in report[1:]:  # Skip the headers row
             # Combine 'code' and 'expected file' into a single column
             if row[5]:  # Check if 'expected file' exists
                 combined_code = f"{row[0]} \n\nExpected file: \n {row[5]}"
             else:
                 combined_code = row[0]
-            tab_row = []
+            tab_row = [split_string(args.test_case, 18)]
             for i, col in enumerate(report[0]):
                 if col in excluded_columns:
                     continue  # Skip excluded columns
@@ -180,7 +182,7 @@ def write_table_report(report, args):
                     tab_row.append(split_string(str(row[i]), 65))  # Set width to 60
                 else:
                     tab_row.append(split_string(str(combined_code if i == 0 else row[i]), 18))
-                tab_report.append(tab_row)
+            tab_report.append(tab_row)
 
         # Generate the table and write it to the file or print it
         report_table = tabulate.tabulate(tab_report, headers=headers, tablefmt='grid')
