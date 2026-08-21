@@ -35,7 +35,8 @@ jobs:
           set +e
           python scripts/tests/synctestsets.py --dry-run \
             --travis target/.travis.yml \
-            --tests target/tests/secvalidationtests.json
+            --tests target/tests/secvalidationtests.json \
+            --summary-json sync-summary.json
           RESULT=$?
           set -e
           if [ $RESULT -eq 2 ]; then
@@ -63,3 +64,127 @@ jobs:
           git add tests/secvalidationtests.json
           git commit -m "Sync secvalidationtests.json with .travis.yml matrix"
           git push
+
+      - name: Report structural check and sync changes
+        if: always()
+        run: |
+          python3 << 'PYEOF'
+          import difflib
+          import json
+          import os
+
+          MAX_BLOCK_LINES = 200
+
+          def truncated(block_lines):
+              """Cap a code-block body so one huge entry can't blow out the summary."""
+              if len(block_lines) <= MAX_BLOCK_LINES:
+                  return block_lines
+              return block_lines[:MAX_BLOCK_LINES] + [f'... truncated ({len(block_lines) - MAX_BLOCK_LINES} more line(s)) ...']
+
+          summary_path = 'sync-summary.json'
+          lines = []
+
+          if not os.path.exists(summary_path):
+              lines.append('## Sync Test Sets from Travis')
+              lines.append('')
+              lines.append('_No summary data available — the sync script did not get far enough to produce one. Check the "Run sync script" step logs._')
+          else:
+              with open(summary_path) as f:
+                  data = json.load(f)
+
+              issues = data.get('structural_issues', [])
+              added = data.get('added', [])
+              updated = data.get('updated', [])
+              added_details = data.get('added_details', [])
+              updated_details = data.get('updated_details', [])
+
+              lines.append('## .travis.yml Structural Check')
+              lines.append('')
+              if issues:
+                  lines.append(f'Found **{len(issues)}** issue(s) — every `INFILES` entry should have a populated `file` and `xule_run_only`, one `EXFILES` entry per `INFILES` entry, and each `xule_run_only` code should appear in its paired `EXFILES` name:')
+                  lines.append('')
+                  lines.append('| Row | Line | Issue |')
+                  lines.append('|-----|------|-------|')
+                  for issue in issues:
+                      row = str(issue.get('row', '')).replace('|', '\\|')
+                      msg = str(issue.get('issue', '')).replace('|', '\\|')
+                      lines.append(f"| {row} | {issue.get('line', '')} | {msg} |")
+              else:
+                  lines.append('No structural issues found — every `INFILES` entry has a matching `EXFILES` entry.')
+
+              lines.append('')
+              lines.append('## Test Set Changes')
+              lines.append('')
+              if not added and not updated:
+                  lines.append('No changes — `secvalidationtests.json` is already in sync with `.travis.yml`.')
+              else:
+                  if updated_details:
+                      lines.append(f'**Updated ({len(updated_details)}):**')
+                      lines.append('')
+                      for item in updated_details:
+                          before, after = item['before'], item['after']
+
+                          exfiles_before = [x.strip() for x in before['exfiles'].split(',') if x.strip()]
+                          exfiles_after = [x.strip() for x in after['exfiles'].split(',') if x.strip()]
+                          exfiles_diff = list(difflib.unified_diff(
+                              exfiles_before, exfiles_after,
+                              fromfile='before', tofile='after', lineterm='',
+                          ))
+
+                          infiles_before = json.dumps(before['infiles'], indent=2).splitlines()
+                          infiles_after = json.dumps(after['infiles'], indent=2).splitlines()
+                          infiles_diff = list(difflib.unified_diff(
+                              infiles_before, infiles_after,
+                              fromfile='before', tofile='after', lineterm='',
+                          ))
+
+                          lines.append(f"<details><summary>~ {item['name']}</summary>")
+                          lines.append('')
+                          lines.append('_exfiles:_')
+                          lines.append('')
+                          if exfiles_diff:
+                              lines.append('```diff')
+                              lines.extend(truncated(exfiles_diff))
+                              lines.append('```')
+                          else:
+                              lines.append('_unchanged_')
+                          lines.append('')
+                          lines.append('_infiles:_')
+                          lines.append('')
+                          if infiles_diff:
+                              lines.append('```diff')
+                              lines.extend(truncated(infiles_diff))
+                              lines.append('```')
+                          else:
+                              lines.append('_unchanged_')
+                          lines.append('')
+                          lines.append('</details>')
+                          lines.append('')
+                  if added_details:
+                      lines.append(f'**Added ({len(added_details)}):**')
+                      lines.append('')
+                      for item in added_details:
+                          entry = item['entry']
+                          exfiles_list = [x.strip() for x in entry['exfiles'].split(',') if x.strip()]
+                          infiles_json = json.dumps(entry['infiles'], indent=2).splitlines()
+
+                          lines.append(f"<details><summary>+ {item['name']}</summary>")
+                          lines.append('')
+                          lines.append('_exfiles:_')
+                          lines.append('')
+                          lines.append('```')
+                          lines.extend(truncated(exfiles_list))
+                          lines.append('```')
+                          lines.append('')
+                          lines.append('_infiles:_')
+                          lines.append('')
+                          lines.append('```json')
+                          lines.extend(truncated(infiles_json))
+                          lines.append('```')
+                          lines.append('')
+                          lines.append('</details>')
+                          lines.append('')
+
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('\n'.join(lines) + '\n')
+          PYEOF
