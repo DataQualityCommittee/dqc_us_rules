@@ -175,16 +175,20 @@ jobs:
 
           if [ -z "$BASE" ]; then
             echo "No base_commit provided — finding last commit that recompiled the ruleset .zip files..."
-            # The 'commit' job pushes a commit titled "Recompile ..." or "Recompile and
-            # test ..." whenever it actually regenerates the .zip files (as opposed to
-            # "Test ruleset .zip files ..." from a skip_compilation=true run, which
-            # doesn't recompile anything). A workflow run finishing status=success is
-            # NOT equivalent to this — a run can succeed without compiling at all (e.g.
-            # test-only runs, or a run that found zero changes) — and even when it does
-            # compile, the run's head_sha is the commit it started FROM, not the commit
-            # it produced. So walk local history for that commit message instead of
-            # querying the Actions API for the last successful run.
-            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ Recompile( and test)? ruleset \.zip files ' | cut -d' ' -f1 || true)
+            # The 'commit' job pushes a commit titled "Full recompile ruleset .zip ..."
+            # or "Partial recompile ruleset .zip ..." whenever it actually regenerates
+            # the .zip files (as opposed to "Test ruleset .zip files ..." from a
+            # skip_compilation=true run, which doesn't recompile anything). Older
+            # commits from before this title format changed used "Recompile ruleset
+            # .zip files ..." / "Recompile and test ruleset .zip files ..." — matched
+            # too, so history predating the change still resolves. A workflow run
+            # finishing status=success is NOT equivalent to this — a run can succeed
+            # without compiling at all (e.g. test-only runs, or a run that found zero
+            # changes) — and even when it does compile, the run's head_sha is the
+            # commit it started FROM, not the commit it produced. So walk local
+            # history for the commit message instead of querying the Actions API for
+            # the last successful run.
+            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ ((Full|Partial) recompile ruleset \.zip |Recompile( and test)? ruleset \.zip files )' | cut -d' ' -f1 || true)
             if [ -n "$LAST_COMPILE_SHA" ]; then
               echo "Last compile commit: $LAST_COMPILE_SHA"
               BASE="$LAST_COMPILE_SHA"
@@ -1255,7 +1259,7 @@ jobs:
   # ──────────────────────────────────────────────
   commit:
     name: Commit all rulesets
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
+    needs: [detect-changes, build-test-matrix, compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
     if: >-
       always()
       && inputs.skip_compilation == false
@@ -1323,20 +1327,63 @@ jobs:
           EDGAR_VERSION: ${{ inputs.edgar_version }}
           TEST_MODE: ${{ inputs.test_mode }}
           SKIP_COMPILATION: ${{ inputs.skip_compilation }}
+          IS_FULL_REBUILD: ${{ needs.detect-changes.outputs.is_full_rebuild }}
+          HAS_TESTS: ${{ needs.build-test-matrix.outputs.has_tests }}
+          CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
         run: |
           COMMIT_VERSION="v${RULE_VERSION}"
+
           if [ "$SKIP_COMPILATION" = "true" ]; then
-            ACTION="Test"
-          elif [ "$TEST_MODE" = "none" ]; then
-            ACTION="Recompile"
+            # No compilation happened at all — existing .zip files were only tested.
+            ACTION="Test ruleset .zip files"
           else
-            ACTION="Recompile and test"
+            # Recompile scope: 'all'/'none' test_mode always compiles every source
+            # directory (full); test_mode='changed' compiles only the directories
+            # detect-changes found touched, unless a base-taxonomy/constants/etc.
+            # change forced a full rebuild.
+            if [ "$TEST_MODE" != "changed" ] || [ "$IS_FULL_REBUILD" = "true" ]; then
+              RECOMPILE_SCOPE="Full"
+            else
+              RECOMPILE_SCOPE="Partial"
+            fi
+
+            # Test scope: 'none' never tests; 'all' always runs every test; 'changed'
+            # runs every test only if a full-rebuild-triggering file was touched
+            # (CHANGED_RULES_JSON contains "__ALL__"), a subset of tests if specific
+            # rules matched (partial), or no tests if nothing matched.
+            IS_FULL_TEST="false"
+            case "$CHANGED_RULES_JSON" in
+              *'"__ALL__"'*) IS_FULL_TEST="true" ;;
+            esac
+
+            if [ "$TEST_MODE" = "none" ] || { [ "$TEST_MODE" = "changed" ] && [ "$HAS_TESTS" != "true" ]; }; then
+              TEST_SCOPE="none"
+            elif [ "$TEST_MODE" = "all" ] || { [ "$TEST_MODE" = "changed" ] && [ "$IS_FULL_TEST" = "true" ]; }; then
+              TEST_SCOPE="full"
+            else
+              TEST_SCOPE="partial"
+            fi
+
+            if [ "$RECOMPILE_SCOPE" = "Full" ]; then
+              case "$TEST_SCOPE" in
+                partial) ACTION="Full recompile ruleset .zip and partial test" ;;
+                full)    ACTION="Full recompile ruleset .zip and test" ;;
+                none)    ACTION="Full recompile ruleset .zip and no testing" ;;
+              esac
+            else
+              case "$TEST_SCOPE" in
+                partial) ACTION="Partial recompile ruleset .zip and test" ;;
+                full)    ACTION="Partial recompile ruleset .zip and full test" ;;
+                none)    ACTION="Partial recompile ruleset .zip no testing" ;;
+              esac
+            fi
           fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          COMMIT_MSG="${ACTION} ruleset .zip files ${COMMIT_VERSION}"
+          COMMIT_MSG="${ACTION} ${COMMIT_VERSION}"
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}"
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
