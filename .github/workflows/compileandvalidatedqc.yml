@@ -170,30 +170,37 @@ jobs:
         id: analyze
         env:
           BASE_COMMIT: ${{ inputs.base_commit }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
         run: |
           BASE="$BASE_COMMIT"
 
           if [ -z "$BASE" ]; then
-            echo "No base_commit provided — finding last successful run..."
-            LAST_SUCCESS_SHA=$(
-              gh api \
-                "repos/$REPO/actions/workflows/compileandvalidatedqc.yml/runs?status=success&per_page=1&branch=$BRANCH" \
-                --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || true
-            )
-            if [ -n "$LAST_SUCCESS_SHA" ]; then
-              echo "Last successful run commit: $LAST_SUCCESS_SHA"
-              BASE="$LAST_SUCCESS_SHA"
+            echo "No base_commit provided — finding last commit that recompiled the ruleset .zip files..."
+            # The 'commit' job pushes a commit titled "Recompile ..." or "Recompile and
+            # test ..." whenever it actually regenerates the .zip files (as opposed to
+            # "Test ruleset .zip files ..." from a skip_compilation=true run, which
+            # doesn't recompile anything). A workflow run finishing status=success is
+            # NOT equivalent to this — a run can succeed without compiling at all (e.g.
+            # test-only runs, or a run that found zero changes) — and even when it does
+            # compile, the run's head_sha is the commit it started FROM, not the commit
+            # it produced. So walk local history for that commit message instead of
+            # querying the Actions API for the last successful run.
+            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ Recompile( and test)? ruleset \.zip files ' | cut -d' ' -f1 || true)
+            if [ -n "$LAST_COMPILE_SHA" ]; then
+              echo "Last compile commit: $LAST_COMPILE_SHA"
+              BASE="$LAST_COMPILE_SHA"
             else
-              echo "No previous successful run found — falling back to HEAD~1"
+              echo "No previous compile commit found — falling back to HEAD~1"
               BASE="HEAD~1"
             fi
           fi
 
+          if ! git rev-parse --verify --quiet "${BASE}^{commit}" > /dev/null; then
+            echo "::warning::Base commit '$BASE' not found in this checkout's history (branch may have been rewritten or the commit is stale) — falling back to HEAD~1"
+            BASE="HEAD~1"
+          fi
+
           echo "Diffing $BASE..HEAD for .xule file changes..."
-          CHANGED_XULE=$(git diff --name-only "$BASE"..HEAD -- '*.xule' || true)
+          CHANGED_XULE=$(git diff --name-only "$BASE"..HEAD -- '*.xule')
 
           if [ -z "$CHANGED_XULE" ]; then
             echo "No .xule files changed."
@@ -315,6 +322,44 @@ jobs:
           cp -r /tmp/EDGAR "$SITE_PACKAGES/arelle/plugin/"
           rm -rf /tmp/EDGAR
 
+      - name: Restore Arelle web cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.config/arelle/cache
+          key: arelle-webcache-${{ hashFiles('dqc_us_rules/source/**/base-taxonomy*.xule', 'dqc_us_rules/source/**/namespace*.xule') }}
+          restore-keys: |
+            arelle-webcache-
+
+      - name: Warm Arelle web cache (external taxonomy schemas)
+        run: |
+          # Compilation and validation pull remote taxonomy schemas (notably from
+          # xbrl.ifrs.org, which intermittently rejects the TLS handshake). Pre-loading
+          # each known entry point here — and persisting the result via actions/cache —
+          # means compile-fresh/validate-fresh jobs mostly hit a warm local cache instead
+          # of depending on a live fetch on every run.
+          # Some years' source files reference the entry point over plain http
+          # (e.g. 2020, 2021, 2023) instead of https, so both schemes must be matched
+          # or those years silently never get warmed.
+          ENTRY_POINTS=$(grep -rhoE "https?://xbrl\.ifrs\.org/taxonomy/[0-9-]+/[a-zA-Z_]+_entry_point[^']*\.xsd" dqc_us_rules/source | sort -u)
+          echo "Entry points to warm:"
+          echo "$ENTRY_POINTS"
+          for url in $ENTRY_POINTS; do
+            echo "::group::Warming $url"
+            ok=false
+            for attempt in 1 2 3; do
+              if python -m arelle.CntlrCmdLine --file "$url" --logFile /tmp/warm-cache.log; then
+                ok=true
+                break
+              fi
+              echo "Attempt $attempt failed, retrying in 10s..."
+              sleep 10
+            done
+            if [ "$ok" != true ]; then
+              echo "::warning::Could not warm cache for $url — compile/validate jobs will fall back to a live fetch."
+            fi
+            echo "::endgroup::"
+          done
+
       - name: Archive virtual environment
         run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
 
@@ -363,9 +408,9 @@ jobs:
           test_mode = os.environ.get('TEST_MODE', 'all')
           changed_dirs_raw = os.environ.get('CHANGED_DIRS', '')
 
-          changed_dirs = set()
-          if test_mode == 'changed' and changed_dirs_raw:
-              changed_dirs = set(json.loads(changed_dirs_raw))
+          changed_dirs = None
+          if test_mode == 'changed':
+              changed_dirs = set(json.loads(changed_dirs_raw)) if changed_dirs_raw else set()
               print(f'Filtering compilation to changed directories: {sorted(changed_dirs)}')
 
           taxonomy_filters = [t.strip() for t in taxonomy_input.split(',') if t.strip()]
@@ -385,7 +430,7 @@ jobs:
                   if 'all' not in year_filters and not any(year_dir == yf or year_dir.endswith(yf) for yf in year_filters):
                       continue
                   dir_key = f'{taxonomy}/{year_dir}'
-                  if test_mode == 'changed' and changed_dirs and dir_key not in changed_dirs:
+                  if changed_dirs is not None and dir_key not in changed_dirs:
                       continue
                   zip_name = f'dqc-{year_dir if taxonomy == "esef" else taxonomy + "-" + year_dir}-{version_tag}-ruleset.zip'
                   includes.append({
@@ -591,6 +636,14 @@ jobs:
       - name: Add virtual environment to PATH
         run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
 
+      - name: Restore Arelle web cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.config/arelle/cache
+          key: arelle-webcache-${{ hashFiles('dqc_us_rules/source/**/base-taxonomy*.xule', 'dqc_us_rules/source/**/namespace*.xule') }}
+          restore-keys: |
+            arelle-webcache-
+
       - name: Compile ruleset
         uses: ./.github/actions/compile-ruleset
         with:
@@ -749,7 +802,9 @@ jobs:
             --compare-file ./report.txt \
             --test-files ./log.xml \
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
-            --html-file ./report.html
+            --html-file ./report.html \
+            --json-file ./report.json \
+            --test-case "${{ matrix.name }}"
         continue-on-error: true
 
       - name: Print log.xml
@@ -772,15 +827,26 @@ jobs:
             log.xml
             report.txt
             report.html
+            report.json
           retention-days: 30
 
-      - name: Upload HTML report
+      - name: Copy discrepancy reports to uniquely named files
+        if: always() && steps.compare.outcome == 'failure'
+        run: |
+          cp report.html "discrepancies-${{ matrix.name }}.html"
+          cp report.txt "discrepancies-${{ matrix.name }}.txt"
+          cp report.json "discrepancies-${{ matrix.name }}.json"
+
+      - name: Upload discrepancy reports
         if: always() && steps.compare.outcome == 'failure'
         uses: actions/upload-artifact@v7
         with:
-          name: "discrepancies-${{ matrix.name }}.html"
-          path: report.html
-          retention-days: 30
+          name: "discrepancies-${{ matrix.name }}"
+          path: |
+            discrepancies-${{ matrix.name }}.html
+            discrepancies-${{ matrix.name }}.txt
+            discrepancies-${{ matrix.name }}.json
+          retention-days: 1
 
       - name: Report outcome
         if: always()
@@ -788,12 +854,6 @@ jobs:
           if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
             echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
           elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
-            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
             exit 1
           else
@@ -840,6 +900,14 @@ jobs:
 
       - name: Add virtual environment to PATH
         run: echo "${{ env.VENV_PATH }}/bin" >> "$GITHUB_PATH"
+
+      - name: Restore Arelle web cache
+        uses: actions/cache/restore@v6
+        with:
+          path: ~/.config/arelle/cache
+          key: arelle-webcache-${{ hashFiles('dqc_us_rules/source/**/base-taxonomy*.xule', 'dqc_us_rules/source/**/namespace*.xule') }}
+          restore-keys: |
+            arelle-webcache-
 
       - name: Download all compiled rulesets
         if: inputs.skip_compilation == false
@@ -967,7 +1035,9 @@ jobs:
             --compare-file ./report.txt \
             --test-files ./log.xml \
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
-            --html-file ./report.html
+            --html-file ./report.html \
+            --json-file ./report.json \
+            --test-case "${{ matrix.name }}"
         continue-on-error: true
 
       - name: Print log.xml
@@ -990,15 +1060,26 @@ jobs:
             log.xml
             report.txt
             report.html
+            report.json
           retention-days: 30
 
-      - name: Upload HTML report
+      - name: Copy discrepancy reports to uniquely named files
+        if: always() && steps.compare.outcome == 'failure'
+        run: |
+          cp report.html "discrepancies-${{ matrix.name }}.html"
+          cp report.txt "discrepancies-${{ matrix.name }}.txt"
+          cp report.json "discrepancies-${{ matrix.name }}.json"
+
+      - name: Upload discrepancy reports
         if: always() && steps.compare.outcome == 'failure'
         uses: actions/upload-artifact@v7
         with:
-          name: "discrepancies-${{ matrix.name }}.html"
-          path: report.html
-          retention-days: 30
+          name: "discrepancies-${{ matrix.name }}"
+          path: |
+            discrepancies-${{ matrix.name }}.html
+            discrepancies-${{ matrix.name }}.txt
+            discrepancies-${{ matrix.name }}.json
+          retention-days: 1
 
       - name: Report outcome
         if: always()
@@ -1006,17 +1087,168 @@ jobs:
           if [ "${{ steps.testdata.outputs.filing_count }}" = "0" ]; then
             echo "No filings matched changed rules for ${{ matrix.name }} — skipped."
           elif [ "${{ steps.compare.outcome }}" = "failure" ]; then
-            echo "### Discrepancies: ${{ matrix.name }}" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            cat report.txt >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
             exit 1
           else
             echo "All validation results match expected output for ${{ matrix.name }}."
           fi
+
+  # ──────────────────────────────────────────────
+  #  Combine failing validation HTML reports into one artifact
+  # ──────────────────────────────────────────────
+  combine-html-reports:
+    name: Combine discrepancy HTML reports
+    needs: [validate-prebuilt, validate-fresh]
+    if: always() && (needs.validate-prebuilt.result != 'skipped' || needs.validate-fresh.result != 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    outputs:
+      combined_artifact_url: ${{ steps.upload.outputs.artifact-url }}
+      report_summary: ${{ steps.summary.outputs.summary }}
+    steps:
+      - name: Download all discrepancy reports
+        continue-on-error: true
+        uses: actions/download-artifact@v7
+        with:
+          path: ./discrepancies
+          pattern: 'discrepancies-*'
+          merge-multiple: true
+
+      - name: Check for discrepancy reports
+        id: check
+        run: |
+          COUNT=$(find ./discrepancies -name '*.html' -type f 2>/dev/null | wc -l)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "Found $COUNT discrepancy HTML report(s)."
+
+      - name: Stitch discrepancy HTML reports into one file, sorted by code
+        id: stitch
+        if: steps.check.outputs.count != '0'
+        run: |
+          python3 << 'PYEOF'
+          import glob
+          import html
+          import re
+
+          row_re = re.compile(r'<tr>.*?</tr>', re.S)
+          cell_re = re.compile(r'<t[hd][^>]*>(.*?)</t[hd]>', re.S)
+
+          header = None
+          rows = []  # (sort_key, row_html)
+
+          for fname in sorted(glob.glob('./discrepancies/*.html')):
+              label = fname.rsplit('/', 1)[-1]
+              if label.endswith('.html'):
+                  label = label[:-len('.html')]
+              if label.startswith('discrepancies-'):
+                  label = label[len('discrepancies-'):]
+
+              with open(fname, encoding='utf-8') as f:
+                  content = f.read()
+              trs = row_re.findall(content)
+              if not trs:
+                  continue
+              if header is None:
+                  header = trs[0].replace('<tr>', '<tr><th>test case</th>', 1)
+              for tr in trs[1:]:
+                  cell_match = cell_re.search(tr)
+                  code_html = cell_match.group(1) if cell_match else ''
+                  code_text = re.split(r'<br\s*/?>', code_html, maxsplit=1)[0].strip()
+                  tr_with_label = tr.replace('<tr>', f"<tr><td valign='top'>{html.escape(label)}</td>", 1)
+                  rows.append((code_text, tr_with_label))
+
+          rows.sort(key=lambda r: r[0])
+
+          html_start = """<html><head><style>
+          table {
+              border-collapse: collapse;
+          }
+
+          table, th, td {
+              border: 1px solid black;
+          }
+                      </style></head><body><table>"""
+          html_end = '</table></body></html>'
+
+          with open('combined-discrepancies.html', 'w', encoding='utf-8') as out:
+              out.write(html_start)
+              if header:
+                  out.write(header)
+              for _, tr in rows:
+                  out.write(tr)
+              out.write(html_end)
+
+          print(f'Stitched {len(rows)} discrepancy row(s) from the downloaded reports, sorted by code.')
+          PYEOF
+
+      - name: Upload combined discrepancies artifact
+        id: upload
+        if: steps.check.outputs.count != '0'
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.run_id }}"
+          path: combined-discrepancies.html
+          retention-days: 30
+
+      - name: Build combined discrepancy text summary
+        id: summary
+        if: steps.check.outputs.count != '0'
+        run: |
+          pip install --quiet tabulate
+          python3 << 'PYEOF'
+          import glob
+          import json
+          import os
+          from tabulate import tabulate
+
+          def split_string(s, size):
+              def _split(s, size):
+                  for pos in range(0, len(s), size):
+                      yield s[pos:pos + size]
+              return '\n'.join('\n'.join(_split(line, size)) for line in str(s).split('\n'))
+
+          rows = []
+          for fname in sorted(glob.glob('./discrepancies/*.json')):
+              with open(fname, encoding='utf-8') as f:
+                  rows.extend(json.load(f))
+
+          rows.sort(key=lambda r: str(r.get('code', '')).split('\n', 1)[0])
+
+          headers = ['test case', 'code', 'message', 'test count', 'expected count']
+          tab_report = [
+              [
+                  split_string(r.get('test case', ''), 18),
+                  split_string(r.get('code', ''), 18),
+                  split_string(r.get('message', ''), 65),
+                  split_string(r.get('test count', ''), 8),
+                  split_string(r.get('expected count', ''), 8),
+              ]
+              for r in rows
+          ]
+          summary_table = tabulate(tab_report, headers=headers, tablefmt='grid') if tab_report else 'No differences.'
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('summary<<GH_REPORT_SUMMARY_EOF\n')
+              out.write(summary_table + '\n')
+              out.write('GH_REPORT_SUMMARY_EOF\n')
+
+          print(f'Combined {len(rows)} discrepancy row(s) from {len(glob.glob("./discrepancies/*.json"))} report(s) into a single table, sorted by code.')
+          PYEOF
+
+      - name: Delete staged per-test discrepancy artifacts
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          gh api "repos/$REPO/actions/runs/$RUN_ID/artifacts?per_page=100" --paginate \
+            --jq '.artifacts[] | select(.name | startswith("discrepancies-")) | .id' | \
+          while read -r artifact_id; do
+            echo "Deleting staged artifact $artifact_id"
+            gh api -X DELETE "repos/$REPO/actions/artifacts/$artifact_id" || true
+          done
 
   # ──────────────────────────────────────────────
   #  Commit compiled rulesets
@@ -1115,30 +1347,57 @@ jobs:
   # ──────────────────────────────────────────────
   final-status:
     name: Final status
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit]
+    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit, combine-html-reports]
     if: always()
     runs-on: ubuntu-latest
     steps:
+      - name: Print combined discrepancy report
+        if: needs.combine-html-reports.outputs.report_summary != ''
+        env:
+          COMBINED_ARTIFACT_URL: ${{ needs.combine-html-reports.outputs.combined_artifact_url }}
+          REPORT_SUMMARY: ${{ needs.combine-html-reports.outputs.report_summary }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          {
+            echo "### Failing Validation Reports"
+            echo ""
+            if [ -n "$COMBINED_ARTIFACT_URL" ]; then
+              echo "[Download combined HTML reports](${COMBINED_ARTIFACT_URL})"
+            else
+              echo "Combined HTML reports: see artifacts on the [workflow run](${RUN_URL})"
+            fi
+            echo ""
+            echo '```'
+            echo "$REPORT_SUMMARY"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Write status badge
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           HAS_FAILURE: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
         run: |
           if [ "$HAS_FAILURE" = "true" ]; then
-            COLOR="%23e5534b"
+            COLOR="e5534b"
             LABEL="Failed"
           else
-            COLOR="%2357ab5a"
+            COLOR="57ab5a"
             LABEL="Passed"
           fi
-          W_VALUE=$(( ${#LABEL} * 8 + 16 ))
-          W_TOTAL=$(( 90 + W_VALUE ))
-          X_VALUE=$(( 90 + W_VALUE / 2 ))
-          BADGE_HTML="<a href=\"${RUN_URL}\"><img src=\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${W_TOTAL}' height='20'%3E%3ClinearGradient id='b' x2='0' y2='100%25'%3E%3Cstop offset='0' stop-color='%23bbb' stop-opacity='.1'/%3E%3Cstop offset='1' stop-opacity='.1'/%3E%3C/linearGradient%3E%3Cmask id='a'%3E%3Crect width='${W_TOTAL}' height='20' rx='3' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23a)'%3E%3Crect width='90' height='20' fill='%23555'/%3E%3Crect x='90' width='${W_VALUE}' height='20' fill='${COLOR}'/%3E%3Crect width='${W_TOTAL}' height='20' fill='url(%23b)'/%3E%3C/g%3E%3Cg fill='%23fff' text-anchor='middle' font-family='DejaVu Sans,Verdana,Geneva,sans-serif' font-size='11'%3E%3Ctext x='45' y='15' fill='%23010101' fill-opacity='.3'%3Eworkflow%3C/text%3E%3Ctext x='45' y='14'%3Eworkflow%3C/text%3E%3Ctext x='${X_VALUE}' y='15' fill='%23010101' fill-opacity='.3'%3E${LABEL}%3C/text%3E%3Ctext x='${X_VALUE}' y='14'%3E${LABEL}%3C/text%3E%3C/g%3E%3C/svg%3E\" alt=\"Workflow ${LABEL}\" /></a>"
+          BADGE_SRC="https://img.shields.io/badge/workflow-${LABEL}-${COLOR}"
+          BADGE_HTML="<a href=\"${RUN_URL}\"><img src=\"${BADGE_SRC}\" alt=\"Workflow ${LABEL}\" /></a>"
+          BADGE_MD="[![Workflow ${LABEL}](${BADGE_SRC})](${RUN_URL})"
           {
             echo "### Status Badge HTML"
             echo ""
             echo '```html'
             echo "$BADGE_HTML"
             echo '```'
+            echo ""
+            echo "### Status Badge Markdown"
+            echo ""
+            echo '```md'
+            echo "$BADGE_MD"
+            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
