@@ -35,7 +35,8 @@ jobs:
           set +e
           python scripts/tests/synctestsets.py --dry-run \
             --travis target/.travis.yml \
-            --tests target/tests/secvalidationtests.json
+            --tests target/tests/secvalidationtests.json \
+            --summary-json sync-summary.json
           RESULT=$?
           set -e
           if [ $RESULT -eq 2 ]; then
@@ -63,3 +64,92 @@ jobs:
           git add tests/secvalidationtests.json
           git commit -m "Sync secvalidationtests.json with .travis.yml matrix"
           git push
+
+      - name: Report structural check and sync changes
+        if: always()
+        run: |
+          python3 << 'PYEOF'
+          import difflib
+          import json
+          import os
+
+          MAX_BLOCK_LINES = 200
+
+          def truncated(block_lines):
+              """Cap a code-block body so one huge entry can't blow out the summary."""
+              if len(block_lines) <= MAX_BLOCK_LINES:
+                  return block_lines
+              return block_lines[:MAX_BLOCK_LINES] + [f'... truncated ({len(block_lines) - MAX_BLOCK_LINES} more line(s)) ...']
+
+          summary_path = 'sync-summary.json'
+          lines = []
+
+          if not os.path.exists(summary_path):
+              lines.append('## Sync Test Sets from Travis')
+              lines.append('')
+              lines.append('_No summary data available — the sync script did not get far enough to produce one. Check the "Run sync script" step logs._')
+          else:
+              with open(summary_path) as f:
+                  data = json.load(f)
+
+              issues = data.get('structural_issues', [])
+              added = data.get('added', [])
+              updated = data.get('updated', [])
+              added_details = data.get('added_details', [])
+              updated_details = data.get('updated_details', [])
+
+              lines.append('## .travis.yml Structural Check')
+              lines.append('')
+              if issues:
+                  lines.append(f'Found **{len(issues)}** issue(s) — every `INFILES` entry should have a populated `file` and `xule_run_only`, one `EXFILES` entry per `INFILES` entry, and each `xule_run_only` code should appear in its paired `EXFILES` name:')
+                  lines.append('')
+                  lines.append('| Row | Line | Issue |')
+                  lines.append('|-----|------|-------|')
+                  for issue in issues:
+                      row = str(issue.get('row', '')).replace('|', '\\|')
+                      msg = str(issue.get('issue', '')).replace('|', '\\|')
+                      lines.append(f"| {row} | {issue.get('line', '')} | {msg} |")
+              else:
+                  lines.append('No structural issues found — every `INFILES` entry has a matching `EXFILES` entry.')
+
+              lines.append('')
+              lines.append('## Test Set Changes')
+              lines.append('')
+              if not added and not updated:
+                  lines.append('No changes — `secvalidationtests.json` is already in sync with `.travis.yml`.')
+              else:
+                  if updated_details:
+                      lines.append(f'**Updated ({len(updated_details)}):**')
+                      lines.append('')
+                      for item in updated_details:
+                          before_json = json.dumps(item['before'], indent=2).splitlines()
+                          after_json = json.dumps(item['after'], indent=2).splitlines()
+                          diff = list(difflib.unified_diff(
+                              before_json, after_json,
+                              fromfile='before', tofile='after', lineterm='',
+                          ))
+                          lines.append(f"<details><summary>~ {item['name']}</summary>")
+                          lines.append('')
+                          lines.append('```diff')
+                          lines.extend(truncated(diff))
+                          lines.append('```')
+                          lines.append('')
+                          lines.append('</details>')
+                          lines.append('')
+                  if added_details:
+                      lines.append(f'**Added ({len(added_details)}):**')
+                      lines.append('')
+                      for item in added_details:
+                          entry_json = json.dumps(item['entry'], indent=2).splitlines()
+                          lines.append(f"<details><summary>+ {item['name']}</summary>")
+                          lines.append('')
+                          lines.append('```json')
+                          lines.extend(truncated(entry_json))
+                          lines.append('```')
+                          lines.append('')
+                          lines.append('</details>')
+                          lines.append('')
+
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('\n'.join(lines) + '\n')
+          PYEOF

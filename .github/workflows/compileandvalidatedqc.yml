@@ -170,30 +170,37 @@ jobs:
         id: analyze
         env:
           BASE_COMMIT: ${{ inputs.base_commit }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          BRANCH: ${{ github.ref_name }}
         run: |
           BASE="$BASE_COMMIT"
 
           if [ -z "$BASE" ]; then
-            echo "No base_commit provided — finding last successful run..."
-            LAST_SUCCESS_SHA=$(
-              gh api \
-                "repos/$REPO/actions/workflows/compileandvalidatedqc.yml/runs?status=success&per_page=1&branch=$BRANCH" \
-                --jq '.workflow_runs[0].head_sha // empty' 2>/dev/null || true
-            )
-            if [ -n "$LAST_SUCCESS_SHA" ]; then
-              echo "Last successful run commit: $LAST_SUCCESS_SHA"
-              BASE="$LAST_SUCCESS_SHA"
+            echo "No base_commit provided — finding last commit that recompiled the ruleset .zip files..."
+            # The 'commit' job pushes a commit titled "Recompile ..." or "Recompile and
+            # test ..." whenever it actually regenerates the .zip files (as opposed to
+            # "Test ruleset .zip files ..." from a skip_compilation=true run, which
+            # doesn't recompile anything). A workflow run finishing status=success is
+            # NOT equivalent to this — a run can succeed without compiling at all (e.g.
+            # test-only runs, or a run that found zero changes) — and even when it does
+            # compile, the run's head_sha is the commit it started FROM, not the commit
+            # it produced. So walk local history for that commit message instead of
+            # querying the Actions API for the last successful run.
+            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ Recompile( and test)? ruleset \.zip files ' | cut -d' ' -f1 || true)
+            if [ -n "$LAST_COMPILE_SHA" ]; then
+              echo "Last compile commit: $LAST_COMPILE_SHA"
+              BASE="$LAST_COMPILE_SHA"
             else
-              echo "No previous successful run found — falling back to HEAD~1"
+              echo "No previous compile commit found — falling back to HEAD~1"
               BASE="HEAD~1"
             fi
           fi
 
+          if ! git rev-parse --verify --quiet "${BASE}^{commit}" > /dev/null; then
+            echo "::warning::Base commit '$BASE' not found in this checkout's history (branch may have been rewritten or the commit is stale) — falling back to HEAD~1"
+            BASE="HEAD~1"
+          fi
+
           echo "Diffing $BASE..HEAD for .xule file changes..."
-          CHANGED_XULE=$(git diff --name-only "$BASE"..HEAD -- '*.xule' || true)
+          CHANGED_XULE=$(git diff --name-only "$BASE"..HEAD -- '*.xule')
 
           if [ -z "$CHANGED_XULE" ]; then
             echo "No .xule files changed."
@@ -401,9 +408,9 @@ jobs:
           test_mode = os.environ.get('TEST_MODE', 'all')
           changed_dirs_raw = os.environ.get('CHANGED_DIRS', '')
 
-          changed_dirs = set()
-          if test_mode == 'changed' and changed_dirs_raw:
-              changed_dirs = set(json.loads(changed_dirs_raw))
+          changed_dirs = None
+          if test_mode == 'changed':
+              changed_dirs = set(json.loads(changed_dirs_raw)) if changed_dirs_raw else set()
               print(f'Filtering compilation to changed directories: {sorted(changed_dirs)}')
 
           taxonomy_filters = [t.strip() for t in taxonomy_input.split(',') if t.strip()]
@@ -423,7 +430,7 @@ jobs:
                   if 'all' not in year_filters and not any(year_dir == yf or year_dir.endswith(yf) for yf in year_filters):
                       continue
                   dir_key = f'{taxonomy}/{year_dir}'
-                  if test_mode == 'changed' and changed_dirs and dir_key not in changed_dirs:
+                  if changed_dirs is not None and dir_key not in changed_dirs:
                       continue
                   zip_name = f'dqc-{year_dir if taxonomy == "esef" else taxonomy + "-" + year_dir}-{version_tag}-ruleset.zip'
                   includes.append({
@@ -1393,3 +1400,4 @@ jobs:
             echo "$BADGE_MD"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+
