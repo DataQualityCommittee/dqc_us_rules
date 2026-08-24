@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       skip_compilation:
-        description: 'Skip compilation and run tests with current ruleset .zip files on this branch (useful when only test comparison files changed)'
+        description: 'Skip compilation and run tests with current ruleset .zip files on this branch'
         required: true
         default: false
         type: boolean
@@ -38,13 +38,13 @@ on:
         required: true
         default: 'all'
         type: string
-      version_suffix:
-        description: 'Suffix appended to the branch in zip filename/tag (e.g. "-test" for -v30-test-ruleset.zip)'
+      version_prefix:
+        description: 'Optional zip filename prefix (e.g. "test" for test-dqc-us-2025-v30-ruleset.zip)'
         required: false
         default: ''
         type: string
       test_mode:
-        description: 'Run tests: "all" = run all tests; "changed" = run tests for changed .xule files; "none" = compile rulesets, skip tests.'
+        description: 'Run tests: "all" = run all tests; "changed" = run tests for changed .xule files; "none" = compile rulesets, skip tests'
         required: true
         default: 'all'
         type: choice
@@ -53,7 +53,7 @@ on:
           - changed
           - none
       base_commit:
-        description: 'Specify "changed" by commit SHA to diff against. Leave empty to auto-detect from last successful workflow.'
+        description: 'Specify"changed" commit SHA to diff against (leave empty to auto-detect from last successful workflow)'
         required: false
         default: ''
         type: string
@@ -68,8 +68,11 @@ jobs:
   # ──────────────────────────────────────────────
   summary:
     name: Workflow inputs
-    needs: resolve-env
+    needs: [resolve-env, detect-changes, build-test-matrix]
+    if: always()
     runs-on: ubuntu-latest
+    outputs:
+      title: ${{ steps.title.outputs.title }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -80,27 +83,90 @@ jobs:
           RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule || true)
           echo "rule_version=${RULE_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
 
+      # Computed here (rather than in the commit job) because everything it depends
+      # on — inputs plus detect-changes/build-test-matrix outputs — is already known
+      # this early, and the commit job later reuses this exact title verbatim as its
+      # commit message subject, instead of recomputing it after compile/test finish.
+      - name: Compute title
+        id: title
+        env:
+          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
+          TEST_MODE: ${{ inputs.test_mode }}
+          VERSION_PREFIX: ${{ inputs.version_prefix }}
+          IS_FULL_REBUILD: ${{ needs.detect-changes.outputs.is_full_rebuild }}
+          HAS_TESTS: ${{ needs.build-test-matrix.outputs.has_tests }}
+          CHANGED_RULES_JSON: ${{ needs.build-test-matrix.outputs.changed_rules }}
+        run: |
+          COMMIT_VERSION="v${RULE_VERSION}"
+
+          if [ "$SKIP_COMPILATION" = "true" ]; then
+            # No compilation happened at all — existing .zip files were only tested.
+            ACTION="Test ruleset .zip files"
+          else
+            # Recompile scope: 'all'/'none' test_mode always compiles every source
+            # directory (full); test_mode='changed' compiles only the directories
+            # detect-changes found touched, unless a base-taxonomy/constants/etc.
+            # change forced a full rebuild.
+            if [ "$TEST_MODE" != "changed" ] || [ "$IS_FULL_REBUILD" = "true" ]; then
+              RECOMPILE_SCOPE="Full"
+            else
+              RECOMPILE_SCOPE="Partial"
+            fi
+
+            # Test scope: 'none' never tests; 'all' always runs every test; 'changed'
+            # runs every test only if a full-rebuild-triggering file was touched
+            # (CHANGED_RULES_JSON contains "__ALL__"), a subset of tests if specific
+            # rules matched (partial), or no tests if nothing matched.
+            IS_FULL_TEST="false"
+            case "$CHANGED_RULES_JSON" in
+              *'"__ALL__"'*) IS_FULL_TEST="true" ;;
+            esac
+
+            if [ "$TEST_MODE" = "none" ] || { [ "$TEST_MODE" = "changed" ] && [ "$HAS_TESTS" != "true" ]; }; then
+              TEST_SCOPE="none"
+            elif [ "$TEST_MODE" = "all" ] || { [ "$TEST_MODE" = "changed" ] && [ "$IS_FULL_TEST" = "true" ]; }; then
+              TEST_SCOPE="full"
+            else
+              TEST_SCOPE="partial"
+            fi
+
+            if [ "$RECOMPILE_SCOPE" = "Full" ]; then
+              case "$TEST_SCOPE" in
+                partial) ACTION="Full recompile ruleset .zip and partial test" ;;
+                full)    ACTION="Full recompile ruleset .zip and test" ;;
+                none)    ACTION="Full recompile ruleset .zip and no testing" ;;
+              esac
+            else
+              case "$TEST_SCOPE" in
+                partial) ACTION="Partial recompile ruleset .zip and test" ;;
+                full)    ACTION="Partial recompile ruleset .zip and full test" ;;
+                none)    ACTION="Partial recompile ruleset .zip no testing" ;;
+              esac
+            fi
+          fi
+
+          TITLE="${ACTION} ${COMMIT_VERSION}"
+          if [ -n "$VERSION_PREFIX" ]; then
+            TITLE="${TITLE} (${VERSION_PREFIX})"
+          fi
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
       - name: Print summary
         env:
           USE_PREBUILT: ${{ needs.resolve-env.outputs.use_prebuilt }}
           RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          TITLE: ${{ steps.title.outputs.title }}
         run: |
           if [ "${{ inputs.use_prebuilt_env }}" = "true" ] && [ "$USE_PREBUILT" = "false" ]; then
-            ENV_LABEL="fresh build (auto — custom versions override prebuilt)"
+            ENV_LABEL="fresh build (auto — no matching prebuilt image published)"
           elif [ "$USE_PREBUILT" = "true" ]; then
             ENV_LABEL="prebuilt container"
           else
             ENV_LABEL="fresh build"
           fi
-          if [ "${{ inputs.skip_compilation }}" = "true" ]; then
-            ACTION="Test"
-          elif [ "${{ inputs.test_mode }}" = "none" ]; then
-            ACTION="Recompile"
-          else
-            ACTION="Recompile and test"
-          fi
           {
-            echo "## ${ACTION} ruleset .zip files v${RULE_VERSION}"
+            echo "## ${TITLE}"
             echo ""
             echo "### Workflow Inputs"
             echo ""
@@ -108,13 +174,13 @@ jobs:
             echo "|-------|-------|"
             echo "| **Ruleset version** | \`${RULE_VERSION}\` |"
             echo "| **Environment** | \`${ENV_LABEL}\` |"
+            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
             echo "| **Arelle version** | \`${{ inputs.arelle_version }}\` |"
             echo "| **Xule version** | \`${{ inputs.xule_version }}\` |"
             echo "| **EDGAR version** | \`${{ inputs.edgar_version }}\` |"
             echo "| **Taxonomies** | \`${{ inputs.taxonomy }}\` |"
             echo "| **Years** | \`${{ inputs.year }}\` |"
-            echo "| **Ruleset suffix** | \`${{ inputs.version_suffix || '(none)' }}\` |"
-            echo "| **Skip compilation** | \`${{ inputs.skip_compilation }}\` |"
+            echo "| **Filename prefix** | \`${{ inputs.version_prefix || '(none)' }}\` |"
             echo "| **Test mode** | \`${{ inputs.test_mode }}\` |"
             echo "| **Base commit** | \`${{ inputs.base_commit || '(auto-detect)' }}\` |"
             echo ""
@@ -123,27 +189,48 @@ jobs:
 
   # ──────────────────────────────────────────────
   #  Resolve effective environment choice
-  #  Auto-disables prebuilt when versions differ from the defaults baked into the container image.
+  #  Auto-disables prebuilt when no image exists in the registry for the
+  #  requested Arelle/Xule/EDGAR combo (the tag doubles as the selector —
+  #  different branches typically default xule_version to whichever
+  #  prebuild they were validated against). Falls back to a fresh build
+  #  when that exact combo hasn't been published via "Build Validation
+  #  Container" yet.
   # ──────────────────────────────────────────────
   resolve-env:
     name: Resolve environment
     runs-on: ubuntu-latest
     outputs:
       use_prebuilt: ${{ steps.resolve.outputs.use_prebuilt }}
-      image: ${{ steps.resolve.outputs.image }}
+      image: ${{ steps.tag.outputs.image }}
     steps:
-      - name: Resolve effective use_prebuilt flag
-        id: resolve
+      - name: Compute image tag
+        id: tag
         run: |
           IMAGE_NAME="$(echo '${{ github.repository }}/validation' | tr '[:upper:]' '[:lower:]')"
           echo "image=ghcr.io/${IMAGE_NAME}:arelle-${{ inputs.arelle_version }}-xule-${{ inputs.xule_version }}-edgar-${{ inputs.edgar_version }}" >> "$GITHUB_OUTPUT"
-          DEFAULT_ARELLE="2.44.0"
-          DEFAULT_XULE="30052.1"
-          DEFAULT_EDGAR="26.1.3"
+
+      - name: Set up Docker Buildx
+        if: inputs.use_prebuilt_env == true
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GitHub Container Registry
+        if: inputs.use_prebuilt_env == true
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Resolve effective use_prebuilt flag
+        id: resolve
+        env:
+          IMAGE: ${{ steps.tag.outputs.image }}
+        run: |
           USE_PREBUILT="${{ inputs.use_prebuilt_env }}"
           if [ "$USE_PREBUILT" = "true" ]; then
-            if [ "${{ inputs.arelle_version }}" != "$DEFAULT_ARELLE" ] || [ "${{ inputs.xule_version }}" != "$DEFAULT_XULE" ] || [ "${{ inputs.edgar_version }}" != "$DEFAULT_EDGAR" ]; then
-              echo "::warning::Prebuilt container uses Arelle $DEFAULT_ARELLE / Xule $DEFAULT_XULE / EDGAR $DEFAULT_EDGAR — custom versions requested, switching to fresh build."
+            echo "Checking registry for prebuilt image: $IMAGE"
+            if ! docker buildx imagetools inspect "$IMAGE" > /dev/null 2>&1; then
+              echo "::warning::No prebuilt image published for Arelle ${{ inputs.arelle_version }} / Xule ${{ inputs.xule_version }} / EDGAR ${{ inputs.edgar_version }} (tag: $IMAGE) — switching to fresh build. Run 'Build Validation Container' with these versions to publish it."
               USE_PREBUILT="false"
             fi
           fi
@@ -175,16 +262,20 @@ jobs:
 
           if [ -z "$BASE" ]; then
             echo "No base_commit provided — finding last commit that recompiled the ruleset .zip files..."
-            # The 'commit' job pushes a commit titled "Recompile ..." or "Recompile and
-            # test ..." whenever it actually regenerates the .zip files (as opposed to
-            # "Test ruleset .zip files ..." from a skip_compilation=true run, which
-            # doesn't recompile anything). A workflow run finishing status=success is
-            # NOT equivalent to this — a run can succeed without compiling at all (e.g.
-            # test-only runs, or a run that found zero changes) — and even when it does
-            # compile, the run's head_sha is the commit it started FROM, not the commit
-            # it produced. So walk local history for that commit message instead of
-            # querying the Actions API for the last successful run.
-            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ Recompile( and test)? ruleset \.zip files ' | cut -d' ' -f1 || true)
+            # The 'commit' job pushes a commit titled "Full recompile ruleset .zip ..."
+            # or "Partial recompile ruleset .zip ..." whenever it actually regenerates
+            # the .zip files (as opposed to "Test ruleset .zip files ..." from a
+            # skip_compilation=true run, which doesn't recompile anything). Older
+            # commits from before this title format changed used "Recompile ruleset
+            # .zip files ..." / "Recompile and test ruleset .zip files ..." — matched
+            # too, so history predating the change still resolves. A workflow run
+            # finishing status=success is NOT equivalent to this — a run can succeed
+            # without compiling at all (e.g. test-only runs, or a run that found zero
+            # changes) — and even when it does compile, the run's head_sha is the
+            # commit it started FROM, not the commit it produced. So walk local
+            # history for the commit message instead of querying the Actions API for
+            # the last successful run.
+            LAST_COMPILE_SHA=$(git log --format='%H %s' | grep -m1 -E '^[0-9a-f]+ ((Full|Partial) recompile ruleset \.zip |Recompile( and test)? ruleset \.zip files )' | cut -d' ' -f1 || true)
             if [ -n "$LAST_COMPILE_SHA" ]; then
               echo "Last compile commit: $LAST_COMPILE_SHA"
               BASE="$LAST_COMPILE_SHA"
@@ -331,34 +422,71 @@ jobs:
             arelle-webcache-
 
       - name: Warm Arelle web cache (external taxonomy schemas)
+        env:
+          TAXONOMY: ${{ inputs.taxonomy }}
         run: |
+          # xbrl.ifrs.org entry points are only pulled by the ifrs and esef
+          # taxonomies. The taxonomy input filters both what gets compiled
+          # (build-compile-matrix) and what gets validated (build-test-matrix's
+          # matches_scope), so if it excludes ifrs and esef, nothing in this
+          # run will fetch from xbrl.ifrs.org and warming the cache is wasted work.
+          NEEDS_IFRS=false
+          IFS=',' read -ra FILTERS <<< "$TAXONOMY"
+          for f in "${FILTERS[@]}"; do
+            f_trimmed=$(echo "$f" | xargs)
+            if [ "$f_trimmed" = "all" ] || [ "$f_trimmed" = "ifrs" ] || [ "$f_trimmed" = "esef" ]; then
+              NEEDS_IFRS=true
+              break
+            fi
+          done
+          if [ "$NEEDS_IFRS" != true ]; then
+            echo "Taxonomy filter '$TAXONOMY' excludes ifrs/esef — skipping cache warm."
+            exit 0
+          fi
+
           # Compilation and validation pull remote taxonomy schemas (notably from
           # xbrl.ifrs.org, which intermittently rejects the TLS handshake). Pre-loading
-          # each known entry point here — and persisting the result via actions/cache —
-          # means compile-fresh/validate-fresh jobs mostly hit a warm local cache instead
-          # of depending on a live fetch on every run.
+          # each known entry point .xsd here — and persisting the result via
+          # actions/cache — means compile-fresh/validate-fresh jobs mostly hit a warm
+          # local cache for the entry point instead of depending on a live fetch on
+          # every run. Only the entry point file itself is fetched (via Arelle's
+          # webCache directly, not a full --file load), leaving the schemas and
+          # linkbases it imports for Arelle to fetch and cache on demand when
+          # compile/validate actually needs them.
           # Some years' source files reference the entry point over plain http
           # (e.g. 2020, 2021, 2023) instead of https, so both schemes must be matched
           # or those years silently never get warmed.
-          ENTRY_POINTS=$(grep -rhoE "https?://xbrl\.ifrs\.org/taxonomy/[0-9-]+/[a-zA-Z_]+_entry_point[^']*\.xsd" dqc_us_rules/source | sort -u)
+          ENTRY_POINTS=$(grep -rhoE "https?://xbrl\.ifrs\.org/taxonomy/[0-9-]+/[a-zA-Z_]+_entry_point[^']*\.xsd" dqc_us_rules/source | grep -v 'depr' | sort -u)
           echo "Entry points to warm:"
           echo "$ENTRY_POINTS"
-          for url in $ENTRY_POINTS; do
-            echo "::group::Warming $url"
-            ok=false
-            for attempt in 1 2 3; do
-              if python -m arelle.CntlrCmdLine --file "$url" --logFile /tmp/warm-cache.log; then
-                ok=true
-                break
-              fi
-              echo "Attempt $attempt failed, retrying in 10s..."
-              sleep 10
-            done
-            if [ "$ok" != true ]; then
-              echo "::warning::Could not warm cache for $url — compile/validate jobs will fall back to a live fetch."
-            fi
-            echo "::endgroup::"
-          done
+          export ENTRY_POINTS
+          python3 << 'PYEOF'
+          import os
+          import time
+
+          from arelle.Cntlr import Cntlr
+
+          urls = [u for u in os.environ['ENTRY_POINTS'].splitlines() if u.strip()]
+          cntlr = Cntlr(logFileName='/tmp/warm-cache.log')
+
+          for url in urls:
+              print(f'::group::Warming {url}')
+              ok = False
+              for attempt in range(1, 4):
+                  try:
+                      filepath = cntlr.webCache.getfilename(url, reload=True)
+                      ok = bool(filepath and os.path.exists(filepath))
+                  except Exception as exc:
+                      print(f'Attempt {attempt} raised: {exc}')
+                      ok = False
+                  if ok:
+                      break
+                  print(f'Attempt {attempt} failed, retrying in 10s...')
+                  time.sleep(10)
+              if not ok:
+                  print(f'::warning::Could not warm cache for {url} — compile/validate jobs will fall back to a live fetch.')
+              print('::endgroup::')
+          PYEOF
 
       - name: Archive virtual environment
         run: tar -C "${{ env.VENV_PATH }}" -czf /tmp/dqc-venv.tar.gz .
@@ -392,17 +520,19 @@ jobs:
           CHANGED_DIRS: ${{ needs.detect-changes.outputs.changed_dirs }}
           TAXONOMY: ${{ inputs.taxonomy }}
           YEAR: ${{ inputs.year }}
-          VERSION_SUFFIX: ${{ inputs.version_suffix }}
+          VERSION_PREFIX: ${{ inputs.version_prefix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')${VERSION_SUFFIX}"
+          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')"
           export RESOLVED_VERSION_TAG="$VERSION_TAG"
+          export RESOLVED_FILENAME_PREFIX="$VERSION_PREFIX"
 
           python3 << 'PYEOF'
           import json, os, sys
 
           source_root = 'dqc_us_rules/source'
           version_tag = os.environ['RESOLVED_VERSION_TAG']
+          filename_prefix = os.environ['RESOLVED_FILENAME_PREFIX']
           taxonomy_input = os.environ.get('TAXONOMY', 'all')
           year_input = os.environ.get('YEAR', 'all')
           test_mode = os.environ.get('TEST_MODE', 'all')
@@ -432,7 +562,8 @@ jobs:
                   dir_key = f'{taxonomy}/{year_dir}'
                   if changed_dirs is not None and dir_key not in changed_dirs:
                       continue
-                  zip_name = f'dqc-{year_dir if taxonomy == "esef" else taxonomy + "-" + year_dir}-{version_tag}-ruleset.zip'
+                  prefix_part = f'{filename_prefix}-' if filename_prefix else ''
+                  zip_name = f'{prefix_part}dqc-{year_dir if taxonomy == "esef" else taxonomy + "-" + year_dir}-{version_tag}-ruleset.zip'
                   includes.append({
                       'taxonomy': taxonomy,
                       'year_dir': year_dir,
@@ -681,7 +812,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          pattern: 'dqc-*-ruleset.zip'
+          pattern: '*-ruleset.zip'
 
       - name: Install compiled rulesets
         if: inputs.skip_compilation == false
@@ -914,7 +1045,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          pattern: 'dqc-*-ruleset.zip'
+          pattern: '*-ruleset.zip'
 
       - name: Install compiled rulesets
         if: inputs.skip_compilation == false
@@ -1251,31 +1382,50 @@ jobs:
           done
 
   # ──────────────────────────────────────────────
-  #  Commit compiled rulesets
+  #  Commit compiled rulesets, then report final status (combined so the
+  #  status badge/discrepancy report always print — even if the commit
+  #  itself is skipped or fails — without a separate job).
   # ──────────────────────────────────────────────
   commit:
-    name: Commit all rulesets
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh]
-    if: >-
-      always()
-      && inputs.skip_compilation == false
-      && (needs.compile-prebuilt.result == 'success' || needs.compile-fresh.result == 'success')
-      && (needs.validate-prebuilt.result == 'success' || needs.validate-prebuilt.result == 'skipped')
-      && (needs.validate-fresh.result == 'success' || needs.validate-fresh.result == 'skipped')
+    name: Commit rulesets and report status
+    needs: [summary, detect-changes, build-test-matrix, compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, combine-html-reports]
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
+      - name: Determine whether to commit
+        id: gate
+        if: always()
+        env:
+          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
+          COMPILE_PREBUILT: ${{ needs.compile-prebuilt.result }}
+          COMPILE_FRESH: ${{ needs.compile-fresh.result }}
+          VALIDATE_PREBUILT: ${{ needs.validate-prebuilt.result }}
+          VALIDATE_FRESH: ${{ needs.validate-fresh.result }}
+        run: |
+          SHOULD_COMMIT=false
+          if [ "$SKIP_COMPILATION" = "false" ] \
+            && { [ "$COMPILE_PREBUILT" = "success" ] || [ "$COMPILE_FRESH" = "success" ]; } \
+            && { [ "$VALIDATE_PREBUILT" = "success" ] || [ "$VALIDATE_PREBUILT" = "skipped" ]; } \
+            && { [ "$VALIDATE_FRESH" = "success" ] || [ "$VALIDATE_FRESH" = "skipped" ]; }; then
+            SHOULD_COMMIT=true
+          fi
+          echo "should_commit=$SHOULD_COMMIT" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
+        if: steps.gate.outputs.should_commit == 'true'
         uses: actions/checkout@v6
 
       - name: Download all compiled rulesets
+        if: steps.gate.outputs.should_commit == 'true'
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts
-          pattern: 'dqc-*-ruleset.zip'
+          pattern: '*-ruleset.zip'
 
       - name: Copy rulesets into repo
+        if: steps.gate.outputs.should_commit == 'true'
         run: |
           echo "Downloaded artifacts:"
           find ./artifacts -name '*.zip' -type f
@@ -1286,12 +1436,14 @@ jobs:
 
       - name: Detect Python version from Dockerfile
         id: pyver
+        if: steps.gate.outputs.should_commit == 'true'
         run: |
           PY_VERSION=$(grep -oP '(?<=FROM python:)[^\s-]+' Dockerfile)
           echo "python_version=${PY_VERSION:-unknown}" >> "$GITHUB_OUTPUT"
 
       - name: Extract ruleset version from version.xule
         id: version
+        if: steps.gate.outputs.should_commit == 'true'
         run: |
           RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule)
           if [ -z "$RULE_VERSION" ]; then
@@ -1302,6 +1454,7 @@ jobs:
           echo "Extracted ruleset version: $RULE_VERSION"
 
       - name: Update rulesetMap.json version references
+        if: steps.gate.outputs.should_commit == 'true'
         env:
           RULE_VERSION: ${{ steps.version.outputs.rule_version }}
           BRANCH_NAME: ${{ github.ref_name }}
@@ -1313,46 +1466,27 @@ jobs:
           cat rulesetMap.json
 
       - name: Commit and push
+        id: commit_push
+        if: steps.gate.outputs.should_commit == 'true'
         env:
-          VERSION_SUFFIX: ${{ inputs.version_suffix }}
-          BRANCH_NAME: ${{ github.ref_name }}
-          RULE_VERSION: ${{ steps.version.outputs.rule_version }}
+          TITLE: ${{ needs.summary.outputs.title }}
           PY_VERSION: ${{ steps.pyver.outputs.python_version }}
           ARELLE_VERSION: ${{ inputs.arelle_version }}
           XULE_VERSION: ${{ inputs.xule_version }}
           EDGAR_VERSION: ${{ inputs.edgar_version }}
-          TEST_MODE: ${{ inputs.test_mode }}
-          SKIP_COMPILATION: ${{ inputs.skip_compilation }}
         run: |
-          COMMIT_VERSION="v${RULE_VERSION}"
-          if [ "$SKIP_COMPILATION" = "true" ]; then
-            ACTION="Test"
-          elif [ "$TEST_MODE" = "none" ]; then
-            ACTION="Recompile"
-          else
-            ACTION="Recompile and test"
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add ./dqc_us_rules/*.zip rulesetMap.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          COMMIT_MSG="${ACTION} ruleset .zip files ${COMMIT_VERSION}"
+          COMMIT_MSG="${TITLE}"
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"Python ${PY_VERSION} || Arelle ${ARELLE_VERSION} || XULE ${XULE_VERSION} || EDGAR ${EDGAR_VERSION}"
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
           git push
 
-  # ──────────────────────────────────────────────
-  #  Final status summary
-  # ──────────────────────────────────────────────
-  final-status:
-    name: Final status
-    needs: [compile-prebuilt, compile-fresh, validate-prebuilt, validate-fresh, commit, combine-html-reports]
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
       - name: Print combined discrepancy report
-        if: needs.combine-html-reports.outputs.report_summary != ''
+        if: always() && needs.combine-html-reports.outputs.report_summary != ''
         env:
           COMBINED_ARTIFACT_URL: ${{ needs.combine-html-reports.outputs.combined_artifact_url }}
           REPORT_SUMMARY: ${{ needs.combine-html-reports.outputs.report_summary }}
@@ -1373,9 +1507,10 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Write status badge
+        if: always()
         env:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          HAS_FAILURE: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+          HAS_FAILURE: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') || steps.commit_push.outcome == 'failure' }}
         run: |
           if [ "$HAS_FAILURE" = "true" ]; then
             COLOR="e5534b"
