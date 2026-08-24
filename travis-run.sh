@@ -15,7 +15,8 @@ mv $CURDIR/EDGAR $VIRTUAL_ENV/lib/$PYTHON_VERSION/site-packages/arelle/plugin
 rm -fR $CURDIR/EDGAR
 
 echo $INFILES > infiles.json
-sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|$GH_SLUG/raw/$PR_BR/dqc_us_rules/|" $CURDIR/rulesetMap.json
+DQC_PREFIX=$(ls $CURDIR/dqc_us_rules/*dqc-*-ruleset.zip 2>/dev/null | xargs -n1 basename | sed -E 's/dqc-.*//' | sort | tail -n1)
+sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/dqc|$GH_SLUG/raw/$PR_BR/dqc_us_rules/${DQC_PREFIX}dqc|" $CURDIR/rulesetMap.json
 sed -i "s|\?raw=true||" $CURDIR/rulesetMap.json
 cat $CURDIR/plugin/xule/version.json
 $PYTHON_VERSION -m arelle.CntlrCmdLine --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" -v --dqc-replace-rule-set-map $CURDIR/rulesetMap.json --xule-filing-list infiles.json --logFile $CURDIR/log.xml -v --xule-debug
