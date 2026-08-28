@@ -11,32 +11,44 @@ rule-name-prefix DQC
 
 /** V31 Release **/
 
+CONSTANT $DIMENSION_CLASS_DICT = dict(
+                                list("Geography", list(srt:StatementGeographicalAxis, StatutoryAccountingPracticesByJurisdictionAxis, IncomeTaxAuthorityAxis)),
+                                list("EquityComponents", list(PartnerCapitalComponentsAxis, StatementEquityComponentsAxis)),
+                                list("FinancialInstrument", list(FinancialInstrumentAxis, InvestmentTypeAxis, DerivativeInstrumentRiskAxis, DefinedBenefitPlanByPlanAssetCategoriesAxis, FairValueByAssetClassAxis, SecurityOwnedAndSoldNotYetPurchasedAtFairValueAxis, AssetsSoldUnderAgreementsToRepurchaseAxis, CashAndCashEquivalentsAxis, ExtinguishmentOfDebtAxis, ShortTermDebtTypeAxis, LongtermDebtTypeAxis, RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, CreditFacilityAxis, UnderlyingAssetClassAxis, StatementClassOfStockAxis)),
+                                list("AccountStandards", list(AdjustmentsForChangeInAccountingPrincipleAxis,AdjustmentsForNewAccountingPronouncementsAxis)),
+                                list("MeasurementBasis", list(FairValueByMeasurementBasisAxis)),
+                                list("IndustrySector", list(EquitySecuritiesByIndustryAxis)),
+                                list("entityIndividualPlanName", list(LineOfCreditFacilityAxis, srt:CounterpartyNameAxis, srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis, CededCreditRiskAxis, NoncashOrPartNoncashDivestituresByUniqueNameAxis, PlanNameAxis, RetirementPlanNameAxis, InvestmentIssuerNameAxis, OtherOwnershipInterestsByNameAxis, IncomeTaxAuthorityNameAxis, EmployeeStockOwnershipPlanESOPDisclosuresByPlanAxis, srt:MajorCustomersAxis, ShareBasedGoodsAndNonemployeeServicesTransactionBySupplierAxis, dei:LegalEntityAxis, PartnerTypeOfPartnersCapitalAccountAxis, srt:OwnershipAxis, BusinessAcquisitionAxis )),
+                                list("FairValueHierachy", list(FairValueByFairValueHierarchyLevelAxis)),
+                                list("statisticalMeasurement", list(srt:RangeAxis)),
+                                list("foreignDomesticDistribution",list(GeographicDistributionAxis)),
+                                list("Scenerios",list(srt:StatementScenarioAxis)),
+                                list("Revision",list(srt:RestatementAxis)),
+                                list("Consolidation",list(srt:ConsolidationItemsAxis)),
+                                list("BusinessSegment",list(StatementBusinessSegmentsAxis)),
+                                list("Operating", list(StatementOperatingActivitiesSegmentAxis)),
+                                list("Currency", list(srt:CurrencyAxis)),
+                                list("LitigationID", list(srt:LitigationCaseAxis)),
+                                list("LitigationStatus", list(LitigationStatusAxis)),
+                                list("FitchRating", list(srt:CreditRatingFitchAxis)),
+                                list("MoodyRating", list(srt:CreditRatingMoodysAxis)),
+                                list("SAndPRating", list(srt:CreditRatingStandardPoorsAxis)),
+                                list("AMBestRating", list(srt:CreditRatingAMBestAxis)),
+                                list("InternalCreditRating", list(InternalCreditAssessmentAxis)),
+                                list("FossilFuels", list(srt:ReserveQuantitiesByTypeOfReserveAxis)),
+                                list("ShareRepurchasePrograms", list(srt:ShareRepurchaseProgramAxis)),
+                                list("RestructuringType", list(RestructuringCostAndReserveAxis)),
+                                list("DebtByName", list(DebtInstrumentAxis))
+ )
+
 Assert US.0250.10962 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Assign dimensions to a class then check if members in a filing are not used across different dimensions without the same class.  If a member is used across different dimensions then the class of the dimension should be the same.  If not then flag an error.
-
-The rule defines a dictionary of classes such as classes of stock , geographies, finaicial assets, finicial libilities, organisation structures and assigns dimensions to them.  Then the rule checks if a member is used across different dimensions and if the class of the dimension is the same.  If not then flag an error. **/
-
- $dimensionClassDict = dict(
-                                list("Geography", list(srt:StatementGeographicalAxis, StatutoryAccountingPracticesByJurisdictionAxis, IncomeTaxAuthorityAxis)),
-                                list("ClassOfStock", list(StatementClassOfStockAxis)),
-                                list("EquityComponents", list(PartnerCapitalComponentsAxis, StatementEquityComponentsAxis)),
-                                list("FinancialInstrument", list(FinancialInstrumentAxis, InvestmentTypeAxis,DerivativeInstrumentRiskAxis, DefinedBenefitPlanByPlanAssetCategoriesAxis, FairValueByAssetClassAxis, SecurityOwnedAndSoldNotYetPurchasedAtFairValueAxis, AssetsSoldUnderAgreementsToRepurchaseAxis, CashAndCashEquivalentsAxis, ExtinguishmentOfDebtAxis, ShortTermDebtTypeAxis, LongtermDebtTypeAxis, RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, CreditFacilityAxis, UnderlyingAssetClassAxis)),
-                                list("OrganizationStructure", list(dei:LegalEntityAxis, PartnerTypeOfPartnersCapitalAccountAxis)),
-                                list("AccountStandards", list(AdjustmentsForChangeInAccountingPrincipleAxis,AdjustmentsForNewAccountingPronouncementsAxis)),
-                                list("MeasurementBasis", list(FairValueByMeasurementBasisAxis)),
-                                list("IndustrySector", list(EquitySecuritiesByIndustryAxis)),
-                                list("entityOrPlanName", list(LineOfCreditFacilityAxis, srt:CounterpartyNameAxis, srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis, CededCreditRiskAxis, NoncashOrPartNoncashDivestituresByUniqueNameAxis, PlanNameAxis, RetirementPlanNameAxis, InvestmentIssuerNameAxis, OtherOwnershipInterestsByNameAxis, IncomeTaxAuthorityNameAxis, EmployeeStockOwnershipPlanESOPDisclosuresByPlanAxis )),
-                                list("FairValueHierachy", list(FairValueByFairValueHierarchyLevelAxis)),
-                                list("statisticalMeasurement", list(srt:RangeAxis))
- )
-
 /** Create a dictionary of members by class **/
 
-$membersByClass = dict(for $class in $dimensionClassDict.keys
-    list($class, for $dim in $dimensionClassDict[$class]
+$membersByClass = dict(for $class in $DIMENSION_CLASS_DICT.keys
+    list($class, for $dim in $DIMENSION_CLASS_DICT[$class]
         $members = navigate dimensions dimension-member descendants from $dim returns set (target-name);
         $members
     ));
@@ -72,4 +84,3 @@ Rule version: {$ruleVersion}"
 
 severity error  
 effectiveDate $effective_dates[$rule_id]
-
