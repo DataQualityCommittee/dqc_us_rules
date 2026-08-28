@@ -23,9 +23,11 @@ else
 
 $spread = [@concept = InvestmentBasisSpreadVariableRate @@InvestmentIdentifierAxis = * @unit]
 
+$spreadDimMember =  $spread.dimension(InvestmentIdentifierAxis)
+
 $ratebasis = [@concept = InvestmentVariableInterestRateTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit]
 
-exists($spread) and not exists($ratebasis)
+exists($spread) and (not exists($ratebasis) and get_dim_key_value($spreadDimMember, "VRB") == none)
     
 message
 "The filer has reported a value for the concept {$spread.concept.name} with a value of {$spread}. This concept is used to report the spread of a variable rate investment. The filer has not reported the rate basis for this investment. Please ensure that the rate basis is reported for this investment.
