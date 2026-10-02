@@ -66,7 +66,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 $equityItems = $EQUITY_ITEMS - set(StockholdersEquity);
 
-$badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis != srt:ReportableLegalEntitiesMember}
+$badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis not in list(srt:ReportableLegalEntitiesMember, srt:ConsolidationEliminationsMember)}
 
 exists($badFact)
 
