@@ -1469,16 +1469,22 @@ jobs:
           echo "rule_version=$RULE_VERSION" >> "$GITHUB_OUTPUT"
           echo "Extracted ruleset version: $RULE_VERSION"
 
-      - name: Update rulesetMap.json version references
+      - name: Update rulesetMap.json ref references
         if: steps.gate.outputs.should_commit == 'true'
         env:
           RULE_VERSION: ${{ steps.version.outputs.rule_version }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          MAP_VERSION="v${RULE_VERSION}"
-          sed -i -E "s|/dqc_us_rules/raw/[^/]+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_VERSION}/dqc_us_rules/|g" rulesetMap.json
+          # Only master points the map at a release tag; every other branch
+          # points at itself so the map tracks the branch's own ruleset zips.
+          if [ "$BRANCH_NAME" = "master" ]; then
+            MAP_REF="v${RULE_VERSION}"
+          else
+            MAP_REF="${BRANCH_NAME}"
+          fi
+          sed -i -E "s|/dqc_us_rules/raw/.+/dqc_us_rules/|/dqc_us_rules/raw/${MAP_REF}/dqc_us_rules/|g" rulesetMap.json
           sed -i -E "s/-v([0-9]+)-ruleset\.zip/-V\1-ruleset.zip/g" rulesetMap.json
-          echo "Updated rulesetMap.json version to: ${MAP_VERSION}"
+          echo "Updated rulesetMap.json ref to: ${MAP_REF}"
           cat rulesetMap.json
 
       - name: Commit and push
