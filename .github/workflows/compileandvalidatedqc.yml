@@ -824,6 +824,7 @@ jobs:
       - name: Configure ruleset map to use branch zips
         env:
           BRANCH_NAME: ${{ github.ref_name }}
+          VERSION_PREFIX: ${{ inputs.version_prefix }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
@@ -832,6 +833,9 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
+          # Compiled zips are named '<prefix>-<filename>' when version_prefix is set;
+          # prefer those so tests run against this run's output, not the committed zips.
+          prefix = os.environ.get('VERSION_PREFIX', '').strip()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -840,8 +844,12 @@ jobs:
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
               filename = url.rsplit('/', 1)[-1].split('?')[0]
-              local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
-              if os.path.exists(local_path):
+              candidates = ([f'{prefix}-{filename}'] if prefix else []) + [filename]
+              local_path = next(
+                  (p for p in (os.path.join(os.getcwd(), 'dqc_us_rules', c) for c in candidates)
+                   if os.path.exists(p)),
+                  None)
+              if local_path:
                   updated[uri] = local_path
                   print(f'  {uri} -> {local_path} (local)')
               else:
@@ -1057,6 +1065,7 @@ jobs:
       - name: Configure ruleset map to use branch zips
         env:
           BRANCH_NAME: ${{ github.ref_name }}
+          VERSION_PREFIX: ${{ inputs.version_prefix }}
         run: |
           echo "Rulesets in dqc_us_rules/:"
           ls -lh ./dqc_us_rules/*.zip
@@ -1065,6 +1074,9 @@ jobs:
           import json, os, re
 
           branch = os.environ['BRANCH_NAME']
+          # Compiled zips are named '<prefix>-<filename>' when version_prefix is set;
+          # prefer those so tests run against this run's output, not the committed zips.
+          prefix = os.environ.get('VERSION_PREFIX', '').strip()
 
           with open('rulesetMap.json') as f:
               rmap = json.load(f)
@@ -1073,8 +1085,12 @@ jobs:
           for uri, url in rmap.items():
               url = re.sub(r'/raw/[^/]+/', f'/raw/{branch}/', url)
               filename = url.rsplit('/', 1)[-1].split('?')[0]
-              local_path = os.path.join(os.getcwd(), 'dqc_us_rules', filename)
-              if os.path.exists(local_path):
+              candidates = ([f'{prefix}-{filename}'] if prefix else []) + [filename]
+              local_path = next(
+                  (p for p in (os.path.join(os.getcwd(), 'dqc_us_rules', c) for c in candidates)
+                   if os.path.exists(p)),
+                  None)
+              if local_path:
                   updated[uri] = local_path
                   print(f'  {uri} -> {local_path} (local)')
               else:
