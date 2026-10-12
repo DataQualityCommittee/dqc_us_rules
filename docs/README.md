@@ -207,11 +207,11 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0241 - Incorrect Use of TransactionTypeAxis with Transaction Market Method Members](DQC_US_0241/DQC_0241.md) | Approved | 30 |
 | [DQC_US_0242 - Software-to-be-Sold Not Using Dedicated Capitalized Software Concepts](DQC_US_0242/DQC_0242.md) | Approved | 30 |
 | [DQC_US_0243 - Inappropriate Use of ConsolidationItemsAxis with Cash Flow and Equity Concepts](DQC_US_0243/DQC_0243.md) | Approved | 30 |
-| [DQC_US_0245 - Consolidated Entities Axis in Statement Section](DQC_US_0245/DQC_0245.md) | Public Exposure | 31 |
-| [DQC_US_0246 - Investment Identifier Axis Key Validation](DQC_US_0246/DQC_0246.md) | Public Exposure | 31 |
-| [DQC_US_0248 - 11-K Filing Cover Page Tagging with Legal Entity Axis](DQC_US_0248/DQC_0248.md) | Public Exposure | 31 |
-| [DQC_US_0249 - Single Member Extensible Enumeration Axis Used Without Aggregate Value](DQC_US_0249/DQC_0249.md) | Public Exposure | 31 |
-| [DQC_US_0250 - Members Used Across Incompatible Dimension Classes](DQC_US_0250/DQC_0250.md) | Public Exposure | 31 |
+| [DQC_US_0245 - Consolidated Entities Axis in Statement Section](DQC_US_0245/DQC_0245.md) | Approved | 31 |
+| [DQC_US_0246 - Investment Identifier Axis Key Validation](DQC_US_0246/DQC_0246.md) | Approved | 31 |
+| [DQC_US_0248 - 11-K Filing Cover Page Tagging with Legal Entity Axis](DQC_US_0248/DQC_0248.md) | Approved | 31 |
+| [DQC_US_0249 - Single Member Extensible Enumeration Axis Used Without Aggregate Value](DQC_US_0249/DQC_0249.md) | Approved | 31 |
+| [DQC_US_0250 - Members Used Across Incompatible Dimension Classes](DQC_US_0250/DQC_0250.md) | Approved | 31 |
 
 
 ## Guidance 
