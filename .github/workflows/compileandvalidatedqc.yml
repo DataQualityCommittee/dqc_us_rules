@@ -523,7 +523,18 @@ jobs:
           VERSION_PREFIX: ${{ inputs.version_prefix }}
           BRANCH_NAME: ${{ github.ref_name }}
         run: |
-          VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')"
+          if [ "$BRANCH_NAME" = "master" ]; then
+            # master has no "vNN" branch name to derive a tag from — use the
+            # major version from version.xule instead (e.g. '31.0.0' -> 'V31').
+            RULE_VERSION=$(grep -oP "(?<=\\\$ruleVersion = ')[^']+" dqc_us_rules/source/lib/version.xule)
+            if [ -z "$RULE_VERSION" ]; then
+              echo "::error::Could not extract \$ruleVersion from dqc_us_rules/source/lib/version.xule"
+              exit 1
+            fi
+            VERSION_TAG="V${RULE_VERSION%%.*}"
+          else
+            VERSION_TAG="$(echo "$BRANCH_NAME" | sed 's/^v/V/')"
+          fi
           export RESOLVED_VERSION_TAG="$VERSION_TAG"
           export RESOLVED_FILENAME_PREFIX="$VERSION_PREFIX"
 
