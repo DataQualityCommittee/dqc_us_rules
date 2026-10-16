@@ -1,0 +1,198 @@
+name: SEC Report Validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_set:
+        description: 'Test set name to run (or "all" for all sets). Names are defined in tests/secvalidationtests.json.'
+        required: true
+        default: 'all'
+        type: string
+      branch:
+        description: 'Branch to validate (leave empty for default branch)'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  build-matrix:
+    name: Build test matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      new_tests: ${{ steps.sync-check.outputs.new_tests }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - name: Check for new INFILES in .travis.yml
+        id: sync-check
+        run: |
+          set +e
+          python tests/synctestsets.py --dry-run
+          RESULT=$?
+          set -e
+          if [ $RESULT -eq 2 ]; then
+            echo "new_tests=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::New test sets found in .travis.yml that are not in secvalidationtests.json. Run the 'Sync Test Sets from Travis' workflow to add them."
+          else
+            echo "new_tests=false" >> "$GITHUB_OUTPUT"
+            echo "Test config is in sync with .travis.yml"
+          fi
+
+          echo "Available test sets:"
+          python3 -c "
+          import json
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          for t in tests:
+              print(f\"  - {t['name']} ({len(t['infiles'])} filings)\")
+          "
+
+      - name: Build matrix from test config
+        id: set-matrix
+        run: |
+          SELECTED="${{ inputs.test_set }}"
+          if [ "$SELECTED" = "all" ]; then
+            MATRIX=$(python3 -c "
+          import json
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          includes = []
+          for i, t in enumerate(tests):
+              includes.append({
+                  'index': i,
+                  'name': t['name'],
+              })
+          if not includes:
+              print('No test sets found', file=sys.stderr)
+              exit(1)
+          print(json.dumps({'include': includes}))
+          ")
+          else
+            MATRIX=$(python3 -c "
+          import json, sys
+          selected = sys.argv[1]
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          includes = []
+          for i, t in enumerate(tests):
+              if t['name'] == selected:
+                  includes.append({
+                      'index': i,
+                      'name': t['name'],
+                  })
+          if not includes:
+              print('No matching test set found', file=sys.stderr)
+              sys.exit(1)
+          print(json.dumps({'include': includes}))
+          " "$SELECTED")
+          fi
+          echo "matrix=$MATRIX" >> "$GITHUB_OUTPUT"
+
+  validate:
+    name: "${{ matrix.name }}"
+    needs: build-matrix
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/validation:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch || github.ref }}
+
+      - name: Configure ruleset map
+        run: |
+          BRANCH="${{ inputs.branch || github.ref_name }}"
+          GH_RAW="https://github.com/${{ github.repository }}/raw/$BRANCH"
+          sed -i "s|https://github.com/DataQualityCommittee/dqc_us_rules/.*/dqc_us_rules/|$GH_RAW/dqc_us_rules/|" rulesetMap.json
+          sed -i "s|\?raw=true||" rulesetMap.json
+
+      - name: Extract test set and write filing list
+        id: testdata
+        run: |
+          python3 -c "
+          import json
+          with open('tests/secvalidationtests.json') as f:
+              tests = json.load(f)
+          test = tests[${{ matrix.index }}]
+          with open('infiles.json', 'w') as f:
+              json.dump(test['infiles'], f)
+          with open('exfiles.txt', 'w') as f:
+              f.write(test['exfiles'])
+          print('Filing list:')
+          for filing in test['infiles']:
+              print(f\"  {filing['xule_run_only']}: {filing['file']}\")
+          "
+          echo "exfiles=$(cat exfiles.txt)" >> "$GITHUB_OUTPUT"
+
+      - name: Run Arelle DQC validation
+        run: |
+          python -m arelle.CntlrCmdLine \
+            --httpUserAgent "DQC-Arelle (xbrl.us; dqc@xbrl.us)" \
+            --plugin "validate/DQC|EDGAR/transform|inlineXbrlDocumentSet" \
+            -v \
+            --dqc-replace-rule-set-map ./rulesetMap.json \
+            --xule-filing-list infiles.json \
+            --logFile ./log.xml \
+            --xule-debug
+
+      - name: Compare results against expected
+        id: compare
+        run: |
+          python compare.py \
+            --compare-file ./report.txt \
+            --test-files ./log.xml \
+            --expected-results "${{ steps.testdata.outputs.exfiles }}" \
+            --html-file ./report.html
+        continue-on-error: true
+
+      - name: Print log.xml
+        if: always()
+        run: head -3000 log.xml || true
+
+      - name: Print comparison report (text)
+        if: always()
+        run: |
+          echo "===== COMPARISON REPORT (TEXT) ====="
+          cat report.txt 2>/dev/null || echo "No text report generated."
+          echo "===== END COMPARISON REPORT ====="
+
+      - name: Print comparison report (HTML)
+        if: always()
+        run: |
+          echo "===== COMPARISON REPORT (HTML) ====="
+          cat report.html 2>/dev/null || echo "No HTML report generated."
+          echo "===== END COMPARISON REPORT ====="
+
+      - name: Upload reports as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "reports-${{ matrix.name }}"
+          path: |
+            log.xml
+            report.txt
+            report.html
+          retention-days: 30
+
+      - name: Report outcome
+        if: always()
+        run: |
+          if [ "${{ steps.compare.outcome }}" = "failure" ]; then
+            echo "::error::Discrepancies found in ${{ matrix.name }}. See uploaded artifacts."
+            exit 1
+          else
+            echo "All validation results match expected output for ${{ matrix.name }}."
+          fi

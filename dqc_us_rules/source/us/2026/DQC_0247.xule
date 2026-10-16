@@ -1,0 +1,85 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V31 Release  EFFECTIVE DATE FOR THIS RULE IS 2027 AS GUIDANCE HAS NOT YET BEEN PUBLISHED   EXPECTED FOR SECOND QUARTER OF 2027 and 2027 taxonomy only.**/
+/** This rule checks the issues related to derivatives in open swap contracts**/
+
+/** TURN ON FOR 2027
+
+Assert US.0247.10955 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+
+exists({@concept in list(DerivativeAssetNotionalAmount, DerivativeLiabilityNotionalAmount) @OpenSwapContractIdentifierAxis = *}#factValue)
+
+
+message
+"The filer has used the concept {$factValue.concept.name} with a value of {$factValue}. When used with the axis OpenSwapContractIdentifierAxis the filer should use the element DerivativeNotionalAmount as per the FASB guidance.
+
+Concept : {$factValue.concept.name}
+Value : {$factValue}
+Period : {$factValue.period}
+Dimensions : {$factValue.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+Assert US.0247.10956 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+exists({@concept in list(DerivativeAssetNotionalAmount, DerivativeLiabilityNotionalAmount) @OpenOptionContractIdentifierAxis = *}#factValue)
+
+message
+"The filer has used the concept {$factValue.concept.name} with a value of {$factValue}. When used with the axis OpenOptionContractIdentifierAxis the filer should use the element DerivativeNotionalAmount as per the FASB guidance.
+
+Concept : {$factValue.concept.name}
+Value : {$factValue}
+Period : {$factValue.period}
+Dimensions : {$factValue.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+Assert US.0247.10957 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+
+
+exists({@concept in list(DerivativeAssetNotionalAmount, DerivativeLiabilityNotionalAmount) @OpenFuturesContractIdentifierAxis = *}#factValue)
+
+message
+"The filer has used the concept {$factValue.concept.name} with a value of {$factValue}. When used with the axis OpenFuturesContractIdentifierAxis the filer should use the element DerivativeNotionalAmount as per the FASB guidance.
+
+Concept : {$factValue.concept.name}
+Value : {$factValue}
+Period : {$factValue.period}
+Dimensions : {$factValue.dimensions.join(', ','=')}
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]
+
+**/
+
+/** NEED ADDITIONAL RULES FOR UnrealizedGainLossOnDErivativeAssets and Liabilities **/

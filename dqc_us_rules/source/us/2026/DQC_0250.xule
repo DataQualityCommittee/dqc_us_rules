@@ -1,0 +1,90 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2024
+**/
+
+
+rule-name-prefix DQC
+
+/** V31 Release **/
+
+/** Assign dimensions to a class then check if members in a filing are not used across different dimensions without the same class.  If a member is used across different dimensions then the class of the dimension should be the same.  If not then flag an error.
+
+The rule defines a dictionary of classes such as classes of stock , geographies, financial instrument, organisation structures and assigns dimensions to them.  Then the rule checks if a member is used across different dimensions and if the class of the dimension is the same.  If not then flag an error. **/
+
+ CONSTANT $DIMENSION_CLASS_DICT = dict(
+                                list("Geography", list(srt:StatementGeographicalAxis, StatutoryAccountingPracticesByJurisdictionAxis, IncomeTaxAuthorityAxis)),
+                                list("EquityComponents", list(PartnerCapitalComponentsAxis, StatementEquityComponentsAxis)),
+                                list("FinancialInstrument", list(FinancialInstrumentAxis, InvestmentTypeAxis, DerivativeInstrumentRiskAxis, DefinedBenefitPlanByPlanAssetCategoriesAxis, FairValueByAssetClassAxis, SecurityOwnedAndSoldNotYetPurchasedAtFairValueAxis, AssetsSoldUnderAgreementsToRepurchaseAxis, CashAndCashEquivalentsAxis, ExtinguishmentOfDebtAxis, ShortTermDebtTypeAxis, LongtermDebtTypeAxis, RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, CreditFacilityAxis, UnderlyingAssetClassAxis, StatementClassOfStockAxis)),
+                                list("AccountStandards", list(AdjustmentsForChangeInAccountingPrincipleAxis,AdjustmentsForNewAccountingPronouncementsAxis)),
+                                list("MeasurementBasis", list(FairValueByMeasurementBasisAxis)),
+                                list("IndustrySector", list(EquitySecuritiesByIndustryAxis)),
+                                list("entityIndividualPlanName", list(LineOfCreditFacilityAxis, srt:CounterpartyNameAxis, srt:ScheduleOfEquityMethodInvestmentEquityMethodInvesteeNameAxis, CededCreditRiskAxis, NoncashOrPartNoncashDivestituresByUniqueNameAxis, PlanNameAxis, RetirementPlanNameAxis, InvestmentIssuerNameAxis, OtherOwnershipInterestsByNameAxis, IncomeTaxAuthorityNameAxis, EmployeeStockOwnershipPlanESOPDisclosuresByPlanAxis, srt:MajorCustomersAxis, ShareBasedGoodsAndNonemployeeServicesTransactionBySupplierAxis, dei:LegalEntityAxis, PartnerTypeOfPartnersCapitalAccountAxis, srt:OwnershipAxis, BusinessAcquisitionAxis )),
+                                list("FairValueHierachy", list(FairValueByFairValueHierarchyLevelAxis)),
+                                list("statisticalMeasurement", list(srt:RangeAxis)),
+                                list("foreignDomesticDistribution",list(GeographicDistributionAxis)),
+                                list("Scenerios",list(srt:StatementScenarioAxis)),
+                                list("Revision",list(srt:RestatementAxis)),
+                                list("Consolidation",list(srt:ConsolidationItemsAxis)),
+                                list("BusinessSegment",list(StatementBusinessSegmentsAxis)),
+                                list("Operating", list(StatementOperatingActivitiesSegmentAxis)),
+                                list("Currency", list(srt:CurrencyAxis)),
+                                list("LitigationID", list(srt:LitigationCaseAxis)),
+                                list("LitigationStatus", list(LitigationStatusAxis)),
+                                list("FitchRating", list(srt:CreditRatingFitchAxis)),
+                                list("MoodyRating", list(srt:CreditRatingMoodysAxis)),
+                                list("SAndPRating", list(srt:CreditRatingStandardPoorsAxis)),
+                                list("AMBestRating", list(srt:CreditRatingAMBestAxis)),
+                                list("InternalCreditRating", list(InternalCreditAssessmentAxis)),
+                                list("FossilFuels", list(srt:ReserveQuantitiesByTypeOfReserveAxis)),
+                                list("ShareRepurchasePrograms", list(srt:ShareRepurchaseProgramAxis)),
+                                list("RestructuringType", list(RestructuringCostAndReserveAxis)),
+                                list("DebtByName", list(DebtInstrumentAxis))
+ )
+
+Assert US.0250.10962 satisfied
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** Create a dictionary of members by class **/
+
+$membersByClass = dict(for $class in $DIMENSION_CLASS_DICT.keys
+    list($class, for $dim in $DIMENSION_CLASS_DICT[$class]
+        $members = navigate dimensions dimension-member descendants from $dim returns set (target-name);
+        $members
+    ));
+
+/* Step 1: Build member → list of classes using a fold-style approach */
+$memberToClasses = dict(
+                    for $class in $membersByClass.keys
+                        for $member in $membersByClass[$class]
+                            /* For each member, collect all classes it appears in */
+                            $classesForMember = list(for $c in $membersByClass.keys
+                                if $member in $membersByClass[$c]
+                                    $c
+                                else skip);
+                            list($member, $classesForMember)
+)
+
+/* Step 2: Filter to only members appearing in multiple classes */
+$duplicateMembers = dict(for $key in $memberToClasses.keys
+    if $memberToClasses[$key].length > 1
+    list($key, $memberToClasses[$key])
+    else skip)
+
+/* Use the duplicates to generate errors */
+for $member in $duplicateMembers.keys
+    true                       
+
+message
+"
+The filer has reported a member {$member} that is used across different incompatible dimensions.  The incompatible dimensions this member is used on are {$duplicateMembers[$member].join(', ')}.  Members should be used on dimensions of the same type.  Please ensure that the class of the dimensions are the same if a member is used across different dimensions.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error  
+effectiveDate $effective_dates[$rule_id]

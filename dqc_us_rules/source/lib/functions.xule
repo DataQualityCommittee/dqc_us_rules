@@ -1105,3 +1105,34 @@ Checks that an investment identifier member local-name follows the expected
             list(true, "All components valid")
         else
             list(false, "Security Type valid:" + $ok_primary.string + ", Issuer valid:" + $ok_issuer.string + ", Affiliation valid:" + $ok_affiliation.string + ", Industry valid:" + $ok_industry.string + ", Geography valid:" + $ok_geo.string)
+
+/**
+ * Get the value for a given key from an InvestmentIdentifierAxis dimension string.
+ * The dimension string format is: SecurityName|KEY1=value1 KEY2=value2 KEY3=value3
+ * @param $dim_string The dimension member string (e.g. "Apple Inc|IND=Technology GEO=US")
+ * @param $key The key to look up (e.g. "IND")
+ * @return The value associated with the key, or none if not found
+ */
+function get_dim_key_value($dim_string, $key)
+
+    if $dim_string.contains('|') and $dim_string.contains('=')
+        $parts = $dim_string.split('|');
+        /* Clean spaces around '=' by splitting on '=', trimming, and rejoining */
+        $cleanedKeys = (list(for $part in $parts[2].split('=')
+            join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
+        )).join('=');
+        $keyPairs = filter list(for $k in $cleanedKeys.split(' ')
+            $k) where $item != "" returns $item;
+
+		$myFilterList = list(for $k in $keyPairs
+            if ($k.split('='))[1] == $key
+                (($k.split('='))[2])
+            else
+                skip)
+        $match = filter $myFilterList where $item != none returns $item;
+        if $match.length > 0
+            $match[1]
+        else
+            none
+    else
+        none

@@ -1,0 +1,223 @@
+/**
+DQC Rules
+ (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
+ See https://xbrl.us/dqc-license for license information.
+ See https://xbrl.us/dqc-patent for patent infringement notice.
+Taxonomy: US GAAP 2026
+**/
+
+
+rule-name-prefix DQC
+
+/** V32 Release **/
+/**
+
+Overview: Business Development Companies (BDCs) and other investment companies report each investment on the Schedule of Investments (SOI) using an identifier axis.  Each member on the identifier axis identifies an individual investment or contract. Filers have been tagging the Schedule of Investments using tables that do not include an identifier axis, instead identifying investments using other axes such as the InvestmentIssuerNameAxis, InvestmentTypeAxis or an extension axis. When this occurs the individual investments cannot be identified.
+
+The US GAAP taxonomy defines the following tables and the identifier axis used with each table:
+
+Table                                       Identifier Axis
+ScheduleOfInvestmentsTable                  InvestmentIdentifierAxis
+InvestmentsSoldNotYetPurchasedTable         SecuritySoldShortIdentifierAxis
+OpenOptionContractsWrittenTable             OpenOptionContractIdentifierAxis
+OpenFuturesContractTable                    OpenFuturesContractIdentifierAxis
+OpenForwardForeignCurrencyContractTable     OpenForwardForeignCurrencyContractIdentifierAxis
+OpenSwapContractTable                       OpenSwapContractIdentifierAxis
+
+Rule US.0252.10967 checks that the ScheduleOfInvestmentsTable includes the InvestmentIdentifierAxis.
+
+Rule US.0252.10968 checks that the InvestmentsSoldNotYetPurchasedTable includes the SecuritySoldShortIdentifierAxis.
+
+Rule US.0252.10969 checks that the OpenOptionContractsWrittenTable includes the OpenOptionContractIdentifierAxis.
+
+Rule US.0252.10970 checks that the OpenFuturesContractTable includes the OpenFuturesContractIdentifierAxis.
+
+Rule US.0252.10971 checks that the OpenForwardForeignCurrencyContractTable includes the OpenForwardForeignCurrencyContractIdentifierAxis.
+
+Rule US.0252.10972 checks that the OpenSwapContractTable includes the OpenSwapContractIdentifierAxis.
+
+Each assertion only evaluates tables in a statement section (role description contains '- Statement -') that is not parenthetical and that has facts reported in it.
+
+Rule DQC.US.0210 is superseded by this rule that checks that the individual investment facts (interest rate, spread and floor) are reported with the InvestmentIdentifierAxis.
+
+**/
+
+ASSERT US.0252.10967 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(ScheduleOfInvestmentsTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @InvestmentIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and InvestmentIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The Schedule of Investments in the section \"{$cube.drs-role.description}\" uses the ScheduleOfInvestmentsTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the InvestmentIdentifierAxis.  Each investment reported in the Schedule of Investments should be identified using a member on the InvestmentIdentifierAxis so that the attributes of each individual investment such as the cost, fair value, principal amount, interest rate and maturity can be identified. Please add the InvestmentIdentifierAxis to the table and report each investment using a member on this axis. If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0252.10968 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(InvestmentsSoldNotYetPurchasedTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @SecuritySoldShortIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and SecuritySoldShortIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The schedule of securities sold short in the section \"{$cube.drs-role.description}\" uses the InvestmentsSoldNotYetPurchasedTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the SecuritySoldShortIdentifierAxis.  Each security sold short should be identified using a member on the SecuritySoldShortIdentifierAxis so that the attributes of each individual security can be identified. Please add the SecuritySoldShortIdentifierAxis and report each security sold short using a member on this axis if this is the actual Investments sold not yet purchased table.  If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0252.10969 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(OpenOptionContractsWrittenTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @OpenOptionContractIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and OpenOptionContractIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The schedule of open option contracts written in the section \"{$cube.drs-role.description}\" uses the OpenOptionContractsWrittenTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the OpenOptionContractIdentifierAxis.  Each open option contract should be identified using a member on the OpenOptionContractIdentifierAxis so that the attributes of each individual contract can be identified. Please add the OpenOptionContractIdentifierAxis to the table and report each option contract using a member on this axis. If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0252.10970 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(OpenFuturesContractTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @OpenOptionContractIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and OpenFuturesContractIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The schedule of open futures contracts in the section \"{$cube.drs-role.description}\" uses the OpenFuturesContractTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the OpenFuturesContractIdentifierAxis.  Each open futures contract should be identified using a member on the OpenFuturesContractIdentifierAxis so that the attributes of each individual contract can be identified. Please add the OpenFuturesContractIdentifierAxis to the table and report each futures contract using a member on this axis. If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0252.10971 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(OpenForwardForeignCurrencyContractTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @OpenForwardForeignCurrencyContractIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and OpenForwardForeignCurrencyContractIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The schedule of open forward foreign currency contracts in the section \"{$cube.drs-role.description}\" uses the OpenForwardForeignCurrencyContractTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the OpenForwardForeignCurrencyContractIdentifierAxis.  Each open forward foreign currency contract should be identified using a member on the OpenForwardForeignCurrencyContractIdentifierAxis so that the attributes of each individual contract can be identified. Please add the OpenForwardForeignCurrencyContractIdentifierAxis to the table and report each forward contract using a member on this axis. If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+ASSERT US.0252.10972 SATISFIED
+
+$rule_id = (rule-name().split('.'))[rule-name().split('.').length];
+
+/** DQCRT RULE **/
+if not applicable_form(rule-name()) and not $BDC_FLAG
+	skip
+else
+
+for $cube in soi_statement_cubes(OpenSwapContractTable)
+	$cubeDimensions = $cube.dimensions.concept.name
+
+	/** Only evaluate a table that has facts reported in it **/
+	$cubeFacts = list({covered @cube = $cube})
+	$investmentIdentifierFacts = list({covered @OpenSwapContractIdentifierAxis=*}).length == 0
+
+	$cubeFacts.length > 0 and OpenSwapContractIdentifierAxis not in $cubeDimensions and $investmentIdentifierFacts
+
+message
+"The schedule of open swap contracts in the section \"{$cube.drs-role.description}\" uses the OpenSwapContractTable with the following axes: {$cubeDimensions.sort.join(', ')}.  This table does not include the OpenSwapContractIdentifierAxis.  Each open swap contract should be identified using a member on the OpenSwapContractIdentifierAxis so that the attributes of each individual contract can be identified. Please add the OpenSwapContractIdentifierAxis to the table and report each swap contract using a member on this axis. If the table reflects a different investment type change the table name to the appropriate table concept that is used with that investment type and dimension.
+
+Rule Element Id:{$rule_id}
+Rule version: {$ruleVersion}"
+
+severity error
+
+effectiveDate $effective_dates[$rule_id]
+
+
+/** Returns the cubes for the given table used in a statement section that is not parenthetical **/
+function soi_statement_cubes($tableName)
+	filter taxonomy().cubes where $item.cube-concept.name == $tableName
+		and $item.drs-role.description.contains('- Statement -')
+		and (not $item.drs-role.uri.lower-case.contains('parenthetical'))

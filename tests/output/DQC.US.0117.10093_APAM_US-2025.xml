@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30050 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 3.05 secs at 2026-08-18T13:23:11 - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.081412. - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0117.10093 - 13:23:18.064237 - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="DQC.US.0117.10093" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm" severity="error" effectiveDate="2023-08-31" cid="2562897195280">[DQC.US.0117.10093] In the statement 9952153 - Statement - Unaudited Consolidated Statements of Operations the concept us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax with a value of 610,517,000 and dimension of srt:ProductOrServiceAxis and member of us-gaap:AssetManagement1Member is not equal to the dimensional breakdown of 219,653,000 using the dimension srt:ProductOrServiceAxis and the second dimension srt:MajorCustomersAxis:
+	AssetManagement1Member 	 --> 219,653,000 	 --> srt:MajorCustomersAxis=apam:SeparateAccountsMember, srt:ProductOrServiceAxis=us-gaap:AssetManagement1Member 
+
+
+On the face financial statements it is expected that values reported are dimensionally complete for a given line item. If you added up the values of the dimensions the resulting sum should represent the actual aggregate value.  This rule takes the dimensional values of an axis reported on the face financial statements and adds them up and compares them to the actual aggregate value reported anywhere in the filing. If they are different the rule reports an error.
+
+The properties of this us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax fact are:
+Period :2026-01-01 to 2026-06-30
+Unit : USD
+Dimensions : srt:ProductOrServiceAxis=us-gaap:AssetManagement1Member
+Rule Element Id:10093
+Rule version: 31.0.0RC1 - apam-20260630.htm 8</message>
+ <ref href="apam-20260630.htm#f-125" sourceLine="8">
+  <property name="file" value="apam-20260630.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Revenue from Contract with Customer, Excluding Assessed Tax"/>
+  <property name="namespace" value="http://fasb.org/us-gaap/2025"/>
+  <property name="name" value="RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="QName" value="us-gaap:RevenueFromContractWithCustomerExcludingAssessedTax"/>
+  <property name="contextRef" value="c-19">
+   <property name="entity" value="0001517302">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2026-01-01"/>
+   <property name="endDate" value="2026-06-30"/>
+   <property name="dimensions" value="(1)">
+    <property name="srt:ProductOrServiceAxis" value="us-gaap:AssetManagement1Member"/>
+   </property>
+  </property>
+  <property name="unitRef" value="usd ($)">
+   <property name="measure" value="iso4217:USD"/>
+  </property>
+  <property name="decimals" value="-3"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="610,517,000"/>
+  <property name="format" value="ixt:num-dot-decimal"/>
+  <property name="scale" value="3"/>
+  <property name="html value" value="610,517"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0117.10093 time took: 1.570571 - 13:23:19.634902  - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0117.10093 end. Took 0:00:01.570571 - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.652474. - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 5.09 secs - http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1517302/000151730226000114/apam-20260630.htm"/></entry>
+</log>
