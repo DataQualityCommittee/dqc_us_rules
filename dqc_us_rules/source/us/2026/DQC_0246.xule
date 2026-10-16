@@ -37,7 +37,7 @@ Rule US.0246.10951 checks that the value provided for the keys that do not allow
 
 Rule US.0246.10952 checks that the required keys (AFF, ISS, TYP) are present and that at least one of GEO or IND is present in the key-value pairs used to describe a single investment.
 
-Approach: Identify the members used on the InvestmentIdentifierAxis and obtain the label of each member. Where the label contains the '|' character, the label is assumed to use the key-value format and is parsed into a security name and a list of KEY=value pairs which are then evaluated by each of the assertions above.
+Approach: Identify the members used on the InvestmentIdentifierAxis and obtain the label of each member. Where the label contains the '|' character followed by at least one '=' character, the label is assumed to use the key-value format and is parsed into a security name and a list of KEY=value pairs which are then evaluated by each of the assertions above.
 **/
 
 constant $INVESTMENT_APPROVED_KEYS = set('AFF','GEB','GEO','IND','ISS','TYP','VRB')
@@ -49,8 +49,10 @@ constant $INVESTMENT_ALTERNATIVE_REQUIRED_KEYS = set('GEO','IND')
 /** Keys that do not allow a filer created extension value, so the value must match one of the standard taxonomy defined values **/
 constant $INVESTMENT_STRICT_DOMAIN_KEYS = set('AFF','GEB','GEO','TYP')
 
-/** Only the labels that use the pipe delimited key-value format are evaluated by this rule set **/
-constant $INVESTMENT_KEY_VALUE_IDENTIFIERS = (filter $DIM_MEMBERS where $item.contains('|'))
+/** Only the labels that use the pipe delimited key-value format are evaluated by this rule set. A label uses the key-value format when it contains a '|' character followed by at least one '=' character (SecurityName|KEY1=value1 KEY2=value2 ...). **/
+constant $INVESTMENT_KEY_VALUE_IDENTIFIERS = (filter $DIM_MEMBERS where is_key_value_identifier($item))
+
+/**constant $INVESTMENT_KEY_VALUE_IDENTIFIERS = (filter $DIM_MEMBERS where $item.contains('|'))**/
 
 ASSERT US.0246.10948 SATISFIED
 
@@ -65,10 +67,15 @@ if not applicable_form(rule-name()) and not $BDC_FLAG
 	skip
 else
 
-$securityNames = (filter $INVESTMENT_KEY_VALUE_IDENTIFIERS returns getSecurityName($item)).to-set;
+/** Group the identifiers by security name in a single pass. Filtering the full identifier list
+    once per security name instead re-reads every identifier for every name, which is O(n squared)
+    in the number of investments and calls getSecurityName() - and so splits a string - on every
+    one of those reads. **/
+$identifiersBySecurityName = (list(for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS
+							list(getSecurityName($identifier), $identifier))).agg-to-dict(1);
 
-for $name in $securityNames.sort
-	$matchingIdentifiers = (filter $INVESTMENT_KEY_VALUE_IDENTIFIERS where getSecurityName($item) == $name returns $item).to-set
+for $name in $identifiersBySecurityName.keys.sort
+	$matchingIdentifiers = (filter $identifiersBySecurityName[$name] returns $item[2]).to-set
 
 	$matchingIdentifiers.length > 1
 
@@ -222,6 +229,14 @@ severity error
 
 effectiveDate $effective_dates[$rule_id]
 
+
+/** Returns true if the identifier uses the key-value format, i.e. it contains a '|' character followed by at least one '=' character. Returns false if the identifier has no value. **/
+function is_key_value_identifier($identifier)
+	if $identifier == none
+		false
+	else
+		$matchDict = $identifier.string.regex-match('[|][^=]*=');
+		$matchDict['match-count'] > 0
 
 /** Returns the security name portion of a key-value formatted InvestmentIdentifierAxis label, i.e. the text preceding the '|' character. **/
 function getSecurityName($identifier)

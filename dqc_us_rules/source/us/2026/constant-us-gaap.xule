@@ -426,7 +426,8 @@ CONSTANT $ALLOWED_GEB_MEMBERS = navigate domain-member descendants from $APPROVE
 CONSTANT $ALLOWED_GEB_ALIAS = filter $ALLOWED_GEB_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
 CONSTANT $ALLOWED_GEB_ITEMS = (filter $ALLOWED_GEB_MEMBERS returns $item.name.local-name) + $ALLOWED_GEB_ALIAS
 
-CONSTANT $ALLOWED_GEO_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $US-GAAP returns set (target) + navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $COUNTRY returns set (target)
+CONSTANT $ALLOWED_GEO_MEMBERS = navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $US-GAAP returns set (target) + navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $COUNTRY returns set (target) + navigate domain-member descendants from $APPROVED_KEYS["GEO"]["domain-member"] taxonomy $STATE_PROVINCE  returns set (target)
+
 CONSTANT $ALLOWED_GEO_ALIAS = filter $ALLOWED_GEO_MEMBERS returns $item.label("http://fasb.org/us-gaap/role/label/aliasName").text
 CONSTANT $ALLOWED_GEO_ITEMS = (filter $ALLOWED_GEO_MEMBERS returns $item.name.local-name) + $ALLOWED_GEO_ALIAS
 
