@@ -40,7 +40,7 @@ else
 
      /** Determine if they have used keys **/
 
-    $BDC_Key_Values = filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item
+    $BDC_Key_Values = filter $DIM_MEMBERS.to-set where $item.contains("|") and $item.contains("=") returns $item
 
     /** Get the local names of the keys used **/
 
@@ -104,8 +104,8 @@ else
     $BDC_Ext_enum = sum(list([covered @concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = *]))
 
     /** Determine if they have used keys **/
-
-    $BDC_Key_Values = filter $DIM_MEMBERS where $item.contains("|") and $item.contains("=") returns $item
+    
+    $BDC_Key_Values = filter $DIM_MEMBERS.to-set where $item.contains("|") and $item.contains("=") returns $item
 
     /** Get the local names of the keys used **/
 
