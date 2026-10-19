@@ -28,14 +28,21 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $PotentialCapitalizedComputerSoftwareGross = list({@concept in list(FiniteLivedIntangibleAssetsGross, FiniteLivedIntangibleAssetsAccumulatedAmortization, FiniteLivedIntangibleAssetsNet) @FiniteLivedIntangibleAssetsByMajorClassAxis =*})
 
 for $x in $PotentialCapitalizedComputerSoftwareGross
-     if $x.concept.label.contains('to be sold') or $x.concept.label.contains('for sale') or $x.concept.label.contains('for lease') or $x.concept.label.contains('to be leased') or $x.concept.label.contains('marketed')
+     $labels = $x.dimension(FiniteLivedIntangibleAssetsByMajorClassAxis).all-labels.text;
+     if (filter $labels where $item.contains('to be sold')).length > 0 or (filter $labels where $item.contains('for sale')).length > 0 or (filter $labels where $item.contains('for lease')).length > 0 or (filter $labels where $item.contains('to be leased')).length > 0 or (filter $labels where $item.contains('marketed')).length > 0
+     
         true
     else
-        skip
+        false
 
 message
-"
-The filer has reported a fact with the FiniteLivedIntangibleAssetsByMajorClassAxis that is tagged with the concept {$x.concept.name} with a value of {$x} that has a label that indicates it is for software to be sold, leased, or marketed.  The element CapitalizedComputerSoftwareGross should be used for capitalized costs for software to be sold, leased, or marketed instead of elements tagged with the {$x.concept.name}.  The filer should use the element CapitalizedComputerSoftwareGross for any facts tagged with the {$x.concept.name} that are for software to be sold, leased, or marketed.
+ "The filer has reported a fact with the FiniteLivedIntangibleAssetsByMajorClassAxis that is tagged with the concept {$x.concept.name} with a value of {$x} that has a member label that indicates it is for software to be sold, leased, or marketed. The following label values are used that indicate that the software is in this category. The label(s) on the member are {$labels.join(", ")}. The element CapitalizedComputerSoftwareGross should be used for capitalized costs for software to be sold, leased, or marketed instead of elements tagged with the {$x.concept.name}.  The filer should use the element CapitalizedComputerSoftwareGross for any facts tagged with the {$x.concept.name} that are for software to be sold, leased, or marketed.
+
+Concept : {$x.name}
+Value : { $x}
+Period : { $x.period}
+Dimensions : { $x.dimensions.join(', ','=')} 
+
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 

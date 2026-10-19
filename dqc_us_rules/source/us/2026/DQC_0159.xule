@@ -25,8 +25,8 @@ $NonFinancialStatement = set('PRE-14A','PRE 14A','DEF-14A','DEF 14A','DEF-14C','
 if $liquidation_networks.length > 0 or $NonFinancialStatement 
     skip
 else
-    $MaxAssetValue = max(list({covered @concept = Assets}))
-    $MonetaryValue = max(list({covered where $fact.is-monetary}))   
+    $MaxAssetValue = max(list({covered nonils @concept = Assets}))
+    $MonetaryValue = max(list({covered nonils where $fact.is-monetary}))   
 
 if $MaxAssetValue < 2000 or $MonetaryValue < 2000
         skip
@@ -49,7 +49,7 @@ if $MaxAssetValue < 2000 or $MonetaryValue < 2000
                                 set( '10-Q', '10-Q/A').contains([covered @concept.local-name ='DocumentType']) or 
                                 /** ASC 230  Allows no CF if statement of Investment and No level 3 Assets and No debt**/
                                 ($All_statement_abstract_elements.contains(ScheduleOfInvestmentsAbstract) and
-                                list({covered nonils @FairValueByFairValueHierarchyLevelAxis = FairValueInputsLevel3Member where $fact > 0}).length == 0
+                                list({covered nonils @concept.data-type = xbrli:monetaryItemType @FairValueByFairValueHierarchyLevelAxis = FairValueInputsLevel3Member}).length == 0
                                 ))
                         false 
                     else

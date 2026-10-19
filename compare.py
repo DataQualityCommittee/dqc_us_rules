@@ -15,6 +15,7 @@ import collections
 import copy
 import csv
 import html
+import json
 import lxml
 import os
 import re
@@ -36,6 +37,10 @@ def options():
                         help='File name of text version of compare results.')
     parser.add_argument('--html-file', dest='html_file',
                         help='File name of html version of compare results')
+    parser.add_argument('--test-case', dest='test_case', default='',
+                        help='Label for the test case being compared, added as a "Test Case" column in the text report.')
+    parser.add_argument('--json-file', dest='json_file',
+                        help='File name of a raw JSON dump of the report rows, used to merge multiple reports into a single combined table.')
 
     args = parser.parse_args()
 
@@ -155,32 +160,46 @@ def split_string(s, size):
 
     return '\n'.join(splits)
 
+def build_report_rows(report, args):
+    """Build the unwrapped (test case, code, message, test count, expected count) rows for a report.
+
+    Shared by the text/JSON writers so a downstream step can merge rows from multiple reports
+    (e.g. one per test case) into a single combined table without re-parsing rendered text.
+    """
+    if report is None:
+        return []
+    rows = []
+    for row in report[1:]:  # Skip the headers row
+        # Combine 'code' and 'expected file' into a single column
+        if row[5]:  # Check if 'expected file' exists
+            combined_code = f"{row[0]} \n\nExpected file: \n {row[5]}"
+        else:
+            combined_code = row[0]
+        rows.append({
+            'test case': args.test_case,
+            'code': combined_code,
+            'message': row[2],
+            'test count': row[4],
+            'expected count': row[6],
+        })
+    return rows
+
 def write_table_report(report, args):
     """Write report as a tabulate text file"""
     if report is not None:
         # Fix long strings in the table. Tabulate does not wrap text in a cell. So the long text is pre split with newlines
         # using split_string()
-        tab_report = []
-        # Filter headers to exclude the specified columns
-        excluded_columns = {'severity', 'test file', 'expected file', 'key message'}  # Exclude specific columns
-        headers = [col for col in report[0] if col not in excluded_columns]
-        for row in report[1:]:  # Skip the headers row
-            # Combine 'code' and 'expected file' into a single column
-            if row[5]:  # Check if 'expected file' exists
-                combined_code = f"{row[0]} \n\nExpected file: \n {row[5]}"
-            else:
-                combined_code = row[0]
-            tab_row = []
-            for i, col in enumerate(report[0]):
-                if col in excluded_columns:
-                    continue  # Skip excluded columns
-                if col in {'test count', 'expected count'}:  # Adjust width for these columns
-                    tab_row.append(split_string(str(row[i]), 8))  # Narrower width for counts
-                elif col == 'message':  # Adjust width for the 'message' column
-                    tab_row.append(split_string(str(row[i]), 65))  # Set width to 60
-                else:
-                    tab_row.append(split_string(str(combined_code if i == 0 else row[i]), 18))
-                tab_report.append(tab_row)
+        headers = ['test case', 'code', 'message', 'test count', 'expected count']
+        tab_report = [
+            [
+                split_string(str(r['test case']), 18),
+                split_string(str(r['code']), 18),
+                split_string(str(r['message']), 65),
+                split_string(str(r['test count']), 8),
+                split_string(str(r['expected count']), 8),
+            ]
+            for r in build_report_rows(report, args)
+        ]
 
         # Generate the table and write it to the file or print it
         report_table = tabulate.tabulate(tab_report, headers=headers, tablefmt='grid')
@@ -188,7 +207,13 @@ def write_table_report(report, args):
             print(report_table, '\n')
         else:
             with open(args.compare_file, 'w') as o:
-                o.write(report_table + '\n')    
+                o.write(report_table + '\n')
+
+def write_json_report(report, args):
+    """Write the raw (unwrapped) report rows as JSON, for merging multiple reports into one combined table."""
+    if args.json_file:
+        with open(args.json_file, 'w', encoding='utf-8') as f:
+            json.dump(build_report_rows(report, args), f)
 
 def write_html_report(report, args):
     """Write report as an html file"""
@@ -242,6 +267,7 @@ if __name__ == '__main__':
         print('No differences')
     write_table_report(report, args)
     write_html_report(report, args)
+    write_json_report(report, args)
     if report is None:
         sys.exit(0)
     else:

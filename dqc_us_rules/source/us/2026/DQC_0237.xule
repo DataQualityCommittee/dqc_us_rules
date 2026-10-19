@@ -43,9 +43,9 @@ else
 		/** Get Balance SHeet Location Axis Members **/
 
 		$facts_using_BS_location_axis = list({covered nonils @StatementOfFinancialPositionLocationBalanceAxis = *})
-		$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(StatementOfFinancialPositionLocationBalanceAxis).name).to-set
+		$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(StatementOfFinancialPositionLocationBalanceAxis)).to-set
 		for $member in $bs_location_members
-			if ($fsConcepts.intersect($member)).length > 0
+			if ($fsConcepts.contains($member))
 				false
 			else
 				true
@@ -92,9 +92,9 @@ else
 			/** Get Income Location Axis Members **/
 
 			$facts_using_BS_location_axis = list({covered nonils @StatementOfIncomeLocationBalanceAxis = *})
-			$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(StatementOfIncomeLocationBalanceAxis).name).to-set
+			$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(StatementOfIncomeLocationBalanceAxis)).to-set
 			for $member in $bs_location_members
-				if ($fsConcepts.intersect($member)).length > 0
+				if ($fsConcepts.contains($member))
 					false
 				else
 					true
@@ -141,9 +141,9 @@ else
 			/** Get Other Comprehensive Income Location Axis Members **/
 
 			$facts_using_BS_location_axis = list({covered nonils @OtherComprehensiveIncomeBalanceAxis = *})
-			$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(OtherComprehensiveIncomeBalanceAxis).name).to-set
+			$bs_location_members = (filter $facts_using_BS_location_axis returns $item.dimension(OtherComprehensiveIncomeBalanceAxis)).to-set
 			for $member in $bs_location_members
-				if ($fsConcepts.intersect($member)).length > 0
+				if ($fsConcepts.contains($member))
 					false
 				else
 					true

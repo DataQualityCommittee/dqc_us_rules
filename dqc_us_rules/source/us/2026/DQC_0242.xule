@@ -28,15 +28,15 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $PotentialCapitalizedComputerSoftwareGross = list({@concept in list(FiniteLivedIntangibleAssetsGross, FiniteLivedIntangibleAssetsAccumulatedAmortization, FiniteLivedIntangibleAssetsNet) @FiniteLivedIntangibleAssetsByMajorClassAxis = *})
 
 for $x in $PotentialCapitalizedComputerSoftwareGross
-     if (filter $x.dimensions.values.all-labels.sum where $item.text.contains('to be sold')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('for sale')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('for lease')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('to be leased')).length > 0 or (filter $x.dimensions.values.all-labels.sum where $item.text.contains('marketed')).length > 0
-
-        $labelValue = filter $x.dimensions.values.all-labels.sum returns $item.text
+     $labels = $x.dimension(FiniteLivedIntangibleAssetsByMajorClassAxis).all-labels.text;
+     if (filter $labels where $item.contains('to be sold')).length > 0 or (filter $labels where $item.contains('for sale')).length > 0 or (filter $labels where $item.contains('for lease')).length > 0 or (filter $labels where $item.contains('to be leased')).length > 0 or (filter $labels where $item.contains('marketed')).length > 0
+     
         true
     else
         false
 
 message
-"The filer has reported a fact with the FiniteLivedIntangibleAssetsByMajorClassAxis that is tagged with the concept {$x.concept.name} with a value of {$x} that has a member label that indicates it is for software to be sold, leased, or marketed. The following label values are used that indicate that the software is in this category. The label(s) on the member are {$labelValue.join(", ")}. The element CapitalizedComputerSoftwareGross should be used for capitalized costs for software to be sold, leased, or marketed instead of elements tagged with the {$x.concept.name}.  The filer should use the element CapitalizedComputerSoftwareGross for any facts tagged with the {$x.concept.name} that are for software to be sold, leased, or marketed.
+ "The filer has reported a fact with the FiniteLivedIntangibleAssetsByMajorClassAxis that is tagged with the concept {$x.concept.name} with a value of {$x} that has a member label that indicates it is for software to be sold, leased, or marketed. The following label values are used that indicate that the software is in this category. The label(s) on the member are {$labels.join(", ")}. The element CapitalizedComputerSoftwareGross should be used for capitalized costs for software to be sold, leased, or marketed instead of elements tagged with the {$x.concept.name}.  The filer should use the element CapitalizedComputerSoftwareGross for any facts tagged with the {$x.concept.name} that are for software to be sold, leased, or marketed.
 
 Concept : {$x.name}
 Value : { $x}
