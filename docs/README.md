@@ -212,6 +212,7 @@ Approved rules listed below will increment with each major release in which they
 | [DQC_US_0248 - 11-K Filing Cover Page Tagging with Legal Entity Axis](DQC_US_0248/DQC_0248.md) | Approved | 31 |
 | [DQC_US_0249 - Single Member Extensible Enumeration Axis Used Without Aggregate Value](DQC_US_0249/DQC_0249.md) | Approved | 31 |
 | [DQC_US_0250 - Members Used Across Incompatible Dimension Classes](DQC_US_0250/DQC_0250.md) | Approved | 31 |
+| [DQC_US_0252 - Identifier Axis Required on Schedule of Investments Tables](DQC_US_0252/DQC_0252.md) | Approved | 31 |
 
 
 ## Guidance 
