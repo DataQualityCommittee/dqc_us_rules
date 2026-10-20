@@ -433,7 +433,9 @@ constant $SOI_PRES_NETWORKS_FLAG = (FILTER $PRES_NETWORKS where $item.role.descr
 and ( $item.role.description.lower-case.contains('schedule'))
 and ( $item.role.description.lower-case.contains('investment'))).length > 0
 
-constant $BDC_FLAG = $STATEMENT_SOI_CUBES_FLAG and $SOI_PRES_NETWORKS_FLAG
+constant $BDC_FILE_NUMBER = (filter (list({covered @concept.local-name ='EntityFileNumber'})) where $item.contains('814-')).length > 0
+
+constant $BDC_FLAG = $STATEMENT_SOI_CUBES_FLAG and $SOI_PRES_NETWORKS_FLAG and $BDC_FILE_NUMBER
 
 CONSTANT $EQUIVALENT_TAX_RATES = list(list(IncomeTaxReconciliationIncomeTaxExpenseBenefitAtFederalStatutoryIncomeTaxRate, EffectiveIncomeTaxRateReconciliationAtFederalStatutoryIncomeTaxRate),
                                     list(IncomeTaxReconciliationStateAndLocalIncomeTaxes, EffectiveIncomeTaxRateReconciliationStateAndLocalIncomeTaxes),
