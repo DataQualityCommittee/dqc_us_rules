@@ -954,6 +954,7 @@ jobs:
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
             --html-file ./report.html \
             --json-file ./report.json \
+            --filing-list ./infiles.json \
             --test-case "${{ matrix.name }}"
         continue-on-error: true
 
@@ -1195,6 +1196,7 @@ jobs:
             --expected-results "${{ steps.testdata.outputs.exfiles }}" \
             --html-file ./report.html \
             --json-file ./report.json \
+            --filing-list ./infiles.json \
             --test-case "${{ matrix.name }}"
         continue-on-error: true
 
@@ -1283,14 +1285,29 @@ jobs:
       - name: Stitch discrepancy HTML reports into one file, sorted by code
         id: stitch
         if: steps.check.outputs.count != '0'
+        env:
+          REPO_BLOB_URL: ${{ github.server_url }}/${{ github.repository }}/blob/${{ github.sha }}
         run: |
           python3 << 'PYEOF'
           import glob
           import html
+          import json
+          import os
           import re
 
           row_re = re.compile(r'<tr>.*?</tr>', re.S)
           cell_re = re.compile(r'<t[hd][^>]*>(.*?)</t[hd]>', re.S)
+          repo_blob_url = os.environ['REPO_BLOB_URL']
+
+          def filing_link(location):
+              """Link to the test case filing: sec.gov URLs as-is, local (e.g. roll) files on GitHub."""
+              if not location:
+                  return ''
+              if re.match(r'https?://', location):
+                  url = location
+              else:
+                  url = f"{repo_blob_url}/{location[2:] if location.startswith('./') else location}"
+              return f"<br /><a href='{html.escape(url)}'>{html.escape(location)}</a>"
 
           header = None
           rows = []  # (sort_key, row_html)
@@ -1307,13 +1324,22 @@ jobs:
               trs = row_re.findall(content)
               if not trs:
                   continue
+
+              # The JSON rows are written in the same order as the HTML rows and carry the filing URL.
+              try:
+                  with open(fname[:-len('.html')] + '.json', encoding='utf-8') as f:
+                      json_rows = json.load(f)
+              except (OSError, ValueError):
+                  json_rows = []
+
               if header is None:
                   header = trs[0].replace('<tr>', '<tr><th>test case</th>', 1)
-              for tr in trs[1:]:
+              for i, tr in enumerate(trs[1:]):
                   cell_match = cell_re.search(tr)
                   code_html = cell_match.group(1) if cell_match else ''
                   code_text = re.split(r'<br\s*/?>', code_html, maxsplit=1)[0].strip()
-                  tr_with_label = tr.replace('<tr>', f"<tr><td valign='top'>{html.escape(label)}</td>", 1)
+                  url_html = filing_link(json_rows[i].get('test case url', '')) if i < len(json_rows) else ''
+                  tr_with_label = tr.replace('<tr>', f"<tr><td valign='top'>{html.escape(label)}{url_html}</td>", 1)
                   rows.append((code_text, tr_with_label))
 
           rows.sort(key=lambda r: r[0])
