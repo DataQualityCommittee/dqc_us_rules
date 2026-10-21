@@ -64,7 +64,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify equity items using the meta taxonomy to identify items that are measures of equity.  Then identify if any of those items are tagged with the consolidated entities axis.  If so, then the rule is not satisfied. **/
 
-$equityItems = $EQUITY_ITEMS - set(StockholdersEquity);
+$equityItems = (filter $EQUITY_ITEMS returns $item.name).to-set - set(StockholdersEquity);
 
 $badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis not in list(srt:ReportableLegalEntitiesMember, srt:ConsolidationEliminationsMember)}
 
