@@ -41,6 +41,9 @@ def options():
                         help='Label for the test case being compared, added as a "Test Case" column in the text report.')
     parser.add_argument('--json-file', dest='json_file',
                         help='File name of a raw JSON dump of the report rows, used to merge multiple reports into a single combined table.')
+    parser.add_argument('--filing-list', dest='filing_list',
+                        help='JSON filing list (as passed to --xule-filing-list), index-aligned with --expected-results. '
+                             'Used to add the test case filing URL to each JSON report row.')
 
     args = parser.parse_args()
 
@@ -127,7 +130,7 @@ def compare(test_messages, expected_messages):
     :return:
     """
     report = []
-    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count', 'key message']
+    headers = ['code', 'severity', 'message', 'test file', 'test count', 'expected file', 'expected count', 'key message', 'entry']
     all_keys = test_messages.keys() | expected_messages.keys()
     for key in sorted(all_keys):
         test_count = len(test_messages.get(key,tuple()))
@@ -142,7 +145,8 @@ def compare(test_messages, expected_messages):
                            test_count,
                            os.path.split(expected_messages[key][0][1] if key in expected_messages else '')[1], # file name
                            expected_count,
-                           key[2]
+                           key[2],
+                           base_message[0], # entry, used to locate the filing the message came from
                           ])
     if len(report) > 0:
         return [headers, *report]
@@ -160,6 +164,39 @@ def split_string(s, size):
 
     return '\n'.join(splits)
 
+def build_filing_lookup(args):
+    """Build lookups from expected file name and from filing file name to the filing location (URL or path).
+
+    The filing list and the expected results list are index-aligned: the nth expected file holds the
+    expected messages for the nth filing.
+    """
+    by_expected = {}
+    by_filing_name = {}
+    if not args.filing_list:
+        return by_expected, by_filing_name
+    try:
+        with open(args.filing_list, encoding='utf-8') as f:
+            filings = [x.get('file', '') for x in json.load(f)]
+    except (OSError, ValueError) as e:
+        print(f"Warning: unable to read filing list '{args.filing_list}': {e}")
+        return by_expected, by_filing_name
+    expected_files = [x.strip() for x in args.expected_results.split(',') if x.strip()]
+    for expected_file, filing in zip(expected_files, filings):
+        by_expected.setdefault(os.path.split(expected_file)[1], filing)
+    for filing in filings:
+        by_filing_name.setdefault(filing.rsplit('/', 1)[-1], filing)
+    return by_expected, by_filing_name
+
+def find_filing(row, by_expected, by_filing_name):
+    """Find the filing a report row came from, using the expected file, then the message's ref hrefs."""
+    if row[5] in by_expected:
+        return by_expected[row[5]]
+    for ref in row[8].findall('ref'):
+        name = ref.get('href', '').split('#', 1)[0].replace('\\', '/').rsplit('/', 1)[-1]
+        if name in by_filing_name:
+            return by_filing_name[name]
+    return ''
+
 def build_report_rows(report, args):
     """Build the unwrapped (test case, code, message, test count, expected count) rows for a report.
 
@@ -168,6 +205,7 @@ def build_report_rows(report, args):
     """
     if report is None:
         return []
+    by_expected, by_filing_name = build_filing_lookup(args)
     rows = []
     for row in report[1:]:  # Skip the headers row
         # Combine 'code' and 'expected file' into a single column
@@ -177,6 +215,7 @@ def build_report_rows(report, args):
             combined_code = row[0]
         rows.append({
             'test case': args.test_case,
+            'test case url': find_filing(row, by_expected, by_filing_name),
             'code': combined_code,
             'message': row[2],
             'test count': row[4],
@@ -234,7 +273,7 @@ def write_html_report(report, args):
             table = ''
             # First row has headers, excluding the "severity" and "key_message" columns
             # Filter headers to exclude the specified columns
-            excluded_columns = {'severity', 'test file', 'expected file', 'key message'}  # Exclude specific columns
+            excluded_columns = {'severity', 'test file', 'expected file', 'key message', 'entry'}  # Exclude specific columns
             headers = [col for col in report[0] if col not in excluded_columns]
             table += '<tr>' + ''.join(['<th>' + html.escape(x) + '</th>' for x in headers]) + '</tr>'
             

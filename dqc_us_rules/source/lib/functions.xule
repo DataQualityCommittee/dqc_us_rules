@@ -1115,24 +1115,20 @@ Checks that an investment identifier member local-name follows the expected
  */
 function get_dim_key_value($dim_string, $key)
 
-    if $dim_string.contains('|') and $dim_string.contains('=')
-        $parts = $dim_string.split('|');
-        /* Clean spaces around '=' by splitting on '=', trimming, and rejoining */
-        $cleanedKeys = (list(for $part in $parts[2].split('=')
-            join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
-        )).join('=');
-        $keyPairs = filter list(for $k in $cleanedKeys.split(' ')
-            $k) where $item != "" returns $item;
+/* One regular expression rather than a chain of split/filter/join steps. The chain built a
+       new value for every piece of every identifier, so on a Schedule of Investments with a few
+       thousand identifiers each call allocated around 2MB and the callers ran it once per fact.
+       The pattern reproduces the chain exactly:
+         ^[^|]*[|]                 skip the security name; only text after the first '|' counts
+        ' *(?:[^|]*?[^= |] +)?'   advance to the start of a KEY=value token, never past a second
+                                   '|', and never to a word that directly follows '=' (which the
+                                   original treats as part of the preceding value)
+         KEY *= *                  the key, allowing spaces around '=' as the original's
+                                   whitespace normalisation does
+         ([^ =|]*)                 the value: up to the next space, '=' or '|'
+       Brackets are used for '|' so the pattern needs no backslash escapes. */
 
-		$myFilterList = list(for $k in $keyPairs
-            if ($k.split('='))[1] == $key
-                (($k.split('='))[2])
-            else
-                skip)
-        $match = filter $myFilterList where $item != none returns $item;
-        if $match.length > 0
-            $match[1]
-        else
-            none
+    if $dim_string.contains('|') and $dim_string.contains('=')
+        $dim_string.regex-match-string('^[^|]*[|] *(?:[^|]*?[^= |] +)?' + $key + ' *= *([^ =|]*)', 1)
     else
         none
