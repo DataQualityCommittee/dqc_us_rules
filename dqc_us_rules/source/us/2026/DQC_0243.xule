@@ -29,7 +29,7 @@ constant $CASH_OUTFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-out
 
 constant $CASH_INFLOWS = navigate 'http://www.xbrl.org/2021/arcrole/instant-inflow' descendants from list(Cash, CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents) taxonomy $META returns set (target-name)
 
-constant $EQUITY_ITEMS = $META.concepts-by-trait(list(us-gaap-metaModel:EquityMemberMM))
+constant $EQUITY_ITEMS = (filter $META.concepts-by-trait(list(us-gaap-metaModel:EquityMemberMM)) returns $item.name).to-set
 
 ASSERT US.0243.10944 SATISFIED
 
@@ -64,7 +64,7 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** Identify equity items using the meta taxonomy to identify items that are measures of equity.  Then identify if any of those items are tagged with the consolidated entities axis.  If so, then the rule is not satisfied. **/
 
-$equityItems = (filter $EQUITY_ITEMS returns $item.name).to-set - set(StockholdersEquity);
+$equityItems = $EQUITY_ITEMS - set(StockholdersEquity);
 
 $badFact = {covered @concept in $equityItems  @srt:ConsolidationItemsAxis not in list(srt:ReportableLegalEntitiesMember, srt:ConsolidationEliminationsMember)}
 
