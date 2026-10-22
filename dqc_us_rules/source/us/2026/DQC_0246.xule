@@ -274,10 +274,7 @@ else
 
 /** Get list of all investments **/
 
-$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
-
-for $DIM in $DIM_Members
+for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $IND = [@concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
     exists($IOAC) and (missing($IND) and get_dim_key_value($DIM, "IND") == none)
@@ -314,10 +311,7 @@ else
 
 /** Get list of all investments **/
 
-$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
-
-for $DIM in $DIM_Members
+for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @period @unit];
     $ISS = [@concept = InvestmentIssuerNameExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @period  @unit where $fact.period.end == $IOAC.period.end]
     exists($IOAC) and (missing($ISS) and get_dim_key_value($DIM, "ISS") == none)
@@ -355,10 +349,7 @@ else
 
 /** Get list of all investments **/
 
-$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
-
-for $DIM in $DIM_Members
+for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $TYP = [@concept = InvestmentTypeExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
     exists($IOAC) and (missing($TYP) and get_dim_key_value($DIM, "TYP") == none)
@@ -393,10 +384,7 @@ else
 
 /** Get list of all investments **/
 
-$BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
-
-for $DIM in $DIM_Members
+for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $GEO = [@concept = InvestmentIssuerGeographicRegionExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
     exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none)
@@ -431,12 +419,12 @@ if not applicable_form(rule-name())
 	skip
 else
 
-/** Get list of all investments **/
+/** Get list of all investments 
 
 $BDC_IOAC_FACTS = list([covered @concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = *])
-$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set
+$DIM_Members = (filter  $BDC_IOAC_FACTS returns $item.dimension(InvestmentIdentifierAxis)).to-set **/
 
-for $DIM in $DIM_Members
+for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $AFF = [@concept = InvestmentIssuerAffiliationExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
     exists($IOAC) and (missing($AFF) and get_dim_key_value($DIM, "AFF") == none)
