@@ -97,7 +97,7 @@ if not $BDC_FLAG
 else
 
 for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
-	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))).to-set
+	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) ($pair.split('='))[1])).to-set
 
 	$invalidKeys = $keysUsed - $INVESTMENT_APPROVED_KEYS
 
@@ -125,7 +125,7 @@ if not applicable_form(rule-name()) and not $BDC_FLAG
 else
 
 for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
-	$keysList = list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))
+	$keysList = list(for $pair in getKeyValuePairs($identifier) ($pair.split('='))[1])
 
 	$duplicateKeys = list(for $key in $keysList.to-set
 							if (filter $keysList where $item == $key).length > 1
@@ -157,7 +157,8 @@ else
 
 for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
 	$invalidPairs = list(for $pair in getKeyValuePairs($identifier)
-							$key = getKeyFromPair($pair);
+							$pairParts = $pair.split('=');
+							$key = $pairParts[1];
 							if $key not in $INVESTMENT_STRICT_DOMAIN_KEYS
 								skip
 							else
@@ -170,7 +171,7 @@ for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
 										  else if $key == 'TYP' $ALLOWED_TYP_ITEMS
 										  else set();
 
-								if $domain.length == 0 or getValueFromPair($pair) in $domain
+								if $domain.length == 0 or (if $pairParts.length >= 2 $pairParts[2] else "") in $domain
 									skip
 								else
 									$pair)
@@ -200,7 +201,7 @@ if  not $BDC_FLAG
 else
 
 for $identifier in $INVESTMENT_KEY_VALUE_IDENTIFIERS.sort
-	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) getKeyFromPair($pair))).to-set
+	$keysUsed = (list(for $pair in getKeyValuePairs($identifier) ($pair.split('='))[1])).to-set
 
 	$missingKeys = $INVESTMENT_REQUIRED_KEYS - $keysUsed
 	$missingAlternativeKeys = $INVESTMENT_ALTERNATIVE_REQUIRED_KEYS - $keysUsed
@@ -242,11 +243,16 @@ function getKeyValuePart($identifier)
 
 /** Splits the key-value portion of a label into a list of individual 'KEY=value' tokens. **/
 function getKeyValuePairs($identifier)
-	$keyValuePart = getKeyValuePart($identifier);
-	$trimmedKeyValuePart = (list(for $part in $keyValuePart.split('=')
-		join(filter list(for $word in $part.split(' ') $word) where $item != '' returns $item, ' ')
-	)).join('=');
-	filter ($trimmedKeyValuePart.split(' ')) where $item.length > 0 returns $item
+	/* One regular expression rather than a split/filter/join chain per word. A token is a run of
+	   characters other than space and '=', where an '=' may have spaces on either side; spaces+	   around '=' are not part of the token, so they are removed when there are any. This gives the
+	   same tokens as normalising the spaces around each '=' and then splitting on spaces. */
+
+	$keyValuePart = ($identifier.split('|'))[2];
+	$tokens = $keyValuePart.regex-match-string-all('(?:[^ =]| *= *)+');
+	if $keyValuePart.contains(' =') or $keyValuePart.contains('= ')
+		list(for $token in $tokens $token.split(' ').join(''))
+	else
+		$tokens
 
 /** Returns the key portion of a single 'KEY=value' token. **/
 function getKeyFromPair($pair)
