@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="utf-8"?>
+<log>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in DQC Rules Validator successful, version Check version using Tools->DQC->Version on the GUI or --dqc-version on the command line. - validate/DQC </message>
+ <ref href="validate/DQC"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in SEC Inline Transforms successful, version 19.2. - EDGAR/transform </message>
+ <ref href="EDGAR/transform"/></entry>
+<entry code="info" level="info">
+ <message>[info] Activation of plug-in Inline XBRL Document Set successful, version 1.1. - inlineXbrlDocumentSet </message>
+ <ref href="inlineXbrlDocumentSet"/></entry>
+<entry code="info" level="info">
+ <message>[info] Xule version: 3.0.30055 - </message>
+ <ref href=""/></entry>
+<entry code="info" level="info">
+ <message>[info] loaded in 5.25 secs at 2026-10-23T11:37:59 - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.buildIndexTime" level="debug">
+ <message>[xule.buildIndexTime] Index build time 0:00:00.192739. - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] Processing: DQC.US.0249.10961 - 11:38:09.484404 - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleDebug" level="debug">
+ <message>[xule.ruleDebug] http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -153,036,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -153,036,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-05-27 to 2023-08-25
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -153,036,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -153,036,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-05-27 to 2023-08-25
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -190,504,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -190,504,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax fact are:
+Period :2023-05-27 to 2023-12-01
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent with a value of 206,300,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent.
+ 
+2. Tag the aggregate value of us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent with a value of 206,300,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent is reported.
+
+The properties of this us-gaap:OtherComprehensiveIncomeLossNetOfTaxPortionAttributableToParent fact are:
+Period :2022-08-27 to 2023-08-25
+Dimensions : us-gaap:StatementEquityComponentsAxis=us-gaap:ParentMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -181,600,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -181,600,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax fact are:
+Period :2023-05-27 to 2023-08-25
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -8,904,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax with a value of -8,904,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossOnDisposalOfDiscontinuedOperationNetOfTax fact are:
+Period :2023-08-26 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of -1,984,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of -1,984,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-08-26 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of -1,984,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of -1,984,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-08-26 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -10,888,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -10,888,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-08-26 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -10,888,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -10,888,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-08-26 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 26,580,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 26,580,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-05-27 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 26,580,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 26,580,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-05-27 to 2023-12-01
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,564,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,564,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-05-27 to 2023-08-25
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,564,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,564,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2023-05-27 to 2023-08-25
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -163,924,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -163,924,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-05-27 to 2023-12-01
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -163,924,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax with a value of -163,924,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax is reported.
+
+The properties of this us-gaap:DiscontinuedOperationGainLossFromDisposalOfDiscontinuedOperationBeforeIncomeTax fact are:
+Period :2023-05-27 to 2023-12-01
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration with a value of 46,100,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955538 - Disclosure - Cash and Investments - Narrative (Details) on the table us-gaap:ScheduleOfCashAndCashEquivalentsTable. However, the only member used to disaggregate the total for us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration was the member peng:ZiliaTechnologiesMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:ZiliaTechnologiesMember.  The member peng:ZiliaTechnologiesMember should be removed from the value as it represents the aggregate value of us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration.
+ 
+2. Tag the aggregate value of us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration with a value of 46,100,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration is reported.
+
+The properties of this us-gaap:DisposalGroupIncludingDiscontinuedOperationConsideration fact are:
+Period :2025-12-29
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:ZiliaTechnologiesMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DisposalGroupDisposedOfBySaleNotDiscontinuedOperationsMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,600,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955535 - Disclosure - Divestiture of SMART Brazil - Loss From Divestiture (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,600,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2022-08-27 to 2023-08-25
+Dimensions : us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember, us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="DQC.US.0249.10961" level="error">
+ <message filing_url="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm" severity="error" effectiveDate="None" cid="1640246040592">[DQC.US.0249.10961] The filing has  reported a value for the element us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,600,000 using the axis IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis in the role 9955533 - Disclosure - Divestiture of SMART Brazil - Additional Information (Details) on the table us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsTable. However, the only member used to disaggregate the total for us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation was the member peng:SMARTBrazilMember. If only one member is used on this axis then the filer should either:
+
+1. Retag the filing using the element DiscontinuedOperationNameExtensibleEnumeration or DisposalGroupNotDiscontinuedOperationNameExtensibleEnumeration with a value of peng:SMARTBrazilMember.  The member peng:SMARTBrazilMember should be removed from the value as it represents the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation.
+ 
+2. Tag the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation with a value of 28,600,000 without the IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis axis. This rule will not generate an error if the aggregate value of us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation is reported.
+
+The properties of this us-gaap:DiscontinuedOperationTaxEffectOfIncomeLossFromDisposalOfDiscontinuedOperation fact are:
+Period :2022-08-27 to 2023-08-25
+Dimensions : us-gaap:IncomeStatementBalanceSheetAndAdditionalDisclosuresByDisposalGroupsIncludingDiscontinuedOperationsAxis=peng:SMARTBrazilMember, us-gaap:DisposalGroupClassificationAxis=us-gaap:DiscontinuedOperationsDisposedOfBySaleMember
+Unit : USD
+
+Rule Element Id:10961
+Rule version: 31.0.1
+ - peng-20260828.htm 8</message>
+ <ref href="peng-20260828.htm#f-1" sourceLine="8">
+  <property name="file" value="peng-20260828.htm"/>
+  <property name="line" value="8"/>
+  <property name="label" value="Document Type"/>
+  <property name="namespace" value="http://xbrl.sec.gov/dei/2026"/>
+  <property name="name" value="DocumentType"/>
+  <property name="QName" value="dei:DocumentType"/>
+  <property name="contextRef" value="c-1">
+   <property name="entity" value="0001616533">
+    <property name="scheme" value="http://www.sec.gov/CIK"/>
+   </property>
+   <property name="startDate" value="2025-08-30"/>
+   <property name="endDate" value="2026-08-28"/>
+  </property>
+  <property name="decimals" value="None"/>
+  <property name="precision" value="None"/>
+  <property name="xsi:nil" value="false"/>
+  <property name="value" value="10-K"/>
+ </ref></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] DQC.US.0249.10961 time took: 1.538459 - 11:38:11.023027  - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total number of rules processed: 1 - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Number of rules over 0.005s: 1 - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Rule DQC.US.0249.10961 end. Took 0:00:01.538459 - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="xule.ruleEvalTime" level="debug">
+ <message>[xule.ruleEvalTime] Total time to process: 0:00:01.731947. - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+<entry code="info" level="info">
+ <message>[info] validated in 6.68 secs - http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm </message>
+ <ref href="http://www.sec.gov/Archives/edgar/data/1616533/000161653326000050/peng-20260828.htm"/></entry>
+</log>
