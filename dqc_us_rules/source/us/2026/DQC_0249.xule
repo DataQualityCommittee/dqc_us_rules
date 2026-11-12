@@ -46,11 +46,14 @@ for $cube in $all_cubes
             if $cube.dimensions().concept().name.contains($dim)
                     $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
                     if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
-                        $PrimaryConcepts = list({@cube = $cube @$dim = *});
-                        $count_values = count($PrimaryConcepts);
-                        if $count_values == 1 and (not exists({@concept = $PrimaryConcepts[1].concept @$dim = none}))
-                            $PrimaryConcept = $PrimaryConcepts[1]
-                            true
+                        $PrimaryConcept = {@concept = * @cube = $cube @$dim = *};
+                        /** Alignment ensures the @$dim = none fact has the same other dimensions, so no dimension count is needed.
+                            Pass if the aggregate exists or another member of $dim is reported with the same dimensions. **/
+                        if (not exists({@concept = $PrimaryConcept.concept @$dim = none})) 
+                            if (not exists({@concept = $PrimaryConcept.concept @$dim != $PrimaryConcept.dimension($dim)}))
+                                true
+                            else
+                                false
                         else
                             false
                     else
@@ -62,7 +65,7 @@ for $cube in $all_cubes
 message
 "The filing has  reported a value for the element {$PrimaryConcept.concept} with a value of {$PrimaryConcept} using the axis {$dim} in the role {$cube.drs-role.description} on the table {$cube.cube-concept()}. However, the only member used to disaggregate the total for {$PrimaryConcept.concept} was the member {$PrimaryConcept.dimension($dim)}. If only one member is used on this axis then the filer should either:
 
-1. Retag the filing using the element {$axisExtensibleEnumDict[$dim]} with a value of {$PrimaryConcept.dimension($dim)}.  The member {$PrimaryConcept.dimension($dim)} should be removed from the value as it represents the aggregate value of {$PrimaryConcept.concept}.
+1. Retag the filing using the element {$axisExtensibleEnumDict[$dim]} with a value of {$PrimaryConcept.dimension($dim)}.  The member {$PrimaryConcept.dimension($dim)} should be removed from the value as it represents the aggregate value of {$PrimaryConcept}.
  
 2. Tag the aggregate value of {$PrimaryConcept.concept} with a value of {$PrimaryConcept} without the {$dim} axis. This rule will not generate an error if the aggregate value of {$PrimaryConcept.concept} is reported.
 
@@ -76,6 +79,6 @@ Rule version: {$ruleVersion}
 "
 
 SEVERITY error
-
+rule-focus $PrimaryConcept
 effectiveDate $effective_dates[$rule_id]
 
