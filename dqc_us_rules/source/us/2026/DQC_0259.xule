@@ -31,7 +31,10 @@ $fact= {@concept in $extensibleEnumerationElements @InvestmentIdentifierAxis = *
 
 $factKVP = $fact.dimension(InvestmentIdentifierAxis)
 
-$fact.local-name not in $factKVP 
+if not is_kvp_member($factKVP)
+	skip
+else
+	$fact.local-name not in $factKVP
 
 message
 "The fact with concept name {$fact.concept.name} and a value of {$fact} is an extensible enumeration and has no corresponding Key Value Pair (KVP) in the InvestmentIdentifierAxis.  The value of the extensible enumeration fact should be a value specified in the KVP.
