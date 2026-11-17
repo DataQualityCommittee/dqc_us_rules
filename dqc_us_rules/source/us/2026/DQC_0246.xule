@@ -88,6 +88,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -116,6 +117,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -148,6 +150,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -191,6 +194,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -227,6 +231,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -305,7 +310,7 @@ Rule version: {$ruleVersion}"
 
 severity error 
 rule-focus $IOAC 
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -342,7 +347,7 @@ Rule version: {$ruleVersion}"
 
 severity error 
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -380,6 +385,7 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $IOAC
+status first-value($rule_status[$rule_id], $status)
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0246.10733 SATISFIED
@@ -416,7 +422,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -458,6 +464,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]

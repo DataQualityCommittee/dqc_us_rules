@@ -19,4 +19,17 @@ output-attribute effectiveDate
 
 /** Define attribute values **/
 
-constant $status = 'APPROVED'
+constant $status = 'PROPOSED'
+
+/** Status by rule element id. An assertion looks up its own id and falls back to $status when it is not listed:
+    status first-value($rule_status[$rule_id], $status)
+**/
+
+constant $rule_status = dict(
+		for $id in list(
+			/** DQC.US.0199 **/ '10653', '10654',
+			/** DQC.US.0246 **/ '10730', '10731', '10732', '10733', '10746',
+			                    '10948', '10949', '10950', '10951', '10952',
+			/** DQC.US.0252 **/ '10967', '10968', '10969', '10970', '10971', '10972')
+		list($id, 'PENDING')
+		)
