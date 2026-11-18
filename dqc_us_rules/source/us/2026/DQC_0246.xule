@@ -393,7 +393,8 @@ else
 for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $GEO = [@concept = InvestmentIssuerGeographicRegionExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none)
+	$IND = [@concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none) and (missing($IND) and get_dim_key_value($DIM, "IND") == none)
 
 
 message
