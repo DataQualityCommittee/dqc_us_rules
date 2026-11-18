@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2025, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2024
+Taxonomy: US GAAP 2026
 **/
 
 
@@ -43,15 +43,17 @@ $all_cubes = filter taxonomy().cubes;
 
 for $cube in $all_cubes
         for $dim in $axisExtensibleEnumDict.keys
+        /** Only run the rule if the dimension has only one member used across all facts in the filing **/
+        $dimMembers = (filter list({covered @concept = * @$dim = *}) returns $item.dimension($dim)).to-set;
+        if $dimMembers.length == 1
             if $cube.dimensions().concept().name.contains($dim)
                     $domain = navigate dimensions dimension-domain descendants from $dim drs-role $cube.drs-role returns set target-name;
                     if count(navigate dimensions descendants from $domain drs-role $cube.drs-role cube $cube.cube-concept()) == 1
                         $PrimaryConcept = {@concept = * @cube = $cube @$dim = *};
-                        /** Alignment ensures the @$dim = none fact has the same other dimensions, so no dimension count is needed.
-                            Pass if the aggregate exists or another member of $dim is reported with the same dimensions. **/
+                        // I dont need to to do a dimension count has alignment takes care of it by minusing 1 using the fact that the dimension with none should exist if there are multiple members.
                         if (not exists({@concept = $PrimaryConcept.concept @$dim = none})) 
                             if (not exists({@concept = $PrimaryConcept.concept @$dim != $PrimaryConcept.dimension($dim)}))
-                                true
+                                    true
                             else
                                 false
                         else
@@ -60,6 +62,8 @@ for $cube in $all_cubes
                         skip
             else
                     skip
+        else
+            skip
 
 
 message
