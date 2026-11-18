@@ -47,7 +47,7 @@ ASSERT US.0199.10654 satisfied
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
 /** DQCRT RULE **/
-if not applicable_form(rule-name()) and not $BDC_FLAG
+if not applicable_form(rule-name())  and not $BDC_FLAG
 	skip
 else
 
@@ -55,10 +55,16 @@ $maturity = [@concept = InvestmentMaturityDate @@InvestmentIdentifierAxis = * @u
 
 $rate = [@concept in list(InvestmentBasisSpreadVariableRate, InvestmentInterestRate, InvestmentInterestRatePaidInKind, InvestmentInterestRatePaidInCash)  @@InvestmentIdentifierAxis = * @unit=*]
 
-exists($rate) and not exists($maturity)
+$investmentType = [@concept = InvestmentTypeExtensibleEnumeration @@InvestmentIdentifierAxis = * @unit where $fact == MoneyMarketFundsMember]
+
+$invTypeDimMember =  $rate.dimension(InvestmentIdentifierAxis)
+
+exists($rate) and not exists($maturity) and (not(exists($investmentType)))
     
 message
 "The filer has reported a value for the concept {$rate.concept.name} with a value of {$rate}. This concept is used to report the interest rate of a debt investment. For debt investments the filer should also report the maturity date of the investment. Please ensure that the InvestmentMaturityDate concept is also reported for this investment.
+
+If the investment type is reported as Cash and Cash Equivalents or Money Market Funds that do not include interest, the maturity date is not required. Use the member MoneyMarketFundsMember as the value of the extensible enumeartion concept InvestmentTypeExtensibleEnumeration or a string value of MoneyMarketFundsMember as the key value for the dimension TYP.
 
 The properties of this {$rate.concept} fact are:
 Period :{$rate.period}
@@ -69,5 +75,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+rule-focus $rate
 
 effectiveDate $effective_dates[$rule_id]
+
