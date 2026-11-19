@@ -48,10 +48,15 @@ else
 			if ($fsConcepts.contains($member))
 				false
 			else
-				true
+				if list({covered @concept.local-name = 'LineItemNotPresentedOnFinancialStatement' @StatementOfFinancialPositionLocationBalanceAxis = $member }).length > 0
+						false
+					else
+						true
 
 message
 "The filer has used the StatementOfFinancialPositionLocationBalanceAxis with a value of {$member} in the filing. This member is used to identify the location of the line item in the balance sheet. However, the concept {$member.local-name} does not appear in the face financial statements.
+
+If the line item is not presented on the financial statement, the filer should provide a fact with the concept LineItemNotPresentedOnFinancialStatement and the corresponding axis member.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -61,6 +66,13 @@ effectiveDate $effective_dates[$rule_id]
 
 
 ASSERT US.0237.10935 SATISFIED
+
+/** In some cases a filer will point to a location in the income statement but the line item does not exist for 1 of 2 reasons:
+1. The note has two items but one of the items is embedded within the other.
+2. The note has 1 item that is split among 2 items in the financial statement.
+
+To eliminate the error the filer has to provide a flag that has the same dimension member as the error fact that says LineItemNotOnFinancialStatement. This is a boolean extension item.
+**/
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
@@ -97,10 +109,15 @@ else
 				if ($fsConcepts.contains($member))
 					false
 				else
-					true
+					if list({covered @concept.local-name = 'LineItemNotPresentedOnFinancialStatement' @StatementOfIncomeLocationBalanceAxis = $member }).length > 0
+						false
+					else
+						true
 
 message
 "The filer has used the StatementOfIncomeLocationBalanceAxis with a value of {$member} in the filing. This member is used to identify the location of the line item in the income statement. However, the concept {$member.local-name} does not appear in the face financial statements.
+
+If the line item is not presented on the financial statement, the filer should provide a fact with the concept LineItemNotPresentedOnFinancialStatement and the corresponding axis member.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
@@ -146,10 +163,15 @@ else
 				if ($fsConcepts.contains($member))
 					false
 				else
-					true
+					if list({covered @concept.local-name = 'LineItemNotPresentedOnFinancialStatement' @OtherComprehensiveIncomeBalanceAxis = $member }).length > 0
+						false
+					else
+						true
 
 message
-"The filer has used the OtherComprehensiveIncomeBalanceAxis with a value of {$member} in the filing. This member is used to identify the location of the line item in the other comprehensive income statement. However, the concept {$member.local-name} does not appear in the face financial statements.
+ "The filer has used the OtherComprehensiveIncomeBalanceAxis with a value of {$member} in the filing. This member is used to identify the location of the line item in the other comprehensive income statement. However, the concept {$member.local-name} does not appear in the face financial statements.
+
+If the line item is not presented on the financial statement, the filer should provide a fact with the concept LineItemNotPresentedOnFinancialStatement and the corresponding axis member.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
