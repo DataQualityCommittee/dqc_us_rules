@@ -88,6 +88,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -116,6 +117,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -148,6 +150,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -191,6 +194,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -227,6 +231,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -305,7 +310,7 @@ Rule version: {$ruleVersion}"
 
 severity error 
 rule-focus $IOAC 
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -342,7 +347,7 @@ Rule version: {$ruleVersion}"
 
 severity error 
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -380,6 +385,7 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $IOAC
+status first-value($rule_status[$rule_id], $status)
 effectiveDate $effective_dates[$rule_id]
 
 ASSERT US.0246.10733 SATISFIED
@@ -399,7 +405,8 @@ else
 for $DIM in $DIM_MEMBERS.to-set
     $IOAC = [@concept = InvestmentOwnedAtCost @InvestmentIdentifierAxis = $DIM @unit];
     $GEO = [@concept = InvestmentIssuerGeographicRegionExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
-    exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none)
+	$IND = [@concept = InvestmentIndustrySectorExtensibleEnumeration @InvestmentIdentifierAxis = $DIM @unit]
+    exists($IOAC) and (missing($GEO) and get_dim_key_value($DIM, "GEO") == none) and (missing($IND) and get_dim_key_value($DIM, "IND") == none)
 
 
 message
@@ -415,7 +422,7 @@ Rule version: {$ruleVersion}"
 
 severity error
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -457,6 +464,6 @@ Rule version: {$ruleVersion}"
 
 severity error  
 rule-focus $IOAC
-status $status  
+status first-value($rule_status[$rule_id], $status)  
 
 effectiveDate $effective_dates[$rule_id]

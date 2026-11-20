@@ -39,6 +39,7 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]
 
@@ -69,5 +70,6 @@ Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
 
 severity error
+status first-value($rule_status[$rule_id], $status)
 
 effectiveDate $effective_dates[$rule_id]

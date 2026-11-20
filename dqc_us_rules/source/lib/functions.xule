@@ -1132,3 +1132,12 @@ function get_dim_key_value($dim_string, $key)
         $dim_string.regex-match-string('^[^|]*[|] *(?:[^|]*?[^= |] +)?' + $key + ' *= *([^ =|]*)', 1)
     else
         none
+
+/**
+ * Determine if an InvestmentIdentifierAxis typed member is a Key Value Pair (KVP) string.
+ * The KVP format is: SecurityName|KEY1=value1 KEY2=value2
+ * @param $dim_string The typed dimension member value
+ * @return true if the member is in KVP format, otherwise false
+ */
+function is_kvp_member($dim_string)
+    $dim_string != none and $dim_string.string.contains('|') and $dim_string.string.contains('=')

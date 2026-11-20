@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2024
+Taxonomy: US GAAP 2025
 **/
 
 
@@ -11,7 +11,11 @@ rule-name-prefix DQC
 
 /** V31 Release **/
 
-CONSTANT $DIMENSION_CLASS_DICT = dict(
+/** Assign dimensions to a class then check if members in a filing are not used across different dimensions without the same class.  If a member is used across different dimensions then the class of the dimension should be the same.  If not then flag an error.
+
+The rule defines a dictionary of classes such as classes of stock , geographies, financial instrument, organisation structures and assigns dimensions to them.  Then the rule checks if a member is used across different dimensions and if the class of the dimension is the same.  If not then flag an error. **/
+
+ CONSTANT $DIMENSION_CLASS_DICT = dict(
                                 list("Geography", list(srt:StatementGeographicalAxis, StatutoryAccountingPracticesByJurisdictionAxis, IncomeTaxAuthorityAxis)),
                                 list("EquityComponents", list(PartnerCapitalComponentsAxis, StatementEquityComponentsAxis)),
                                 list("FinancialInstrument", list(FinancialInstrumentAxis, InvestmentTypeAxis, DerivativeInstrumentRiskAxis, DefinedBenefitPlanByPlanAssetCategoriesAxis, FairValueByAssetClassAxis, SecurityOwnedAndSoldNotYetPurchasedAtFairValueAxis, AssetsSoldUnderAgreementsToRepurchaseAxis, CashAndCashEquivalentsAxis, ExtinguishmentOfDebtAxis, ShortTermDebtTypeAxis, LongtermDebtTypeAxis, RestrictedCashAndCashEquivalentsCashAndCashEquivalentsAxis, CreditFacilityAxis, UnderlyingAssetClassAxis, StatementClassOfStockAxis)),
@@ -41,43 +45,43 @@ CONSTANT $DIMENSION_CLASS_DICT = dict(
                                 list("DebtByName", list(DebtInstrumentAxis))
  )
 
+/** Classes of stock that may be used on both the StatementClassOfStockAxis and the StatementEquityComponentsAxis: CommonStockMember, PreferredStockMember, the US GAAP ClassOfStockDomain members, and any member the filer places below one of these. **/
+CONSTANT $GAAP_STOCK_CLASS_MEMBERS = set(CommonStockMember, PreferredStockMember) + (navigate domain-member descendants from ClassOfStockDomain taxonomy $US-GAAP returns set (target-name))
+
+CONSTANT $STOCK_CLASS_MEMBERS = $GAAP_STOCK_CLASS_MEMBERS + (navigate domain-member descendants from $GAAP_STOCK_CLASS_MEMBERS returns set (target-name))
+
 Assert US.0250.10962 satisfied
 
 $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 
-/** Create a dictionary of members by class **/
+/** Build one row of (member, dimension, class) for every member of every classified dimension in the filing. **/
 
-$membersByClass = dict(for $class in $DIMENSION_CLASS_DICT.keys
-    list($class, for $dim in $DIMENSION_CLASS_DICT[$class]
-        $members = navigate dimensions dimension-member descendants from $dim returns set (target-name);
-        $members
-    ));
+$memberDimClass = list(for $class in $DIMENSION_CLASS_DICT.keys
+                        for $dim in $DIMENSION_CLASS_DICT[$class]
+                            for $dimMember in (navigate dimensions dimension-member descendants from $dim returns set (target-name))
+                                list($dimMember, $dim, $class));
 
-/* Step 1: Build member → list of classes using a fold-style approach */
-$memberToClasses = dict(
-                    for $class in $membersByClass.keys
-                        for $member in $membersByClass[$class]
-                            /* For each member, collect all classes it appears in */
-                            $classesForMember = list(for $c in $membersByClass.keys
-                                if $member in $membersByClass[$c]
-                                    $c
-                                else skip);
-                            list($member, $classesForMember)
-)
+$allMembers = (filter $memberDimClass returns $item[1]).to-set;
 
-/* Step 2: Filter to only members appearing in multiple classes */
-$duplicateMembers = dict(for $key in $memberToClasses.keys
-    if $memberToClasses[$key].length > 1
-    list($key, $memberToClasses[$key])
-    else skip)
-
-/* Use the duplicates to generate errors */
-for $member in $duplicateMembers.keys
-    true                       
+for $member in $allMembers
+    $usages = filter $memberDimClass where $item[1] == $member;
+    $usageDims = (filter $usages returns $item[2]).to-set;
+    /** Allowed exception: classes of stock (e.g. CommonStockMember, PreferredStockMember) can be used on both the StatementClassOfStockAxis and the StatementEquityComponentsAxis. **/
+    $checkedUsages = if $member in $STOCK_CLASS_MEMBERS and $usageDims.contains(StatementClassOfStockAxis)
+                        filter $usages where $item[2] != StatementEquityComponentsAxis
+                     else
+                        $usages;
+    $classes = (filter $checkedUsages returns $item[3]).to-set;
+    if $classes.length > 1
+        $dimsUsed = (filter $usages returns "{$item[2]} ({$item[3]})").to-set;
+        true
+    else
+        false
 
 message
+
 "
-The filer has reported a member {$member} that is used across different incompatible dimensions.  The incompatible dimensions this member is used on are {$duplicateMembers[$member].join(', ')}.  Members should be used on dimensions of the same type.  Please ensure that the class of the dimensions are the same if a member is used across different dimensions.
+The filer has reported a member {$member} that is used across different incompatible dimensions.  The incompatible dimensions this member is used on are {$dimsUsed.sort.join(' and ')}.  Members should be used on dimensions of the same type.  Please ensure that the class of the dimensions are the same if a member is used across different dimensions.
 
 Rule Element Id:{$rule_id}
 Rule version: {$ruleVersion}"
