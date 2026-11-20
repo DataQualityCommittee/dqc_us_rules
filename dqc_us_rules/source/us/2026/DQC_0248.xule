@@ -3,7 +3,7 @@ DQC Rules
  (c) Copyright 2017 - 2026, XBRL US Inc. All rights reserved.
  See https://xbrl.us/dqc-license for license information.
  See https://xbrl.us/dqc-patent for patent infringement notice.
-Taxonomy: US GAAP 2024
+Taxonomy: US GAAP 2026
 **/
 
 
@@ -21,8 +21,8 @@ $rule_id = (rule-name().split('.'))[rule-name().split('.').length];
 $EBPReports = set('11-K','11-K/A','11-KT').contains([covered @concept.local-name ='DocumentType']);
 
 If $EBPReports
-    $documentTypeWithMemberExists = list([@concept.local.name = 'DocumentType' @dei:LegalEntityAxis = *]);
-    $AmendmentFlagWithMemberExists = list([@concept.local.name = 'AmendmentFlag' @dei:LegalEntityAxis = *]);
+    $documentTypeWithMemberExists = list([covered @concept.local-name = 'DocumentType' @dei:LegalEntityAxis = *]);
+    $AmendmentFlagWithMemberExists = list([covered @concept.local-name = 'AmendmentFlag' @dei:LegalEntityAxis = *]);
 
     if $documentTypeWithMemberExists.length == 0 
         $message1 = "The filing is an 11-K filing and the DocumentType element has NOT been tagged with a member on the LegalEntityAxis."

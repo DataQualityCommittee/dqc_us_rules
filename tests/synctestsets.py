@@ -5,6 +5,8 @@ Parses all active and single-commented matrix rows from .travis.yml,
 compares them against the existing test sets in the JSON config. When
 an entry's name already exists but its content (filings) has changed,
 the existing entry is updated in place. Truly new entries are prepended.
+Entries in the JSON whose name no longer appears in .travis.yml (the row
+was deleted or double-commented out) are removed.
 
 Also structurally validates each matrix row: every {file, xule_run_only}
 object in INFILES must have both fields populated, INFILES and EXFILES
@@ -268,8 +270,23 @@ def sync(dry_run=False, travis_file=None, tests_json=None, summary_json=None):
             added.append(entry["name"])
             added_details.append({"name": entry["name"], "entry": new_entry})
 
+    # Remove JSON entries whose matrix row no longer exists in .travis.yml.
+    # Guard: if nothing parsed from .travis.yml, don't wipe the JSON.
+    removed = []
+    removed_details = []
+    if travis_entries:
+        travis_names = {e["name"] for e in travis_entries}
+        kept = []
+        for e in existing:
+            if e["name"] in travis_names:
+                kept.append(e)
+            else:
+                removed.append(e["name"])
+                removed_details.append({"name": e["name"], "entry": e})
+        existing = kept
+
     existing = new_entries + existing
-    has_changes = bool(added or updated)
+    has_changes = bool(added or updated or removed)
 
     if summary_json:
         with open(summary_json, "w") as f:
@@ -277,13 +294,15 @@ def sync(dry_run=False, travis_file=None, tests_json=None, summary_json=None):
                 "structural_issues": structural_issues,
                 "added": added,
                 "updated": updated,
+                "removed": removed,
                 "added_details": added_details,
                 "updated_details": updated_details,
+                "removed_details": removed_details,
                 "has_changes": has_changes,
             }, f, indent=2)
 
     if not has_changes:
-        print("No new test sets found. JSON is already in sync.")
+        print("No changes found. JSON is already in sync.")
         return False
 
     if updated:
@@ -294,6 +313,10 @@ def sync(dry_run=False, travis_file=None, tests_json=None, summary_json=None):
         print(f"Found {len(added)} new test set(s):")
         for name in added:
             print(f"  + {name}")
+    if removed:
+        print(f"Removed {len(removed)} test set(s) no longer in .travis.yml:")
+        for name in removed:
+            print(f"  - {name}")
 
     if dry_run:
         print("\nDry run — no changes written.")

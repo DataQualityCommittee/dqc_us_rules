@@ -97,6 +97,8 @@ jobs:
               updated = data.get('updated', [])
               added_details = data.get('added_details', [])
               updated_details = data.get('updated_details', [])
+              removed = data.get('removed', [])
+              removed_details = data.get('removed_details', [])
 
               lines.append('## .travis.yml Structural Check')
               lines.append('')
@@ -115,7 +117,7 @@ jobs:
               lines.append('')
               lines.append('## Test Set Changes')
               lines.append('')
-              if not added and not updated:
+              if not added and not updated and not removed:
                   lines.append('No changes — `secvalidationtests.json` is already in sync with `.travis.yml`.')
               else:
                   if updated_details:
@@ -180,6 +182,23 @@ jobs:
                           lines.append('')
                           lines.append('```json')
                           lines.extend(truncated(infiles_json))
+                          lines.append('```')
+                          lines.append('')
+                          lines.append('</details>')
+                          lines.append('')
+
+                  if removed_details:
+                      lines.append(f'**Removed ({len(removed_details)}):**')
+                      lines.append('')
+                      for item in removed_details:
+                          entry = item['entry']
+                          exfiles_list = [x.strip() for x in entry['exfiles'].split(',') if x.strip()]
+                          lines.append(f"<details><summary>- {item['name']}</summary>")
+                          lines.append('')
+                          lines.append('_exfiles:_')
+                          lines.append('')
+                          lines.append('```')
+                          lines.extend(truncated(exfiles_list))
                           lines.append('```')
                           lines.append('')
                           lines.append('</details>')

@@ -1265,7 +1265,6 @@ jobs:
       actions: write
     outputs:
       combined_artifact_url: ${{ steps.upload.outputs.artifact-url }}
-      report_summary: ${{ steps.summary.outputs.summary }}
     steps:
       - name: Download all discrepancy reports
         continue-on-error: true
@@ -1378,6 +1377,9 @@ jobs:
       - name: Build combined discrepancy text summary
         id: summary
         if: steps.check.outputs.count != '0'
+        env:
+          COMBINED_ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           pip install --quiet tabulate
           python3 << 'PYEOF'
@@ -1412,11 +1414,28 @@ jobs:
           ]
           summary_table = tabulate(tab_report, headers=headers, tablefmt='grid') if tab_report else 'No differences.'
 
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
-              out.write('summary<<GH_REPORT_SUMMARY_EOF\n')
-              out.write(summary_table + '\n')
-              out.write('GH_REPORT_SUMMARY_EOF\n')
+          # Write the table straight to this job's summary. It is too large to pass to
+          # another job as an output/env var (Linux caps one env var at 128 KiB), and
+          # GitHub caps a step summary at 1 MiB: render the whole table if it fits,
+          # otherwise none of it. The link to the combined HTML report is always written.
+          artifact_url = os.environ.get('COMBINED_ARTIFACT_URL', '')
+          if artifact_url:
+              link = f'[Download combined HTML reports]({artifact_url})'
+          else:
+              link = f"Combined HTML reports: see artifacts on the [workflow run]({os.environ['RUN_URL']})"
 
+          max_bytes = 900_000
+          fits = len(summary_table.encode('utf-8')) <= max_bytes
+
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as out:
+              out.write('### Failing Validation Reports\n\n')
+              out.write(f'{link}\n\n')
+              if fits:
+                  out.write('```\n' + summary_table + '\n```\n')
+              else:
+                  out.write(f'{len(rows)} discrepancy rows. Download the report from the link in the summary table.\n')
+
+          print(summary_table)
           print(f'Combined {len(rows)} discrepancy row(s) from {len(glob.glob("./discrepancies/*.json"))} report(s) into a single table, sorted by code.')
           PYEOF
 
@@ -1543,27 +1562,6 @@ jobs:
           COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           git commit -m "${COMMIT_MSG}"
           git push
-
-      - name: Print combined discrepancy report
-        if: always() && needs.combine-html-reports.outputs.report_summary != ''
-        env:
-          COMBINED_ARTIFACT_URL: ${{ needs.combine-html-reports.outputs.combined_artifact_url }}
-          REPORT_SUMMARY: ${{ needs.combine-html-reports.outputs.report_summary }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          {
-            echo "### Failing Validation Reports"
-            echo ""
-            if [ -n "$COMBINED_ARTIFACT_URL" ]; then
-              echo "[Download combined HTML reports](${COMBINED_ARTIFACT_URL})"
-            else
-              echo "Combined HTML reports: see artifacts on the [workflow run](${RUN_URL})"
-            fi
-            echo ""
-            echo '```'
-            echo "$REPORT_SUMMARY"
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Write status badge
         if: always()
