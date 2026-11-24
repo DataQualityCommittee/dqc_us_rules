@@ -61,7 +61,7 @@ CONSTANT $NUM_DEN_FULL = dict(list(srt:FinancingReceivableAllowanceForCreditLoss
 
 CONSTANT $TWO_CLASS_METHOD_ITEMS = list(EarningsPerShareBasicDistributed, EarningsPerShareBasicUndistributed, EarningsPerShareDilutedDistributed, EarningsPerShareDilutedUndistributed, UndistributedEarningsLossAvailableToCommonShareholdersBasic)
 
-CONSTANT $FACT_USING_TWOCLASS_METHOD = list({covered nonils @concept = $TWO_CLASS_METHOD_ITEMS}).length > 0
+CONSTANT $FACT_USING_TWOCLASS_METHOD = list({covered nonils @concept in $TWO_CLASS_METHOD_ITEMS}).length > 0
 
 CONSTANT $EXISTING_PERCENT_CHECKS = filter $EQUIVALENT_TAX_RATES returns $item.last
 
