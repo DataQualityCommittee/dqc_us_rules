@@ -28,6 +28,11 @@ Have issue where the value was reported in a historical period that the balance 
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
 
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
+
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
@@ -120,6 +125,11 @@ Have issue where the value was reported in a historical period that the balance 
 **/
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
@@ -214,6 +224,11 @@ Have issue where the value was reported in a historical period that the balance 
 **/
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
@@ -311,6 +326,11 @@ Have issue where the value was reported in a historical period that the balance 
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
 
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
+
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 /** Does the Finance Lease Asset exist and is the report a 10-K **/
@@ -399,6 +419,11 @@ Have issue where the value was reported in a historical period that the balance 
 **/
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
