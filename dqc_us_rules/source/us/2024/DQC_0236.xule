@@ -24,7 +24,7 @@ $enumerationItem = [covered @TaxJurisdictionOfDomicileExtensibleEnumeration]
 $DomesticFacts = list({@IncomeTaxAuthorityAxis = $enumerationItem})
 
 $domesticLineItems = set(for $x in $DomesticFacts
-                    $DomesticFacts[$x].concept.name)
+                    $x.concept.name)
 
 for $lineItem in $domesticLineItems
     $factsForLineItem = list({@concept.name = $lineItem @IncomeTaxAuthorityAxis != $enumerationItem})

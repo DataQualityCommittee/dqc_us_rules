@@ -27,6 +27,11 @@ Have issue where the value was reported in a historical period that the balance 
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
 
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
+
 $InstantPeriodToIgnore = ($ReportingPeriod - time-span('P136M'))
 
 $DurationPeriodToIgnore = ($ReportingPeriod - time-span('P2Y6M'))
@@ -207,6 +212,11 @@ Have issue where the value was reported in a historical period that the balance 
 **/
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $InstantPeriodToIgnore = ($ReportingPeriod - time-span('P1Y6M'))
 

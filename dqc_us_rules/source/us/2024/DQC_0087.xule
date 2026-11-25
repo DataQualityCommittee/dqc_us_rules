@@ -24,6 +24,11 @@ else
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
 
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
+
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
 if exists([@concept = OperatingLeaseLiability @BalanceSheetLocationAxis @unit=* where $fact != 0 and $fact.period.end >= $PeriodToIgnore]#leaseLiability) and set('10-K','10-K/A','10-KT','20-F','20-F/A','40-F','40-F/A').contains([covered @concept.local-name ='DocumentType'])
@@ -107,6 +112,11 @@ else
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
@@ -192,6 +202,11 @@ else
 
 /** Does the Operating Lease Liability exist and is the report a 10-K **/
 $ReportingPeriod = [covered @concept.local-name ='DocumentPeriodEndDate']
+
+/** Skip if DocumentPeriodEndDate is not reported, otherwise the subtraction below returns the time-span rather than a date **/
+if not exists($ReportingPeriod)
+	skip
+else
 
 $PeriodToIgnore = ($ReportingPeriod - time-span('P1Y3M'))
 
