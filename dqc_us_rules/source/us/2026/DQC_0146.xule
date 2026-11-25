@@ -20,7 +20,8 @@ else
 
 $document_period = first(list({covered @concept.local-name = 'DocumentPeriodEndDate'}));
 
-if not exists($document_period)
+/** first() returns none (not unbound) for an empty list, and exists(none) is true, so test for none directly **/
+if $document_period == none
 	skip
 else
 	$document_period_end_date = $document_period.period.end;
